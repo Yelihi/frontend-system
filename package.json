@@ -4,12 +4,12 @@
   "private": true,
   "type": "module",
   "bin": {
-    "fs": "dist/cli.js"
+    "fs": "dist/src/cli.js"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "tsx --test test/**/*.test.ts",
+    "test": "npm run build && node --test dist/test/**/*.test.js",
     "check": "npm run typecheck && npm test"
   },
   "dependencies": {
@@ -18,8 +18,6 @@
   },
   "devDependencies": {
     "@types/node": "^24.3.1",
-    "tsx": "^4.20.5",
     "typescript": "^5.9.2"
   }
 }
-
