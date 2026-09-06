@@ -158,7 +158,9 @@ export class FileSystemProjectDiscovery implements ProjectDiscoveryPort {
     const files = await this.listFiles(project.rootPath);
     const manifests = await readManifests(project.rootPath, files);
     const relativeFiles = files.map((file) => relative(project.rootPath, file));
-    const lock = relativeFiles.find((file) => /(^|\/)(pnpm-lock\.yaml|yarn\.lock|package-lock\.json|bun\.lockb?)$/.test(file));
+    const lock = relativeFiles
+      .filter((file) => /(^|\/)(pnpm-lock\.yaml|yarn\.lock|package-lock\.json|bun\.lockb?)$/.test(file))
+      .sort((a, b) => a.split("/").length - b.split("/").length || a.localeCompare(b))[0];
     const declaredManager = manifests.find((manifest) => manifest.data.packageManager)?.data.packageManager;
     const packageManagerName = declaredManager?.split("@")[0] ??
       (lock?.endsWith("pnpm-lock.yaml") ? "pnpm" : lock?.endsWith("yarn.lock") ? "yarn" : lock?.match(/bun\.lockb?$/) ? "bun" : "npm");
@@ -174,9 +176,8 @@ export class FileSystemProjectDiscovery implements ProjectDiscoveryPort {
       for (const [name, command] of Object.entries(manifest.data.scripts ?? {})) {
         const key = prefix ? `${prefix}:${name}` : name;
         scripts[key] = command;
-        const capability = name.split(":")[0] ?? name;
-        if (capabilityNames.has(capability)) {
-          capabilities.push({ name: capability, command: commandFor(manager, name), workingDirectory: manifest.directory });
+        if (capabilityNames.has(name)) {
+          capabilities.push({ name, command: commandFor(manager, name), workingDirectory: manifest.directory });
         }
       }
     }
@@ -193,7 +194,9 @@ export class FileSystemProjectDiscovery implements ProjectDiscoveryPort {
     const featureSliced = ["entities", "features", "shared", "widgets"].every((layer) =>
       architectureRoots.some((root) => root.endsWith(`/src/${layer}`) || root === `src/${layer}`),
     );
-    const configFiles = relativeFiles.filter((file) => configPattern.test(file));
+    const configFiles = relativeFiles.filter(
+      (file) => file.split("/").length <= 3 && configPattern.test(file),
+    );
     const nodeVersion = manifests.find((manifest) => manifest.data.engines?.node)?.data.engines?.node;
 
     return {
