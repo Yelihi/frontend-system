@@ -81,7 +81,13 @@ export class KnowledgeResolver {
     ]);
 
     return {
-      applicable: selected.map(({ score: _score, ...reference }) => reference),
+      applicable: selected.map(({ id, path, title, summary, domains }) => ({
+        id,
+        path,
+        title,
+        summary,
+        domains,
+      })),
       gaps: [...requiredDomains]
         .filter((domain) => !coveredDomains.has(domain))
         .map((domain) => ({ domain, status: "missing-user-knowledge", fallbackRequired: true })),

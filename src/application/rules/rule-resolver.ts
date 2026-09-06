@@ -1,5 +1,5 @@
 import { readFile, readdir } from "node:fs/promises";
-import { basename, join, relative } from "node:path";
+import { join, relative } from "node:path";
 
 import type {
   EngineeringRule,
