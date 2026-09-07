@@ -43,6 +43,11 @@ const technologyPackages: Record<string, { name: string; category: string }> = {
   zustand: { name: "Zustand", category: "state-management" },
   "@reduxjs/toolkit": { name: "Redux Toolkit", category: "state-management" },
   tailwindcss: { name: "Tailwind CSS", category: "styling" },
+  "@storybook/react": { name: "Storybook", category: "design-tool" },
+  "@storybook/vue3": { name: "Storybook", category: "design-tool" },
+  "@radix-ui/react-slot": { name: "Radix UI", category: "component-library" },
+  "@mui/material": { name: "Material UI", category: "component-library" },
+  antd: { name: "Ant Design", category: "component-library" },
 };
 
 interface PackageManifest {
@@ -207,6 +212,19 @@ export class FileSystemProjectDiscovery implements ProjectDiscoveryPort {
       (file) => file.split("/").length <= 3 && configPattern.test(file),
     );
     const nodeVersion = manifests.find((manifest) => manifest.data.engines?.node)?.data.engines?.node;
+    const technologies = detectTechnologies(project.rootPath, manifests);
+    const designFiles = relativeFiles.filter((file) =>
+      /(^|\/)(components\.json|tailwind\.config\.(js|cjs|mjs|ts)|global(s)?\.css|[^/]+\.stories\.(js|jsx|ts|tsx|vue))$/.test(file) ||
+      file.startsWith(".storybook/"),
+    );
+    const designSystems = [
+      ...(relativeFiles.includes("components.json") ? ["shadcn/ui"] : []),
+      ...(designFiles.some((file) => file.startsWith(".storybook/") || file.includes(".stories.")) ? ["Storybook"] : []),
+      ...(technologies.some((technology) => technology.name === "Tailwind CSS") ? ["Tailwind CSS"] : []),
+      ...technologies
+        .filter((technology) => technology.category === "component-library")
+        .map((technology) => technology.name),
+    ].filter((value, index, all) => all.indexOf(value) === index);
 
     return {
       project,
@@ -216,7 +234,7 @@ export class FileSystemProjectDiscovery implements ProjectDiscoveryPort {
         ...(packageManagerVersion ? { version: packageManagerVersion } : {}),
         evidence: [declaredManager ? "packageManager field" : lock ?? "package.json fallback"],
       },
-      technologies: detectTechnologies(project.rootPath, manifests),
+      technologies,
       scripts,
       paths: {
         root: project.rootPath,
@@ -228,6 +246,16 @@ export class FileSystemProjectDiscovery implements ProjectDiscoveryPort {
         style: featureSliced ? "feature-sliced" : manifests.some((manifest) => manifest.directory !== project.rootPath) ? "nested application" : "single application",
         roots: architectureRoots,
         evidence: architectureRoots,
+      },
+      design: {
+        systems: designSystems,
+        files: designFiles,
+        evidence: [
+          ...designFiles.slice(0, 50),
+          ...technologies
+            .filter((technology) => ["styling", "component-library", "design-tool"].includes(technology.category ?? ""))
+            .flatMap((technology) => technology.evidence),
+        ],
       },
       conventions: [
         ...(configFiles.some((file) => file.endsWith("tsconfig.json"))

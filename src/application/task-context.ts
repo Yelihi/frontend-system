@@ -14,7 +14,7 @@ export async function taskContext(
   request: WorkRequest,
 ): Promise<{ profile: ProjectProfile; context: WorkContext; document: string }> {
   const profile = await discovery.discover(await discovery.createRef(projectPath));
-  const knowledge = await new KnowledgeResolver(join(systemRoot, "knowledge")).resolve(profile, request);
+  const knowledge = await new KnowledgeResolver(join(systemRoot, "references", "learned")).resolve(profile, request);
   const rules = await new RuleResolver(join(systemRoot, "mandatory-rules")).resolve(
     profile,
     request,

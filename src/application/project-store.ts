@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 
-import type { ProjectAnalysis, ProjectProfile, ProjectState } from "../domain/types.js";
+import type { ProjectAnalysis, ProjectConfig, ProjectProfile, ProjectState } from "../domain/types.js";
 
 const directoryName = ".frontend-system";
 
@@ -17,6 +17,17 @@ async function optionalRead(path: string): Promise<string> {
 
 export async function readProjectDocument(root: string): Promise<string> {
   return optionalRead(join(root, directoryName, "project.md"));
+}
+
+export async function readProjectConfig(root: string): Promise<ProjectConfig | undefined> {
+  const content = await optionalRead(join(root, directoryName, "config.json"));
+  return content ? JSON.parse(content) as ProjectConfig : undefined;
+}
+
+export async function writeProjectConfig(root: string, config: ProjectConfig): Promise<void> {
+  const directory = join(root, directoryName);
+  await mkdir(directory, { recursive: true });
+  await writeFile(join(directory, "config.json"), `${JSON.stringify(config, null, 2)}\n`);
 }
 
 export async function readProjectState(root: string): Promise<ProjectState | undefined> {

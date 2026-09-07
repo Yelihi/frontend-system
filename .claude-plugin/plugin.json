@@ -1,0 +1,7 @@
+{
+  "name": "frontend-system",
+  "version": "0.1.0",
+  "description": "Evidence-driven frontend inspection, implementation, verification, and knowledge workflows.",
+  "author": { "name": "Yelihi" },
+  "repository": "https://github.com/Yelihi/frontend-system"
+}

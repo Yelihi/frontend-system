@@ -1,11 +1,21 @@
 {
   "name": "frontend-system",
-  "version": "0.0.0",
-  "private": true,
+  "version": "0.1.0",
   "type": "module",
   "bin": {
-    "fs": "dist/src/cli.js"
+    "fs": "dist/src/cli.js",
+    "frontend-system-mcp": "dist/src/mcp.js"
   },
+  "files": [
+    "dist/src/",
+    "skills/",
+    "references/",
+    "mandatory-rules/",
+    ".codex-plugin/",
+    ".claude-plugin/",
+    ".mcp.json",
+    "README.md"
+  ],
   "scripts": {
     "prebuild": "node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\"",
     "build": "tsc -p tsconfig.json",
@@ -16,13 +26,13 @@
     "check": "npm run typecheck && npm run lint && npm test"
   },
   "dependencies": {
-    "@langchain/langgraph": "^1.4.14",
+    "@modelcontextprotocol/sdk": "^1.30.0",
     "zod": "^4.1.5"
   },
   "devDependencies": {
     "@types/node": "^24.3.1",
     "eslint": "^10.10.0",
-    "typescript-eslint": "^8.69.0",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "typescript-eslint": "^8.69.0"
   }
 }

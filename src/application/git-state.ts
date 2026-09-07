@@ -35,3 +35,7 @@ export async function reviewBase(root: string, requested?: string): Promise<stri
     return head;
   }
 }
+
+export async function diffStat(root: string, base: string): Promise<string> {
+  return git(root, ["diff", "--stat", base, "--"]);
+}

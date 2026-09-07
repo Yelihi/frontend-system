@@ -51,9 +51,22 @@ export interface ProjectProfile {
     configFiles: string[];
   };
   architecture: { style: string; roots: string[]; evidence: string[] };
+  design: {
+    systems: string[];
+    files: string[];
+    evidence: string[];
+  };
   conventions: ProjectConvention[];
   capabilities: ProjectCapability[];
   constraints: ProjectConstraint[];
+}
+
+export interface ProjectConfig {
+  version: 1;
+  designProvider: {
+    name: "built-in" | "open-design";
+    scope?: "project" | "user";
+  };
 }
 
 export type RuleSource = "user" | "knowledge" | "mandatory" | "project" | "model";

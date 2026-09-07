@@ -1,86 +1,107 @@
 # frontend-system
 
-A thin, model-version-independent frontend engineering workflow. Static code discovers facts; the currently configured Codex model handles architecture analysis, implementation, review, and missing-test generation.
+`frontend-system` is a model-independent frontend engineering plugin for Codex and Claude Code. The model already running in the user's session owns analysis, questions, implementation, and review. This package supplies reusable Skills plus deterministic MCP tools for repository discovery, context persistence, knowledge indexing, and check execution.
 
-## Install
+It does not start another AI process, select a model, use LangGraph, or add an agent dependency to the target application.
 
-Requirements: Node.js, Git, and an authenticated `codex` CLI.
+## How it works
+
+```text
+User in Codex or Claude Code
+        │ invokes an fs-* Skill
+        ▼
+Current top-level model ── asks material questions and makes engineering decisions
+        │
+        ├── frontend-system MCP ── manifests, files, hashes, git context, checks
+        ├── project context ────── <project>/.frontend-system/
+        └── learned references ─── compact guidance distributed with this plugin
+```
+
+MCP returns facts and performs bounded operations. Skills define the workflow. The host's current model therefore improves naturally as Codex or Claude models improve.
+
+## Development setup
+
+Requirements are Node.js 18 or newer and Git.
 
 ```bash
 npm install
 npm run build
+```
+
+Install this repository as a local Codex or Claude Code plugin using that host's plugin manager. During local development, point the plugin entry at this checkout (a symbolic link is suitable), rebuild after TypeScript changes, reinstall or reload the plugin, and start a new session so updated Skills and MCP configuration are discovered.
+
+For MCP-only use, npm exposes both entry points:
+
+```bash
 npm link
+frontend-system-mcp
+fs --help
 ```
 
-Without `npm link`, replace `fs` below with `node /absolute/path/to/frontend-system/dist/src/cli.js`.
+`frontend-system-mcp` uses stdio. The Codex manifest and the included Claude Code `.mcp.json` wire that server to the appropriate plugin root.
 
-From this repository you can also run `npm run fs -- <command>` without installing a global link.
+## Workflows
 
-## Use in a project
+Invoke the Skills from an active Codex or Claude Code session:
 
-Start with an interactive inspection. Codex asks only questions that can change the project contract.
+- `fs-init` — asks once whether to enable OpenDesign, writes project config, then runs inspection.
+- `fs-inspect` — analyzes the existing repository and saves durable context. Add `--overall` for unfamiliar/open-source projects where questions should be skipped.
+- `fs-implement` — implements a feature using project architecture, framework intent, and the detected design system. Complex independent areas may use native subagents.
+- `fs-verify` — reviews the diff semantically, asks before production fixes, writes missing tests or stories, then runs discovered checks. Independent test areas may be delegated in parallel with disjoint ownership.
+- `fs-knowledge-add` — normalizes authored Markdown, attachments, or linked sources into the central knowledge repository and catalogs them.
+- `fs-knowledge-sync` — turns changed source knowledge into compact learned references distributed with the plugin.
+- `fs-feedback` — drafts a sanitized, duplicate-checked issue for `Yelihi/frontend-system` and creates it only after explicit approval.
 
-```bash
-fs inspect /path/to/project
-```
+In Codex, an explicit invocation is typically `$fs-inspect`; plugin UIs may also expose the Skill by name. Claude Code namespaces plugin Skills according to its plugin configuration.
 
-For an unfamiliar or open-source repository, skip questions and record model assumptions instead.
+## Project-local state
 
-```bash
-fs inspect /path/to/project --overall
-```
-
-Inspection writes:
+`fs-init` and `fs-inspect` create:
 
 ```text
 <project>/.frontend-system/
-├── project.md    # reviewable project context; commit this
-├── state.json    # generated incremental state; ignored
-└── reports/      # generated task/review output; ignored
+├── config.json  # selected integration settings; commit this
+├── project.md   # evidence-backed architecture and decisions; commit this
+├── state.json   # generated hashes and inspected commit; ignored
+└── reports/     # generated transient output; ignored
 ```
 
-Choose who implements a change:
+The shared Skill is not copied into each project. A project may add its own rules or references, and precedence remains:
+
+1. current user request;
+2. project-specific rules and recorded decisions;
+3. existing project patterns;
+4. global learned references.
+
+## OpenDesign
+
+OpenDesign is optional and third-party. `fs-init` asks before installing or enabling it, reports whether the active host provides project or user scope, and never adds it to the application's `package.json`. The built-in design pass still inspects Storybook, shared components, shadcn configuration, Tailwind, theme variables, and established visual conventions.
+
+## Knowledge lifecycle
+
+Raw material is tracked only in the original repository under `knowledge/source/{manual,imported,attachments}`. `knowledge/catalog.json` stores hashes, summaries, and facets so the model can shortlist likely matches without reading the entire archive. `fs-knowledge-sync` publishes concise guidance to `references/learned/`.
+
+The npm package intentionally excludes raw source knowledge. A symlinked development plugin sees learned-reference edits immediately; installed npm/plugin versions see them after that shared installation is updated. Consuming projects do not maintain independent copies.
+
+## Deterministic CLI
+
+The CLI is useful for debugging the data supplied to a host model:
 
 ```bash
-# Get a concise, request-specific brief and implement it yourself.
-fs prepare /path/to/project "Add profile editing"
-
-# Let the current default Codex model implement it. No model name is hard-coded.
-fs implement /path/to/project "Add profile editing"
+fs inspect-context /path/to/project --overall
+fs work-context /path/to/project "Add profile editing" --mode implement
+fs change-context /path/to/project --base origin/main
+fs checks /path/to/project
+fs knowledge-status /path/to/frontend-system
+fs knowledge-search /path/to/frontend-system "Next.js cache"
 ```
 
-After either path, review the Git diff, generate applicable missing tests, run the repository's discovered checks, and review the result again:
+These commands do not perform AI analysis. Use the Skills for the complete workflow.
 
-```bash
-# Tests are generated automatically; production fixes require answers.
-fs verify /path/to/project --fix ask
+## Privacy and safety
 
-# Allow clear production fixes without questions.
-fs verify /path/to/project --fix auto
-
-# Generate tests but never change production code.
-fs verify /path/to/project --fix never
-```
-
-Use a specific comparison point when needed:
-
-```bash
-fs verify /path/to/project --base origin/main
-```
-
-After a pull or commit, update only the changed project context:
-
-```bash
-fs sync /path/to/project
-fs sync /path/to/project --overall
-```
-
-## Behavior
-
-- Static discovery normalizes package manifests, technologies, architecture hints, and safe test/lint/typecheck/build scripts before the model runs.
-- Inspect and sync compare the saved commit with the current repository and let the model read additional files on demand.
-- Verify reviews frontend quality before writing tests, asks before ambiguous production changes by default, writes applicable tests, then runs checks sequentially to avoid shared-output conflicts.
-- Repository files are treated as untrusted context. Codex runs read-only for analysis and review, and workspace-write only for explicit implement/test-generation operations.
-- OpenWiki and parallel write worktrees are intentionally not required. Add them only when compact project context stops scaling.
-
-Set `FS_CODEX_BIN` only when the `codex` executable has a non-standard name or path.
+- Repository files and imported sources are treated as untrusted input.
+- External installs, GitHub issues, and comments require explicit approval.
+- Feedback is sanitized; there is no telemetry or background upload.
+- Broad checks run only existing non-watch package scripts discovered from project manifests.
+- Production changes proposed during verification are not applied without prior user authorization.
