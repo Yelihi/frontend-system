@@ -2,7 +2,11 @@ export interface ProjectRef {
   id: string;
   name: string;
   rootPath: string;
-  git: { repositoryRoot: string; defaultBranch: string };
+  git: {
+    repositoryRoot: string;
+    defaultBranch: string;
+    commit?: string;
+  };
 }
 
 export interface DetectedTechnology {
@@ -22,7 +26,9 @@ export interface ProjectConvention {
 
 export interface ProjectCapability {
   name: string;
+  script: string;
   command: string;
+  packageManager: string;
   workingDirectory: string;
 }
 
@@ -50,12 +56,7 @@ export interface ProjectProfile {
   constraints: ProjectConstraint[];
 }
 
-export type RuleSource =
-  | "user"
-  | "knowledge"
-  | "mandatory"
-  | "project"
-  | "model";
+export type RuleSource = "user" | "knowledge" | "mandatory" | "project" | "model";
 
 export interface EngineeringRule {
   id: string;
@@ -84,18 +85,12 @@ export interface KnowledgeGap {
 
 export interface WorkRequest {
   raw: string;
-  mode: "analyze" | "plan" | "execute";
+  mode: "inspect" | "prepare" | "implement" | "verify";
   constraints: string[];
-  maxWorkers: number;
-}
-
-export interface RelevantFile {
-  path: string;
-  reason: string;
 }
 
 export interface WorkContext {
-  relevantFiles: RelevantFile[];
+  relevantFiles: Array<{ path: string; reason: string }>;
   relevantModules: string[];
   relevantTechnologies: DetectedTechnology[];
   applicableKnowledge: KnowledgeReference[];
@@ -104,102 +99,57 @@ export interface WorkContext {
   summary: string;
 }
 
-export interface Task {
+export interface InspectionQuestion {
   id: string;
+  question: string;
+  reason: string;
+}
+
+export interface ProjectAnalysis {
+  summary: string;
+  observed: string[];
+  architecture: string[];
+  conventions: string[];
+  decisions: string[];
+  qualityGates: string[];
+  assumptions: string[];
+  questions: InspectionQuestion[];
+}
+
+export interface ProjectState {
+  analyzedCommit?: string;
+  fileHashes: Record<string, string>;
+  updatedAt: string;
+}
+
+export interface ReviewFinding {
+  id: string;
+  severity: "blocker" | "warning" | "note";
+  dimension: string;
   title: string;
-  objective: string;
-  rationale: string;
-  dependencies: string[];
-  scope: { paths: string[] };
-  acceptanceCriteria: string[];
-  constraints: string[];
-  applicableRuleIds: string[];
-  applicableKnowledgeIds: string[];
+  evidence: string[];
+  proposal: string;
+  requiresDecision: boolean;
+}
+
+export interface TestRecommendation {
+  kind: "unit" | "integration" | "e2e" | "storybook" | "security";
+  reason: string;
+  target: string;
+}
+
+export interface ReviewAnalysis {
+  summary: string;
   risk: "low" | "medium" | "high";
-  status:
-    | "pending"
-    | "ready"
-    | "running"
-    | "completed"
-    | "failed"
-    | "blocked"
-    | "verified"
-    | "merged";
+  applicableDimensions: string[];
+  findings: ReviewFinding[];
+  questions: InspectionQuestion[];
+  tests: TestRecommendation[];
 }
 
-export interface ExecutionPlan {
-  summary: string;
-  tasks: Task[];
-  risks: string[];
-}
-
-export interface TaskExecution {
-  taskId: string;
-  workspaceId: string;
-  status: "pending" | "running" | "completed" | "failed";
-  output?: string;
-}
-
-export interface TaskReview {
-  taskId: string;
-  approved: boolean;
-  findings: string[];
-}
-
-export interface TaskVerification {
-  taskId: string;
+export interface VerificationResult {
+  capability: string;
+  command: string;
   passed: boolean;
-  commands: string[];
-  output: string[];
-}
-
-export interface KnowledgeCandidate {
-  id: string;
-  title: string;
-  summary: string;
-  category: string;
-  source: { project: string; taskId?: string; files?: string[] };
-  reason:
-    | "new-learning"
-    | "knowledge-gap"
-    | "knowledge-correction"
-    | "project-incident"
-    | "reusable-pattern";
-  proposedLocation?: string;
-  confidence: number;
-  status: "pending" | "approved" | "rejected";
-}
-
-export interface WorkflowRun {
-  id: string;
-  startedAt: string;
-  status: "running" | "completed" | "failed" | "blocked";
-}
-
-export interface WorkflowEvent {
-  type: string;
-  timestamp: string;
-  message: string;
-}
-
-export interface WorkflowError {
-  stage: string;
-  message: string;
-}
-
-export interface FrontendSystemState {
-  run: WorkflowRun;
-  target: ProjectRef;
-  request: WorkRequest;
-  profile?: ProjectProfile;
-  context?: WorkContext;
-  plan?: ExecutionPlan;
-  tasks: Task[];
-  activeTaskIds: string[];
-  executions: TaskExecution[];
-  reviews: TaskReview[];
-  verifications: TaskVerification[];
-  knowledgeCandidates: KnowledgeCandidate[];
-  events: WorkflowEvent[];
-  errors: WorkflowError[];
+  output: string;
 }

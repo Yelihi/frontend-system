@@ -14,6 +14,7 @@ import type { ProjectDiscoveryPort } from "../../ports/project-discovery.port.js
 const run = promisify(execFile);
 const ignoredDirectories = new Set([
   ".git",
+  ".frontend-system",
   ".next",
   ".venv",
   ".turbo",
@@ -143,6 +144,7 @@ export class FileSystemProjectDiscovery implements ProjectDiscoveryPort {
     const repositoryRoot = (await git(root, ["rev-parse", "--show-toplevel"])) ?? root;
     const remoteHead = await git(root, ["symbolic-ref", "--short", "refs/remotes/origin/HEAD"]);
     const currentBranch = await git(root, ["branch", "--show-current"]);
+    const commit = await git(root, ["rev-parse", "HEAD"]);
     return {
       id: basename(root).toLowerCase().replace(/[^a-z0-9]+/g, "-"),
       name: basename(root),
@@ -150,6 +152,7 @@ export class FileSystemProjectDiscovery implements ProjectDiscoveryPort {
       git: {
         repositoryRoot,
         defaultBranch: remoteHead?.replace(/^origin\//, "") || currentBranch || "main",
+        ...(commit ? { commit } : {}),
       },
     };
   }
@@ -167,7 +170,7 @@ export class FileSystemProjectDiscovery implements ProjectDiscoveryPort {
     const packageManagerVersion = declaredManager?.split("@")[1];
     const scripts: Record<string, string> = {};
     const capabilities: ProjectCapability[] = [];
-    const capabilityNames = new Set(["lint", "typecheck", "test", "build", "e2e"]);
+    const capabilityPattern = /^(lint|typecheck|build|e2e|build-storybook|test(?::(?:unit|integration|e2e|storybook))?)$/;
 
     for (const manifest of manifests) {
       const prefix = relative(project.rootPath, manifest.directory);
@@ -176,8 +179,14 @@ export class FileSystemProjectDiscovery implements ProjectDiscoveryPort {
       for (const [name, command] of Object.entries(manifest.data.scripts ?? {})) {
         const key = prefix ? `${prefix}:${name}` : name;
         scripts[key] = command;
-        if (capabilityNames.has(name)) {
-          capabilities.push({ name, command: commandFor(manager, name), workingDirectory: manifest.directory });
+        if (capabilityPattern.test(name)) {
+          capabilities.push({
+            name,
+            script: name,
+            command: commandFor(manager, name),
+            packageManager: manager,
+            workingDirectory: manifest.directory,
+          });
         }
       }
     }

@@ -7,7 +7,9 @@
     "fs": "dist/src/cli.js"
   },
   "scripts": {
+    "prebuild": "node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\"",
     "build": "tsc -p tsconfig.json",
+    "fs": "node dist/src/cli.js",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint src test",
     "test": "npm run build && node --test dist/test/**/*.test.js",
