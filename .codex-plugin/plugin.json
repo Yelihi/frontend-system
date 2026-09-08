@@ -9,7 +9,7 @@
   "mcpServers": {
     "frontend-system": {
       "command": "node",
-      "args": ["${PLUGIN_ROOT}/dist/src/mcp.js"]
+      "args": ["${PLUGIN_ROOT}/bundle/mcp.js"]
     }
   },
   "interface": {

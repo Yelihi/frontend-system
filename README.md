@@ -19,16 +19,35 @@ Current top-level model ── asks material questions and makes engineering dec
 
 MCP returns facts and performs bounded operations. Skills define the workflow. The host's current model therefore improves naturally as Codex or Claude models improve.
 
-## Development setup
+## Install in Codex
 
 Requirements are Node.js 18 or newer and Git.
+
+Register the GitHub repository once for the current Codex user. These commands may be run from any directory:
+
+```bash
+codex plugin marketplace add Yelihi/frontend-system
+codex plugin add frontend-system@frontend-system
+```
+
+Start a new Codex session in any target project and invoke `$fs-init`. Marketplace registration and plugin installation are user-level; they are not repeated for every project. Each project keeps only its own `.frontend-system/` context.
+
+To update an installed copy after this repository changes:
+
+```bash
+codex plugin marketplace upgrade frontend-system
+codex plugin remove frontend-system@frontend-system
+codex plugin add frontend-system@frontend-system
+```
+
+## Development setup
 
 ```bash
 npm install
 npm run build
 ```
 
-Install this repository as a local Codex or Claude Code plugin using that host's plugin manager. During local development, point the plugin entry at this checkout (a symbolic link is suitable), rebuild after TypeScript changes, reinstall or reload the plugin, and start a new session so updated Skills and MCP configuration are discovered.
+The build produces both TypeScript CLI output and `bundle/mcp.js`. The committed MCP bundle lets a Git-backed plugin run without installing package dependencies in the target project.
 
 For MCP-only use, npm exposes both entry points:
 

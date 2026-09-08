@@ -16,4 +16,4 @@ The active top-level model owns the work and all final decisions. Never invoke a
 7. Add or update proportional tests with the implementation. Run targeted checks first, then broader discovered checks when warranted.
 8. If architecture facts or durable decisions changed, refresh the project context using `save_project_context`.
 
-Read `references/frontend-quality.md` when establishing review dimensions.
+Read `../../references/frontend-quality.md` when establishing review dimensions.

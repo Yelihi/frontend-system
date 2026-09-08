@@ -2,7 +2,7 @@
   "mcpServers": {
     "frontend-system": {
       "command": "node",
-      "args": ["${CLAUDE_PLUGIN_ROOT}/dist/src/mcp.js"]
+      "args": ["${CLAUDE_PLUGIN_ROOT}/bundle/mcp.js"]
     }
   }
 }

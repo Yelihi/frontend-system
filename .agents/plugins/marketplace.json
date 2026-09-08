@@ -1,0 +1,22 @@
+{
+  "name": "frontend-system",
+  "interface": {
+    "displayName": "Frontend System"
+  },
+  "plugins": [
+    {
+      "name": "frontend-system",
+      "description": "Evidence-driven frontend inspection, implementation, verification, and knowledge workflows.",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/Yelihi/frontend-system.git",
+        "ref": "main"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}

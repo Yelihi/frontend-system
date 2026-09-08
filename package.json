@@ -7,6 +7,7 @@
     "frontend-system-mcp": "dist/src/mcp.js"
   },
   "files": [
+    "bundle/",
     "dist/src/",
     "skills/",
     "references/",
@@ -18,7 +19,8 @@
   ],
   "scripts": {
     "prebuild": "node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\"",
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc -p tsconfig.json && npm run bundle:mcp",
+    "bundle:mcp": "esbuild src/mcp.ts --bundle --platform=node --format=esm --target=node18 --outfile=bundle/mcp.js",
     "fs": "node dist/src/cli.js",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint src test",
@@ -31,6 +33,7 @@
   },
   "devDependencies": {
     "@types/node": "^24.3.1",
+    "esbuild": "^0.28.2",
     "eslint": "^10.10.0",
     "typescript": "^5.9.2",
     "typescript-eslint": "^8.69.0"
