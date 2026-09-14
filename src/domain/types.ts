@@ -39,6 +39,7 @@ export interface ProjectConstraint {
 }
 
 export interface ProjectProfile {
+  inventory?: { fileCount: number; excluded: string[]; warnings: string[] };
   project: ProjectRef;
   runtime?: { name: string; version?: string; evidence: string[] };
   packageManager?: { name: string; version?: string; evidence: string[] };
@@ -65,7 +66,9 @@ export interface ProjectConfig {
   version: 1;
   designProvider: {
     name: "built-in" | "open-design";
-    scope?: "project" | "user";
+    scope?: "project" | "user" | undefined;
+    mode?: "cloud" | "local-codex" | "byok" | undefined;
+    projectId?: string | undefined;
   };
 }
 
@@ -98,7 +101,7 @@ export interface KnowledgeGap {
 
 export interface WorkRequest {
   raw: string;
-  mode: "inspect" | "prepare" | "implement" | "verify";
+  mode: "inspect" | "prepare" | "implement" | "verify" | "review" | "refactor";
   constraints: string[];
 }
 
@@ -165,4 +168,7 @@ export interface VerificationResult {
   command: string;
   passed: boolean;
   output: string;
+  status?: "passed" | "failed" | "not-run";
+  workingDirectory?: string;
+  reason?: string;
 }

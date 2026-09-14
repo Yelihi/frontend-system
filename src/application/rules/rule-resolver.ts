@@ -50,7 +50,7 @@ async function mandatoryRules(root: string, profile: ProjectProfile): Promise<En
         title,
         description,
         source: "mandatory",
-        priority: 2,
+        priority: 1,
         appliesTo: [domain],
         evidence: [path],
         mandatory: true,
@@ -84,10 +84,10 @@ export class RuleResolver {
         title: reference.title,
         description: reference.summary,
         source: "knowledge" as const,
-        priority: 1,
+        priority: 3,
         appliesTo: reference.domains,
         evidence: [reference.path],
-        mandatory: true,
+        mandatory: false,
       })),
       ...(await mandatoryRules(this.mandatoryRoot, profile)),
       ...profile.constraints.map((constraint) => ({
@@ -95,7 +95,7 @@ export class RuleResolver {
         title: constraint.description,
         description: constraint.description,
         source: "project" as const,
-        priority: 3,
+        priority: 2,
         appliesTo: ["all"],
         evidence: constraint.evidence,
         mandatory: true,
@@ -121,11 +121,7 @@ export class RuleResolver {
       })),
     ];
 
-    const resolved = new Map<string, EngineeringRule>();
-    for (const rule of candidates.sort((a, b) => a.priority - b.priority)) {
-      const conflictKey = slug(rule.title);
-      if (!resolved.has(conflictKey)) resolved.set(conflictKey, rule);
-    }
-    return [...resolved.values()];
+    // Ordering is reading priority, not semantic conflict resolution. Keep both sources.
+    return candidates.sort((a, b) => a.priority - b.priority);
   }
 }

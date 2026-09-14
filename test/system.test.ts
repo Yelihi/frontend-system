@@ -3,6 +3,8 @@ import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import test from "node:test";
+import { Client } from "@modelcontextprotocol/sdk/client/index.js";
+import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
 
 import { FileSystemProjectDiscovery } from "../src/adapters/filesystem/project-discovery.js";
 import {
@@ -19,6 +21,7 @@ import {
   writeProjectConfig,
 } from "../src/application/project-store.js";
 import { RuleResolver } from "../src/application/rules/rule-resolver.js";
+import { taskContext } from "../src/application/task-context.js";
 import type { ProjectAnalysis, ProjectProfile, WorkRequest } from "../src/domain/types.js";
 
 async function fixture(files: Record<string, string>): Promise<string> {
@@ -95,10 +98,55 @@ test("persists project configuration and evidence-backed context", async () => {
     await writeProjectConfig(root, { version: 1, designProvider: { name: "built-in" } });
     await writeProjectArtifacts(profile, analysis);
     assert.equal((await readProjectConfig(root))?.designProvider.name, "built-in");
-    assert.match(await readFile(join(root, ".frontend-system/project.md"), "utf8"), /Keep state local/);
+    assert.match(await readFile(join(root, ".frontend-system/init.md"), "utf8"), /Keep state local/);
     assert.ok((await readProjectState(root))?.fileHashes["package.json"]);
   } finally {
     await rm(root, { recursive: true, force: true });
+  }
+});
+
+test("OpenDesign settings survive MCP updates and stay isolated in work context", async () => {
+  const first = await fixture({ "package.json": "{}" });
+  const second = await fixture({ "package.json": "{}" });
+  const client = new Client({ name: "config-test", version: "1" });
+  const projectId = "de6f189c-2947-4a0a-aa70-1d2bf8251b26";
+  try {
+    await client.connect(new StdioClientTransport({
+      command: process.execPath, args: [join(process.cwd(), "bundle/mcp.js")],
+    }));
+    const configure = (args: Record<string, unknown>) => client.callTool({
+      name: "configure_project", arguments: { projectPath: first, designProvider: "open-design", ...args },
+    });
+    assert.ok(!(await configure({ openDesignMode: "local-codex", openDesignProjectId: projectId })).isError);
+    assert.ok(!(await configure({ designProviderScope: "user" })).isError);
+    const discovery = new FileSystemProjectDiscovery();
+    const context = await taskContext(discovery, process.cwd(), first, request);
+    assert.deepEqual(context.config?.designProvider, {
+      name: "open-design", mode: "local-codex", projectId, scope: "user",
+    });
+    assert.equal((await taskContext(discovery, process.cwd(), second, request)).config, undefined);
+    assert.ok((await configure({ openDesignProjectId: "wrong-project" })).isError);
+    assert.deepEqual(await readProjectConfig(first), context.config);
+    assert.ok(!(await configure({ openDesignProjectId: null })).isError);
+    assert.equal((await readProjectConfig(first))?.designProvider.projectId, undefined);
+    assert.ok(!(await configure({ designProvider: "built-in" })).isError);
+    assert.deepEqual((await readProjectConfig(first))?.designProvider, { name: "built-in" });
+    assert.ok((await configure({ designProvider: "built-in", openDesignMode: "cloud" })).isError);
+    // Reject unsupported settings before replacing the existing valid file.
+    await assert.rejects(writeProjectConfig(first, {
+      version: 1, designProvider: { name: "open-design", mode: "invalid" },
+    } as unknown as Parameters<typeof writeProjectConfig>[1]));
+    assert.equal((await readProjectConfig(first))?.designProvider.name, "built-in");
+    await writeProjectConfig(second, { version: 1, designProvider: { name: "open-design" } });
+    assert.equal((await readProjectConfig(second))?.designProvider.mode, undefined);
+    await writeFile(join(second, ".frontend-system/config.json"), JSON.stringify({
+      version: 1, designProvider: { name: "open-design", apiKey: "not-a-real-key" },
+    }));
+    await assert.rejects(readProjectConfig(second));
+  } finally {
+    await client.close();
+    await rm(first, { recursive: true, force: true });
+    await rm(second, { recursive: true, force: true });
   }
 });
 

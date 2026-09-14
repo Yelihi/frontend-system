@@ -80,14 +80,14 @@ async function git(rootPath: string, args: string[]): Promise<string | undefined
   }
 }
 
-async function readManifests(rootPath: string, files: string[]): Promise<PackageManifest[]> {
+async function readManifests(rootPath: string, files: string[], warnings: string[]): Promise<PackageManifest[]> {
   const manifests: PackageManifest[] = [];
   for (const path of files.filter((file) => basename(file) === "package.json")) {
     try {
       const data = JSON.parse(await readFile(path, "utf8")) as PackageManifest["data"];
       manifests.push({ path, directory: dirname(path), data });
     } catch {
-      // Invalid manifests are evidence for review, not a reason to abort discovery.
+      warnings.push(`Manifest unreadable or invalid: ${relative(rootPath, path)}`);
     }
   }
   return manifests.sort((a, b) => relative(rootPath, a.path).localeCompare(relative(rootPath, b.path)));
@@ -127,20 +127,32 @@ function commandFor(manager: string, script: string): string {
 }
 
 export class FileSystemProjectDiscovery implements ProjectDiscoveryPort {
-  async listFiles(rootPath: string): Promise<string[]> {
+  async inventory(rootPath: string): Promise<{ files: string[]; excluded: string[]; warnings: string[] }> {
     const root = resolve(rootPath);
     const files: string[] = [];
-    const visit = async (directory: string, depth: number): Promise<void> => {
-      if (depth > 6 || files.length >= 20_000) return;
+    const excluded: string[] = [];
+    const warnings: string[] = [];
+    const visit = async (directory: string): Promise<void> => {
       for (const entry of await readdir(directory, { withFileTypes: true })) {
-        if (entry.isDirectory() && ignoredDirectories.has(entry.name)) continue;
         const path = join(directory, entry.name);
-        if (entry.isDirectory()) await visit(path, depth + 1);
+        if (entry.isDirectory() && ignoredDirectories.has(entry.name)) {
+          excluded.push(relative(root, path));
+          continue;
+        }
+        if (entry.isSymbolicLink()) {
+          warnings.push(`Not followed (symbolic link): ${relative(root, path)}`);
+          continue;
+        }
+        if (entry.isDirectory()) await visit(path);
         else if (entry.isFile()) files.push(path);
       }
     };
-    await visit(root, 0);
-    return files.sort();
+    await visit(root);
+    return { files: files.sort(), excluded: excluded.sort(), warnings: warnings.sort() };
+  }
+
+  async listFiles(rootPath: string): Promise<string[]> {
+    return (await this.inventory(rootPath)).files;
   }
 
   async createRef(rootPath: string): Promise<ProjectRef> {
@@ -163,8 +175,9 @@ export class FileSystemProjectDiscovery implements ProjectDiscoveryPort {
   }
 
   async discover(project: ProjectRef): Promise<ProjectProfile> {
-    const files = await this.listFiles(project.rootPath);
-    const manifests = await readManifests(project.rootPath, files);
+    const inventory = await this.inventory(project.rootPath);
+    const files = inventory.files;
+    const manifests = await readManifests(project.rootPath, files, inventory.warnings);
     const relativeFiles = files.map((file) => relative(project.rootPath, file));
     const lock = relativeFiles
       .filter((file) => /(^|\/)(pnpm-lock\.yaml|yarn\.lock|package-lock\.json|bun\.lockb?)$/.test(file))
@@ -175,7 +188,7 @@ export class FileSystemProjectDiscovery implements ProjectDiscoveryPort {
     const packageManagerVersion = declaredManager?.split("@")[1];
     const scripts: Record<string, string> = {};
     const capabilities: ProjectCapability[] = [];
-    const capabilityPattern = /^(lint|typecheck|build|e2e|build-storybook|test(?::(?:unit|integration|e2e|storybook))?)$/;
+    const capabilityPattern = /^(lint|typecheck|build|e2e|build-storybook|test(?::[\w-]+)*)$/;
 
     for (const manifest of manifests) {
       const prefix = relative(project.rootPath, manifest.directory);
@@ -184,7 +197,7 @@ export class FileSystemProjectDiscovery implements ProjectDiscoveryPort {
       for (const [name, command] of Object.entries(manifest.data.scripts ?? {})) {
         const key = prefix ? `${prefix}:${name}` : name;
         scripts[key] = command;
-        if (capabilityPattern.test(name)) {
+        if (capabilityPattern.test(name) && !/(^|:)(watch|dev|update|fix|ui)(:|$)/.test(name)) {
           capabilities.push({
             name,
             script: name,
@@ -208,18 +221,16 @@ export class FileSystemProjectDiscovery implements ProjectDiscoveryPort {
     const featureSliced = ["entities", "features", "shared", "widgets"].every((layer) =>
       architectureRoots.some((root) => root.endsWith(`/src/${layer}`) || root === `src/${layer}`),
     );
-    const configFiles = relativeFiles.filter(
-      (file) => file.split("/").length <= 3 && configPattern.test(file),
-    );
+    const configFiles = relativeFiles.filter((file) => configPattern.test(file));
     const nodeVersion = manifests.find((manifest) => manifest.data.engines?.node)?.data.engines?.node;
     const technologies = detectTechnologies(project.rootPath, manifests);
     const designFiles = relativeFiles.filter((file) =>
       /(^|\/)(components\.json|tailwind\.config\.(js|cjs|mjs|ts)|global(s)?\.css|[^/]+\.stories\.(js|jsx|ts|tsx|vue))$/.test(file) ||
-      file.startsWith(".storybook/"),
+      /(^|\/)\.storybook\//.test(file),
     );
     const designSystems = [
       ...(relativeFiles.includes("components.json") ? ["shadcn/ui"] : []),
-      ...(designFiles.some((file) => file.startsWith(".storybook/") || file.includes(".stories.")) ? ["Storybook"] : []),
+      ...(designFiles.some((file) => /(^|\/)\.storybook\//.test(file) || file.includes(".stories.")) ? ["Storybook"] : []),
       ...(technologies.some((technology) => technology.name === "Tailwind CSS") ? ["Tailwind CSS"] : []),
       ...technologies
         .filter((technology) => technology.category === "component-library")
@@ -228,6 +239,7 @@ export class FileSystemProjectDiscovery implements ProjectDiscoveryPort {
 
     return {
       project,
+      inventory: { fileCount: files.length, excluded: inventory.excluded, warnings: inventory.warnings },
       runtime: { name: "node", ...(nodeVersion ? { version: nodeVersion } : {}), evidence: nodeVersion ? ["package.json engines.node"] : ["package.json detected"] },
       packageManager: {
         name: packageManagerName,

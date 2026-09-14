@@ -7,15 +7,15 @@ import { FileSystemProjectDiscovery } from "./adapters/filesystem/project-discov
 import { changedFiles, diffStat, reviewBase } from "./application/git-state.js";
 import { knowledgeStatus, searchKnowledge } from "./application/knowledge/catalog.js";
 import { readProjectConfig, readProjectDocument, readProjectState } from "./application/project-store.js";
-import { runCapabilities } from "./application/run-capabilities.js";
+import { runProjectChecks } from "./application/run-capabilities.js";
 import { taskContext } from "./application/task-context.js";
 import type { WorkRequest } from "./domain/types.js";
 
 const usage = `Usage:
   fs inspect-context [project] [--overall]
-  fs work-context [project] "<request>" [--mode prepare|implement|verify]
+  fs work-context [project] "<request>" [--mode prepare|implement|verify|review|refactor]
   fs change-context [project] [--base <ref>]
-  fs checks [project]
+  fs checks [project] [--capability <script-id>] [--purpose baseline|verification] [--baseline <check-id>]
   fs knowledge-status [repository]
   fs knowledge-search [repository] "<query>"
   fs mcp
@@ -48,6 +48,9 @@ async function main(): Promise<void> {
       overall: { type: "boolean", default: false },
       base: { type: "string" },
       mode: { type: "string", default: "implement" },
+      capability: { type: "string", multiple: true },
+      purpose: { type: "string", default: "verification" },
+      baseline: { type: "string" },
       help: { type: "boolean", short: "h", default: false },
     },
   });
@@ -67,7 +70,7 @@ async function main(): Promise<void> {
   if (command === "work-context") {
     const raw = rest.join(" ");
     if (!raw) throw new Error(`work-context requires a request\n${usage}`);
-    if (!(["prepare", "implement", "verify"] as string[]).includes(values.mode)) throw new Error("Invalid --mode value.");
+    if (!(["prepare", "implement", "verify", "review", "refactor"] as string[]).includes(values.mode)) throw new Error("Invalid --mode value.");
     const request: WorkRequest = { raw, mode: values.mode as WorkRequest["mode"], constraints: [] };
     print(await taskContext(discovery, systemRoot, root, request));
     return;
@@ -78,7 +81,10 @@ async function main(): Promise<void> {
     return;
   }
   if (command === "checks") {
-    print(await runCapabilities(await discovery.discover(await discovery.createRef(root))));
+    if (values.purpose !== "baseline" && values.purpose !== "verification") throw new Error("Invalid --purpose value.");
+    print(await runProjectChecks(await discovery.discover(await discovery.createRef(root)), {
+      capabilities: values.capability, purpose: values.purpose, baselineCheckId: values.baseline,
+    }));
     return;
   }
   if (command === "knowledge-status") {

@@ -7,7 +7,7 @@ description: Publish changed source knowledge into compact learned references us
 
 1. Call `knowledge_status` in the original frontend-system repository. Catalog changed or uncataloged Markdown first; do not silently skip it.
 2. For unpublished document IDs, use `search_knowledge` and catalog metadata to group related material. Open only the necessary sources.
-3. Update compact files under `references/learned/`. Preserve actionable rules, applicability, version limits, tradeoffs, and source links; omit article-like prose and raw attachments.
+3. Update compact files under `references/learned/`. Preserve knowledge kind (experience, guidance, preference, hypothesis or explicit constraint), applicability/version limits, tradeoffs, counterexamples, focused code examples and source links. Keep chosen options distinct from measured outcomes; omit article-like prose and raw attachments. Never convert every source into a mandatory rule.
 4. Prefer updating a cohesive existing reference over creating tiny fragments. Keep framework/version-specific guidance explicitly scoped.
 5. Review the resulting diff for contradictions and accidental loss. Then call `mark_knowledge_synced` only for source IDs actually represented in the learned references.
 6. Run repository checks. Report the synced IDs and changed learned-reference files.

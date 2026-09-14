@@ -1,38 +1,38 @@
 # frontend-system
 
-`frontend-system` is a model-independent frontend engineering plugin for Codex and Claude Code. The model already running in the user's session owns analysis, questions, implementation, and review. This package supplies reusable Skills plus deterministic MCP tools for repository discovery, context persistence, knowledge indexing, and check execution.
+`frontend-system`은 오류와 위험을 유발하거나 불필요한 유지보수 비용을 만드는 프론트엔드 코드를 찾아 수정하는 시스템입니다. 현재 실행 중인 Codex 또는 Claude Code 모델에 프로젝트의 근거 자료, 적용 조건이 있는 지식, 범위별 결정 기록, 실행 가능한 검증을 결합합니다. 이미 적합한 코드를 그대로 유지하는 것도 올바른 결과입니다.
 
-It does not start another AI process, select a model, use LangGraph, or add an agent dependency to the target application.
+내장 도구는 별도의 AI 프로세스를 실행하거나 모델을 선택하지 않으며, LangGraph를 사용하거나 대상 애플리케이션에 에이전트 의존성을 추가하지 않습니다. 사용자가 명시적으로 요청한 OpenDesign 생성은 OpenDesign 자체 실행 절차를 따릅니다.
 
-## How it works
+## 동작 구조
 
 ```text
-User in Codex or Claude Code
-        │ invokes an fs-* Skill
+Codex 또는 Claude Code 사용자
+        │ fs-* 스킬 호출
         ▼
-Current top-level model ── asks material questions and makes engineering decisions
+현재 최상위 모델 ── 중요한 질문과 엔지니어링 판단 수행
         │
-        ├── frontend-system MCP ── manifests, files, hashes, git context, checks
-        ├── project context ────── <project>/.frontend-system/
-        └── learned references ─── compact guidance distributed with this plugin
+        ├── frontend-system MCP ── 매니페스트, 파일, 해시, Git 맥락, 검증
+        ├── 프로젝트 맥락 ──────── <project>/.frontend-system/
+        └── 지식 참조 문서 ─────── 플러그인과 함께 배포하는 간결한 지침
 ```
 
-MCP returns facts and performs bounded operations. Skills define the workflow. The host's current model therefore improves naturally as Codex or Claude models improve.
+MCP는 사실 정보를 반환하고 정해진 범위의 작업을 수행합니다. 스킬은 작업 절차를 정의합니다. 따라서 Codex나 Claude 모델이 발전하면 이를 사용하는 시스템의 판단 능력도 함께 발전합니다.
 
-## Install in Codex
+## Codex에 설치하기
 
-Requirements are Node.js 18 or newer and Git.
+Node.js 18 이상과 Git이 필요합니다.
 
-Register the GitHub repository once for the current Codex user. These commands may be run from any directory:
+현재 Codex 사용자 계정에 GitHub 저장소를 한 번 등록합니다. 아래 명령어는 어느 디렉터리에서든 실행할 수 있습니다.
 
 ```bash
 codex plugin marketplace add Yelihi/frontend-system
 codex plugin add frontend-system@frontend-system
 ```
 
-Start a new Codex session in any target project and invoke `$fs-init`. Marketplace registration and plugin installation are user-level; they are not repeated for every project. Each project keeps only its own `.frontend-system/` context.
+대상 프로젝트에서 새 Codex 세션을 시작하고 `$fs-init`을 호출합니다. 마켓플레이스 등록과 플러그인 설치는 사용자 단위이므로 프로젝트마다 반복하지 않습니다. 각 프로젝트에는 해당 프로젝트의 `.frontend-system/` 맥락만 보관합니다.
 
-To update an installed copy after this repository changes:
+이 저장소가 변경된 뒤 설치본을 업데이트하려면 다음 명령어를 실행합니다.
 
 ```bash
 codex plugin marketplace upgrade frontend-system
@@ -40,16 +40,16 @@ codex plugin remove frontend-system@frontend-system
 codex plugin add frontend-system@frontend-system
 ```
 
-## Development setup
+## 개발 환경 설정
 
 ```bash
 npm install
 npm run build
 ```
 
-The build produces both TypeScript CLI output and `bundle/mcp.js`. The committed MCP bundle lets a Git-backed plugin run without installing package dependencies in the target project.
+빌드하면 TypeScript CLI 산출물과 `bundle/mcp.js`가 생성됩니다. MCP 번들을 저장소에 포함하므로 Git 기반 플러그인은 대상 프로젝트에 패키지 의존성을 설치하지 않고 실행할 수 있습니다.
 
-For MCP-only use, npm exposes both entry points:
+MCP만 사용하려면 npm으로 제공하는 진입점을 사용할 수 있습니다.
 
 ```bash
 npm link
@@ -57,70 +57,172 @@ frontend-system-mcp
 fs --help
 ```
 
-`frontend-system-mcp` uses stdio. The Codex manifest and the included Claude Code `.mcp.json` wire that server to the appropriate plugin root.
+`frontend-system-mcp`는 stdio로 통신합니다. Codex 매니페스트와 함께 제공되는 Claude Code의 `.mcp.json`은 각 플러그인 루트를 기준으로 이 서버를 연결합니다.
 
-## Workflows
+## 작업 흐름
 
-Invoke the Skills from an active Codex or Claude Code session:
+실행 중인 Codex 또는 Claude Code 세션에서 다음 스킬을 호출합니다.
 
-- `fs-init` — asks once whether to enable OpenDesign, writes project config, then runs inspection.
-- `fs-inspect` — analyzes the existing repository and saves durable context. Add `--overall` for unfamiliar/open-source projects where questions should be skipped.
-- `fs-implement` — implements a feature using project architecture, framework intent, and the detected design system. Complex independent areas may use native subagents.
-- `fs-verify` — reviews the diff semantically, asks before production fixes, writes missing tests or stories, then runs discovered checks. Independent test areas may be delegated in parallel with disjoint ownership.
-- `fs-knowledge-add` — normalizes authored Markdown, attachments, or linked sources into the central knowledge repository and catalogs them.
-- `fs-knowledge-sync` — turns changed source knowledge into compact learned references distributed with the plugin.
-- `fs-feedback` — drafts a sanitized, duplicate-checked issue for `Yelihi/frontend-system` and creates it only after explicit approval.
+- `fs-init` — 기존 프로젝트를 깊이 분석하거나, 명시적으로 승인한 revision을 기준으로 새 프론트엔드의 초기 구조를 만듭니다. 선택한 디자인 도구 설정을 유지합니다.
+- `fs-inspect` — 프로젝트가 직접 관리하는 전체 영역을 조사하고 동작과 의존성을 추적합니다. 현재 사실과 근거, 분석하지 못한 범위를 저장합니다. `--overall`을 추가하면 구조 관련 질문을 생략하지만 근거 수집은 생략하지 않습니다.
+- `fs-revise` — 도메인에서 보장할 동작, 상태·데이터·오류 처리 전략, 아키텍처, 계약, 디자인 시스템, 마이그레이션의 트레이드오프를 논의합니다. 초안을 저장하고 정확히 어떤 목표 내용을 승인했는지 기록합니다.
+- `fs-refactor` — 변경 전 기준 테스트를 준비하고 승인한 프로젝트 전체 전환을 실행하거나 재개합니다. 테스트와 API를 다시 작성할 때도 도메인에서 보장해야 할 동작을 유지합니다.
+- `fs-review` — 선택한 파일, 폴더, 동작과 이를 사용하는 코드를 추적해 위험을 찾습니다. 검토 요청에는 발견 사항을 보고하고, 수정 요청에는 해당 범위의 변경과 검증까지 수행합니다.
+- `fs-implement` — 프로젝트 아키텍처, 프레임워크의 설계 의도, 확인된 디자인 시스템에 맞춰 기능을 구현합니다. UI 변경은 OpenDesign 사용 여부와 관계없이 순차적인 디자인 논의와 렌더링 검증을 포함합니다. 복잡하면서 독립적인 영역에는 호스트의 서브에이전트를 사용할 수 있습니다.
+- `fs-verify` — 변경 내용을 의미적으로 검토하고, 제품 코드 수정 전 동의를 구하며, 부족한 테스트나 스토리를 작성한 뒤 발견한 검증 명령을 실행합니다. 독립적인 테스트 영역은 수정 범위가 겹치지 않도록 나누어 병렬 위임할 수 있습니다.
+- `fs-knowledge-add` — 직접 작성한 Markdown, 첨부 파일, 링크 자료를 중앙 지식 저장소의 형식에 맞게 정리하고 목록에 등록합니다.
+- `fs-knowledge-sync` — 변경된 원본 지식을 플러그인과 함께 배포할 간결한 참조 문서로 정리합니다.
+- `fs-feedback` — 민감 정보를 제거하고 중복을 확인한 `Yelihi/frontend-system` 이슈 초안을 작성합니다. 명시적으로 승인한 뒤에만 이슈를 생성합니다.
 
-In Codex, an explicit invocation is typically `$fs-inspect`; plugin UIs may also expose the Skill by name. Claude Code namespaces plugin Skills according to its plugin configuration.
+Codex에서는 일반적으로 `$fs-inspect`처럼 명시적으로 호출합니다. 플러그인 UI에서 스킬 이름으로 제공될 수도 있습니다. Claude Code는 플러그인 설정에 따라 스킬에 네임스페이스를 붙입니다.
 
-## Project-local state
+기존 프로젝트에서는 다음과 같이 사용합니다.
 
-`fs-init` and `fs-inspect` create:
+```text
+$fs-init 이 프로젝트의 전체 구조와 실제 의존 관계, 팀 규칙을 분석해 줘.
+$fs-revise 상태 결합과 오류 처리 위험을 줄이는 목표 설계를 함께 정하자.
+$fs-refactor 승인한 revision을 기준으로 테스트부터 준비하고 전체 전환해 줘.
+$fs-review src/features/board와 관련 의존성을 검토해 줘.
+$fs-review 방금 합의한 범위의 문제를 수정하고 검증해 줘.
+```
+
+새 프로젝트는 `fs-revise`로 시작합니다. 프레임워크와 의존성을 선택하기 전에 도메인 이벤트, 반드시 유지할 조건, 실패 상황을 논의합니다. 구체적인 목표를 승인한 뒤 `fs-init`으로 초기 구조를 만들고 `fs-implement`로 기능을 구현합니다. FS의 범위는 프론트엔드, API 계약, 프레임워크 내부의 서버 코드입니다. 별도 백엔드나 DB의 인프라 구성, 마이그레이션, 배포는 별도 작업입니다. DDD나 atomic 방식의 폴더 계층은 필수가 아닙니다. 전체 리팩터링에서는 기존 UI 검증을 유지하되 Storybook을 기본 설치하지 않습니다. 새로운 공통 UI나 디자인 시스템 작업에서는 기본적으로 Storybook을 포함합니다.
+
+FS는 자체 작업 중이거나 명시적인 검토 요청이 있을 때 검사합니다. 백그라운드 감시 도구, Git 훅, PR 봇을 설치하지 않습니다. 검토만 요청하면 제품 코드나 테스트 코드를 수정하지 않습니다. 새로운 도메인 결정, 팀 규칙 변경, 기술 마이그레이션, 범위 확장은 논의가 필요하지만 이미 승인한 단계는 반복해서 승인을 요청하지 않습니다.
+
+예를 들어 `$fs-implement 설정 페이지의 UI를 개선해 줘`를 호출하면 기존 UI를 먼저 살펴본 뒤 목적 → 시각적 참고 자료와 방향 → 콘텐츠 → 변경 제약 → 반응형 동작과 상태 순으로 아직 정해지지 않은 내용을 하나씩 질문합니다. 이미 제공했거나 저장소에서 확인한 사항은 다시 묻지 않습니다. 참고 자료는 선택 사항이며, `나머지는 기존 프로젝트 기준으로 정해 줘`라고 하면 남은 디자인 선택을 에이전트에 맡길 수 있습니다. 방향이 정해지면 구현 후 실제 렌더링 화면을 검증하고, 미리보기에 제한이 있으면 보고합니다. 기본 디자인 방식에서도 같은 절차를 적용합니다.
+
+## 프로젝트별 저장 정보
+
+현재 사실, 목표 설계, 판단 근거를 구분해 저장합니다.
 
 ```text
 <project>/.frontend-system/
-├── config.json  # selected integration settings; commit this
-├── project.md   # evidence-backed architecture and decisions; commit this
-├── state.json   # generated hashes and inspected commit; ignored
-└── reports/     # generated transient output; ignored
+├── config.json    # 선택한 외부 도구 연결 설정
+├── init.md        # 현재 사실과 영역별 근거 링크
+├── evidence/      # 조사 범위, 도메인 보장 사항, 분석 근거
+├── decisions/     # 범위별 선택, 이유, 대안, 결과
+├── revision.md    # 목표 설계; 코드와 달라져도 임의로 덮어쓰지 않음
+├── revision.json  # 버전, 내용 해시, 명시적 승인
+├── revisions/     # 이전 목표 내용과 승인 메타데이터
+├── execution.json # 실행 단계, 검증 기록 참조, 소스 체크포인트
+├── checks/        # 변경 전 기준 및 검증 결과 기록
+├── state.json     # 소스 해시와 분석한 커밋; Git 추적 제외
+└── reports/       # 임시 결과물; Git 추적 제외
 ```
 
-The shared Skill is not copied into each project. A project may add its own rules or references, and precedence remains:
+기존 `project.md`도 계속 읽을 수 있으며, 분석 결과를 `init.md`에 저장하기 시작해도 보존합니다. 기존 결정은 버리지 않고 새 분석과 대조해 정리합니다. 기존 Git 제외 규칙도 유지합니다. 검토한 사실, 목표, 범위별 결정은 커밋해서 관리합니다. 검증 로그에는 프로젝트 출력이 포함될 수 있으므로 공유 전에 내용을 확인합니다.
 
-1. current user request;
-2. project-specific rules and recorded decisions;
-3. existing project patterns;
-4. global learned references.
+공통 스킬은 프로젝트마다 복사하지 않습니다. 명시적 요청과 팀 제약은 코드에서 관찰한 습관, 조건부 지식, 선호, 가설과 구분합니다. 규칙의 순서는 읽기 우선순위이며, 서로 충돌하는 출처도 유지해 모델이 의미를 판단하도록 합니다. 사용자의 선택은 해당 프로젝트에 보관하고, 공통 지식으로 승격하려면 확인을 받습니다. 사용자가 쌓은 지식이 부족하더라도 모델 지식, 공식 자료 조사, 관련 측정 결과를 활용해 작업을 진행합니다.
+
+### 검증과 작업 재개
+
+전체 리팩터링에서는 기존 테스트를 루트 `__test__` 아래로 모으되 대상과 앱별 경로 구조, 픽스처, 스냅샷, 실행 환경을 유지합니다. 구조를 수정하기 전에 테스트 이동이 정상인지 검증합니다. 인터페이스가 바뀌면 기존 도메인 보장 사항마다 새 테스트를 대응시킵니다. 더 이상 사용하지 않는 API 때문에 발생한 실패와 실제 동작의 회귀를 구분합니다.
+
+변경 전 기준 검증에서 발생한 실패는 영향에 따라 진단합니다. 관련 없는 실패는 기록하고 독립적인 작업을 계속할 수 있습니다. 코드 전환 완료와 검증 완료는 구분해 보고합니다. 성공한 것처럼 보이도록 새로운 목표의 테스트 케이스를 임의로 생략하지 않습니다.
+
+revision을 저장하거나 내용을 수동으로 변경하면 기존 승인이 무효화됩니다. 실행 체크포인트는 정확히 승인한 내용과 실제 소스 해시에 연결됩니다. 작업을 재개할 때 추가·변경·삭제된 파일과 목표 변경 여부를 보고합니다. 새로운 단계를 완료 처리하려면 현재 코드에 대한 검증 통과 기록이 필요합니다. 최종 완료에는 검증 도중 소스가 바뀌지 않은 상태에서 테스트를 포함한 전체 검증이 통과해야 합니다. 관련 없는 실패가 남았다면 완전히 검증된 프로젝트라고 선언하지 않고 코드 완료와 검증 미완료를 구분해 보고합니다. 과거의 단계 완료 기록만으로 새로 수정한 코드가 검증되지는 않습니다. 자동 reset이나 커밋은 수행하지 않습니다.
+
+저장소는 `.workflow-lock`으로 프로젝트 쓰기를 순차 처리합니다. 다른 작업이 잠금을 사용 중이면 상태를 다시 읽고 재시도합니다. 비정상 종료 뒤 남은 잠금은 쓰기 작업이 종료되었는지 확인한 후 제거합니다. 현재 스냅샷은 정확성을 위해 발견한 모든 파일의 해시를 계산하므로 매우 큰 프로젝트에서는 추가 I/O 비용이 발생합니다. 생성물·외부 라이브러리의 제외 내역과 따라가지 않은 링크를 보고합니다. 의존 관계의 의미와 도메인 분석 범위는 호스트 모델이 판단하며, 파일 목록이나 디렉터리 이름만으로 입증되었다고 간주하지 않습니다.
+
+### MCP 작업 인터페이스
+
+| 도구 | 입력 및 결과 |
+| --- | --- |
+| `list_project_files` | 해시, 전체 개수, 다음 오프셋, 제외 내역과 경고를 포함한 페이지 단위 파일 목록 |
+| `get_work_context` | `review`·`refactor` 모드, 분석 최신 여부, 작업 맥락 제공 |
+| `get_workflow_context`, `get_revision` | 승인과 변경 여부, 체크포인트 이후 변경, 기록 목록, 범위를 제한한 목표 내용 읽기 |
+| `save_revision`, `approve_revision` | 내용 해시로 동시 변경 확인; 초안에는 항상 명시적 승인 필요 |
+| `save_project_record`, `get_project_record` | 안전한 ID, 해시, 읽기 범위 제한을 적용한 범위별 Markdown 근거·결정 기록 |
+| `run_project_checks`, `get_check_record` | 검증 항목 선택, 변경 전 기준 기록과 비교, 검증 근거 저장 |
+| `save_execution` | 승인된 revision 해시, 예상 체크포인트 해시, 단계, 검증 기록 ID |
+
+`run_project_checks`는 프로젝트만 전달하면 발견한 모든 검증을 실행하는 기존 호출도 지원합니다. 응답에는 `results`와 함께 ID, 소스 해시, 실행 중 소스 변경 여부, 전체·선택 검증 범위, 비교 참고 정보가 포함됩니다. 라이브러리 헬퍼인 `runCapabilities`는 기존처럼 배열을 반환합니다. 검증 항목이 없으면 성공이 아닌 `not-run`으로 기록합니다. 검증 항목은 `test:unit`이나 `apps/web:test`처럼 정확한 스크립트 키로 선택합니다. 자세한 절차는 [결정 작업 흐름](references/decision-workflow.md)과 [테스트 및 전환](references/testing-and-transition.md)을 참고하세요.
 
 ## OpenDesign
 
-OpenDesign is optional and third-party. `fs-init` asks before installing or enabling it, reports whether the active host provides project or user scope, and never adds it to the application's `package.json`. The built-in design pass still inspects Storybook, shared components, shadcn configuration, Tailwind, theme variables, and established visual conventions.
+OpenDesign은 선택적으로 연결하는 외부 도구입니다. `fs-init`은 설치하거나 활성화하기 전에 동의를 구하고, 현재 호스트가 프로젝트 단위와 사용자 단위 중 어떤 범위를 제공하는지 알려줍니다. 애플리케이션의 `package.json`에는 추가하지 않습니다. 기본 디자인 검토에서도 Storybook, 공통 컴포넌트, shadcn 설정, Tailwind, 테마 변수, 기존 시각적 규칙을 확인합니다.
 
-## Knowledge lifecycle
+데스크톱 앱 설치만으로 설정이 끝나지는 않습니다. 호스트 에이전트는 별도의 OpenDesign MCP로 연결 상태를 확인하고, 선택한 모드의 인증을 완료하며, 현재 저장소에 사용할 디자인 프로젝트를 선택하거나 생성합니다. frontend-system은 이 선택을 저장하고 `get_work_context`로 반환합니다. 인증 정보나 결제는 직접 처리하지 않습니다.
 
-Raw material is tracked only in the original repository under `knowledge/source/{manual,imported,attachments}`. `knowledge/catalog.json` stores hashes, summaries, and facets so the model can shortlist likely matches without reading the entire archive. `fs-knowledge-sync` publishes concise guidance to `references/learned/`.
+| 모드 | 인증 및 사용 방식 |
+| --- | --- |
+| 기본 방식 | 현재 호스트 세션으로 저장소의 디자인을 검토합니다. OpenDesign 생성은 사용하지 않습니다. |
+| OpenDesign Cloud | OpenDesign 연결 시 기본 제안 모드입니다. 브라우저 로그인과 OpenDesign Cloud 계정의 크레딧을 사용합니다. |
+| Local Codex | 명시적으로 선택합니다. 설치·인증된 Codex 런타임과 해당 사용 한도를 이용하며 OpenDesign Cloud 크레딧 절차는 거치지 않습니다. |
+| secure BYOK | 명시적으로 선택합니다. 인증 정보는 OpenDesign Settings에서 관리하고 비용은 선택한 제공자가 청구합니다. |
 
-The npm package intentionally excludes raw source knowledge. A symlinked development plugin sees learned-reference edits immediately; installed npm/plugin versions see them after that shared installation is updated. Consuming projects do not maintain independent copies.
+Cloud 요금은 바뀔 수 있으므로 [공식 요금 안내](https://open-design.ai/pricing/)를 확인하세요. 로그인 성공만으로 잔액이 충분하다고 판단하지 않습니다. 잔액이나 예상 비용 조회 도구가 없으면 초기화 결과에 크레딧 사용 가능 여부를 알 수 없다고 표시합니다. 설정 과정에서는 유료 테스트 생성을 실행하지 않습니다. 요청한 생성을 시작하기 전에 어떤 계정에 비용이 청구되는지 설명합니다. 잔액이 부족하면 도구가 반환한 충전 링크를 안내하고 사용자가 충전을 확인한 뒤 재개합니다.
 
-## Deterministic CLI
+### 여러 프로젝트에서 사용하기
 
-The CLI is useful for debugging the data supplied to a host model:
+같은 기기에서는 데스크톱 설치, 적용 가능한 호스트 MCP 등록, 인증된 계정을 재사용합니다. **각 저장소에서** 다음과 같이 실행합니다.
+
+```text
+$fs-init 이 프로젝트에 OpenDesign Cloud를 연결하고 로그인과 디자인 프로젝트 연결까지 확인해 줘.
+```
+
+로그인이 필요하면 반환된 브라우저 활성화 링크나 코드를 따라 진행하고, 에이전트가 완료 여부를 확인합니다. 현재 호스트에서 새로 등록한 도구를 불러올 수 없다면 새 작업을 시작하고 `fs-init`을 다시 실행합니다. 다른 모드를 사용하려면 `Local Codex로 연결해 줘`처럼 명시합니다.
+
+각 저장소의 선택은 `.frontend-system/config.json`에 저장합니다.
+
+```json
+{
+  "version": 1,
+  "designProvider": {
+    "name": "open-design",
+    "scope": "user",
+    "mode": "cloud",
+    "projectId": "de6f189c-2947-4a0a-aa70-1d2bf8251b26"
+  }
+}
+```
+
+위 ID는 예시이며, 초기화할 때 OpenDesign이 반환한 실제 ID를 저장합니다. `scope`는 MCP 등록 범위를 뜻하고, 이 설정 파일 자체는 항상 해당 저장소에 속합니다. 다른 기기나 계정에서는 ID를 다시 검증하고, 프로젝트가 없으면 다시 연결합니다. 비밀번호, 토큰, 크레딧 잔액, 영구적인 준비 완료 표시는 저장하지 않습니다. 이전 설정도 읽을 수 있으며, 모드나 프로젝트 연결이 빠져 있으면 생성 전에 보완합니다. `configure_project`의 부분 업데이트는 같은 제공자의 기존 설정을 유지합니다. 제공자를 바꾸면 이전 제공자 설정을 지우고, `openDesignProjectId: null`은 프로젝트 연결을 해제합니다.
+
+새 디자인을 생성하고 구현하려면 다음과 같이 요청합니다.
+
+```text
+$fs-implement OpenDesign Cloud 크레딧을 사용해 이 프로젝트의 대시보드 디자인을 생성하고,
+기존 컴포넌트와 테마에 맞춰 실제 코드에 적용해 줘. 모바일과 로딩·오류 상태도 확인해 줘.
+```
+
+새로 생성하지 않고 기존 디자인을 사용하려면 다음과 같이 요청합니다.
+
+```text
+$fs-implement 연결된 OpenDesign 프로젝트의 대시보드 디자인을 읽고 현재 코드에 적용해 줘.
+```
+
+구현할 때는 저장한 디자인 프로젝트를 명시적으로 지정하고, 선택한 결과물의 스타일과 에셋을 읽어 현재 저장소에 맞게 적용합니다. 이후 렌더링된 UI를 비교하고 프로젝트 검증을 실행합니다. 생성된 미리보기만으로 구현 완료라고 판단하지 않습니다. 설정이 막혀도 저장소 분석은 진행하고, 완료하지 못한 OpenDesign 단계를 정확히 보고합니다. 알리지 않고 다른 제공자로 전환하지 않습니다. 인증, 생성, 충전, 소스 적용의 자세한 절차는 [연동 작업 흐름](references/open-design.md)을 참고하세요.
+
+## 지식 관리 흐름
+
+원본 자료는 원본 저장소의 `knowledge/source/{manual,imported,attachments}`에서만 관리합니다. `knowledge/catalog.json`에는 해시, 요약, 분류 정보를 저장하므로 모델이 자료 전체를 읽지 않고도 관련 후보를 추릴 수 있습니다. `fs-knowledge-sync`는 간결하게 정리한 지침을 `references/learned/`에 배포합니다.
+
+npm 패키지에는 원본 지식을 포함하지 않습니다. 심볼릭 링크로 연결한 개발용 플러그인에는 참조 문서 수정이 즉시 반영됩니다. 설치된 npm 패키지나 플러그인에는 해당 공통 설치본을 업데이트한 뒤 반영됩니다. 사용하는 프로젝트마다 별도 사본을 관리하지 않습니다.
+
+## AI 분석 없이 실행하는 CLI
+
+CLI는 호스트 모델에 제공하는 데이터를 디버깅할 때 유용합니다.
 
 ```bash
 fs inspect-context /path/to/project --overall
-fs work-context /path/to/project "Add profile editing" --mode implement
+fs work-context /path/to/project "프로필 편집 기능 추가" --mode implement
+fs work-context /path/to/project "보드 상태 관리 검토" --mode review
 fs change-context /path/to/project --base origin/main
 fs checks /path/to/project
+fs checks /path/to/project --purpose baseline
+fs checks /path/to/project --capability test:unit --baseline CHECK_ID
 fs knowledge-status /path/to/frontend-system
-fs knowledge-search /path/to/frontend-system "Next.js cache"
+fs knowledge-search /path/to/frontend-system "Next.js 캐시"
 ```
 
-These commands do not perform AI analysis. Use the Skills for the complete workflow.
+이 명령어들은 AI 분석을 수행하지 않습니다. 전체 작업 흐름을 실행하려면 스킬을 사용하세요.
 
-## Privacy and safety
+## 개인정보 보호와 안전
 
-- Repository files and imported sources are treated as untrusted input.
-- External installs, GitHub issues, and comments require explicit approval.
-- Feedback is sanitized; there is no telemetry or background upload.
-- Broad checks run only existing non-watch package scripts discovered from project manifests.
-- Production changes proposed during verification are not applied without prior user authorization.
+- 저장소 파일과 가져온 자료는 신뢰할 수 없는 입력으로 취급합니다.
+- 외부 도구 설치, GitHub 이슈 생성, 댓글 작성에는 명시적 승인이 필요합니다.
+- 피드백에서 민감 정보를 제거하며, 사용 정보 수집이나 백그라운드 업로드는 하지 않습니다.
+- 전체 검증은 프로젝트 매니페스트에서 발견한 기존 패키지 스크립트 중 감시 모드가 아닌 명령만 실행합니다.
+- 검증 중 제안된 제품 코드 수정은 사용자의 사전 승인 없이 적용하지 않습니다.

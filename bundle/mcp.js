@@ -1061,10 +1061,10 @@ var require_util = __commonJS({
     var codegen_1 = require_codegen();
     var code_1 = require_code();
     function toHash(arr) {
-      const hash = {};
+      const hash2 = {};
       for (const item of arr)
-        hash[item] = true;
-      return hash;
+        hash2[item] = true;
+      return hash2;
     }
     exports.toHash = toHash;
     function alwaysValidSchema(it, schema) {
@@ -2984,7 +2984,7 @@ var require_compile = __commonJS({
       const schOrFunc = root.refs[ref];
       if (schOrFunc)
         return schOrFunc;
-      let _sch = resolve4.call(this, root, ref);
+      let _sch = resolve5.call(this, root, ref);
       if (_sch === void 0) {
         const schema = (_a3 = root.localRefs) === null || _a3 === void 0 ? void 0 : _a3[ref];
         const { schemaId } = this.opts;
@@ -3011,7 +3011,7 @@ var require_compile = __commonJS({
     function sameSchemaEnv(s1, s2) {
       return s1.schema === s2.schema && s1.root === s2.root && s1.baseId === s2.baseId;
     }
-    function resolve4(root, ref) {
+    function resolve5(root, ref) {
       let sch;
       while (typeof (sch = this.refs[ref]) == "string")
         ref = sch;
@@ -3841,7 +3841,7 @@ var require_fast_uri = __commonJS({
       }
       return uri;
     }
-    function resolve4(baseURI, relativeURI, options) {
+    function resolve5(baseURI, relativeURI, options) {
       const schemelessOptions = options ? Object.assign({ scheme: "null" }, options) : { scheme: "null" };
       const {
         parsed: baseParsed,
@@ -3874,49 +3874,49 @@ var require_fast_uri = __commonJS({
       schemelessOptions.skipEscape = true;
       return serialize(resolved, schemelessOptions);
     }
-    function resolveComponent(base, relative6, options, skipNormalization) {
+    function resolveComponent(base, relative9, options, skipNormalization) {
       const target = {};
       if (!skipNormalization) {
         base = parse3(serialize(base, options), options);
-        relative6 = parse3(serialize(relative6, options), options);
+        relative9 = parse3(serialize(relative9, options), options);
       }
       options = options || {};
-      if (!options.tolerant && relative6.scheme) {
-        target.scheme = relative6.scheme;
-        target.userinfo = relative6.userinfo;
-        target.host = relative6.host;
-        target.port = relative6.port;
-        target.path = removeDotSegments(relative6.path || "");
-        target.query = relative6.query;
+      if (!options.tolerant && relative9.scheme) {
+        target.scheme = relative9.scheme;
+        target.userinfo = relative9.userinfo;
+        target.host = relative9.host;
+        target.port = relative9.port;
+        target.path = removeDotSegments(relative9.path || "");
+        target.query = relative9.query;
       } else {
-        if (relative6.userinfo !== void 0 || relative6.host !== void 0 || relative6.port !== void 0) {
-          target.userinfo = relative6.userinfo;
-          target.host = relative6.host;
-          target.port = relative6.port;
-          target.path = removeDotSegments(relative6.path || "");
-          target.query = relative6.query;
+        if (relative9.userinfo !== void 0 || relative9.host !== void 0 || relative9.port !== void 0) {
+          target.userinfo = relative9.userinfo;
+          target.host = relative9.host;
+          target.port = relative9.port;
+          target.path = removeDotSegments(relative9.path || "");
+          target.query = relative9.query;
         } else {
-          if (!relative6.path) {
+          if (!relative9.path) {
             target.path = base.path;
-            if (relative6.query !== void 0) {
-              target.query = relative6.query;
+            if (relative9.query !== void 0) {
+              target.query = relative9.query;
             } else {
               target.query = base.query;
             }
           } else {
-            if (relative6.path[0] === "/") {
-              target.path = removeDotSegments(relative6.path);
+            if (relative9.path[0] === "/") {
+              target.path = removeDotSegments(relative9.path);
             } else {
               if ((base.userinfo !== void 0 || base.host !== void 0 || base.port !== void 0) && !base.path) {
-                target.path = "/" + relative6.path;
+                target.path = "/" + relative9.path;
               } else if (!base.path) {
-                target.path = relative6.path;
+                target.path = relative9.path;
               } else {
-                target.path = base.path.slice(0, base.path.lastIndexOf("/") + 1) + relative6.path;
+                target.path = base.path.slice(0, base.path.lastIndexOf("/") + 1) + relative9.path;
               }
               target.path = removeDotSegments(target.path);
             }
-            target.query = relative6.query;
+            target.query = relative9.query;
           }
           target.userinfo = base.userinfo;
           target.host = base.host;
@@ -3924,7 +3924,7 @@ var require_fast_uri = __commonJS({
         }
         target.scheme = base.scheme;
       }
-      target.fragment = relative6.fragment;
+      target.fragment = relative9.fragment;
       return target;
     }
     function equal(uriA, uriB, options) {
@@ -4209,7 +4209,7 @@ var require_fast_uri = __commonJS({
     var fastUri = {
       SCHEMES,
       normalize,
-      resolve: resolve4,
+      resolve: resolve5,
       resolveComponent,
       equal,
       serialize,
@@ -8112,10 +8112,10 @@ var require_util2 = __commonJS({
     var codegen_1 = require_codegen2();
     var code_1 = require_code3();
     function toHash(arr) {
-      const hash = {};
+      const hash2 = {};
       for (const item of arr)
-        hash[item] = true;
-      return hash;
+        hash2[item] = true;
+      return hash2;
     }
     exports.toHash = toHash;
     function alwaysValidSchema(it, schema) {
@@ -10000,7 +10000,7 @@ var require_compile2 = __commonJS({
       const schOrFunc = root.refs[ref];
       if (schOrFunc)
         return schOrFunc;
-      let _sch = resolve4.call(this, root, ref);
+      let _sch = resolve5.call(this, root, ref);
       if (_sch === void 0) {
         const schema = (_a3 = root.localRefs) === null || _a3 === void 0 ? void 0 : _a3[ref];
         const { schemaId } = this.opts;
@@ -10027,7 +10027,7 @@ var require_compile2 = __commonJS({
     function sameSchemaEnv(s1, s2) {
       return s1.schema === s2.schema && s1.root === s2.root && s1.baseId === s2.baseId;
     }
-    function resolve4(root, ref) {
+    function resolve5(root, ref) {
       let sch;
       while (typeof (sch = this.refs[ref]) == "string")
         ref = sch;
@@ -12894,7 +12894,8 @@ var require_dist = __commonJS({
 });
 
 // src/mcp.ts
-import { dirname as dirname2, resolve as resolve3 } from "node:path";
+import { dirname as dirname2, relative as relative8, resolve as resolve4 } from "node:path";
+import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
 // node_modules/zod/v3/helpers/util.js
@@ -21856,8 +21857,8 @@ var tupleProcessor = (schema, ctx, _json, params) => {
   let minItems = def.items.length;
   while (minItems > 0) {
     const item = def.items[minItems - 1];
-    const optional2 = ctx.io === "input" ? inputOptin(item) !== void 0 : item._zod.optout === "optional";
-    if (!optional2)
+    const optional3 = ctx.io === "input" ? inputOptin(item) !== void 0 : item._zod.optout === "optional";
+    if (!optional3)
       break;
     minItems--;
   }
@@ -22820,6 +22821,9 @@ var ZodUUID = /* @__PURE__ */ $constructor("ZodUUID", (inst, def) => {
   $ZodUUID.init(inst, def);
   ZodStringFormat.init(inst, def);
 });
+function uuid2(params) {
+  return _uuid(ZodUUID, params);
+}
 var ZodURL = /* @__PURE__ */ $constructor("ZodURL", (inst, def) => {
   $ZodURL.init(inst, def);
   ZodStringFormat.init(inst, def);
@@ -23066,6 +23070,14 @@ function object2(shape, params) {
     ...util_exports.normalizeParams(params)
   };
   return new ZodObject2(def);
+}
+function strictObject(shape, params) {
+  return new ZodObject2({
+    type: "object",
+    shape,
+    catchall: never(),
+    ...util_exports.normalizeParams(params)
+  });
 }
 function looseObject(shape, params) {
   return new ZodObject2({
@@ -26777,7 +26789,7 @@ var Protocol = class {
           return;
         }
         const pollInterval = task2.pollInterval ?? this._options?.defaultTaskPollInterval ?? 1e3;
-        await new Promise((resolve4) => setTimeout(resolve4, pollInterval));
+        await new Promise((resolve5) => setTimeout(resolve5, pollInterval));
         options?.signal?.throwIfAborted();
       }
     } catch (error2) {
@@ -26794,7 +26806,7 @@ var Protocol = class {
    */
   request(request, resultSchema, options) {
     const { relatedRequestId, resumptionToken, onresumptiontoken, task, relatedTask } = options ?? {};
-    return new Promise((resolve4, reject) => {
+    return new Promise((resolve5, reject) => {
       const earlyReject = (error2) => {
         reject(error2);
       };
@@ -26872,7 +26884,7 @@ var Protocol = class {
           if (!parseResult.success) {
             reject(parseResult.error);
           } else {
-            resolve4(parseResult.data);
+            resolve5(parseResult.data);
           }
         } catch (error2) {
           reject(error2);
@@ -27133,12 +27145,12 @@ var Protocol = class {
       }
     } catch {
     }
-    return new Promise((resolve4, reject) => {
+    return new Promise((resolve5, reject) => {
       if (signal.aborted) {
         reject(new McpError(ErrorCode.InvalidRequest, "Request cancelled"));
         return;
       }
-      const timeoutId = setTimeout(resolve4, interval);
+      const timeoutId = setTimeout(resolve5, interval);
       signal.addEventListener("abort", () => {
         clearTimeout(timeoutId);
         reject(new McpError(ErrorCode.InvalidRequest, "Request cancelled"));
@@ -28229,7 +28241,7 @@ var McpServer = class {
     let task = createTaskResult.task;
     const pollInterval = task.pollInterval ?? 5e3;
     while (task.status !== "completed" && task.status !== "failed" && task.status !== "cancelled") {
-      await new Promise((resolve4) => setTimeout(resolve4, pollInterval));
+      await new Promise((resolve5) => setTimeout(resolve5, pollInterval));
       const updatedTask = await extra.taskStore.getTask(taskId);
       if (!updatedTask) {
         throw new McpError(ErrorCode.InternalError, `Task ${taskId} not found during polling`);
@@ -28893,12 +28905,12 @@ var StdioServerTransport = class {
     this.onclose?.();
   }
   send(message) {
-    return new Promise((resolve4) => {
+    return new Promise((resolve5) => {
       const json = serializeMessage(message);
       if (this._stdout.write(json)) {
-        resolve4();
+        resolve5();
       } else {
-        this._stdout.once("drain", resolve4);
+        this._stdout.once("drain", resolve5);
       }
     });
   }
@@ -28959,13 +28971,14 @@ async function git(rootPath, args) {
     return void 0;
   }
 }
-async function readManifests(rootPath, files) {
+async function readManifests(rootPath, files, warnings) {
   const manifests = [];
   for (const path of files.filter((file) => basename(file) === "package.json")) {
     try {
       const data = JSON.parse(await readFile(path, "utf8"));
       manifests.push({ path, directory: dirname(path), data });
     } catch {
+      warnings.push(`Manifest unreadable or invalid: ${relative(rootPath, path)}`);
     }
   }
   return manifests.sort((a, b) => relative(rootPath, a.path).localeCompare(relative(rootPath, b.path)));
@@ -29002,20 +29015,31 @@ function commandFor(manager, script) {
   return manager === "npm" ? `npm run ${script}` : `${manager} ${script}`;
 }
 var FileSystemProjectDiscovery = class {
-  async listFiles(rootPath) {
+  async inventory(rootPath) {
     const root = resolve(rootPath);
     const files = [];
-    const visit = async (directory, depth) => {
-      if (depth > 6 || files.length >= 2e4) return;
-      for (const entry of await readdir(directory, { withFileTypes: true })) {
-        if (entry.isDirectory() && ignoredDirectories.has(entry.name)) continue;
-        const path = join(directory, entry.name);
-        if (entry.isDirectory()) await visit(path, depth + 1);
+    const excluded = [];
+    const warnings = [];
+    const visit = async (directory2) => {
+      for (const entry of await readdir(directory2, { withFileTypes: true })) {
+        const path = join(directory2, entry.name);
+        if (entry.isDirectory() && ignoredDirectories.has(entry.name)) {
+          excluded.push(relative(root, path));
+          continue;
+        }
+        if (entry.isSymbolicLink()) {
+          warnings.push(`Not followed (symbolic link): ${relative(root, path)}`);
+          continue;
+        }
+        if (entry.isDirectory()) await visit(path);
         else if (entry.isFile()) files.push(path);
       }
     };
-    await visit(root, 0);
-    return files.sort();
+    await visit(root);
+    return { files: files.sort(), excluded: excluded.sort(), warnings: warnings.sort() };
+  }
+  async listFiles(rootPath) {
+    return (await this.inventory(rootPath)).files;
   }
   async createRef(rootPath) {
     const root = resolve(rootPath);
@@ -29036,8 +29060,9 @@ var FileSystemProjectDiscovery = class {
     };
   }
   async discover(project) {
-    const files = await this.listFiles(project.rootPath);
-    const manifests = await readManifests(project.rootPath, files);
+    const inventory = await this.inventory(project.rootPath);
+    const files = inventory.files;
+    const manifests = await readManifests(project.rootPath, files, inventory.warnings);
     const relativeFiles = files.map((file) => relative(project.rootPath, file));
     const lock = relativeFiles.filter((file) => /(^|\/)(pnpm-lock\.yaml|yarn\.lock|package-lock\.json|bun\.lockb?)$/.test(file)).sort((a, b) => a.split("/").length - b.split("/").length || a.localeCompare(b))[0];
     const declaredManager = manifests.find((manifest) => manifest.data.packageManager)?.data.packageManager;
@@ -29045,7 +29070,7 @@ var FileSystemProjectDiscovery = class {
     const packageManagerVersion = declaredManager?.split("@")[1];
     const scripts = {};
     const capabilities = [];
-    const capabilityPattern = /^(lint|typecheck|build|e2e|build-storybook|test(?::(?:unit|integration|e2e|storybook))?)$/;
+    const capabilityPattern = /^(lint|typecheck|build|e2e|build-storybook|test(?::[\w-]+)*)$/;
     for (const manifest of manifests) {
       const prefix = relative(project.rootPath, manifest.directory);
       const localLock = relativeFiles.find((file) => dirname(file) === prefix && /(?:pnpm-lock\.yaml|yarn\.lock|package-lock\.json|bun\.lockb?)$/.test(file));
@@ -29053,7 +29078,7 @@ var FileSystemProjectDiscovery = class {
       for (const [name, command] of Object.entries(manifest.data.scripts ?? {})) {
         const key = prefix ? `${prefix}:${name}` : name;
         scripts[key] = command;
-        if (capabilityPattern.test(name)) {
+        if (capabilityPattern.test(name) && !/(^|:)(watch|dev|update|fix|ui)(:|$)/.test(name)) {
           capabilities.push({
             name,
             script: name,
@@ -29069,22 +29094,21 @@ var FileSystemProjectDiscovery = class {
     const featureSliced = ["entities", "features", "shared", "widgets"].every(
       (layer) => architectureRoots.some((root) => root.endsWith(`/src/${layer}`) || root === `src/${layer}`)
     );
-    const configFiles = relativeFiles.filter(
-      (file) => file.split("/").length <= 3 && configPattern.test(file)
-    );
+    const configFiles = relativeFiles.filter((file) => configPattern.test(file));
     const nodeVersion = manifests.find((manifest) => manifest.data.engines?.node)?.data.engines?.node;
     const technologies = detectTechnologies(project.rootPath, manifests);
     const designFiles = relativeFiles.filter(
-      (file) => /(^|\/)(components\.json|tailwind\.config\.(js|cjs|mjs|ts)|global(s)?\.css|[^/]+\.stories\.(js|jsx|ts|tsx|vue))$/.test(file) || file.startsWith(".storybook/")
+      (file) => /(^|\/)(components\.json|tailwind\.config\.(js|cjs|mjs|ts)|global(s)?\.css|[^/]+\.stories\.(js|jsx|ts|tsx|vue))$/.test(file) || /(^|\/)\.storybook\//.test(file)
     );
     const designSystems = [
       ...relativeFiles.includes("components.json") ? ["shadcn/ui"] : [],
-      ...designFiles.some((file) => file.startsWith(".storybook/") || file.includes(".stories.")) ? ["Storybook"] : [],
+      ...designFiles.some((file) => /(^|\/)\.storybook\//.test(file) || file.includes(".stories.")) ? ["Storybook"] : [],
       ...technologies.some((technology) => technology.name === "Tailwind CSS") ? ["Tailwind CSS"] : [],
       ...technologies.filter((technology) => technology.category === "component-library").map((technology) => technology.name)
     ].filter((value, index, all) => all.indexOf(value) === index);
     return {
       project,
+      inventory: { fileCount: files.length, excluded: inventory.excluded, warnings: inventory.warnings },
       runtime: { name: "node", ...nodeVersion ? { version: nodeVersion } : {}, evidence: nodeVersion ? ["package.json engines.node"] : ["package.json detected"] },
       packageManager: {
         name: packageManagerName,
@@ -29125,10 +29149,10 @@ var FileSystemProjectDiscovery = class {
 // src/application/git-state.ts
 import { execFile as execFile2 } from "node:child_process";
 function git2(root, args) {
-  return new Promise((resolve4, reject) => {
+  return new Promise((resolve5, reject) => {
     execFile2("git", ["-C", root, ...args], { maxBuffer: 10 * 1024 * 1024 }, (error2, stdout, stderr) => {
       if (error2) reject(new Error(stderr.trim() || error2.message));
-      else resolve4(stdout.trim());
+      else resolve5(stdout.trim());
     });
   });
 }
@@ -29175,10 +29199,10 @@ function terms(value) {
 }
 async function markdownFiles(root) {
   const found = [];
-  const visit = async (directory) => {
+  const visit = async (directory2) => {
     try {
-      for (const entry of await readdir2(directory, { withFileTypes: true })) {
-        const path = join2(directory, entry.name);
+      for (const entry of await readdir2(directory2, { withFileTypes: true })) {
+        const path = join2(directory2, entry.name);
         if (entry.isDirectory()) await visit(path);
         else if (entry.isFile() && entry.name.endsWith(".md") && entry.name.toLowerCase() !== "readme.md") found.push(path);
       }
@@ -29250,10 +29274,10 @@ function digest(content) {
 async function sourceFiles(root) {
   const sourceRoot = join3(root, "knowledge", "source");
   const found = [];
-  const visit = async (directory) => {
+  const visit = async (directory2) => {
     try {
-      for (const entry of await readdir3(directory, { withFileTypes: true })) {
-        const path = join3(directory, entry.name);
+      for (const entry of await readdir3(directory2, { withFileTypes: true })) {
+        const path = join3(directory2, entry.name);
         if (entry.isDirectory()) await visit(path);
         else if (entry.isFile() && entry.name.endsWith(".md")) found.push(relative3(root, path));
       }
@@ -29348,11 +29372,62 @@ async function markKnowledgeSynced(root, ids) {
 }
 
 // src/application/project-store.ts
-import { createHash as createHash2 } from "node:crypto";
-import { mkdir as mkdir2, readFile as readFile4, writeFile as writeFile2 } from "node:fs/promises";
-import { join as join4 } from "node:path";
-var directoryName = ".frontend-system";
-async function optionalRead(path) {
+import { mkdir as mkdir3, readFile as readFile5, writeFile as writeFile3 } from "node:fs/promises";
+import { join as join5 } from "node:path";
+
+// src/application/workflow-store.ts
+import { createHash as createHash2, randomUUID } from "node:crypto";
+import { mkdir as mkdir2, readFile as readFile4, readdir as readdir4, realpath, rename, rm, writeFile as writeFile2 } from "node:fs/promises";
+import { join as join4, relative as relative4, resolve as resolve3 } from "node:path";
+var recordId = string2().regex(/^[a-z0-9][a-z0-9-]{0,79}$/);
+var digest2 = (value) => createHash2("sha256").update(value).digest("hex");
+var hash = string2().regex(/^[a-f0-9]{64}$/);
+var checksSchema = array(object2({
+  capability: string2(),
+  command: string2(),
+  passed: boolean2(),
+  output: string2(),
+  status: _enum(["passed", "failed", "not-run"]),
+  workingDirectory: string2().optional(),
+  reason: string2().optional()
+}));
+var executionSchema = strictObject({
+  revisionHash: hash,
+  status: _enum(["in-progress", "blocked", "complete"]),
+  baselineCheckId: recordId.optional(),
+  finalCheckId: recordId.optional(),
+  steps: array(strictObject({
+    id: recordId,
+    title: string2().min(1),
+    status: _enum(["pending", "running", "blocked", "complete"]),
+    files: array(string2()),
+    checkIds: array(recordId),
+    remaining: array(string2())
+  })).min(1),
+  note: string2()
+}).refine((value) => new Set(value.steps.map((step) => step.id)).size === value.steps.length, "Duplicate step IDs");
+var revisionSchema = object2({
+  version: number2().int().positive(),
+  hash,
+  approved: boolean2(),
+  approval: string2()
+});
+var executionRecordSchema = object2({
+  execution: executionSchema,
+  fileHashes: record(string2(), string2()),
+  updatedAt: string2()
+});
+var checkRecordSchema = object2({
+  id: recordId,
+  purpose: _enum(["baseline", "verification"]),
+  revisionHash: hash.nullable(),
+  sourceHash: hash,
+  stable: boolean2(),
+  full: boolean2(),
+  results: checksSchema,
+  createdAt: string2()
+});
+async function optional2(path) {
   try {
     return await readFile4(path, "utf8");
   } catch (error2) {
@@ -29360,32 +29435,216 @@ async function optionalRead(path) {
     throw error2;
   }
 }
+async function directory(root, child = "") {
+  const base = join4(resolve3(root), ".frontend-system");
+  const path = join4(base, child);
+  await mkdir2(base, { recursive: true });
+  const actualRoot = await realpath(root);
+  if (await realpath(base) !== join4(actualRoot, ".frontend-system")) {
+    throw new Error("Project records must not traverse symbolic links");
+  }
+  await mkdir2(path, { recursive: true });
+  if (await realpath(path) !== join4(actualRoot, ".frontend-system", child)) throw new Error("Project records must not traverse symbolic links");
+  return path;
+}
+async function atomic(path, content) {
+  const temp = `${path}.${randomUUID()}.tmp`;
+  try {
+    await writeFile2(temp, content, { flag: "wx" });
+    await rename(temp, path);
+  } finally {
+    await rm(temp, { force: true });
+  }
+}
+async function locked(root, action) {
+  const lock = join4(await directory(root), ".workflow-lock");
+  await mkdir2(lock);
+  try {
+    return await action();
+  } finally {
+    await rm(lock, { recursive: true });
+  }
+}
+async function sourceSnapshot(root) {
+  const snapshot = {};
+  for (const path of await new FileSystemProjectDiscovery().listFiles(root)) {
+    snapshot[relative4(root, path)] = createHash2("sha256").update(await readFile4(path)).digest("hex");
+  }
+  return snapshot;
+}
+async function readRevision(root) {
+  const content = await optional2(join4(root, ".frontend-system/revision.md"));
+  const raw = await optional2(join4(root, ".frontend-system/revision.json"));
+  const metadata = raw ? revisionSchema.parse(JSON.parse(raw)) : void 0;
+  const currentHash = content ? digest2(content) : null;
+  return {
+    content,
+    hash: currentHash,
+    version: metadata?.version ?? 0,
+    approved: !!metadata?.approved && metadata.hash === currentHash,
+    drifted: !!metadata && metadata.hash !== currentHash
+  };
+}
+async function saveRevision(root, content, expectedHash) {
+  if (!content.trim()) throw new Error("Revision must not be empty");
+  return locked(root, async () => {
+    const current = await readRevision(root);
+    if (current.hash !== expectedHash) throw new Error("Revision changed; reread before saving");
+    const version2 = current.version + 1;
+    const base = await directory(root);
+    const history = await directory(root, "revisions");
+    const previousMetadata = await optional2(join4(base, "revision.json"));
+    if (previousMetadata) await atomic(join4(history, `approval-${current.version}.json`), previousMetadata);
+    if (current.content) await atomic(join4(history, `${current.hash}.md`), current.content);
+    await atomic(join4(history, `${digest2(content)}.md`), content);
+    await atomic(join4(base, "revision.md"), content);
+    await atomic(join4(base, "revision.json"), JSON.stringify({ version: version2, hash: digest2(content), approved: false, approval: "" }));
+    return readRevision(root);
+  });
+}
+async function approveRevision(root, expectedHash, approval) {
+  if (!approval.trim()) throw new Error("Record the user's explicit approval");
+  return locked(root, async () => {
+    const current = await readRevision(root);
+    if (!current.version || current.drifted || current.hash !== expectedHash) throw new Error("Save and review the current revision before approval");
+    await atomic(join4(await directory(root), "revision.json"), JSON.stringify({
+      version: current.version,
+      hash: current.hash,
+      approved: true,
+      approval
+    }));
+    return readRevision(root);
+  });
+}
+async function saveProjectRecord(root, kind, id, content, expectedHash) {
+  recordId.parse(id);
+  if (!content.trim()) throw new Error("Record must not be empty");
+  return locked(root, async () => {
+    const path = join4(await directory(root, kind), `${id}.md`);
+    const previous = await optional2(path);
+    if ((previous ? digest2(previous) : null) !== expectedHash) throw new Error("Record changed; reread before saving");
+    await atomic(path, content);
+    return { path, hash: digest2(content) };
+  });
+}
+async function readProjectRecord(root, kind, id, offset = 0, limit = 200) {
+  recordId.parse(id);
+  const content = await optional2(join4(root, ".frontend-system", kind, `${id}.md`));
+  if (!content) throw new Error("Record not found");
+  const lines = content.split("\n");
+  return { hash: digest2(content), content: lines.slice(offset, offset + limit).join("\n"), totalLines: lines.length, nextOffset: offset + limit < lines.length ? offset + limit : null };
+}
+async function workflowContext(root) {
+  const revision = await readRevision(root);
+  const records = [];
+  for (const kind of ["evidence", "decisions"]) {
+    const path = join4(root, ".frontend-system", kind);
+    try {
+      for (const name of (await readdir4(path)).sort()) {
+        if (name.endsWith(".md")) records.push({ kind, id: name.slice(0, -3), path: join4(path, name) });
+      }
+    } catch (error2) {
+      if (error2.code !== "ENOENT") throw error2;
+    }
+  }
+  const raw = await optional2(join4(root, ".frontend-system/execution.json"));
+  const saved = raw ? executionRecordSchema.parse(JSON.parse(raw)) : void 0;
+  const current = saved ? await sourceSnapshot(root) : void 0;
+  const changedFiles2 = saved && current ? [.../* @__PURE__ */ new Set([...Object.keys(current), ...Object.keys(saved.fileHashes)])].filter((path) => current[path] !== saved.fileHashes[path]).sort() : [];
+  return {
+    revision: { ...revision, content: revision.content.slice(0, 12e3), truncated: revision.content.length > 12e3 },
+    records,
+    execution: saved?.execution ?? null,
+    executionHash: raw ? digest2(raw) : null,
+    changedSinceCheckpoint: changedFiles2,
+    revisionChangedSinceCheckpoint: !!saved && saved.execution.revisionHash !== revision.hash,
+    needsRevalidation: !!saved && (changedFiles2.length > 0 || saved.execution.revisionHash !== revision.hash || !revision.approved)
+  };
+}
+async function saveCheckRecord(root, record2) {
+  const validated = checkRecordSchema.parse(record2);
+  const path = join4(await directory(root, "checks"), `${record2.id}.json`);
+  await writeFile2(path, JSON.stringify(validated, null, 2), { flag: "wx" });
+  return { id: record2.id, path };
+}
+async function readCheckRecord(root, id) {
+  recordId.parse(id);
+  return checkRecordSchema.parse(JSON.parse(await readFile4(join4(root, ".frontend-system/checks", `${id}.json`), "utf8")));
+}
+async function saveExecution(root, input, expectedHash) {
+  const execution = executionSchema.parse(input);
+  return locked(root, async () => {
+    const state = await workflowContext(root);
+    if (state.executionHash !== expectedHash) throw new Error("Execution changed; reread before saving");
+    if (!state.revision.approved || state.revision.hash !== execution.revisionHash) throw new Error("Execution requires the current approved revision");
+    const fileHashes = await sourceSnapshot(root);
+    const sourceHash = digest2(JSON.stringify(fileHashes));
+    const verify = async (id, full = false) => {
+      const record2 = await readCheckRecord(root, id);
+      if (!record2.stable || record2.sourceHash !== sourceHash || record2.revisionHash !== execution.revisionHash || !record2.results.length || record2.results.some((result2) => result2.status !== "passed") || full && (!record2.full || !record2.results.some((result2) => /(^|:)(test|e2e)(:|$)/.test(result2.capability)))) {
+        throw new Error(`Check ${id} does not verify the current source and revision`);
+      }
+    };
+    if (execution.baselineCheckId) {
+      if ((await readCheckRecord(root, execution.baselineCheckId)).purpose !== "baseline") throw new Error("Expected a baseline check record");
+    }
+    for (const step of execution.steps) {
+      const previous = state.execution?.steps.find(({ id }) => id === step.id);
+      if (step.status === "complete" && (JSON.stringify(previous) !== JSON.stringify(step) || state.revisionChangedSinceCheckpoint)) {
+        if (!step.checkIds.length || step.remaining.length) throw new Error("Completed steps require checks and no remaining work");
+        for (const id of step.checkIds) await verify(id);
+      }
+    }
+    if (execution.status === "complete") {
+      if (execution.steps.some((step) => step.status !== "complete") || !execution.finalCheckId) throw new Error("Complete all steps and provide a final full check");
+      await verify(execution.finalCheckId, true);
+    }
+    const path = join4(await directory(root), "execution.json");
+    const content = JSON.stringify({ execution, fileHashes, updatedAt: (/* @__PURE__ */ new Date()).toISOString() }, null, 2);
+    await atomic(path, content);
+    return { path, hash: digest2(content) };
+  });
+}
+
+// src/application/project-store.ts
+var directoryName = ".frontend-system";
+var configSchema = strictObject({
+  version: literal(1),
+  designProvider: discriminatedUnion("name", [
+    strictObject({ name: literal("built-in"), scope: _enum(["project", "user"]).optional() }),
+    strictObject({
+      name: literal("open-design"),
+      scope: _enum(["project", "user"]).optional(),
+      mode: _enum(["cloud", "local-codex", "byok"]).optional(),
+      projectId: uuid2().optional()
+    })
+  ])
+});
+async function optionalRead(path) {
+  try {
+    return await readFile5(path, "utf8");
+  } catch (error2) {
+    if (error2.code === "ENOENT") return "";
+    throw error2;
+  }
+}
 async function readProjectDocument(root) {
-  return optionalRead(join4(root, directoryName, "project.md"));
+  return await optionalRead(join5(root, directoryName, "init.md")) || optionalRead(join5(root, directoryName, "project.md"));
 }
 async function readProjectConfig(root) {
-  const content = await optionalRead(join4(root, directoryName, "config.json"));
-  return content ? JSON.parse(content) : void 0;
+  const content = await optionalRead(join5(root, directoryName, "config.json"));
+  return content ? configSchema.parse(JSON.parse(content)) : void 0;
 }
 async function writeProjectConfig(root, config2) {
-  const directory = join4(root, directoryName);
-  await mkdir2(directory, { recursive: true });
-  await writeFile2(join4(directory, "config.json"), `${JSON.stringify(config2, null, 2)}
+  const validated = configSchema.parse(config2);
+  const directory2 = join5(root, directoryName);
+  await mkdir3(directory2, { recursive: true });
+  await writeFile3(join5(directory2, "config.json"), `${JSON.stringify(validated, null, 2)}
 `);
 }
 async function readProjectState(root) {
-  const content = await optionalRead(join4(root, directoryName, "state.json"));
+  const content = await optionalRead(join5(root, directoryName, "state.json"));
   return content ? JSON.parse(content) : void 0;
-}
-async function hashes(profile) {
-  const result2 = {};
-  for (const path of [...profile.paths.manifests, ...profile.paths.configFiles]) {
-    try {
-      result2[path] = createHash2("sha256").update(await readFile4(join4(profile.project.rootPath, path))).digest("hex");
-    } catch {
-    }
-  }
-  return result2;
 }
 function section(title, entries) {
   return `## ${title}
@@ -29410,14 +29669,20 @@ ${analysis.summary}`,
   ].join("\n\n");
 }
 async function writeProjectArtifacts(profile, analysis) {
-  const directory = join4(profile.project.rootPath, directoryName);
-  await mkdir2(join4(directory, "reports"), { recursive: true });
+  const directory2 = join5(profile.project.rootPath, directoryName);
+  await mkdir3(join5(directory2, "reports"), { recursive: true });
+  const ignorePath = join5(directory2, ".gitignore");
+  const ignored = await optionalRead(ignorePath);
+  const missing = ["state.json", "reports/", ".workflow-lock/"].filter((line) => !ignored.split(/\r?\n/).includes(line));
+  if (missing.length) await writeFile3(ignorePath, `${ignored}${ignored && !ignored.endsWith("\n") ? "\n" : ""}${missing.join("\n")}
+`);
+  const legacy = await optionalRead(join5(directory2, "project.md"));
+  const content = renderProject(profile, analysis) + (legacy ? "\nLegacy context (preserved): [project.md](project.md). Reconcile its decisions before superseding them.\n" : "");
   await Promise.all([
-    writeFile2(join4(directory, ".gitignore"), "state.json\nreports/\n"),
-    writeFile2(join4(directory, "project.md"), renderProject(profile, analysis)),
-    writeFile2(join4(directory, "state.json"), JSON.stringify({
+    writeFile3(join5(directory2, "init.md"), content),
+    writeFile3(join5(directory2, "state.json"), JSON.stringify({
       ...profile.project.git.commit ? { analyzedCommit: profile.project.git.commit } : {},
-      fileHashes: await hashes(profile),
+      fileHashes: await sourceSnapshot(profile.project.rootPath),
       updatedAt: (/* @__PURE__ */ new Date()).toISOString()
     }, null, 2))
   ]);
@@ -29425,45 +29690,98 @@ async function writeProjectArtifacts(profile, analysis) {
 
 // src/application/run-capabilities.ts
 import { execFile as execFile3 } from "node:child_process";
+import { randomUUID as randomUUID2 } from "node:crypto";
+import { relative as relative5 } from "node:path";
 var order = ["test:unit", "test:integration", "test", "test:e2e", "e2e", "test:storybook", "build-storybook", "typecheck", "lint", "build"];
-function run2(capability) {
-  return new Promise((resolve4) => {
+function run2(capability, id, definition) {
+  if (/(?:^|\s)(?:--watch(?:=\S+)?|--ui|-w)(?:\s|$)/.test(definition)) {
+    return Promise.resolve({ capability: id, command: capability.command, workingDirectory: capability.workingDirectory, passed: false, status: "not-run", reason: "Watch command requires a non-watch script", output: "" });
+  }
+  return new Promise((resolve5) => {
+    const env = { ...process.env, CI: "true" };
+    delete env.NODE_TEST_CONTEXT;
     execFile3(
       capability.packageManager,
       ["run", capability.script],
       {
         cwd: capability.workingDirectory,
-        env: { ...process.env, CI: "true" },
+        env,
         maxBuffer: 20 * 1024 * 1024,
         timeout: 15 * 60 * 1e3
       },
-      (error2, stdout, stderr) => resolve4({
-        capability: capability.name,
+      (error2, stdout, stderr) => resolve5({
+        capability: id,
         command: capability.command,
         passed: !error2,
+        status: !error2 ? "passed" : error2.code === "ENOENT" ? "not-run" : "failed",
+        workingDirectory: capability.workingDirectory,
         output: `${stdout}${stderr}`.slice(-12e3)
       })
     );
   });
 }
-async function runCapabilities(profile) {
+async function runCapabilities(profile, selected) {
+  const id = (capability) => {
+    const prefix = relative5(profile.project.rootPath, capability.workingDirectory);
+    return prefix ? `${prefix}:${capability.script}` : capability.script;
+  };
+  if (selected) {
+    if (!selected.length || selected.some((key) => !profile.capabilities.some((capability) => id(capability) === key))) throw new Error("Select existing capability IDs from profile.scripts");
+  }
   const capabilities = [...profile.capabilities].sort(
     (a, b) => order.indexOf(a.name) - order.indexOf(b.name)
   );
   const results = [];
-  for (const capability of capabilities) results.push(await run2(capability));
+  for (const capability of capabilities) {
+    if (!selected || selected.includes(id(capability))) results.push(await run2(capability, id(capability), profile.scripts[id(capability)] ?? capability.command));
+  }
+  if (!results.length) results.push({ capability: "none", command: "", passed: false, status: "not-run", output: "", reason: "No discovered checks; establish the required test environment" });
   return results;
+}
+async function runProjectChecks(profile, options = {}) {
+  const root = profile.project.rootPath;
+  const baseline = options.baselineCheckId ? await readCheckRecord(root, options.baselineCheckId) : void 0;
+  const before = digest2(JSON.stringify(await sourceSnapshot(root)));
+  const revision = await readRevision(root);
+  const results = await runCapabilities(profile, options.capabilities);
+  const after = digest2(JSON.stringify(await sourceSnapshot(root)));
+  const record2 = {
+    id: randomUUID2(),
+    purpose: options.purpose ?? "verification",
+    revisionHash: revision.hash,
+    sourceHash: after,
+    stable: before === after,
+    full: !options.capabilities,
+    results: results.map((result2) => ({ ...result2, status: result2.status ?? "not-run" })),
+    createdAt: (/* @__PURE__ */ new Date()).toISOString()
+  };
+  const saved = await saveCheckRecord(root, record2);
+  return {
+    ...saved,
+    ...record2,
+    comparison: results.map((result2) => {
+      const previous = baseline?.results.find((entry) => entry.capability === result2.capability);
+      return {
+        capability: result2.capability,
+        previousStatus: previous?.status ?? null,
+        status: result2.status,
+        previouslyFailing: previous?.status === "failed",
+        // Matching status does not establish the same failure cause; the caller must inspect evidence.
+        needsFailureReview: result2.status === "failed"
+      };
+    })
+  };
 }
 
 // src/application/task-context.ts
-import { join as join6 } from "node:path";
+import { join as join7 } from "node:path";
 
 // src/application/context/build-work-context.ts
-import { relative as relative4 } from "node:path";
+import { relative as relative6 } from "node:path";
 async function buildWorkContext(discovery2, profile, request, knowledge, rules) {
   const query = terms(request.raw);
   const files = (await discovery2.listFiles(profile.project.rootPath)).map(
-    (path) => relative4(profile.project.rootPath, path)
+    (path) => relative6(profile.project.rootPath, path)
   );
   const structuralSamples = /* @__PURE__ */ new Set();
   for (const sourceDirectory of profile.paths.sourceDirectories) {
@@ -29502,8 +29820,8 @@ async function buildWorkContext(discovery2, profile, request, knowledge, rules) 
 }
 
 // src/application/rules/rule-resolver.ts
-import { readFile as readFile5, readdir as readdir4 } from "node:fs/promises";
-import { join as join5, relative as relative5 } from "node:path";
+import { readFile as readFile6, readdir as readdir5 } from "node:fs/promises";
+import { join as join6, relative as relative7 } from "node:path";
 function slug(value) {
   return value.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, "-").replace(/^-|-$/g, "");
 }
@@ -29513,10 +29831,10 @@ function technologyDomain(value) {
 async function ruleFiles(root, domains) {
   const files = [];
   for (const domain of domains) {
-    const directory = join5(root, domain);
+    const directory2 = join6(root, domain);
     try {
-      for (const entry of await readdir4(directory, { withFileTypes: true })) {
-        if (entry.isFile() && entry.name.endsWith(".md")) files.push(join5(directory, entry.name));
+      for (const entry of await readdir5(directory2, { withFileTypes: true })) {
+        if (entry.isFile() && entry.name.endsWith(".md")) files.push(join6(directory2, entry.name));
       }
     } catch (error2) {
       if (error2.code !== "ENOENT") throw error2;
@@ -29529,8 +29847,8 @@ async function mandatoryRules(root, profile) {
   const domains = /* @__PURE__ */ new Set(["common", ...technologyDomains]);
   const rules = [];
   for (const path of await ruleFiles(root, domains)) {
-    const content = await readFile5(path, "utf8");
-    const domain = relative5(root, path).split("/")[0] ?? "common";
+    const content = await readFile6(path, "utf8");
+    const domain = relative7(root, path).split("/")[0] ?? "common";
     const sections = content.split(/^##\s+/m).slice(1);
     for (const section2 of sections) {
       const [heading = "", ...body] = section2.split("\n");
@@ -29542,7 +29860,7 @@ async function mandatoryRules(root, profile) {
         title,
         description,
         source: "mandatory",
-        priority: 2,
+        priority: 1,
         appliesTo: [domain],
         evidence: [path],
         mandatory: true
@@ -29572,10 +29890,10 @@ var RuleResolver = class {
         title: reference.title,
         description: reference.summary,
         source: "knowledge",
-        priority: 1,
+        priority: 3,
         appliesTo: reference.domains,
         evidence: [reference.path],
-        mandatory: true
+        mandatory: false
       })),
       ...await mandatoryRules(this.mandatoryRoot, profile),
       ...profile.constraints.map((constraint) => ({
@@ -29583,7 +29901,7 @@ var RuleResolver = class {
         title: constraint.description,
         description: constraint.description,
         source: "project",
-        priority: 3,
+        priority: 2,
         appliesTo: ["all"],
         evidence: constraint.evidence,
         mandatory: true
@@ -29608,26 +29926,27 @@ var RuleResolver = class {
         mandatory: false
       }))
     ];
-    const resolved = /* @__PURE__ */ new Map();
-    for (const rule of candidates.sort((a, b) => a.priority - b.priority)) {
-      const conflictKey = slug(rule.title);
-      if (!resolved.has(conflictKey)) resolved.set(conflictKey, rule);
-    }
-    return [...resolved.values()];
+    return candidates.sort((a, b) => a.priority - b.priority);
   }
 };
 
 // src/application/task-context.ts
 async function taskContext(discovery2, systemRoot2, projectPath2, request) {
   const profile = await discovery2.discover(await discovery2.createRef(projectPath2));
-  const knowledge = await new KnowledgeResolver(join6(systemRoot2, "references", "learned")).resolve(profile, request);
-  const rules = await new RuleResolver(join6(systemRoot2, "mandatory-rules")).resolve(
+  const knowledge = await new KnowledgeResolver(join7(systemRoot2, "references", "learned")).resolve(profile, request);
+  const rules = await new RuleResolver(join7(systemRoot2, "mandatory-rules")).resolve(
     profile,
     request,
     knowledge.applicable,
     knowledge.gaps
   );
+  const previous = await readProjectState(projectPath2);
+  const current = previous ? await sourceSnapshot(projectPath2) : void 0;
+  const inspectionChanges = previous && current ? [.../* @__PURE__ */ new Set([...Object.keys(previous.fileHashes), ...Object.keys(current)])].filter((path) => previous.fileHashes[path] !== current[path]).sort() : [];
   return {
+    inspection: { recorded: !!previous, changedFiles: inspectionChanges, needsRefresh: !previous || inspectionChanges.length > 0 },
+    workflow: await workflowContext(projectPath2),
+    config: await readProjectConfig(projectPath2),
     profile,
     context: await buildWorkContext(discovery2, profile, request, knowledge.applicable, rules),
     document: await readProjectDocument(projectPath2)
@@ -29635,20 +29954,93 @@ async function taskContext(discovery2, systemRoot2, projectPath2, request) {
 }
 
 // src/mcp.ts
-var systemRoot = resolve3(dirname2(fileURLToPath(import.meta.url)), "../..");
+var moduleDirectory = dirname2(fileURLToPath(import.meta.url));
+var systemRoot = resolve4(moduleDirectory, existsSync(resolve4(moduleDirectory, "../skills")) ? ".." : "../..");
 var discovery = new FileSystemProjectDiscovery();
 var server = new McpServer({ name: "frontend-system", version: "0.1.0" });
 function result(value) {
   return { content: [{ type: "text", text: JSON.stringify(value, null, 2) }] };
 }
 function projectPath(path) {
-  return resolve3(path ?? process.cwd());
+  return resolve4(path ?? process.cwd());
 }
 function repositoryPath(path) {
-  return resolve3(path ?? process.env.FRONTEND_SYSTEM_REPO ?? systemRoot);
+  return resolve4(path ?? process.env.FRONTEND_SYSTEM_REPO ?? systemRoot);
 }
 var readOnly = { readOnlyHint: true, destructiveHint: false, openWorldHint: false };
 var localWrite = { readOnlyHint: false, destructiveHint: false, openWorldHint: false };
+server.registerTool("list_project_files", {
+  title: "Page through the whole project inventory",
+  description: "List every non-generated file without depth or count truncation. Exclusions and unfollowed symlinks are explicit; inventory coverage is not semantic analysis.",
+  inputSchema: { projectPath: string2().optional(), offset: number2().int().min(0).default(0), limit: number2().int().min(1).max(1e3).default(200), expectedHash: string2().optional() },
+  annotations: readOnly
+}, async ({ projectPath: path, offset, limit, expectedHash }) => {
+  const root = projectPath(path);
+  const inventory = await discovery.inventory(root);
+  const files = inventory.files.map((file) => relative8(root, file));
+  const hash2 = digest2(JSON.stringify(files));
+  if (expectedHash && hash2 !== expectedHash) throw new Error("Inventory changed; restart pagination");
+  return result({
+    files: files.slice(offset, offset + limit),
+    total: files.length,
+    hash: hash2,
+    nextOffset: offset + limit < files.length ? offset + limit : null,
+    excluded: inventory.excluded,
+    warnings: inventory.warnings
+  });
+});
+server.registerTool("get_workflow_context", {
+  title: "Read revision, decisions, and resume state",
+  description: "Return project records and detect source or revision changes since the checkpoint. Stored completion is historical, not proof of current verification.",
+  inputSchema: { projectPath: string2().optional() },
+  annotations: readOnly
+}, async ({ projectPath: path }) => result(await workflowContext(projectPath(path))));
+server.registerTool("get_revision", {
+  title: "Read a revision window",
+  description: "Read the current target design with its content hash and effective approval. Read all relevant windows before discussing or approving it.",
+  inputSchema: { projectPath: string2().optional(), offset: number2().int().min(0).default(0), limit: number2().int().min(1).max(500).default(200) },
+  annotations: readOnly
+}, async ({ projectPath: path, offset, limit }) => {
+  const revision = await readRevision(projectPath(path));
+  const lines = revision.content.split("\n");
+  return result({ ...revision, content: lines.slice(offset, offset + limit).join("\n"), totalLines: lines.length, nextOffset: offset + limit < lines.length ? offset + limit : null });
+});
+server.registerTool("save_revision", {
+  title: "Save an unapproved target design",
+  description: "Save a revision draft and preserve the previous content in history. Every save invalidates approval. Pass the current hash, or null for a new project.",
+  inputSchema: { projectPath: string2().optional(), content: string2().min(1), expectedHash: string2().nullable() },
+  annotations: localWrite
+}, async ({ projectPath: path, content, expectedHash }) => result(await saveRevision(projectPath(path), content, expectedHash)));
+server.registerTool("approve_revision", {
+  title: "Record explicit user approval of a revision",
+  description: "Call only after the user approves this exact target design. Record their approval, never infer it from a request to analyze or draft. Does not start implementation.",
+  inputSchema: { projectPath: string2().optional(), expectedHash: string2(), approval: string2().min(1) },
+  annotations: localWrite
+}, async ({ projectPath: path, expectedHash, approval }) => result(await approveRevision(projectPath(path), expectedHash, approval)));
+server.registerTool("save_project_record", {
+  title: "Save project evidence or a scoped decision",
+  description: "Write Markdown evidence or decisions, preserving provenance, scope, alternatives, tradeoffs, uncertainty and recheck conditions. Project recording never promotes a decision to shared knowledge.",
+  inputSchema: { projectPath: string2().optional(), kind: _enum(["evidence", "decisions"]), id: recordId, content: string2().min(1), expectedHash: string2().nullable() },
+  annotations: localWrite
+}, async ({ projectPath: path, kind, id, content, expectedHash }) => result(await saveProjectRecord(projectPath(path), kind, id, content, expectedHash)));
+server.registerTool("get_project_record", {
+  title: "Read selected evidence or decision",
+  description: "Read a bounded window of a project record selected from workflow context.",
+  inputSchema: { projectPath: string2().optional(), kind: _enum(["evidence", "decisions"]), id: recordId, offset: number2().int().min(0).default(0), limit: number2().int().min(1).max(500).default(200) },
+  annotations: readOnly
+}, async ({ projectPath: path, kind, id, offset, limit }) => result(await readProjectRecord(projectPath(path), kind, id, offset, limit)));
+server.registerTool("save_execution", {
+  title: "Checkpoint a refactoring execution",
+  description: "Record stages against the approved revision. Reconcile source changes before saving. Newly completed stages require current passing checks; complete execution requires a full current check. Never edit product files or reset user changes here.",
+  inputSchema: { projectPath: string2().optional(), expectedHash: string2().nullable(), execution: executionSchema },
+  annotations: localWrite
+}, async ({ projectPath: path, expectedHash, execution }) => result(await saveExecution(projectPath(path), execution, expectedHash)));
+server.registerTool("get_check_record", {
+  title: "Read recorded check evidence",
+  description: "Return an immutable baseline or verification record. Matching failure status does not prove the same failure cause.",
+  inputSchema: { projectPath: string2().optional(), id: recordId },
+  annotations: readOnly
+}, async ({ projectPath: path, id }) => result(await readCheckRecord(projectPath(path), id)));
 server.registerTool("inspect_project", {
   title: "Inspect frontend project facts",
   description: "Discover manifests, technologies, design evidence, scripts, architecture hints, and existing frontend-system context without invoking a model.",
@@ -29675,18 +30067,25 @@ server.registerTool("configure_project", {
   inputSchema: {
     projectPath: string2().optional(),
     designProvider: _enum(["built-in", "open-design"]),
-    designProviderScope: _enum(["project", "user"]).optional()
+    designProviderScope: _enum(["project", "user"]).optional(),
+    openDesignMode: _enum(["cloud", "local-codex", "byok"]).optional(),
+    openDesignProjectId: uuid2().nullable().optional().describe("Verified OpenDesign project ID; null clears the binding. Omitted settings are preserved for the same provider.")
   },
   annotations: localWrite
-}, async ({ projectPath: path, designProvider, designProviderScope }) => {
+}, async ({ projectPath: path, designProvider, designProviderScope, openDesignMode, openDesignProjectId }) => {
   const root = projectPath(path);
+  const previous = await readProjectConfig(root);
   const config2 = {
     version: 1,
     designProvider: {
+      ...previous?.designProvider.name === designProvider ? previous.designProvider : {},
       name: designProvider,
-      ...designProviderScope ? { scope: designProviderScope } : {}
+      ...designProviderScope ? { scope: designProviderScope } : {},
+      ...openDesignMode ? { mode: openDesignMode } : {},
+      ...openDesignProjectId ? { projectId: openDesignProjectId } : {}
     }
   };
+  if (openDesignProjectId === null) delete config2.designProvider.projectId;
   await writeProjectConfig(root, config2);
   return result({ path: `${root}/.frontend-system/config.json`, config: config2 });
 });
@@ -29716,7 +30115,7 @@ server.registerTool("save_project_context", {
   const root = projectPath(path);
   const profile = await discovery.discover(await discovery.createRef(root));
   await writeProjectArtifacts(profile, analysis);
-  return result({ projectDocument: `${root}/.frontend-system/project.md`, analyzedCommit: profile.project.git.commit });
+  return result({ projectDocument: `${root}/.frontend-system/init.md`, analyzedCommit: profile.project.git.commit });
 });
 server.registerTool("get_work_context", {
   title: "Build focused frontend work context",
@@ -29724,7 +30123,7 @@ server.registerTool("get_work_context", {
   inputSchema: {
     projectPath: string2().optional(),
     request: string2(),
-    mode: _enum(["prepare", "implement", "verify"]).default("implement"),
+    mode: _enum(["prepare", "implement", "verify", "review", "refactor"]).default("implement"),
     constraints: array(string2()).default([])
   },
   annotations: readOnly
@@ -29755,12 +30154,12 @@ server.registerTool("get_change_context", {
 server.registerTool("run_project_checks", {
   title: "Run discovered project checks",
   description: "Run only existing, non-watch package scripts for unit, integration, e2e, Storybook, types, lint, and build. Test code should be created before calling this tool.",
-  inputSchema: { projectPath: string2().optional() },
+  inputSchema: { projectPath: string2().optional(), capabilities: array(string2()).min(1).optional(), purpose: _enum(["baseline", "verification"]).default("verification"), baselineCheckId: recordId.optional() },
   annotations: localWrite
-}, async ({ projectPath: path }) => {
+}, async ({ projectPath: path, capabilities, purpose, baselineCheckId }) => {
   const root = projectPath(path);
   const profile = await discovery.discover(await discovery.createRef(root));
-  return result(await runCapabilities(profile));
+  return result(await runProjectChecks(profile, { capabilities, purpose, baselineCheckId }));
 });
 server.registerTool("knowledge_status", {
   title: "Check source knowledge status",

@@ -10,7 +10,7 @@ Keep semantic structure, keyboard operation, accessible names, focus behavior, a
 
 ## Verify with discovered capabilities
 
-Use only lint, typecheck, test, build, or e2e commands discovered from the target repository. Do not invent commands.
+Run real scripts discovered from the target repository. When the required checks do not exist, establish the minimum compatible test environment and scripts within the authorized scope, rediscover them, then execute. Missing checks are unverified, not passed.
 
 ## Keep state ownership narrow
 
@@ -26,7 +26,7 @@ Review cancellation, stale responses, cache invalidation, optimistic rollback, l
 
 ## Add tests before running checks
 
-Inspect the diff and existing coverage, add only the missing applicable unit, integration, e2e, Storybook, or security tests, then run discovered commands.
+Capture a baseline before changing code/tests. Inspect the affected behavior and existing coverage, add only missing applicable cases within the authorized scope, then run checks. Preserve domain guarantees across interface/test rewrites. Explicit review-only requests produce proposals without edits.
 
 ## Review dependency and bundle cost
 

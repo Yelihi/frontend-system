@@ -14,7 +14,7 @@ Store source knowledge in the original frontend-system repository, never in a co
    - `knowledge/source/manual/`
    - `knowledge/source/imported/`
    - `knowledge/source/attachments/`
-5. Keep front matter or a metadata section with source type, URL/file provenance, dates, and facets. Reuse catalog facet values when accurate; introduce a new value only when existing values would be misleading.
+5. Keep front matter or metadata with source type, provenance, dates and facets. Distinguish constraints, experiences, guidance, preferences and hypotheses; retain applicability/version limits, tradeoffs, counterexamples and useful code examples. Accept rough notes and ask only for context that changes interpretation. Reuse catalog facets when accurate. Project choices are not universal rules; require confirmation before promoting them to shared knowledge.
 6. Call `catalog_knowledge_document` after the file exists. If it reports an exact duplicate, do not create a second entry; remove only the newly created duplicate if safe and clearly owned by this operation.
 7. Summarize where the source was stored, whether it merged, and that `fs-knowledge-sync` is required before distributed Skills use the new knowledge.
 
