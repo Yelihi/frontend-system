@@ -31,3 +31,5 @@ Read `../../references/decision-workflow.md`.
    A review alone is not a user decision or permission for incidental record writes.
    Propose revision changes only for an actual
    design decision; never normalize a violation by editing documentation.
+
+For knowledge-backed judgments, follow `../../references/knowledge-indexing.md` (work-time search): search observed symptoms after inspecting code, then read selected evidence and applicability conditions. Concepts and uncertain claims alone do not authorize code changes.

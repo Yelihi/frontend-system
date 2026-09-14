@@ -1061,10 +1061,10 @@ var require_util = __commonJS({
     var codegen_1 = require_codegen();
     var code_1 = require_code();
     function toHash(arr) {
-      const hash2 = {};
+      const hash3 = {};
       for (const item of arr)
-        hash2[item] = true;
-      return hash2;
+        hash3[item] = true;
+      return hash3;
     }
     exports.toHash = toHash;
     function alwaysValidSchema(it, schema) {
@@ -2235,10 +2235,10 @@ var require_resolve = __commonJS({
       }
       return count;
     }
-    function getFullPath(resolver, id = "", normalize) {
+    function getFullPath(resolver, id2 = "", normalize) {
       if (normalize !== false)
-        id = normalizeId(id);
-      const p = resolver.parse(id);
+        id2 = normalizeId(id2);
+      const p = resolver.parse(id2);
       return _getFullPath(resolver, p);
     }
     exports.getFullPath = getFullPath;
@@ -2248,13 +2248,13 @@ var require_resolve = __commonJS({
     }
     exports._getFullPath = _getFullPath;
     var TRAILING_SLASH_HASH = /#\/?$/;
-    function normalizeId(id) {
-      return id ? id.replace(TRAILING_SLASH_HASH, "") : "";
+    function normalizeId(id2) {
+      return id2 ? id2.replace(TRAILING_SLASH_HASH, "") : "";
     }
     exports.normalizeId = normalizeId;
-    function resolveUrl(resolver, baseId, id) {
-      id = normalizeId(id);
-      return resolver.resolve(baseId, id);
+    function resolveUrl(resolver, baseId, id2) {
+      id2 = normalizeId(id2);
+      return resolver.resolve(baseId, id2);
     }
     exports.resolveUrl = resolveUrl;
     var ANCHOR = /^[a-z_][-a-z0-9._]*$/i;
@@ -2984,7 +2984,7 @@ var require_compile = __commonJS({
       const schOrFunc = root.refs[ref];
       if (schOrFunc)
         return schOrFunc;
-      let _sch = resolve5.call(this, root, ref);
+      let _sch = resolve6.call(this, root, ref);
       if (_sch === void 0) {
         const schema = (_a3 = root.localRefs) === null || _a3 === void 0 ? void 0 : _a3[ref];
         const { schemaId } = this.opts;
@@ -3011,7 +3011,7 @@ var require_compile = __commonJS({
     function sameSchemaEnv(s1, s2) {
       return s1.schema === s2.schema && s1.root === s2.root && s1.baseId === s2.baseId;
     }
-    function resolve5(root, ref) {
+    function resolve6(root, ref) {
       let sch;
       while (typeof (sch = this.refs[ref]) == "string")
         ref = sch;
@@ -3024,8 +3024,8 @@ var require_compile = __commonJS({
       if (Object.keys(root.schema).length > 0 && refPath === baseId) {
         return getJsonPointer.call(this, p, root);
       }
-      const id = (0, resolve_1.normalizeId)(refPath);
-      const schOrRef = this.refs[id] || this.schemas[id];
+      const id2 = (0, resolve_1.normalizeId)(refPath);
+      const schOrRef = this.refs[id2] || this.schemas[id2];
       if (typeof schOrRef == "string") {
         const sch = resolveSchema.call(this, root, schOrRef);
         if (typeof (sch === null || sch === void 0 ? void 0 : sch.schema) !== "object")
@@ -3036,7 +3036,7 @@ var require_compile = __commonJS({
         return;
       if (!schOrRef.validate)
         compileSchema.call(this, schOrRef);
-      if (id === (0, resolve_1.normalizeId)(ref)) {
+      if (id2 === (0, resolve_1.normalizeId)(ref)) {
         const { schema } = schOrRef;
         const { schemaId } = this.opts;
         const schId = schema[schemaId];
@@ -3841,7 +3841,7 @@ var require_fast_uri = __commonJS({
       }
       return uri;
     }
-    function resolve5(baseURI, relativeURI, options) {
+    function resolve6(baseURI, relativeURI, options) {
       const schemelessOptions = options ? Object.assign({ scheme: "null" }, options) : { scheme: "null" };
       const {
         parsed: baseParsed,
@@ -3874,49 +3874,49 @@ var require_fast_uri = __commonJS({
       schemelessOptions.skipEscape = true;
       return serialize(resolved, schemelessOptions);
     }
-    function resolveComponent(base, relative9, options, skipNormalization) {
+    function resolveComponent(base, relative10, options, skipNormalization) {
       const target = {};
       if (!skipNormalization) {
         base = parse3(serialize(base, options), options);
-        relative9 = parse3(serialize(relative9, options), options);
+        relative10 = parse3(serialize(relative10, options), options);
       }
       options = options || {};
-      if (!options.tolerant && relative9.scheme) {
-        target.scheme = relative9.scheme;
-        target.userinfo = relative9.userinfo;
-        target.host = relative9.host;
-        target.port = relative9.port;
-        target.path = removeDotSegments(relative9.path || "");
-        target.query = relative9.query;
+      if (!options.tolerant && relative10.scheme) {
+        target.scheme = relative10.scheme;
+        target.userinfo = relative10.userinfo;
+        target.host = relative10.host;
+        target.port = relative10.port;
+        target.path = removeDotSegments(relative10.path || "");
+        target.query = relative10.query;
       } else {
-        if (relative9.userinfo !== void 0 || relative9.host !== void 0 || relative9.port !== void 0) {
-          target.userinfo = relative9.userinfo;
-          target.host = relative9.host;
-          target.port = relative9.port;
-          target.path = removeDotSegments(relative9.path || "");
-          target.query = relative9.query;
+        if (relative10.userinfo !== void 0 || relative10.host !== void 0 || relative10.port !== void 0) {
+          target.userinfo = relative10.userinfo;
+          target.host = relative10.host;
+          target.port = relative10.port;
+          target.path = removeDotSegments(relative10.path || "");
+          target.query = relative10.query;
         } else {
-          if (!relative9.path) {
+          if (!relative10.path) {
             target.path = base.path;
-            if (relative9.query !== void 0) {
-              target.query = relative9.query;
+            if (relative10.query !== void 0) {
+              target.query = relative10.query;
             } else {
               target.query = base.query;
             }
           } else {
-            if (relative9.path[0] === "/") {
-              target.path = removeDotSegments(relative9.path);
+            if (relative10.path[0] === "/") {
+              target.path = removeDotSegments(relative10.path);
             } else {
               if ((base.userinfo !== void 0 || base.host !== void 0 || base.port !== void 0) && !base.path) {
-                target.path = "/" + relative9.path;
+                target.path = "/" + relative10.path;
               } else if (!base.path) {
-                target.path = relative9.path;
+                target.path = relative10.path;
               } else {
-                target.path = base.path.slice(0, base.path.lastIndexOf("/") + 1) + relative9.path;
+                target.path = base.path.slice(0, base.path.lastIndexOf("/") + 1) + relative10.path;
               }
               target.path = removeDotSegments(target.path);
             }
-            target.query = relative9.query;
+            target.query = relative10.query;
           }
           target.userinfo = base.userinfo;
           target.host = base.host;
@@ -3924,7 +3924,7 @@ var require_fast_uri = __commonJS({
         }
         target.scheme = base.scheme;
       }
-      target.fragment = relative9.fragment;
+      target.fragment = relative10.fragment;
       return target;
     }
     function equal(uriA, uriB, options) {
@@ -4209,7 +4209,7 @@ var require_fast_uri = __commonJS({
     var fastUri = {
       SCHEMES,
       normalize,
-      resolve: resolve5,
+      resolve: resolve6,
       resolveComponent,
       equal,
       serialize,
@@ -4462,15 +4462,15 @@ var require_core = __commonJS({
             this.addSchema(sch, void 0, _meta, _validateSchema);
           return this;
         }
-        let id;
+        let id2;
         if (typeof schema === "object") {
           const { schemaId } = this.opts;
-          id = schema[schemaId];
-          if (id !== void 0 && typeof id != "string") {
+          id2 = schema[schemaId];
+          if (id2 !== void 0 && typeof id2 != "string") {
             throw new Error(`schema ${schemaId} must be string`);
           }
         }
-        key = (0, resolve_1.normalizeId)(key || id);
+        key = (0, resolve_1.normalizeId)(key || id2);
         this._checkUnique(key);
         this.schemas[key] = this._addSchema(schema, _meta, key, _validateSchema, true);
         return this;
@@ -4549,11 +4549,11 @@ var require_core = __commonJS({
           case "object": {
             const cacheKey = schemaKeyRef;
             this._cache.delete(cacheKey);
-            let id = schemaKeyRef[this.opts.schemaId];
-            if (id) {
-              id = (0, resolve_1.normalizeId)(id);
-              delete this.schemas[id];
-              delete this.refs[id];
+            let id2 = schemaKeyRef[this.opts.schemaId];
+            if (id2) {
+              id2 = (0, resolve_1.normalizeId)(id2);
+              delete this.schemas[id2];
+              delete this.refs[id2];
             }
             return this;
           }
@@ -4624,7 +4624,7 @@ var require_core = __commonJS({
       errorsText(errors = this.errors, { separator = ", ", dataVar = "data" } = {}) {
         if (!errors || errors.length === 0)
           return "No errors";
-        return errors.map((e) => `${dataVar}${e.instancePath} ${e.message}`).reduce((text, msg) => text + separator + msg);
+        return errors.map((e) => `${dataVar}${e.instancePath} ${e.message}`).reduce((text2, msg) => text2 + separator + msg);
       }
       $dataMetaSchema(metaSchema, keywordsJsonPointers) {
         const rules = this.RULES.all;
@@ -4660,10 +4660,10 @@ var require_core = __commonJS({
         }
       }
       _addSchema(schema, meta2, baseId, validateSchema = this.opts.validateSchema, addSchema = this.opts.addUsedSchema) {
-        let id;
+        let id2;
         const { schemaId } = this.opts;
         if (typeof schema == "object") {
-          id = schema[schemaId];
+          id2 = schema[schemaId];
         } else {
           if (this.opts.jtd)
             throw new Error("schema must be object");
@@ -4673,7 +4673,7 @@ var require_core = __commonJS({
         let sch = this._cache.get(schema);
         if (sch !== void 0)
           return sch;
-        baseId = (0, resolve_1.normalizeId)(id || baseId);
+        baseId = (0, resolve_1.normalizeId)(id2 || baseId);
         const localRefs = resolve_1.getSchemaRefs.call(this, schema, baseId);
         sch = new compile_1.SchemaEnv({ schema, schemaId, meta: meta2, baseId, localRefs });
         this._cache.set(sch.schema, sch);
@@ -4686,9 +4686,9 @@ var require_core = __commonJS({
           this.validateSchema(schema, true);
         return sch;
       }
-      _checkUnique(id) {
-        if (this.schemas[id] || this.refs[id]) {
-          throw new Error(`schema with key or id "${id}" already exists`);
+      _checkUnique(id2) {
+        if (this.schemas[id2] || this.refs[id2]) {
+          throw new Error(`schema with key or id "${id2}" already exists`);
         }
       }
       _compileSchemaEnv(sch) {
@@ -8112,10 +8112,10 @@ var require_util2 = __commonJS({
     var codegen_1 = require_codegen2();
     var code_1 = require_code3();
     function toHash(arr) {
-      const hash2 = {};
+      const hash3 = {};
       for (const item of arr)
-        hash2[item] = true;
-      return hash2;
+        hash3[item] = true;
+      return hash3;
     }
     exports.toHash = toHash;
     function alwaysValidSchema(it, schema) {
@@ -9251,10 +9251,10 @@ var require_resolve2 = __commonJS({
       }
       return count;
     }
-    function getFullPath(resolver, id = "", normalize) {
+    function getFullPath(resolver, id2 = "", normalize) {
       if (normalize !== false)
-        id = normalizeId(id);
-      const p = resolver.parse(id);
+        id2 = normalizeId(id2);
+      const p = resolver.parse(id2);
       return _getFullPath(resolver, p);
     }
     exports.getFullPath = getFullPath;
@@ -9264,13 +9264,13 @@ var require_resolve2 = __commonJS({
     }
     exports._getFullPath = _getFullPath;
     var TRAILING_SLASH_HASH = /#\/?$/;
-    function normalizeId(id) {
-      return id ? id.replace(TRAILING_SLASH_HASH, "") : "";
+    function normalizeId(id2) {
+      return id2 ? id2.replace(TRAILING_SLASH_HASH, "") : "";
     }
     exports.normalizeId = normalizeId;
-    function resolveUrl(resolver, baseId, id) {
-      id = normalizeId(id);
-      return resolver.resolve(baseId, id);
+    function resolveUrl(resolver, baseId, id2) {
+      id2 = normalizeId(id2);
+      return resolver.resolve(baseId, id2);
     }
     exports.resolveUrl = resolveUrl;
     var ANCHOR = /^[a-z_][-a-z0-9._]*$/i;
@@ -10000,7 +10000,7 @@ var require_compile2 = __commonJS({
       const schOrFunc = root.refs[ref];
       if (schOrFunc)
         return schOrFunc;
-      let _sch = resolve5.call(this, root, ref);
+      let _sch = resolve6.call(this, root, ref);
       if (_sch === void 0) {
         const schema = (_a3 = root.localRefs) === null || _a3 === void 0 ? void 0 : _a3[ref];
         const { schemaId } = this.opts;
@@ -10027,7 +10027,7 @@ var require_compile2 = __commonJS({
     function sameSchemaEnv(s1, s2) {
       return s1.schema === s2.schema && s1.root === s2.root && s1.baseId === s2.baseId;
     }
-    function resolve5(root, ref) {
+    function resolve6(root, ref) {
       let sch;
       while (typeof (sch = this.refs[ref]) == "string")
         ref = sch;
@@ -10040,8 +10040,8 @@ var require_compile2 = __commonJS({
       if (Object.keys(root.schema).length > 0 && refPath === baseId) {
         return getJsonPointer.call(this, p, root);
       }
-      const id = (0, resolve_1.normalizeId)(refPath);
-      const schOrRef = this.refs[id] || this.schemas[id];
+      const id2 = (0, resolve_1.normalizeId)(refPath);
+      const schOrRef = this.refs[id2] || this.schemas[id2];
       if (typeof schOrRef == "string") {
         const sch = resolveSchema.call(this, root, schOrRef);
         if (typeof (sch === null || sch === void 0 ? void 0 : sch.schema) !== "object")
@@ -10052,7 +10052,7 @@ var require_compile2 = __commonJS({
         return;
       if (!schOrRef.validate)
         compileSchema.call(this, schOrRef);
-      if (id === (0, resolve_1.normalizeId)(ref)) {
+      if (id2 === (0, resolve_1.normalizeId)(ref)) {
         const { schema } = schOrRef;
         const { schemaId } = this.opts;
         const schId = schema[schemaId];
@@ -10360,15 +10360,15 @@ var require_core3 = __commonJS({
             this.addSchema(sch, void 0, _meta, _validateSchema);
           return this;
         }
-        let id;
+        let id2;
         if (typeof schema === "object") {
           const { schemaId } = this.opts;
-          id = schema[schemaId];
-          if (id !== void 0 && typeof id != "string") {
+          id2 = schema[schemaId];
+          if (id2 !== void 0 && typeof id2 != "string") {
             throw new Error(`schema ${schemaId} must be string`);
           }
         }
-        key = (0, resolve_1.normalizeId)(key || id);
+        key = (0, resolve_1.normalizeId)(key || id2);
         this._checkUnique(key);
         this.schemas[key] = this._addSchema(schema, _meta, key, _validateSchema, true);
         return this;
@@ -10447,11 +10447,11 @@ var require_core3 = __commonJS({
           case "object": {
             const cacheKey = schemaKeyRef;
             this._cache.delete(cacheKey);
-            let id = schemaKeyRef[this.opts.schemaId];
-            if (id) {
-              id = (0, resolve_1.normalizeId)(id);
-              delete this.schemas[id];
-              delete this.refs[id];
+            let id2 = schemaKeyRef[this.opts.schemaId];
+            if (id2) {
+              id2 = (0, resolve_1.normalizeId)(id2);
+              delete this.schemas[id2];
+              delete this.refs[id2];
             }
             return this;
           }
@@ -10522,7 +10522,7 @@ var require_core3 = __commonJS({
       errorsText(errors = this.errors, { separator = ", ", dataVar = "data" } = {}) {
         if (!errors || errors.length === 0)
           return "No errors";
-        return errors.map((e) => `${dataVar}${e.instancePath} ${e.message}`).reduce((text, msg) => text + separator + msg);
+        return errors.map((e) => `${dataVar}${e.instancePath} ${e.message}`).reduce((text2, msg) => text2 + separator + msg);
       }
       $dataMetaSchema(metaSchema, keywordsJsonPointers) {
         const rules = this.RULES.all;
@@ -10558,10 +10558,10 @@ var require_core3 = __commonJS({
         }
       }
       _addSchema(schema, meta2, baseId, validateSchema = this.opts.validateSchema, addSchema = this.opts.addUsedSchema) {
-        let id;
+        let id2;
         const { schemaId } = this.opts;
         if (typeof schema == "object") {
-          id = schema[schemaId];
+          id2 = schema[schemaId];
         } else {
           if (this.opts.jtd)
             throw new Error("schema must be object");
@@ -10571,7 +10571,7 @@ var require_core3 = __commonJS({
         let sch = this._cache.get(schema);
         if (sch !== void 0)
           return sch;
-        baseId = (0, resolve_1.normalizeId)(id || baseId);
+        baseId = (0, resolve_1.normalizeId)(id2 || baseId);
         const localRefs = resolve_1.getSchemaRefs.call(this, schema, baseId);
         sch = new compile_1.SchemaEnv({ schema, schemaId, meta: meta2, baseId, localRefs });
         this._cache.set(sch.schema, sch);
@@ -10584,9 +10584,9 @@ var require_core3 = __commonJS({
           this.validateSchema(schema, true);
         return sch;
       }
-      _checkUnique(id) {
-        if (this.schemas[id] || this.refs[id]) {
-          throw new Error(`schema with key or id "${id}" already exists`);
+      _checkUnique(id2) {
+        if (this.schemas[id2] || this.refs[id2]) {
+          throw new Error(`schema with key or id "${id2}" already exists`);
         }
       }
       _compileSchemaEnv(sch) {
@@ -12894,7 +12894,7 @@ var require_dist = __commonJS({
 });
 
 // src/mcp.ts
-import { dirname as dirname2, relative as relative8, resolve as resolve4 } from "node:path";
+import { dirname as dirname2, relative as relative9, resolve as resolve5 } from "node:path";
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
@@ -19243,9 +19243,9 @@ var $ZodObjectJIT = /* @__PURE__ */ $constructor("$ZodObjectJIT", (inst, def) =>
     const syms = normalized.symbolKeys;
     const doc = new Doc(["payload", "ctx"], { shape, inst, memo: memo2, syms });
     const parseStr = (k) => `shape[${k}]._zod.run({ value: input[${k}], issues: [] }, ctx)`;
-    const prefixStr = (id, k) => `
-          for (let i = 0; i < ${id}.issues.length; i++) {
-            const iss = ${id}.issues[i];
+    const prefixStr = (id2, k) => `
+          for (let i = 0; i < ${id2}.issues.length; i++) {
+            const iss = ${id2}.issues[i];
             iss.path = iss.path ? [${k}, ...iss.path] : [${k}];
             payload.issues.push(iss);
           }`;
@@ -19259,34 +19259,34 @@ var $ZodObjectJIT = /* @__PURE__ */ $constructor("$ZodObjectJIT", (inst, def) =>
     for (const key of normalized.allKeys) {
       if (key === "__proto__")
         continue;
-      const id = ids[key];
+      const id2 = ids[key];
       const k = typeof key === "symbol" ? `syms[${syms.indexOf(key)}]` : esc(key);
       const isPresent = `${k} in input`;
       const schema = shape[key];
       const optin = schema?._zod?.optin;
       const isOptionalIn = optin !== void 0;
       const isOptionalOut = schema?._zod?.optout === "optional";
-      doc.write(`const ${id} = ${parseStr(k)};`);
+      doc.write(`const ${id2} = ${parseStr(k)};`);
       if (isOptionalIn && isOptionalOut) {
-        const assign = optin === "optional" ? `${id}_present` : `${id}.value !== undefined || ${id}_present`;
+        const assign = optin === "optional" ? `${id2}_present` : `${id2}.value !== undefined || ${id2}_present`;
         doc.write(`
-        const ${id}_present = ${isPresent};
-        if (!${id}.issues.length || ${id}_present) {
-          if (${id}.issues.length) {${prefixStr(id, k)}
+        const ${id2}_present = ${isPresent};
+        if (!${id2}.issues.length || ${id2}_present) {
+          if (${id2}.issues.length) {${prefixStr(id2, k)}
           }
 
           if (${assign}) {
-            newResult[${k}] = ${id}.value;
+            newResult[${k}] = ${id2}.value;
           }
         }
 
       `);
       } else if (!isOptionalIn) {
         doc.write(`
-        const ${id}_present = ${isPresent};
-        if (${id}.issues.length) {${prefixStr(id, k)}
+        const ${id2}_present = ${isPresent};
+        if (${id2}.issues.length) {${prefixStr(id2, k)}
         }
-        if (!${id}_present && !${id}.issues.length) {
+        if (!${id2}_present && !${id2}.issues.length) {
           payload.issues.push({
             code: "invalid_type",
             expected: "nonoptional",
@@ -19295,22 +19295,22 @@ var $ZodObjectJIT = /* @__PURE__ */ $constructor("$ZodObjectJIT", (inst, def) =>
           });
         }
 
-        if (${id}_present) {
-          newResult[${k}] = ${id}.value;
+        if (${id2}_present) {
+          newResult[${k}] = ${id2}.value;
         }
 
       `);
       } else {
         doc.write(`
-        if (${id}.issues.length) {${prefixStr(id, k)}
+        if (${id2}.issues.length) {${prefixStr(id2, k)}
         }
         
-        if (${id}.value === undefined) {
+        if (${id2}.value === undefined) {
           if (${isPresent}) {
             newResult[${k}] = undefined;
           }
         } else {
-          newResult[${k}] = ${id}.value;
+          newResult[${k}] = ${id2}.value;
         }
 
       `);
@@ -21108,26 +21108,26 @@ function extractDefs(ctx, schema) {
     return;
   const idToSchema = /* @__PURE__ */ new Map();
   for (const entry of ctx.seen.entries()) {
-    const id = ctx.metadataRegistry.get(entry[0])?.id;
-    if (id) {
-      const existing = idToSchema.get(id);
+    const id2 = ctx.metadataRegistry.get(entry[0])?.id;
+    if (id2) {
+      const existing = idToSchema.get(id2);
       if (existing && existing !== entry[0]) {
-        throw new Error(`Duplicate schema id "${id}" detected during JSON Schema conversion. Two different schemas cannot share the same id when converted together.`);
+        throw new Error(`Duplicate schema id "${id2}" detected during JSON Schema conversion. Two different schemas cannot share the same id when converted together.`);
       }
-      idToSchema.set(id, entry[0]);
+      idToSchema.set(id2, entry[0]);
     }
   }
   const makeURI = (entry) => {
     const defsSegment = ctx.target === "draft-2020-12" ? "$defs" : "definitions";
     if (ctx.external) {
       const externalId = ctx.external.registry.get(entry[0])?.id;
-      const uriGenerator = ctx.external.uri ?? ((id2) => id2);
+      const uriGenerator = ctx.external.uri ?? ((id3) => id3);
       if (externalId) {
         return { ref: uriGenerator(externalId) };
       }
-      const id = entry[1].defId ?? entry[1].schema.id ?? `schema${ctx.counter++}`;
-      entry[1].defId = id;
-      return { defId: id, ref: `${uriGenerator("__shared")}#/${defsSegment}/${encodeJSONPointerSegment(id)}` };
+      const id2 = entry[1].defId ?? entry[1].schema.id ?? `schema${ctx.counter++}`;
+      entry[1].defId = id2;
+      return { defId: id2, ref: `${uriGenerator("__shared")}#/${defsSegment}/${encodeJSONPointerSegment(id2)}` };
     }
     const uriPrefix = `#`;
     const defUriPrefix = `${uriPrefix}/${defsSegment}/`;
@@ -21175,8 +21175,8 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
         continue;
       }
     }
-    const id = ctx.metadataRegistry.get(entry[0])?.id;
-    if (id) {
+    const id2 = ctx.metadataRegistry.get(entry[0])?.id;
+    if (id2) {
       extractToDef(entry);
       continue;
     }
@@ -21410,10 +21410,10 @@ function finalize(ctx, schema) {
   } else {
   }
   if (ctx.external?.uri) {
-    const id = ctx.external.registry.get(schema)?.id;
-    if (!id)
+    const id2 = ctx.external.registry.get(schema)?.id;
+    if (!id2)
       throw new Error("Schema is missing an `id` property");
-    result2.$id = ctx.external.uri(id);
+    result2.$id = ctx.external.uri(id2);
   }
   assignProps(result2, root.defId ? root.schema : root.def ?? root.schema);
   const rootMetaId = ctx.metadataRegistry.get(schema)?.id;
@@ -21928,7 +21928,7 @@ function stringifyKeyNames(bySchema, json, visited) {
   const values = json.enum ?? (json.const !== void 0 ? [json.const] : void 0);
   if (!numericType && !values?.some((v) => typeof v === "number"))
     return json;
-  const { minimum, maximum, exclusiveMinimum, exclusiveMaximum, multipleOf, format, id, ...rest } = json;
+  const { minimum, maximum, exclusiveMinimum, exclusiveMaximum, multipleOf, format, id: id2, ...rest } = json;
   if (rest.enum)
     rest.enum = rest.enum.map((v) => typeof v === "number" ? String(v) : v);
   else if (typeof rest.const === "number")
@@ -26789,7 +26789,7 @@ var Protocol = class {
           return;
         }
         const pollInterval = task2.pollInterval ?? this._options?.defaultTaskPollInterval ?? 1e3;
-        await new Promise((resolve5) => setTimeout(resolve5, pollInterval));
+        await new Promise((resolve6) => setTimeout(resolve6, pollInterval));
         options?.signal?.throwIfAborted();
       }
     } catch (error2) {
@@ -26806,7 +26806,7 @@ var Protocol = class {
    */
   request(request, resultSchema, options) {
     const { relatedRequestId, resumptionToken, onresumptiontoken, task, relatedTask } = options ?? {};
-    return new Promise((resolve5, reject) => {
+    return new Promise((resolve6, reject) => {
       const earlyReject = (error2) => {
         reject(error2);
       };
@@ -26884,7 +26884,7 @@ var Protocol = class {
           if (!parseResult.success) {
             reject(parseResult.error);
           } else {
-            resolve5(parseResult.data);
+            resolve6(parseResult.data);
           }
         } catch (error2) {
           reject(error2);
@@ -27145,12 +27145,12 @@ var Protocol = class {
       }
     } catch {
     }
-    return new Promise((resolve5, reject) => {
+    return new Promise((resolve6, reject) => {
       if (signal.aborted) {
         reject(new McpError(ErrorCode.InvalidRequest, "Request cancelled"));
         return;
       }
-      const timeoutId = setTimeout(resolve5, interval);
+      const timeoutId = setTimeout(resolve6, interval);
       signal.addEventListener("abort", () => {
         clearTimeout(timeoutId);
         reject(new McpError(ErrorCode.InvalidRequest, "Request cancelled"));
@@ -27399,7 +27399,7 @@ var ExperimentalServerTasks = class {
       if (hasPreviousToolUse) {
         const toolUseIds = new Set(previousContent.filter((c) => c.type === "tool_use").map((c) => c.id));
         const toolResultIds = new Set(lastContent.filter((c) => c.type === "tool_result").map((c) => c.toolUseId));
-        if (toolUseIds.size !== toolResultIds.size || ![...toolUseIds].every((id) => toolResultIds.has(id))) {
+        if (toolUseIds.size !== toolResultIds.size || ![...toolUseIds].every((id2) => toolResultIds.has(id2))) {
           throw new Error("ids of tool_result blocks and tool_use blocks from previous message do not match");
         }
       }
@@ -27824,7 +27824,7 @@ var Server = class extends Protocol {
       if (hasPreviousToolUse) {
         const toolUseIds = new Set(previousContent.filter((c) => c.type === "tool_use").map((c) => c.id));
         const toolResultIds = new Set(lastContent.filter((c) => c.type === "tool_result").map((c) => c.toolUseId));
-        if (toolUseIds.size !== toolResultIds.size || ![...toolUseIds].every((id) => toolResultIds.has(id))) {
+        if (toolUseIds.size !== toolResultIds.size || ![...toolUseIds].every((id2) => toolResultIds.has(id2))) {
           throw new Error("ids of tool_result blocks and tool_use blocks from previous message do not match");
         }
       }
@@ -28241,7 +28241,7 @@ var McpServer = class {
     let task = createTaskResult.task;
     const pollInterval = task.pollInterval ?? 5e3;
     while (task.status !== "completed" && task.status !== "failed" && task.status !== "cancelled") {
-      await new Promise((resolve5) => setTimeout(resolve5, pollInterval));
+      await new Promise((resolve6) => setTimeout(resolve6, pollInterval));
       const updatedTask = await extra.taskStore.getTask(taskId);
       if (!updatedTask) {
         throw new McpError(ErrorCode.InternalError, `Task ${taskId} not found during polling`);
@@ -28905,12 +28905,12 @@ var StdioServerTransport = class {
     this.onclose?.();
   }
   send(message) {
-    return new Promise((resolve5) => {
+    return new Promise((resolve6) => {
       const json = serializeMessage(message);
       if (this._stdout.write(json)) {
-        resolve5();
+        resolve6();
       } else {
-        this._stdout.once("drain", resolve5);
+        this._stdout.once("drain", resolve6);
       }
     });
   }
@@ -29149,10 +29149,10 @@ var FileSystemProjectDiscovery = class {
 // src/application/git-state.ts
 import { execFile as execFile2 } from "node:child_process";
 function git2(root, args) {
-  return new Promise((resolve5, reject) => {
+  return new Promise((resolve6, reject) => {
     execFile2("git", ["-C", root, ...args], { maxBuffer: 10 * 1024 * 1024 }, (error2, stdout, stderr) => {
       if (error2) reject(new Error(stderr.trim() || error2.message));
-      else resolve5(stdout.trim());
+      else resolve6(stdout.trim());
     });
   });
 }
@@ -29186,13 +29186,100 @@ async function diffStat(root, base) {
 }
 
 // src/application/knowledge/catalog.ts
+import { createHash as createHash2 } from "node:crypto";
+import { mkdir, readFile as readFile4, readdir as readdir3, writeFile } from "node:fs/promises";
+import { isAbsolute as isAbsolute2, join as join3, relative as relative4, resolve as resolve3 } from "node:path";
+
+// src/application/knowledge/reference-index.ts
 import { createHash } from "node:crypto";
-import { mkdir, readFile as readFile3, readdir as readdir3, writeFile } from "node:fs/promises";
-import { isAbsolute, join as join3, relative as relative3, resolve as resolve2 } from "node:path";
+import { readFile as readFile2, realpath } from "node:fs/promises";
+import { isAbsolute, relative as relative2, resolve as resolve2 } from "node:path";
+var text = string2().min(1).max(600);
+var id = string2().regex(/^[a-z0-9][a-z0-9._-]*$/);
+var hash = string2().regex(/^[a-f0-9]{64}$/);
+var referenceIndexSchema = object2({
+  version: literal(1),
+  entries: array(object2({
+    id,
+    kind: _enum(["concept", "decision"]),
+    title: text,
+    summary: text,
+    path: text,
+    contentHash: hash,
+    keywords: array(text).max(30),
+    domains: array(text).max(15),
+    technologies: array(text).max(15),
+    excludedTechnologies: array(text).max(15),
+    conditions: array(text).max(15),
+    exclusions: array(text).max(15),
+    evidenceKind: _enum(["public-contract", "implementation", "experience", "hypothesis"]),
+    review: _enum(["reviewed", "uncertain"]),
+    sources: record(id, hash),
+    related: array(id).max(15)
+  })).max(1e4),
+  outcomes: array(object2({
+    sourceId: id,
+    sourceHash: hash,
+    action: _enum(["represented", "deferred", "omitted"]),
+    reason: text
+  })).max(1e4)
+});
+var contentHash = (value) => createHash("sha256").update(value).digest("hex");
+var technologyKey = (value) => value.toLowerCase().replace(/[^a-z0-9]/g, "");
+async function confinedRead(root, path) {
+  if (isAbsolute(path)) throw new Error("Expected a relative knowledge path.");
+  const base = await realpath(root);
+  const target = await realpath(resolve2(base, path));
+  const rel = relative2(base, target);
+  if (!rel || rel.startsWith("..") || isAbsolute(rel)) throw new Error("Knowledge path escapes its root.");
+  return readFile2(target, "utf8");
+}
+async function readReferenceIndex(root) {
+  let raw;
+  try {
+    raw = await readFile2(resolve2(root, "index.json"), "utf8");
+  } catch (error2) {
+    if (error2.code === "ENOENT") return void 0;
+    throw error2;
+  }
+  const index = referenceIndexSchema.parse(JSON.parse(raw));
+  const ids = new Set(index.entries.map((entry) => entry.id));
+  if (ids.size !== index.entries.length) throw new Error("Duplicate knowledge IDs.");
+  if (new Set(index.outcomes.map((item) => item.sourceId)).size !== index.outcomes.length) throw new Error("Duplicate source outcomes.");
+  for (const entry of index.entries) {
+    if (!Object.keys(entry.sources).length) throw new Error(`Missing source evidence: ${entry.id}`);
+    if (entry.related.some((related) => !ids.has(related))) throw new Error(`Unknown related knowledge: ${entry.id}`);
+  }
+  return index;
+}
+function searchReferenceIndex(index, query, technologies = [], limit = 5) {
+  const tokens = [...new Set(query.toLowerCase().split(/[^\p{L}\p{N}]+/u).filter((word) => word.length > 1))];
+  const tech = technologies.map(technologyKey);
+  return index.entries.filter((entry) => {
+    if (entry.excludedTechnologies.some((value) => tech.includes(technologyKey(value)))) return false;
+    return !tech.length || !entry.technologies.length || entry.technologies.some((value) => tech.includes(technologyKey(value)));
+  }).map((entry) => {
+    const haystack = `${entry.title} ${entry.summary} ${entry.keywords.join(" ")}`.toLowerCase();
+    const score = tokens.filter((token) => haystack.includes(token)).length;
+    const { contentHash: _hash, sources: _sources, ...metadata } = entry;
+    void _hash;
+    void _sources;
+    return { ...metadata, score };
+  }).filter((entry) => entry.score > 0).sort((a, b) => b.score - a.score || a.id.localeCompare(b.id)).slice(0, Math.max(1, Math.min(20, limit)));
+}
+async function readIndexedReference(root, id2, offset = 0, limit = 6e3) {
+  const entry = (await readReferenceIndex(root))?.entries.find((entry2) => entry2.id === id2);
+  if (!entry) throw new Error(`Unknown indexed knowledge: ${id2}`);
+  const body = await confinedRead(root, entry.path);
+  if (contentHash(body) !== entry.contentHash) throw new Error(`Reference changed; resync required: ${id2}`);
+  const start = Math.max(0, offset);
+  const end = start + Math.max(1, Math.min(12e3, limit));
+  return { entry, content: body.slice(start, end), totalCharacters: body.length, nextOffset: end < body.length ? end : null };
+}
 
 // src/application/knowledge/knowledge-resolver.ts
-import { readFile as readFile2, readdir as readdir2 } from "node:fs/promises";
-import { basename as basename2, join as join2, relative as relative2 } from "node:path";
+import { readFile as readFile3, readdir as readdir2 } from "node:fs/promises";
+import { basename as basename2, join as join2, relative as relative3 } from "node:path";
 var ignoredWords = /* @__PURE__ */ new Set(["the", "and", "for", "with", "this", "that", "\uD604\uC7AC", "\uAE30\uB2A5", "\uBD84\uC11D", "\uAC1C\uC120"]);
 function terms(value) {
   return [...new Set(value.toLowerCase().split(/[^\p{L}\p{N}]+/u).filter((word) => word.length > 1 && !ignoredWords.has(word)))];
@@ -29227,9 +29314,15 @@ var KnowledgeResolver = class {
       ...profile.technologies.flatMap((technology) => terms(technology.name))
     ]);
     const applicable = [];
-    for (const path of await markdownFiles(this.root)) {
-      const content = await readFile2(path, "utf8");
-      const relativePath = relative2(this.root, path);
+    const index = await readReferenceIndex(this.root);
+    if (index) {
+      for (const entry of searchReferenceIndex(index, request.raw, profile.technologies.map((item) => item.name))) {
+        applicable.push({ ...entry, path: join2(this.root, entry.path) });
+      }
+    }
+    for (const path of index ? [] : await markdownFiles(this.root)) {
+      const content = await readFile3(path, "utf8");
+      const relativePath = relative3(this.root, path);
       const haystack = `${relativePath}
 ${content}`.toLowerCase();
       const score = [...queryTerms].filter((term) => haystack.includes(term)).length;
@@ -29254,13 +29347,10 @@ ${content}`.toLowerCase();
       ...profile.technologies.filter((technology) => technology.category !== "test-tool").map((technology) => domainName(technology.name))
     ]);
     return {
-      applicable: selected.map(({ id, path, title, summary, domains }) => ({
-        id,
-        path,
-        title,
-        summary,
-        domains
-      })),
+      applicable: selected.map(({ score, ...metadata }) => {
+        void score;
+        return metadata;
+      }),
       gaps: [...requiredDomains].filter((domain) => !coveredDomains.has(domain)).map((domain) => ({ domain, status: "missing-user-knowledge", fallbackRequired: true }))
     };
   }
@@ -29269,7 +29359,7 @@ ${content}`.toLowerCase();
 // src/application/knowledge/catalog.ts
 var emptyCatalog = () => ({ version: 1, facets: {}, documents: {} });
 function digest(content) {
-  return createHash("sha256").update(content).digest("hex");
+  return createHash2("sha256").update(content).digest("hex");
 }
 async function sourceFiles(root) {
   const sourceRoot = join3(root, "knowledge", "source");
@@ -29279,7 +29369,7 @@ async function sourceFiles(root) {
       for (const entry of await readdir3(directory2, { withFileTypes: true })) {
         const path = join3(directory2, entry.name);
         if (entry.isDirectory()) await visit(path);
-        else if (entry.isFile() && entry.name.endsWith(".md")) found.push(relative3(root, path));
+        else if (entry.isFile() && entry.name.endsWith(".md")) found.push(relative4(root, path));
       }
     } catch (error2) {
       if (error2.code !== "ENOENT") throw error2;
@@ -29290,7 +29380,7 @@ async function sourceFiles(root) {
 }
 async function loadKnowledgeCatalog(root) {
   try {
-    return JSON.parse(await readFile3(join3(root, "knowledge", "catalog.json"), "utf8"));
+    return JSON.parse(await readFile4(join3(root, "knowledge", "catalog.json"), "utf8"));
   } catch (error2) {
     if (error2.code === "ENOENT") return emptyCatalog();
     throw error2;
@@ -29302,24 +29392,24 @@ async function saveKnowledgeCatalog(root, catalog) {
 `);
 }
 function sourcePath(root, path) {
-  const sourceRoot = resolve2(root, "knowledge", "source");
-  const absolute = resolve2(root, path);
-  if (isAbsolute(path) || absolute !== sourceRoot && !absolute.startsWith(`${sourceRoot}/`)) {
+  const sourceRoot = resolve3(root, "knowledge", "source");
+  const absolute = resolve3(root, path);
+  if (isAbsolute2(path) || absolute !== sourceRoot && !absolute.startsWith(`${sourceRoot}/`)) {
     throw new Error("Knowledge path must be relative and inside knowledge/source.");
   }
   return absolute;
 }
 async function catalogKnowledgeDocument(root, input) {
-  const contentHash = digest(await readFile3(sourcePath(root, input.path), "utf8"));
+  const contentHash2 = digest(await readFile4(sourcePath(root, input.path), "utf8"));
   const catalog = await loadKnowledgeCatalog(root);
   const duplicate = Object.values(catalog.documents).find(
-    (document2) => document2.contentHash === contentHash && document2.id !== input.id
+    (document2) => document2.contentHash === contentHash2 && document2.id !== input.id
   );
   if (duplicate) return { document: duplicate, duplicateOf: duplicate.id };
   const previous = catalog.documents[input.id];
   const document = {
     ...input,
-    contentHash,
+    contentHash: contentHash2,
     ...previous?.publishedHash ? { publishedHash: previous.publishedHash } : {},
     updatedAt: (/* @__PURE__ */ new Date()).toISOString()
   };
@@ -29334,15 +29424,37 @@ async function knowledgeStatus(root) {
   const catalog = await loadKnowledgeCatalog(root);
   const files = await sourceFiles(root);
   const byPath = new Map(Object.values(catalog.documents).map((document) => [document.path, document]));
+  const actual = /* @__PURE__ */ new Map();
   const changed = [];
   for (const path of files) {
+    const hash3 = digest(await readFile4(join3(root, path), "utf8"));
+    actual.set(path, hash3);
     const document = byPath.get(path);
-    if (document && digest(await readFile3(join3(root, path), "utf8")) !== document.contentHash) changed.push(path);
+    if (document && hash3 !== document.contentHash) changed.push(path);
+  }
+  const index = await readReferenceIndex(join3(root, "references", "learned"));
+  const affectedReferences = (index?.entries ?? []).filter((entry) => Object.entries(entry.sources).some(([id2, hash3]) => {
+    const document = catalog.documents[id2];
+    return !document || actual.get(document.path) !== hash3;
+  })).map((entry) => entry.id);
+  const affected = new Set(affectedReferences);
+  let expanded = true;
+  while (expanded) {
+    expanded = false;
+    for (const entry of index?.entries ?? []) {
+      if (!affected.has(entry.id) && entry.related.some((id2) => affected.has(id2))) {
+        affected.add(entry.id);
+        expanded = true;
+      }
+    }
   }
   return {
+    deleted: Object.values(catalog.documents).filter((document) => !files.includes(document.path)).map((document) => document.id),
+    affectedReferences: [...affected],
+    outcomes: index?.outcomes ?? [],
     uncataloged: files.filter((path) => !byPath.has(path)),
     changed,
-    unpublished: Object.values(catalog.documents).filter((document) => document.contentHash !== document.publishedHash).map((document) => document.id).sort()
+    unpublished: Object.values(catalog.documents).filter((document) => document.contentHash !== document.publishedHash || index?.outcomes.some((item) => item.sourceId === document.id && item.action === "deferred")).map((document) => document.id).sort()
   };
 }
 async function searchKnowledge(root, query, facets = {}, limit = 5) {
@@ -29361,9 +29473,26 @@ async function searchKnowledge(root, query, facets = {}, limit = 5) {
 async function markKnowledgeSynced(root, ids) {
   const catalog = await loadKnowledgeCatalog(root);
   const updated = [];
-  for (const id of ids) {
-    const document = catalog.documents[id];
-    if (!document) throw new Error(`Unknown knowledge document: ${id}`);
+  const learnedRoot = join3(root, "references", "learned");
+  const index = await readReferenceIndex(learnedRoot);
+  if (!index) throw new Error("Publish references/learned/index.json before marking sources synced.");
+  for (const entry of index.entries) {
+    if (contentHash(await confinedRead(learnedRoot, entry.path)) !== entry.contentHash) throw new Error(`Changed reference: ${entry.id}`);
+    for (const [sourceId, hash3] of Object.entries(entry.sources)) {
+      const source = catalog.documents[sourceId];
+      if (!source || digest(await confinedRead(join3(root, "knowledge", "source"), relative4(join3(root, "knowledge", "source"), sourcePath(root, source.path)))) !== hash3) {
+        throw new Error(`Stale reference source: ${entry.id}/${sourceId}`);
+      }
+    }
+  }
+  for (const id2 of ids) {
+    const document = catalog.documents[id2];
+    if (!document) throw new Error(`Unknown knowledge document: ${id2}`);
+    if (digest(await readFile4(sourcePath(root, document.path), "utf8")) !== document.contentHash) throw new Error(`Recatalog changed source: ${id2}`);
+    const outcome = index.outcomes.find((item) => item.sourceId === id2 && item.sourceHash === document.contentHash);
+    if (!outcome) throw new Error(`Missing current sync outcome: ${id2}`);
+    if (outcome.action === "deferred") throw new Error(`Deferred source cannot be marked published: ${id2}`);
+    if (outcome.action === "represented" && !index.entries.some((entry) => entry.sources[id2] === document.contentHash)) throw new Error(`Missing source representation: ${id2}`);
     document.publishedHash = document.contentHash;
     updated.push(document);
   }
@@ -29372,16 +29501,16 @@ async function markKnowledgeSynced(root, ids) {
 }
 
 // src/application/project-store.ts
-import { mkdir as mkdir3, readFile as readFile5, writeFile as writeFile3 } from "node:fs/promises";
+import { mkdir as mkdir3, readFile as readFile6, writeFile as writeFile3 } from "node:fs/promises";
 import { join as join5 } from "node:path";
 
 // src/application/workflow-store.ts
-import { createHash as createHash2, randomUUID } from "node:crypto";
-import { mkdir as mkdir2, readFile as readFile4, readdir as readdir4, realpath, rename, rm, writeFile as writeFile2 } from "node:fs/promises";
-import { join as join4, relative as relative4, resolve as resolve3 } from "node:path";
+import { createHash as createHash3, randomUUID } from "node:crypto";
+import { mkdir as mkdir2, readFile as readFile5, readdir as readdir4, realpath as realpath2, rename, rm, writeFile as writeFile2 } from "node:fs/promises";
+import { join as join4, relative as relative5, resolve as resolve4 } from "node:path";
 var recordId = string2().regex(/^[a-z0-9][a-z0-9-]{0,79}$/);
-var digest2 = (value) => createHash2("sha256").update(value).digest("hex");
-var hash = string2().regex(/^[a-f0-9]{64}$/);
+var digest2 = (value) => createHash3("sha256").update(value).digest("hex");
+var hash2 = string2().regex(/^[a-f0-9]{64}$/);
 var checksSchema = array(object2({
   capability: string2(),
   command: string2(),
@@ -29392,7 +29521,7 @@ var checksSchema = array(object2({
   reason: string2().optional()
 }));
 var executionSchema = strictObject({
-  revisionHash: hash,
+  revisionHash: hash2,
   status: _enum(["in-progress", "blocked", "complete"]),
   baselineCheckId: recordId.optional(),
   finalCheckId: recordId.optional(),
@@ -29408,7 +29537,7 @@ var executionSchema = strictObject({
 }).refine((value) => new Set(value.steps.map((step) => step.id)).size === value.steps.length, "Duplicate step IDs");
 var revisionSchema = object2({
   version: number2().int().positive(),
-  hash,
+  hash: hash2,
   approved: boolean2(),
   approval: string2()
 });
@@ -29420,8 +29549,8 @@ var executionRecordSchema = object2({
 var checkRecordSchema = object2({
   id: recordId,
   purpose: _enum(["baseline", "verification"]),
-  revisionHash: hash.nullable(),
-  sourceHash: hash,
+  revisionHash: hash2.nullable(),
+  sourceHash: hash2,
   stable: boolean2(),
   full: boolean2(),
   results: checksSchema,
@@ -29429,22 +29558,22 @@ var checkRecordSchema = object2({
 });
 async function optional2(path) {
   try {
-    return await readFile4(path, "utf8");
+    return await readFile5(path, "utf8");
   } catch (error2) {
     if (error2.code === "ENOENT") return "";
     throw error2;
   }
 }
 async function directory(root, child = "") {
-  const base = join4(resolve3(root), ".frontend-system");
+  const base = join4(resolve4(root), ".frontend-system");
   const path = join4(base, child);
   await mkdir2(base, { recursive: true });
-  const actualRoot = await realpath(root);
-  if (await realpath(base) !== join4(actualRoot, ".frontend-system")) {
+  const actualRoot = await realpath2(root);
+  if (await realpath2(base) !== join4(actualRoot, ".frontend-system")) {
     throw new Error("Project records must not traverse symbolic links");
   }
   await mkdir2(path, { recursive: true });
-  if (await realpath(path) !== join4(actualRoot, ".frontend-system", child)) throw new Error("Project records must not traverse symbolic links");
+  if (await realpath2(path) !== join4(actualRoot, ".frontend-system", child)) throw new Error("Project records must not traverse symbolic links");
   return path;
 }
 async function atomic(path, content) {
@@ -29468,7 +29597,7 @@ async function locked(root, action) {
 async function sourceSnapshot(root) {
   const snapshot = {};
   for (const path of await new FileSystemProjectDiscovery().listFiles(root)) {
-    snapshot[relative4(root, path)] = createHash2("sha256").update(await readFile4(path)).digest("hex");
+    snapshot[relative5(root, path)] = createHash3("sha256").update(await readFile5(path)).digest("hex");
   }
   return snapshot;
 }
@@ -29516,20 +29645,20 @@ async function approveRevision(root, expectedHash, approval) {
     return readRevision(root);
   });
 }
-async function saveProjectRecord(root, kind, id, content, expectedHash) {
-  recordId.parse(id);
+async function saveProjectRecord(root, kind, id2, content, expectedHash) {
+  recordId.parse(id2);
   if (!content.trim()) throw new Error("Record must not be empty");
   return locked(root, async () => {
-    const path = join4(await directory(root, kind), `${id}.md`);
+    const path = join4(await directory(root, kind), `${id2}.md`);
     const previous = await optional2(path);
     if ((previous ? digest2(previous) : null) !== expectedHash) throw new Error("Record changed; reread before saving");
     await atomic(path, content);
     return { path, hash: digest2(content) };
   });
 }
-async function readProjectRecord(root, kind, id, offset = 0, limit = 200) {
-  recordId.parse(id);
-  const content = await optional2(join4(root, ".frontend-system", kind, `${id}.md`));
+async function readProjectRecord(root, kind, id2, offset = 0, limit = 200) {
+  recordId.parse(id2);
+  const content = await optional2(join4(root, ".frontend-system", kind, `${id2}.md`));
   if (!content) throw new Error("Record not found");
   const lines = content.split("\n");
   return { hash: digest2(content), content: lines.slice(offset, offset + limit).join("\n"), totalLines: lines.length, nextOffset: offset + limit < lines.length ? offset + limit : null };
@@ -29567,9 +29696,9 @@ async function saveCheckRecord(root, record2) {
   await writeFile2(path, JSON.stringify(validated, null, 2), { flag: "wx" });
   return { id: record2.id, path };
 }
-async function readCheckRecord(root, id) {
-  recordId.parse(id);
-  return checkRecordSchema.parse(JSON.parse(await readFile4(join4(root, ".frontend-system/checks", `${id}.json`), "utf8")));
+async function readCheckRecord(root, id2) {
+  recordId.parse(id2);
+  return checkRecordSchema.parse(JSON.parse(await readFile5(join4(root, ".frontend-system/checks", `${id2}.json`), "utf8")));
 }
 async function saveExecution(root, input, expectedHash) {
   const execution = executionSchema.parse(input);
@@ -29579,20 +29708,20 @@ async function saveExecution(root, input, expectedHash) {
     if (!state.revision.approved || state.revision.hash !== execution.revisionHash) throw new Error("Execution requires the current approved revision");
     const fileHashes = await sourceSnapshot(root);
     const sourceHash = digest2(JSON.stringify(fileHashes));
-    const verify = async (id, full = false) => {
-      const record2 = await readCheckRecord(root, id);
+    const verify = async (id2, full = false) => {
+      const record2 = await readCheckRecord(root, id2);
       if (!record2.stable || record2.sourceHash !== sourceHash || record2.revisionHash !== execution.revisionHash || !record2.results.length || record2.results.some((result2) => result2.status !== "passed") || full && (!record2.full || !record2.results.some((result2) => /(^|:)(test|e2e)(:|$)/.test(result2.capability)))) {
-        throw new Error(`Check ${id} does not verify the current source and revision`);
+        throw new Error(`Check ${id2} does not verify the current source and revision`);
       }
     };
     if (execution.baselineCheckId) {
       if ((await readCheckRecord(root, execution.baselineCheckId)).purpose !== "baseline") throw new Error("Expected a baseline check record");
     }
     for (const step of execution.steps) {
-      const previous = state.execution?.steps.find(({ id }) => id === step.id);
+      const previous = state.execution?.steps.find(({ id: id2 }) => id2 === step.id);
       if (step.status === "complete" && (JSON.stringify(previous) !== JSON.stringify(step) || state.revisionChangedSinceCheckpoint)) {
         if (!step.checkIds.length || step.remaining.length) throw new Error("Completed steps require checks and no remaining work");
-        for (const id of step.checkIds) await verify(id);
+        for (const id2 of step.checkIds) await verify(id2);
       }
     }
     if (execution.status === "complete") {
@@ -29622,7 +29751,7 @@ var configSchema = strictObject({
 });
 async function optionalRead(path) {
   try {
-    return await readFile5(path, "utf8");
+    return await readFile6(path, "utf8");
   } catch (error2) {
     if (error2.code === "ENOENT") return "";
     throw error2;
@@ -29691,13 +29820,13 @@ async function writeProjectArtifacts(profile, analysis) {
 // src/application/run-capabilities.ts
 import { execFile as execFile3 } from "node:child_process";
 import { randomUUID as randomUUID2 } from "node:crypto";
-import { relative as relative5 } from "node:path";
+import { relative as relative6 } from "node:path";
 var order = ["test:unit", "test:integration", "test", "test:e2e", "e2e", "test:storybook", "build-storybook", "typecheck", "lint", "build"];
-function run2(capability, id, definition) {
+function run2(capability, id2, definition) {
   if (/(?:^|\s)(?:--watch(?:=\S+)?|--ui|-w)(?:\s|$)/.test(definition)) {
-    return Promise.resolve({ capability: id, command: capability.command, workingDirectory: capability.workingDirectory, passed: false, status: "not-run", reason: "Watch command requires a non-watch script", output: "" });
+    return Promise.resolve({ capability: id2, command: capability.command, workingDirectory: capability.workingDirectory, passed: false, status: "not-run", reason: "Watch command requires a non-watch script", output: "" });
   }
-  return new Promise((resolve5) => {
+  return new Promise((resolve6) => {
     const env = { ...process.env, CI: "true" };
     delete env.NODE_TEST_CONTEXT;
     execFile3(
@@ -29709,8 +29838,8 @@ function run2(capability, id, definition) {
         maxBuffer: 20 * 1024 * 1024,
         timeout: 15 * 60 * 1e3
       },
-      (error2, stdout, stderr) => resolve5({
-        capability: id,
+      (error2, stdout, stderr) => resolve6({
+        capability: id2,
         command: capability.command,
         passed: !error2,
         status: !error2 ? "passed" : error2.code === "ENOENT" ? "not-run" : "failed",
@@ -29721,19 +29850,19 @@ function run2(capability, id, definition) {
   });
 }
 async function runCapabilities(profile, selected) {
-  const id = (capability) => {
-    const prefix = relative5(profile.project.rootPath, capability.workingDirectory);
+  const id2 = (capability) => {
+    const prefix = relative6(profile.project.rootPath, capability.workingDirectory);
     return prefix ? `${prefix}:${capability.script}` : capability.script;
   };
   if (selected) {
-    if (!selected.length || selected.some((key) => !profile.capabilities.some((capability) => id(capability) === key))) throw new Error("Select existing capability IDs from profile.scripts");
+    if (!selected.length || selected.some((key) => !profile.capabilities.some((capability) => id2(capability) === key))) throw new Error("Select existing capability IDs from profile.scripts");
   }
   const capabilities = [...profile.capabilities].sort(
     (a, b) => order.indexOf(a.name) - order.indexOf(b.name)
   );
   const results = [];
   for (const capability of capabilities) {
-    if (!selected || selected.includes(id(capability))) results.push(await run2(capability, id(capability), profile.scripts[id(capability)] ?? capability.command));
+    if (!selected || selected.includes(id2(capability))) results.push(await run2(capability, id2(capability), profile.scripts[id2(capability)] ?? capability.command));
   }
   if (!results.length) results.push({ capability: "none", command: "", passed: false, status: "not-run", output: "", reason: "No discovered checks; establish the required test environment" });
   return results;
@@ -29777,11 +29906,11 @@ async function runProjectChecks(profile, options = {}) {
 import { join as join7 } from "node:path";
 
 // src/application/context/build-work-context.ts
-import { relative as relative6 } from "node:path";
+import { relative as relative7 } from "node:path";
 async function buildWorkContext(discovery2, profile, request, knowledge, rules) {
   const query = terms(request.raw);
   const files = (await discovery2.listFiles(profile.project.rootPath)).map(
-    (path) => relative6(profile.project.rootPath, path)
+    (path) => relative7(profile.project.rootPath, path)
   );
   const structuralSamples = /* @__PURE__ */ new Set();
   for (const sourceDirectory of profile.paths.sourceDirectories) {
@@ -29820,8 +29949,8 @@ async function buildWorkContext(discovery2, profile, request, knowledge, rules) 
 }
 
 // src/application/rules/rule-resolver.ts
-import { readFile as readFile6, readdir as readdir5 } from "node:fs/promises";
-import { join as join6, relative as relative7 } from "node:path";
+import { readFile as readFile7, readdir as readdir5 } from "node:fs/promises";
+import { join as join6, relative as relative8 } from "node:path";
 function slug(value) {
   return value.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, "-").replace(/^-|-$/g, "");
 }
@@ -29847,8 +29976,8 @@ async function mandatoryRules(root, profile) {
   const domains = /* @__PURE__ */ new Set(["common", ...technologyDomains]);
   const rules = [];
   for (const path of await ruleFiles(root, domains)) {
-    const content = await readFile6(path, "utf8");
-    const domain = relative7(root, path).split("/")[0] ?? "common";
+    const content = await readFile7(path, "utf8");
+    const domain = relative8(root, path).split("/")[0] ?? "common";
     const sections = content.split(/^##\s+/m).slice(1);
     for (const section2 of sections) {
       const [heading = "", ...body] = section2.split("\n");
@@ -29885,7 +30014,7 @@ var RuleResolver = class {
         appliesTo: ["all"],
         mandatory: true
       })),
-      ...knowledge.map((reference) => ({
+      ...knowledge.filter((reference) => reference.kind !== "concept" && reference.review !== "uncertain").map((reference) => ({
         id: reference.id,
         title: reference.title,
         description: reference.summary,
@@ -29955,17 +30084,17 @@ async function taskContext(discovery2, systemRoot2, projectPath2, request) {
 
 // src/mcp.ts
 var moduleDirectory = dirname2(fileURLToPath(import.meta.url));
-var systemRoot = resolve4(moduleDirectory, existsSync(resolve4(moduleDirectory, "../skills")) ? ".." : "../..");
+var systemRoot = resolve5(moduleDirectory, existsSync(resolve5(moduleDirectory, "../skills")) ? ".." : "../..");
 var discovery = new FileSystemProjectDiscovery();
 var server = new McpServer({ name: "frontend-system", version: "0.1.0" });
 function result(value) {
   return { content: [{ type: "text", text: JSON.stringify(value, null, 2) }] };
 }
 function projectPath(path) {
-  return resolve4(path ?? process.cwd());
+  return resolve5(path ?? process.cwd());
 }
 function repositoryPath(path) {
-  return resolve4(path ?? process.env.FRONTEND_SYSTEM_REPO ?? systemRoot);
+  return resolve5(path ?? process.env.FRONTEND_SYSTEM_REPO ?? systemRoot);
 }
 var readOnly = { readOnlyHint: true, destructiveHint: false, openWorldHint: false };
 var localWrite = { readOnlyHint: false, destructiveHint: false, openWorldHint: false };
@@ -29977,13 +30106,13 @@ server.registerTool("list_project_files", {
 }, async ({ projectPath: path, offset, limit, expectedHash }) => {
   const root = projectPath(path);
   const inventory = await discovery.inventory(root);
-  const files = inventory.files.map((file) => relative8(root, file));
-  const hash2 = digest2(JSON.stringify(files));
-  if (expectedHash && hash2 !== expectedHash) throw new Error("Inventory changed; restart pagination");
+  const files = inventory.files.map((file) => relative9(root, file));
+  const hash3 = digest2(JSON.stringify(files));
+  if (expectedHash && hash3 !== expectedHash) throw new Error("Inventory changed; restart pagination");
   return result({
     files: files.slice(offset, offset + limit),
     total: files.length,
-    hash: hash2,
+    hash: hash3,
     nextOffset: offset + limit < files.length ? offset + limit : null,
     excluded: inventory.excluded,
     warnings: inventory.warnings
@@ -30022,13 +30151,13 @@ server.registerTool("save_project_record", {
   description: "Write Markdown evidence or decisions, preserving provenance, scope, alternatives, tradeoffs, uncertainty and recheck conditions. Project recording never promotes a decision to shared knowledge.",
   inputSchema: { projectPath: string2().optional(), kind: _enum(["evidence", "decisions"]), id: recordId, content: string2().min(1), expectedHash: string2().nullable() },
   annotations: localWrite
-}, async ({ projectPath: path, kind, id, content, expectedHash }) => result(await saveProjectRecord(projectPath(path), kind, id, content, expectedHash)));
+}, async ({ projectPath: path, kind, id: id2, content, expectedHash }) => result(await saveProjectRecord(projectPath(path), kind, id2, content, expectedHash)));
 server.registerTool("get_project_record", {
   title: "Read selected evidence or decision",
   description: "Read a bounded window of a project record selected from workflow context.",
   inputSchema: { projectPath: string2().optional(), kind: _enum(["evidence", "decisions"]), id: recordId, offset: number2().int().min(0).default(0), limit: number2().int().min(1).max(500).default(200) },
   annotations: readOnly
-}, async ({ projectPath: path, kind, id, offset, limit }) => result(await readProjectRecord(projectPath(path), kind, id, offset, limit)));
+}, async ({ projectPath: path, kind, id: id2, offset, limit }) => result(await readProjectRecord(projectPath(path), kind, id2, offset, limit)));
 server.registerTool("save_execution", {
   title: "Checkpoint a refactoring execution",
   description: "Record stages against the approved revision. Reconcile source changes before saving. Newly completed stages require current passing checks; complete execution requires a full current check. Never edit product files or reset user changes here.",
@@ -30040,7 +30169,7 @@ server.registerTool("get_check_record", {
   description: "Return an immutable baseline or verification record. Matching failure status does not prove the same failure cause.",
   inputSchema: { projectPath: string2().optional(), id: recordId },
   annotations: readOnly
-}, async ({ projectPath: path, id }) => result(await readCheckRecord(projectPath(path), id)));
+}, async ({ projectPath: path, id: id2 }) => result(await readCheckRecord(projectPath(path), id2)));
 server.registerTool("inspect_project", {
   title: "Inspect frontend project facts",
   description: "Discover manifests, technologies, design evidence, scripts, architecture hints, and existing frontend-system context without invoking a model.",
@@ -30196,6 +30325,19 @@ server.registerTool("catalog_knowledge_document", {
   ...document,
   ...sourceUrl ? { sourceUrl } : {}
 })));
+server.registerTool("search_learned_knowledge", {
+  description: "Search compact concept/decision metadata using observed symptoms and known technologies. Conditions and exclusions still require semantic review. Does not read reference bodies.",
+  inputSchema: { query: string2(), technologies: array(string2()).default([]), limit: number2().int().min(1).max(20).default(5) },
+  annotations: readOnly
+}, async ({ query, technologies, limit }) => {
+  const index = await readReferenceIndex(resolve5(systemRoot, "references/learned"));
+  return result({ indexed: !!index, candidates: index ? searchReferenceIndex(index, query, technologies, limit) : [] });
+});
+server.registerTool("read_learned_knowledge", {
+  description: "Read a selected indexed reference with evidence, bounded content and content-hash verification. Read conditions and counterexamples before applying it.",
+  inputSchema: { id: string2(), offset: number2().int().min(0).default(0), limit: number2().int().min(1).max(12e3).default(6e3) },
+  annotations: readOnly
+}, async ({ id: id2, offset, limit }) => result(await readIndexedReference(resolve5(systemRoot, "references/learned"), id2, offset, limit)));
 server.registerTool("mark_knowledge_synced", {
   title: "Mark knowledge references as synced",
   description: "After learned Skill references have been updated, record the corresponding source hashes as published.",

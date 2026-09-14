@@ -79,7 +79,7 @@ export class RuleResolver {
         appliesTo: ["all"],
         mandatory: true,
       })),
-      ...knowledge.map((reference) => ({
+      ...knowledge.filter((reference) => reference.kind !== "concept" && reference.review !== "uncertain").map((reference) => ({
         id: reference.id,
         title: reference.title,
         description: reference.summary,

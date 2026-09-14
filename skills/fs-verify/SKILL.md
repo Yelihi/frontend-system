@@ -20,3 +20,5 @@ authorize edits to product or test code; report missing coverage in that case.
 7. Re-read the final diff and summarize findings, coverage, recorded check IDs, outcomes and limitations. Separate existing failures, new regressions, interface transitions and unexecuted checks. Do not declare success because no checks were discovered, or equate code completion with verified completion.
 
 Never auto-edit production code merely because a verifier can propose a fix.
+
+For knowledge-backed judgments, follow `../../references/knowledge-indexing.md` (work-time search): search observed symptoms after inspecting code, then read selected evidence and applicability conditions. Concepts and uncertain claims alone do not authorize code changes.

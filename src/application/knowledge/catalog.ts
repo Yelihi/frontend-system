@@ -2,6 +2,8 @@ import { createHash } from "node:crypto";
 import { mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import { isAbsolute, join, relative, resolve } from "node:path";
 
+import { confinedRead, readReferenceIndex, contentHash as referenceHash, type ReferenceIndex } from "./reference-index.js";
+
 import { terms } from "./knowledge-resolver.js";
 
 export type KnowledgeSourceType = "manual" | "imported" | "attachment";
@@ -102,20 +104,44 @@ export async function knowledgeStatus(root: string): Promise<{
   uncataloged: string[];
   changed: string[];
   unpublished: string[];
+  deleted: string[];
+  affectedReferences: string[];
+  outcomes: ReferenceIndex["outcomes"];
 }> {
   const catalog = await loadKnowledgeCatalog(root);
   const files = await sourceFiles(root);
   const byPath = new Map(Object.values(catalog.documents).map((document) => [document.path, document]));
+  const actual = new Map<string, string>();
   const changed: string[] = [];
   for (const path of files) {
+    const hash = digest(await readFile(join(root, path), "utf8"));
+    actual.set(path, hash);
     const document = byPath.get(path);
-    if (document && digest(await readFile(join(root, path), "utf8")) !== document.contentHash) changed.push(path);
+    if (document && hash !== document.contentHash) changed.push(path);
+  }
+  const index = await readReferenceIndex(join(root, "references", "learned"));
+  const affectedReferences = (index?.entries ?? []).filter((entry) => Object.entries(entry.sources).some(([id, hash]) => {
+    const document = catalog.documents[id];
+    return !document || actual.get(document.path) !== hash;
+  })).map((entry) => entry.id);
+  const affected = new Set(affectedReferences);
+  let expanded = true;
+  while (expanded) {
+    expanded = false;
+    for (const entry of index?.entries ?? []) {
+      if (!affected.has(entry.id) && entry.related.some((id) => affected.has(id))) {
+        affected.add(entry.id); expanded = true;
+      }
+    }
   }
   return {
+    deleted: Object.values(catalog.documents).filter((document) => !files.includes(document.path)).map((document) => document.id),
+    affectedReferences: [...affected],
+    outcomes: index?.outcomes ?? [],
     uncataloged: files.filter((path) => !byPath.has(path)),
     changed,
     unpublished: Object.values(catalog.documents)
-      .filter((document) => document.contentHash !== document.publishedHash)
+      .filter((document) => document.contentHash !== document.publishedHash || index?.outcomes.some((item) => item.sourceId === document.id && item.action === "deferred"))
       .map((document) => document.id)
       .sort(),
   };
@@ -148,9 +174,26 @@ export async function searchKnowledge(
 export async function markKnowledgeSynced(root: string, ids: string[]): Promise<KnowledgeDocument[]> {
   const catalog = await loadKnowledgeCatalog(root);
   const updated: KnowledgeDocument[] = [];
+  const learnedRoot = join(root, "references", "learned");
+  const index = await readReferenceIndex(learnedRoot);
+  if (!index) throw new Error("Publish references/learned/index.json before marking sources synced.");
+  for (const entry of index.entries) {
+    if (referenceHash(await confinedRead(learnedRoot, entry.path)) !== entry.contentHash) throw new Error(`Changed reference: ${entry.id}`);
+    for (const [sourceId, hash] of Object.entries(entry.sources)) {
+      const source = catalog.documents[sourceId];
+      if (!source || digest(await confinedRead(join(root, "knowledge", "source"), relative(join(root, "knowledge", "source"), sourcePath(root, source.path)))) !== hash) {
+        throw new Error(`Stale reference source: ${entry.id}/${sourceId}`);
+      }
+    }
+  }
   for (const id of ids) {
     const document = catalog.documents[id];
     if (!document) throw new Error(`Unknown knowledge document: ${id}`);
+    if (digest(await readFile(sourcePath(root, document.path), "utf8")) !== document.contentHash) throw new Error(`Recatalog changed source: ${id}`);
+    const outcome = index.outcomes.find((item) => item.sourceId === id && item.sourceHash === document.contentHash);
+    if (!outcome) throw new Error(`Missing current sync outcome: ${id}`);
+    if (outcome.action === "deferred") throw new Error(`Deferred source cannot be marked published: ${id}`);
+    if (outcome.action === "represented" && !index.entries.some((entry) => entry.sources[id] === document.contentHash)) throw new Error(`Missing source representation: ${id}`);
     document.publishedHash = document.contentHash;
     updated.push(document);
   }

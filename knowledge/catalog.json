@@ -1,10 +1,85 @@
 {
   "version": 1,
   "facets": {
-    "framework": [],
-    "topic": [],
-    "artifact": [],
-    "maturity": []
+    "framework": [
+      "react"
+    ],
+    "topic": [
+      "commit",
+      "elements",
+      "fiber",
+      "jsx",
+      "keys",
+      "purity",
+      "reconciliation",
+      "rendering",
+      "state"
+    ],
+    "artifact": [
+      "concept-guide"
+    ],
+    "maturity": [
+      "foundational",
+      "internals"
+    ]
   },
-  "documents": {}
+  "documents": {
+    "react-rendering-foundations": {
+      "id": "react-rendering-foundations",
+      "path": "knowledge/source/manual/react-rendering-foundations.md",
+      "title": "React 기초: 상태와 UI 동기화, JSX, 순수성, Render와 Commit",
+      "summary": "사용자 제공 React 기초 노트 정규화. 선언형 상태-UI 동기화, 엘리먼트와 JSX, 컴포넌트 순수성, render/commit과 배칭을 설명하고 freeze·ref·Fragment·성능·Effect 타이밍의 원문 주장과 보정을 함께 기록한다.",
+      "sourceType": "manual",
+      "facets": {
+        "framework": [
+          "react"
+        ],
+        "topic": [
+          "state",
+          "rendering",
+          "jsx",
+          "elements",
+          "purity"
+        ],
+        "artifact": [
+          "concept-guide"
+        ],
+        "maturity": [
+          "foundational"
+        ]
+      },
+      "contentHash": "d8ce7e534e85b9cbcb1d9e31e69128ca70e2a8f7e1ec3b265c8c4fd6a4909513",
+      "updatedAt": "2026-09-10T07:43:11.863Z"
+    },
+    "react-fiber-reconciliation-and-commit": {
+      "id": "react-fiber-reconciliation-and-commit",
+      "path": "knowledge/source/manual/react-fiber-reconciliation-and-commit.md",
+      "title": "React 엔진: Fiber, 더블 버퍼링, 재조정, Key와 DOM 커밋",
+      "summary": "사용자 노트와 GitHub 이슈 #2의 그림 3장을 판독한 React 엔진 개념 문서. Fiber와 Hook 저장 구조, alternate 더블 버퍼링, key·타입 기반 재조정과 상태 리셋, 커밋·DOM·Effect 타이밍을 v19.2.0 소스와 공식 문서로 보정한다.",
+      "sourceType": "manual",
+      "facets": {
+        "framework": [
+          "react"
+        ],
+        "topic": [
+          "state",
+          "rendering",
+          "elements",
+          "fiber",
+          "reconciliation",
+          "keys",
+          "commit"
+        ],
+        "artifact": [
+          "concept-guide"
+        ],
+        "maturity": [
+          "internals"
+        ]
+      },
+      "sourceUrl": "https://github.com/Yelihi/frontend-system/issues/2",
+      "contentHash": "be797a1096952bf6f5f3aff5c64f9c8efb0f3850087a029cc483fe83bd71ba52",
+      "updatedAt": "2026-09-10T07:51:37.016Z"
+    }
+  }
 }

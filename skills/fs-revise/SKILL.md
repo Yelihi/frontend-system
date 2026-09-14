@@ -32,3 +32,5 @@ Read `../../references/decision-workflow.md`.
 6. Record material user decisions locally. Direct the next requested action to
    `fs-refactor` for existing projects or `fs-init` for new-project setup. Never
    rewrite the target merely to legitimize code drift.
+
+For knowledge-backed judgments, follow `../../references/knowledge-indexing.md` (work-time search): search observed symptoms after inspecting code, then read selected evidence and applicability conditions. Concepts and uncertain claims alone do not authorize code changes.

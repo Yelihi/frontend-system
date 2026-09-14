@@ -1,6 +1,8 @@
 import { readFile, readdir } from "node:fs/promises";
 import { basename, join, relative } from "node:path";
 
+import { readReferenceIndex, searchReferenceIndex } from "./reference-index.js";
+
 import type {
   KnowledgeGap,
   KnowledgeReference,
@@ -48,7 +50,14 @@ export class KnowledgeResolver {
     ]);
     const applicable: Array<KnowledgeReference & { score: number }> = [];
 
-    for (const path of await markdownFiles(this.root)) {
+    const index = await readReferenceIndex(this.root);
+    if (index) {
+      for (const entry of searchReferenceIndex(index, request.raw, profile.technologies.map((item) => item.name))) {
+        applicable.push({ ...entry, path: join(this.root, entry.path) });
+      }
+    }
+    // Compatibility for installations that have not published an index yet.
+    for (const path of index ? [] : await markdownFiles(this.root)) {
       const content = await readFile(path, "utf8");
       const relativePath = relative(this.root, path);
       const haystack = `${relativePath}\n${content}`.toLowerCase();
@@ -81,13 +90,7 @@ export class KnowledgeResolver {
     ]);
 
     return {
-      applicable: selected.map(({ id, path, title, summary, domains }) => ({
-        id,
-        path,
-        title,
-        summary,
-        domains,
-      })),
+      applicable: selected.map(({ score, ...metadata }) => { void score; return metadata; }),
       gaps: [...requiredDomains]
         .filter((domain) => !coveredDomains.has(domain))
         .map((domain) => ({ domain, status: "missing-user-knowledge", fallbackRequired: true })),

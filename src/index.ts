@@ -10,3 +10,4 @@ export * from "./application/project-store.js";
 export * from "./application/run-capabilities.js";
 export * from "./application/git-state.js";
 export * from "./application/workflow-store.js";
+export * from "./application/knowledge/reference-index.js";

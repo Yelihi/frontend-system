@@ -200,6 +200,9 @@ test("knowledge catalog shortlists, detects duplicates, and tracks publication",
     assert.equal(duplicate.duplicateOf, "cache-boundaries");
     assert.equal((await searchKnowledge(root, "Next.js cache", { framework: ["nextjs"] }))[0]?.id, "cache-boundaries");
     assert.deepEqual((await knowledgeStatus(root)).unpublished, ["cache-boundaries"]);
+    await assert.rejects(markKnowledgeSynced(root, ["cache-boundaries"]), /index.json/);
+    await mkdir(join(root, "references/learned"), { recursive: true });
+    await writeFile(join(root, "references/learned/index.json"), JSON.stringify({ version: 1, entries: [], outcomes: [{ sourceId: "cache-boundaries", sourceHash: first.document.contentHash, action: "omitted", reason: "No new guidance; retained as source only." }] }));
     await markKnowledgeSynced(root, ["cache-boundaries"]);
     assert.deepEqual((await knowledgeStatus(root)).unpublished, []);
     assert.deepEqual(Object.keys((await loadKnowledgeCatalog(root)).documents), ["cache-boundaries"]);

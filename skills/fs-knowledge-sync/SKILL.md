@@ -1,15 +1,17 @@
 ---
 name: fs-knowledge-sync
-description: Publish changed source knowledge into compact learned references used by frontend-system Skills. Use when the user asks to sync, summarize, or distribute newly added frontend knowledge.
+description: Review changed source knowledge and publish indexed concepts and conditional decisions for frontend-system, preserving evidence, uncertainty and explicit deferral reasons. Use when the user asks to sync or distribute learned knowledge.
 ---
 
 # Frontend System Knowledge Sync
 
-1. Call `knowledge_status` in the original frontend-system repository. Catalog changed or uncataloged Markdown first; do not silently skip it.
-2. For unpublished document IDs, use `search_knowledge` and catalog metadata to group related material. Open only the necessary sources.
-3. Update compact files under `references/learned/`. Preserve knowledge kind (experience, guidance, preference, hypothesis or explicit constraint), applicability/version limits, tradeoffs, counterexamples, focused code examples and source links. Keep chosen options distinct from measured outcomes; omit article-like prose and raw attachments. Never convert every source into a mandatory rule.
-4. Prefer updating a cohesive existing reference over creating tiny fragments. Keep framework/version-specific guidance explicitly scoped.
-5. Review the resulting diff for contradictions and accidental loss. Then call `mark_knowledge_synced` only for source IDs actually represented in the learned references.
-6. Run repository checks. Report the synced IDs and changed learned-reference files.
+Read `../../references/knowledge-indexing.md` for the review criteria, index fields and evaluation procedure.
 
-Local symlink installations see reference changes immediately. npm or plugin installations receive them only after the shared package/plugin is updated; consuming projects do not run their own knowledge sync.
+1. Resolve the original repository from FRONTEND_SYSTEM_REPO, the user's path or current checkout. Call knowledge_status. Catalog changed or uncataloged Markdown first. Include affectedReferences and deleted sources in the review scope; do not silently skip them.
+2. Search catalog metadata and read necessary originals and related references. Accept CS, domain architecture and framework fundamentals. Review claims individually for source support, applicability/version, contradictions and evidence kind. Preserve original notes; distinguish user interpretation from verified findings. Research official sources when accuracy or currency is uncertain. Ask only when missing context changes the judgment.
+3. Preserve useful concepts without inventing prescriptions. Create conditional decisions only where the evidence supports them. Prefer supplementing a cohesive reference; preserve conflicting claims and counterexamples. Retain compact source evidence in the distributed reference, since raw originals may be unavailable in installed plugins.
+4. Update references/learned/index.json and affected Markdown together, preserving unrelated entries. Record source hashes and related IDs. Record represented/deferred/omitted outcomes with reasons, including claim-level omissions. Recheck every reference affected by source corrections or deletion. Never infer approval to promote a project preference into shared policy.
+5. Exercise representative symptom queries with the search tool (or local exported search function when editing the source checkout), inspect necessary bounded bodies, and run repository checks. Evaluate retrieval separately from whether advice is justified. Do not publish claims of measured real-world accuracy from synthetic tests.
+6. Call mark_knowledge_synced only for represented or explicitly omitted source IDs after review and validation. Deferred sources remain unpublished. Report created/merged references, reviewed claims, unresolved conflicts, omission reasons, evaluated cases and verification limits.
+
+Local symlink installations see changes immediately. Installed plugins receive them after updating the shared installation. Do not report the installed server as refreshed merely because source files changed.

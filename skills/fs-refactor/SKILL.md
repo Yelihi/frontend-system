@@ -31,3 +31,5 @@ Read `../../references/decision-workflow.md` and
 
 Do not install Storybook by default for a full refactor; retain existing UI checks.
 Do not auto-commit, reset user changes or silently replace the selected architecture.
+
+For knowledge-backed judgments, follow `../../references/knowledge-indexing.md` (work-time search): search observed symptoms after inspecting code, then read selected evidence and applicability conditions. Concepts and uncertain claims alone do not authorize code changes.

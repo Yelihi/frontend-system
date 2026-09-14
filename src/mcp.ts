@@ -27,6 +27,7 @@ import {
   approveRevision, digest, executionSchema, readCheckRecord, readProjectRecord, readRevision, recordId,
   saveExecution, saveProjectRecord, saveRevision, workflowContext,
 } from "./application/workflow-store.js";
+import { readReferenceIndex, searchReferenceIndex, readIndexedReference } from "./application/knowledge/reference-index.js";
 import { taskContext } from "./application/task-context.js";
 import type { ProjectAnalysis, ProjectConfig, WorkRequest } from "./domain/types.js";
 
@@ -283,6 +284,21 @@ server.registerTool("catalog_knowledge_document", {
     ...document,
     ...(sourceUrl ? { sourceUrl } : {}),
   })));
+
+server.registerTool("search_learned_knowledge", {
+  description: "Search compact concept/decision metadata using observed symptoms and known technologies. Conditions and exclusions still require semantic review. Does not read reference bodies.",
+  inputSchema: { query: z.string(), technologies: z.array(z.string()).default([]), limit: z.number().int().min(1).max(20).default(5) },
+  annotations: readOnly,
+}, async ({ query, technologies, limit }) => {
+  const index = await readReferenceIndex(resolve(systemRoot, "references/learned"));
+  return result({ indexed: !!index, candidates: index ? searchReferenceIndex(index, query, technologies, limit) : [] });
+});
+
+server.registerTool("read_learned_knowledge", {
+  description: "Read a selected indexed reference with evidence, bounded content and content-hash verification. Read conditions and counterexamples before applying it.",
+  inputSchema: { id: z.string(), offset: z.number().int().min(0).default(0), limit: z.number().int().min(1).max(12000).default(6000) },
+  annotations: readOnly,
+}, async ({ id, offset, limit }) => result(await readIndexedReference(resolve(systemRoot, "references/learned"), id, offset, limit)));
 
 server.registerTool("mark_knowledge_synced", {
   title: "Mark knowledge references as synced",
