@@ -1,11 +1,11 @@
 ---
 name: fs-review
-description: Analyze a specified frontend file, folder or behavior and its dependencies for defects, risk and maintenance cost; explain tradeoffs and fix within scope when requested. Use for focused decisions and partial refactoring, including code with no recent diff.
+description: Analyze a specified frontend file, folder or behavior and its dependencies for defects, risk and maintenance cost; explain tradeoffs and fix within scope when requested. Use for focused decisions, debugging reported symptoms, root-cause investigation and partial refactoring, including code with no recent diff.
 ---
 
 # Frontend System Review
 
-Read `../../references/decision-workflow.md`.
+Read `../../references/decision-workflow.md`. For reported bugs, intermittent failures or root-cause investigation, also follow `../../references/debugging.md`: reproduce, distinguish hypotheses from evidence, fix within scope, verify and record project-local findings. Reuse review mode; do not require a new debug command.
 
 1. Resolve the requested file/folder/behavior and call `get_work_context` with mode
    `review`. If no target can be inferred, ask for the smallest useful scope. Read

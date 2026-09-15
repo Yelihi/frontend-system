@@ -4,6 +4,16 @@ Execution/setup/checkpoint instructions apply to authorized implementation or
 verification work. In review-only work, inspect available evidence and propose the
 needed cases without installing, writing tests/records or claiming they were run.
 
+## Current verification boundary
+
+Verify the changed guarantee with the smallest meaningful reproduction and relevant
+existing checks. Retain security, safety and accessibility responsibilities. Broad
+browser combinations, elaborate visual baselines and performance dashboards are
+not prerequisites for FS. Do not install them to complete a bounded fix. Storybook
+is optional in all workflows. Record human/environment checks that remain instead
+of treating unavailable verification as passed. Use `debugging.md` when a failure
+requires investigation; do not rewrite an assertion merely to clear the failure.
+
 ## Establish the baseline
 
 1. Inspect manifests, scripts, test config, environment requirements and existing

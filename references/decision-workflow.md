@@ -2,6 +2,12 @@
 
 Read this for revision, review, implementation and verification. FS's goal is to
 reduce defects, risk and maintenance cost. Keeping suitable code is a valid result.
+The current version centers on project understanding, evidence-led decisions/debugging,
+and accumulated knowledge. Make layer responsibilities, state ownership, dependency
+direction and failure handling explainable; avoid generating uncontrolled abstractions.
+Broad browser matrices, sophisticated visual regression and performance dashboards
+are outside the current core. Do not build an external verification service or MCP
+integration speculatively. Existing project tools and focused checks remain useful.
 The active host model reasons and edits; MCP discovers, stores and runs checks.
 Do not start a nested model. There is no background watcher or automatic PR hook.
 
@@ -100,9 +106,12 @@ in the revision workflow. Use small cohesive primitives and composition (shadcn-
 composition can be a reference), not mandatory atomic folder levels. A screenshot
 does not specify behavior, responsive rules or error states: resolve material gaps.
 
-Whole-project refactoring does not install Storybook by default; retain existing
-checks. New shared UI/design-system work includes Storybook setup and relevant stories
-and interaction checks by default, using versions compatible with the actual project.
-Ordinary screens still require relevant browser/behavior verification. Do not claim
-visual verification if no browser or preview was available. OpenDesign remains
-optional; follow `open-design.md` only when selected.
+Retain existing project checks. Storybook is optional even for new shared UI work;
+add it only when requested or justified by an agreed verification need. Select the
+smallest sufficient setup rather than installing a full UI test platform. Inspect
+relevant rendered behavior when available, and identify required human checks when
+it is not. Missing browser evidence is not a pass. OpenDesign remains optional;
+follow `open-design.md` only when selected.
+
+For symptoms and root-cause work, follow `debugging.md`. Reuse evidence records for
+project-local investigations and confirm promotion before enriching shared knowledge.

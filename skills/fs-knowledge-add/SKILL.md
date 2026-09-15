@@ -18,4 +18,6 @@ Store source knowledge in the original frontend-system repository, never in a co
 6. Call `catalog_knowledge_document` after the file exists. If it reports an exact duplicate, do not create a second entry; remove only the newly created duplicate if safe and clearly owned by this operation.
 7. Summarize where the source was stored, whether it merged, and that `fs-knowledge-sync` is required before distributed Skills use the new knowledge.
 
+For project debugging records, confirm shared-knowledge promotion unless already requested. Sanitize project-specific and sensitive data, retain reproduction evidence and limitations, and distinguish a verified cause from a candidate hypothesis. Registration does not itself update distributed references.
+
 The catalog is a cheap shortlist index, not a substitute for source evidence.
