@@ -105,6 +105,21 @@ test("persists project configuration and evidence-backed context", async () => {
   }
 });
 
+test("Vue inspection and rule selection stay framework-specific", async () => {
+  const root = await fixture({
+    "package.json": JSON.stringify({ dependencies: { vue: "3.5.0" } }),
+    "src/App.vue": "<script setup>import { ref } from 'vue'; const count = ref(0);</script><template><button>{{ count }}</button></template>",
+  });
+  try {
+    const discovery = new FileSystemProjectDiscovery();
+    const profile = await discovery.discover(await discovery.createRef(root));
+    assert.ok(profile.technologies.some((item) => item.name === "Vue"));
+    const rules = await new RuleResolver(join(process.cwd(), "mandatory-rules")).resolve(profile, request, [], []);
+    assert.ok(rules.some((rule) => rule.id.startsWith("mandatory:vue:")));
+    assert.ok(!rules.some((rule) => rule.id.startsWith("mandatory:react:")));
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
 test("OpenDesign settings survive MCP updates and stay isolated in work context", async () => {
   const first = await fixture({ "package.json": "{}" });
   const second = await fixture({ "package.json": "{}" });

@@ -1,15 +1,25 @@
 {
   "name": "frontend-system",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Evidence-driven frontend inspection, implementation, verification, and knowledge workflows.",
-  "author": { "name": "Yelihi" },
+  "author": {
+    "name": "Yelihi"
+  },
   "repository": "https://github.com/Yelihi/frontend-system",
-  "keywords": ["frontend", "architecture", "testing", "codex", "claude"],
+  "keywords": [
+    "frontend",
+    "architecture",
+    "testing",
+    "codex",
+    "claude"
+  ],
   "skills": "./skills/",
   "mcpServers": {
     "frontend-system": {
       "command": "node",
-      "args": ["${PLUGIN_ROOT}/bundle/mcp.js"]
+      "args": [
+        "${PLUGIN_ROOT}/bundle/mcp.js"
+      ]
     }
   },
   "interface": {
@@ -18,7 +28,13 @@
     "longDescription": "Project-aware frontend engineering workflows with deterministic discovery, semantic review, test generation, and curated knowledge.",
     "developerName": "Yelihi",
     "category": "Developer Tools",
-    "capabilities": ["Read", "Write", "Interactive"],
-    "defaultPrompt": ["Inspect this frontend project and establish its engineering context."]
+    "capabilities": [
+      "Read",
+      "Write",
+      "Interactive"
+    ],
+    "defaultPrompt": [
+      "Inspect this frontend project and establish its engineering context."
+    ]
   }
 }

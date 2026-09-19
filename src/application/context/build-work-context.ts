@@ -47,7 +47,7 @@ export async function buildWorkContext(
     .slice(0, 30)
     .map(({ path, score }) => ({
       path,
-      reason: score >= 3 ? "project entry/configuration" : structuralSamples.has(path) ? "architecture sample" : "matches request",
+      reason: score >= 3 ? "project entry/configuration" : structuralSamples.has(path) ? "unreviewed structure sample" : "matches request",
     }));
   const requestTerms = new Set(query);
   const relevantTechnologies = profile.technologies.filter(

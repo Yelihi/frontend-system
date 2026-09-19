@@ -5,6 +5,7 @@ import { isAbsolute, join, relative, resolve } from "node:path";
 import { confinedRead, readReferenceIndex, contentHash as referenceHash, type ReferenceIndex } from "./reference-index.js";
 
 import { terms } from "./knowledge-resolver.js";
+import { readRuleProposal } from "./rule-proposals.js";
 
 export type KnowledgeSourceType = "manual" | "imported" | "attachment";
 
@@ -15,6 +16,7 @@ export interface KnowledgeDocument {
   summary: string;
   sourceType: KnowledgeSourceType;
   sourceUrl?: string;
+  remoteHash?: string;
   contentHash: string;
   publishedHash?: string;
   facets: Record<string, string[]>;
@@ -107,6 +109,7 @@ export async function knowledgeStatus(root: string): Promise<{
   deleted: string[];
   affectedReferences: string[];
   outcomes: ReferenceIndex["outcomes"];
+  ruleProposals: Array<{ id: string; status: "approved" | "pending" | "stale"; hash?: string; reason?: string }>;
 }> {
   const catalog = await loadKnowledgeCatalog(root);
   const files = await sourceFiles(root);
@@ -125,6 +128,17 @@ export async function knowledgeStatus(root: string): Promise<{
     return !document || actual.get(document.path) !== hash;
   })).map((entry) => entry.id);
   const affected = new Set(affectedReferences);
+  const ruleProposals: Array<{ id: string; status: "approved" | "pending" | "stale"; hash?: string; reason?: string }> = [];
+  let proposalFiles: string[] = [];
+  try { proposalFiles = await readdir(join(root, "knowledge/proposals")); }
+  catch (error) { if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error; }
+  for (const file of proposalFiles.filter((file) => file.endsWith(".json")).sort()) {
+    const id = file.slice(0, -5);
+    try {
+      const proposal = await readRuleProposal(root, id);
+      ruleProposals.push({ id, status: proposal.approved ? "approved" : "pending", hash: proposal.hash });
+    } catch (error) { ruleProposals.push({ id, status: "stale", reason: error instanceof Error ? error.message : String(error) }); }
+  }
   let expanded = true;
   while (expanded) {
     expanded = false;
@@ -138,6 +152,7 @@ export async function knowledgeStatus(root: string): Promise<{
     deleted: Object.values(catalog.documents).filter((document) => !files.includes(document.path)).map((document) => document.id),
     affectedReferences: [...affected],
     outcomes: index?.outcomes ?? [],
+    ruleProposals,
     uncataloged: files.filter((path) => !byPath.has(path)),
     changed,
     unpublished: Object.values(catalog.documents)
@@ -178,6 +193,13 @@ export async function markKnowledgeSynced(root: string, ids: string[]): Promise<
   const index = await readReferenceIndex(learnedRoot);
   if (!index) throw new Error("Publish references/learned/index.json before marking sources synced.");
   for (const entry of index.entries) {
+    if (entry.kind === "rule") {
+      const approved = await readRuleProposal(root, entry.ruleApproval!.proposalId);
+      const rule = approved.proposal.rules.find(({ id }) => id === entry.id);
+      if (!approved.approved || approved.hash !== entry.ruleApproval!.proposalHash || JSON.stringify(rule) !== JSON.stringify(entry.rule) || JSON.stringify(Object.entries(approved.proposal.sources).sort()) !== JSON.stringify(Object.entries(entry.sources).sort())) {
+        throw new Error(`Rule does not match its approved proposal: ${entry.id}`);
+      }
+    }
     if (referenceHash(await confinedRead(learnedRoot, entry.path)) !== entry.contentHash) throw new Error(`Changed reference: ${entry.id}`);
     for (const [sourceId, hash] of Object.entries(entry.sources)) {
       const source = catalog.documents[sourceId];

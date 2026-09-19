@@ -2,14 +2,17 @@ import { createHash } from "node:crypto";
 import { readFile, realpath } from "node:fs/promises";
 import { isAbsolute, relative, resolve } from "node:path";
 import * as z from "zod/v4";
+import { ruleSchema } from "../policy.js";
 
 const text = z.string().min(1).max(600);
 const id = z.string().regex(/^[a-z0-9][a-z0-9._-]*$/);
 const hash = z.string().regex(/^[a-f0-9]{64}$/);
 export const referenceIndexSchema = z.object({
-  version: z.literal(1),
+  version: z.union([z.literal(1), z.literal(2)]),
   entries: z.array(z.object({
-    id, kind: z.enum(["concept", "decision"]), title: text, summary: text,
+    id, kind: z.enum(["concept", "decision", "rule"]), title: text, summary: text,
+    rule: ruleSchema.optional(),
+    ruleApproval: z.object({ proposalId: id, proposalHash: hash }).optional(),
     path: text, contentHash: hash,
     keywords: z.array(text).max(30), domains: z.array(text).max(15),
     technologies: z.array(text).max(15), excludedTechnologies: z.array(text).max(15),
@@ -49,6 +52,8 @@ export async function readReferenceIndex(root: string): Promise<ReferenceIndex |
   if (ids.size !== index.entries.length) throw new Error("Duplicate knowledge IDs.");
   if (new Set(index.outcomes.map((item) => item.sourceId)).size !== index.outcomes.length) throw new Error("Duplicate source outcomes.");
   for (const entry of index.entries) {
+    if (entry.kind === "rule" && (index.version !== 2 || !entry.rule || !entry.ruleApproval || entry.review !== "reviewed" || entry.rule.id !== entry.id)) throw new Error(`Rule needs an approved v2 definition: ${entry.id}`);
+    if (entry.kind !== "rule" && (entry.rule || entry.ruleApproval)) throw new Error(`Rule metadata on non-rule: ${entry.id}`);
     if (!Object.keys(entry.sources).length) throw new Error(`Missing source evidence: ${entry.id}`);
     if (entry.related.some((related) => !ids.has(related))) throw new Error(`Unknown related knowledge: ${entry.id}`);
   }

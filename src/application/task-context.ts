@@ -24,11 +24,14 @@ export async function taskContext(
   );
   const previous = await readProjectState(projectPath);
   const current = previous ? await sourceSnapshot(projectPath) : undefined;
+  const workflow = await workflowContext(projectPath);
   const inspectionChanges = previous && current ? [...new Set([...Object.keys(previous.fileHashes), ...Object.keys(current)])]
     .filter((path) => previous.fileHashes[path] !== current[path]).sort() : [];
   return {
     inspection: { recorded: !!previous, changedFiles: inspectionChanges, needsRefresh: !previous || inspectionChanges.length > 0 },
-    workflow: await workflowContext(projectPath),
+    // Pinned policy is returned here independently of lexical knowledge search.
+    workflow,
+    focus: ["prepare", "inspect", "review"].includes(request.mode) ? "design" : "implementation",
     config: await readProjectConfig(projectPath),
     profile,
     context: await buildWorkContext(discovery, profile, request, knowledge.applicable, rules),

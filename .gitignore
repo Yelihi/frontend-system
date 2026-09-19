@@ -1,4 +1,7 @@
 node_modules/
 dist/
 *.tsbuildinfo
-
+knowledge/.cache/
+test/fixtures/**/.next/
+test/fixtures/**/test-results/
+test/fixtures/**/playwright-report/

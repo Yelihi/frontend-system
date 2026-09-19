@@ -11,7 +11,11 @@ CS, 도메인 아키텍처, 프레임워크 원리 모두 받는다. 원본은 �
 
 ## sync 출력
 
-`references/learned/index.json`은 버전 1이며 `entries`와 `outcomes` 배열을 갖는다. 정확한 검증 스키마는 `src/application/knowledge/reference-index.ts`에 있다. 원본을 읽은 모델이 Markdown 참조와 인덱스를 작성하고, 도구는 해시·연결·구조를 검증한다. 도구가 주장의 진실성을 자동 인증하는 것은 아니다.
+`references/learned/index.json`은 버전 1(개념·판단)을 계속 읽으며, 새 규칙은 버전 2로 배포한다. 두 형식 모두 `entries`와 `outcomes`를 갖는다. 정확한 스키마는 `src/application/knowledge/reference-index.ts`와 `src/application/policy.ts`에 있다. 도구는 해시·연결·구조·규칙 승인을 검증하며 주장의 진실성을 자동 인증하지 않는다.
+
+버전 2의 `kind: rule`은 `rule` 정의와 `ruleApproval: {proposalId, proposalHash}`를 추가한다. rule은 id/version/title/statement/layer/obligation/conditions/exclusions/evidence/verification/examples/validation/limitations를 갖는다. layer는 domain/architecture/framework/accessibility/security/testing, obligation은 required/recommended, verification은 existing-tool/custom-check/behavior-test/review, validation은 proposed/verified이다. 예제는 path/expectation(pass/fail/excluded)/선택 diagnostic을 기록한다. 검증하지 않은 예제는 verified로 표시하지 않는다.
+
+필수 후보의 저장은 `save_rule_proposal`, 검토는 `get_rule_proposal`, 사용자 확정은 `approve_rule_proposal`을 사용한다. 후보 내용·원본 해시가 바뀌면 다시 검토한다. 배포 rule과 sources는 승인한 후보와 일치해야 한다. rule 항목은 review=reviewed여야 하며 concept/decision에 rule 메타데이터를 붙이지 않는다. 공용 승인이 프로젝트 채택을 뜻하지는 않는다.
 
 각 entry 필드:
 

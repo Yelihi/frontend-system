@@ -86,7 +86,7 @@ export interface EngineeringRule {
 }
 
 export interface KnowledgeReference {
-  kind?: "concept" | "decision";
+  kind?: "concept" | "decision" | "rule";
   review?: "reviewed" | "uncertain";
   conditions?: string[];
   exclusions?: string[];

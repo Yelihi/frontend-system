@@ -1,8 +1,10 @@
 # Tests and refactoring transitions
 
 Execution/setup/checkpoint instructions apply to authorized implementation or
-verification work. In review-only work, inspect available evidence and propose the
-needed cases without installing, writing tests/records or claiming they were run.
+verification work. In review-only work, inspect evidence and propose missing cases
+without installing or writing tests/project memory. Existing checks may run when
+useful (and their normal result logs may be stored); explicit no-write requests
+exclude them. Report only checks actually executed.
 
 ## Current verification boundary
 
@@ -28,14 +30,10 @@ requires investigation; do not rewrite an assertion merely to clear the failure.
    in official docs. Create discoverable non-watch scripts and run them. Do not
    replace working tools or install every kind of testing framework.
 
-During whole-project refactoring, move existing tests to repository-root `__test__`
-mirroring their original target/app paths. Include fixtures, snapshots and path/config
-updates while preserving per-app environments and runtime boundaries. Compare test
-discovery and results before/after moving, before structural product changes. Retain
-existing UI checks; no new Storybook installation by default for this workflow.
-If a framework cannot discover relocated tests, resolve its supported configuration
-or report the incompatibility; never silently lose tests. Generated/vendor tests are
-excluded. Later feature tests follow the established layout.
+Preserve the project's existing test placement. Move tests only for an explicit
+transition need; include fixtures/snapshots and verify discovery and behavior before
+and after. Do not enforce a root __test__ directory. Preserve per-app runtime boundaries
+and existing UI checks; Storybook remains optional. Later tests follow project convention.
 
 ## Map domain guarantees before rewriting
 
@@ -67,6 +65,9 @@ states. For important assertions, demonstrate detection with a known bad input o
 failure reproduction. Mocks must not substitute for the behavior being tested.
 
 ## Execute and record
+
+For policy-enabled projects, read `workflow-policy.md` for attempts, required script
+bindings, protected assets, migration exceptions and semantic review evidence.
 
 `run_project_checks` accepts optional `capabilities` (exact IDs from `profile.scripts`,
 e.g. `test:unit` or `apps/web:test`), `purpose`, and `baselineCheckId`. Existing full

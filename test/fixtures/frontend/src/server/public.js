@@ -1,0 +1,1 @@
+export { serverLabel } from './catalog';

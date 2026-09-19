@@ -18,6 +18,9 @@ const ignoredDirectories = new Set([
   ".next",
   ".venv",
   ".turbo",
+  ".cache",
+  "test-results",
+  "playwright-report",
   "build",
   "coverage",
   "dist",
@@ -188,7 +191,7 @@ export class FileSystemProjectDiscovery implements ProjectDiscoveryPort {
     const packageManagerVersion = declaredManager?.split("@")[1];
     const scripts: Record<string, string> = {};
     const capabilities: ProjectCapability[] = [];
-    const capabilityPattern = /^(lint|typecheck|build|e2e|build-storybook|test(?::[\w-]+)*)$/;
+    const capabilityPattern = /^(lint|typecheck|build|e2e|build-storybook|(?:test|check)(?::[\w-]+)*)$/;
 
     for (const manifest of manifests) {
       const prefix = relative(project.rootPath, manifest.directory);

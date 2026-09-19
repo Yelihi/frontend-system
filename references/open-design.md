@@ -1,6 +1,6 @@
 # OpenDesign integration
 
-Use this reference during `fs-init` setup and OpenDesign-backed UI implementation.
+Use this reference during `fs-work` setup and OpenDesign-backed UI implementation.
 The host agent calls the separately installed OpenDesign MCP; frontend-system's
 MCP only persists settings and supplies repository context. It does not proxy
 credentials, manage billing, or start a design engine itself.
@@ -67,7 +67,7 @@ mode selection before first generation; they are not permission to spend credits
    request. Send only relevant material covered by the user's request.
 3. Explain which account bears usage costs before the first paid run. An explicit
    request to generate with the explained mode authorizes that generation; do
-   not ask again. General `fs-implement` or an enabled provider alone does not
+   not ask again. General `fs-work` or an enabled provider alone does not
    authorize an unspecified paid design. Reuse existing artifacts or ask for the
    missing generation choice while continuing independent implementation work.
 4. Follow the official brief, login, and runtime workflow with its server-issued

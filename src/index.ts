@@ -11,3 +11,6 @@ export * from "./application/run-capabilities.js";
 export * from "./application/git-state.js";
 export * from "./application/workflow-store.js";
 export * from "./application/knowledge/reference-index.js";
+export * from "./application/policy.js";
+export * from "./application/knowledge/rule-proposals.js";
+export * from "./application/knowledge/sources.js";

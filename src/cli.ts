@@ -7,7 +7,8 @@ import { FileSystemProjectDiscovery } from "./adapters/filesystem/project-discov
 import { changedFiles, diffStat, reviewBase } from "./application/git-state.js";
 import { knowledgeStatus, searchKnowledge } from "./application/knowledge/catalog.js";
 import { readProjectConfig, readProjectDocument, readProjectState } from "./application/project-store.js";
-import { runProjectChecks } from "./application/run-capabilities.js";
+import { runProjectChecks, summarizeChecks } from "./application/run-capabilities.js";
+import { checkSources, readSourceChange } from "./application/knowledge/sources.js";
 import { taskContext } from "./application/task-context.js";
 import type { WorkRequest } from "./domain/types.js";
 
@@ -15,7 +16,9 @@ const usage = `Usage:
   fs inspect-context [project] [--overall]
   fs work-context [project] "<request>" [--mode prepare|implement|verify|review|refactor]
   fs change-context [project] [--base <ref>]
-  fs checks [project] [--capability <script-id>] [--purpose baseline|verification] [--baseline <check-id>]
+  fs checks [project] [--required | --capability <script-id>] [--purpose baseline|verification] [--baseline <check-id>] [--attempt <id>]
+  fs source-check [repository]
+  fs source-read [repository] <id> [--offset <characters>]
   fs knowledge-status [repository]
   fs knowledge-search [repository] "<query>"
   fs mcp
@@ -51,6 +54,9 @@ async function main(): Promise<void> {
       capability: { type: "string", multiple: true },
       purpose: { type: "string", default: "verification" },
       baseline: { type: "string" },
+      required: { type: "boolean", default: false },
+      attempt: { type: "string" },
+      offset: { type: "string", default: "0" },
       help: { type: "boolean", short: "h", default: false },
     },
   });
@@ -82,9 +88,23 @@ async function main(): Promise<void> {
   }
   if (command === "checks") {
     if (values.purpose !== "baseline" && values.purpose !== "verification") throw new Error("Invalid --purpose value.");
-    print(await runProjectChecks(await discovery.discover(await discovery.createRef(root)), {
+    const record = await runProjectChecks(await discovery.discover(await discovery.createRef(root)), {
       capabilities: values.capability, purpose: values.purpose, baselineCheckId: values.baseline,
-    }));
+      required: values.required, attemptId: values.attempt,
+    });
+    print(summarizeChecks(record));
+    if (!record.stable || record.results.some((item) => item.status !== "passed")) process.exitCode = 1;
+    return;
+  }
+  if (command === "source-check") {
+    const results = await checkSources(root);
+    print(results);
+    if (results.some((item) => ["failed", "needs-host"].includes(item.status))) process.exitCode = 1;
+    return;
+  }
+  if (command === "source-read") {
+    if (!rest[0] || !/^\d+$/.test(values.offset)) throw new Error("Provide a source ID and nonnegative offset");
+    print(await readSourceChange(root, rest[0], Number(values.offset)));
     return;
   }
   if (command === "knowledge-status") {

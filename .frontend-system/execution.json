@@ -1,0 +1,218 @@
+{
+  "execution": {
+    "revisionHash": "d6d6ddfc37b7b7105f46dc4b7f3c05060329759d854eca34d17bcf5dd81bf681",
+    "status": "complete",
+    "finalCheckId": "55e74a51-b48b-4ca4-960b-c12bd28010eb",
+    "kind": "refactor",
+    "steps": [
+      {
+        "id": "commands",
+        "title": "Baseline and command consolidation",
+        "status": "complete",
+        "files": [
+          "skills/fs-plan/SKILL.md",
+          "skills/fs-work/SKILL.md",
+          "skills/fs-review/SKILL.md",
+          "skills/fs-knowledge/SKILL.md"
+        ],
+        "checkIds": [
+          "55e74a51-b48b-4ca4-960b-c12bd28010eb"
+        ],
+        "remaining": []
+      },
+      {
+        "id": "knowledge",
+        "title": "Rules and proposals",
+        "status": "complete",
+        "files": [
+          "src/application/knowledge/rule-proposals.ts",
+          "src/application/knowledge/reference-index.ts",
+          "src/application/knowledge/catalog.ts"
+        ],
+        "checkIds": [
+          "55e74a51-b48b-4ca4-960b-c12bd28010eb"
+        ],
+        "remaining": []
+      },
+      {
+        "id": "sources",
+        "title": "Incremental sources",
+        "status": "complete",
+        "files": [
+          "src/application/knowledge/sources.ts",
+          "knowledge/sources.json",
+          "test/source-updates.test.ts"
+        ],
+        "checkIds": [
+          "55e74a51-b48b-4ca4-960b-c12bd28010eb"
+        ],
+        "remaining": []
+      },
+      {
+        "id": "policy",
+        "title": "Required checks",
+        "status": "complete",
+        "files": [
+          "src/application/policy.ts",
+          "src/application/run-capabilities.ts",
+          "test/policy-workflow.test.ts"
+        ],
+        "checkIds": [
+          "55e74a51-b48b-4ca4-960b-c12bd28010eb"
+        ],
+        "remaining": []
+      },
+      {
+        "id": "workflow",
+        "title": "Bounded execution",
+        "status": "complete",
+        "files": [
+          "src/application/workflow-store.ts",
+          "src/application/task-context.ts",
+          "src/mcp.ts",
+          "src/cli.ts"
+        ],
+        "checkIds": [
+          "55e74a51-b48b-4ca4-960b-c12bd28010eb"
+        ],
+        "remaining": []
+      },
+      {
+        "id": "fixtures",
+        "title": "Frontend acceptance",
+        "status": "complete",
+        "files": [
+          "test/fixtures/frontend/scripts/acceptance.mjs",
+          "test/system.test.ts"
+        ],
+        "checkIds": [
+          "55e74a51-b48b-4ca4-960b-c12bd28010eb"
+        ],
+        "remaining": []
+      },
+      {
+        "id": "delivery",
+        "title": "CI and documentation",
+        "status": "complete",
+        "files": [
+          ".github/workflows/ci.yml",
+          "scripts/check-package.mjs",
+          "README.md",
+          "bundle/mcp.js"
+        ],
+        "checkIds": [
+          "55e74a51-b48b-4ca4-960b-c12bd28010eb"
+        ],
+        "remaining": []
+      }
+    ],
+    "note": "All seven steps completed; final stable full check 55e74a51-b48b-4ca4-960b-c12bd28010eb. Core 25 tests, real frontend acceptance, Chromium E2E and standalone package smoke passed. See evidence/fs-020-verification.md for evidence and limits. CI configured; remote CI and deployment not performed."
+  },
+  "fileHashes": {
+    ".agents/plugins/marketplace.json": "66d44707a3c4d194da1cf0da4887fb66e9b8972f77d66292cca42d9120d4419a",
+    ".claude-plugin/plugin.json": "7d741b346b83d9f070b02e0b967b74caab887a4c9642d710ee0f3b76e48ea30e",
+    ".codex-plugin/plugin.json": "4178a32ffa0d2006a4c74e859d44d77abe7c1c92e5420312f25ed854bce3c4c8",
+    ".github/workflows/ci.yml": "42b7952ea0c80efb924e3e41081931efade03a9c3b32d0b96e685ca3b93c141d",
+    ".gitignore": "b40a8ac61570f84bea339420863bb1c8b74bfea03605c2ec7ac5d3e69dd23979",
+    ".mcp.json": "911d584d67cf14e4403a5b2b5641fcc257255039a81900801acf3321ec556c0c",
+    "FS-DISCUSSION-HANDOFF.md": "cf8b39405255f2c832553b12b1031a41946973a127cedd58273746a2d3b69c22",
+    "README.md": "02b1a2a78aaabbcf23ef3e79ae84c52fbc89ca16858a248872bd1a227ad8550d",
+    "bundle/mcp.js": "37973cbbf5426744eb653709a8ccb5fbe0d540c5ab89653a7b36120e40dd7017",
+    "eslint.config.js": "ac781400369ecc9f530dd14486124312d9a297cb8229854e8c3cce4bc43511b0",
+    "knowledge/README.md": "b8da0b9f201913565e6e351634777c963cdc7bd3fa3d853e0d17e47bab0f048e",
+    "knowledge/catalog.json": "c38040c00d21544dc04f47d7ba1c0a105b75e68fc188e4bb7f2bc4fe4d123e26",
+    "knowledge/source/attachments/.gitkeep": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "knowledge/source/imported/.gitkeep": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "knowledge/source/manual/.gitkeep": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "knowledge/source/manual/react-fiber-reconciliation-and-commit.md": "be797a1096952bf6f5f3aff5c64f9c8efb0f3850087a029cc483fe83bd71ba52",
+    "knowledge/source/manual/react-rendering-foundations.md": "d8ce7e534e85b9cbcb1d9e31e69128ca70e2a8f7e1ec3b265c8c4fd6a4909513",
+    "knowledge/sources.json": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+    "knowledge/template.md": "2822113487f93d52a1f69178f9cc6ebeea004cdbb5a3aa4367bc77f6d4771761",
+    "mandatory-rules/common/review.md": "e71158712eaf1e3dcc0f9452cd20019d40beaa3fe9b886005d6db3b13e971f68",
+    "mandatory-rules/nextjs/core.md": "d9614c63030aa71f160bd1bc443c4c017718d73d40c0699423607d9941459d52",
+    "mandatory-rules/react/core.md": "f820abcdd9f20281118906868f322d83495943a9bdb0a835865d5727c3d22cdb",
+    "mandatory-rules/vue/core.md": "ebcf6d6e28fd0c4e7166113f7901345b4ff819f7d5dd91d7722c376151d3ecc6",
+    "package-lock.json": "d3743dde2505e0f8266ef9f8ac8186ebed79949eaf0dff958e769366bf3b6b45",
+    "package.json": "4b46173f87bee134c730f8f115c86985e59ecab2b84a17e651b204721ac45469",
+    "references/debugging.md": "7a3e2f46c2816e7c6f08e16109cce81836f2275982380ef82f02521fbd13f60d",
+    "references/decision-workflow.md": "1c08f5d944e78e4fee361701ac7a93bc8250af30dcedfc6aff4ada803ea09852",
+    "references/frontend-quality.md": "4bb655fbeccacaebe2f98ddedf1a4dbcdafd41f9074aa660fe2a352c28837237",
+    "references/knowledge-indexing.md": "68ac53a8033e6245558f77950fa3711855f64f17a50ea50e448965af09be5005",
+    "references/learned/README.md": "b65eac393b03dd7f026542de5a5e46d08470e799826528602932e249d0a283ef",
+    "references/learned/index.json": "5f9759081cb47b9d9a60832dfd5010b75b793cf9346567b10da1beec03ba3eae",
+    "references/linked-knowledge.md": "69bd523ba65dcab0d84792c3621742a6f081318e9aac8c1ee0663ecfaf4ba4c7",
+    "references/open-design.md": "13736226332d92822e609b9a97a89250caee88e79a57eafa76979841f3ef3132",
+    "references/source-updates.md": "7c98991484a0688628a1965c7cfa26349db601dbbdda07f2d6a6ab37df5dc518",
+    "references/testing-and-transition.md": "0a0416c1f452fbb672b92707cd377ae8282a90c820f9b405afa8cadfebc47074",
+    "references/workflow-policy.md": "9fae4f6d60c229e117edc6e6b1d0e5a12c24e814eb9f0cc591af7ff05b4326f1",
+    "references/workflows/fs-feedback.md": "7734d62925a26a59225b6124f36e4b296c8cb184dfbccb7aa9cf369f7a36f292",
+    "references/workflows/fs-implement.md": "8bc897844451a9f32a11b5cbfac35f34203a3931751ba15d547005dd2044b645",
+    "references/workflows/fs-init.md": "841570023633578255d272cf4c1f07dc7b0bb9a4cb08fb0cdd118a8cf266da8c",
+    "references/workflows/fs-inspect.md": "63603acb9447876940d32efa82e3a072823f1ab8a5d298e61d2c7e600c2287a0",
+    "references/workflows/fs-knowledge-add.md": "9231b141542076bcc9d73dee0f21fb8294e1f5f0cb4ccf38c358c3cd763fd43d",
+    "references/workflows/fs-knowledge-sync.md": "3eeca5fd4585bc8eb38db3c85274b4445d9647e2d53d14f4bc913cdc179959a8",
+    "references/workflows/fs-refactor.md": "23e9760a07ba135c62eb7bcc5cbac5f977c36cf5f687e2bb76d2ac2f196c787a",
+    "references/workflows/fs-review.md": "ec9a4921728bf5c2130c1cf9fd95462286da175916f095bffff11485443d1370",
+    "references/workflows/fs-revise.md": "d5b5cfd4b987b3ba5b03c03022ebb2b45bced70cfc0f422a6a1c61f30a4cd62a",
+    "references/workflows/fs-verify.md": "bb3ea2173adada7c40212fcf95a674891bc9058cdd987140bc850877cd1e1469",
+    "scripts/check-package.mjs": "f0698b504a6f28dc3cd9519cef3612d28f58ea7e000f5e9ad21774ba9b56e360",
+    "skills/fs-knowledge/SKILL.md": "5057ad7509fb77f38aa640eb8e4d8475c141f4e3f6e3176bee37a38c6bc0d968",
+    "skills/fs-plan/SKILL.md": "26d2c80fa996baa9e8c0e1030bdada372368dfbd6798f572dde701fecd45f041",
+    "skills/fs-review/SKILL.md": "7199a913433cbae6cbbda49f521be1471b11766106c7a7174ee8ad1e915551c3",
+    "skills/fs-work/SKILL.md": "be24226d9c0ac0a99c3b941d3d1632af38a18350a686a87bbaf23a62d30dac10",
+    "src/adapters/filesystem/project-discovery.ts": "016e024f7e4fb81bd3eca16a9ce7cf81b9fba6bdd705e69cb45b564718bab468",
+    "src/application/context/build-work-context.ts": "f837e9fc911ae3039086a514a54f4f0abf50f3334506817a0af5076b18c8fb18",
+    "src/application/git-state.ts": "1c15c1bef86860dc4e1af9ac1ae37bf65a86082ff0eef88de3357cfd68e6973d",
+    "src/application/knowledge/catalog.ts": "5615b8d655ce78feb9b1c85dcabb408833bfb537afe0f7e89c0354bc6f00f119",
+    "src/application/knowledge/knowledge-resolver.ts": "ed520b4ab5da01872838178ee4451f394c718e117a74f4b316715abb142a0104",
+    "src/application/knowledge/reference-index.ts": "a2e19f47e74b32f7e466559f1c999dbbafe662153521b0728fa08dc76aa42012",
+    "src/application/knowledge/rule-proposals.ts": "9f3d97c497d91340732ec7c17b86a2aec15feb70f8c7d258b59ee50c43f7f33c",
+    "src/application/knowledge/sources.ts": "10983dfc30b80eded4b2897a86499bfcdc9b4888ef434633e8ff8231e58a11a7",
+    "src/application/policy.ts": "436effa408a999d4d8f15c4d6acfa38c1ed115b04190aecc6ff69b30b3ee1f97",
+    "src/application/project-store.ts": "a6d07525d92cfd17feecc650266fe3beab3b6f6bae46c2e4b4a48a82f75c66ac",
+    "src/application/rules/rule-resolver.ts": "c532c7612b23e2acfc99d78ec661c0e98cd8015345fbc94d28ec649727ed0d09",
+    "src/application/run-capabilities.ts": "414f25872fbd8e1a91f292ae2fa5b24ec72bec1807f2cfcccfbfbe6370e03d0f",
+    "src/application/task-context.ts": "a0253681b47d80843a2f1a953dd5808cb4508d6e7fa0d78c236f50963d3fc16a",
+    "src/application/workflow-store.ts": "434eabd8d71d6dc7a55be522d53630b7352212a1d3266c33a625cbf60212b300",
+    "src/cli.ts": "7fa96048a87268254c6dd03df8febcb900dd840a1f054c882839638c7101feba",
+    "src/domain/types.ts": "4c97200ec9b57cc0680fc5c47895bc8a8ddab027bc4315f9102266bb02bab290",
+    "src/index.ts": "4743fe8fdbf999e065013cbe74af5ce6814d89ea43d6f09975c978e4a12472cf",
+    "src/mcp.ts": "bbafb16f4d2ec4882ab8cef3f52f335b973f5d9b1f534b476428d0042b0c9927",
+    "src/ports/project-discovery.port.ts": "9f4cc3039c1a0b7c6b1aff8eb1ebf730cc728046a82b388f325124bc91e3d3e7",
+    "test/evals/consolidated-results.md": "f45eb8600bff4b8142385a51caffa841a2dec856ef0ef70abf41de4c2fad7430",
+    "test/evals/review-results.md": "0d9c6a39290169783706592199369cedab6aed1848a351881efe4f0679db4bd0",
+    "test/evals/review-scenarios.md": "aa372836a9882d0e38fecc8ecc0a955ac524c04ea4a67ab478ea7d6c67488d4a",
+    "test/fixtures/frontend/AGENTS.md": "63f2c50380ed6303237cce215ce27af1d620d094c215e28d1b1538a3c070e3bb",
+    "test/fixtures/frontend/CLAUDE.md": "336cc4fbf19beaada7ccf9986414fa91851a8d7a07dfb3ccbe800a69eed0ab49",
+    "test/fixtures/frontend/app/actions.js": "b67edce66e645b9728c3db0e5159cb23a72c01d01e6d60fb19f2790391f8a017",
+    "test/fixtures/frontend/app/api/orders/route.js": "1839f0334da9dd33912cee25fbe0232798f0595e4d21c1a8ec66d3fe1f54365e",
+    "test/fixtures/frontend/app/layout.jsx": "698897ee77d287dba619fb00d625dc0fc239a30c5ef3858480ed9774c9860cea",
+    "test/fixtures/frontend/app/order-form.jsx": "75978cb8a6af0c410e1ab6e5fd0a3860296fd1a462eeedd263952c09402d1e73",
+    "test/fixtures/frontend/app/page.jsx": "c2943fb5d6b975f676cb67aed76c08e2c689675285eea93de4fa8f9096fd80c8",
+    "test/fixtures/frontend/e2e/order.spec.mjs": "38016d8ecdbd5a92f850c74d48a10f69cee3a704b37b00877193870b7a7896e2",
+    "test/fixtures/frontend/eslint.config.mjs": "3624563f6cccab80896a35c9461fc1ae30389554349374bf453a5667590b361c",
+    "test/fixtures/frontend/jsconfig.json": "b5e74988174abcf48c53f7d9eed03d8690dba1471cca6edcaa44d2911bda7179",
+    "test/fixtures/frontend/next.config.mjs": "e53d0c8d3f690e8bd0b06f1ee16a5e871738fc56f9cd56c7790c906bd4d94505",
+    "test/fixtures/frontend/package-lock.json": "7f094df62e4f1addb2cd14603df0c66729eb5abf4e9355ef65005e560153aedd",
+    "test/fixtures/frontend/package.json": "8a80128446c93fdcb27cf655b974ad5f8a2154b5ef97b8bc1e4cfccf9e93f0c1",
+    "test/fixtures/frontend/playwright.config.mjs": "d806cc5df093224bdf10a5002c8e4639b51201591c4670d227999401204bbe25",
+    "test/fixtures/frontend/scripts/acceptance.mjs": "2183b0f403265352c53d646bd3a82460429199e06a0b66a626f96557847a25ba",
+    "test/fixtures/frontend/scripts/check-boundaries.mjs": "c868d6a062244537a4df001d0dabe71682349a27a5c655a4f2f4aacde3cf8b14",
+    "test/fixtures/frontend/src/domain/orders.js": "edf6e3a50837b9cec01abce59232fbc6b1ff2893be7bf180ad42f288c3445f86",
+    "test/fixtures/frontend/src/features/cart/index.js": "460efe7b048ce422765e50e8e217a12a9ccc6e06569a170de222189711950ab3",
+    "test/fixtures/frontend/src/features/cart/internal/price.js": "64fe64b26f9f72b2c05c2a69fb5cdcbe59113a69c65b402a53ce9aac9db3a515",
+    "test/fixtures/frontend/src/features/checkout/index.js": "50035e19abe2f621023ba8f76b285b1c745c56308b95ae3cf29f4444fd7a38f3",
+    "test/fixtures/frontend/src/server/catalog.js": "e53755afd2339c955eb15922efed23c07578c1788215d32f19ba986e581d9704",
+    "test/fixtures/frontend/src/server/public.js": "10a347081db118f596698a328b3b2ee239d25a1866735f1a566da165615cf074",
+    "test/fixtures/frontend/tests/order.test.mjs": "f69c6a4010a7f753f450751b408c91ade203dfb1e1d4b38f8d7c778c598aab53",
+    "test/fixtures/frontend/tsconfig.check.json": "989a8d79832d6548ab18946080678276fb5fa251e757f30661ddc34ec518c890",
+    "test/knowledge-index.test.ts": "9708eb810455241f5eb7e54274bfba2de892ea02e8947b1d8ef2118f92cfc103",
+    "test/policy-workflow.test.ts": "caa9990d2b19a9cc8c119ce48c65eea06b1a3ac4f67031f8867ac1049cff0613",
+    "test/rule-proposals.test.ts": "2a0df181e073f231d6cc1af138e71531d5452a5cb8dec33704fd9d006a6a3519",
+    "test/source-updates.test.ts": "ede6e0395b557aad152e324400b6f15e75213a7a39ee2db855980135451b0c5c",
+    "test/system.test.ts": "36bf959085092290a616d840da69353896e59b5012676299420f7a3a5382b1b1",
+    "test/workflow.test.ts": "eb6ea8697d63e3f0ef3dcfd56c043b646ec50a207b7ba954ebe1f7c85a017851",
+    "tsconfig.json": "45dbbaf8c3f1248cec3818a540daf0551f3d7935921f5c0dba95fcf3548eb2c3"
+  },
+  "updatedAt": "2026-09-19T06:53:55.007Z"
+}

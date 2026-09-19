@@ -1,6 +1,6 @@
 # 배포 지식 참조
 
-`fs-knowledge-sync`가 검토한 개념과 조건부 판단을 이곳에 저장합니다. `index.json`에는 검색 메타데이터, 원본 해시, 처리 결과를 기록합니다. 본문은 후보를 고른 뒤 필요한 만큼 읽습니다.
+`fs-knowledge sync`가 검토한 개념과 조건부 판단을 이곳에 저장합니다. `index.json`에는 검색 메타데이터, 원본 해시, 처리 결과를 기록합니다. 본문은 후보를 고른 뒤 필요한 만큼 읽습니다.
 
 초기 인덱스는 비어 있습니다. 원본 등록만으로 배포된 것으로 간주하지 않으며 sync를 통해 참조와 인덱스를 함께 작성해야 합니다. 원본 자료는 `knowledge/source/`에 보존합니다.
 
@@ -12,9 +12,9 @@
 
 ```mermaid
 flowchart TD
-    A["사용자 학습 자료<br/>CS · 프레임워크 원리 · 도메인 설계 · 경험"] --> B["fs-knowledge-add<br/>원본 보관 · 출처와 분류 등록"]
+    A["사용자 학습 자료<br/>CS · 프레임워크 원리 · 도메인 설계 · 경험"] --> B["fs-knowledge<br/>원본 보관 · 출처와 분류 등록"]
     B --> C["knowledge/source + catalog.json"]
-    C --> D["fs-knowledge-sync<br/>주장별 근거 · 적용 범위 · 충돌 검토"]
+    C --> D["fs-knowledge sync<br/>주장별 근거 · 적용 범위 · 충돌 검토"]
     D --> E["개념 reference<br/>원리 설명과 원인 분석"]
     D --> F["판단 reference<br/>선택 조건 · 비용 · 반례"]
     D --> G["보류 또는 배포 생략<br/>이유 기록 · 원본 보존"]

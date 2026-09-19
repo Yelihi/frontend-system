@@ -1,0 +1,115 @@
+{
+  "id": "55e74a51-b48b-4ca4-960b-c12bd28010eb",
+  "purpose": "verification",
+  "revisionHash": "d6d6ddfc37b7b7105f46dc4b7f3c05060329759d854eca34d17bcf5dd81bf681",
+  "sourceHash": "219aadc6936d6afd0a9bc322339a67967238b7567f7574fc341c8c1160d7dffc",
+  "stable": true,
+  "full": true,
+  "results": [
+    {
+      "capability": "check",
+      "command": "npm run check",
+      "passed": true,
+      "output": "\n> frontend-system@0.2.0 check\n> npm run typecheck && npm run lint && npm test\n\n\n> frontend-system@0.2.0 typecheck\n> tsc -p tsconfig.json --noEmit\n\n\n> frontend-system@0.2.0 lint\n> eslint src test\n\n\n> frontend-system@0.2.0 test\n> npm run build && node --test dist/test/**/*.test.js\n\n\n> frontend-system@0.2.0 prebuild\n> node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\"\n\n\n> frontend-system@0.2.0 build\n> tsc -p tsconfig.json && npm run bundle:mcp\n\n\n> frontend-system@0.2.0 bundle:mcp\n> esbuild src/mcp.ts --bundle --platform=node --format=esm --target=node18 --outfile=bundle/mcp.js\n\n✔ knowledge retrieval evaluation: paraphrases, irrelevant technologies, CS and abstention (3.547416ms)\nℹ {\"cases\":6,\"retrievedPrecisionAt5\":1,\"recallAt5\":1,\"forbiddenResults\":0,\"returnedCharacters\":1834,\"synthetic\":true}\n✔ sync validates source evidence, records deferrals, tracks corrections/deletion and bounds reads (55.678708ms)\n✔ concepts and uncertain decisions are context, not engineering rules (2.018083ms)\n✔ policy binds approval; deleted, changed and protected checks cannot pass CLI (1012.229583ms)\n✔ policy completion needs attempts, complete checks and current semantic evidence (1165.89375ms)\n✔ attempt budgets survive checkpoints; cycles and unfinished dependencies fail (42.52575ms)\n✔ migration exceptions require a resolution step, matching review and final checks (412.335959ms)\n✔ policy validates contracts and legacy projects do not acquire enforcement silently (39.431417ms)\n✔ shared rules need exact proposal approval; changed sources or candidates invalidate it (62.131167ms)\n✔ source checks preserve pending differences, bound output and avoid unchanged bodies (98.498208ms)\n✔ failed, HTML, oversized and private sources never overwrite a valid snapshot (29.993959ms)\n✔ discovers framework, safe capabilities, and design-system evidence (117.2815ms)\n✔ persists project configuration and evidence-backed context (86.342084ms)\n✔ Vue inspection and rule selection stay framework-specific (76.644083ms)\n✔ OpenDesign settings survive MCP updates and stay isolated in work context (267.732167ms)\n✔ user knowledge outranks project convention and security keeps a fallback (2.548042ms)\n✔ knowledge catalog shortlists, detects duplicates, and tracks publication (14.249417ms)\n✔ whole inventory includes deep and large areas and reports exclusions (1935.1625ms)\n✔ legacy facts migrate without losing decisions or changing the target (88.355542ms)\n✔ revision approvals bind exact content and scoped records reject lost updates (16.591166ms)\n✔ workflow writes reject symbolic-link escapes before creating children (1.76525ms)\n✔ test relocation and contract rewriting preserve guarantees; resume rejects stale proof (825.613292ms)\n✔ empty and selected checks distinguish missing verification and new failures (836.355291ms)\n✔ project constraints and conflicting knowledge remain distinct evidence (19.902084ms)\n✔ MCP exposes inventory, approval, bounded records and both new context modes (327.770792ms)\nℹ tests 25\nℹ suites 0\nℹ pass 25\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 4259.121333\n\n  bundle/mcp.js  1.1mb ⚠️\n\n⚡ Done in 58ms\n",
+      "status": "passed",
+      "workingDirectory": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system"
+    },
+    {
+      "capability": "test/fixtures/frontend:check:boundaries",
+      "command": "npm run check:boundaries",
+      "passed": true,
+      "output": "\n> check:boundaries\n> node scripts/check-boundaries.mjs\n\n",
+      "status": "passed",
+      "workingDirectory": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/test/fixtures/frontend"
+    },
+    {
+      "capability": "test:frontend",
+      "command": "npm run test:frontend",
+      "passed": true,
+      "output": "\n> frontend-system@0.2.0 test:frontend\n> npm --prefix test/fixtures/frontend run acceptance && npm --prefix test/fixtures/frontend run test:e2e\n\n\n> acceptance\n> node scripts/acceptance.mjs\n\nFrontend acceptance: valid fixtures passed; hooks, accessibility, import/re-export/dynamic boundary, domain mutation and server-only violations rejected.\n\n> test:e2e\n> playwright test\n\n\nRunning 1 test using 1 worker\n·\n  1 passed (2.4s)\n[WebServer] (node:84148) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)\n[WebServer] (node:84149) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)\n(node:84150) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n",
+      "status": "passed",
+      "workingDirectory": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system"
+    },
+    {
+      "capability": "test:package",
+      "command": "npm run test:package",
+      "passed": true,
+      "output": "\n> frontend-system@0.2.0 test:package\n> node scripts/check-package.mjs\n\nPackage smoke passed: four skills, no raw knowledge, standalone MCP tools.\n",
+      "status": "passed",
+      "workingDirectory": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system"
+    },
+    {
+      "capability": "test/fixtures/frontend:test:unit",
+      "command": "npm run test:unit",
+      "passed": true,
+      "output": "\n> test:unit\n> node --test tests/order.test.mjs\n\n✔ duplicate submission is rejected; failure preserves retry and success clears error (0.687458ms)\nℹ tests 1\nℹ suites 0\nℹ pass 1\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 33.141125\n",
+      "status": "passed",
+      "workingDirectory": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/test/fixtures/frontend"
+    },
+    {
+      "capability": "test",
+      "command": "npm run test",
+      "passed": true,
+      "output": "\n> frontend-system@0.2.0 test\n> npm run build && node --test dist/test/**/*.test.js\n\n\n> frontend-system@0.2.0 prebuild\n> node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\"\n\n\n> frontend-system@0.2.0 build\n> tsc -p tsconfig.json && npm run bundle:mcp\n\n\n> frontend-system@0.2.0 bundle:mcp\n> esbuild src/mcp.ts --bundle --platform=node --format=esm --target=node18 --outfile=bundle/mcp.js\n\n✔ knowledge retrieval evaluation: paraphrases, irrelevant technologies, CS and abstention (4.138125ms)\nℹ {\"cases\":6,\"retrievedPrecisionAt5\":1,\"recallAt5\":1,\"forbiddenResults\":0,\"returnedCharacters\":1834,\"synthetic\":true}\n✔ sync validates source evidence, records deferrals, tracks corrections/deletion and bounds reads (51.028042ms)\n✔ concepts and uncertain decisions are context, not engineering rules (1.284ms)\n✔ policy binds approval; deleted, changed and protected checks cannot pass CLI (981.073458ms)\n✔ policy completion needs attempts, complete checks and current semantic evidence (1197.58975ms)\n✔ attempt budgets survive checkpoints; cycles and unfinished dependencies fail (44.65375ms)\n✔ migration exceptions require a resolution step, matching review and final checks (411.775083ms)\n✔ policy validates contracts and legacy projects do not acquire enforcement silently (44.52575ms)\n✔ shared rules need exact proposal approval; changed sources or candidates invalidate it (58.768667ms)\n✔ source checks preserve pending differences, bound output and avoid unchanged bodies (97.638833ms)\n✔ failed, HTML, oversized and private sources never overwrite a valid snapshot (18.871167ms)\n✔ discovers framework, safe capabilities, and design-system evidence (79.074833ms)\n✔ persists project configuration and evidence-backed context (63.68425ms)\n✔ Vue inspection and rule selection stay framework-specific (58.628958ms)\n✔ OpenDesign settings survive MCP updates and stay isolated in work context (292.526959ms)\n✔ user knowledge outranks project convention and security keeps a fallback (1.211709ms)\n✔ knowledge catalog shortlists, detects duplicates, and tracks publication (14.384792ms)\n✔ whole inventory includes deep and large areas and reports exclusions (1930.11225ms)\n✔ legacy facts migrate without losing decisions or changing the target (99.00325ms)\n✔ revision approvals bind exact content and scoped records reject lost updates (17.990041ms)\n✔ workflow writes reject symbolic-link escapes before creating children (2.145791ms)\n✔ test relocation and contract rewriting preserve guarantees; resume rejects stale proof (818.754459ms)\n✔ empty and selected checks distinguish missing verification and new failures (806.2555ms)\n✔ project constraints and conflicting knowledge remain distinct evidence (18.26525ms)\n✔ MCP exposes inventory, approval, bounded records and both new context modes (321.405084ms)\nℹ tests 25\nℹ suites 0\nℹ pass 25\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 4212.098125\n\n  bundle/mcp.js  1.1mb ⚠️\n\n⚡ Done in 33ms\n",
+      "status": "passed",
+      "workingDirectory": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system"
+    },
+    {
+      "capability": "test/fixtures/frontend:test:e2e",
+      "command": "npm run test:e2e",
+      "passed": true,
+      "output": "\n> test:e2e\n> playwright test\n\n\nRunning 1 test using 1 worker\n·\n  1 passed (1.8s)\n[WebServer] (node:86912) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)\n[WebServer] (node:86913) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)\n(node:86914) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n",
+      "status": "passed",
+      "workingDirectory": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/test/fixtures/frontend"
+    },
+    {
+      "capability": "typecheck",
+      "command": "npm run typecheck",
+      "passed": true,
+      "output": "\n> frontend-system@0.2.0 typecheck\n> tsc -p tsconfig.json --noEmit\n\n",
+      "status": "passed",
+      "workingDirectory": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system"
+    },
+    {
+      "capability": "test/fixtures/frontend:typecheck",
+      "command": "npm run typecheck",
+      "passed": true,
+      "output": "\n> typecheck\n> tsc --noEmit -p tsconfig.check.json\n\n",
+      "status": "passed",
+      "workingDirectory": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/test/fixtures/frontend"
+    },
+    {
+      "capability": "lint",
+      "command": "npm run lint",
+      "passed": true,
+      "output": "\n> frontend-system@0.2.0 lint\n> eslint src test\n\n",
+      "status": "passed",
+      "workingDirectory": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system"
+    },
+    {
+      "capability": "test/fixtures/frontend:lint",
+      "command": "npm run lint",
+      "passed": true,
+      "output": "\n> lint\n> eslint app src\n\n",
+      "status": "passed",
+      "workingDirectory": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/test/fixtures/frontend"
+    },
+    {
+      "capability": "build",
+      "command": "npm run build",
+      "passed": true,
+      "output": "\n> frontend-system@0.2.0 prebuild\n> node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\"\n\n\n> frontend-system@0.2.0 build\n> tsc -p tsconfig.json && npm run bundle:mcp\n\n\n> frontend-system@0.2.0 bundle:mcp\n> esbuild src/mcp.ts --bundle --platform=node --format=esm --target=node18 --outfile=bundle/mcp.js\n\n\n  bundle/mcp.js  1.1mb ⚠️\n\n⚡ Done in 34ms\n",
+      "status": "passed",
+      "workingDirectory": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system"
+    },
+    {
+      "capability": "test/fixtures/frontend:build",
+      "command": "npm run build",
+      "passed": true,
+      "output": "\n> build\n> next build --webpack\n\n▲ Next.js 16.3.5 (webpack)\n✓ Running next.config.mjs took 6ms\n- Experiments (use with caution):\n  · cpus: 1\n\n  Creating an optimized production build ...\n✓ Compiled successfully in 562ms\n  Running TypeScript ...\n  Finished TypeScript in 1ms ...\n  Collecting page data using 1 worker ...\n  Generating static pages using 1 worker (0/4) ...\n  Generating static pages using 1 worker (1/4) \r\n  Generating static pages using 1 worker (2/4) \r\n  Generating static pages using 1 worker (3/4) \r\n✓ Generating static pages using 1 worker (4/4) in 74ms\n  Finalizing page optimization ...\n  Collecting build traces ...\n\nRoute (app)\n┌ ○ /\n├ ○ /_not-found\n└ ƒ /api/orders\n\n\n○  (Static)   prerendered as static content\nƒ  (Dynamic)  server-rendered on demand\n\n",
+      "status": "passed",
+      "workingDirectory": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/test/fixtures/frontend"
+    }
+  ],
+  "createdAt": "2026-09-19T06:53:19.707Z"
+}
