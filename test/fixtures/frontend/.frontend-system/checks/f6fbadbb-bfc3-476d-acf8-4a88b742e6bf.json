@@ -1,0 +1,59 @@
+{
+  "id": "f6fbadbb-bfc3-476d-acf8-4a88b742e6bf",
+  "purpose": "verification",
+  "revisionHash": null,
+  "sourceHash": "acd53f47af87874dbedef2b71b01bcf3d76f624ec625e8be7d3c409432f3a99f",
+  "stable": true,
+  "full": true,
+  "results": [
+    {
+      "capability": "check:boundaries",
+      "command": "npm run check:boundaries",
+      "passed": true,
+      "output": "\n> check:boundaries\n> node scripts/check-boundaries.mjs\n\n",
+      "status": "passed",
+      "workingDirectory": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/test/fixtures/frontend"
+    },
+    {
+      "capability": "test:unit",
+      "command": "npm run test:unit",
+      "passed": true,
+      "output": "\n> test:unit\n> node --test tests/order.test.mjs\n\n✔ duplicate submission is rejected; failure preserves retry and success clears error (0.737833ms)\nℹ tests 1\nℹ suites 0\nℹ pass 1\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 42.406916\n",
+      "status": "passed",
+      "workingDirectory": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/test/fixtures/frontend"
+    },
+    {
+      "capability": "test:e2e",
+      "command": "npm run test:e2e",
+      "passed": true,
+      "output": "\n> test:e2e\n> playwright test\n\n\nRunning 1 test using 1 worker\n·\n  1 passed (5.8s)\n[WebServer] (node:40946) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)\n[WebServer] (node:40948) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)\n(node:40954) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n",
+      "status": "passed",
+      "workingDirectory": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/test/fixtures/frontend"
+    },
+    {
+      "capability": "typecheck",
+      "command": "npm run typecheck",
+      "passed": true,
+      "output": "\n> typecheck\n> tsc --noEmit -p tsconfig.check.json\n\n",
+      "status": "passed",
+      "workingDirectory": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/test/fixtures/frontend"
+    },
+    {
+      "capability": "lint",
+      "command": "npm run lint",
+      "passed": true,
+      "output": "\n> lint\n> eslint app src\n\n",
+      "status": "passed",
+      "workingDirectory": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/test/fixtures/frontend"
+    },
+    {
+      "capability": "build",
+      "command": "npm run build",
+      "passed": true,
+      "output": "\n> build\n> next build --webpack\n\n▲ Next.js 16.3.5 (webpack)\n✓ Running next.config.mjs took 8ms\n- Experiments (use with caution):\n  · cpus: 1\n\n  Creating an optimized production build ...\n✓ Compiled successfully in 718ms\n  Running TypeScript ...\n  Finished TypeScript in 1ms ...\n  Collecting page data using 1 worker ...\n  Generating static pages using 1 worker (0/4) ...\n  Generating static pages using 1 worker (1/4) \r\n  Generating static pages using 1 worker (2/4) \r\n  Generating static pages using 1 worker (3/4) \r\n✓ Generating static pages using 1 worker (4/4) in 96ms\n  Finalizing page optimization ...\n  Collecting build traces ...\n\nRoute (app)\n┌ ○ /\n├ ○ /_not-found\n└ ƒ /api/orders\n\n\n○  (Static)   prerendered as static content\nƒ  (Dynamic)  server-rendered on demand\n\n",
+      "status": "passed",
+      "workingDirectory": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/test/fixtures/frontend"
+    }
+  ],
+  "createdAt": "2026-09-21T03:48:38.390Z"
+}

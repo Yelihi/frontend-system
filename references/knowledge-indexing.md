@@ -11,6 +11,12 @@ CS, 도메인 아키텍처, 프레임워크 원리 모두 받는다. 원본은 �
 
 ## sync 출력
 
+참조 본문 앞부분에 `참고 상황`, `판단에 사용할 내용`, `적용하지 않는 경우`를 명시한다.
+각 문서의 실제 증상·질문과 확인할 개념을 적고, 같은 분야라는 이유로 동일한 문구를 반복하지 않는다.
+검색 요약에도 참고 상황을 반영하고 `conditions`에는 실제 기술·환경 조건을 기록한다.
+수집 날짜·부분 열람·미실행 같은 검토 한계는 사용 상황과 구별해서 보존한다.
+개념 설명을 위해 만든 참조에는 해결책이나 수정 의무를 억지로 추가하지 않는다.
+
 `references/learned/index.json`은 버전 1(개념·판단)을 계속 읽으며, 새 규칙은 버전 2로 배포한다. 두 형식 모두 `entries`와 `outcomes`를 갖는다. 정확한 스키마는 `src/application/knowledge/reference-index.ts`와 `src/application/policy.ts`에 있다. 도구는 해시·연결·구조·규칙 승인을 검증하며 주장의 진실성을 자동 인증하지 않는다.
 
 버전 2의 `kind: rule`은 `rule` 정의와 `ruleApproval: {proposalId, proposalHash}`를 추가한다. rule은 id/version/title/statement/layer/obligation/conditions/exclusions/evidence/verification/examples/validation/limitations를 갖는다. layer는 domain/architecture/framework/accessibility/security/testing, obligation은 required/recommended, verification은 existing-tool/custom-check/behavior-test/review, validation은 proposed/verified이다. 예제는 path/expectation(pass/fail/excluded)/선택 diagnostic을 기록한다. 검증하지 않은 예제는 verified로 표시하지 않는다.

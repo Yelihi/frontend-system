@@ -207,7 +207,7 @@ test("MCP exposes inventory, approval, bounded records and both new context mode
       assert.ok(!response.isError, JSON.stringify(response));
       return JSON.parse((response.content as Array<{ text: string }>)[0]!.text) as Record<string, unknown>;
     };
-    const learned = await call("search_learned_knowledge", { query: "unmatched-evaluation-query", technologies: ["React"] });
+    const learned = await call("search_learned_knowledge", { query: "zzunmatchedknowledgeprobezz", technologies: ["React"] });
     assert.equal(learned.indexed, true);
     assert.deepEqual(learned.candidates, []);
     const missingKnowledge = await client.callTool({ name: "read_learned_knowledge", arguments: { id: "missing-evaluation-id" } });
