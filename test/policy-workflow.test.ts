@@ -8,7 +8,7 @@ import test from "node:test";
 import { FileSystemProjectDiscovery } from "../src/adapters/filesystem/project-discovery.js";
 import { policySchema, type VerificationPolicy } from "../src/application/policy.js";
 import { runProjectChecks } from "../src/application/run-capabilities.js";
-import { approveRevision, beginAttempt, digest, readRevision, saveExecution, saveReview, saveRevision, workflowContext } from "../src/application/workflow-store.js";
+import { approveRevision, beginAttempt, digest, readProjectRecord, readRevision, saveExecution, saveProjectRecord, saveReview, saveRevision, workflowContext } from "../src/application/workflow-store.js";
 
 const discovery = new FileSystemProjectDiscovery();
 const profile = async (root: string) => discovery.discover(await discovery.createRef(root));
@@ -123,5 +123,69 @@ test("policy validates contracts and legacy projects do not acquire enforcement 
     await approveRevision(root, revision.hash!, "Existing approval");
     assert.equal((await workflowContext(root)).enforcement, "legacy");
     await assert.rejects(runProjectChecks(await profile(root), { required: true }), /policy/);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+test("a real domain regression connects evidence, examples, required checks and completion", async () => {
+  const root = await mkdtemp(join(tmpdir(), "fs-order-policy-"));
+  try {
+    const fixture = join(process.cwd(), "test/fixtures/frontend");
+    const source = await readFile(join(fixture, "src/domain/orders.js"), "utf8");
+    const tests = await readFile(join(fixture, "tests/order.test.mjs"), "utf8");
+    const invalid = source.replace("if (pending) return false;", "if (pending) return true;");
+    assert.notEqual(invalid, source, "The mutation must change the pending-submission guard");
+    for (const path of ["src/domain", "tests", "examples"]) await mkdir(join(root, path), { recursive: true });
+    const script = "node --test tests/order.test.mjs";
+    await writeFile(join(root, "package.json"), JSON.stringify({ type: "module", scripts: { "test:unit": script } }));
+    await writeFile(join(root, "tests/order.test.mjs"), tests);
+    await writeFile(join(root, "examples/orders-valid.js"), source);
+    await writeFile(join(root, "examples/orders-invalid.js"), invalid);
+    const sourcePath = join(root, "src/domain/orders.js");
+    await writeFile(sourcePath, source);
+    const baseline = await runProjectChecks(await profile(root), { purpose: "baseline" });
+    assert.equal(baseline.results[0]!.status, "passed");
+    await writeFile(sourcePath, invalid);
+    const detected = await runProjectChecks(await profile(root));
+    assert.equal(detected.results[0]!.status, "failed");
+    assert.match(detected.results[0]!.output, /ERR_ASSERTION/);
+    await writeFile(sourcePath, source);
+
+    const evidence = `# Synthetic order regression\nContract: pending submissions return false; failure permits retry; success clears error.\nCause: the pending guard reports a duplicate as accepted.\nNormal check: ${baseline.id}; invalid assertion: ${detected.id}.\nScope: local submitter behavior, not server idempotency or production recurrence.\nRule: order; check: order-test; script: test:unit.\n`;
+    await saveProjectRecord(root, "evidence", "debug-order", evidence, null);
+    const policy = examplePolicy();
+    policy.rules[0] = { ...policy.rules[0]!, statement: "Reject pending submissions and preserve retry behavior",
+      evidence: [".frontend-system/evidence/debug-order.md"], validation: "verified",
+      examples: [{ path: "examples/orders-valid.js", expectation: "pass" }, { path: "examples/orders-invalid.js", expectation: "fail", diagnostic: "ERR_ASSERTION" }],
+      limitations: ["Local submitter only; no server idempotency or production recurrence evidence"] };
+    policy.checks = [{ id: "order-test", script: "test:unit", command: script, ruleIds: ["order"] }];
+    policy.guards = [{ path: "tests/order.test.mjs", hash: digest(tests) }];
+    const revision = await saveRevision(root, "# Preserve the synthetic order contract", null, policy);
+    await approveRevision(root, revision.hash!, "Fixture approval of the exact local contract and check");
+    const execution = { revisionHash: revision.hash!, status: "in-progress" as const, kind: "verify" as const,
+      baselineCheckId: baseline.id, steps: [{ id: "order", title: "Verify order contract", status: "pending" as const,
+        files: ["src/domain/orders.js"], checkIds: [] as string[], remaining: ["Verify contract"] }], note: "See evidence/debug-order.md" };
+    const saved = await saveExecution(root, execution, null);
+    const attempt = await beginAttempt(root, "order", saved.hash);
+    await writeFile(sourcePath, invalid);
+    const failed = await runProjectChecks(await profile(root), { required: true, attemptId: attempt.id });
+    assert.equal(failed.results[0]!.capability, "test:unit");
+    assert.equal(failed.results[0]!.status, "failed");
+    assert.match(failed.results[0]!.output, /ERR_ASSERTION/);
+    const done = { ...execution, status: "complete" as const, finalCheckId: failed.id,
+      steps: [{ ...execution.steps[0]!, status: "complete" as const, remaining: [], checkIds: [failed.id], attemptId: attempt.id, reviewIds: [] as string[] }] };
+    await assert.rejects(saveExecution(root, done, saved.hash), /does not verify/);
+
+    await writeFile(sourcePath, source);
+    const repairedAttempt = await beginAttempt(root, "order", saved.hash);
+    const passed = await runProjectChecks(await profile(root), { required: true, attemptId: repairedAttempt.id });
+    assert.equal(passed.results[0]!.status, "passed");
+    assert.equal(passed.stable, true);
+    const review = await saveReview(root, { stepId: "order", reviewId: "order-review", attemptId: repairedAttempt.id, status: "passed",
+      findings: [{ ruleId: "order", files: ["src/domain/orders.js", "tests/order.test.mjs"], evidence: `Synthetic review fixture: normal ${baseline.id}, invalid ${detected.id}, restored ${passed.id}`, conclusion: "Real submitter test covers pending rejection and failure/success retry" }], remaining: [], resolvedExceptions: [] });
+    done.finalCheckId = passed.id;
+    done.steps[0] = { ...done.steps[0]!, checkIds: [passed.id], attemptId: repairedAttempt.id, reviewIds: [review.id] };
+    await saveExecution(root, done, saved.hash);
+    assert.equal((await workflowContext(root)).execution!.status, "complete");
+    assert.equal((await readProjectRecord(root, "evidence", "debug-order")).content, evidence);
   } finally { await rm(root, { recursive: true, force: true }); }
 });

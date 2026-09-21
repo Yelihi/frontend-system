@@ -36,3 +36,5 @@ hash. Run positive/negative examples where feasible; report unexecuted methods a
 proposed. `mark_knowledge_synced` verifies hashes/approval, not truth. Then acknowledge
 matching remote snapshots. Publication never changes an existing project's pinned
 policy; adoption belongs to `fs-plan`. Do not create a skill for every source.
+
+For the final answer, follow the [evidence and limits guidance](../../references/decision-workflow.md#report-evidence-and-limits), distinguishing source claims, reviewed judgments and executed verification.

@@ -29,6 +29,8 @@ tools manage attempts, checks and completion. Do not launch a nested model.
    negative examples. Findings cite existing files and explain evidence/conclusions.
    A model review is not deterministic proof. Do not weaken expectations or guards
    merely to pass; guard changes require a reviewed policy update.
+   For materially risky changes, consider the [selective independent review](../../references/workflows/fs-verify.md#selective-independent-review)
+   procedure; it is not a second-review requirement for every task.
 6. Correct failures and retry within three recorded attempts per step (initial plus
    two repairs). Local individual test runs are not full attempts. On exhaustion,
    missing environment or new product decisions record blocked/remaining work.

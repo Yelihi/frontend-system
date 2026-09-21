@@ -20,6 +20,9 @@ and necessary verification. Distinguish confirmed defects, risks and hypotheses.
 Keeping suitable code is a valid result. Run existing checks if useful; their normal
 result logs may be written, but an explicit no-write request excludes that too.
 
+When assigned as a separate reviewer, follow [selective independent review](../../references/workflows/fs-verify.md#selective-independent-review)
+for the handoff, evidence and role boundaries. Do not delegate another review yourself.
+
 Do not edit product/test/configuration or project-memory files. When fixes are
 requested, route to `fs-work` with the existing authorization and findings; do not
 repeat the approval question. Unavailable runtime evidence is not success.

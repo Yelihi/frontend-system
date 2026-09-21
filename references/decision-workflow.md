@@ -62,6 +62,27 @@ requests produce findings/proposals without code edits. A request to fix authori
 in-scope implementation and verification, not a new dependency migration or broader
 product redesign. Do not repeatedly seek approval for already authorized work.
 
+## Report evidence and limits
+
+In the final answer, connect each material conclusion to its evidence and the
+limits of that evidence. Scale the report to the task; a few sentences can suffice.
+
+- **Conclusion:** state the finding or achieved change. Distinguish a confirmed
+  defect, a conditional risk, a hypothesis and a proposal where that affects the decision.
+- **Evidence:** cite the relevant inspected file/location, source or observed result.
+  For checks, name what ran, its actual result and the behavior it covers; link a
+  check ID or artifact when one exists. Attribute supplied logs or prior results
+  to their source rather than claiming to have executed them yourself.
+- **Limits:** identify relevant unexecuted, failed or stale checks and what they
+  leave unresolved. Separate code completion from verified behavior; unit results
+  alone do not establish UI or persistence behavior. Mention a next check only when
+  needed to resolve the conclusion, not as a generic list of possible risks.
+
+Use these as content guidance, not mandatory headings or a report for every minor
+observation. Do not invent confidence percentages, measurements, check IDs or saved
+records. This reporting guidance does not add checks, approvals or completion gates,
+and does not authorize writes during review-only work.
+
 ## Project memory
 
 Use `save_project_record` with kind `decisions` for an actual choice, using the hash
@@ -79,6 +100,34 @@ A review alone does not create a user decision or authorize incidental context w
 Return proposed findings in the response; record a choice when the user actually makes
 one under the agreed project-memory policy. An explicit read-only/no-write request
 also excludes memory and inspection writes. In that case describe proposed updates.
+
+## Learn from real-project outcomes
+
+When the user chooses to evaluate FS on a real project, start with one authorized
+feature or fix in the designated repository. Establish the expected behavior and
+relevant baseline using existing checks and [feature verification notes](testing-and-transition.md#reusable-feature-verification-notes).
+If no target is designated or inferable from the task, report that the trial has
+not started; plugin fixtures and synthetic evaluations are not consumer-project outcomes.
+
+During authorized work, extend the relevant `evidence` record with `save_project_record`
+and its current hash (null for a new record). Link existing artifacts rather than
+creating a second report. Keep only what helps assess this task:
+
+- Task/contract, source revision or hashes, environment and observed checks/results.
+- Confirmed defects, rejected suggestions and unresolved findings, distinguished by
+  evidence; record user corrections or rework with their reasons. A changed requirement
+  is not automatically an AI error, and an unchallenged suggestion is not proven correct.
+- Actual follow-up runs or observation period and any recurrence. Without follow-up,
+  recurrence is unknown. Attribute user-reported outcomes; do not invent elapsed time,
+  saved effort, success rates or a reliability score from sparse or unlike tasks.
+
+Use comparable outcomes to recommend keeping, narrowing or expanding the scope of
+similar future tasks, stating the evidence's limits. Record an actual scope choice
+in `decisions` only when made by the user; preserve its reason and reconsideration
+conditions. Successful trials do not change existing authorization, approvals,
+required checks or completion criteria. Review-only work proposes record updates.
+This is an optional project-local learning procedure, not a new gate for every task
+or an automatic promotion to shared rules.
 
 ## Test the contract
 

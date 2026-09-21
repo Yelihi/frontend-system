@@ -44,3 +44,34 @@ passing output and return at most the last 2000 characters of a failure. Use
 
 These are mistake-prevention and audit tools, not a security boundary against a
 writer who can edit local records. Host-model review evidence is labeled as such.
+
+## Connect recurring failures to checks
+
+Start with the project's existing debug/evidence records. Confirm whether repeated
+failures violate the same agreed guarantee; similar symptoms or repeated AI advice
+alone do not establish a rule. Record the cases, cause, applicability, counterexample
+and cost of prevention. If no real recurrence is available, label the example synthetic.
+
+Reuse a check that already covers the guarantee. Otherwise prefer the existing
+type system, framework, lint rule or behavior test before a custom checker. Keep
+judgment-dependent guidance as a scoped review with a failure example; do not force
+an unreliable mechanical rule. Leave one-off or unconfirmed findings as evidence.
+
+Within authorized work, prove the normal example passes and a deliberately invalid
+variant fails for the intended diagnostic or assertion. Run mutations in an isolated
+fixture and restore it; an unrelated setup failure is not detection. Keep those
+examples runnable and connect their paths/results to the existing rule and evidence.
+
+For project adoption, link the rule ID to the exact existing script/command in the
+revision policy and protect the relevant test/config assets. Review new obligations
+or changed guards under the existing approval workflow; honor approval already given
+for the concrete change. A regression test inside an already approved contract does
+not itself require a new rule or policy. Shared publication still requires the
+separate knowledge proposal/approval flow and never silently updates project policy.
+
+Verify the connection through `run_project_checks` and `save_execution`: the invalid
+variant must fail its check and cannot complete; restored code needs current passing
+checks and any required review. Record what was linked or deferred and why. Local
+completion enforcement is distinct from required CI/merge settings; do not claim
+remote enforcement without checking it. No new command, automatic promotion or
+universal ban follows from this procedure.

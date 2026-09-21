@@ -16,6 +16,50 @@ is optional in all workflows. Record human/environment checks that remain instea
 of treating unavailable verification as passed. Use `debugging.md` when a failure
 requires investigation; do not rewrite an assertion merely to clear the failure.
 
+## Reusable feature verification notes
+
+For a changed user flow or reproduced bug, keep the minimum instructions another
+agent needs to repeat the relevant verification. Read related evidence listed by
+`get_work_context`/`get_workflow_context` with `get_project_record` first. Reuse an
+existing guarantee/debug record or test instructions; link to them instead of
+duplicating procedures. Cover the affected flow, not a mandatory whole-app inventory.
+
+During authorized implementation/verification, save the notes in the existing
+evidence record with `save_project_record` (kind `evidence`). If no suitable record
+exists, use an ID such as `feature-profile-save`. Read before updating and pass its
+hash as `expectedHash`; use null for a new record. Review-only work proposes missing
+instructions without saving them. If recording tools are unavailable, report that
+limitation and provide the proposed notes; do not claim persistence.
+
+Keep the procedure separate from its last observed result. Use this compact shape,
+omitting inapplicable fields and linking existing instructions/tests where sufficient:
+
+- **Feature and contract:** affected flow, guarantee ID or requirement/decision
+  reference, expected and forbidden outcomes. Current behavior alone is not the oracle.
+- **Start and prerequisites:** actual project command and working directory, ready
+  signal, relevant environment, test data and authentication setup; never credentials.
+- **Reach and act:** route/screen entry and ordered user actions, including the
+  relevant failure/retry path. Use existing test selectors or accessible names.
+- **Observe:** visible state and relevant side effects that distinguish success
+  from failure; capture the action and result, not just a final screenshot.
+- **Existing checks:** applicable test/script and exact invocation. Exercise the
+  claimed behavior; a mocked result or unit test does not prove the real UI flow.
+- **Last run:** date, source state, environment, actual outcome, check ID if one was
+  produced, and retained log/screenshot/trace locations. Unexecuted steps stay unverified.
+- **Limits and cleanup:** blocked steps, required human checks, safe test-data use,
+  and cleanup of only resources created for this run; retain non-sensitive evidence.
+
+For example, a profile-save retry flow should name how to open the form, trigger a
+failure in the project's existing test setup, retry successfully, and observe both
+retained input and cleared error text when the agreed contract requires them.
+Do not invent routes, commands, failure controls or results to fill the notes.
+
+Recheck affected instructions when routes, labels, setup, contracts or tests change.
+On reuse, compare them with current code and environment; an old successful run is
+historical evidence. If behavior regresses, report it rather than changing the
+expected result to match. Notes do not replace required checks or semantic review,
+add a completion gate, or authorize new tools, broader testing or changed contracts.
+
 ## Establish the baseline
 
 1. Inspect manifests, scripts, test config, environment requirements and existing

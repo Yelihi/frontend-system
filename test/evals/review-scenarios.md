@@ -1,10 +1,11 @@
 # Decision-mode evaluation inputs
 
-Run each request independently using `skills/fs-review/SKILL.md`. These are synthetic
-projects, not this plugin's architecture. Do not edit this repository, install tools,
-generate paid artifacts, or assume runtime measurements. Report the decision, evidence,
-unresolved facts, necessary tests and whether the request authorizes edits. These
-cases are for host-model evaluation; `npm test` does not measure model judgment.
+Coordinator: follow [the procedure](README.md) and keep [the rubric](review-rubric.md)
+out of the candidate context. Supply only one case body, its request and a snapshot
+of `skills/fs-review/SKILL.md` with its references per fresh session. All cases below
+are synthetic; the supplied facts are the review target, not the FS repository.
+Do not pass this introduction, case labels or earlier answers to the candidate.
+`npm test` does not measure model judgment.
 
 ## A — Shared store subscription
 
@@ -105,3 +106,30 @@ export function formatPrice(value) {
 ```
 
 Request: "이 구조가 위험한지 검토해 줘. 확장성을 위해 지금 바꿔야 할까?"
+
+## F — Saved profile verification
+
+Project facts: React profile screen. The agreed contract is to retain edited values
+after a failed save, clear the error after a successful retry, and persist the new
+values. No source files or runnable app are provided beyond these facts.
+
+Existing evidence `feature-profile-save` describes opening `/profile`, changing
+the Name field, pressing `Save`, triggering one failed request through the existing
+test transport, then retrying. It records a successful browser run on source `r1`
+with check ID `profile-r1`. Current source `r2` moved the entry to `/settings/profile`
+and renamed the button to `Save changes`. The only current passing result is a unit
+test of the input validator. No browser session, current UI result or persisted-value
+check is available in this task. The existing evidence has not been updated.
+
+Request: "이 기록이면 지금 프로필 저장을 검증 완료로 봐도 될까요? 부족하면 필요한 확인 절차만 정리해주세요. 코드나 기록은 수정하지 마세요."
+
+## G — Duplicate requests
+
+Project facts: React development build. After one click on Save, a captured network
+log contains two POST requests with the same body. An earlier AI reply attributed
+this to StrictMode, but supplied no component code, call stack, request initiator,
+retry configuration or comparison with a production build. None of those artifacts
+are available in this task. The agreed contract is that one save action must not
+create duplicate records. No change to application configuration is authorized.
+
+Request: "이전 AI는 StrictMode 때문이라고 했습니다. 이 결론을 믿어도 되는지, 원인을 확인하려면 무엇을 봐야 하는지 검토만 해주세요."

@@ -16,4 +16,41 @@ authorize edits to product or test code; report missing coverage in that case.
 
 Never auto-edit production code merely because a verifier can propose a fix.
 
+## Selective independent review
+
+Consider one separate reviewer when a change can materially affect authorization,
+lose user data, or introduce difficult race/retry behavior. Use the actual failure
+conditions and impact, not a keyword or diff-size threshold. Routine low-impact
+changes use the existing review and checks; do not create a standing review panel.
+
+When justified within the authorized work, use an available, permitted native
+reviewer that did not implement the change, or an existing human review process.
+Keep the host responsible for integration. Do not start a nested CLI/model service,
+select a paid provider implicitly, or claim that a fresh context means a different
+model. If separate review is unavailable, report it and follow the existing policy;
+an already agreed review requirement remains outstanding, never silently waived.
+
+Give the reviewer the agreed contract, scope, exact source state/diff, relevant
+callers and tests, environment limits, and access to needed repository evidence.
+Keep the implementation discussion and author's verdict out of the initial handoff;
+do not withhold requirements, known failures or material constraints to make it blind.
+Use read-only review scope. The reviewer must not edit code, weaken tests/guards,
+approve policies, write project records or launch further reviewers. Existing checks
+may run within the task's permissions; explicit no-write requests still take precedence.
+
+Ask for concrete failure conditions, affected paths and counterexamples supported
+by source or execution evidence, including what the tests fail to detect. An empty
+finding list is valid. Agreement between models and a green test suite are not proof.
+The host examines disputed findings using code or a focused reproduction, not a vote;
+preserve unresolved material findings and their verification needs.
+
+The authorized host incorporates the findings into existing evidence/review records.
+In the existing evidence text, identify the review as self-review or separate review,
+the actual reviewer/session when known, the source state reviewed, evidence and limits.
+Do not invent provenance. `save_semantic_review` still records `host-model-review`;
+it does not authenticate reviewer independence or turn judgment into machine proof.
+Check for source drift before saving: after affected edits, repeat the relevant
+review and checks. Existing approvals, attempt budgets and completion gates apply;
+this procedure adds no universal gate and never authorizes automatic merge/deployment.
+
 For knowledge-backed judgments, follow `../../references/knowledge-indexing.md` (work-time search): search observed symptoms after inspecting code, then read selected evidence and applicability conditions. Concepts and uncertain claims alone do not authorize code changes.
