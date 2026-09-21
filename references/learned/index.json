@@ -2874,9 +2874,9 @@
       "id": "react-derived-state-and-effects",
       "kind": "concept",
       "title": "React 파생 값·이벤트 처리와 Effect의 구분",
-      "summary": "props·state에서 계산 가능한 값을 Effect로 다시 저장하거나 클릭 결과를 Effect가 뒤늦게 처리할 때. 렌더 계산·특정 사용자 이벤트·외부 시스템 동기화를 구분해 필요한 상태와 Effect인지 판단한다.",
+      "summary": "파생 값을 Effect로 다시 저장하거나 이전 검색 응답이 최신 결과를 덮어쓰고 외부 저장소 구독을 직접 구현할 때. 렌더·이벤트·외부 동기화를 구분하고 상태 소유권과 cleanup을 확인한다.",
       "path": "react-derived-state-and-effects.md",
-      "contentHash": "61dcae26537e6fb80b00796e79781d55ac45dd81d2062a75d4fb6182da4921e0",
+      "contentHash": "59f3a9ad383ceacbbdc92793393e5ece146cc6de47f6621e99d2533feb274cd5",
       "keywords": [
         "불필요한 Effect",
         "파생 상태",
@@ -2885,7 +2885,13 @@
         "fullName",
         "이중 렌더",
         "이벤트 핸들러",
-        "외부 동기화"
+        "외부 동기화",
+        "이전 검색 응답",
+        "최신 결과 덮어쓰기",
+        "요청 경합",
+        "cleanup",
+        "useSyncExternalStore",
+        "외부 저장소 구독"
       ],
       "domains": [
         "state",
@@ -2896,16 +2902,16 @@
       ],
       "excludedTechnologies": [],
       "conditions": [
-        "props·state에서 계산 가능한 값을 Effect로 다시 저장하거나 클릭 결과를 Effect가 뒤늦게 처리할 때.",
-        "React 함수 컴포넌트의 파생 값과 이벤트 처리. 외부 동기화의 요구·설치 버전을 별도로 확인한다."
+        "React 함수 컴포넌트의 파생 값·이벤트·외부 동기화. 설치 버전, 요청 수명, 구독과 SSR 초기 상태를 확인한다."
       ],
       "exclusions": [
-        "네트워크·외부 위젯 동기화까지 일괄 제거하거나 모든 계산에 useMemo를 추가하지 않는다."
+        "네트워크·외부 위젯 동기화까지 일괄 제거하거나 모든 계산에 useMemo를 추가하지 않는다.",
+        "응답 무시를 요청 취소로 간주하거나 모듈 변수를 서버 사용자별 상태에 공유하지 않는다."
       ],
       "evidenceKind": "public-contract",
       "review": "reviewed",
       "sources": {
-        "react-avoid-unnecessary-effects": "1de66d45b60467d083cda3801152f574d6c9193059168d8c377fec78a527776b"
+        "react-avoid-unnecessary-effects": "f25115478deb7762881a90ed4523055bbfda084277b1eb32587708c75a5da08c"
       },
       "related": [
         "react-rendering-state-model",
@@ -5916,9 +5922,9 @@
     },
     {
       "sourceId": "react-avoid-unnecessary-effects",
-      "sourceHash": "1de66d45b60467d083cda3801152f574d6c9193059168d8c377fec78a527776b",
+      "sourceHash": "f25115478deb7762881a90ed4523055bbfda084277b1eb32587708c75a5da08c",
       "action": "represented",
-      "reason": "Effect 일괄 삭제 규칙으로 만들지 않는다. 뒷부분 상태 조정·초기화·구독·fetch 예제의 처방은 이번 참조에서 배포하지 않는다. 원격 스냅샷은 미검토 예제·연습문제의 검토를 위해 ACK하지 않는다."
+      "reason": "공식 Markdown 전체의 설명·코드·Recap·연습문제를 검토하고 기존 참조에 상태 초기화·구독·요청 경합의 조건을 보강했다. ignore는 취소가 아니며 선택 ID 보존과 초기화는 다른 동작이다. 앱 초기화 예제의 서버 사용자별 공유, Effect 일괄 제거, 완성된 오류 처리·실제 성능 보장은 제외. 연결 문서·데모·제품 실행은 미검증."
     },
     {
       "sourceId": "tanstack-query-important-defaults",

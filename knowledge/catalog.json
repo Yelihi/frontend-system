@@ -9133,7 +9133,7 @@
       "id": "react-avoid-unnecessary-effects",
       "path": "knowledge/source/imported/react-avoid-unnecessary-effects.md",
       "title": "React — You Might Not Need an Effect",
-      "summary": "기존 props·state로 계산할 값과 특정 사용자 이벤트 처리를 Effect로 우회하지 않는다. 외부 시스템과 동기화하는 Effect는 별개이며 메모이제이션은 계산 비용을 확인한 뒤 판단한다.",
+      "summary": "React 공식 Effect 문서 전체를 검토한 요약. 파생 값·이벤트·상태 초기화·외부 저장소 구독·요청 경합의 조건을 구분하며 실행 예제는 미검증.",
       "sourceType": "imported",
       "sourceUrl": "https://react.dev/learn/you-might-not-need-an-effect",
       "remoteHash": "b32370f3f29b26c0dcdea24475c88a807898585e69913f3b027fa2b8dccf41f5",
@@ -9145,9 +9145,9 @@
           "react"
         ]
       },
-      "contentHash": "1de66d45b60467d083cda3801152f574d6c9193059168d8c377fec78a527776b",
-      "updatedAt": "2026-09-21T12:34:24.718Z",
-      "publishedHash": "1de66d45b60467d083cda3801152f574d6c9193059168d8c377fec78a527776b"
+      "contentHash": "f25115478deb7762881a90ed4523055bbfda084277b1eb32587708c75a5da08c",
+      "publishedHash": "f25115478deb7762881a90ed4523055bbfda084277b1eb32587708c75a5da08c",
+      "updatedAt": "2026-09-21T16:16:53.636Z"
     },
     "tanstack-query-important-defaults": {
       "id": "tanstack-query-important-defaults",
