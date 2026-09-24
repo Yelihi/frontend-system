@@ -14,6 +14,17 @@ authorize edits to product or test code; report missing coverage in that case.
 6. For a failing check that needs root-cause analysis, follow `../../references/debugging.md` within current authorization; verification alone does not authorize production fixes. Run focused tests while authoring. Once coverage is in place, call `run_project_checks` for discovered non-watch checks.
 7. Re-read the final diff and summarize findings, coverage, recorded check IDs, outcomes and limitations. Separate existing failures, new regressions, interface transitions and unexecuted checks. Do not declare success because no checks were discovered, or equate code completion with verified completion.
 
+For an authorized reliability evaluation, fix the expected contract before iterating:
+valid behavior passes → an isolated invalid variant fails for the intended reason →
+completion rejects that evidence → repair passes with current checks/reviews.
+Also challenge the verifier with weakened assertions and stale evidence where relevant.
+Repeat the changed failure conditions in fresh fixtures; preserve failed observations
+and investigate them rather than adjusting the expected contract to make the run green.
+Respect the existing three-attempt budget per real work step. Repeating identical tests
+measures repeatability, not independent model judgment or proof of all future behavior.
+Use existing project checks and the FS `test:eval` harness; no separate agent platform
+or mandatory multi-round evaluation for every ordinary edit is needed.
+
 Never auto-edit production code merely because a verifier can propose a fix.
 
 ## Selective independent review

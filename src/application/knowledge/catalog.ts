@@ -43,7 +43,7 @@ async function sourceFiles(root: string): Promise<string[]> {
       for (const entry of await readdir(directory, { withFileTypes: true })) {
         const path = join(directory, entry.name);
         if (entry.isDirectory()) await visit(path);
-        else if (entry.isFile() && entry.name.endsWith(".md")) found.push(relative(root, path));
+        else if (entry.isFile() && entry.name.endsWith(".md") && path !== join(sourceRoot, "template.md")) found.push(relative(root, path));
       }
     } catch (error) {
       if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
@@ -70,6 +70,7 @@ async function saveKnowledgeCatalog(root: string, catalog: KnowledgeCatalog): Pr
 function sourcePath(root: string, path: string): string {
   const sourceRoot = resolve(root, "knowledge", "source");
   const absolute = resolve(root, path);
+  if (absolute === join(sourceRoot, "template.md")) throw new Error("Knowledge template is not source material; copy it into source/manual first.");
   if (isAbsolute(path) || (absolute !== sourceRoot && !absolute.startsWith(`${sourceRoot}/`))) {
     throw new Error("Knowledge path must be relative and inside knowledge/source.");
   }

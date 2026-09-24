@@ -1,0 +1,17 @@
+✔ valid quantity sends once and reports successful state (0.900666ms)
+✔ invalid quantities reject before transport (1.82225ms)
+✔ pending duplicate is false and does not send (0.493875ms)
+✔ independent forms do not share pending state (0.628584ms)
+✔ async failure returns false, releases pending and permits retry (0.566084ms)
+✔ synchronous transport throw also releases pending (0.483459ms)
+✔ non-Error rejection gets the agreed fallback (0.548833ms)
+✔ retry clears previous error immediately before resolving (0.550291ms)
+✔ new request clears submitted status while pending (0.467291ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 44.596916

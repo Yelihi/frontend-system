@@ -1,0 +1,53 @@
+{
+  "contractHash": "66177c1627e1fb3bcc63b6ad6592671f0c9b225fb892b3457cae2b2e7c2c5643",
+  "records": [
+    {
+      "name": "before",
+      "exit": 1,
+      "sourceHash": "49c8999ed965bc57476649ed22789ec266e183414f6e0c1d6ed1836def5d18de",
+      "summary": [
+        "ℹ tests 9",
+        "ℹ pass 2",
+        "ℹ fail 7",
+        "ℹ cancelled 0",
+        "ℹ skipped 0"
+      ]
+    },
+    {
+      "name": "north",
+      "exit": 0,
+      "sourceHash": "0d4d6072bfd1af018de507561cc72f4aafd448d74fb5416b27a0644c1fac0ad8",
+      "summary": [
+        "ℹ tests 9",
+        "ℹ pass 9",
+        "ℹ fail 0",
+        "ℹ cancelled 0",
+        "ℹ skipped 0"
+      ]
+    },
+    {
+      "name": "east",
+      "exit": 0,
+      "sourceHash": "0d4d6072bfd1af018de507561cc72f4aafd448d74fb5416b27a0644c1fac0ad8",
+      "summary": [
+        "ℹ tests 9",
+        "ℹ pass 9",
+        "ℹ fail 0",
+        "ℹ cancelled 0",
+        "ℹ skipped 0"
+      ]
+    },
+    {
+      "name": "west",
+      "exit": 0,
+      "sourceHash": "0d4d6072bfd1af018de507561cc72f4aafd448d74fb5416b27a0644c1fac0ad8",
+      "summary": [
+        "ℹ tests 9",
+        "ℹ pass 9",
+        "ℹ fail 0",
+        "ℹ cancelled 0",
+        "ℹ skipped 0"
+      ]
+    }
+  ]
+}

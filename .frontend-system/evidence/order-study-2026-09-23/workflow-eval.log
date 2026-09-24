@@ -1,0 +1,47 @@
+
+> frontend-system@0.2.0 test:eval
+> npm run build && node --test dist/test/reliability-eval.test.js
+
+
+> frontend-system@0.2.0 prebuild
+> node -e "require('node:fs').rmSync('dist', { recursive: true, force: true })"
+
+
+> frontend-system@0.2.0 build
+> tsc -p tsconfig.json && npm run bundle:mcp
+
+
+> frontend-system@0.2.0 bundle:mcp
+> esbuild src/mcp.ts --bundle --platform=node --format=esm --target=node18 --outfile=bundle/mcp.js
+
+
+  bundle/mcp.js  1.1mb ⚠️
+
+⚡ Done in 35ms
+✔ reliability eval 1/3: pending, stale progress, weakened oracle, repair (487.68925ms)
+ℹ {"round":1,"contract":"pending","revisionHash":"136c31e623394471edb7990b208f00507c22c04f3dfe189580ff170a58c9e96a","sourceHash":"36659d69a2c2f167f691a80f737a8de224143e4fe1b7cd0e6699bff5ccf107b3","rejected":["invalid product","stale check","weakened oracle"],"repaired":true}
+✔ reliability eval 1/3: quantity, stale progress, weakened oracle, repair (467.583666ms)
+ℹ {"round":1,"contract":"quantity","revisionHash":"136c31e623394471edb7990b208f00507c22c04f3dfe189580ff170a58c9e96a","sourceHash":"36659d69a2c2f167f691a80f737a8de224143e4fe1b7cd0e6699bff5ccf107b3","rejected":["invalid product","stale check","weakened oracle"],"repaired":true}
+✔ reliability eval 1/3: retry, stale progress, weakened oracle, repair (456.557709ms)
+ℹ {"round":1,"contract":"retry","revisionHash":"136c31e623394471edb7990b208f00507c22c04f3dfe189580ff170a58c9e96a","sourceHash":"36659d69a2c2f167f691a80f737a8de224143e4fe1b7cd0e6699bff5ccf107b3","rejected":["invalid product","stale check","weakened oracle"],"repaired":true}
+✔ reliability eval 2/3: pending, stale progress, weakened oracle, repair (470.399333ms)
+ℹ {"round":2,"contract":"pending","revisionHash":"136c31e623394471edb7990b208f00507c22c04f3dfe189580ff170a58c9e96a","sourceHash":"36659d69a2c2f167f691a80f737a8de224143e4fe1b7cd0e6699bff5ccf107b3","rejected":["invalid product","stale check","weakened oracle"],"repaired":true}
+✔ reliability eval 2/3: quantity, stale progress, weakened oracle, repair (457.561416ms)
+ℹ {"round":2,"contract":"quantity","revisionHash":"136c31e623394471edb7990b208f00507c22c04f3dfe189580ff170a58c9e96a","sourceHash":"36659d69a2c2f167f691a80f737a8de224143e4fe1b7cd0e6699bff5ccf107b3","rejected":["invalid product","stale check","weakened oracle"],"repaired":true}
+✔ reliability eval 2/3: retry, stale progress, weakened oracle, repair (460.685083ms)
+ℹ {"round":2,"contract":"retry","revisionHash":"136c31e623394471edb7990b208f00507c22c04f3dfe189580ff170a58c9e96a","sourceHash":"36659d69a2c2f167f691a80f737a8de224143e4fe1b7cd0e6699bff5ccf107b3","rejected":["invalid product","stale check","weakened oracle"],"repaired":true}
+✔ reliability eval 3/3: pending, stale progress, weakened oracle, repair (475.428917ms)
+ℹ {"round":3,"contract":"pending","revisionHash":"136c31e623394471edb7990b208f00507c22c04f3dfe189580ff170a58c9e96a","sourceHash":"36659d69a2c2f167f691a80f737a8de224143e4fe1b7cd0e6699bff5ccf107b3","rejected":["invalid product","stale check","weakened oracle"],"repaired":true}
+✔ reliability eval 3/3: quantity, stale progress, weakened oracle, repair (461.417875ms)
+ℹ {"round":3,"contract":"quantity","revisionHash":"136c31e623394471edb7990b208f00507c22c04f3dfe189580ff170a58c9e96a","sourceHash":"36659d69a2c2f167f691a80f737a8de224143e4fe1b7cd0e6699bff5ccf107b3","rejected":["invalid product","stale check","weakened oracle"],"repaired":true}
+✔ reliability eval 3/3: retry, stale progress, weakened oracle, repair (455.895041ms)
+ℹ {"round":3,"contract":"retry","revisionHash":"136c31e623394471edb7990b208f00507c22c04f3dfe189580ff170a58c9e96a","sourceHash":"36659d69a2c2f167f691a80f737a8de224143e4fe1b7cd0e6699bff5ccf107b3","rejected":["invalid product","stale check","weakened oracle"],"repaired":true}
+✔ unguarded policies remain repairable but cannot be approved or reported as verified (27.142416ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4277.500583

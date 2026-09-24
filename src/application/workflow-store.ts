@@ -4,7 +4,7 @@ import { join, relative, resolve } from "node:path";
 import * as z from "zod/v4";
 
 import { FileSystemProjectDiscovery } from "../adapters/filesystem/project-discovery.js";
-import { policySchema, policyFailures, requiredScripts, type VerificationPolicy } from "./policy.js";
+import { policySchema, policyFailures, policyProtectionFailures, requiredScripts, type VerificationPolicy } from "./policy.js";
 
 export const recordId = z.string().regex(/^[a-z0-9][a-z0-9-]{0,79}$/);
 export const digest = (value: string) => createHash("sha256").update(value).digest("hex");
@@ -36,6 +36,7 @@ const revisionSchema = z.object({
 });
 const executionRecordSchema = z.object({
   execution: executionSchema, fileHashes: z.record(z.string(), z.string()), updatedAt: z.string(),
+  requiresRevalidation: z.boolean().optional(),
 });
 const checkRecordSchema = z.object({
   id: recordId, purpose: z.enum(["baseline", "verification"]), revisionHash: hash.nullable(),
@@ -132,6 +133,8 @@ export async function approveRevision(root: string, expectedHash: string, approv
   return locked(root, async () => {
     const current = await readRevision(root);
     if (!current.version || current.drifted || current.hash !== expectedHash) throw new Error("Save and review the current revision before approval");
+    const failures = current.policy ? policyProtectionFailures(current.policy) : [];
+    if (failures.length) throw new Error(failures.join("; "));
     await atomic(join(await directory(root), "revision.json"), JSON.stringify({
       version: current.version, hash: current.hash, approved: true, approval,
       policy: current.policy,
@@ -176,13 +179,25 @@ export async function workflowContext(root: string) {
   const current = saved ? await sourceSnapshot(root) : undefined;
   const changedFiles = saved && current ? [...new Set([...Object.keys(current), ...Object.keys(saved.fileHashes)])]
     .filter((path) => current[path] !== saved.fileHashes[path]).sort() : [];
+  const protectionFailures = revision.policy ? policyProtectionFailures(revision.policy) : [];
+  const needsRevalidation = !!saved && (saved.requiresRevalidation === true || changedFiles.length > 0 || saved.execution.revisionHash !== revision.hash || !revision.approved || protectionFailures.length > 0);
   return {
     revision: { ...revision, content: revision.content.slice(0, 12000), truncated: revision.content.length > 12000 }, records,
     execution: saved?.execution ?? null,
     executionHash: raw ? digest(raw) : null,
     changedSinceCheckpoint: changedFiles,
     revisionChangedSinceCheckpoint: !!saved && saved.execution.revisionHash !== revision.hash,
-    needsRevalidation: !!saved && (changedFiles.length > 0 || saved.execution.revisionHash !== revision.hash || !revision.approved),
+    needsRevalidation,
+    verification: {
+      status: protectionFailures.length ? "blocked" : needsRevalidation ? "stale" : saved?.execution.status !== "complete" ? "unverified" : revision.policy ? "verified" : "legacy",
+      failures: protectionFailures,
+      sourceHash: current ? digest(JSON.stringify(current)) : null,
+      revisionHash: revision.hash,
+      finalCheckId: saved?.execution.finalCheckId ?? null,
+      // IDs identify the approved scope, not an assertion of correctness outside it.
+      requiredRuleIds: revision.policy?.rules.filter((rule) => rule.obligation === "required").map((rule) => rule.id) ?? [],
+      reviewIds: saved?.execution.steps.flatMap((step) => step.reviewIds ?? []) ?? [],
+    },
     enforcement: revision.policy ? "policy" : "legacy",
   };
 }
@@ -257,7 +272,9 @@ export async function saveExecution(root: string, input: Execution, expectedHash
       }
     }
     const path = join(await directory(root), "execution.json");
-    const content = JSON.stringify({ execution, fileHashes, updatedAt: new Date().toISOString() }, null, 2);
+    // Saving progress must not erase stale verification. Only accepted final checks clear it.
+    const requiresRevalidation = execution.status !== "complete" && state.needsRevalidation;
+    const content = JSON.stringify({ execution, fileHashes, requiresRevalidation, updatedAt: new Date().toISOString() }, null, 2);
     await atomic(path, content);
     await writeChecklist(root, execution);
     return { path, hash: digest(content) };

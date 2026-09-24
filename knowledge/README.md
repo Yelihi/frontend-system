@@ -9,9 +9,9 @@
 - `sources.json`: 반복 확인할 공개 기술 문서·글의 ID → URL 목록
 - `.cache/`: 배포하지 않는 원격 본문·변경 비교 캐시
 - `proposals/`: 사용자와 검토할 규칙 후보 및 내용 해시 기반 승인
-- [template.md](template.md): 공부 내용을 작성할 한국어 템플릿
+- [source/template.md](source/template.md): 맥락·문제 코드·기대 동작·반례·검증을 작성할 한국어 템플릿
 
-템플릿을 `source/manual/<주제>.md`로 복사해 작성하세요. 모든 항목을 채울 필요는 없습니다. 기초 원리만 정리해도 되며, 코드 변경 기준을 억지로 도출하지 않습니다.
+템플릿을 `source/manual/<주제>.md`로 복사해 작성하세요. `source/template.md` 자체는 등록·sync 대상에서 제외합니다. 모든 항목을 채울 필요는 없습니다. 기초 원리만 정리해도 되며, 코드 변경 기준을 억지로 도출하지 않습니다.
 
 `fs-knowledge`로 새 자료를 분류하고 중복을 확인합니다. `fs-knowledge sync`로 실제 작업에 사용할 요약을 `references/learned/`에 반영합니다. 원본 자료는 npm 배포 대상에서 제외됩니다. GitHub 보관은 별개이므로 파일 작성이나 지식 등록만으로 커밋·푸시되지는 않습니다.
 

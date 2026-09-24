@@ -23,6 +23,21 @@ normal/invalid examples, calculate guard hashes, then approve the concrete polic
 Do not pin mutable product source as a verification guard. A guard asset change
 requires reviewing and updating the policy; ordinary product edits do not.
 
+Required automated rules need an automated check. Each check covering such a rule
+must either list `guardPaths` referencing entries in `guards`, or the rule must have
+a required semantic review. An unrelated guard does not protect a test. Required
+`review` rules need a review requirement, not just a green script. These conditions
+are enforced on approval, check execution and final completion. Older unprotected
+policies stay readable and editable but report blocked verification until repaired.
+Duplicate guard paths also require repair before approval/use.
+
+For a guarded check, include the assets that determine its oracle: assertions,
+fixtures/snapshots, checker implementation and relevant configuration. The host must
+inspect the actual dependency chain; the tool validates declared hashes, not whether
+the declaration is complete. For the review route, inspect product AND test changes,
+including deleted/skipped tests and weakened assertions. Passing model review is
+judgment evidence, not the same guarantee as an immutable oracle.
+
 Migration exceptions do not suppress runner failures. Configure a narrowly scoped
 baseline in the checker (with regression coverage), pin that configuration, and
 retain the exception's resolution step. No new violations may enter the baseline.
@@ -35,6 +50,19 @@ Missing step check selection defaults to all policy checks; final completion alw
 requires the entire policy and at least one real test/e2e result. Steps use immutable
 attempt and review records. Three attempts are persisted per revision/step. Source
 and revision hashes bind checks and reviews. Follow-up edits require revalidation.
+Saving an in-progress/blocked checkpoint records progress without clearing pending
+revalidation, even when its completed steps are unchanged. Only accepted final
+verification clears that flag. A historical completed step is not current proof.
+
+`get_workflow_context` / work context return `verification` with source/revision
+hashes, final check ID, required rule IDs and review IDs. `verified` means accepted
+completion within the pinned policy; `unverified`, `stale` and `blocked` must never be
+reported as verified completion. `legacy` identifies a completed text-only workflow
+without policy enforcement. A current source hash identifies what is being assessed;
+on stale state it does not mean the referenced old check covered that source.
+Report each achieved guarantee with its actual check/review and scope. File hashes
+do not establish runtime/dependency/environment equivalence, real backend behavior,
+or correctness beyond the exercised cases. Do not infer a reliability percentage.
 
 `run_project_checks(required: true)` and `fs checks --required` run automated policy
 checks; success alone is not full semantic completion. `save_execution` verifies

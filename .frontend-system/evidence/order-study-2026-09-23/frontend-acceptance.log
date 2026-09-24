@@ -1,0 +1,5 @@
+
+> acceptance
+> node scripts/acceptance.mjs
+
+Frontend acceptance: valid fixtures passed; hooks, accessibility, import/re-export/dynamic boundary, domain mutation and server-only violations rejected.

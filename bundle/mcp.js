@@ -29158,20 +29158,22 @@ function git2(root, args) {
   return new Promise((resolve7, reject) => {
     execFile2("git", ["-C", root, ...args], { maxBuffer: 10 * 1024 * 1024 }, (error2, stdout, stderr) => {
       if (error2) reject(new Error(stderr.trim() || error2.message));
-      else resolve7(stdout.trim());
+      else resolve7(stdout);
     });
   });
 }
 async function changedFiles(root, base) {
   const names = /* @__PURE__ */ new Set();
   if (base) {
-    for (const path of (await git2(root, ["diff", "--name-only", base, "--"])).split("\n").filter(Boolean)) names.add(path);
+    for (const path of (await git2(root, ["diff", "--name-only", "--no-renames", "-z", base, "--"])).split("\0").filter(Boolean)) names.add(path);
   }
-  for (const line of (await git2(root, ["status", "--porcelain"])).split("\n").filter(Boolean)) {
-    const path = line.slice(3).split(" -> ").at(-1);
-    if (path) names.add(path);
+  const entries = (await git2(root, ["status", "--porcelain=v1", "-z", "--untracked-files=all"])).split("\0").filter(Boolean);
+  for (let index = 0; index < entries.length; index++) {
+    const entry = entries[index];
+    names.add(entry.slice(3));
+    if (/[RC]/.test(entry.slice(0, 2))) names.add(entries[++index]);
   }
-  return [...names].filter((path) => !path.startsWith(".frontend-system/")).sort();
+  return [...names].filter((path) => path !== ".frontend-system" && !path.startsWith(".frontend-system/")).sort();
 }
 async function reviewBase(root, requested) {
   if (requested) {
@@ -29179,7 +29181,7 @@ async function reviewBase(root, requested) {
     return requested;
   }
   if (await git2(root, ["status", "--porcelain"])) return "HEAD";
-  const head = await git2(root, ["rev-parse", "HEAD"]);
+  const head = (await git2(root, ["rev-parse", "HEAD"])).trim();
   try {
     await git2(root, ["rev-parse", "--verify", `${head}^`]);
     return `${head}^`;
@@ -29188,7 +29190,7 @@ async function reviewBase(root, requested) {
   }
 }
 async function diffStat(root, base) {
-  return git2(root, ["diff", "--stat", base, "--"]);
+  return (await git2(root, ["diff", "--stat", base, "--"])).trim();
 }
 
 // src/application/knowledge/catalog.ts
@@ -29235,7 +29237,8 @@ var policySchema = strictObject({
     id: ruleId,
     script: string2().min(1),
     command: string2().min(1),
-    ruleIds: array(ruleId)
+    ruleIds: array(ruleId),
+    guardPaths: array(localPath).min(1).optional()
   })),
   reviews: array(strictObject({ id: ruleId, ruleIds: array(ruleId), description: string2().min(1) })),
   // Exact hashes protect checker/config/test assets. Changes require a policy update.
@@ -29255,6 +29258,11 @@ var policySchema = strictObject({
     if (new Set(group.map(({ id: id2 }) => id2)).size !== group.length) context.addIssue({ code: "custom", message: "Duplicate policy IDs" });
   }
   const ids = new Set(policy.rules.map(({ id: id2 }) => id2));
+  for (const check of policy.checks) {
+    if (check.guardPaths?.some((path) => !policy.guards.some((guard) => guard.path === path))) {
+      context.addIssue({ code: "custom", message: `Check references an unpinned verification asset: ${check.id}` });
+    }
+  }
   for (const item of [...policy.checks, ...policy.reviews]) {
     if (item.ruleIds.some((id2) => !ids.has(id2))) context.addIssue({ code: "custom", message: "Unknown policy rule" });
   }
@@ -29271,8 +29279,19 @@ var policySchema = strictObject({
 function requiredScripts(policy) {
   return [...new Set(policy.checks.map(({ script }) => script))];
 }
+function policyProtectionFailures(policy) {
+  const failures = new Set(policy.guards.map(({ path }) => path)).size !== policy.guards.length ? ["Duplicate guard paths"] : [];
+  return failures.concat(policy.rules.filter((rule) => rule.obligation === "required").flatMap((rule) => {
+    const checks = policy.checks.filter((check) => check.ruleIds.includes(rule.id));
+    const reviewed = policy.reviews.some((review) => review.ruleIds.includes(rule.id));
+    if (rule.verification === "review") return reviewed ? [] : [`Required rule needs semantic review: ${rule.id}`];
+    if (!checks.length) return [`Required rule needs an automated check: ${rule.id}`];
+    return checks.filter((check) => !reviewed && !check.guardPaths?.length).map((check) => `Required check needs guardPaths or semantic review for rule ${rule.id}: ${check.id}`);
+  }));
+}
 function policyFailures(policy, scripts, files) {
   return [
+    ...policyProtectionFailures(policy),
     ...policy.checks.filter((check) => scripts[check.script] !== check.command).map((check) => `Missing or changed required script: ${check.script}`),
     ...policy.guards.filter((guard) => files[guard.path] !== guard.hash).map((guard) => `Protected verification asset changed: ${guard.path}`)
   ];
@@ -29525,7 +29544,7 @@ async function sourceFiles(root) {
       for (const entry of await readdir3(directory2, { withFileTypes: true })) {
         const path = join4(directory2, entry.name);
         if (entry.isDirectory()) await visit(path);
-        else if (entry.isFile() && entry.name.endsWith(".md")) found.push(relative4(root, path));
+        else if (entry.isFile() && entry.name.endsWith(".md") && path !== join4(sourceRoot, "template.md")) found.push(relative4(root, path));
       }
     } catch (error2) {
       if (error2.code !== "ENOENT") throw error2;
@@ -29550,6 +29569,7 @@ async function saveKnowledgeCatalog(root, catalog) {
 function sourcePath(root, path) {
   const sourceRoot = resolve4(root, "knowledge", "source");
   const absolute = resolve4(root, path);
+  if (absolute === join4(sourceRoot, "template.md")) throw new Error("Knowledge template is not source material; copy it into source/manual first.");
   if (isAbsolute2(path) || absolute !== sourceRoot && !absolute.startsWith(`${sourceRoot}/`)) {
     throw new Error("Knowledge path must be relative and inside knowledge/source.");
   }
@@ -29730,7 +29750,8 @@ var revisionSchema = object2({
 var executionRecordSchema = object2({
   execution: executionSchema,
   fileHashes: record(string2(), string2()),
-  updatedAt: string2()
+  updatedAt: string2(),
+  requiresRevalidation: boolean2().optional()
 });
 var checkRecordSchema = object2({
   id: recordId,
@@ -29829,6 +29850,8 @@ async function approveRevision(root, expectedHash, approval) {
   return locked(root, async () => {
     const current = await readRevision(root);
     if (!current.version || current.drifted || current.hash !== expectedHash) throw new Error("Save and review the current revision before approval");
+    const failures = current.policy ? policyProtectionFailures(current.policy) : [];
+    if (failures.length) throw new Error(failures.join("; "));
     await atomic(join5(await directory(root), "revision.json"), JSON.stringify({
       version: current.version,
       hash: current.hash,
@@ -29874,6 +29897,8 @@ async function workflowContext(root) {
   const saved = raw ? executionRecordSchema.parse(JSON.parse(raw)) : void 0;
   const current = saved ? await sourceSnapshot(root) : void 0;
   const changedFiles2 = saved && current ? [.../* @__PURE__ */ new Set([...Object.keys(current), ...Object.keys(saved.fileHashes)])].filter((path) => current[path] !== saved.fileHashes[path]).sort() : [];
+  const protectionFailures = revision.policy ? policyProtectionFailures(revision.policy) : [];
+  const needsRevalidation = !!saved && (saved.requiresRevalidation === true || changedFiles2.length > 0 || saved.execution.revisionHash !== revision.hash || !revision.approved || protectionFailures.length > 0);
   return {
     revision: { ...revision, content: revision.content.slice(0, 12e3), truncated: revision.content.length > 12e3 },
     records,
@@ -29881,7 +29906,17 @@ async function workflowContext(root) {
     executionHash: raw ? digest2(raw) : null,
     changedSinceCheckpoint: changedFiles2,
     revisionChangedSinceCheckpoint: !!saved && saved.execution.revisionHash !== revision.hash,
-    needsRevalidation: !!saved && (changedFiles2.length > 0 || saved.execution.revisionHash !== revision.hash || !revision.approved),
+    needsRevalidation,
+    verification: {
+      status: protectionFailures.length ? "blocked" : needsRevalidation ? "stale" : saved?.execution.status !== "complete" ? "unverified" : revision.policy ? "verified" : "legacy",
+      failures: protectionFailures,
+      sourceHash: current ? digest2(JSON.stringify(current)) : null,
+      revisionHash: revision.hash,
+      finalCheckId: saved?.execution.finalCheckId ?? null,
+      // IDs identify the approved scope, not an assertion of correctness outside it.
+      requiredRuleIds: revision.policy?.rules.filter((rule) => rule.obligation === "required").map((rule) => rule.id) ?? [],
+      reviewIds: saved?.execution.steps.flatMap((step) => step.reviewIds ?? []) ?? []
+    },
     enforcement: revision.policy ? "policy" : "legacy"
   };
 }
@@ -29951,7 +29986,8 @@ async function saveExecution(root, input, expectedHash) {
       }
     }
     const path = join5(await directory(root), "execution.json");
-    const content = JSON.stringify({ execution, fileHashes, updatedAt: (/* @__PURE__ */ new Date()).toISOString() }, null, 2);
+    const requiresRevalidation = execution.status !== "complete" && state.needsRevalidation;
+    const content = JSON.stringify({ execution, fileHashes, requiresRevalidation, updatedAt: (/* @__PURE__ */ new Date()).toISOString() }, null, 2);
     await atomic(path, content);
     await writeChecklist(root, execution);
     return { path, hash: digest2(content) };

@@ -1,0 +1,143 @@
+✔ valid quantity sends once and reports successful state (0.867625ms)
+✖ invalid quantities reject before transport (0.858375ms)
+✖ pending duplicate is false and does not send (0.375083ms)
+✖ independent forms do not share pending state (0.2565ms)
+✖ async failure returns false, releases pending and permits retry (0.254417ms)
+✖ synchronous transport throw also releases pending (0.226583ms)
+✖ non-Error rejection gets the agreed fallback (0.653459ms)
+✖ retry clears previous error immediately before resolving (0.479917ms)
+✔ new request clears submitted status while pending (0.86675ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 2
+ℹ fail 7
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 46.279459
+
+✖ failing tests:
+
+test at ../../../../../../private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-orders-xc3ViJ/contract.test.mjs:12:1
+✖ invalid quantities reject before transport (0.858375ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection (Error).
+      at async TestContext.<anonymous> (file:///private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-orders-xc3ViJ/contract.test.mjs:13:133)
+      at async Test.run (node:internal/test_runner/test:1113:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:788:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ../../../../../../private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-orders-xc3ViJ/contract.test.mjs:15:1
+✖ pending duplicate is false and does not send (0.375083ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  true !== false
+
+      at TestContext.<anonymous> (file:///private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-orders-xc3ViJ/contract.test.mjs:17:13)
+      at async Test.run (node:internal/test_runner/test:1113:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:788:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ../../../../../../private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-orders-xc3ViJ/contract.test.mjs:19:1
+✖ independent forms do not share pending state (0.2565ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  0 !== 1
+
+      at TestContext.<anonymous> (file:///private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-orders-xc3ViJ/contract.test.mjs:22:13)
+      at async Test.run (node:internal/test_runner/test:1113:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:788:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ../../../../../../private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-orders-xc3ViJ/contract.test.mjs:24:1
+✖ async failure returns false, releases pending and permits retry (0.254417ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  1 !== 2
+
+      at TestContext.<anonymous> (file:///private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-orders-xc3ViJ/contract.test.mjs:27:44)
+      at async Test.run (node:internal/test_runner/test:1113:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:788:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 2,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ../../../../../../private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-orders-xc3ViJ/contract.test.mjs:29:1
+✖ synchronous transport throw also releases pending (0.226583ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  1 !== 2
+
+      at TestContext.<anonymous> (file:///private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-orders-xc3ViJ/contract.test.mjs:31:80)
+      at async Test.run (node:internal/test_runner/test:1113:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:788:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 2,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ../../../../../../private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-orders-xc3ViJ/contract.test.mjs:33:1
+✖ non-Error rejection gets the agreed fallback (0.653459ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+
+  + undefined
+  - 'Order failed'
+
+      at TestContext.<anonymous> (file:///private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-orders-xc3ViJ/contract.test.mjs:35:45)
+      at async Test.run (node:internal/test_runner/test:1113:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:788:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 'Order failed',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ../../../../../../private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-orders-xc3ViJ/contract.test.mjs:37:1
+✖ retry clears previous error immediately before resolving (0.479917ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+    {
+  +   error: 'offline',
+  +   pending: false,
+  -   error: '',
+  -   pending: true,
+      submitted: false
+    }
+
+      at TestContext.<anonymous> (file:///private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-orders-xc3ViJ/contract.test.mjs:40:13)
+      at async Test.run (node:internal/test_runner/test:1113:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:788:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { pending: false, error: 'offline', submitted: false },
+    expected: { pending: true, error: '', submitted: false },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

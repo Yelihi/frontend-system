@@ -184,6 +184,20 @@ test("sync validates source evidence, records deferrals, tracks corrections/dele
   } finally { await rm(root, { recursive: true, force: true }); }
 });
 
+test("source template is excluded while authored copies remain discoverable", async () => {
+  const root = await mkdtemp(join(tmpdir(), "fs-template-"));
+  try {
+    await mkdir(join(root, "knowledge/source/manual"), { recursive: true });
+    await writeFile(join(root, "knowledge/source/template.md"), "Blank learning form");
+    await writeFile(join(root, "knowledge/source/manual/example.md"), "An authored case");
+    assert.deepEqual((await knowledgeStatus(root)).uncataloged, ["knowledge/source/manual/example.md"]);
+    const input = { id: "example", title: "Case", summary: "Observed behavior", sourceType: "manual" as const, facets: {} };
+    await assert.rejects(catalogKnowledgeDocument(root, { ...input, path: "knowledge/source/./template.md" }), /template is not source material/);
+    await catalogKnowledgeDocument(root, { ...input, path: "knowledge/source/manual/example.md" });
+    assert.deepEqual((await knowledgeStatus(root)).unpublished, ["example"]);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
 test("concepts and uncertain decisions are context, not engineering rules", async () => {
   const root = await mkdtemp(join(tmpdir(), "fs-rules-"));
   try {
