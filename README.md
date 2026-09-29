@@ -134,23 +134,36 @@ $fs-work 확인한 원인을 수정하고, 수정 전후 재현 결과와 해결
 ```text
 <project>/.frontend-system/
 ├── config.json    # 선택한 외부 도구 연결 설정
-├── init.md        # 현재 사실과 영역별 근거 링크
-├── evidence/      # 조사 범위, 도메인 보장 사항, 분석 근거
-├── decisions/     # 범위별 선택, 이유, 대안, 결과
-├── revision.md    # 목표 설계; 코드와 달라져도 임의로 덮어쓰지 않음
-├── revision.json  # 버전, 내용 해시, 명시적 승인
-├── revisions/     # 이전 목표 내용과 승인 메타데이터
-├── execution.json # 실행 단계, 검증 기록 참조, 소스 체크포인트
-├── checks/        # 변경 전 기준 및 검증 결과 기록
-├── state.json     # 소스 해시와 분석한 커밋; Git 추적 제외
-└── reports/       # 임시 결과물; Git 추적 제외
+├── project.md      # main 기준 현재 사실, 도메인/이벤트/테스트 근거
+├── project-history/ # 이전 project.md 보존
+├── init.md         # 기존 검사 문서가 있을 때 보존하는 fallback
+├── evidence/       # 조사 범위, 도메인 보장 사항, 분석 근거
+├── decisions/      # 범위별 선택, 이유, 대안, 결과
+├── plans/<plan-id>/
+│   ├── plan.md     # 요청별 설계와 승인 대상 이슈 계약
+│   ├── revision.json / revisions/ # 버전·승인·변경 이력
+│   ├── execution.json / progress.md # 실행 상태와 사람이 읽는 진행표
+│   └── checks/ / attempts/ / reviews/ # 해당 계획의 검증 기록
+├── project-refresh.json # main 문서 생성의 pending/failed 상태
+├── state.json      # 로컬 분석 상태; Git 추적 제외
+└── reports/        # 임시 결과물; Git 추적 제외
 ```
 
-기존 `project.md`도 계속 읽을 수 있으며, 분석 결과를 `init.md`에 저장하기 시작해도 보존합니다. 기존 결정은 버리지 않고 새 분석과 대조해 정리합니다. 기존 Git 제외 규칙도 유지합니다. 검토한 사실, 목표, 범위별 결정은 커밋해서 관리합니다. 검증 로그에는 프로젝트 출력이 포함될 수 있으므로 공유 전에 내용을 확인합니다.
+기존 루트 revision/execution/checks는 보존하며 planId를 생략한 도구 호출로 읽습니다.
+새 요청은 계획 ID별로 저장하고, 승인 버전·이슈 계약·검사·시도 기록을 분리합니다.
+계획을 직접 수정하면 승인이 무효화되고, 진행 상태는 별도 progress.md로 관리합니다.
+
+project.md는 로컬 main의 파일을 체크아웃 없이 읽어 작성합니다. 분석 기준 커밋,
+문서 해시, main의 변경을 확인하며 작업 브랜치의 미병합 사실과 구분합니다.
+문서 생성물만 변경되면 다시 분석할 필요가 없고, 생성이 실패해도 마지막 문서를
+유지합니다. 원격 main 자동 fetch나 AI 문서 bot은 설치하지 않습니다.
+[실행 절차와 도구 입력](references/project-plans.md)을 참고하세요.
 
 공통 스킬은 프로젝트마다 복사하지 않습니다. 명시적 요청과 팀 제약은 코드에서 관찰한 습관, 조건부 지식, 선호, 가설과 구분합니다. 규칙의 순서는 읽기 우선순위이며, 서로 충돌하는 출처도 유지해 모델이 의미를 판단하도록 합니다. 사용자의 선택은 해당 프로젝트에 보관하고, 공통 지식으로 승격하려면 확인을 받습니다. 사용자가 쌓은 지식이 부족하더라도 모델 지식, 공식 자료 조사, 관련 측정 결과를 활용해 작업을 진행합니다.
 
 ### 검증과 작업 재개
+
+검증 도구는 [설치·실행·CI 연결 절차](references/verification-tools.md)에 따라 기존 프로젝트 도구부터 재사용합니다. FS는 지식·규칙·실행 절차를 제공하고, 대상 프로젝트 또는 워크스페이스가 검사 도구의 개발 의존성·lockfile·설정·테스트를 소유합니다. 브라우저 바이너리와 OS 의존성은 실행 환경에 준비하며, 로컬과 CI는 같은 프로젝트 스크립트를 실행합니다. 부족한 도구만 승인된 작업 범위에서 설치하고, 설치 성공·검사 통과·원격 CI 통과는 구분합니다. CI의 필수 검사 설정과 배포 권한도 별도로 확인합니다.
 
 사용자가 대표 프로젝트와 기능을 정해 FS를 평가할 때는 [실제 작업 결과로 다음 범위를 판단하는 절차](references/decision-workflow.md#learn-from-real-project-outcomes)를 사용합니다. 기존 evidence에 검증 결과·잘못된 제안·사용자 수정·후속 관찰을 남기고, 비슷한 작업의 근거로 다음에 맡길 범위를 제안합니다. 실제 범위 선택만 decisions에 기록하며, 성공 기록이 권한이나 완료 기준을 자동으로 바꾸지 않습니다. 후속 관찰이 없으면 재발 여부는 미확인으로 남깁니다.
 
@@ -174,12 +187,15 @@ revision을 저장하거나 내용을 수동으로 변경하면 기존 승인이
 
 | 도구 | 입력 및 결과 |
 | --- | --- |
+| `get_project_snapshot`, `read_project_source`, `get_project_document` | main 사실·선택한 소스·문서의 페이지 단위 읽기와 최신 상태 |
+| `record_project_refresh`, `save_project_context` | pending/failed 기록과 기준 커밋·문서 해시를 확인한 project.md 저장 |
+| `list_plans` | 요청별 계획 ID·버전·승인 상태 |
 | `list_project_files` | 해시, 전체 개수, 다음 오프셋, 제외 내역과 경고를 포함한 페이지 단위 파일 목록 |
 | `get_work_context` | `review`·`refactor` 모드, 분석 최신 여부, 작업 맥락 제공 |
 | `get_workflow_context`, `get_revision` | 승인과 변경 여부, 체크포인트 이후 변경, 기록 목록, 범위를 제한한 목표 내용 읽기 |
 | `save_revision`, `approve_revision` | 내용 해시로 동시 변경 확인; 초안에는 항상 명시적 승인 필요 |
 | `save_project_record`, `get_project_record` | 안전한 ID, 해시, 읽기 범위 제한을 적용한 범위별 Markdown 근거·결정 기록 |
-| `run_project_checks`, `get_check_record` | 검증 항목 선택, 변경 전 기준 기록과 비교, 검증 근거 저장 |
+| `run_project_checks`, `get_check_record` | planId 및 baseline/issue/delivery 단계, 검증 항목 선택, 변경 전 기준 기록과 비교, 검증 근거 저장 |
 | `save_execution` | 승인된 revision 해시, 예상 체크포인트 해시, 단계, 검증 기록 ID |
 
 `run_project_checks`는 프로젝트만 전달하면 발견한 모든 검증을 실행하는 기존 호출도 지원합니다. 응답에는 `results`와 함께 ID, 소스 해시, 실행 중 소스 변경 여부, 전체·선택 검증 범위, 비교 참고 정보가 포함됩니다. 라이브러리 헬퍼인 `runCapabilities`는 기존처럼 배열을 반환합니다. 검증 항목이 없으면 성공이 아닌 `not-run`으로 기록합니다. 검증 항목은 `test:unit`이나 `apps/web:test`처럼 정확한 스크립트 키로 선택합니다. 자세한 절차는 [결정 작업 흐름](references/decision-workflow.md)과 [테스트 및 전환](references/testing-and-transition.md)을 참고하세요.
@@ -361,7 +377,16 @@ npm run test:package
 Node 테스트는 저장·승인·정책·시도 한도·소스 갱신을 검증합니다. 별도 예제는
 실제 ESLint/Next 검사, 직접 작성한 경계 검사, 도메인 유닛 테스트와 Chromium
 E2E를 실행합니다. 정상 사례와 의도적 위반의 진단을 모두 확인합니다.
-CI도 같은 명령을 사용합니다. 실제 배포나 원격 병합 설정은 자동 변경하지 않습니다.
+GitHub Actions의 [FS CI and delivery](.github/workflows/ci.yml)는 PR과 main push에서
+타입·린트·테스트·패키지·번들 일치 검사와 프론트엔드 acceptance/E2E를 실행합니다.
+브라우저 보고서와 실패 trace는 7일 보관합니다. main의 두 검사 작업이 모두 통과하면
+독립 실행 검사를 통과한 `.tgz` 설치 패키지를 커밋 SHA 이름의 Actions artifact로
+14일 보관합니다. Actions의 수동 실행도 main에서 같은 절차를 사용할 수 있습니다.
+이는 검증된 패키지를 전달하는 단계이며 npm 게시, GitHub Release 생성, 설치된
+플러그인의 자동 업데이트나 원격 병합 필수 설정은 수행하지 않습니다.
+
+로컬에서 같은 설치 패키지를 만들려면 `npm run build` 후
+`npm run test:package -- --output-dir dist/release`를 실행합니다.
 호스트 모델 판단 평가는 [판단 회귀 평가 절차](test/evals/README.md)에 따라 별도로 실행합니다. 스킬·공통 판단 지침·지식 적용 방식·호스트 모델 변경 시 관련 사례를 같은 조건에서 비교하고, 결함 누락·불필요한 변경·근거 없는 단정·허위 검증 보고를 구분합니다. 판정 기준과 이전 답은 평가 대상에 전달하지 않습니다. 결과는 `test/evals/`에 기록하며 자동 테스트 통과와 구분합니다. 이 절차는 FS 자체의 유지보수용이며 소비 프로젝트의 승인·완료 정책이나 일반 작업의 필수 검사를 추가하지 않습니다.
 
 ## 개인정보 보호와 안전

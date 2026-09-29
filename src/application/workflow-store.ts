@@ -4,7 +4,7 @@ import { join, relative, resolve } from "node:path";
 import * as z from "zod/v4";
 
 import { FileSystemProjectDiscovery } from "../adapters/filesystem/project-discovery.js";
-import { policySchema, policyFailures, policyProtectionFailures, requiredScripts, type VerificationPolicy } from "./policy.js";
+import { localPath, policySchema, policyFailures, policyProtectionFailures, requiredScripts, type VerificationPolicy } from "./policy.js";
 
 export const recordId = z.string().regex(/^[a-z0-9][a-z0-9-]{0,79}$/);
 export const digest = (value: string) => createHash("sha256").update(value).digest("hex");
@@ -13,6 +13,14 @@ const checksSchema = z.array(z.object({
   capability: z.string(), command: z.string(), passed: z.boolean(), output: z.string(),
   status: z.enum(["passed", "failed", "not-run"]), workingDirectory: z.string().optional(), reason: z.string().optional(),
 }));
+export const issueSchema = z.strictObject({
+  id: recordId, title: z.string().min(1), contract: z.string().min(1),
+  files: z.array(localPath), dependsOn: z.array(recordId),
+  requiredCheckIds: z.array(z.string()), acceptance: z.array(z.string().min(1)).min(1),
+});
+export const issuesSchema = z.array(issueSchema).min(1);
+type Issues = z.infer<typeof issuesSchema>;
+
 export const executionSchema = z.strictObject({
   revisionHash: hash,
   status: z.enum(["in-progress", "blocked", "complete"]),
@@ -32,14 +40,14 @@ export const executionSchema = z.strictObject({
 type Execution = z.infer<typeof executionSchema>;
 const revisionSchema = z.object({
   version: z.number().int().positive(), hash, approved: z.boolean(), approval: z.string(),
-  policy: policySchema.optional(),
+  policy: policySchema.optional(), issues: issuesSchema.optional(),
 });
 const executionRecordSchema = z.object({
   execution: executionSchema, fileHashes: z.record(z.string(), z.string()), updatedAt: z.string(),
   requiresRevalidation: z.boolean().optional(),
 });
 const checkRecordSchema = z.object({
-  id: recordId, purpose: z.enum(["baseline", "verification"]), revisionHash: hash.nullable(),
+  id: recordId, planId: recordId.nullable().optional(), stage: z.enum(["baseline", "issue", "delivery"]).optional(), purpose: z.enum(["baseline", "verification"]), revisionHash: hash.nullable(),
   sourceHash: hash, stable: z.boolean(), full: z.boolean(), results: checksSchema, createdAt: z.string(),
   attemptId: recordId.optional(),
 });
@@ -53,7 +61,7 @@ async function optional(path: string): Promise<string> {
   }
 }
 
-async function directory(root: string, child = ""): Promise<string> {
+export async function directory(root: string, child = ""): Promise<string> {
   const base = join(resolve(root), ".frontend-system");
   const path = join(base, child);
   await mkdir(base, { recursive: true });
@@ -66,7 +74,7 @@ async function directory(root: string, child = ""): Promise<string> {
   return path;
 }
 
-async function atomic(path: string, content: string): Promise<void> {
+export async function atomic(path: string, content: string): Promise<void> {
   const temp = `${path}.${randomUUID()}.tmp`;
   try {
     await writeFile(temp, content, { flag: "wx" });
@@ -74,7 +82,7 @@ async function atomic(path: string, content: string): Promise<void> {
   } finally { await rm(temp, { force: true }); }
 }
 
-async function locked<T>(root: string, action: () => Promise<T>): Promise<T> {
+export async function locked<T>(root: string, action: () => Promise<T>): Promise<T> {
   const lock = join(await directory(root), ".workflow-lock");
   // ponytail: one writer per project; retry a busy lock, inspect an abandoned lock before removing it.
   await mkdir(lock);
@@ -91,55 +99,91 @@ export async function sourceSnapshot(root: string): Promise<Record<string, strin
   return snapshot;
 }
 
-export async function readRevision(root: string) {
-  const content = await optional(join(root, ".frontend-system/revision.md"));
-  const raw = await optional(join(root, ".frontend-system/revision.json"));
+function scope(planId?: string): string {
+  return planId === undefined ? "" : `plans/${recordId.parse(planId)}`;
+}
+
+async function planDirectory(root: string, child: string, planId?: string) {
+  // Validate every parent before creating a child, including plans/<id>.
+  if (planId !== undefined) {
+    await directory(root, "plans");
+    await directory(root, scope(planId));
+  }
+  return directory(root, [scope(planId), child].filter(Boolean).join("/"));
+}
+
+export async function listPlans(root: string) {
+  let entries;
+  try { entries = await readdir(join(root, ".frontend-system/plans"), { withFileTypes: true }); }
+  catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "ENOENT") return [];
+    throw error;
+  }
+  return Promise.all(entries.filter((entry) => entry.isDirectory() && recordId.safeParse(entry.name).success)
+    .sort((a, b) => a.name.localeCompare(b.name)).map(async ({ name: id }) => {
+      const revision = await readRevision(root, id);
+      return { id, path: join(root, ".frontend-system", scope(id), "plan.md"),
+        version: revision.version, hash: revision.hash, approved: revision.approved };
+    }));
+}
+
+export async function readRevision(root: string, planId?: string) {
+  const content = await optional(join(root, ".frontend-system", scope(planId), planId ? "plan.md" : "revision.md"));
+  const raw = await optional(join(root, ".frontend-system", scope(planId), "revision.json"));
   const metadata = raw ? revisionSchema.parse(JSON.parse(raw)) : undefined;
-  const currentHash = content ? revisionDigest(content, metadata?.policy) : null;
+  const currentHash = content ? revisionDigest(content, metadata?.policy, metadata?.issues, planId, metadata?.version) : null;
   return {
-    content, hash: currentHash, version: metadata?.version ?? 0,
+    planId: planId ?? null, content, hash: currentHash, version: metadata?.version ?? 0,
     approved: !!metadata?.approved && metadata.hash === currentHash,
     drifted: !!metadata && metadata.hash !== currentHash,
-    policy: metadata?.policy,
+    policy: metadata?.policy, issues: metadata?.issues,
   };
 }
 
-function revisionDigest(content: string, policy?: VerificationPolicy) {
-  return digest(policy ? JSON.stringify({ content, policy }) : content);
+function revisionDigest(content: string, policy?: VerificationPolicy, issues?: Issues, planId?: string, version?: number) {
+  return digest(policy || issues || planId ? JSON.stringify({ content, policy, issues, planId, ...(planId ? { version } : {}) }) : content);
 }
 
-export async function saveRevision(root: string, content: string, expectedHash: string | null, policy?: VerificationPolicy) {
+export async function saveRevision(root: string, content: string, expectedHash: string | null, policy?: VerificationPolicy, planId?: string, issues?: Issues) {
   if (!content.trim()) throw new Error("Revision must not be empty");
   return locked(root, async () => {
-    const current = await readRevision(root);
+    const current = await readRevision(root, planId);
     if (current.hash !== expectedHash) throw new Error("Revision changed; reread before saving");
     const version = current.version + 1;
     const nextPolicy = policy === undefined ? current.policy : policySchema.parse(policy);
-    const nextHash = revisionDigest(content, nextPolicy);
-    const base = await directory(root);
-    const history = await directory(root, "revisions");
+    const nextIssues = issues === undefined ? current.issues : issuesSchema.parse(issues);
+    if (planId && (!nextPolicy || !nextIssues)) throw new Error("Named plans require a verification policy and issue contracts");
+    if (nextIssues) validateIssues(nextIssues, nextPolicy);
+    if (planId) {
+      const marker = "\n<!-- fs-issue-contracts -->\n";
+      const design = content.includes(marker) ? content.slice(0, content.indexOf(marker)) : content;
+      content = `${design.trimEnd()}${marker}\n## Issue contracts\n\nEdit these through save_revision.issues; progress is recorded in [progress.md](progress.md).\n\n\`\`\`json\n${JSON.stringify(nextIssues, null, 2)}\n\`\`\`\n`;
+    }
+    const nextHash = revisionDigest(content, nextPolicy, nextIssues, planId, version);
+    const base = await planDirectory(root, "", planId);
+    const history = await planDirectory(root, "revisions", planId);
     const previousMetadata = await optional(join(base, "revision.json"));
     if (previousMetadata) await atomic(join(history, `approval-${current.version}.json`), previousMetadata);
     if (current.content) await atomic(join(history, `${current.hash}.md`), current.content);
     await atomic(join(history, `${nextHash}.md`), content);
-    await atomic(join(base, "revision.md"), content);
-    await atomic(join(base, "revision.json"), JSON.stringify({ version, hash: nextHash, approved: false, approval: "", policy: nextPolicy }));
-    return readRevision(root);
+    await atomic(join(base, planId ? "plan.md" : "revision.md"), content);
+    await atomic(join(base, "revision.json"), JSON.stringify({ version, hash: nextHash, approved: false, approval: "", policy: nextPolicy, issues: nextIssues }));
+    return readRevision(root, planId);
   });
 }
 
-export async function approveRevision(root: string, expectedHash: string, approval: string) {
+export async function approveRevision(root: string, expectedHash: string, approval: string, planId?: string) {
   if (!approval.trim()) throw new Error("Record the user's explicit approval");
   return locked(root, async () => {
-    const current = await readRevision(root);
+    const current = await readRevision(root, planId);
     if (!current.version || current.drifted || current.hash !== expectedHash) throw new Error("Save and review the current revision before approval");
     const failures = current.policy ? policyProtectionFailures(current.policy) : [];
     if (failures.length) throw new Error(failures.join("; "));
-    await atomic(join(await directory(root), "revision.json"), JSON.stringify({
+    await atomic(join(await planDirectory(root, "", planId), "revision.json"), JSON.stringify({
       version: current.version, hash: current.hash, approved: true, approval,
-      policy: current.policy,
+      policy: current.policy, issues: current.issues,
     }));
-    return readRevision(root);
+    return readRevision(root, planId);
   });
 }
 
@@ -163,8 +207,8 @@ export async function readProjectRecord(root: string, kind: "evidence" | "decisi
   return { hash: digest(content), content: lines.slice(offset, offset + limit).join("\n"), totalLines: lines.length, nextOffset: offset + limit < lines.length ? offset + limit : null };
 }
 
-export async function workflowContext(root: string) {
-  const revision = await readRevision(root);
+export async function workflowContext(root: string, planId?: string) {
+  const revision = await readRevision(root, planId);
   const records: Array<{ kind: string; id: string; path: string }> = [];
   for (const kind of ["evidence", "decisions"]) {
     const path = join(root, ".frontend-system", kind);
@@ -174,7 +218,7 @@ export async function workflowContext(root: string) {
       }
     } catch (error) { if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error; }
   }
-  const raw = await optional(join(root, ".frontend-system/execution.json"));
+  const raw = await optional(join(root, ".frontend-system", scope(planId), "execution.json"));
   const saved = raw ? executionRecordSchema.parse(JSON.parse(raw)) : undefined;
   const current = saved ? await sourceSnapshot(root) : undefined;
   const changedFiles = saved && current ? [...new Set([...Object.keys(current), ...Object.keys(saved.fileHashes)])]
@@ -202,27 +246,36 @@ export async function workflowContext(root: string) {
   };
 }
 
-export async function saveCheckRecord(root: string, record: CheckRecord) {
+export async function saveCheckRecord(root: string, record: CheckRecord, planId?: string) {
   const validated = checkRecordSchema.parse(record);
-  const path = join(await directory(root, "checks"), `${record.id}.json`);
+  const path = join(await planDirectory(root, "checks", planId), `${record.id}.json`);
   await writeFile(path, JSON.stringify(validated, null, 2), { flag: "wx" });
   return { id: record.id, path };
 }
 
-export async function readCheckRecord(root: string, id: string): Promise<CheckRecord> {
+export async function readCheckRecord(root: string, id: string, planId?: string): Promise<CheckRecord> {
   recordId.parse(id);
-  return checkRecordSchema.parse(JSON.parse(await readFile(join(root, ".frontend-system/checks", `${id}.json`), "utf8")));
+  return checkRecordSchema.parse(JSON.parse(await readFile(join(root, ".frontend-system", scope(planId), "checks", `${id}.json`), "utf8")));
 }
 
-export async function saveExecution(root: string, input: Execution, expectedHash: string | null) {
+export async function saveExecution(root: string, input: Execution, expectedHash: string | null, planId?: string) {
   const execution = executionSchema.parse(input);
   return locked(root, async () => {
-    const state = await workflowContext(root);
+    const state = await workflowContext(root, planId);
     if (state.executionHash !== expectedHash) throw new Error("Execution changed; reread before saving");
     if (!state.revision.approved || state.revision.hash !== execution.revisionHash) throw new Error("Execution requires the current approved revision");
     const fileHashes = await sourceSnapshot(root);
     const sourceHash = digest(JSON.stringify(fileHashes));
     validateSteps(execution);
+    if (state.revision.issues) {
+      const issues = state.revision.issues;
+      if (execution.steps.length !== issues.length || issues.some((issue) => {
+        const step = execution.steps.find(({ id }) => id === issue.id);
+        return !step || step.title !== issue.title || JSON.stringify(step.files) !== JSON.stringify(issue.files) ||
+          JSON.stringify(step.dependsOn ?? []) !== JSON.stringify(issue.dependsOn) ||
+          JSON.stringify(step.requiredCheckIds ?? []) !== JSON.stringify(issue.requiredCheckIds);
+      })) throw new Error("Execution must preserve approved issue contracts; revise the plan to change them");
+    }
     const policy = state.revision.policy;
     for (const exception of policy?.exceptions ?? []) {
       if (!execution.steps.some(({ id }) => id === exception.resolveByStep)) throw new Error(`Missing exception resolution step: ${exception.resolveByStep}`);
@@ -233,10 +286,13 @@ export async function saveExecution(root: string, input: Execution, expectedHash
       }
     }
     const verify = async (id: string, full = false) => {
-      const record = await readCheckRecord(root, id);
-      if (!record.stable || record.sourceHash !== sourceHash || record.revisionHash !== execution.revisionHash ||
+      const record = await readCheckRecord(root, id, planId);
+      const hasBehaviorCheck = record.results.some((result) => /(^|:)(test|e2e)(:|$)/.test(result.capability)) ||
+        policy?.checks.some((check) => record.results.some((result) => result.capability === check.script) &&
+          policy.rules.some((rule) => rule.verification === "behavior-test" && check.ruleIds.includes(rule.id)));
+      if (record.purpose !== "verification" || !record.stable || record.sourceHash !== sourceHash || record.revisionHash !== execution.revisionHash ||
         !record.results.length || record.results.some((result) => result.status !== "passed") ||
-        (full && ((!policy && !record.full) || !record.results.some((result) => /(^|:)(test|e2e)(:|$)/.test(result.capability))))) {
+        (full && ((!policy && !record.full) || !hasBehaviorCheck))) {
         throw new Error(`Check ${id} does not verify the current source and revision`);
       }
       if (policy && full && requiredScripts(policy).some((script) => !record.results.some((result) => result.capability === script && result.status === "passed"))) {
@@ -245,7 +301,7 @@ export async function saveExecution(root: string, input: Execution, expectedHash
       return record;
     };
     if (execution.baselineCheckId) {
-      if ((await readCheckRecord(root, execution.baselineCheckId)).purpose !== "baseline") throw new Error("Expected a baseline check record");
+      if ((await readCheckRecord(root, execution.baselineCheckId, planId)).purpose !== "baseline") throw new Error("Expected a baseline check record");
     }
     for (const step of execution.steps) {
       if (["running", "complete"].includes(step.status) && (step.dependsOn ?? []).some((id) => execution.steps.find((entry) => entry.id === id)?.status !== "complete")) {
@@ -255,7 +311,7 @@ export async function saveExecution(root: string, input: Execution, expectedHash
       if (step.status === "complete" && (JSON.stringify(previous) !== JSON.stringify(step) || state.revisionChangedSinceCheckpoint)) {
         if (!step.checkIds.length || step.remaining.length) throw new Error("Completed steps require checks and no remaining work");
         for (const id of step.checkIds) await verify(id);
-        if (policy) await verifyStep(root, step, policy, execution.revisionHash, sourceHash);
+        if (policy) await verifyStep(root, step, policy, execution.revisionHash, sourceHash, planId);
       }
     }
     if (execution.status === "complete") {
@@ -267,21 +323,21 @@ export async function saveExecution(root: string, input: Execution, expectedHash
         const profile = await discovery.discover(await discovery.createRef(root));
         const failures = policyFailures(policy, profile.scripts, fileHashes);
         if (failures.length) throw new Error(failures.join("; "));
-        const reviews = await Promise.all(execution.steps.flatMap((step) => (step.reviewIds ?? []).map((id) => readReview(root, id))));
+        const reviews = await Promise.all(execution.steps.flatMap((step) => (step.reviewIds ?? []).map((id) => readReview(root, id, planId))));
         verifyReviews(reviews, policy, execution.revisionHash, sourceHash);
       }
     }
-    const path = join(await directory(root), "execution.json");
+    const path = join(await planDirectory(root, "", planId), "execution.json");
     // Saving progress must not erase stale verification. Only accepted final checks clear it.
     const requiresRevalidation = execution.status !== "complete" && state.needsRevalidation;
     const content = JSON.stringify({ execution, fileHashes, requiresRevalidation, updatedAt: new Date().toISOString() }, null, 2);
     await atomic(path, content);
-    await writeChecklist(root, execution);
+    await writeChecklist(root, execution, planId);
     return { path, hash: digest(content) };
   });
 }
 
-function validateSteps(execution: Execution) {
+function validateSteps(execution: { steps: Array<{ id: string; dependsOn?: string[] | undefined }> }) {
   const steps = new Map(execution.steps.map((step) => [step.id, step]));
   const visited = new Set<string>();
   const visiting = new Set<string>();
@@ -297,31 +353,41 @@ function validateSteps(execution: Execution) {
   for (const id of steps.keys()) visit(id);
 }
 
-async function writeChecklist(root: string, execution: Execution) {
-  const path = join(await directory(root), "refactoring.md");
+function validateIssues(issues: Issues, policy?: VerificationPolicy) {
+  if (new Set(issues.map(({ id }) => id)).size !== issues.length) throw new Error("Duplicate issue IDs");
+  validateSteps({ steps: issues });
+  for (const issue of issues) {
+    if (issue.requiredCheckIds.some((id) => !policy?.checks.some((check) => check.id === id))) throw new Error("Unknown issue check");
+  }
+  if (policy?.checks.some((check) => !issues.some((issue) => issue.requiredCheckIds.includes(check.id)))) throw new Error("Every policy check needs an issue");
+  if (policy?.exceptions.some((exception) => !issues.some((issue) => issue.id === exception.resolveByStep))) throw new Error("Missing exception resolution issue");
+}
+
+async function writeChecklist(root: string, execution: Execution, planId?: string) {
+  const path = join(await planDirectory(root, "", planId), planId ? "progress.md" : "refactoring.md");
   const previous = await optional(path);
   const body = `# Work plan\n\nRevision: ${execution.revisionHash}\nKind: ${execution.kind ?? "refactor"}\nStatus: ${execution.status}\n\n${execution.steps.map((step) => `- [${step.status === "complete" ? "x" : " "}] ${step.id}: ${step.title} (${step.status})\n  Depends on: ${(step.dependsOn ?? []).join(", ") || "none"}\n  Remaining: ${step.remaining.join("; ") || "none"}`).join("\n")}\n\n${execution.note}\n`;
-  if (previous && previous !== body) await atomic(join(await directory(root, "plans"), `${digest(previous)}.md`), previous);
+  if (previous && previous !== body) await atomic(join(await planDirectory(root, planId ? "history" : "plans", planId), `${digest(previous)}.md`), previous);
   await atomic(path, body);
 }
 
 const attemptSchema = z.object({ id: recordId, stepId: recordId, revisionHash: hash, number: z.number().int().min(1).max(3), createdAt: z.string() });
-export async function readAttempt(root: string, id: string) {
+export async function readAttempt(root: string, id: string, planId?: string) {
   recordId.parse(id);
-  return attemptSchema.parse(JSON.parse(await readFile(join(root, ".frontend-system/attempts", `${id}.json`), "utf8")));
+  return attemptSchema.parse(JSON.parse(await readFile(join(root, ".frontend-system", scope(planId), "attempts", `${id}.json`), "utf8")));
 }
 
-export async function beginAttempt(root: string, stepId: string, expectedHash: string) {
+export async function beginAttempt(root: string, stepId: string, expectedHash: string, planId?: string) {
   recordId.parse(stepId);
   return locked(root, async () => {
-    const state = await workflowContext(root);
+    const state = await workflowContext(root, planId);
     if (state.executionHash !== expectedHash || !state.execution || !state.revision.approved || state.revision.hash !== state.execution.revisionHash) throw new Error("Reread the current approved execution");
     const step = state.execution.steps.find(({ id }) => id === stepId);
     if (!step || step.status === "complete") throw new Error("Select an incomplete step");
     validateSteps(state.execution);
     if ((step.dependsOn ?? []).some((id) => state.execution!.steps.find((entry) => entry.id === id)?.status !== "complete")) throw new Error("Prerequisites are incomplete");
-    const folder = await directory(root, "attempts");
-    const attempts = await Promise.all((await readdir(folder)).filter((name) => name.endsWith(".json")).map((name) => readAttempt(root, name.slice(0, -5))));
+    const folder = await planDirectory(root, "attempts", planId);
+    const attempts = await Promise.all((await readdir(folder)).filter((name) => name.endsWith(".json")).map((name) => readAttempt(root, name.slice(0, -5), planId)));
     const number = attempts.filter((item) => item.stepId === stepId && item.revisionHash === state.revision.hash).length + 1;
     if (number > 3) throw new Error("Attempt budget exhausted; record blocked state and resolve the cause");
     const attempt = attemptSchema.parse({ id: randomUUID(), stepId, revisionHash: state.revision.hash, number, createdAt: new Date().toISOString() });
@@ -338,18 +404,18 @@ export const reviewInputSchema = z.strictObject({
 });
 const reviewSchema = reviewInputSchema.extend({ id: recordId, revisionHash: hash, sourceHash: hash, createdAt: z.string(), authority: z.literal("host-model-review") });
 type Review = z.infer<typeof reviewSchema>;
-export async function readReview(root: string, id: string) {
+export async function readReview(root: string, id: string, planId?: string) {
   recordId.parse(id);
-  return reviewSchema.parse(JSON.parse(await readFile(join(root, ".frontend-system/reviews", `${id}.json`), "utf8")));
+  return reviewSchema.parse(JSON.parse(await readFile(join(root, ".frontend-system", scope(planId), "reviews", `${id}.json`), "utf8")));
 }
-export async function saveReview(root: string, input: z.infer<typeof reviewInputSchema>) {
+export async function saveReview(root: string, input: z.infer<typeof reviewInputSchema>, planId?: string) {
   const data = reviewInputSchema.parse(input);
   return locked(root, async () => {
-    const state = await workflowContext(root);
+    const state = await workflowContext(root, planId);
     const policy = state.revision.policy;
     const requirement = policy?.reviews.find(({ id }) => id === data.reviewId);
     if (!state.revision.approved || !requirement || !state.execution?.steps.some(({ id }) => id === data.stepId)) throw new Error("Review requires an approved policy and execution step");
-    const attempt = await readAttempt(root, data.attemptId);
+    const attempt = await readAttempt(root, data.attemptId, planId);
     if (attempt.revisionHash !== state.revision.hash || attempt.stepId !== data.stepId) throw new Error("Review attempt does not match");
     const snapshot = await sourceSnapshot(root);
     if (data.findings.some((finding) => !policy!.rules.some(({ id }) => id === finding.ruleId) || finding.files.some((file) => !snapshot[file]))) throw new Error("Review findings require existing files and policy rules");
@@ -357,7 +423,7 @@ export async function saveReview(root: string, input: z.infer<typeof reviewInput
     if (data.resolvedExceptions.some((id) => !policy!.exceptions.some((item) => item.id === id))) throw new Error("Unknown exception resolution");
     if (data.status === "passed" && data.remaining.length) throw new Error("Passing review cannot have remaining work");
     const review = reviewSchema.parse({ ...data, id: randomUUID(), revisionHash: state.revision.hash, sourceHash: digest(JSON.stringify(snapshot)), createdAt: new Date().toISOString(), authority: "host-model-review" });
-    await writeFile(join(await directory(root, "reviews"), `${review.id}.json`), JSON.stringify(review), { flag: "wx" });
+    await writeFile(join(await planDirectory(root, "reviews", planId), `${review.id}.json`), JSON.stringify(review), { flag: "wx" });
     return review;
   });
 }
@@ -368,18 +434,18 @@ function verifyReviews(reviews: Review[], policy: VerificationPolicy, revisionHa
   if (policy.exceptions.some((item) => !passing.some((review) => review.resolvedExceptions.includes(item.id)))) throw new Error("Unresolved migration exceptions");
 }
 
-async function verifyStep(root: string, step: Execution["steps"][number], policy: VerificationPolicy, revisionHash: string, sourceHash: string) {
+async function verifyStep(root: string, step: Execution["steps"][number], policy: VerificationPolicy, revisionHash: string, sourceHash: string, planId?: string) {
   if (!step.attemptId) throw new Error("Policy steps require a recorded attempt");
-  const attempt = await readAttempt(root, step.attemptId);
+  const attempt = await readAttempt(root, step.attemptId, planId);
   if (attempt.stepId !== step.id || attempt.revisionHash !== revisionHash) throw new Error("Step attempt does not match");
-  const records = await Promise.all(step.checkIds.map((id) => readCheckRecord(root, id)));
+  const records = await Promise.all(step.checkIds.map((id) => readCheckRecord(root, id, planId)));
   if (records.some((item) => item.attemptId !== attempt.id)) throw new Error("Step checks must belong to its attempt");
   const checks = step.requiredCheckIds ?? policy.checks.map(({ id }) => id);
   for (const id of checks) {
     const check = policy.checks.find((item) => item.id === id);
     if (!check || !records.some((record) => record.results.some((result) => result.capability === check.script && result.status === "passed"))) throw new Error(`Missing required step check: ${id}`);
   }
-  const reviews = await Promise.all((step.reviewIds ?? []).map((id) => readReview(root, id)));
+  const reviews = await Promise.all((step.reviewIds ?? []).map((id) => readReview(root, id, planId)));
   if (reviews.some((review) => review.stepId !== step.id || review.attemptId !== attempt.id)) throw new Error("Step reviews must belong to its attempt");
   verifyReviews(reviews, { ...policy, exceptions: policy.exceptions.filter((item) => item.resolveByStep === step.id) }, revisionHash, sourceHash);
 }

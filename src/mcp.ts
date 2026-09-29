@@ -24,13 +24,14 @@ import {
 } from "./application/project-store.js";
 import { runProjectChecks, summarizeChecks } from "./application/run-capabilities.js";
 import {
-  approveRevision, digest, executionSchema, readCheckRecord, readProjectRecord, readRevision, recordId,
+  approveRevision, digest, executionSchema, issuesSchema, listPlans, readCheckRecord, readProjectRecord, readRevision, recordId,
   saveExecution, saveProjectRecord, saveRevision, workflowContext, beginAttempt, saveReview, reviewInputSchema,
 } from "./application/workflow-store.js";
 import { policySchema } from "./application/policy.js";
 import { approveRuleProposal, proposalInputSchema, readRuleProposal, saveRuleProposal } from "./application/knowledge/rule-proposals.js";
 import { acknowledgeSource, checkSources, readSourceChange, registerSource, sourceRegistry } from "./application/knowledge/sources.js";
 import { readReferenceIndex, searchReferenceIndex, readIndexedReference } from "./application/knowledge/reference-index.js";
+import { projectSnapshot, projectDocumentStatus, projectDocumentHash, recordProjectRefresh, readProjectSource } from "./application/project-snapshot.js";
 import { taskContext } from "./application/task-context.js";
 import type { ProjectAnalysis, ProjectConfig, WorkRequest } from "./domain/types.js";
 
@@ -69,18 +70,23 @@ server.registerTool("list_project_files", {
     nextOffset: offset + limit < files.length ? offset + limit : null, excluded: inventory.excluded, warnings: inventory.warnings });
 });
 
+server.registerTool("list_plans", {
+  description: "List request plans and approval versions. Select a planId before reading or changing its workflow; omitted planId addresses legacy records only.",
+  inputSchema: { projectPath: z.string().optional() }, annotations: readOnly,
+}, async ({ projectPath: path }) => result(await listPlans(projectPath(path))));
+
 server.registerTool("get_workflow_context", {
   title: "Read revision, decisions, and resume state",
   description: "Return project records and detect source or revision changes since the checkpoint. Stored completion is historical, not proof of current verification.",
-  inputSchema: { projectPath: z.string().optional() }, annotations: readOnly,
-}, async ({ projectPath: path }) => result(await workflowContext(projectPath(path))));
+  inputSchema: { projectPath: z.string().optional(), planId: recordId.optional() }, annotations: readOnly,
+}, async ({ projectPath: path, planId }) => result(await workflowContext(projectPath(path), planId)));
 
 server.registerTool("get_revision", {
   title: "Read a revision window",
   description: "Read the current target design with its content hash and effective approval. Read all relevant windows before discussing or approving it.",
-  inputSchema: { projectPath: z.string().optional(), offset: z.number().int().min(0).default(0), limit: z.number().int().min(1).max(500).default(200) }, annotations: readOnly,
-}, async ({ projectPath: path, offset, limit }) => {
-  const revision = await readRevision(projectPath(path));
+  inputSchema: { projectPath: z.string().optional(), planId: recordId.optional(), offset: z.number().int().min(0).default(0), limit: z.number().int().min(1).max(500).default(200) }, annotations: readOnly,
+}, async ({ projectPath: path, planId, offset, limit }) => {
+  const revision = await readRevision(projectPath(path), planId);
   const lines = revision.content.split("\n");
   return result({ ...revision, content: lines.slice(offset, offset + limit).join("\n"), totalLines: lines.length, nextOffset: offset + limit < lines.length ? offset + limit : null });
 });
@@ -88,14 +94,14 @@ server.registerTool("get_revision", {
 server.registerTool("save_revision", {
   title: "Save an unapproved target design",
   description: "Save a revision draft and preserve the previous content in history. Every save invalidates approval. Pass the current hash, or null for a new project.",
-  inputSchema: { projectPath: z.string().optional(), content: z.string().min(1), expectedHash: z.string().nullable(), policy: policySchema.optional() }, annotations: localWrite,
-}, async ({ projectPath: path, content, expectedHash, policy }) => result(await saveRevision(projectPath(path), content, expectedHash, policy)));
+  inputSchema: { projectPath: z.string().optional(), planId: recordId.optional(), content: z.string().min(1), expectedHash: z.string().nullable(), policy: policySchema.optional(), issues: issuesSchema.optional() }, annotations: localWrite,
+}, async ({ projectPath: path, planId, content, expectedHash, policy, issues }) => result(await saveRevision(projectPath(path), content, expectedHash, policy, planId, issues)));
 
 server.registerTool("approve_revision", {
   title: "Record explicit user approval of a revision",
   description: "Call only after the user approves this exact target design. Record their approval, never infer it from a request to analyze or draft. Does not start implementation.",
-  inputSchema: { projectPath: z.string().optional(), expectedHash: z.string(), approval: z.string().min(1) }, annotations: localWrite,
-}, async ({ projectPath: path, expectedHash, approval }) => result(await approveRevision(projectPath(path), expectedHash, approval)));
+  inputSchema: { projectPath: z.string().optional(), planId: recordId.optional(), expectedHash: z.string(), approval: z.string().min(1) }, annotations: localWrite,
+}, async ({ projectPath: path, planId, expectedHash, approval }) => result(await approveRevision(projectPath(path), expectedHash, approval, planId)));
 
 server.registerTool("save_project_record", {
   title: "Save project evidence or a scoped decision",
@@ -112,15 +118,15 @@ server.registerTool("get_project_record", {
 server.registerTool("save_execution", {
   title: "Checkpoint a refactoring execution",
   description: "Record stages against the approved revision. Reconcile source changes before saving. Newly completed stages require current passing checks; complete execution requires a full current check. Never edit product files or reset user changes here.",
-  inputSchema: { projectPath: z.string().optional(), expectedHash: z.string().nullable(), execution: executionSchema }, annotations: localWrite,
-}, async ({ projectPath: path, expectedHash, execution }) => result(await saveExecution(projectPath(path), execution, expectedHash)));
+  inputSchema: { projectPath: z.string().optional(), planId: recordId.optional(), expectedHash: z.string().nullable(), execution: executionSchema }, annotations: localWrite,
+}, async ({ projectPath: path, planId, expectedHash, execution }) => result(await saveExecution(projectPath(path), execution, expectedHash, planId)));
 
 server.registerTool("get_check_record", {
   title: "Read recorded check evidence",
   description: "Return an immutable baseline or verification record. Matching failure status does not prove the same failure cause.",
-  inputSchema: { projectPath: z.string().optional(), id: recordId, capability: z.string().optional(), offset: z.number().int().min(0).default(0), limit: z.number().int().min(1).max(12000).default(12000) }, annotations: readOnly,
-}, async ({ projectPath: path, id, capability, offset, limit }) => {
-  const record = await readCheckRecord(projectPath(path), id);
+  inputSchema: { projectPath: z.string().optional(), planId: recordId.optional(), id: recordId, capability: z.string().optional(), offset: z.number().int().min(0).default(0), limit: z.number().int().min(1).max(12000).default(12000) }, annotations: readOnly,
+}, async ({ projectPath: path, planId, id, capability, offset, limit }) => {
+  const record = await readCheckRecord(projectPath(path), id, planId);
   if (!capability) return result(summarizeChecks(record));
   const entry = record.results.find((item) => item.capability === capability);
   if (!entry) throw new Error("Unknown check capability");
@@ -129,13 +135,13 @@ server.registerTool("get_check_record", {
 
 server.registerTool("begin_work_attempt", {
   description: "Reserve one of three persisted full attempts for an incomplete step. Local development tests do not need attempts. Reuse the returned ID for checks and semantic reviews; cannot reset the budget by resuming.",
-  inputSchema: { projectPath: z.string().optional(), stepId: recordId, expectedHash: z.string() }, annotations: localWrite,
-}, async ({ projectPath: path, stepId, expectedHash }) => result(await beginAttempt(projectPath(path), stepId, expectedHash)));
+  inputSchema: { projectPath: z.string().optional(), planId: recordId.optional(), stepId: recordId, expectedHash: z.string() }, annotations: localWrite,
+}, async ({ projectPath: path, planId, stepId, expectedHash }) => result(await beginAttempt(projectPath(path), stepId, expectedHash, planId)));
 
 server.registerTool("save_semantic_review", {
   description: "Record host-model review evidence against the current source and approved policy. Findings must cite existing files. This records model judgment, not machine proof of correctness.",
-  inputSchema: { projectPath: z.string().optional(), review: reviewInputSchema }, annotations: localWrite,
-}, async ({ projectPath: path, review }) => result(await saveReview(projectPath(path), review)));
+  inputSchema: { projectPath: z.string().optional(), planId: recordId.optional(), review: reviewInputSchema }, annotations: localWrite,
+}, async ({ projectPath: path, planId, review }) => result(await saveReview(projectPath(path), review, planId)));
 
 server.registerTool("inspect_project", {
   title: "Inspect frontend project facts",
@@ -193,13 +199,48 @@ const questionSchema = z.object({
   reason: z.string(),
 });
 
+server.registerTool("get_project_snapshot", {
+  description: "Read main facts without checkout or changing local files. Page tracked files and read selected contents with read_project_source. Manifests are facts, not proof of installed tools or passing tests. No remote fetch.",
+  inputSchema: { projectPath: z.string().optional(), baseRef: z.string().default("main"), offset: z.number().int().min(0).default(0), limit: z.number().int().min(1).max(1000).default(200), expectedCommit: z.string().optional() }, annotations: readOnly,
+}, async ({ projectPath: path, baseRef, offset, limit, expectedCommit }) => {
+  const root = projectPath(path);
+  const snapshot = await projectSnapshot(root, baseRef);
+  if (expectedCommit && snapshot.commit !== expectedCommit) throw new Error("Main changed; restart pagination");
+  return result({ ...snapshot, files: snapshot.files.slice(offset, offset + limit), totalFiles: snapshot.files.length,
+    nextOffset: offset + limit < snapshot.files.length ? offset + limit : null,
+    documentHash: await projectDocumentHash(root), documentStatus: await projectDocumentStatus(root) });
+});
+
+server.registerTool("record_project_refresh", {
+  description: "Mark an authorized main-context refresh pending or failed. Preserve the last successful project.md. Save_project_context clears this state after successful replacement.",
+  inputSchema: { projectPath: z.string().optional(), baseRef: z.string().default("main"), expectedCommit: z.string().nullable(), status: z.enum(["pending", "failed"]), reason: z.string().default("") }, annotations: localWrite,
+}, async ({ projectPath: path, baseRef, expectedCommit, status, reason }) => result(await recordProjectRefresh(projectPath(path), baseRef, expectedCommit, status, reason)));
+
+server.registerTool("get_project_document", {
+  description: "Read a bounded project.md window, falling back to preserved init.md. Use the returned content hash to keep pagination consistent.",
+  inputSchema: { projectPath: z.string().optional(), offset: z.number().int().min(0).default(0), limit: z.number().int().min(1).max(12000).default(6000), expectedHash: z.string().optional() }, annotations: readOnly,
+}, async ({ projectPath: path, offset, limit, expectedHash }) => {
+  const content = await readProjectDocument(projectPath(path));
+  const hash = content ? digest(content) : null;
+  if (expectedHash && hash !== expectedHash) throw new Error("Document changed; restart pagination");
+  return result({ hash, content: content.slice(offset, offset + limit), totalCharacters: content.length, nextOffset: offset + limit < content.length ? offset + limit : null });
+});
+
+server.registerTool("read_project_source", {
+  description: "Read a bounded file window from the inspected main commit. Working-branch contents are not used.",
+  inputSchema: { projectPath: z.string().optional(), baseRef: z.string().default("main"), path: z.string(), expectedCommit: z.string(), offset: z.number().int().min(0).default(0), limit: z.number().int().min(1).max(12000).default(6000) }, annotations: readOnly,
+}, async ({ projectPath: root, path, expectedCommit, baseRef, offset, limit }) => result(await readProjectSource(projectPath(root), path, expectedCommit, baseRef, offset, limit)));
+
 server.registerTool("save_project_context", {
   title: "Save inspected project context",
   description: "Persist the top-level model's evidence-backed project analysis and update deterministic hashes.",
   inputSchema: {
     projectPath: z.string().optional(),
+    baseRef: z.string().default("main"), expectedCommit: z.string().nullable(), expectedHash: z.string().nullable(),
     analysis: z.object({
       summary: z.string(),
+      domains: z.array(z.string()).default([]), events: z.array(z.string()).default([]),
+      state: z.array(z.string()).default([]), styles: z.array(z.string()).default([]), tests: z.array(z.string()).default([]),
       observed: z.array(z.string()),
       architecture: z.array(z.string()),
       conventions: z.array(z.string()),
@@ -210,26 +251,26 @@ server.registerTool("save_project_context", {
     }),
   },
   annotations: localWrite,
-}, async ({ projectPath: path, analysis }) => {
+}, async ({ projectPath: path, analysis, baseRef, expectedCommit, expectedHash }) => {
   const root = projectPath(path);
   const profile = await discovery.discover(await discovery.createRef(root));
-  await writeProjectArtifacts(profile, analysis as ProjectAnalysis);
-  return result({ projectDocument: `${root}/.frontend-system/init.md`, analyzedCommit: profile.project.git.commit });
+  await writeProjectArtifacts(profile, analysis as ProjectAnalysis, { baseRef, expectedCommit, expectedHash });
+  return result({ projectDocument: `${root}/.frontend-system/project.md`, status: await projectDocumentStatus(root) });
 });
 
 server.registerTool("get_work_context", {
   title: "Build focused frontend work context",
   description: "Return a token-conscious file shortlist, applicable rules, learned references, project constraints, and design evidence for a request.",
   inputSchema: {
-    projectPath: z.string().optional(),
+    projectPath: z.string().optional(), planId: recordId.optional(),
     request: z.string(),
     mode: z.enum(["prepare", "implement", "verify", "review", "refactor"]).default("implement"),
     constraints: z.array(z.string()).default([]),
   },
   annotations: readOnly,
-}, async ({ projectPath: path, request, mode, constraints }) => {
+}, async ({ projectPath: path, planId, request, mode, constraints }) => {
   const workRequest: WorkRequest = { raw: request, mode, constraints };
-  return result(await taskContext(discovery, systemRoot, projectPath(path), workRequest));
+  return result(await taskContext(discovery, systemRoot, projectPath(path), workRequest, planId));
 });
 
 server.registerTool("get_change_context", {
@@ -256,12 +297,12 @@ server.registerTool("get_change_context", {
 server.registerTool("run_project_checks", {
   title: "Run discovered project checks",
   description: "Run only existing, non-watch package scripts for unit, integration, e2e, Storybook, types, lint, and build. Test code should be created before calling this tool.",
-  inputSchema: { projectPath: z.string().optional(), capabilities: z.array(z.string()).min(1).optional(), purpose: z.enum(["baseline", "verification"]).default("verification"), baselineCheckId: recordId.optional(), required: z.boolean().default(false), attemptId: recordId.optional() },
+  inputSchema: { projectPath: z.string().optional(), planId: recordId.optional(), stage: z.enum(["baseline", "issue", "delivery"]).optional(), stepId: recordId.optional(), capabilities: z.array(z.string()).min(1).optional(), purpose: z.enum(["baseline", "verification"]).optional(), baselineCheckId: recordId.optional(), required: z.boolean().default(false), attemptId: recordId.optional() },
   annotations: localWrite,
-}, async ({ projectPath: path, capabilities, purpose, baselineCheckId, required, attemptId }) => {
+}, async ({ projectPath: path, planId, stage, stepId, capabilities, purpose, baselineCheckId, required, attemptId }) => {
   const root = projectPath(path);
   const profile = await discovery.discover(await discovery.createRef(root));
-  return result(summarizeChecks(await runProjectChecks(profile, { capabilities, purpose, baselineCheckId, required, attemptId })));
+  return result(summarizeChecks(await runProjectChecks(profile, { planId, stage, stepId, capabilities, purpose, baselineCheckId, required, attemptId })));
 });
 
 server.registerTool("knowledge_status", {

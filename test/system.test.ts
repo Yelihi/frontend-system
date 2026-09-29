@@ -98,7 +98,7 @@ test("persists project configuration and evidence-backed context", async () => {
     await writeProjectConfig(root, { version: 1, designProvider: { name: "built-in" } });
     await writeProjectArtifacts(profile, analysis);
     assert.equal((await readProjectConfig(root))?.designProvider.name, "built-in");
-    assert.match(await readFile(join(root, ".frontend-system/init.md"), "utf8"), /Keep state local/);
+    assert.match(await readFile(join(root, ".frontend-system/project.md"), "utf8"), /Keep state local/);
     assert.ok((await readProjectState(root))?.fileHashes["package.json"]);
   } finally {
     await rm(root, { recursive: true, force: true });

@@ -1,4 +1,4 @@
-name: FS verification
+name: FS CI and delivery
 on:
   pull_request:
   push:
@@ -6,9 +6,13 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   core:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -21,6 +25,7 @@ jobs:
       - run: git diff --exit-code -- bundle/mcp.js
   frontend:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     env:
       NEXT_TELEMETRY_DISABLED: '1'
     steps:
@@ -35,3 +40,31 @@ jobs:
       - run: npx --no-install playwright install --with-deps chromium
         working-directory: test/fixtures/frontend
       - run: npm run test:frontend
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: frontend-evidence-${{ github.sha }}
+          path: |
+            test/fixtures/frontend/playwright-report/
+            test/fixtures/frontend/test-results/
+          retention-days: 7
+  delivery:
+    needs: [core, frontend]
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npm run test:package -- --output-dir dist/release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: frontend-system-${{ github.sha }}
+          path: dist/release/*.tgz
+          if-no-files-found: error
+          retention-days: 14

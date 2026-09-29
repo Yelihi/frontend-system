@@ -14,7 +14,8 @@ Read `../../references/decision-workflow.md`.
    Compare viable options and costs. Choose layers/dependency directions, principal
    contracts, framework/CSS/dependency choices and design-system rules from those needs.
    DDD is optional. Separate backend/DB implementation is outside FS scope.
-4. Write `.frontend-system/revision.md` using `save_revision`: include problems and
+4. Follow `../project-plans.md`. Write `.frontend-system/plans/<plan-id>/plan.md`
+   using save_revision with planId, policy and issue contracts: include problems and
    scope, domain guarantees, explicit before/after behavior changes, architecture and
    dependency rules, important contracts, design-system decisions, tradeoffs,
    transition stages and acceptance checks. Keep general coding guidance in skills.

@@ -1,7 +1,9 @@
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import * as z from "zod/v4";
-import { sourceSnapshot } from "./workflow-store.js";
+import { atomic, digest, directory, locked, sourceSnapshot } from "./workflow-store.js";
+
+import { projectSnapshot } from "./project-snapshot.js";
 
 import type { ProjectAnalysis, ProjectConfig, ProjectProfile, ProjectState } from "../domain/types.js";
 
@@ -29,7 +31,7 @@ async function optionalRead(path: string): Promise<string> {
 }
 
 export async function readProjectDocument(root: string): Promise<string> {
-  return await optionalRead(join(root, directoryName, "init.md")) || optionalRead(join(root, directoryName, "project.md"));
+  return await optionalRead(join(root, directoryName, "project.md")) || optionalRead(join(root, directoryName, "init.md"));
 }
 
 export async function readProjectConfig(root: string): Promise<ProjectConfig | undefined> {
@@ -59,7 +61,12 @@ function renderProject(profile: ProjectProfile, analysis: ProjectAnalysis): stri
     `\n> Generated from ${profile.project.git.commit ?? "an uncommitted tree"}. Verify evidence before changing approved decisions.`,
     `\n${analysis.summary}`,
     section("Observed", analysis.observed),
+    section("Domains and routes", analysis.domains ?? []),
+    section("Events and calls", analysis.events ?? []),
     section("Architecture", analysis.architecture),
+    section("State and data fetching", analysis.state ?? []),
+    section("Styles", analysis.styles ?? []),
+    section("Tests and evidence", analysis.tests ?? []),
     section("Conventions", analysis.conventions),
     section("Decisions", analysis.decisions),
     section("Quality Gates", analysis.qualityGates),
@@ -69,23 +76,45 @@ function renderProject(profile: ProjectProfile, analysis: ProjectAnalysis): stri
   ].join("\n\n");
 }
 
-export async function writeProjectArtifacts(profile: ProjectProfile, analysis: ProjectAnalysis): Promise<void> {
-  const directory = join(profile.project.rootPath, directoryName);
-  await mkdir(join(directory, "reports"), { recursive: true });
-  const ignorePath = join(directory, ".gitignore");
-  const ignored = await optionalRead(ignorePath);
-  const missing = ["state.json", "reports/", ".workflow-lock/"].filter((line) => !ignored.split(/\r?\n/).includes(line));
-  if (missing.length) await writeFile(ignorePath, `${ignored}${ignored && !ignored.endsWith("\n") ? "\n" : ""}${missing.join("\n")}\n`);
-  const legacy = await optionalRead(join(directory, "project.md"));
-  const content = renderProject(profile, analysis) + (legacy ? "\nLegacy context (preserved): [project.md](project.md). Reconcile its decisions before superseding them.\n" : "");
-  await Promise.all([
-    writeFile(join(directory, "init.md"), content),
-    writeFile(join(directory, "state.json"), JSON.stringify({
-      ...(profile.project.git.commit ? { analyzedCommit: profile.project.git.commit } : {}),
-      fileHashes: await sourceSnapshot(profile.project.rootPath),
-      updatedAt: new Date().toISOString(),
-    } satisfies ProjectState, null, 2)),
-  ]);
+export async function writeProjectArtifacts(profile: ProjectProfile, analysis: ProjectAnalysis, options: {
+  baseRef?: string | undefined; expectedCommit?: string | null | undefined; expectedHash?: string | null | undefined;
+} = {}): Promise<void> {
+  const root = profile.project.rootPath;
+  await locked(root, async () => {
+    const snapshot = await projectSnapshot(root, options.baseRef);
+    if (snapshot.commit && options.expectedCommit !== snapshot.commit) throw new Error("Save context against the inspected main commit; main may have changed");
+    if (!snapshot.commit && options.expectedCommit) throw new Error("The inspected main commit is unavailable");
+    const base = await directory(root);
+    const path = join(base, "project.md");
+    const previous = await optionalRead(path);
+    if (options.expectedHash !== undefined && (previous ? digest(previous) : null) !== options.expectedHash) throw new Error("Project document changed; reread before saving");
+    if (snapshot.commit && options.expectedHash === undefined) throw new Error("Provide the current project document hash (null for a new document)");
+    const legacy = await optionalRead(join(base, "init.md"));
+    if (previous) await atomic(join(await directory(root, "project-history"), `${digest(previous)}.md`), previous);
+    const metadata = { baseRef: snapshot.baseRef, analyzedCommit: snapshot.commit, sourceHash: snapshot.sourceHash, updatedAt: new Date().toISOString() };
+    const mainProfile = { ...profile, project: { ...profile.project, git: { ...profile.project.git, ...(snapshot.commit ? { commit: snapshot.commit } : {}) } } };
+    const content = [
+      `<!-- frontend-system-context ${JSON.stringify(metadata)} -->`,
+      renderProject(mainProfile, analysis),
+      section("Tracked files at base commit", snapshot.files.map((file) => `\`${file}\``)),
+      section("Package manifests at base commit", Object.entries(snapshot.manifests).map(([file, manifest]) => `\`${file}\`: \`${JSON.stringify(manifest)}\``)),
+      snapshot.commit ? `Base: ${snapshot.baseRef} @ ${snapshot.commit}. Check current status with get_project_snapshot; local edits are not main facts.` : "No committed main baseline. This is initial context, not verified main state.",
+      legacy ? "Previous inspection preserved: [init.md](init.md). Reconcile its decisions explicitly." : "",
+      previous ? `Previous context preserved: [history](project-history/${digest(previous)}.md).` : "",
+      "",
+    ].join("\n\n");
+    // Recheck after generation; a failed refresh preserves the last successful document.
+    if ((await projectSnapshot(root, options.baseRef)).commit !== snapshot.commit) throw new Error("Main changed during context generation; retry with new facts");
+    await atomic(path, content);
+    await rm(join(base, "project-refresh.json"), { force: true });
+    const ignored = await optionalRead(join(base, ".gitignore"));
+    const missing = ["state.json", "reports/", ".workflow-lock/"].filter((line) => !ignored.split(/\r?\n/).includes(line));
+    if (missing.length) await atomic(join(base, ".gitignore"), `${ignored}${ignored && !ignored.endsWith("\n") ? "\n" : ""}${missing.join("\n")}\n`);
+    await atomic(join(base, "state.json"), JSON.stringify({
+      ...(snapshot.commit ? { analyzedCommit: snapshot.commit } : {}),
+      fileHashes: snapshot.workingChanges.length ? {} : await sourceSnapshot(root), updatedAt: metadata.updatedAt,
+    } satisfies ProjectState, null, 2));
+  });
 }
 
 export async function writeReport(root: string, name: string, content: string): Promise<string> {

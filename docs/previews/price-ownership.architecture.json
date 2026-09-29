@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "가격 화면의 책임과 데이터 · Next.js 설계 예시",
+    "quality_profile": "showcase",
+    "viewBox": [1080, 690]
+  },
+  "components": [
+    { "id": "page", "type": "backend", "label": "가격 페이지", "sublabel": "초기 조회 · 서버 조합", "tag": "Server", "pos": [80, 80], "size": [190, 70] },
+    { "id": "source", "type": "backend", "label": "가격 데이터 원본", "sublabel": "서버에서 접근하는 API", "pos": [435, 80], "size": [190, 70] },
+    { "id": "cache", "type": "database", "label": "연도별 서버 상태", "sublabel": "SWR 캐시 · 로딩 · 오류", "tag": "Client", "pos": [80, 310], "size": [190, 70] },
+    { "id": "selection", "type": "frontend", "label": "화면 선택 상태", "sublabel": "year · category · monthKey", "tag": "Client", "pos": [435, 310], "size": [190, 70] },
+    { "id": "projection", "type": "frontend", "label": "표시 데이터 계산", "sublabel": "필터 · 월별 내역 · 합계", "pos": [435, 490], "size": [190, 70] },
+    { "id": "chart", "type": "frontend", "label": "가격 차트", "sublabel": "월 선택 이벤트", "pos": [830, 280], "size": [180, 70] },
+    { "id": "items", "type": "frontend", "label": "월별 내역", "sublabel": "monthKey로 선택", "pos": [830, 460], "size": [180, 70] },
+    { "id": "summary", "type": "frontend", "label": "가격 요약", "sublabel": "현재 필터의 합계", "pos": [830, 595], "size": [180, 70] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "서버 · 초기 진입", "wraps": ["page", "source"], "pad": 24 },
+    { "kind": "region", "label": "브라우저 · 상호작용 영역", "wraps": ["cache", "selection", "projection", "chart", "items", "summary"], "pad": 18 }
+  ],
+  "connections": [
+    { "id": "initial-response", "from": "source", "to": "page", "label": "초기 응답" },
+    { "id": "initial-fallback", "from": "page", "to": "cache", "label": "초기 데이터 전달", "variant": "emphasis", "labelDy": 90 },
+    { "id": "cached-data", "from": "cache", "to": "projection", "label": "조회 결과" },
+    { "id": "selection-input", "from": "selection", "to": "projection", "label": "선택 조건", "labelDy": 65 },
+    { "id": "chart-series", "from": "projection", "to": "chart", "label": "월별 시리즈" },
+    { "id": "monthly-items", "from": "projection", "to": "items", "label": "선택 월 내역", "labelDx": 60 },
+    { "id": "filtered-total", "from": "projection", "to": "summary", "label": "필터 합계" }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "소유권 제안 · 미승인", "items": ["서버 응답과 UI 선택 상태를 분리", "파생 합계는 별도 저장소에 복제하지 않음"] },
+    { "dot": "amber", "title": "다음으로 논의할 선택", "items": ["URL 공유 필요 여부와 기존 store 활용", "카테고리 필터 위치 · 캐시 갱신 정책"] }
+  ]
+}

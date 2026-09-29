@@ -1,6 +1,6 @@
 import { execFile } from "node:child_process";
 
-function git(root: string, args: string[]): Promise<string> {
+export function git(root: string, args: string[]): Promise<string> {
   return new Promise((resolve, reject) => {
     execFile("git", ["-C", root, ...args], { maxBuffer: 10 * 1024 * 1024 }, (error, stdout, stderr) => {
       if (error) reject(new Error(stderr.trim() || error.message));

@@ -6,7 +6,13 @@ import { policyFailures, requiredScripts } from "./policy.js";
 
 import type { ProjectCapability, ProjectProfile, VerificationResult } from "../domain/types.js";
 
-const order = ["test:unit", "test:integration", "test", "test:e2e", "e2e", "test:storybook", "build-storybook", "typecheck", "lint", "build"];
+function checkOrder(name: string): number {
+  if (/^(lint|typecheck)(:|$)/.test(name)) return 0;
+  if (/^(check)(:|$)/.test(name)) return 1;
+  if (/^(test:(e2e|storybook)|e2e|build-storybook)(:|$)/.test(name)) return 3;
+  if (/^build(:|$)/.test(name)) return 4;
+  return 2;
+}
 
 function run(capability: ProjectCapability, id: string, definition: string): Promise<VerificationResult> {
   if (/(?:^|\s)(?:--watch(?:=\S+)?|--ui|--fix|--write|--updateSnapshot|-w|-u)(?:\s|$)/.test(definition)) {
@@ -54,7 +60,7 @@ export async function runCapabilities(profile: ProjectProfile, selected?: string
     if (!selected.length || selected.some((key) => !profile.capabilities.some((capability) => id(capability) === key))) throw new Error("Select existing capability IDs from profile.scripts");
   }
   const capabilities = [...profile.capabilities].sort(
-    (a, b) => order.indexOf(a.name) - order.indexOf(b.name) || a.script.localeCompare(b.script),
+    (a, b) => checkOrder(a.name) - checkOrder(b.name) || a.script.localeCompare(b.script),
   );
   const results: VerificationResult[] = [];
   for (const capability of capabilities) {
@@ -65,6 +71,9 @@ export async function runCapabilities(profile: ProjectProfile, selected?: string
 }
 
 export async function runProjectChecks(profile: ProjectProfile, options: {
+  planId?: string | undefined;
+  stage?: "baseline" | "issue" | "delivery" | undefined;
+  stepId?: string | undefined;
   capabilities?: string[] | undefined;
   purpose?: "baseline" | "verification" | undefined;
   baselineCheckId?: string | undefined;
@@ -72,17 +81,32 @@ export async function runProjectChecks(profile: ProjectProfile, options: {
   attemptId?: string | undefined;
 } = {}) {
   const root = profile.project.rootPath;
-  const baseline = options.baselineCheckId ? await readCheckRecord(root, options.baselineCheckId) : undefined;
+  const baseline = options.baselineCheckId ? await readCheckRecord(root, options.baselineCheckId, options.planId) : undefined;
   const snapshot = await sourceSnapshot(root);
   const before = digest(JSON.stringify(snapshot));
-  const revision = await readRevision(root);
-  if (options.required && (!revision.policy || !revision.approved)) throw new Error("Required checks need an approved verification policy");
+  const revision = await readRevision(root, options.planId);
+  const required = options.required || options.stage === "delivery" || options.stage === "issue";
+  if (required && (!revision.policy || !revision.approved)) throw new Error("Required checks need an approved verification policy");
+  let attemptStep: string | undefined;
   if (options.attemptId) {
-    const attempt = await readAttempt(root, options.attemptId);
+    const attempt = await readAttempt(root, options.attemptId, options.planId);
+    attemptStep = attempt.stepId;
     if (!revision.approved || attempt.revisionHash !== revision.hash) throw new Error("Check attempt does not match the approved revision");
   }
-  if (options.required && options.capabilities) throw new Error("Choose required checks or a capability selection, not both");
-  const selected = options.required ? requiredScripts(revision.policy!) : options.capabilities;
+  if ((required || options.stage) && options.capabilities) throw new Error("Choose a stage/required checks or a capability selection, not both");
+  if (options.required && options.stage && options.stage !== "delivery") throw new Error("Required checks cannot be narrowed by a stage");
+  if (options.stage === "baseline" && options.purpose === "verification") throw new Error("Baseline stage records baseline evidence");
+  let selected = required ? requiredScripts(revision.policy!) : options.capabilities;
+  if (options.stage === "baseline") selected = profile.capabilities.filter((item) =>
+    ["lint", "typecheck", "test:unit", "test:integration"].includes(item.name) ||
+    (item.name === "test" && !profile.capabilities.some((other) => other.workingDirectory === item.workingDirectory && ["test:unit", "test:integration"].includes(other.name))))
+    .map((item) => relative(root, item.workingDirectory) ? `${relative(root, item.workingDirectory)}:${item.script}` : item.script);
+  if (options.stage === "issue") {
+    const stepId = options.stepId ?? attemptStep;
+    const issue = revision.issues?.find(({ id }) => id === stepId);
+    if (!issue || (attemptStep && attemptStep !== issue.id)) throw new Error("Issue stage requires an approved issue and matching attempt");
+    selected = [...new Set(issue.requiredCheckIds.map((id) => revision.policy!.checks.find((check) => check.id === id)!.script))];
+  }
   const failures = revision.policy ? policyFailures(revision.policy, profile.scripts, snapshot) : [];
   const eligible = { ...profile, capabilities: [...profile.capabilities] };
   // Explicit approved script IDs may use names outside the discovery convention.
@@ -102,15 +126,15 @@ export async function runProjectChecks(profile: ProjectProfile, options: {
       ? [{ capability: "none", command: "", passed: false, status: "not-run", reason: "Policy has no automated checks", output: "" }]
       : await runCapabilities(eligible, selected);
   const after = digest(JSON.stringify(await sourceSnapshot(root)));
-  const afterRevision = await readRevision(root);
+  const afterRevision = await readRevision(root, options.planId);
   const record = {
-    id: randomUUID(), purpose: options.purpose ?? "verification", revisionHash: revision.hash,
-    sourceHash: after, stable: before === after && revision.hash === afterRevision.hash, full: !options.capabilities && !options.required,
+    id: randomUUID(), planId: options.planId ?? null, stage: options.stage, purpose: options.stage === "baseline" ? "baseline" : options.purpose ?? "verification", revisionHash: revision.hash,
+    sourceHash: after, stable: before === after && revision.hash === afterRevision.hash, full: !options.capabilities && !required && !options.stage,
     results: results.map((result) => ({ ...result, status: result.status ?? "not-run" as const })),
     createdAt: new Date().toISOString(),
     ...(options.attemptId ? { attemptId: options.attemptId } : {}),
   };
-  const saved = await saveCheckRecord(root, record);
+  const saved = await saveCheckRecord(root, record, options.planId);
   return {
     ...saved, ...record,
     comparison: results.map((result) => {

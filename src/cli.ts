@@ -10,13 +10,18 @@ import { readProjectConfig, readProjectDocument, readProjectState } from "./appl
 import { runProjectChecks, summarizeChecks } from "./application/run-capabilities.js";
 import { checkSources, readSourceChange } from "./application/knowledge/sources.js";
 import { taskContext } from "./application/task-context.js";
+import { projectSnapshot, projectDocumentStatus } from "./application/project-snapshot.js";
+import { listPlans, workflowContext } from "./application/workflow-store.js";
 import type { WorkRequest } from "./domain/types.js";
 
 const usage = `Usage:
   fs inspect-context [project] [--overall]
-  fs work-context [project] "<request>" [--mode prepare|implement|verify|review|refactor]
+  fs work-context [project] "<request>" [--plan <id>] [--mode prepare|implement|verify|review|refactor]
   fs change-context [project] [--base <ref>]
-  fs checks [project] [--required | --capability <script-id>] [--purpose baseline|verification] [--baseline <check-id>] [--attempt <id>]
+  fs checks [project] [--plan <id>] [--stage baseline|issue|delivery] [--issue <id>] [--required | --capability <script-id>] [--purpose baseline|verification] [--baseline <check-id>] [--attempt <id>]
+  fs project-snapshot [project] [--base main]
+  fs plans [project]
+  fs workflow [project] [--plan <id>]
   fs source-check [repository]
   fs source-read [repository] <id> [--offset <characters>]
   fs knowledge-status [repository]
@@ -52,9 +57,12 @@ async function main(): Promise<void> {
       base: { type: "string" },
       mode: { type: "string", default: "implement" },
       capability: { type: "string", multiple: true },
-      purpose: { type: "string", default: "verification" },
+      purpose: { type: "string" },
       baseline: { type: "string" },
       required: { type: "boolean", default: false },
+      stage: { type: "string" },
+      issue: { type: "string" },
+      plan: { type: "string" },
       attempt: { type: "string" },
       offset: { type: "string", default: "0" },
       help: { type: "boolean", short: "h", default: false },
@@ -78,7 +86,7 @@ async function main(): Promise<void> {
     if (!raw) throw new Error(`work-context requires a request\n${usage}`);
     if (!(["prepare", "implement", "verify", "review", "refactor"] as string[]).includes(values.mode)) throw new Error("Invalid --mode value.");
     const request: WorkRequest = { raw, mode: values.mode as WorkRequest["mode"], constraints: [] };
-    print(await taskContext(discovery, systemRoot, root, request));
+    print(await taskContext(discovery, systemRoot, root, request, values.plan));
     return;
   }
   if (command === "change-context") {
@@ -86,11 +94,16 @@ async function main(): Promise<void> {
     print({ base, changedFiles: await changedFiles(root, base), diffStat: await diffStat(root, base) });
     return;
   }
+  if (command === "project-snapshot") return print({ ...await projectSnapshot(root, values.base), documentStatus: await projectDocumentStatus(root) });
+  if (command === "plans") return print(await listPlans(root));
+  if (command === "workflow") return print(await workflowContext(root, values.plan));
   if (command === "checks") {
-    if (values.purpose !== "baseline" && values.purpose !== "verification") throw new Error("Invalid --purpose value.");
+    if (values.purpose && values.purpose !== "baseline" && values.purpose !== "verification") throw new Error("Invalid --purpose value.");
+    if (values.stage && !["baseline", "issue", "delivery"].includes(values.stage)) throw new Error("Invalid --stage value");
     const record = await runProjectChecks(await discovery.discover(await discovery.createRef(root)), {
-      capabilities: values.capability, purpose: values.purpose, baselineCheckId: values.baseline,
-      required: values.required, attemptId: values.attempt,
+      capabilities: values.capability, purpose: values.purpose as "baseline" | "verification" | undefined, baselineCheckId: values.baseline,
+      stage: values.stage as "baseline" | "issue" | "delivery" | undefined, stepId: values.issue,
+      planId: values.plan, required: values.required, attemptId: values.attempt,
     });
     print(summarizeChecks(record));
     if (!record.stable || record.results.some((item) => item.status !== "passed")) process.exitCode = 1;

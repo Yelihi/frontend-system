@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "deliver",
+  "type": "sequence",
+  "input": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/docs/previews/price-events.sequence.json",
+  "output": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/docs/previews/price-events.html",
+  "specification": {
+    "sha256": "1ecf832d6dc833bfbfd497b8ef5efe937dacc04e4b87c16d4f445a88532c6f8b",
+    "bytes": 3542
+  },
+  "artifact": {
+    "sha256": "28caefcfa7d635b3a2081b5ebaae984176b8d8ee9dff7408d8962e39665c098d",
+    "bytes": 807792
+  },
+  "validation": {
+    "checksPassed": 9,
+    "checkCount": 9,
+    "compositionProfile": "showcase",
+    "compositionStatus": "pass",
+    "errors": 0,
+    "warnings": 0
+  }
+}

@@ -7,6 +7,10 @@ description: Register frontend learning material, research official sources, che
 
 Use the original FS repository (explicit path, FRONTEND_SYSTEM_REPO, or this checkout),
 never a consuming project's copied skills. Read only the procedure for this request.
+From a consuming project, resolve the original repository first. If a contribution PR
+is requested, change and validate that original checkout, then prepare the PR with
+source/condition/evidence links under the existing authorization. Do not write a
+plugin cache or create a remote PR merely because local knowledge was synced.
 
 - **Add a link, note or book excerpt:** follow
   `../../references/workflows/fs-knowledge-add.md` and `../../references/linked-knowledge.md`.

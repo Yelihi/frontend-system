@@ -438,11 +438,11 @@
     },
     {
       "id": "code-quality-context-and-contracts",
-      "kind": "concept",
+      "kind": "decision",
       "title": "코드 읽기 맥락과 예측 가능한 인터페이스",
-      "summary": "조건 분기가 읽기 어렵거나 함수 이름과 반환값·숨은 부작용이 호출자의 예상과 다를 때. 호출자가 알아야 할 맥락과 계약을 기준으로 명명·분리·인라인 유지의 이익과 비용을 비교한다.",
+      "summary": "조건 분기·숨은 계약이 읽기 어렵거나 작은 변경에도 래퍼·파일을 계속 따라갈 때. 추상화 abstraction의 탐색 비용과 검증·재사용·변경 경계의 편익을 비교하여 유지·인라인·분리를 판단한다.",
       "path": "code-quality-context-and-contracts.md",
-      "contentHash": "7de024456d25843b9915e6d034249b0b7fc3d808e4dd53d58bb2abd20932a8ba",
+      "contentHash": "48d8290590830f74f4726f594cb426b8feeffde90f72f05acf9f90b958f02242",
       "keywords": [
         "가독성",
         "추상화",
@@ -452,7 +452,19 @@
         "중첩 삼항",
         "매직 넘버",
         "readability",
-        "contract"
+        "contract",
+        "abstraction",
+        "indirection",
+        "wrapper",
+        "factory",
+        "래퍼",
+        "팩토리",
+        "인라인",
+        "파일 탐색",
+        "디자인 패턴",
+        "design patterns",
+        "비용",
+        "AI agent"
       ],
       "domains": [
         "architecture",
@@ -462,11 +474,13 @@
       "excludedTechnologies": [],
       "conditions": [
         "조건 분기가 읽기 어렵거나 함수 이름과 반환값·숨은 부작용이 호출자의 예상과 다를 때.",
-        "일반 프런트엔드 유지보수 개념; React 예제의 생명주기·라이브러리 API는 프로젝트별 확인"
+        "일반 프런트엔드 유지보수 개념; React 예제의 생명주기·라이브러리 API는 프로젝트별 확인",
+        "작은 변경에도 전달 계층을 반복 탐색하거나 패턴 도입을 검토하는 코드. 실제 호출자·요구사항·프레임워크의 경계를 확인한다."
       ],
       "exclusions": [
         "줄 수·파일 수 감소만으로 품질을 판정하거나 모든 조건식에 새 추상화를 만들지 않는다.",
-        "코드 품질 관점과 반례를 개념으로 보존한다. 예제 실행·성능 측정 및 공용 규칙 승인은 수행하지 않았다."
+        "30% 비용 추정치를 보편적 보장으로 사용하지 않는다. 검증·불변식·접근성·보안·서버/클라이언트 경계를 제거하는 근거가 아니다.",
+        "조건부 판단이며 필수 규칙이 아니다. 제품 비교·원문 실험 재현·비용 절감 검증은 미실행이다."
       ],
       "evidenceKind": "experience",
       "review": "reviewed",
@@ -483,9 +497,13 @@
         "frontend-fundamentals-code-quality-readability-order-range-comparisons": "1ea60ae426628937885ec6d2f586dea2d788bb1970767fadd50c20a96c01d75d",
         "frontend-fundamentals-code-quality-predictability-avoid-name-collisions": "24447798fb04a909fc1dc99a0dc2a382e1dd28b0df03b9317e05eadb966a794f",
         "frontend-fundamentals-code-quality-predictability-consistent-return-types": "b8cc3337ea571465c45218f29d343bc5eae286675d22f9456cc4257c19b5536c",
-        "frontend-fundamentals-code-quality-predictability-expose-hidden-side-effects": "abb519e9116dafeca7caf12b41bc85cc8092f63ab334abe24de98cc8b311d085"
+        "frontend-fundamentals-code-quality-predictability-expose-hidden-side-effects": "abb519e9116dafeca7caf12b41bc85cc8092f63ab334abe24de98cc8b311d085",
+        "ondrej-velisek-abstraction-cost-humans-ai": "cb25fe52f8f1d22eb29a298a4b5894e38ef70136c6ed6c8dcfb0c31470c750b9"
       },
-      "related": []
+      "related": [
+        "code-quality-change-boundaries",
+        "react-compound-component-boundaries"
+      ]
     },
     {
       "id": "code-quality-change-boundaries",
@@ -532,7 +550,9 @@
         "frontend-fundamentals-code-quality-coupling-allow-duplication": "661c25148fdd5761a1175946093181a442591323ea594f3c55c0d191d0ebebed",
         "frontend-fundamentals-code-quality-coupling-remove-prop-drilling": "91d14d9f3c7805d7e7f7f2de1599acacdf3988df0e87a650e3558dba050fa31b"
       },
-      "related": []
+      "related": [
+        "code-quality-context-and-contracts"
+      ]
     },
     {
       "id": "bundling-module-graph-and-transforms",
@@ -2701,7 +2721,8 @@
       },
       "related": [
         "code-quality-change-boundaries",
-        "accessibility-widget-interactions"
+        "accessibility-widget-interactions",
+        "code-quality-context-and-contracts"
       ]
     },
     {
@@ -5949,6 +5970,12 @@
       "sourceHash": "d7cb40a71823eaf6160614c4a6d11ec2d65731ddd7876cc5e59595b712ddf72c",
       "action": "represented",
       "reason": "WebGL 1 문법 설명으로 한정한다. WebGL2·WebGPU에 예제를 그대로 적용하거나 픽셀과 fragment 실행 횟수가 항상 일대일이라고 일반화하지 않는다. 일반 DOM UI에 그래픽 도입을 권하는 자료가 아니다."
+    },
+    {
+      "sourceId": "ondrej-velisek-abstraction-cost-humans-ai",
+      "sourceHash": "cb25fe52f8f1d22eb29a298a4b5894e38ef70136c6ed6c8dcfb0c31470c750b9",
+      "action": "represented",
+      "reason": "추상화의 탐색 비용과 편익을 기존 코드 품질 참조의 조건부 판단으로 반영하고 변경 경계·React 조합 패턴과 연결했다. 검증·불변식·접근성 등 유지 조건을 보존한다. 30% 외삽의 일반화, 일괄 추상화 제거, 도구 조건이 다른 비용 비교는 채택하지 않았다. 실험 재현·제품 비용 및 정확성 검증은 미실행이며 필수 규칙은 추가하지 않는다."
     }
   ]
 }

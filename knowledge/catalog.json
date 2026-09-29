@@ -9225,6 +9225,27 @@
       "contentHash": "d7cb40a71823eaf6160614c4a6d11ec2d65731ddd7876cc5e59595b712ddf72c",
       "updatedAt": "2026-09-21T12:34:24.736Z",
       "publishedHash": "d7cb40a71823eaf6160614c4a6d11ec2d65731ddd7876cc5e59595b712ddf72c"
+    },
+    "ondrej-velisek-abstraction-cost-humans-ai": {
+      "id": "ondrej-velisek-abstraction-cost-humans-ai",
+      "path": "knowledge/source/imported/ondrej-velisek-abstraction-cost-humans-ai.md",
+      "title": "추상화의 비용: 사람과 AI 에이전트",
+      "summary": "추상화 abstraction의 탐색 비용과 편익을 비교하는 조건부 검토 자료. 30% 비용 증가는 합성 계산기 실험의 외삽이며 일반 보장이 아니다. 검증·변경 경계 보존과 실제 프로젝트 비교 검증을 제안한다.",
+      "sourceType": "imported",
+      "facets": {
+        "topic": [
+          "architecture",
+          "code-quality",
+          "patterns"
+        ],
+        "artifact": [
+          "reviewed-summary"
+        ]
+      },
+      "sourceUrl": "https://ondrejvelisek.github.io/the-cost-of-abstraction-for-humans-and-ai-agents/",
+      "contentHash": "cb25fe52f8f1d22eb29a298a4b5894e38ef70136c6ed6c8dcfb0c31470c750b9",
+      "updatedAt": "2026-09-28T07:15:43.974Z",
+      "publishedHash": "cb25fe52f8f1d22eb29a298a4b5894e38ef70136c6ed6c8dcfb0c31470c750b9"
     }
   }
 }

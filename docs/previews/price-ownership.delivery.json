@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "deliver",
+  "type": "architecture",
+  "input": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/docs/previews/price-ownership.architecture.json",
+  "output": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/docs/previews/price-ownership.html",
+  "specification": {
+    "sha256": "2818744e0ec13a6e1ba8f438202e6566f4ea5632ac2e547062f5aa34c9fcf81e",
+    "bytes": 2964
+  },
+  "artifact": {
+    "sha256": "8e6893434a4d6cbabc19ac5cc9de7fcc82438bb8fd2b9cb82674eabd14e11cfd",
+    "bytes": 808514
+  },
+  "validation": {
+    "checksPassed": 9,
+    "checkCount": 9,
+    "compositionProfile": "showcase",
+    "compositionStatus": "pass",
+    "errors": 0,
+    "warnings": 0
+  }
+}

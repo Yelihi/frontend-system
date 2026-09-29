@@ -61,7 +61,7 @@ test("legacy facts migrate without losing decisions or changing the target", asy
       decisions: ["Keep server contracts stable."], qualityGates: [], assumptions: [], questions: [],
     });
     assert.match(await readProjectDocument(root), /Observed app/);
-    assert.equal(await readFile(join(root, ".frontend-system/project.md"), "utf8"), "# Legacy\nKeep server contracts stable.");
+    assert.equal(await readFile(join(root, `.frontend-system/project-history/${digest("# Legacy\nKeep server contracts stable.")}.md`), "utf8"), "# Legacy\nKeep server contracts stable.");
     assert.match(await readFile(join(root, ".frontend-system/.gitignore"), "utf8"), /custom-cache/);
     assert.equal((await readRevision(root)).approved, true);
     await writeFile(join(root, "src/a.ts"), "export const a = 2;");

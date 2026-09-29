@@ -127,6 +127,11 @@ export interface InspectionQuestion {
 }
 
 export interface ProjectAnalysis {
+  domains?: string[];
+  events?: string[];
+  state?: string[];
+  styles?: string[];
+  tests?: string[];
   summary: string;
   observed: string[];
   architecture: string[];

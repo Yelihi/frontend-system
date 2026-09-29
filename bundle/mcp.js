@@ -21857,8 +21857,8 @@ var tupleProcessor = (schema, ctx, _json, params) => {
   let minItems = def.items.length;
   while (minItems > 0) {
     const item = def.items[minItems - 1];
-    const optional4 = ctx.io === "input" ? inputOptin(item) !== void 0 : item._zod.optout === "optional";
-    if (!optional4)
+    const optional5 = ctx.io === "input" ? inputOptin(item) !== void 0 : item._zod.optout === "optional";
+    if (!optional5)
       break;
     minItems--;
   }
@@ -29701,8 +29701,8 @@ async function markKnowledgeSynced(root, ids) {
 }
 
 // src/application/project-store.ts
-import { mkdir as mkdir4, readFile as readFile7, writeFile as writeFile4 } from "node:fs/promises";
-import { join as join6 } from "node:path";
+import { mkdir as mkdir4, readFile as readFile8, rm as rm3, writeFile as writeFile4 } from "node:fs/promises";
+import { join as join7 } from "node:path";
 
 // src/application/workflow-store.ts
 import { createHash as createHash3, randomUUID as randomUUID2 } from "node:crypto";
@@ -29720,6 +29720,16 @@ var checksSchema = array(object2({
   workingDirectory: string2().optional(),
   reason: string2().optional()
 }));
+var issueSchema = strictObject({
+  id: recordId,
+  title: string2().min(1),
+  contract: string2().min(1),
+  files: array(localPath),
+  dependsOn: array(recordId),
+  requiredCheckIds: array(string2()),
+  acceptance: array(string2().min(1)).min(1)
+});
+var issuesSchema = array(issueSchema).min(1);
 var executionSchema = strictObject({
   revisionHash: hash2,
   status: _enum(["in-progress", "blocked", "complete"]),
@@ -29745,7 +29755,8 @@ var revisionSchema = object2({
   hash: hash2,
   approved: boolean2(),
   approval: string2(),
-  policy: policySchema.optional()
+  policy: policySchema.optional(),
+  issues: issuesSchema.optional()
 });
 var executionRecordSchema = object2({
   execution: executionSchema,
@@ -29755,6 +29766,8 @@ var executionRecordSchema = object2({
 });
 var checkRecordSchema = object2({
   id: recordId,
+  planId: recordId.nullable().optional(),
+  stage: _enum(["baseline", "issue", "delivery"]).optional(),
   purpose: _enum(["baseline", "verification"]),
   revisionHash: hash2.nullable(),
   sourceHash: hash2,
@@ -29809,57 +29822,105 @@ async function sourceSnapshot(root) {
   }
   return snapshot;
 }
-async function readRevision(root) {
-  const content = await optional2(join5(root, ".frontend-system/revision.md"));
-  const raw = await optional2(join5(root, ".frontend-system/revision.json"));
+function scope(planId) {
+  return planId === void 0 ? "" : `plans/${recordId.parse(planId)}`;
+}
+async function planDirectory(root, child, planId) {
+  if (planId !== void 0) {
+    await directory(root, "plans");
+    await directory(root, scope(planId));
+  }
+  return directory(root, [scope(planId), child].filter(Boolean).join("/"));
+}
+async function listPlans(root) {
+  let entries;
+  try {
+    entries = await readdir4(join5(root, ".frontend-system/plans"), { withFileTypes: true });
+  } catch (error2) {
+    if (error2.code === "ENOENT") return [];
+    throw error2;
+  }
+  return Promise.all(entries.filter((entry) => entry.isDirectory() && recordId.safeParse(entry.name).success).sort((a, b) => a.name.localeCompare(b.name)).map(async ({ name: id2 }) => {
+    const revision = await readRevision(root, id2);
+    return {
+      id: id2,
+      path: join5(root, ".frontend-system", scope(id2), "plan.md"),
+      version: revision.version,
+      hash: revision.hash,
+      approved: revision.approved
+    };
+  }));
+}
+async function readRevision(root, planId) {
+  const content = await optional2(join5(root, ".frontend-system", scope(planId), planId ? "plan.md" : "revision.md"));
+  const raw = await optional2(join5(root, ".frontend-system", scope(planId), "revision.json"));
   const metadata = raw ? revisionSchema.parse(JSON.parse(raw)) : void 0;
-  const currentHash = content ? revisionDigest(content, metadata?.policy) : null;
+  const currentHash = content ? revisionDigest(content, metadata?.policy, metadata?.issues, planId, metadata?.version) : null;
   return {
+    planId: planId ?? null,
     content,
     hash: currentHash,
     version: metadata?.version ?? 0,
     approved: !!metadata?.approved && metadata.hash === currentHash,
     drifted: !!metadata && metadata.hash !== currentHash,
-    policy: metadata?.policy
+    policy: metadata?.policy,
+    issues: metadata?.issues
   };
 }
-function revisionDigest(content, policy) {
-  return digest2(policy ? JSON.stringify({ content, policy }) : content);
+function revisionDigest(content, policy, issues, planId, version2) {
+  return digest2(policy || issues || planId ? JSON.stringify({ content, policy, issues, planId, ...planId ? { version: version2 } : {} }) : content);
 }
-async function saveRevision(root, content, expectedHash, policy) {
+async function saveRevision(root, content, expectedHash, policy, planId, issues) {
   if (!content.trim()) throw new Error("Revision must not be empty");
   return locked(root, async () => {
-    const current = await readRevision(root);
+    const current = await readRevision(root, planId);
     if (current.hash !== expectedHash) throw new Error("Revision changed; reread before saving");
     const version2 = current.version + 1;
     const nextPolicy = policy === void 0 ? current.policy : policySchema.parse(policy);
-    const nextHash = revisionDigest(content, nextPolicy);
-    const base = await directory(root);
-    const history = await directory(root, "revisions");
+    const nextIssues = issues === void 0 ? current.issues : issuesSchema.parse(issues);
+    if (planId && (!nextPolicy || !nextIssues)) throw new Error("Named plans require a verification policy and issue contracts");
+    if (nextIssues) validateIssues(nextIssues, nextPolicy);
+    if (planId) {
+      const marker = "\n<!-- fs-issue-contracts -->\n";
+      const design = content.includes(marker) ? content.slice(0, content.indexOf(marker)) : content;
+      content = `${design.trimEnd()}${marker}
+## Issue contracts
+
+Edit these through save_revision.issues; progress is recorded in [progress.md](progress.md).
+
+\`\`\`json
+${JSON.stringify(nextIssues, null, 2)}
+\`\`\`
+`;
+    }
+    const nextHash = revisionDigest(content, nextPolicy, nextIssues, planId, version2);
+    const base = await planDirectory(root, "", planId);
+    const history = await planDirectory(root, "revisions", planId);
     const previousMetadata = await optional2(join5(base, "revision.json"));
     if (previousMetadata) await atomic(join5(history, `approval-${current.version}.json`), previousMetadata);
     if (current.content) await atomic(join5(history, `${current.hash}.md`), current.content);
     await atomic(join5(history, `${nextHash}.md`), content);
-    await atomic(join5(base, "revision.md"), content);
-    await atomic(join5(base, "revision.json"), JSON.stringify({ version: version2, hash: nextHash, approved: false, approval: "", policy: nextPolicy }));
-    return readRevision(root);
+    await atomic(join5(base, planId ? "plan.md" : "revision.md"), content);
+    await atomic(join5(base, "revision.json"), JSON.stringify({ version: version2, hash: nextHash, approved: false, approval: "", policy: nextPolicy, issues: nextIssues }));
+    return readRevision(root, planId);
   });
 }
-async function approveRevision(root, expectedHash, approval) {
+async function approveRevision(root, expectedHash, approval, planId) {
   if (!approval.trim()) throw new Error("Record the user's explicit approval");
   return locked(root, async () => {
-    const current = await readRevision(root);
+    const current = await readRevision(root, planId);
     if (!current.version || current.drifted || current.hash !== expectedHash) throw new Error("Save and review the current revision before approval");
     const failures = current.policy ? policyProtectionFailures(current.policy) : [];
     if (failures.length) throw new Error(failures.join("; "));
-    await atomic(join5(await directory(root), "revision.json"), JSON.stringify({
+    await atomic(join5(await planDirectory(root, "", planId), "revision.json"), JSON.stringify({
       version: current.version,
       hash: current.hash,
       approved: true,
       approval,
-      policy: current.policy
+      policy: current.policy,
+      issues: current.issues
     }));
-    return readRevision(root);
+    return readRevision(root, planId);
   });
 }
 async function saveProjectRecord(root, kind, id2, content, expectedHash) {
@@ -29880,8 +29941,8 @@ async function readProjectRecord(root, kind, id2, offset = 0, limit = 200) {
   const lines = content.split("\n");
   return { hash: digest2(content), content: lines.slice(offset, offset + limit).join("\n"), totalLines: lines.length, nextOffset: offset + limit < lines.length ? offset + limit : null };
 }
-async function workflowContext(root) {
-  const revision = await readRevision(root);
+async function workflowContext(root, planId) {
+  const revision = await readRevision(root, planId);
   const records = [];
   for (const kind of ["evidence", "decisions"]) {
     const path = join5(root, ".frontend-system", kind);
@@ -29893,7 +29954,7 @@ async function workflowContext(root) {
       if (error2.code !== "ENOENT") throw error2;
     }
   }
-  const raw = await optional2(join5(root, ".frontend-system/execution.json"));
+  const raw = await optional2(join5(root, ".frontend-system", scope(planId), "execution.json"));
   const saved = raw ? executionRecordSchema.parse(JSON.parse(raw)) : void 0;
   const current = saved ? await sourceSnapshot(root) : void 0;
   const changedFiles2 = saved && current ? [.../* @__PURE__ */ new Set([...Object.keys(current), ...Object.keys(saved.fileHashes)])].filter((path) => current[path] !== saved.fileHashes[path]).sort() : [];
@@ -29920,25 +29981,32 @@ async function workflowContext(root) {
     enforcement: revision.policy ? "policy" : "legacy"
   };
 }
-async function saveCheckRecord(root, record2) {
+async function saveCheckRecord(root, record2, planId) {
   const validated = checkRecordSchema.parse(record2);
-  const path = join5(await directory(root, "checks"), `${record2.id}.json`);
+  const path = join5(await planDirectory(root, "checks", planId), `${record2.id}.json`);
   await writeFile3(path, JSON.stringify(validated, null, 2), { flag: "wx" });
   return { id: record2.id, path };
 }
-async function readCheckRecord(root, id2) {
+async function readCheckRecord(root, id2, planId) {
   recordId.parse(id2);
-  return checkRecordSchema.parse(JSON.parse(await readFile6(join5(root, ".frontend-system/checks", `${id2}.json`), "utf8")));
+  return checkRecordSchema.parse(JSON.parse(await readFile6(join5(root, ".frontend-system", scope(planId), "checks", `${id2}.json`), "utf8")));
 }
-async function saveExecution(root, input, expectedHash) {
+async function saveExecution(root, input, expectedHash, planId) {
   const execution = executionSchema.parse(input);
   return locked(root, async () => {
-    const state = await workflowContext(root);
+    const state = await workflowContext(root, planId);
     if (state.executionHash !== expectedHash) throw new Error("Execution changed; reread before saving");
     if (!state.revision.approved || state.revision.hash !== execution.revisionHash) throw new Error("Execution requires the current approved revision");
     const fileHashes = await sourceSnapshot(root);
     const sourceHash = digest2(JSON.stringify(fileHashes));
     validateSteps(execution);
+    if (state.revision.issues) {
+      const issues = state.revision.issues;
+      if (execution.steps.length !== issues.length || issues.some((issue2) => {
+        const step = execution.steps.find(({ id: id2 }) => id2 === issue2.id);
+        return !step || step.title !== issue2.title || JSON.stringify(step.files) !== JSON.stringify(issue2.files) || JSON.stringify(step.dependsOn ?? []) !== JSON.stringify(issue2.dependsOn) || JSON.stringify(step.requiredCheckIds ?? []) !== JSON.stringify(issue2.requiredCheckIds);
+      })) throw new Error("Execution must preserve approved issue contracts; revise the plan to change them");
+    }
     const policy = state.revision.policy;
     for (const exception of policy?.exceptions ?? []) {
       if (!execution.steps.some(({ id: id2 }) => id2 === exception.resolveByStep)) throw new Error(`Missing exception resolution step: ${exception.resolveByStep}`);
@@ -29949,8 +30017,9 @@ async function saveExecution(root, input, expectedHash) {
       }
     }
     const verify = async (id2, full = false) => {
-      const record2 = await readCheckRecord(root, id2);
-      if (!record2.stable || record2.sourceHash !== sourceHash || record2.revisionHash !== execution.revisionHash || !record2.results.length || record2.results.some((result2) => result2.status !== "passed") || full && (!policy && !record2.full || !record2.results.some((result2) => /(^|:)(test|e2e)(:|$)/.test(result2.capability)))) {
+      const record2 = await readCheckRecord(root, id2, planId);
+      const hasBehaviorCheck = record2.results.some((result2) => /(^|:)(test|e2e)(:|$)/.test(result2.capability)) || policy?.checks.some((check) => record2.results.some((result2) => result2.capability === check.script) && policy.rules.some((rule) => rule.verification === "behavior-test" && check.ruleIds.includes(rule.id)));
+      if (record2.purpose !== "verification" || !record2.stable || record2.sourceHash !== sourceHash || record2.revisionHash !== execution.revisionHash || !record2.results.length || record2.results.some((result2) => result2.status !== "passed") || full && (!policy && !record2.full || !hasBehaviorCheck)) {
         throw new Error(`Check ${id2} does not verify the current source and revision`);
       }
       if (policy && full && requiredScripts(policy).some((script) => !record2.results.some((result2) => result2.capability === script && result2.status === "passed"))) {
@@ -29959,7 +30028,7 @@ async function saveExecution(root, input, expectedHash) {
       return record2;
     };
     if (execution.baselineCheckId) {
-      if ((await readCheckRecord(root, execution.baselineCheckId)).purpose !== "baseline") throw new Error("Expected a baseline check record");
+      if ((await readCheckRecord(root, execution.baselineCheckId, planId)).purpose !== "baseline") throw new Error("Expected a baseline check record");
     }
     for (const step of execution.steps) {
       if (["running", "complete"].includes(step.status) && (step.dependsOn ?? []).some((id2) => execution.steps.find((entry) => entry.id === id2)?.status !== "complete")) {
@@ -29969,7 +30038,7 @@ async function saveExecution(root, input, expectedHash) {
       if (step.status === "complete" && (JSON.stringify(previous) !== JSON.stringify(step) || state.revisionChangedSinceCheckpoint)) {
         if (!step.checkIds.length || step.remaining.length) throw new Error("Completed steps require checks and no remaining work");
         for (const id2 of step.checkIds) await verify(id2);
-        if (policy) await verifyStep(root, step, policy, execution.revisionHash, sourceHash);
+        if (policy) await verifyStep(root, step, policy, execution.revisionHash, sourceHash, planId);
       }
     }
     if (execution.status === "complete") {
@@ -29981,15 +30050,15 @@ async function saveExecution(root, input, expectedHash) {
         const profile = await discovery2.discover(await discovery2.createRef(root));
         const failures = policyFailures(policy, profile.scripts, fileHashes);
         if (failures.length) throw new Error(failures.join("; "));
-        const reviews = await Promise.all(execution.steps.flatMap((step) => (step.reviewIds ?? []).map((id2) => readReview(root, id2))));
+        const reviews = await Promise.all(execution.steps.flatMap((step) => (step.reviewIds ?? []).map((id2) => readReview(root, id2, planId))));
         verifyReviews(reviews, policy, execution.revisionHash, sourceHash);
       }
     }
-    const path = join5(await directory(root), "execution.json");
+    const path = join5(await planDirectory(root, "", planId), "execution.json");
     const requiresRevalidation = execution.status !== "complete" && state.needsRevalidation;
     const content = JSON.stringify({ execution, fileHashes, requiresRevalidation, updatedAt: (/* @__PURE__ */ new Date()).toISOString() }, null, 2);
     await atomic(path, content);
-    await writeChecklist(root, execution);
+    await writeChecklist(root, execution, planId);
     return { path, hash: digest2(content) };
   });
 }
@@ -30009,8 +30078,17 @@ function validateSteps(execution) {
   };
   for (const id2 of steps.keys()) visit(id2);
 }
-async function writeChecklist(root, execution) {
-  const path = join5(await directory(root), "refactoring.md");
+function validateIssues(issues, policy) {
+  if (new Set(issues.map(({ id: id2 }) => id2)).size !== issues.length) throw new Error("Duplicate issue IDs");
+  validateSteps({ steps: issues });
+  for (const issue2 of issues) {
+    if (issue2.requiredCheckIds.some((id2) => !policy?.checks.some((check) => check.id === id2))) throw new Error("Unknown issue check");
+  }
+  if (policy?.checks.some((check) => !issues.some((issue2) => issue2.requiredCheckIds.includes(check.id)))) throw new Error("Every policy check needs an issue");
+  if (policy?.exceptions.some((exception) => !issues.some((issue2) => issue2.id === exception.resolveByStep))) throw new Error("Missing exception resolution issue");
+}
+async function writeChecklist(root, execution, planId) {
+  const path = join5(await planDirectory(root, "", planId), planId ? "progress.md" : "refactoring.md");
   const previous = await optional2(path);
   const body = `# Work plan
 
@@ -30024,25 +30102,25 @@ ${execution.steps.map((step) => `- [${step.status === "complete" ? "x" : " "}] $
 
 ${execution.note}
 `;
-  if (previous && previous !== body) await atomic(join5(await directory(root, "plans"), `${digest2(previous)}.md`), previous);
+  if (previous && previous !== body) await atomic(join5(await planDirectory(root, planId ? "history" : "plans", planId), `${digest2(previous)}.md`), previous);
   await atomic(path, body);
 }
 var attemptSchema = object2({ id: recordId, stepId: recordId, revisionHash: hash2, number: number2().int().min(1).max(3), createdAt: string2() });
-async function readAttempt(root, id2) {
+async function readAttempt(root, id2, planId) {
   recordId.parse(id2);
-  return attemptSchema.parse(JSON.parse(await readFile6(join5(root, ".frontend-system/attempts", `${id2}.json`), "utf8")));
+  return attemptSchema.parse(JSON.parse(await readFile6(join5(root, ".frontend-system", scope(planId), "attempts", `${id2}.json`), "utf8")));
 }
-async function beginAttempt(root, stepId, expectedHash) {
+async function beginAttempt(root, stepId, expectedHash, planId) {
   recordId.parse(stepId);
   return locked(root, async () => {
-    const state = await workflowContext(root);
+    const state = await workflowContext(root, planId);
     if (state.executionHash !== expectedHash || !state.execution || !state.revision.approved || state.revision.hash !== state.execution.revisionHash) throw new Error("Reread the current approved execution");
     const step = state.execution.steps.find(({ id: id2 }) => id2 === stepId);
     if (!step || step.status === "complete") throw new Error("Select an incomplete step");
     validateSteps(state.execution);
     if ((step.dependsOn ?? []).some((id2) => state.execution.steps.find((entry) => entry.id === id2)?.status !== "complete")) throw new Error("Prerequisites are incomplete");
-    const folder = await directory(root, "attempts");
-    const attempts = await Promise.all((await readdir4(folder)).filter((name) => name.endsWith(".json")).map((name) => readAttempt(root, name.slice(0, -5))));
+    const folder = await planDirectory(root, "attempts", planId);
+    const attempts = await Promise.all((await readdir4(folder)).filter((name) => name.endsWith(".json")).map((name) => readAttempt(root, name.slice(0, -5), planId)));
     const number3 = attempts.filter((item) => item.stepId === stepId && item.revisionHash === state.revision.hash).length + 1;
     if (number3 > 3) throw new Error("Attempt budget exhausted; record blocked state and resolve the cause");
     const attempt = attemptSchema.parse({ id: randomUUID2(), stepId, revisionHash: state.revision.hash, number: number3, createdAt: (/* @__PURE__ */ new Date()).toISOString() });
@@ -30060,18 +30138,18 @@ var reviewInputSchema = strictObject({
   resolvedExceptions: array(string2())
 });
 var reviewSchema = reviewInputSchema.extend({ id: recordId, revisionHash: hash2, sourceHash: hash2, createdAt: string2(), authority: literal("host-model-review") });
-async function readReview(root, id2) {
+async function readReview(root, id2, planId) {
   recordId.parse(id2);
-  return reviewSchema.parse(JSON.parse(await readFile6(join5(root, ".frontend-system/reviews", `${id2}.json`), "utf8")));
+  return reviewSchema.parse(JSON.parse(await readFile6(join5(root, ".frontend-system", scope(planId), "reviews", `${id2}.json`), "utf8")));
 }
-async function saveReview(root, input) {
+async function saveReview(root, input, planId) {
   const data = reviewInputSchema.parse(input);
   return locked(root, async () => {
-    const state = await workflowContext(root);
+    const state = await workflowContext(root, planId);
     const policy = state.revision.policy;
     const requirement = policy?.reviews.find(({ id: id2 }) => id2 === data.reviewId);
     if (!state.revision.approved || !requirement || !state.execution?.steps.some(({ id: id2 }) => id2 === data.stepId)) throw new Error("Review requires an approved policy and execution step");
-    const attempt = await readAttempt(root, data.attemptId);
+    const attempt = await readAttempt(root, data.attemptId, planId);
     if (attempt.revisionHash !== state.revision.hash || attempt.stepId !== data.stepId) throw new Error("Review attempt does not match");
     const snapshot = await sourceSnapshot(root);
     if (data.findings.some((finding) => !policy.rules.some(({ id: id2 }) => id2 === finding.ruleId) || finding.files.some((file) => !snapshot[file]))) throw new Error("Review findings require existing files and policy rules");
@@ -30079,7 +30157,7 @@ async function saveReview(root, input) {
     if (data.resolvedExceptions.some((id2) => !policy.exceptions.some((item) => item.id === id2))) throw new Error("Unknown exception resolution");
     if (data.status === "passed" && data.remaining.length) throw new Error("Passing review cannot have remaining work");
     const review = reviewSchema.parse({ ...data, id: randomUUID2(), revisionHash: state.revision.hash, sourceHash: digest2(JSON.stringify(snapshot)), createdAt: (/* @__PURE__ */ new Date()).toISOString(), authority: "host-model-review" });
-    await writeFile3(join5(await directory(root, "reviews"), `${review.id}.json`), JSON.stringify(review), { flag: "wx" });
+    await writeFile3(join5(await planDirectory(root, "reviews", planId), `${review.id}.json`), JSON.stringify(review), { flag: "wx" });
     return review;
   });
 }
@@ -30088,20 +30166,109 @@ function verifyReviews(reviews, policy, revisionHash, sourceHash) {
   if (policy.reviews.some((item) => !passing.some((review) => review.reviewId === item.id))) throw new Error("Missing current semantic review evidence");
   if (policy.exceptions.some((item) => !passing.some((review) => review.resolvedExceptions.includes(item.id)))) throw new Error("Unresolved migration exceptions");
 }
-async function verifyStep(root, step, policy, revisionHash, sourceHash) {
+async function verifyStep(root, step, policy, revisionHash, sourceHash, planId) {
   if (!step.attemptId) throw new Error("Policy steps require a recorded attempt");
-  const attempt = await readAttempt(root, step.attemptId);
+  const attempt = await readAttempt(root, step.attemptId, planId);
   if (attempt.stepId !== step.id || attempt.revisionHash !== revisionHash) throw new Error("Step attempt does not match");
-  const records = await Promise.all(step.checkIds.map((id2) => readCheckRecord(root, id2)));
+  const records = await Promise.all(step.checkIds.map((id2) => readCheckRecord(root, id2, planId)));
   if (records.some((item) => item.attemptId !== attempt.id)) throw new Error("Step checks must belong to its attempt");
   const checks = step.requiredCheckIds ?? policy.checks.map(({ id: id2 }) => id2);
   for (const id2 of checks) {
     const check = policy.checks.find((item) => item.id === id2);
     if (!check || !records.some((record2) => record2.results.some((result2) => result2.capability === check.script && result2.status === "passed"))) throw new Error(`Missing required step check: ${id2}`);
   }
-  const reviews = await Promise.all((step.reviewIds ?? []).map((id2) => readReview(root, id2)));
+  const reviews = await Promise.all((step.reviewIds ?? []).map((id2) => readReview(root, id2, planId)));
   if (reviews.some((review) => review.stepId !== step.id || review.attemptId !== attempt.id)) throw new Error("Step reviews must belong to its attempt");
   verifyReviews(reviews, { ...policy, exceptions: policy.exceptions.filter((item) => item.resolveByStep === step.id) }, revisionHash, sourceHash);
+}
+
+// src/application/project-snapshot.ts
+import { join as join6 } from "node:path";
+import { readFile as readFile7 } from "node:fs/promises";
+var included = (path) => !path.split("/").includes(".frontend-system") || path === ".frontend-system/config.json";
+async function projectSnapshot(root, baseRef = "main") {
+  if (!/^[a-zA-Z0-9][a-zA-Z0-9._/-]*$/.test(baseRef) || baseRef.includes("..")) throw new Error("Invalid base branch");
+  const head = await git2(root, ["rev-parse", "--verify", "HEAD"]).then((value) => value.trim(), () => null);
+  if (!head) return { baseRef, commit: null, sourceHash: digest2("[]"), files: [], manifests: {}, workingChanges: [], status: "unversioned" };
+  const commit = (await git2(root, ["rev-parse", "--verify", `${baseRef}^{commit}`])).trim();
+  const tree = (await git2(root, ["ls-tree", "-r", "-z", commit, "--", "."])).split("\0").filter(Boolean);
+  const entries = tree.map((line) => ({ path: line.slice(line.indexOf("	") + 1), object: line.slice(0, line.indexOf("	")) })).filter(({ path }) => included(path)).sort((a, b) => a.path.localeCompare(b.path));
+  const files = entries.map(({ path }) => path);
+  const manifests = {};
+  for (const path of files.filter((path2) => /(^|\/)package\.json$/.test(path2))) {
+    try {
+      manifests[path] = JSON.parse(await git2(root, ["show", `${commit}:./${path}`]));
+    } catch {
+      manifests[path] = { error: "Manifest could not be parsed at the base commit" };
+    }
+  }
+  const workingChanges = [...new Set([
+    ...(await git2(root, ["diff", "--name-only", "--relative", "-z", commit, "--", "."])).split("\0"),
+    ...(await git2(root, ["ls-files", "--others", "--exclude-standard", "-z", "--", "."])).split("\0")
+  ].filter((path) => path && included(path)))].sort();
+  return { baseRef, commit, sourceHash: digest2(JSON.stringify(entries)), files, manifests, workingChanges, status: "versioned" };
+}
+async function readProjectSource(root, path, expectedCommit, baseRef = "main", offset = 0, limit = 12e3) {
+  const snapshot = await projectSnapshot(root, baseRef);
+  if (snapshot.commit !== expectedCommit) throw new Error("Main changed; refresh project facts");
+  if (!snapshot.files.includes(path)) throw new Error("Select a file from the main snapshot");
+  const content = await git2(root, ["show", `${expectedCommit}:./${path}`]);
+  return { commit: expectedCommit, path, content: content.slice(offset, offset + limit), totalCharacters: content.length, nextOffset: offset + limit < content.length ? offset + limit : null };
+}
+var metadataSchema = object2({
+  baseRef: string2(),
+  analyzedCommit: string2().nullable(),
+  sourceHash: string2(),
+  updatedAt: string2()
+});
+var refreshSchema = object2({
+  baseRef: string2(),
+  commit: string2().nullable(),
+  status: _enum(["pending", "failed"]),
+  reason: string2(),
+  updatedAt: string2()
+});
+async function optional3(path) {
+  try {
+    return await readFile7(path, "utf8");
+  } catch (error2) {
+    if (error2.code === "ENOENT") return "";
+    throw error2;
+  }
+}
+async function projectDocumentHash(root) {
+  const content = await optional3(join6(root, ".frontend-system/project.md"));
+  return content ? digest2(content) : null;
+}
+async function contextMetadata(root) {
+  const content = await optional3(join6(root, ".frontend-system/project.md"));
+  const match = /^<!-- frontend-system-context (.+) -->$/m.exec(content);
+  return match ? metadataSchema.parse(JSON.parse(match[1])) : null;
+}
+async function recordProjectRefresh(root, baseRef, expectedCommit, status, reason) {
+  if (status === "failed" && !reason.trim()) throw new Error("Record the refresh failure reason");
+  return locked(root, async () => {
+    const snapshot = await projectSnapshot(root, baseRef);
+    if (snapshot.commit !== expectedCommit) throw new Error("Main changed; refresh project facts");
+    const record2 = refreshSchema.parse({ baseRef, commit: snapshot.commit, status, reason, updatedAt: (/* @__PURE__ */ new Date()).toISOString() });
+    await atomic(join6(await directory(root), "project-refresh.json"), JSON.stringify(record2));
+    return record2;
+  });
+}
+async function projectDocumentStatus(root) {
+  const metadata = await contextMetadata(root);
+  const refreshRaw = await optional3(join6(root, ".frontend-system/project-refresh.json"));
+  const refresh = refreshRaw ? refreshSchema.parse(JSON.parse(refreshRaw)) : null;
+  if (!metadata && !refresh) return { status: "missing", analyzedCommit: null };
+  const snapshot = await projectSnapshot(root, refresh?.baseRef ?? metadata.baseRef);
+  const active = refresh && refresh.commit === snapshot.commit;
+  return {
+    ...metadata,
+    mainCommit: snapshot.commit,
+    workingChanges: snapshot.workingChanges,
+    status: active ? refresh.status : !metadata ? "missing" : !snapshot.commit ? "unversioned" : snapshot.sourceHash === metadata.sourceHash ? "current" : "stale",
+    ...active ? { refreshReason: refresh.reason, refreshStartedAt: refresh.updatedAt } : {}
+  };
 }
 
 // src/application/project-store.ts
@@ -30120,28 +30287,28 @@ var configSchema = strictObject({
 });
 async function optionalRead(path) {
   try {
-    return await readFile7(path, "utf8");
+    return await readFile8(path, "utf8");
   } catch (error2) {
     if (error2.code === "ENOENT") return "";
     throw error2;
   }
 }
 async function readProjectDocument(root) {
-  return await optionalRead(join6(root, directoryName, "init.md")) || optionalRead(join6(root, directoryName, "project.md"));
+  return await optionalRead(join7(root, directoryName, "project.md")) || optionalRead(join7(root, directoryName, "init.md"));
 }
 async function readProjectConfig(root) {
-  const content = await optionalRead(join6(root, directoryName, "config.json"));
+  const content = await optionalRead(join7(root, directoryName, "config.json"));
   return content ? configSchema.parse(JSON.parse(content)) : void 0;
 }
 async function writeProjectConfig(root, config2) {
   const validated = configSchema.parse(config2);
-  const directory2 = join6(root, directoryName);
+  const directory2 = join7(root, directoryName);
   await mkdir4(directory2, { recursive: true });
-  await writeFile4(join6(directory2, "config.json"), `${JSON.stringify(validated, null, 2)}
+  await writeFile4(join7(directory2, "config.json"), `${JSON.stringify(validated, null, 2)}
 `);
 }
 async function readProjectState(root) {
-  const content = await optionalRead(join6(root, directoryName, "state.json"));
+  const content = await optionalRead(join7(root, directoryName, "state.json"));
   return content ? JSON.parse(content) : void 0;
 }
 function section(title, entries) {
@@ -30157,7 +30324,12 @@ function renderProject(profile, analysis) {
     `
 ${analysis.summary}`,
     section("Observed", analysis.observed),
+    section("Domains and routes", analysis.domains ?? []),
+    section("Events and calls", analysis.events ?? []),
     section("Architecture", analysis.architecture),
+    section("State and data fetching", analysis.state ?? []),
+    section("Styles", analysis.styles ?? []),
+    section("Tests and evidence", analysis.tests ?? []),
     section("Conventions", analysis.conventions),
     section("Decisions", analysis.decisions),
     section("Quality Gates", analysis.qualityGates),
@@ -30166,31 +30338,57 @@ ${analysis.summary}`,
     ""
   ].join("\n\n");
 }
-async function writeProjectArtifacts(profile, analysis) {
-  const directory2 = join6(profile.project.rootPath, directoryName);
-  await mkdir4(join6(directory2, "reports"), { recursive: true });
-  const ignorePath = join6(directory2, ".gitignore");
-  const ignored = await optionalRead(ignorePath);
-  const missing = ["state.json", "reports/", ".workflow-lock/"].filter((line) => !ignored.split(/\r?\n/).includes(line));
-  if (missing.length) await writeFile4(ignorePath, `${ignored}${ignored && !ignored.endsWith("\n") ? "\n" : ""}${missing.join("\n")}
+async function writeProjectArtifacts(profile, analysis, options = {}) {
+  const root = profile.project.rootPath;
+  await locked(root, async () => {
+    const snapshot = await projectSnapshot(root, options.baseRef);
+    if (snapshot.commit && options.expectedCommit !== snapshot.commit) throw new Error("Save context against the inspected main commit; main may have changed");
+    if (!snapshot.commit && options.expectedCommit) throw new Error("The inspected main commit is unavailable");
+    const base = await directory(root);
+    const path = join7(base, "project.md");
+    const previous = await optionalRead(path);
+    if (options.expectedHash !== void 0 && (previous ? digest2(previous) : null) !== options.expectedHash) throw new Error("Project document changed; reread before saving");
+    if (snapshot.commit && options.expectedHash === void 0) throw new Error("Provide the current project document hash (null for a new document)");
+    const legacy = await optionalRead(join7(base, "init.md"));
+    if (previous) await atomic(join7(await directory(root, "project-history"), `${digest2(previous)}.md`), previous);
+    const metadata = { baseRef: snapshot.baseRef, analyzedCommit: snapshot.commit, sourceHash: snapshot.sourceHash, updatedAt: (/* @__PURE__ */ new Date()).toISOString() };
+    const mainProfile = { ...profile, project: { ...profile.project, git: { ...profile.project.git, ...snapshot.commit ? { commit: snapshot.commit } : {} } } };
+    const content = [
+      `<!-- frontend-system-context ${JSON.stringify(metadata)} -->`,
+      renderProject(mainProfile, analysis),
+      section("Tracked files at base commit", snapshot.files.map((file) => `\`${file}\``)),
+      section("Package manifests at base commit", Object.entries(snapshot.manifests).map(([file, manifest]) => `\`${file}\`: \`${JSON.stringify(manifest)}\``)),
+      snapshot.commit ? `Base: ${snapshot.baseRef} @ ${snapshot.commit}. Check current status with get_project_snapshot; local edits are not main facts.` : "No committed main baseline. This is initial context, not verified main state.",
+      legacy ? "Previous inspection preserved: [init.md](init.md). Reconcile its decisions explicitly." : "",
+      previous ? `Previous context preserved: [history](project-history/${digest2(previous)}.md).` : "",
+      ""
+    ].join("\n\n");
+    if ((await projectSnapshot(root, options.baseRef)).commit !== snapshot.commit) throw new Error("Main changed during context generation; retry with new facts");
+    await atomic(path, content);
+    await rm3(join7(base, "project-refresh.json"), { force: true });
+    const ignored = await optionalRead(join7(base, ".gitignore"));
+    const missing = ["state.json", "reports/", ".workflow-lock/"].filter((line) => !ignored.split(/\r?\n/).includes(line));
+    if (missing.length) await atomic(join7(base, ".gitignore"), `${ignored}${ignored && !ignored.endsWith("\n") ? "\n" : ""}${missing.join("\n")}
 `);
-  const legacy = await optionalRead(join6(directory2, "project.md"));
-  const content = renderProject(profile, analysis) + (legacy ? "\nLegacy context (preserved): [project.md](project.md). Reconcile its decisions before superseding them.\n" : "");
-  await Promise.all([
-    writeFile4(join6(directory2, "init.md"), content),
-    writeFile4(join6(directory2, "state.json"), JSON.stringify({
-      ...profile.project.git.commit ? { analyzedCommit: profile.project.git.commit } : {},
-      fileHashes: await sourceSnapshot(profile.project.rootPath),
-      updatedAt: (/* @__PURE__ */ new Date()).toISOString()
-    }, null, 2))
-  ]);
+    await atomic(join7(base, "state.json"), JSON.stringify({
+      ...snapshot.commit ? { analyzedCommit: snapshot.commit } : {},
+      fileHashes: snapshot.workingChanges.length ? {} : await sourceSnapshot(root),
+      updatedAt: metadata.updatedAt
+    }, null, 2));
+  });
 }
 
 // src/application/run-capabilities.ts
 import { execFile as execFile3 } from "node:child_process";
 import { randomUUID as randomUUID3 } from "node:crypto";
-import { dirname as dirname2, join as join7, relative as relative6 } from "node:path";
-var order = ["test:unit", "test:integration", "test", "test:e2e", "e2e", "test:storybook", "build-storybook", "typecheck", "lint", "build"];
+import { dirname as dirname2, join as join8, relative as relative6 } from "node:path";
+function checkOrder(name) {
+  if (/^(lint|typecheck)(:|$)/.test(name)) return 0;
+  if (/^(check)(:|$)/.test(name)) return 1;
+  if (/^(test:(e2e|storybook)|e2e|build-storybook)(:|$)/.test(name)) return 3;
+  if (/^build(:|$)/.test(name)) return 4;
+  return 2;
+}
 function run2(capability, id2, definition) {
   if (/(?:^|\s)(?:--watch(?:=\S+)?|--ui|--fix|--write|--updateSnapshot|-w|-u)(?:\s|$)/.test(definition)) {
     return Promise.resolve({ capability: id2, command: capability.command, workingDirectory: capability.workingDirectory, passed: false, status: "not-run", reason: "Watch command requires a non-watch script", output: "" });
@@ -30235,7 +30433,7 @@ async function runCapabilities(profile, selected) {
     if (!selected.length || selected.some((key) => !profile.capabilities.some((capability) => id2(capability) === key))) throw new Error("Select existing capability IDs from profile.scripts");
   }
   const capabilities = [...profile.capabilities].sort(
-    (a, b) => order.indexOf(a.name) - order.indexOf(b.name) || a.script.localeCompare(b.script)
+    (a, b) => checkOrder(a.name) - checkOrder(b.name) || a.script.localeCompare(b.script)
   );
   const results = [];
   for (const capability of capabilities) {
@@ -30246,43 +30444,57 @@ async function runCapabilities(profile, selected) {
 }
 async function runProjectChecks(profile, options = {}) {
   const root = profile.project.rootPath;
-  const baseline = options.baselineCheckId ? await readCheckRecord(root, options.baselineCheckId) : void 0;
+  const baseline = options.baselineCheckId ? await readCheckRecord(root, options.baselineCheckId, options.planId) : void 0;
   const snapshot = await sourceSnapshot(root);
   const before = digest2(JSON.stringify(snapshot));
-  const revision = await readRevision(root);
-  if (options.required && (!revision.policy || !revision.approved)) throw new Error("Required checks need an approved verification policy");
+  const revision = await readRevision(root, options.planId);
+  const required2 = options.required || options.stage === "delivery" || options.stage === "issue";
+  if (required2 && (!revision.policy || !revision.approved)) throw new Error("Required checks need an approved verification policy");
+  let attemptStep;
   if (options.attemptId) {
-    const attempt = await readAttempt(root, options.attemptId);
+    const attempt = await readAttempt(root, options.attemptId, options.planId);
+    attemptStep = attempt.stepId;
     if (!revision.approved || attempt.revisionHash !== revision.hash) throw new Error("Check attempt does not match the approved revision");
   }
-  if (options.required && options.capabilities) throw new Error("Choose required checks or a capability selection, not both");
-  const selected = options.required ? requiredScripts(revision.policy) : options.capabilities;
+  if ((required2 || options.stage) && options.capabilities) throw new Error("Choose a stage/required checks or a capability selection, not both");
+  if (options.required && options.stage && options.stage !== "delivery") throw new Error("Required checks cannot be narrowed by a stage");
+  if (options.stage === "baseline" && options.purpose === "verification") throw new Error("Baseline stage records baseline evidence");
+  let selected = required2 ? requiredScripts(revision.policy) : options.capabilities;
+  if (options.stage === "baseline") selected = profile.capabilities.filter((item) => ["lint", "typecheck", "test:unit", "test:integration"].includes(item.name) || item.name === "test" && !profile.capabilities.some((other) => other.workingDirectory === item.workingDirectory && ["test:unit", "test:integration"].includes(other.name))).map((item) => relative6(root, item.workingDirectory) ? `${relative6(root, item.workingDirectory)}:${item.script}` : item.script);
+  if (options.stage === "issue") {
+    const stepId = options.stepId ?? attemptStep;
+    const issue2 = revision.issues?.find(({ id: id2 }) => id2 === stepId);
+    if (!issue2 || attemptStep && attemptStep !== issue2.id) throw new Error("Issue stage requires an approved issue and matching attempt");
+    selected = [...new Set(issue2.requiredCheckIds.map((id2) => revision.policy.checks.find((check) => check.id === id2).script))];
+  }
   const failures = revision.policy ? policyFailures(revision.policy, profile.scripts, snapshot) : [];
   const eligible = { ...profile, capabilities: [...profile.capabilities] };
   for (const script of revision.policy ? requiredScripts(revision.policy) : []) {
     const manifest = [...profile.paths.manifests].sort((a, b) => b.length - a.length).find((path) => dirname2(path) !== "." && script.startsWith(`${dirname2(path)}:`));
     const folder = manifest ? dirname2(manifest) : "";
     const name = folder ? script.slice(folder.length + 1) : script;
-    const workingDirectory = join7(root, folder);
+    const workingDirectory = join8(root, folder);
     if (!profile.scripts[script] || eligible.capabilities.some((item) => item.workingDirectory === workingDirectory && item.script === name)) continue;
     const manager = profile.capabilities.find((item) => item.workingDirectory === workingDirectory)?.packageManager ?? profile.packageManager?.name ?? "npm";
     eligible.capabilities.push({ name, script: name, command: `${manager} run ${name}`, packageManager: manager, workingDirectory });
   }
   const results = failures.length ? failures.map((reason) => ({ capability: "policy", command: "", passed: false, status: "not-run", reason, output: "" })) : selected?.length === 0 ? [{ capability: "none", command: "", passed: false, status: "not-run", reason: "Policy has no automated checks", output: "" }] : await runCapabilities(eligible, selected);
   const after = digest2(JSON.stringify(await sourceSnapshot(root)));
-  const afterRevision = await readRevision(root);
+  const afterRevision = await readRevision(root, options.planId);
   const record2 = {
     id: randomUUID3(),
-    purpose: options.purpose ?? "verification",
+    planId: options.planId ?? null,
+    stage: options.stage,
+    purpose: options.stage === "baseline" ? "baseline" : options.purpose ?? "verification",
     revisionHash: revision.hash,
     sourceHash: after,
     stable: before === after && revision.hash === afterRevision.hash,
-    full: !options.capabilities && !options.required,
+    full: !options.capabilities && !required2 && !options.stage,
     results: results.map((result2) => ({ ...result2, status: result2.status ?? "not-run" })),
     createdAt: (/* @__PURE__ */ new Date()).toISOString(),
     ...options.attemptId ? { attemptId: options.attemptId } : {}
   };
-  const saved = await saveCheckRecord(root, record2);
+  const saved = await saveCheckRecord(root, record2, options.planId);
   return {
     ...saved,
     ...record2,
@@ -30304,10 +30516,10 @@ async function runProjectChecks(profile, options = {}) {
 import { execFile as execFile4 } from "node:child_process";
 import { lookup } from "node:dns/promises";
 import { createHash as createHash4, randomUUID as randomUUID4 } from "node:crypto";
-import { mkdir as mkdir5, mkdtemp, readFile as readFile8, realpath as realpath4, rename as rename3, rm as rm3, writeFile as writeFile5 } from "node:fs/promises";
+import { mkdir as mkdir5, mkdtemp, readFile as readFile9, realpath as realpath4, rename as rename3, rm as rm4, writeFile as writeFile5 } from "node:fs/promises";
 import { isIP } from "node:net";
 import { tmpdir } from "node:os";
-import { join as join8 } from "node:path";
+import { join as join9 } from "node:path";
 import { promisify as promisify2 } from "node:util";
 var hash3 = (text2) => createHash4("sha256").update(text2).digest("hex");
 var run3 = promisify2(execFile4);
@@ -30323,34 +30535,34 @@ var snapshotSchema = object2({
   lastModified: string2().optional(),
   diff: string2()
 });
-async function optional3(path) {
+async function optional4(path) {
   try {
-    return await readFile8(path, "utf8");
+    return await readFile9(path, "utf8");
   } catch (error2) {
     if (error2.code === "ENOENT") return "";
     throw error2;
   }
 }
 async function sourceRegistry(root) {
-  const raw = await optional3(join8(root, "knowledge/sources.json"));
+  const raw = await optional4(join9(root, "knowledge/sources.json"));
   return { sources: raw ? sourcesSchema.parse(JSON.parse(raw)) : {}, hash: raw ? hash3(raw) : null };
 }
 async function registerSource(root, id2, url2, expectedHash) {
   ruleId.parse(id2);
   validateUrl(url2);
-  const folder = join8(root, "knowledge");
+  const folder = join9(root, "knowledge");
   await mkdir5(folder, { recursive: true });
-  if (await realpath4(folder) !== join8(await realpath4(root), "knowledge")) throw new Error("Knowledge directory must not be a symlink");
-  const lock = join8(folder, ".sources-lock");
+  if (await realpath4(folder) !== join9(await realpath4(root), "knowledge")) throw new Error("Knowledge directory must not be a symlink");
+  const lock = join9(folder, ".sources-lock");
   await mkdir5(lock);
   try {
     const current = await sourceRegistry(root);
     if (current.hash !== expectedHash) throw new Error("Source registry changed; reread it");
-    await replace(join8(folder, "sources.json"), `${JSON.stringify({ ...current.sources, [id2]: url2 }, null, 2)}
+    await replace(join9(folder, "sources.json"), `${JSON.stringify({ ...current.sources, [id2]: url2 }, null, 2)}
 `);
     return sourceRegistry(root);
   } finally {
-    await rm3(lock, { recursive: true });
+    await rm4(lock, { recursive: true });
   }
 }
 async function replace(path, data) {
@@ -30359,13 +30571,13 @@ async function replace(path, data) {
     await writeFile5(temp, data, { flag: "wx" });
     await rename3(temp, path);
   } finally {
-    await rm3(temp, { force: true });
+    await rm4(temp, { force: true });
   }
 }
 async function cacheFolder(root) {
-  const folder = join8(root, "knowledge/.cache/sources");
+  const folder = join9(root, "knowledge/.cache/sources");
   await mkdir5(folder, { recursive: true });
-  if (await realpath4(folder) !== join8(await realpath4(root), "knowledge/.cache/sources")) throw new Error("Source cache must not traverse symlinks");
+  if (await realpath4(folder) !== join9(await realpath4(root), "knowledge/.cache/sources")) throw new Error("Source cache must not traverse symlinks");
   return folder;
 }
 function privateAddress(address) {
@@ -30403,10 +30615,10 @@ async function documentDiff(before, after) {
 
 ${after}`;
   if (before === after) return "";
-  const temp = await mkdtemp(join8(tmpdir(), "fs-source-diff-"));
+  const temp = await mkdtemp(join9(tmpdir(), "fs-source-diff-"));
   try {
-    await writeFile5(join8(temp, "previous.md"), before);
-    await writeFile5(join8(temp, "current.md"), after);
+    await writeFile5(join9(temp, "previous.md"), before);
+    await writeFile5(join9(temp, "current.md"), after);
     try {
       return (await run3("git", ["diff", "--no-index", "--no-ext-diff", "--no-color", "--unified=4", "previous.md", "current.md"], { cwd: temp, maxBuffer: 6 * 1024 * 1024 })).stdout;
     } catch (error2) {
@@ -30415,7 +30627,7 @@ ${after}`;
       throw error2;
     }
   } finally {
-    await rm3(temp, { recursive: true, force: true });
+    await rm4(temp, { recursive: true, force: true });
   }
 }
 async function checkSources(root, ids, transport = fetch, resolveHost = (hostname) => lookup(hostname, { all: true })) {
@@ -30427,13 +30639,13 @@ async function checkSources(root, ids, transport = fetch, resolveHost = (hostnam
   for (const id2 of selected) {
     ruleId.parse(id2);
     const sourceUrl = registry2.sources[id2];
-    const path = join8(folder, `${id2}.json`);
+    const path = join9(folder, `${id2}.json`);
     const lock = `${path}.lock`;
     let acquired = false;
     try {
       await mkdir5(lock);
       acquired = true;
-      const raw = await optional3(path);
+      const raw = await optional4(path);
       const saved = raw ? snapshotSchema.parse(JSON.parse(raw)) : void 0;
       const previous = saved?.url === sourceUrl ? saved : void 0;
       let url2 = validateUrl(sourceUrl);
@@ -30482,14 +30694,14 @@ async function checkSources(root, ids, transport = fetch, resolveHost = (hostnam
     } catch (error2) {
       results.push({ id: id2, url: sourceUrl, status: "failed", reason: error2 instanceof Error ? error2.message : String(error2) });
     } finally {
-      if (acquired) await rm3(lock, { recursive: true });
+      if (acquired) await rm4(lock, { recursive: true });
     }
   }
   return results;
 }
 async function readSourceChange(root, id2, offset = 0, limit = 12e3, full = false, expectedHash) {
   ruleId.parse(id2);
-  const record2 = snapshotSchema.parse(JSON.parse(await readFile8(join8(await cacheFolder(root), `${id2}.json`), "utf8")));
+  const record2 = snapshotSchema.parse(JSON.parse(await readFile9(join9(await cacheFolder(root), `${id2}.json`), "utf8")));
   if ((await sourceRegistry(root)).sources[id2] !== record2.url || expectedHash && record2.hash !== expectedHash) throw new Error("Source changed; restart review");
   const content = full ? record2.body : record2.diff;
   const start = Math.max(0, offset);
@@ -30498,23 +30710,23 @@ async function readSourceChange(root, id2, offset = 0, limit = 12e3, full = fals
 }
 async function acknowledgeSource(root, id2, expectedHash, sourceId) {
   ruleId.parse(id2);
-  const path = join8(await cacheFolder(root), `${id2}.json`);
+  const path = join9(await cacheFolder(root), `${id2}.json`);
   const lock = `${path}.lock`;
   await mkdir5(lock);
   try {
-    const current = snapshotSchema.parse(JSON.parse(await readFile8(path, "utf8")));
+    const current = snapshotSchema.parse(JSON.parse(await readFile9(path, "utf8")));
     if (current.hash !== expectedHash || (await sourceRegistry(root)).sources[id2] !== current.url) throw new Error("Source changed; review again");
     const source = (await loadKnowledgeCatalog(root)).documents[sourceId];
     if (!source || source.remoteHash !== expectedHash || source.sourceUrl !== current.url || source.publishedHash !== source.contentHash) throw new Error("Publish the reviewed source with its remoteHash before acknowledging");
     await replace(path, JSON.stringify({ ...current, reviewedBody: current.body, reviewedHash: current.hash, diff: "" }));
     return { id: id2, reviewedHash: current.hash };
   } finally {
-    await rm3(lock, { recursive: true });
+    await rm4(lock, { recursive: true });
   }
 }
 
 // src/application/task-context.ts
-import { join as join10 } from "node:path";
+import { join as join11 } from "node:path";
 
 // src/application/context/build-work-context.ts
 import { relative as relative7 } from "node:path";
@@ -30560,8 +30772,8 @@ async function buildWorkContext(discovery2, profile, request, knowledge, rules) 
 }
 
 // src/application/rules/rule-resolver.ts
-import { readFile as readFile9, readdir as readdir5 } from "node:fs/promises";
-import { join as join9, relative as relative8 } from "node:path";
+import { readFile as readFile10, readdir as readdir5 } from "node:fs/promises";
+import { join as join10, relative as relative8 } from "node:path";
 function slug(value) {
   return value.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, "-").replace(/^-|-$/g, "");
 }
@@ -30571,10 +30783,10 @@ function technologyDomain(value) {
 async function ruleFiles(root, domains) {
   const files = [];
   for (const domain of domains) {
-    const directory2 = join9(root, domain);
+    const directory2 = join10(root, domain);
     try {
       for (const entry of await readdir5(directory2, { withFileTypes: true })) {
-        if (entry.isFile() && entry.name.endsWith(".md")) files.push(join9(directory2, entry.name));
+        if (entry.isFile() && entry.name.endsWith(".md")) files.push(join10(directory2, entry.name));
       }
     } catch (error2) {
       if (error2.code !== "ENOENT") throw error2;
@@ -30587,7 +30799,7 @@ async function mandatoryRules(root, profile) {
   const domains = /* @__PURE__ */ new Set(["common", ...technologyDomains]);
   const rules = [];
   for (const path of await ruleFiles(root, domains)) {
-    const content = await readFile9(path, "utf8");
+    const content = await readFile10(path, "utf8");
     const domain = relative8(root, path).split("/")[0] ?? "common";
     const sections = content.split(/^##\s+/m).slice(1);
     for (const section2 of sections) {
@@ -30671,10 +30883,10 @@ var RuleResolver = class {
 };
 
 // src/application/task-context.ts
-async function taskContext(discovery2, systemRoot2, projectPath2, request) {
+async function taskContext(discovery2, systemRoot2, projectPath2, request, planId) {
   const profile = await discovery2.discover(await discovery2.createRef(projectPath2));
-  const knowledge = await new KnowledgeResolver(join10(systemRoot2, "references", "learned")).resolve(profile, request);
-  const rules = await new RuleResolver(join10(systemRoot2, "mandatory-rules")).resolve(
+  const knowledge = await new KnowledgeResolver(join11(systemRoot2, "references", "learned")).resolve(profile, request);
+  const rules = await new RuleResolver(join11(systemRoot2, "mandatory-rules")).resolve(
     profile,
     request,
     knowledge.applicable,
@@ -30682,17 +30894,21 @@ async function taskContext(discovery2, systemRoot2, projectPath2, request) {
   );
   const previous = await readProjectState(projectPath2);
   const current = previous ? await sourceSnapshot(projectPath2) : void 0;
-  const workflow = await workflowContext(projectPath2);
+  const workflow = await workflowContext(projectPath2, planId);
   const inspectionChanges = previous && current ? [.../* @__PURE__ */ new Set([...Object.keys(previous.fileHashes), ...Object.keys(current)])].filter((path) => previous.fileHashes[path] !== current[path]).sort() : [];
+  const document = await readProjectDocument(projectPath2);
   return {
+    projectDocumentStatus: await projectDocumentStatus(projectPath2),
     inspection: { recorded: !!previous, changedFiles: inspectionChanges, needsRefresh: !previous || inspectionChanges.length > 0 },
     // Pinned policy is returned here independently of lexical knowledge search.
     workflow,
+    plans: await listPlans(projectPath2),
     focus: ["prepare", "inspect", "review"].includes(request.mode) ? "design" : "implementation",
     config: await readProjectConfig(projectPath2),
     profile,
     context: await buildWorkContext(discovery2, profile, request, knowledge.applicable, rules),
-    document: await readProjectDocument(projectPath2)
+    document: document.slice(0, 12e3),
+    documentTruncated: document.length > 12e3
   };
 }
 
@@ -30732,34 +30948,39 @@ server.registerTool("list_project_files", {
     warnings: inventory.warnings
   });
 });
+server.registerTool("list_plans", {
+  description: "List request plans and approval versions. Select a planId before reading or changing its workflow; omitted planId addresses legacy records only.",
+  inputSchema: { projectPath: string2().optional() },
+  annotations: readOnly
+}, async ({ projectPath: path }) => result(await listPlans(projectPath(path))));
 server.registerTool("get_workflow_context", {
   title: "Read revision, decisions, and resume state",
   description: "Return project records and detect source or revision changes since the checkpoint. Stored completion is historical, not proof of current verification.",
-  inputSchema: { projectPath: string2().optional() },
+  inputSchema: { projectPath: string2().optional(), planId: recordId.optional() },
   annotations: readOnly
-}, async ({ projectPath: path }) => result(await workflowContext(projectPath(path))));
+}, async ({ projectPath: path, planId }) => result(await workflowContext(projectPath(path), planId)));
 server.registerTool("get_revision", {
   title: "Read a revision window",
   description: "Read the current target design with its content hash and effective approval. Read all relevant windows before discussing or approving it.",
-  inputSchema: { projectPath: string2().optional(), offset: number2().int().min(0).default(0), limit: number2().int().min(1).max(500).default(200) },
+  inputSchema: { projectPath: string2().optional(), planId: recordId.optional(), offset: number2().int().min(0).default(0), limit: number2().int().min(1).max(500).default(200) },
   annotations: readOnly
-}, async ({ projectPath: path, offset, limit }) => {
-  const revision = await readRevision(projectPath(path));
+}, async ({ projectPath: path, planId, offset, limit }) => {
+  const revision = await readRevision(projectPath(path), planId);
   const lines = revision.content.split("\n");
   return result({ ...revision, content: lines.slice(offset, offset + limit).join("\n"), totalLines: lines.length, nextOffset: offset + limit < lines.length ? offset + limit : null });
 });
 server.registerTool("save_revision", {
   title: "Save an unapproved target design",
   description: "Save a revision draft and preserve the previous content in history. Every save invalidates approval. Pass the current hash, or null for a new project.",
-  inputSchema: { projectPath: string2().optional(), content: string2().min(1), expectedHash: string2().nullable(), policy: policySchema.optional() },
+  inputSchema: { projectPath: string2().optional(), planId: recordId.optional(), content: string2().min(1), expectedHash: string2().nullable(), policy: policySchema.optional(), issues: issuesSchema.optional() },
   annotations: localWrite
-}, async ({ projectPath: path, content, expectedHash, policy }) => result(await saveRevision(projectPath(path), content, expectedHash, policy)));
+}, async ({ projectPath: path, planId, content, expectedHash, policy, issues }) => result(await saveRevision(projectPath(path), content, expectedHash, policy, planId, issues)));
 server.registerTool("approve_revision", {
   title: "Record explicit user approval of a revision",
   description: "Call only after the user approves this exact target design. Record their approval, never infer it from a request to analyze or draft. Does not start implementation.",
-  inputSchema: { projectPath: string2().optional(), expectedHash: string2(), approval: string2().min(1) },
+  inputSchema: { projectPath: string2().optional(), planId: recordId.optional(), expectedHash: string2(), approval: string2().min(1) },
   annotations: localWrite
-}, async ({ projectPath: path, expectedHash, approval }) => result(await approveRevision(projectPath(path), expectedHash, approval)));
+}, async ({ projectPath: path, planId, expectedHash, approval }) => result(await approveRevision(projectPath(path), expectedHash, approval, planId)));
 server.registerTool("save_project_record", {
   title: "Save project evidence or a scoped decision",
   description: "Write Markdown evidence or decisions, preserving provenance, scope, alternatives, tradeoffs, uncertainty and recheck conditions. Project recording never promotes a decision to shared knowledge.",
@@ -30775,16 +30996,16 @@ server.registerTool("get_project_record", {
 server.registerTool("save_execution", {
   title: "Checkpoint a refactoring execution",
   description: "Record stages against the approved revision. Reconcile source changes before saving. Newly completed stages require current passing checks; complete execution requires a full current check. Never edit product files or reset user changes here.",
-  inputSchema: { projectPath: string2().optional(), expectedHash: string2().nullable(), execution: executionSchema },
+  inputSchema: { projectPath: string2().optional(), planId: recordId.optional(), expectedHash: string2().nullable(), execution: executionSchema },
   annotations: localWrite
-}, async ({ projectPath: path, expectedHash, execution }) => result(await saveExecution(projectPath(path), execution, expectedHash)));
+}, async ({ projectPath: path, planId, expectedHash, execution }) => result(await saveExecution(projectPath(path), execution, expectedHash, planId)));
 server.registerTool("get_check_record", {
   title: "Read recorded check evidence",
   description: "Return an immutable baseline or verification record. Matching failure status does not prove the same failure cause.",
-  inputSchema: { projectPath: string2().optional(), id: recordId, capability: string2().optional(), offset: number2().int().min(0).default(0), limit: number2().int().min(1).max(12e3).default(12e3) },
+  inputSchema: { projectPath: string2().optional(), planId: recordId.optional(), id: recordId, capability: string2().optional(), offset: number2().int().min(0).default(0), limit: number2().int().min(1).max(12e3).default(12e3) },
   annotations: readOnly
-}, async ({ projectPath: path, id: id2, capability, offset, limit }) => {
-  const record2 = await readCheckRecord(projectPath(path), id2);
+}, async ({ projectPath: path, planId, id: id2, capability, offset, limit }) => {
+  const record2 = await readCheckRecord(projectPath(path), id2, planId);
   if (!capability) return result(summarizeChecks(record2));
   const entry = record2.results.find((item) => item.capability === capability);
   if (!entry) throw new Error("Unknown check capability");
@@ -30792,14 +31013,14 @@ server.registerTool("get_check_record", {
 });
 server.registerTool("begin_work_attempt", {
   description: "Reserve one of three persisted full attempts for an incomplete step. Local development tests do not need attempts. Reuse the returned ID for checks and semantic reviews; cannot reset the budget by resuming.",
-  inputSchema: { projectPath: string2().optional(), stepId: recordId, expectedHash: string2() },
+  inputSchema: { projectPath: string2().optional(), planId: recordId.optional(), stepId: recordId, expectedHash: string2() },
   annotations: localWrite
-}, async ({ projectPath: path, stepId, expectedHash }) => result(await beginAttempt(projectPath(path), stepId, expectedHash)));
+}, async ({ projectPath: path, planId, stepId, expectedHash }) => result(await beginAttempt(projectPath(path), stepId, expectedHash, planId)));
 server.registerTool("save_semantic_review", {
   description: "Record host-model review evidence against the current source and approved policy. Findings must cite existing files. This records model judgment, not machine proof of correctness.",
-  inputSchema: { projectPath: string2().optional(), review: reviewInputSchema },
+  inputSchema: { projectPath: string2().optional(), planId: recordId.optional(), review: reviewInputSchema },
   annotations: localWrite
-}, async ({ projectPath: path, review }) => result(await saveReview(projectPath(path), review)));
+}, async ({ projectPath: path, planId, review }) => result(await saveReview(projectPath(path), review, planId)));
 server.registerTool("inspect_project", {
   title: "Inspect frontend project facts",
   description: "Discover manifests, technologies, design evidence, scripts, architecture hints, and existing frontend-system context without invoking a model.",
@@ -30853,13 +31074,58 @@ var questionSchema = object2({
   question: string2(),
   reason: string2()
 });
+server.registerTool("get_project_snapshot", {
+  description: "Read main facts without checkout or changing local files. Page tracked files and read selected contents with read_project_source. Manifests are facts, not proof of installed tools or passing tests. No remote fetch.",
+  inputSchema: { projectPath: string2().optional(), baseRef: string2().default("main"), offset: number2().int().min(0).default(0), limit: number2().int().min(1).max(1e3).default(200), expectedCommit: string2().optional() },
+  annotations: readOnly
+}, async ({ projectPath: path, baseRef, offset, limit, expectedCommit }) => {
+  const root = projectPath(path);
+  const snapshot = await projectSnapshot(root, baseRef);
+  if (expectedCommit && snapshot.commit !== expectedCommit) throw new Error("Main changed; restart pagination");
+  return result({
+    ...snapshot,
+    files: snapshot.files.slice(offset, offset + limit),
+    totalFiles: snapshot.files.length,
+    nextOffset: offset + limit < snapshot.files.length ? offset + limit : null,
+    documentHash: await projectDocumentHash(root),
+    documentStatus: await projectDocumentStatus(root)
+  });
+});
+server.registerTool("record_project_refresh", {
+  description: "Mark an authorized main-context refresh pending or failed. Preserve the last successful project.md. Save_project_context clears this state after successful replacement.",
+  inputSchema: { projectPath: string2().optional(), baseRef: string2().default("main"), expectedCommit: string2().nullable(), status: _enum(["pending", "failed"]), reason: string2().default("") },
+  annotations: localWrite
+}, async ({ projectPath: path, baseRef, expectedCommit, status, reason }) => result(await recordProjectRefresh(projectPath(path), baseRef, expectedCommit, status, reason)));
+server.registerTool("get_project_document", {
+  description: "Read a bounded project.md window, falling back to preserved init.md. Use the returned content hash to keep pagination consistent.",
+  inputSchema: { projectPath: string2().optional(), offset: number2().int().min(0).default(0), limit: number2().int().min(1).max(12e3).default(6e3), expectedHash: string2().optional() },
+  annotations: readOnly
+}, async ({ projectPath: path, offset, limit, expectedHash }) => {
+  const content = await readProjectDocument(projectPath(path));
+  const hash4 = content ? digest2(content) : null;
+  if (expectedHash && hash4 !== expectedHash) throw new Error("Document changed; restart pagination");
+  return result({ hash: hash4, content: content.slice(offset, offset + limit), totalCharacters: content.length, nextOffset: offset + limit < content.length ? offset + limit : null });
+});
+server.registerTool("read_project_source", {
+  description: "Read a bounded file window from the inspected main commit. Working-branch contents are not used.",
+  inputSchema: { projectPath: string2().optional(), baseRef: string2().default("main"), path: string2(), expectedCommit: string2(), offset: number2().int().min(0).default(0), limit: number2().int().min(1).max(12e3).default(6e3) },
+  annotations: readOnly
+}, async ({ projectPath: root, path, expectedCommit, baseRef, offset, limit }) => result(await readProjectSource(projectPath(root), path, expectedCommit, baseRef, offset, limit)));
 server.registerTool("save_project_context", {
   title: "Save inspected project context",
   description: "Persist the top-level model's evidence-backed project analysis and update deterministic hashes.",
   inputSchema: {
     projectPath: string2().optional(),
+    baseRef: string2().default("main"),
+    expectedCommit: string2().nullable(),
+    expectedHash: string2().nullable(),
     analysis: object2({
       summary: string2(),
+      domains: array(string2()).default([]),
+      events: array(string2()).default([]),
+      state: array(string2()).default([]),
+      styles: array(string2()).default([]),
+      tests: array(string2()).default([]),
       observed: array(string2()),
       architecture: array(string2()),
       conventions: array(string2()),
@@ -30870,25 +31136,26 @@ server.registerTool("save_project_context", {
     })
   },
   annotations: localWrite
-}, async ({ projectPath: path, analysis }) => {
+}, async ({ projectPath: path, analysis, baseRef, expectedCommit, expectedHash }) => {
   const root = projectPath(path);
   const profile = await discovery.discover(await discovery.createRef(root));
-  await writeProjectArtifacts(profile, analysis);
-  return result({ projectDocument: `${root}/.frontend-system/init.md`, analyzedCommit: profile.project.git.commit });
+  await writeProjectArtifacts(profile, analysis, { baseRef, expectedCommit, expectedHash });
+  return result({ projectDocument: `${root}/.frontend-system/project.md`, status: await projectDocumentStatus(root) });
 });
 server.registerTool("get_work_context", {
   title: "Build focused frontend work context",
   description: "Return a token-conscious file shortlist, applicable rules, learned references, project constraints, and design evidence for a request.",
   inputSchema: {
     projectPath: string2().optional(),
+    planId: recordId.optional(),
     request: string2(),
     mode: _enum(["prepare", "implement", "verify", "review", "refactor"]).default("implement"),
     constraints: array(string2()).default([])
   },
   annotations: readOnly
-}, async ({ projectPath: path, request, mode, constraints }) => {
+}, async ({ projectPath: path, planId, request, mode, constraints }) => {
   const workRequest = { raw: request, mode, constraints };
-  return result(await taskContext(discovery, systemRoot, projectPath(path), workRequest));
+  return result(await taskContext(discovery, systemRoot, projectPath(path), workRequest, planId));
 });
 server.registerTool("get_change_context", {
   title: "Build frontend change-review context",
@@ -30913,12 +31180,12 @@ server.registerTool("get_change_context", {
 server.registerTool("run_project_checks", {
   title: "Run discovered project checks",
   description: "Run only existing, non-watch package scripts for unit, integration, e2e, Storybook, types, lint, and build. Test code should be created before calling this tool.",
-  inputSchema: { projectPath: string2().optional(), capabilities: array(string2()).min(1).optional(), purpose: _enum(["baseline", "verification"]).default("verification"), baselineCheckId: recordId.optional(), required: boolean2().default(false), attemptId: recordId.optional() },
+  inputSchema: { projectPath: string2().optional(), planId: recordId.optional(), stage: _enum(["baseline", "issue", "delivery"]).optional(), stepId: recordId.optional(), capabilities: array(string2()).min(1).optional(), purpose: _enum(["baseline", "verification"]).optional(), baselineCheckId: recordId.optional(), required: boolean2().default(false), attemptId: recordId.optional() },
   annotations: localWrite
-}, async ({ projectPath: path, capabilities, purpose, baselineCheckId, required: required2, attemptId }) => {
+}, async ({ projectPath: path, planId, stage, stepId, capabilities, purpose, baselineCheckId, required: required2, attemptId }) => {
   const root = projectPath(path);
   const profile = await discovery.discover(await discovery.createRef(root));
-  return result(summarizeChecks(await runProjectChecks(profile, { capabilities, purpose, baselineCheckId, required: required2, attemptId })));
+  return result(summarizeChecks(await runProjectChecks(profile, { planId, stage, stepId, capabilities, purpose, baselineCheckId, required: required2, attemptId })));
 });
 server.registerTool("knowledge_status", {
   title: "Check source knowledge status",

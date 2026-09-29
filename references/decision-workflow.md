@@ -14,7 +14,7 @@ Do not start a nested model. There is no background watcher or automatic PR hook
 ## Read before deciding
 
 Call `get_work_context` with the current task and appropriate mode. Read the current
-`init.md` (legacy `project.md` is a fallback), revision metadata and relevant evidence
+`project.md` (legacy `init.md` is a fallback), revision metadata and relevant evidence
 and decisions. `workflow.revision.truncated` means read more with `get_revision`.
 Select records by ID with `get_project_record`; follow `nextOffset` as needed.
 The context shortlist is a starting point, not an analysis boundary.

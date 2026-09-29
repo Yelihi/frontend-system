@@ -1,13 +1,14 @@
 import assert from 'node:assert/strict';
 import { execFile } from 'node:child_process';
-import { mkdtemp, rm } from 'node:fs/promises';
+import { copyFile, mkdir, mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
-import { promisify } from 'node:util';
+import { join, resolve } from 'node:path';
+import { parseArgs, promisify } from 'node:util';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 
 const exec = promisify(execFile);
+const { values } = parseArgs({ options: { 'output-dir': { type: 'string' } } });
 const temp = await mkdtemp(join(tmpdir(), 'fs-package-'));
 const client = new Client({ name: 'package-smoke', version: '1' });
 try {
@@ -20,8 +21,14 @@ try {
   // Bundled MCP must start independently of the source checkout and its node_modules.
   await client.connect(new StdioClientTransport({ command: process.execPath, args: [join(temp, 'package/bundle/mcp.js')], cwd: temp }));
   const tools = (await client.listTools()).tools.map(tool => tool.name);
-  for (const name of ['save_revision', 'run_project_checks', 'begin_work_attempt', 'save_semantic_review', 'save_rule_proposal', 'check_knowledge_sources', 'read_source_change']) assert.ok(tools.includes(name), name);
+  for (const name of ['list_plans', 'get_project_snapshot', 'read_project_source', 'get_project_document', 'record_project_refresh', 'save_revision', 'run_project_checks', 'begin_work_attempt', 'save_semantic_review', 'save_rule_proposal', 'check_knowledge_sources', 'read_source_change']) assert.ok(tools.includes(name), name);
   const context = await client.callTool({ name: 'inspect_project', arguments: { projectPath: temp } });
   assert.ok(!context.isError);
+  if (values['output-dir']) {
+    const destination = resolve(values['output-dir']);
+    await mkdir(destination, { recursive: true });
+    await copyFile(join(temp, pack.filename), join(destination, pack.filename));
+    console.log(`Verified package saved: ${join(destination, pack.filename)}`);
+  }
   console.log('Package smoke passed: four skills, no raw knowledge, standalone MCP tools.');
 } finally { await client.close(); await rm(temp, { recursive: true, force: true }); }
