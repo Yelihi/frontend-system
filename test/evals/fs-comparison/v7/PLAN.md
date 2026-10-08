@@ -86,3 +86,4 @@ application/system.mjs의 createSystem({transport,onUnauthorized,initialToken=nu
 - CheckoutForm({checkout,input}): 결제 버튼 클릭에서 checkout.submit(input)를 그대로 호출, 진행 중 disabled, 성공 order.id, 실패 role=alert 사용자 메시지. ReturnForm({refund,input}): 환불 버튼으로 같은 위임, 성공 record.id와 restockPending일 때 재입고 대기 문구. 실패 alert. 입력 객체를 가공해 domain 규칙을 UI에서 중복 구현하지 않는다.
 - SessionBar({onLogin,onLogout}): aria-label=세션 토큰, type=password 제어 input. 입력한 값은 로그인 버튼 클릭에서 onLogin(token)에 전달, 로그아웃 버튼은 onLogout 호출. 저장소/localStorage/cookie에 token 저장 금지.
 - App({system,checkoutInput,refundInput}): h1=운영 콘솔과 위 네 Panel, 두 Form, SessionBar를 연결한다. 시스템 조립/HTTP/가격 판단을 여기로 옮기지 않는다. 화면의 작성 형식은 위의 팀 정책을 따르며, 실제 브라우저 검증이 안 되면 SSR/모의 이벤트 검증과 구분해 기록한다.
+
