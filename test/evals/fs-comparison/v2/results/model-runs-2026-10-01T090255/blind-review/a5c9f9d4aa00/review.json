@@ -1,0 +1,1473 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "a5c9f9d4aa00",
+  "reviewer": {
+    "identity": "/root/calibration_review",
+    "session": "independent-blind-review-a5c9f9d4aa00-2026-10-01",
+    "implementationParticipation": false,
+    "conditionMappingRead": false,
+    "additionalModels": false
+  },
+  "criteria": {
+    "Q1": {
+      "score": 0,
+      "items": [
+        {
+          "id": "Q1.1",
+          "criterion": "React/HTTP 없는 실행",
+          "score": 0,
+          "reason": "계산 진입점 src/checkout.js가 빈 파일이라 React/HTTP 없는 실제 업무 실행이 없다.",
+          "sourceLocations": [
+            "source/src/checkout.js (empty)",
+            "source/app/checkout.jsx (empty)",
+            "source/app/api/quote/route.js (empty)",
+            "source/app/api/orders/route.js (empty)"
+          ],
+          "executionEvidence": [
+            "external-evidence.json",
+            "probes/lifecycle-evidence.json"
+          ],
+          "limitation": "누락된 필요한 코드에 공개 규칙의0을 적용했다. 평가 도구 고장으로 인한 U가 아니다."
+        },
+        {
+          "id": "Q1.2",
+          "criterion": "상품·재고 데이터를 바꿔 실행 가능",
+          "score": 0,
+          "reason": "calculateQuote export가 없어 대체 상품·재고를 넣어 실행할 업무 규칙이 없다.",
+          "sourceLocations": [
+            "source/src/checkout.js (empty)",
+            "source/app/checkout.jsx (empty)",
+            "source/app/api/quote/route.js (empty)",
+            "source/app/api/orders/route.js (empty)"
+          ],
+          "executionEvidence": [
+            "external-evidence.json",
+            "probes/lifecycle-evidence.json"
+          ],
+          "limitation": "누락된 필요한 코드에 공개 규칙의0을 적용했다. 평가 도구 고장으로 인한 U가 아니다."
+        }
+      ]
+    },
+    "Q2": {
+      "score": 0,
+      "items": [
+        {
+          "id": "Q2.1",
+          "criterion": "견적·주문이 같은 계산 규칙 사용",
+          "score": 0,
+          "reason": "견적/주문 POST 파일과 계산 파일이 모두 비어 공유 규칙 호출 경로가 없다.",
+          "sourceLocations": [
+            "source/src/checkout.js (empty)",
+            "source/app/checkout.jsx (empty)",
+            "source/app/api/quote/route.js (empty)",
+            "source/app/api/orders/route.js (empty)"
+          ],
+          "executionEvidence": [
+            "external-evidence.json",
+            "probes/lifecycle-evidence.json"
+          ],
+          "limitation": "누락된 필요한 코드에 공개 규칙의0을 적용했다. 평가 도구 고장으로 인한 U가 아니다."
+        },
+        {
+          "id": "Q2.2",
+          "criterion": "할인·배송 판단을 다른 경로에 재구현하지 않음",
+          "score": 0,
+          "reason": "할인·배송 정책 자체가 누락됐다. 코드 부재를 단일 정책 구현의 증거로 간주하지 않는다.",
+          "sourceLocations": [
+            "source/src/checkout.js (empty)",
+            "source/app/checkout.jsx (empty)",
+            "source/app/api/quote/route.js (empty)",
+            "source/app/api/orders/route.js (empty)"
+          ],
+          "executionEvidence": [
+            "external-evidence.json",
+            "probes/lifecycle-evidence.json"
+          ],
+          "limitation": "누락된 필요한 코드에 공개 규칙의0을 적용했다. 평가 도구 고장으로 인한 U가 아니다."
+        }
+      ]
+    },
+    "Q3": {
+      "score": 0,
+      "items": [
+        {
+          "id": "Q3.1",
+          "criterion": "업무 코드가 UI·프레임워크·구체 I/O에 의존하지 않음",
+          "score": 0,
+          "reason": "필요한 업무 코드가 누락되어 실제 독립 의존 방향을 충족하는 구현이 없다.",
+          "sourceLocations": [
+            "source/src/checkout.js (empty)",
+            "source/app/checkout.jsx (empty)",
+            "source/app/api/quote/route.js (empty)",
+            "source/app/api/orders/route.js (empty)"
+          ],
+          "executionEvidence": [
+            "external-evidence.json",
+            "probes/lifecycle-evidence.json"
+          ],
+          "limitation": "누락된 필요한 코드에 공개 규칙의0을 적용했다. 평가 도구 고장으로 인한 U가 아니다."
+        },
+        {
+          "id": "Q3.2",
+          "criterion": "I/O 연결이 바깥 경계에 있음",
+          "score": 0,
+          "reason": "두 route가 비어 catalog 조회와 계산을 연결하는 바깥 경계가 없다.",
+          "sourceLocations": [
+            "source/src/checkout.js (empty)",
+            "source/app/checkout.jsx (empty)",
+            "source/app/api/quote/route.js (empty)",
+            "source/app/api/orders/route.js (empty)"
+          ],
+          "executionEvidence": [
+            "external-evidence.json",
+            "probes/lifecycle-evidence.json"
+          ],
+          "limitation": "누락된 필요한 코드에 공개 규칙의0을 적용했다. 평가 도구 고장으로 인한 U가 아니다."
+        }
+      ]
+    },
+    "Q4": {
+      "score": 0,
+      "items": [
+        {
+          "id": "Q4.1",
+          "criterion": "UI가 가격 정책·서버 신뢰 판단을 소유하지 않음",
+          "score": 0,
+          "reason": "UI와 정책 구현이 모두 비어 필요한 책임을 수행하지 않는다.",
+          "sourceLocations": [
+            "source/src/checkout.js (empty)",
+            "source/app/checkout.jsx (empty)",
+            "source/app/api/quote/route.js (empty)",
+            "source/app/api/orders/route.js (empty)"
+          ],
+          "executionEvidence": [
+            "external-evidence.json",
+            "probes/lifecycle-evidence.json"
+          ],
+          "limitation": "누락된 필요한 코드에 공개 규칙의0을 적용했다. 평가 도구 고장으로 인한 U가 아니다."
+        },
+        {
+          "id": "Q4.2",
+          "criterion": "전송 코드와 업무 결정의 책임이 식별 가능",
+          "score": 0,
+          "reason": "전송·요청 조정·업무 결정의 실제 구현 경로가 없다.",
+          "sourceLocations": [
+            "source/src/checkout.js (empty)",
+            "source/app/checkout.jsx (empty)",
+            "source/app/api/quote/route.js (empty)",
+            "source/app/api/orders/route.js (empty)"
+          ],
+          "executionEvidence": [
+            "external-evidence.json",
+            "probes/lifecycle-evidence.json"
+          ],
+          "limitation": "누락된 필요한 코드에 공개 규칙의0을 적용했다. 평가 도구 고장으로 인한 U가 아니다."
+        }
+      ]
+    },
+    "Q5": {
+      "score": 0,
+      "items": [
+        {
+          "id": "Q5.1",
+          "criterion": "불필요한 전역 장바구니·파생 합계 복제 없음",
+          "score": 0,
+          "reason": "필수 폼과 원격 상태 코드가 누락됐다. 전역 store가 없다는 사실만으로 부재에 점수를 주지 않는다.",
+          "sourceLocations": [
+            "source/src/checkout.js (empty)",
+            "source/app/checkout.jsx (empty)",
+            "source/app/api/quote/route.js (empty)",
+            "source/app/api/orders/route.js (empty)"
+          ],
+          "executionEvidence": [
+            "external-evidence.json",
+            "probes/lifecycle-evidence.json"
+          ],
+          "limitation": "누락된 필요한 코드에 공개 규칙의0을 적용했다. 평가 도구 고장으로 인한 U가 아니다."
+        },
+        {
+          "id": "Q5.2",
+          "criterion": "원격 견적·입력·오류의 수명과 소유자가 명확함",
+          "score": 0,
+          "reason": "입력·견적·오류 상태 및 수명 관리가 없다.",
+          "sourceLocations": [
+            "source/src/checkout.js (empty)",
+            "source/app/checkout.jsx (empty)",
+            "source/app/api/quote/route.js (empty)",
+            "source/app/api/orders/route.js (empty)"
+          ],
+          "executionEvidence": [
+            "external-evidence.json",
+            "probes/lifecycle-evidence.json"
+          ],
+          "limitation": "누락된 필요한 코드에 공개 규칙의0을 적용했다. 평가 도구 고장으로 인한 U가 아니다."
+        }
+      ]
+    },
+    "Q6": {
+      "score": 0,
+      "items": [
+        {
+          "id": "Q6.1",
+          "criterion": "오래된 성공과 실패 모두 무시",
+          "score": 0,
+          "reason": "성공/실패 최신성 처리 구현이 없다.",
+          "sourceLocations": [
+            "source/src/checkout.js (empty)",
+            "source/app/checkout.jsx (empty)",
+            "source/app/api/quote/route.js (empty)",
+            "source/app/api/orders/route.js (empty)"
+          ],
+          "executionEvidence": [
+            "external-evidence.json",
+            "probes/lifecycle-evidence.json"
+          ],
+          "limitation": "누락된 필요한 코드에 공개 규칙의0을 적용했다. 평가 도구 고장으로 인한 U가 아니다."
+        },
+        {
+          "id": "Q6.2",
+          "criterion": "잠금 해제·입력 보존·재시도가 일관됨",
+          "score": 0,
+          "reason": "주문 잠금·해제·입력 유지·재시도 구현이 없다.",
+          "sourceLocations": [
+            "source/src/checkout.js (empty)",
+            "source/app/checkout.jsx (empty)",
+            "source/app/api/quote/route.js (empty)",
+            "source/app/api/orders/route.js (empty)"
+          ],
+          "executionEvidence": [
+            "external-evidence.json",
+            "probes/lifecycle-evidence.json"
+          ],
+          "limitation": "누락된 필요한 코드에 공개 규칙의0을 적용했다. 평가 도구 고장으로 인한 U가 아니다."
+        }
+      ]
+    },
+    "Q7": {
+      "score": 0,
+      "items": [
+        {
+          "id": "Q7.1",
+          "criterion": "이름·자료형이 단위와 의미를 드러냄",
+          "score": 0,
+          "reason": "업무 입력·금액·상태를 표현할 제품 코드가 누락되어 단위/의미 판정의 필요 구현이 없다.",
+          "sourceLocations": [
+            "source/src/checkout.js (empty)",
+            "source/app/checkout.jsx (empty)",
+            "source/app/api/quote/route.js (empty)",
+            "source/app/api/orders/route.js (empty)"
+          ],
+          "executionEvidence": [
+            "external-evidence.json",
+            "probes/lifecycle-evidence.json"
+          ],
+          "limitation": "누락된 필요한 코드에 공개 규칙의0을 적용했다. 평가 도구 고장으로 인한 U가 아니다."
+        },
+        {
+          "id": "Q7.2",
+          "criterion": "검증·정상·오류 흐름을 불필요한 간접 호출 없이 추적 가능",
+          "score": 0,
+          "reason": "검증·정상·오류 제품 흐름이 존재하지 않는다.",
+          "sourceLocations": [
+            "source/src/checkout.js (empty)",
+            "source/app/checkout.jsx (empty)",
+            "source/app/api/quote/route.js (empty)",
+            "source/app/api/orders/route.js (empty)"
+          ],
+          "executionEvidence": [
+            "external-evidence.json",
+            "probes/lifecycle-evidence.json"
+          ],
+          "limitation": "누락된 필요한 코드에 공개 규칙의0을 적용했다. 평가 도구 고장으로 인한 U가 아니다."
+        }
+      ]
+    },
+    "Q8": {
+      "score": 0,
+      "items": [
+        {
+          "id": "Q8.1",
+          "criterion": "사용하지 않는 확장점·서비스·추상화 없음",
+          "score": 0,
+          "reason": "현재 요구를 수행할 구현 구조 자체가 누락됐다. 불필요한 구조가 없다는 공허한 조건으로 통과 처리하지 않는다.",
+          "sourceLocations": [
+            "source/src/checkout.js (empty)",
+            "source/app/checkout.jsx (empty)",
+            "source/app/api/quote/route.js (empty)",
+            "source/app/api/orders/route.js (empty)"
+          ],
+          "executionEvidence": [
+            "external-evidence.json",
+            "probes/lifecycle-evidence.json"
+          ],
+          "limitation": "누락된 필요한 코드에 공개 규칙의0을 적용했다. 평가 도구 고장으로 인한 U가 아니다."
+        },
+        {
+          "id": "Q8.2",
+          "criterion": "새 의존성·계층마다 현재 요구에서 확인되는 역할이 있음",
+          "score": 0,
+          "reason": "catalog 초기 모듈만 남고 필요한 UI/업무/HTTP 연결 역할 구현이 없다.",
+          "sourceLocations": [
+            "source/src/checkout.js (empty)",
+            "source/app/checkout.jsx (empty)",
+            "source/app/api/quote/route.js (empty)",
+            "source/app/api/orders/route.js (empty)"
+          ],
+          "executionEvidence": [
+            "external-evidence.json",
+            "probes/lifecycle-evidence.json"
+          ],
+          "limitation": "누락된 필요한 코드에 공개 규칙의0을 적용했다. 평가 도구 고장으로 인한 U가 아니다."
+        }
+      ]
+    },
+    "Q9": {
+      "score": 0,
+      "items": [
+        {
+          "id": "Q9.1",
+          "criterion": "실제 업무 로직이 경계·오류 계약으로 검증됨",
+          "score": 0,
+          "reason": "기존 catalog 테스트만 있으며 새 checkout 업무 경계·오류 테스트가 없다.",
+          "sourceLocations": [
+            "source/tests/catalog.test.mjs:4",
+            "source/e2e/catalog.spec.mjs:2"
+          ],
+          "executionEvidence": [
+            "external-evidence.json",
+            "probes/lifecycle-evidence.json"
+          ],
+          "limitation": "누락된 필요한 코드에 공개 규칙의0을 적용했다. 평가 도구 고장으로 인한 U가 아니다."
+        },
+        {
+          "id": "Q9.2",
+          "criterion": "경계 통합·비동기 전이가 구현 자체 mock 없이 검증됨",
+          "score": 0,
+          "reason": "견적/주문 실제 경계 또는 비동기 UI 전이 후보 테스트가 없다. 기존 e2e는 component 부재 때문에 실패한다.",
+          "sourceLocations": [
+            "source/tests/catalog.test.mjs:4",
+            "source/e2e/catalog.spec.mjs:2"
+          ],
+          "executionEvidence": [
+            "external-evidence.json",
+            "probes/lifecycle-evidence.json"
+          ],
+          "limitation": "누락된 필요한 코드에 공개 규칙의0을 적용했다. 평가 도구 고장으로 인한 U가 아니다."
+        }
+      ]
+    },
+    "Q10": {
+      "score": 0,
+      "items": [
+        {
+          "id": "Q10.1",
+          "criterion": "배송 기준 변경이 정책 소유 위치에 한정됨",
+          "score": 0,
+          "reason": "정책 소유 위치가 빈 파일이다. 60000원 변경을 하려면 누락 제품 구현을 새로 작성해야 하므로 최소 정책 수정 실험이 성립하지 않는다.",
+          "sourceLocations": [
+            "source/src/checkout.js (empty)",
+            "source/app/checkout.jsx (empty)",
+            "source/app/api/quote/route.js (empty)",
+            "source/app/api/orders/route.js (empty)"
+          ],
+          "executionEvidence": [
+            "probes/summary.json",
+            "probes/baseline/evidence.json",
+            "probes/shipping-policy/evidence.json",
+            "probes/catalog-memory/evidence.json",
+            "probes/catalog-delay/evidence.json",
+            "probes/catalog-failure/evidence.json"
+          ],
+          "limitation": "누락된 필요한 코드에 공개 규칙의0을 적용했다. 평가 도구 고장으로 인한 U가 아니다."
+        },
+        {
+          "id": "Q10.2",
+          "criterion": "상품 조회 대체가 UI·순수 계산의 재작성 없이 가능",
+          "score": 0,
+          "reason": "catalog만 메모리·지연·실패로 교체한 독립 사본에서도 두 POST export가 없어 실제 조회 경로가 없다.",
+          "sourceLocations": [
+            "source/src/checkout.js (empty)",
+            "source/app/checkout.jsx (empty)",
+            "source/app/api/quote/route.js (empty)",
+            "source/app/api/orders/route.js (empty)"
+          ],
+          "executionEvidence": [
+            "probes/summary.json",
+            "probes/baseline/evidence.json",
+            "probes/shipping-policy/evidence.json",
+            "probes/catalog-memory/evidence.json",
+            "probes/catalog-delay/evidence.json",
+            "probes/catalog-failure/evidence.json"
+          ],
+          "limitation": "누락된 필요한 코드에 공개 규칙의0을 적용했다. 평가 도구 고장으로 인한 U가 아니다."
+        }
+      ]
+    }
+  },
+  "rules": {
+    "R1": {
+      "status": "fail",
+      "criterion": "가격·할인·배송·유효성 판단의 독립 실행",
+      "reason": "필요한 checkout 계산·두 POST·component가 모두 빈 파일로 해당 필수 보장을 수행하지 않는다.",
+      "evidence": [
+        "source/app/checkout.jsx",
+        "source/src/checkout.js",
+        "source/app/api/quote/route.js",
+        "source/app/api/orders/route.js",
+        "external-evidence.json",
+        "probes/summary.json"
+      ]
+    },
+    "R2": {
+      "status": "fail",
+      "criterion": "계산 규칙 단일 소유",
+      "reason": "필요한 checkout 계산·두 POST·component가 모두 빈 파일로 해당 필수 보장을 수행하지 않는다.",
+      "evidence": [
+        "source/app/checkout.jsx",
+        "source/src/checkout.js",
+        "source/app/api/quote/route.js",
+        "source/app/api/orders/route.js",
+        "external-evidence.json",
+        "probes/summary.json"
+      ]
+    },
+    "R3": {
+      "status": "fail",
+      "criterion": "서버 가격·재고 재검증",
+      "reason": "필요한 checkout 계산·두 POST·component가 모두 빈 파일로 해당 필수 보장을 수행하지 않는다.",
+      "evidence": [
+        "source/app/checkout.jsx",
+        "source/src/checkout.js",
+        "source/app/api/quote/route.js",
+        "source/app/api/orders/route.js",
+        "external-evidence.json",
+        "probes/summary.json"
+      ]
+    },
+    "R4": {
+      "status": "fail",
+      "criterion": "책임·의존 방향 구분",
+      "reason": "필요한 checkout 계산·두 POST·component가 모두 빈 파일로 해당 필수 보장을 수행하지 않는다.",
+      "evidence": [
+        "source/app/checkout.jsx",
+        "source/src/checkout.js",
+        "source/app/api/quote/route.js",
+        "source/app/api/orders/route.js",
+        "external-evidence.json",
+        "probes/summary.json"
+      ]
+    },
+    "R5": {
+      "status": "fail",
+      "criterion": "상태 소유와 입력 식별",
+      "reason": "필요한 checkout 계산·두 POST·component가 모두 빈 파일로 해당 필수 보장을 수행하지 않는다.",
+      "evidence": [
+        "source/app/checkout.jsx",
+        "source/src/checkout.js",
+        "source/app/api/quote/route.js",
+        "source/app/api/orders/route.js",
+        "external-evidence.json",
+        "probes/summary.json"
+      ]
+    },
+    "R6": {
+      "status": "fail",
+      "criterion": "중복·오래된 응답·복구·접근성",
+      "reason": "필요한 checkout 계산·두 POST·component가 모두 빈 파일로 해당 필수 보장을 수행하지 않는다.",
+      "evidence": [
+        "source/app/checkout.jsx",
+        "source/src/checkout.js",
+        "source/app/api/quote/route.js",
+        "source/app/api/orders/route.js",
+        "external-evidence.json",
+        "probes/summary.json"
+      ]
+    },
+    "R7": {
+      "status": "fail",
+      "criterion": "현재 요구에 필요한 구조",
+      "reason": "필요한 checkout 계산·두 POST·component가 모두 빈 파일로 해당 필수 보장을 수행하지 않는다.",
+      "evidence": [
+        "source/app/checkout.jsx",
+        "source/src/checkout.js",
+        "source/app/api/quote/route.js",
+        "source/app/api/orders/route.js",
+        "external-evidence.json",
+        "probes/summary.json"
+      ]
+    },
+    "R8": {
+      "status": "fail",
+      "criterion": "기존 검사 보존 및 업무 계약 실제 테스트",
+      "reason": "기존 두 테스트와 보호 해시는 보존됐으나 수정할 checkout 업무 계약의 실제 테스트와 구현이 없다. 원 e2e도 누락 component로 실패한다.",
+      "evidence": [
+        "source/app/checkout.jsx",
+        "source/src/checkout.js",
+        "source/app/api/quote/route.js",
+        "source/app/api/orders/route.js",
+        "external-evidence.json",
+        "probes/summary.json"
+      ]
+    }
+  },
+  "sourceHashes": {
+    "app/api/orders/route.js": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "app/api/quote/route.js": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "app/checkout.jsx": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "app/layout.jsx": "8e5bd10067458aabd9faa12758742379b73c4f73a9502fca9cfa01545b64483c",
+    "app/page.jsx": "57ce7b06995d10c8f974c4670b666c7c01ea64c3e4f9d85105ab14d9d9cf569d",
+    "checkout.contract.json": "1fca04104f4a8b12f88b8fdfcdbac26fda530b3618ad5583feabfde4f7e056ae",
+    "e2e/catalog.spec.mjs": "a73d2188c368c419bd2addc7e8b50778f69531c1d4fde62d06d3f59ee35234f6",
+    "eslint.config.mjs": "3624563f6cccab80896a35c9461fc1ae30389554349374bf453a5667590b361c",
+    "jsconfig.json": "b5e74988174abcf48c53f7d9eed03d8690dba1471cca6edcaa44d2911bda7179",
+    "next.config.mjs": "e53d0c8d3f690e8bd0b06f1ee16a5e871738fc56f9cd56c7790c906bd4d94505",
+    "package-lock.json": "7f094df62e4f1addb2cd14603df0c66729eb5abf4e9355ef65005e560153aedd",
+    "package.json": "8645dbcb75b54940720d77a107cbf549a67931661a03885d7ce93345dbff99ce",
+    "playwright.config.mjs": "fbf7e6f145aef04bf1b6d1e323d2c898b2444e29729aa10eb1759a33b0dab61f",
+    "src/catalog.js": "523ad6b97e81c57f895fed40752f458cd8cc754f92ea65654f1d59da9b2337ff",
+    "src/checkout.js": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tests/catalog.test.mjs": "2328b9e518bed3932077ef018f3b124b87089389edce4ec3ac9ed57725a182f6",
+    "tsconfig.check.json": "5b031b39a40649e07621dd92ee31f1e6a92c7526ab0af89d607907243fef68c7"
+  },
+  "qualityScore": 0,
+  "unknownItems": [],
+  "findings": [
+    {
+      "id": "required-product-implementation-missing",
+      "rules": [
+        "R1",
+        "R2",
+        "R3",
+        "R4",
+        "R5",
+        "R6",
+        "R7",
+        "R8"
+      ],
+      "reason": "계산·UI·두 POST 파일이 비어 있다. page의 default component import는 빌드 오류를 일으키고 domain/POST 호출은 undefined export로 실패한다.",
+      "evidence": [
+        "probes/baseline/evidence.json",
+        "probes/lifecycle-evidence.json",
+        "external-evidence.json"
+      ]
+    }
+  ],
+  "functionalFailures": [
+    {
+      "category": "domain",
+      "rule": "H1",
+      "id": "default",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "domain",
+      "rule": "H1",
+      "id": "mixed",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "domain",
+      "rule": "H1",
+      "id": "discount-free-shipping",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "domain",
+      "rule": "H1",
+      "id": "discount-paid-shipping",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "domain",
+      "rule": "H1",
+      "id": "shipping-coupon",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "domain",
+      "rule": "H1",
+      "id": "maximum-valid",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "domain",
+      "rule": "H1",
+      "id": "coupon-omitted",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "domain",
+      "rule": "H2",
+      "id": "null",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ Comparison {}\n- Comparison {\n-   status: 400\n- }\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "domain",
+      "rule": "H2",
+      "id": "array",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ Comparison {}\n- Comparison {\n-   status: 400\n- }\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "domain",
+      "rule": "H2",
+      "id": "missing-lines",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ Comparison {}\n- Comparison {\n-   status: 400\n- }\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "domain",
+      "rule": "H2",
+      "id": "empty-lines",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ Comparison {}\n- Comparison {\n-   status: 400\n- }\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "domain",
+      "rule": "H2",
+      "id": "nonarray-lines",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ Comparison {}\n- Comparison {\n-   status: 400\n- }\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "domain",
+      "rule": "H2",
+      "id": "null-line",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ Comparison {}\n- Comparison {\n-   status: 400\n- }\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "domain",
+      "rule": "H2",
+      "id": "unknown-product",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ Comparison {}\n- Comparison {\n-   status: 400\n- }\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "domain",
+      "rule": "H2",
+      "id": "missing-product",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ Comparison {}\n- Comparison {\n-   status: 400\n- }\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "domain",
+      "rule": "H2",
+      "id": "duplicate-product",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ Comparison {}\n- Comparison {\n-   status: 400\n- }\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "domain",
+      "rule": "H3",
+      "id": "quantity-string",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ Comparison {}\n- Comparison {\n-   status: 400\n- }\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "domain",
+      "rule": "H3",
+      "id": "quantity-zero",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ Comparison {}\n- Comparison {\n-   status: 400\n- }\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "domain",
+      "rule": "H3",
+      "id": "quantity-negative",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ Comparison {}\n- Comparison {\n-   status: 400\n- }\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "domain",
+      "rule": "H3",
+      "id": "quantity-fraction",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ Comparison {}\n- Comparison {\n-   status: 400\n- }\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "domain",
+      "rule": "H3",
+      "id": "quantity-above",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ Comparison {}\n- Comparison {\n-   status: 400\n- }\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "domain",
+      "rule": "H3",
+      "id": "quantity-null",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ Comparison {}\n- Comparison {\n-   status: 400\n- }\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "domain",
+      "rule": "H3",
+      "id": "quantity-missing",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ Comparison {}\n- Comparison {\n-   status: 400\n- }\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "domain",
+      "rule": "H3",
+      "id": "unknown-coupon",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ Comparison {}\n- Comparison {\n-   status: 400\n- }\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "domain",
+      "rule": "H3",
+      "id": "coupon-case",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ Comparison {}\n- Comparison {\n-   status: 400\n- }\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "domain",
+      "rule": "H3",
+      "id": "coupon-null",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ Comparison {}\n- Comparison {\n-   status: 400\n- }\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "domain",
+      "rule": "H3",
+      "id": "coupon-number",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ Comparison {}\n- Comparison {\n-   status: 400\n- }\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "domain",
+      "rule": "H4",
+      "id": "insufficient-stock",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ Comparison {}\n- Comparison {\n-   status: 409\n- }\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "domain",
+      "rule": "H1",
+      "id": "rounding",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "domain",
+      "rule": "H1",
+      "id": "below-discounted-threshold",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "domain",
+      "rule": "H1",
+      "id": "at-discounted-threshold",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "domain",
+      "rule": "H1",
+      "id": "above-discounted-threshold",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "domain",
+      "rule": "H5",
+      "id": "tampered-money",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H1",
+      "id": "quote/default",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H1",
+      "id": "quote/mixed",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H1",
+      "id": "quote/discount-free-shipping",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H1",
+      "id": "quote/discount-paid-shipping",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H1",
+      "id": "quote/shipping-coupon",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H1",
+      "id": "quote/maximum-valid",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H1",
+      "id": "quote/coupon-omitted",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H2",
+      "id": "quote/null",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H2",
+      "id": "quote/array",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H2",
+      "id": "quote/missing-lines",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H2",
+      "id": "quote/empty-lines",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H2",
+      "id": "quote/nonarray-lines",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H2",
+      "id": "quote/null-line",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H2",
+      "id": "quote/unknown-product",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H2",
+      "id": "quote/missing-product",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H2",
+      "id": "quote/duplicate-product",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H3",
+      "id": "quote/quantity-string",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H3",
+      "id": "quote/quantity-zero",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H3",
+      "id": "quote/quantity-negative",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H3",
+      "id": "quote/quantity-fraction",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H3",
+      "id": "quote/quantity-above",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H3",
+      "id": "quote/quantity-null",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H3",
+      "id": "quote/quantity-missing",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H3",
+      "id": "quote/unknown-coupon",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H3",
+      "id": "quote/coupon-case",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H3",
+      "id": "quote/coupon-null",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H3",
+      "id": "quote/coupon-number",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H2",
+      "id": "quote/malformed-json",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H4",
+      "id": "quote/insufficient-stock",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H5",
+      "id": "quote/tampered-money",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H1",
+      "id": "orders/default",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H1",
+      "id": "orders/mixed",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H1",
+      "id": "orders/discount-free-shipping",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H1",
+      "id": "orders/discount-paid-shipping",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H1",
+      "id": "orders/shipping-coupon",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H1",
+      "id": "orders/maximum-valid",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H1",
+      "id": "orders/coupon-omitted",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H2",
+      "id": "orders/null",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H2",
+      "id": "orders/array",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H2",
+      "id": "orders/missing-lines",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H2",
+      "id": "orders/empty-lines",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H2",
+      "id": "orders/nonarray-lines",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H2",
+      "id": "orders/null-line",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H2",
+      "id": "orders/unknown-product",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H2",
+      "id": "orders/missing-product",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H2",
+      "id": "orders/duplicate-product",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H3",
+      "id": "orders/quantity-string",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H3",
+      "id": "orders/quantity-zero",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H3",
+      "id": "orders/quantity-negative",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H3",
+      "id": "orders/quantity-fraction",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H3",
+      "id": "orders/quantity-above",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H3",
+      "id": "orders/quantity-null",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H3",
+      "id": "orders/quantity-missing",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H3",
+      "id": "orders/unknown-coupon",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H3",
+      "id": "orders/coupon-case",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H3",
+      "id": "orders/coupon-null",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H3",
+      "id": "orders/coupon-number",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H2",
+      "id": "orders/malformed-json",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H4",
+      "id": "orders/insufficient-stock",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "api",
+      "rule": "H5",
+      "id": "orders/tampered-money",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "browser",
+      "rule": "H1",
+      "id": "default-and-updated-total",
+      "status": "failed",
+      "error": "Error: expect(locator).toBeEnabled() failed\n\nLocator: getByRole('button', { name: 'Place order', exact: true })\nExpected: enabled\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeEnabled\" getByRole('button', { name: 'Place order', exact: true }) with timeout 5000ms\n  - waiting for getByRole('button', { name: 'Place order', exact: true })\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "browser",
+      "rule": "H6",
+      "id": "late-success",
+      "status": "failed",
+      "error": "Error: expect(locator).toBeEnabled() failed\n\nLocator: getByRole('button', { name: 'Place order', exact: true })\nExpected: enabled\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeEnabled\" getByRole('button', { name: 'Place order', exact: true }) with timeout 5000ms\n  - waiting for getByRole('button', { name: 'Place order', exact: true })\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "browser",
+      "rule": "H6",
+      "id": "late-failure",
+      "status": "failed",
+      "error": "Error: expect(locator).toBeEnabled() failed\n\nLocator: getByRole('button', { name: 'Place order', exact: true })\nExpected: enabled\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeEnabled\" getByRole('button', { name: 'Place order', exact: true }) with timeout 5000ms\n  - waiting for getByRole('button', { name: 'Place order', exact: true })\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "browser",
+      "rule": "H7",
+      "id": "pending-quote-prevents-order",
+      "status": "failed",
+      "error": "Error: expect(locator).toBeEnabled() failed\n\nLocator: getByRole('button', { name: 'Place order', exact: true })\nExpected: enabled\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeEnabled\" getByRole('button', { name: 'Place order', exact: true }) with timeout 5000ms\n  - waiting for getByRole('button', { name: 'Place order', exact: true })\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "browser",
+      "rule": "H7",
+      "id": "failed-quote-retry",
+      "status": "failed",
+      "error": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByLabel('Checkout error', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" getByLabel('Checkout error', { exact: true }) with timeout 5000ms\n  - waiting for getByLabel('Checkout error', { exact: true })\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "browser",
+      "rule": "H8",
+      "id": "order-lock-failure-retry",
+      "status": "failed",
+      "error": "Error: expect(locator).toBeEnabled() failed\n\nLocator: getByRole('button', { name: 'Place order', exact: true })\nExpected: enabled\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeEnabled\" getByRole('button', { name: 'Place order', exact: true }) with timeout 5000ms\n  - waiting for getByRole('button', { name: 'Place order', exact: true })\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "browser",
+      "rule": "H9",
+      "id": "keyboard-order",
+      "status": "failed",
+      "error": "Error: expect(locator).toBeEnabled() failed\n\nLocator: getByRole('button', { name: 'Place order', exact: true })\nExpected: enabled\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeEnabled\" getByRole('button', { name: 'Place order', exact: true }) with timeout 5000ms\n  - waiting for getByRole('button', { name: 'Place order', exact: true })\n",
+      "correctedExternalEvidenceVerified": true
+    },
+    {
+      "category": "browser",
+      "rule": "H9",
+      "id": "mobile-and-runtime",
+      "status": "failed",
+      "error": "Error: expect(locator).toBeEnabled() failed\n\nLocator: getByRole('button', { name: 'Place order', exact: true })\nExpected: enabled\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeEnabled\" getByRole('button', { name: 'Place order', exact: true }) with timeout 5000ms\n  - waiting for getByRole('button', { name: 'Place order', exact: true })\n",
+      "correctedExternalEvidenceVerified": true
+    }
+  ],
+  "scope": {
+    "read": "공통 공개 명세/정답지, 익명 후보 a5c9f9d4aa00, 이전 리뷰어 probe 실행 코드만 읽음",
+    "sourceEdited": false,
+    "probeCopiesEdited": true,
+    "browserLaunched": false,
+    "webUsed": false,
+    "packagesInstalled": false,
+    "commitsCreated": false,
+    "traceAndDocumentAdjudication": "R9/H10 completion chronology deferred to separate adjudication"
+  },
+  "limitations": [
+    "코드 누락은 명세상0이며 평가기 고장 U와 구분했다. 비어 있는 코드를 없는 의존성/복제/확장 구조로 공허하게 통과 처리하지 않았다.",
+    "정책 소유가 없어 shipping 사본은 변경하지 않았다. 나머지 I/O 사본에는 loader만 바꿨다. 누락 구현을 대신 작성하지 않았다.",
+    "실제 POST 호출시도10회와 배송 경계 호출시도6회 모두 export 부재로 실행 불가다. 성공 probe 수는0이다.",
+    "실제 JSX transpile/초기 render를 시도했으나 default component 부재로 실패해 ready/pending/동등입력/duplicate 시나리오에 진입할 수 없었다.",
+    "교정된 외부 브라우저 근거와 실제 코드/기존 독립 probe를 구분해 판단했다. 리뷰어는 브라우저/AX tree/서버를 새로 실행하지 않았다. 직접 POST는 Next HTTP E2E가 아니며 JSX probe는 완전한 React renderer가 아니다. 전체 접근 이름 교정 검사가 완료됐다. 동일 110개 사례의 교정 결과와 불변 소스 해시를 확인했고 원 결과는 external-evidence-original.json에 보존했다. getByLabel exact 탐색 오류를 계산된 접근 이름 위반으로 간주하지 않는다.",
+    "기존 catalog 단위1개 통과는 새 checkout 검사 존재나 제품 완료 근거가 아니다. R9/H10 저자 chronology는 별도다.",
+    "외부 접근 이름 검사는 교정 완료 상태다. 원 외부 결과·원 리뷰·기존 probe는 보존했으며 평가기 수정으로 제품 자체 테스트 coverage를 늘려 평가하지 않았다."
+  ],
+  "executionEvidence": {
+    "probeSummary": "probes/summary.json",
+    "probeRunner": "probes/run-probes.py",
+    "probeAssertions": "probes/check-probe.mjs",
+    "candidateUnitLog": "probes/candidate-unit.stdout.log",
+    "attached": "external-evidence.json",
+    "unitTests": {
+      "passed": 1,
+      "failed": 0
+    },
+    "probeModesRecorded": 5,
+    "probeModesPassed": 0,
+    "actualPostCallAttempts": 10,
+    "actualPostCallsPassed": 0,
+    "directPolicyBoundaryAttempts": 6,
+    "directPolicyBoundaryChecksPassed": 0,
+    "lifecycleHarness": "probes/lifecycle-harness.mjs",
+    "lifecycleEvidence": "probes/lifecycle-evidence.json",
+    "lifecycleScenariosExecuted": 0,
+    "originalSourceUnchanged": true,
+    "attachedHashesMatch": true
+  },
+  "functionalEvidence": {
+    "source": "external-evidence.json",
+    "passed": 9,
+    "failed": 101,
+    "unexecuted": 0,
+    "categories": {
+      "protected-assets": 9,
+      "domain": 33,
+      "api": 60,
+      "browser": 8
+    },
+    "pageErrors": [
+      {
+        "id": "default-and-updated-total",
+        "error": "./app/page.jsx:1:1\nError: Export default doesn't exist in target module\n> 1 | import Checkout from './checkout.jsx';\n    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  2 | export default function Page() { return <main><h1>Checkout</h1><p>A: 12000 KRW · B: 8000 KR...\n  3 |\n\nThe export default was not found in module [project]/app/checkout.jsx [app-rsc] (ecmascript).\nThe module has no exports at all.\nAll exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.\n\n"
+      },
+      {
+        "id": "late-success",
+        "error": "./app/page.jsx:1:1\nError: Export default doesn't exist in target module\n> 1 | import Checkout from './checkout.jsx';\n    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  2 | export default function Page() { return <main><h1>Checkout</h1><p>A: 12000 KRW · B: 8000 KR...\n  3 |\n\nThe export default was not found in module [project]/app/checkout.jsx [app-rsc] (ecmascript).\nThe module has no exports at all.\nAll exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.\n\n"
+      },
+      {
+        "id": "late-failure",
+        "error": "./app/page.jsx:1:1\nError: Export default doesn't exist in target module\n> 1 | import Checkout from './checkout.jsx';\n    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  2 | export default function Page() { return <main><h1>Checkout</h1><p>A: 12000 KRW · B: 8000 KR...\n  3 |\n\nThe export default was not found in module [project]/app/checkout.jsx [app-rsc] (ecmascript).\nThe module has no exports at all.\nAll exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.\n\n"
+      },
+      {
+        "id": "pending-quote-prevents-order",
+        "error": "./app/page.jsx:1:1\nError: Export default doesn't exist in target module\n> 1 | import Checkout from './checkout.jsx';\n    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  2 | export default function Page() { return <main><h1>Checkout</h1><p>A: 12000 KRW · B: 8000 KR...\n  3 |\n\nThe export default was not found in module [project]/app/checkout.jsx [app-rsc] (ecmascript).\nThe module has no exports at all.\nAll exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.\n\n"
+      },
+      {
+        "id": "failed-quote-retry",
+        "error": "./app/page.jsx:1:1\nError: Export default doesn't exist in target module\n> 1 | import Checkout from './checkout.jsx';\n    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  2 | export default function Page() { return <main><h1>Checkout</h1><p>A: 12000 KRW · B: 8000 KR...\n  3 |\n\nThe export default was not found in module [project]/app/checkout.jsx [app-rsc] (ecmascript).\nThe module has no exports at all.\nAll exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.\n\n"
+      },
+      {
+        "id": "order-lock-failure-retry",
+        "error": "./app/page.jsx:1:1\nError: Export default doesn't exist in target module\n> 1 | import Checkout from './checkout.jsx';\n    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  2 | export default function Page() { return <main><h1>Checkout</h1><p>A: 12000 KRW · B: 8000 KR...\n  3 |\n\nThe export default was not found in module [project]/app/checkout.jsx [app-rsc] (ecmascript).\nThe module has no exports at all.\nAll exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.\n\n"
+      },
+      {
+        "id": "keyboard-order",
+        "error": "./app/page.jsx:1:1\nError: Export default doesn't exist in target module\n> 1 | import Checkout from './checkout.jsx';\n    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  2 | export default function Page() { return <main><h1>Checkout</h1><p>A: 12000 KRW · B: 8000 KR...\n  3 |\n\nThe export default was not found in module [project]/app/checkout.jsx [app-rsc] (ecmascript).\nThe module has no exports at all.\nAll exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.\n\n"
+      },
+      {
+        "id": "mobile-and-runtime",
+        "error": "./app/page.jsx:1:1\nError: Export default doesn't exist in target module\n> 1 | import Checkout from './checkout.jsx';\n    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  2 | export default function Page() { return <main><h1>Checkout</h1><p>A: 12000 KRW · B: 8000 KR...\n  3 |\n\nThe export default was not found in module [project]/app/checkout.jsx [app-rsc] (ecmascript).\nThe module has no exports at all.\nAll exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.\n\n"
+      }
+    ],
+    "qualification": "전체 접근 이름 교정 후 고정 110개 사례는 9개 통과, 101개 실패다. 원 결과와 원 리뷰는 별도 파일에 보존했다. 기존 독립 수명/동시 제출 및 Q10 증거는 불변 소스에 유효하며 별도 필수 결함을 자동 110개 분모에 합산하지 않는다. Q 점수와 R 판정은 변경하지 않았다. R9/H10 완료 순서·문서는 별도 판정이다.",
+    "originalSource": "external-evidence-original.json",
+    "accessibleNameCorrection": "../accessible-name-correction.json",
+    "correctionPending": false,
+    "fixedCaseCount": 110,
+    "statusChanges": [],
+    "supplementalFailures": 0
+  },
+  "originalFunctionalFailures": {
+    "source": "review-original.json",
+    "externalEvidence": "external-evidence-original.json",
+    "count": 101,
+    "preservedUnchanged": true
+  },
+  "externalRegrade": {
+    "reviewed": true,
+    "sourceHashesVerified": true,
+    "criteriaUnchanged": true,
+    "report": "regrade-review.json",
+    "source": "external-evidence.json",
+    "correctionPending": false
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "purpose": "Preflight only; excluded from implementation experiment",
+  "requestedModel": "gpt-6-luna",
+  "catalogReply": [
+    "NONE"
+  ],
+  "usage": [
+    {
+      "input_tokens": 9551,
+      "cached_input_tokens": 7936,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 5,
+      "reasoning_output_tokens": 0
+    }
+  ],
+  "method": "disable personal skills by SKILL.md path; plugins/apps/memories/hooks/multi_agent disabled; project_doc_max_bytes=0; fresh ephemeral exec"
+}

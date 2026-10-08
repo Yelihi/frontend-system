@@ -1,0 +1,1744 @@
+{
+  "summary": {
+    "calls": 18,
+    "completedTurns": 18,
+    "totalTokens": 4198387,
+    "uncachedPlusOutput": 484467,
+    "seconds": 3325.164,
+    "unknownUsage": 0,
+    "mcpErrors": 0,
+    "completedJourneys": 9
+  },
+  "rows": [
+    {
+      "id": "ssr-storefront-fs-K1",
+      "case": "ssr-storefront",
+      "arm": "fs-K1",
+      "calls": 2,
+      "completedTurns": 2,
+      "totalTokens": 900204,
+      "uncachedPlusOutput": 76780,
+      "seconds": 538.229,
+      "unknownUsage": 0,
+      "mcpCalls": 13,
+      "mcpErrors": 0,
+      "knowledgeReads": [
+        {
+          "id": [
+            "render-lifetime",
+            "control-contracts"
+          ]
+        }
+      ],
+      "approvals": [],
+      "commands": [
+        "/bin/zsh -lc 'cat ../runtime/skills/fs-plan/SKILL.md'",
+        "/bin/zsh -lc \"rg --files -g '\"'!node_modules'\"' | head -100\"",
+        "/bin/zsh -lc 'cat README.md'",
+        "/bin/zsh -lc 'git status --short'",
+        "/bin/zsh -lc 'cat questions.json'",
+        "/bin/zsh -lc 'cat owner-answers.json'",
+        "/bin/zsh -lc 'node ../runtime/bundle/tool-help.mjs save_revision'",
+        "/bin/zsh -lc 'cp .frontend-system/plans/portal-refactor/plan.md plan.md'",
+        "/bin/zsh -lc \"rg -n 'Outcome and scope|Open and discretionary|optional-restore|cart-refactor|Unapproved|unapproved' plan.md\"",
+        "/bin/zsh -lc 'git status --short'"
+      ],
+      "audits": [
+        {
+          "id": "ssr-storefront-fs-K1",
+          "phase": "questions",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 213.915,
+            "completedTurns": 1,
+            "threadId": "01a10cd1-2449-7872-a503-cdcc5d390305",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 344859,
+              "cached_input_tokens": 301312,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 5168,
+              "reasoning_output_tokens": 857,
+              "total_tokens": 350027,
+              "uncached_input_tokens": 43547
+            },
+            "cumulativeUsage": {
+              "input_tokens": 344859,
+              "cached_input_tokens": 301312,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 5168,
+              "reasoning_output_tokens": 857
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "questions": {
+            "count": 3,
+            "citations": [
+              {
+                "questionId": "q1",
+                "path": "src/storage.ts",
+                "quote": "export function restore(){const raw=localStorage.getItem('cart');if(raw)loadCart(JSON.parse(raw));}",
+                "exact": true
+              },
+              {
+                "questionId": "q1",
+                "path": "README.md",
+                "quote": "The host has not documented how guest persistence and account carts should combine.",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/widget.ts",
+                "quote": "export function hydrate(root:HTMLElement,server:Cart){loadCart(server);restore();root.textContent=String(snapshot().items.length);",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/cart.ts",
+                "quote": "export type Cart={owner:string;items:string[]};",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/login.ts",
+                "quote": "export async function login(user:string,fetchCart:(user:string)=>Promise<Cart>){loadCart(await fetchCart(user));}",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/cart.ts",
+                "quote": "export type Cart={owner:string;items:string[]};",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "README.md",
+                "quote": "The host has not documented how guest persistence and account carts should combine.",
+                "exact": true
+              }
+            ],
+            "allQuotesExact": true
+          }
+        },
+        {
+          "id": "ssr-storefront-fs-K1",
+          "phase": "plan",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 324.314,
+            "completedTurns": 1,
+            "threadId": "01a10cd1-2449-7872-a503-cdcc5d390305",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 541795,
+              "cached_input_tokens": 522112,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 8382,
+              "reasoning_output_tokens": 3506,
+              "total_tokens": 550177,
+              "uncached_input_tokens": 19683
+            },
+            "cumulativeUsage": {
+              "input_tokens": 886654,
+              "cached_input_tokens": 823424,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 13550,
+              "reasoning_output_tokens": 4363
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "planCharacters": 12859
+        }
+      ],
+      "complete": true
+    },
+    {
+      "id": "ssr-storefront-raw-K1",
+      "case": "ssr-storefront",
+      "arm": "raw-K1",
+      "calls": 2,
+      "completedTurns": 2,
+      "totalTokens": 143482,
+      "uncachedPlusOutput": 43770,
+      "seconds": 220.81099999999998,
+      "unknownUsage": 0,
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "knowledgeReads": [],
+      "approvals": [],
+      "commands": [
+        "/bin/zsh -lc 'ls -la'",
+        "/bin/zsh -lc \"pwd && rg --files -g 'README.md' -g 'AGENTS.md' -g 'learning/*.md' -g 'package.json' -g 'src/**' -g 'app/**' -g 'pages/**' -g 'server/**' -g 'tests/**' -g 'questions.json' | sort\"",
+        "/bin/zsh -lc \"for f in learning/*.md; do printf '\\\\nFILE %s\\\\n' \\\"\"'$f\"; cat \"$f\"; done'",
+        "/bin/zsh -lc 'cat README.md package.json tsconfig.json'",
+        "/bin/zsh -lc \"for f in src/*.ts; do printf '\\\\nFILE %s\\\\n' \\\"\"'$f\"; cat \"$f\"; done'",
+        "/bin/zsh -lc \"rg --files -g 'AGENTS.md' -g '\"'!node_modules'\"' .\"",
+        "/bin/zsh -lc 'cat owner-answers.json questions.json README.md'",
+        "/bin/zsh -lc \"for f in src/*.ts; do printf '\\\\nFILE %s\\\\n' \\\"\"'$f\"; cat \"$f\"; done'",
+        "/bin/zsh -lc \"rg --files -g 'AGENTS.md' -g 'plan.md' -g 'learning/*.md' .\""
+      ],
+      "audits": [
+        {
+          "id": "ssr-storefront-raw-K1",
+          "phase": "questions",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 124.797,
+            "completedTurns": 1,
+            "threadId": "01a10cd1-246a-7f23-bf4e-9c10a56ac451",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 72700,
+              "cached_input_tokens": 62720,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 2690,
+              "reasoning_output_tokens": 640,
+              "total_tokens": 75390,
+              "uncached_input_tokens": 9980
+            },
+            "cumulativeUsage": {
+              "input_tokens": 72700,
+              "cached_input_tokens": 62720,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 2690,
+              "reasoning_output_tokens": 640
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "questions": {
+            "count": 4,
+            "citations": [
+              {
+                "questionId": "q1",
+                "path": "src/storage.ts",
+                "quote": "export function restore(){const raw=localStorage.getItem('cart');if(raw)loadCart(JSON.parse(raw));}",
+                "exact": true
+              },
+              {
+                "questionId": "q1",
+                "path": "src/storage.ts",
+                "quote": "export function persist(){localStorage.setItem('cart',JSON.stringify(snapshot()));}",
+                "exact": true
+              },
+              {
+                "questionId": "q1",
+                "path": "README.md",
+                "quote": "The host has not documented how guest persistence and account carts should combine.",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/widget.ts",
+                "quote": "export function hydrate(root:HTMLElement,server:Cart){loadCart(server);restore();root.textContent=String(snapshot().items.length);",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/cart.ts",
+                "quote": "export type Cart={owner:string;items:string[]};",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/login.ts",
+                "quote": "export async function login(user:string,fetchCart:(user:string)=>Promise<Cart>){loadCart(await fetchCart(user));}",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/cart.ts",
+                "quote": "export type Cart={owner:string;items:string[]};",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "README.md",
+                "quote": "The host has not documented how guest persistence and account carts should combine.",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/storage.ts",
+                "quote": "export function restore(){const raw=localStorage.getItem('cart');if(raw)loadCart(JSON.parse(raw));}",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/storage.ts",
+                "quote": "export function persist(){localStorage.setItem('cart',JSON.stringify(snapshot()));}",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/widget.ts",
+                "quote": "return {add(sku:string){add(sku);persist();root.textContent=String(snapshot().items.length);}};}",
+                "exact": true
+              }
+            ],
+            "allQuotesExact": true
+          }
+        },
+        {
+          "id": "ssr-storefront-raw-K1",
+          "phase": "plan",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 96.014,
+            "completedTurns": 1,
+            "threadId": "01a10cd1-246a-7f23-bf4e-9c10a56ac451",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 65886,
+              "cached_input_tokens": 36992,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 2206,
+              "reasoning_output_tokens": 598,
+              "total_tokens": 68092,
+              "uncached_input_tokens": 28894
+            },
+            "cumulativeUsage": {
+              "input_tokens": 138586,
+              "cached_input_tokens": 99712,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 4896,
+              "reasoning_output_tokens": 1238
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "planCharacters": 5997
+        }
+      ],
+      "complete": true
+    },
+    {
+      "id": "offline-uploader-fs-K1",
+      "case": "offline-uploader",
+      "arm": "fs-K1",
+      "calls": 2,
+      "completedTurns": 2,
+      "totalTokens": 1225414,
+      "uncachedPlusOutput": 94278,
+      "seconds": 619.645,
+      "unknownUsage": 0,
+      "mcpCalls": 17,
+      "mcpErrors": 0,
+      "knowledgeReads": [
+        {
+          "id": [
+            "mutation-queue"
+          ]
+        }
+      ],
+      "approvals": [],
+      "commands": [
+        "/bin/zsh -lc 'cat ../runtime/skills/fs-plan/SKILL.md'",
+        "/bin/zsh -lc \"pwd && rg --files -g 'README.md' -g 'AGENTS.md' -g '\"'!node_modules'\"' -g '\"'!dist'\"' -g '\"'!build'\"' | head -80\"",
+        "/bin/zsh -lc 'cat questions.json'",
+        "/bin/zsh -lc 'cat owner-answers.json'",
+        "/bin/zsh -lc 'node ../runtime/bundle/tool-help.mjs save_revision'",
+        "/bin/zsh -lc 'cat .frontend-system/drafts/portal-refactor.json'",
+        "/bin/zsh -lc 'cat .frontend-system/drafts/portal-refactor.json'",
+        "/bin/zsh -lc 'rg --files .frontend-system/plans/portal-refactor'",
+        "/bin/zsh -lc 'cp .frontend-system/plans/portal-refactor/plan.md plan.md'",
+        "/bin/zsh -lc 'cmp plan.md .frontend-system/plans/portal-refactor/plan.md'",
+        "/bin/zsh -lc \"rg -n 'Status:|Open boundaries|Event-order traces|after-close \\\\[open|identity-change \\\\[open|job-workspace \\\\[open' plan.md\""
+      ],
+      "audits": [
+        {
+          "id": "offline-uploader-fs-K1",
+          "phase": "questions",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 237.13,
+            "completedTurns": 1,
+            "threadId": "01a10cd3-0c0c-7353-85a1-f95e0b37878b",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 345293,
+              "cached_input_tokens": 300416,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 5552,
+              "reasoning_output_tokens": 1310,
+              "total_tokens": 350845,
+              "uncached_input_tokens": 44877
+            },
+            "cumulativeUsage": {
+              "input_tokens": 345293,
+              "cached_input_tokens": 300416,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 5552,
+              "reasoning_output_tokens": 1310
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "questions": {
+            "count": 5,
+            "citations": [
+              {
+                "questionId": "q1",
+                "path": "README.md",
+                "quote": "A send may commit remotely and then reject locally. The sender currently has no idempotency key or cancellation acknowledgement. Workspace credentials can change while uploads are pending.",
+                "exact": true
+              },
+              {
+                "questionId": "q1",
+                "path": "src/retry.ts",
+                "quote": "export async function retry<T>(fn:()=>Promise<T>):Promise<T>{try{return await fn();}catch{return fn();}}",
+                "exact": true
+              },
+              {
+                "questionId": "q1",
+                "path": "src/types.ts",
+                "quote": "export type Sender={uploadChunk(job:Job,token:string):Promise<{receipt:string}>};",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/queue.ts",
+                "quote": " return {enqueue,cancel(id:string){canceled.add(id);}};",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/queue.ts",
+                "quote": " try{const result=await retry(()=>sender.uploadChunk(job,token()));if(!canceled.has(job.id))events.done(job.id,result.receipt);}",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "README.md",
+                "quote": "A send may commit remotely and then reject locally. The sender currently has no idempotency key or cancellation acknowledgement. Workspace credentials can change while uploads are pending.",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/workspace.ts",
+                "quote": " const queue=createQueue(sender,events,()=>current);return {...queue,replaceToken(next:string){current=next;},close(){}};",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/queue.ts",
+                "quote": " try{const result=await retry(()=>sender.uploadChunk(job,token()));if(!canceled.has(job.id))events.done(job.id,result.receipt);}",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "README.md",
+                "quote": "A send may commit remotely and then reject locally. The sender currently has no idempotency key or cancellation acknowledgement. Workspace credentials can change while uploads are pending.",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/workspace.ts",
+                "quote": " const queue=createQueue(sender,events,()=>current);return {...queue,replaceToken(next:string){current=next;},close(){}};",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/panel.ts",
+                "quote": "export function panel(root:HTMLElement,id:string,sender:Sender){return openWorkspace(id,sender,{done:(_,r)=>{root.textContent=r;},failed:()=>{root.textContent='Upload failed';},pending:n=>{root.dataset.pending=String(n);}});",
+                "exact": true
+              },
+              {
+                "questionId": "q5",
+                "path": "README.md",
+                "quote": "Plan a reusable file upload queue for two independent workspaces. Keep the existing injected sender and public enqueue/cancel operations. Clarify retries, cancellation and workspace lifetime before implementation.",
+                "exact": true
+              },
+              {
+                "questionId": "q5",
+                "path": "src/queue.ts",
+                "quote": "const jobs:Job[]=[];",
+                "exact": true
+              },
+              {
+                "questionId": "q5",
+                "path": "src/queue.ts",
+                "quote": " async function enqueue(job:Job){jobs.push(job);events.pending(jobs.length);",
+                "exact": true
+              }
+            ],
+            "allQuotesExact": true
+          }
+        },
+        {
+          "id": "offline-uploader-fs-K1",
+          "phase": "plan",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 382.515,
+            "completedTurns": 1,
+            "threadId": "01a10cd3-0c0c-7353-85a1-f95e0b37878b",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 864906,
+              "cached_input_tokens": 830720,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 9663,
+              "reasoning_output_tokens": 3127,
+              "total_tokens": 874569,
+              "uncached_input_tokens": 34186
+            },
+            "cumulativeUsage": {
+              "input_tokens": 1210199,
+              "cached_input_tokens": 1131136,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 15215,
+              "reasoning_output_tokens": 4437
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "planCharacters": 17147
+        }
+      ],
+      "complete": true
+    },
+    {
+      "id": "plugin-shell-raw-K1",
+      "case": "plugin-shell",
+      "arm": "raw-K1",
+      "calls": 2,
+      "completedTurns": 2,
+      "totalTokens": 134726,
+      "uncachedPlusOutput": 28742,
+      "seconds": 223.82799999999997,
+      "unknownUsage": 0,
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "knowledgeReads": [],
+      "approvals": [],
+      "commands": [
+        "/bin/zsh -lc \"pwd; rg --files -g 'README.md' -g 'learning/*.md' -g '\"'!node_modules'\"' -g '\"'!vendor'\"' | sort; rg --files -g '\"'!node_modules'\"' -g '\"'!vendor'\"' | head -100\"",
+        "/bin/zsh -lc \"for f in README.md learning/*.md src/*.ts package.json tsconfig.json; do printf '\\\\n===== %s =====\\\\n' \\\"\"'$f\"; cat \"$f\"; done'",
+        "/bin/zsh -lc \"cat owner-answers.json; cat questions.json; cat README.md; for f in src/*.ts; do printf '\\\\n===== %s =====\\\\n' \\\"\"'$f\"; cat \"$f\"; done'"
+      ],
+      "audits": [
+        {
+          "id": "plugin-shell-raw-K1",
+          "phase": "questions",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 134.801,
+            "completedTurns": 1,
+            "threadId": "01a10cd4-6841-7993-85e4-34fdbd6b5997",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 58421,
+              "cached_input_tokens": 43776,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 3357,
+              "reasoning_output_tokens": 990,
+              "total_tokens": 61778,
+              "uncached_input_tokens": 14645
+            },
+            "cumulativeUsage": {
+              "input_tokens": 58421,
+              "cached_input_tokens": 43776,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 3357,
+              "reasoning_output_tokens": 990
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "questions": {
+            "count": 6,
+            "citations": [
+              {
+                "questionId": "q1",
+                "path": "README.md",
+                "quote": "Extensions can unload themselves from inside a callback. The current bus is also imported by two mounted dashboards; no global broadcast contract is documented.",
+                "exact": true
+              },
+              {
+                "questionId": "q1",
+                "path": "src/bus.ts",
+                "quote": "const listeners:Listener[]=[];",
+                "exact": true
+              },
+              {
+                "questionId": "q1",
+                "path": "src/commands.ts",
+                "quote": "const commands=new Map<string,()=>void>();",
+                "exact": true
+              },
+              {
+                "questionId": "q1",
+                "path": "src/dashboard.ts",
+                "quote": "publish(value:string){emit(value);}",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "README.md",
+                "quote": "Extensions can unload themselves from inside a callback.",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/bus.ts",
+                "quote": "export function emit(value:string){for(const listener of listeners)listener(value);}",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/bus.ts",
+                "quote": "export function subscribe(fn:Listener){listeners.push(fn);return()=>{listeners.splice(listeners.indexOf(fn),1);};}",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "README.md",
+                "quote": "Clarify extension failure, disposal and reload policy.",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/bus.ts",
+                "quote": "export function emit(value:string){for(const listener of listeners)listener(value);}",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/commands.ts",
+                "quote": "export function run(id:string){commands.get(id)?.();}",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/telemetry.ts",
+                "quote": "export function diagnostics(){const entries:Diagnostic[]=[];return {report(d:Diagnostic){entries.push(d);},entries:()=>entries.slice()};}",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "README.md",
+                "quote": "Clarify extension failure, disposal and reload policy.",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/dashboard.ts",
+                "quote": "load(e:Extension){stops.set(e.id,activate(e));},unload(id:string){stops.get(id)?.();stops.delete(id);},",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/commands.ts",
+                "quote": "export function register(id:string,run:()=>void){commands.set(id,run);return()=>commands.delete(id);}",
+                "exact": true
+              },
+              {
+                "questionId": "q5",
+                "path": "README.md",
+                "quote": "Clarify extension failure, disposal and reload policy.",
+                "exact": true
+              },
+              {
+                "questionId": "q5",
+                "path": "src/dashboard.ts",
+                "quote": "publish(value:string){emit(value);},dispose(){for(const stop of stops.values())stop();stops.clear();}};}",
+                "exact": true
+              },
+              {
+                "questionId": "q6",
+                "path": "README.md",
+                "quote": "Keep dependency injection and the existing event contracts.",
+                "exact": true
+              },
+              {
+                "questionId": "q6",
+                "path": "src/extension.ts",
+                "quote": "export function activate(extension:Extension){const a=subscribe(extension.event),b=register(extension.id,extension.run);return()=>{a();b();};}",
+                "exact": true
+              },
+              {
+                "questionId": "q6",
+                "path": "src/bus.ts",
+                "quote": "export function emit(value:string){for(const listener of listeners)listener(value);}",
+                "exact": true
+              },
+              {
+                "questionId": "q6",
+                "path": "src/commands.ts",
+                "quote": "export function run(id:string){commands.get(id)?.();}",
+                "exact": true
+              }
+            ],
+            "allQuotesExact": true
+          }
+        },
+        {
+          "id": "plugin-shell-raw-K1",
+          "phase": "plan",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 89.027,
+            "completedTurns": 1,
+            "threadId": "01a10cd4-6841-7993-85e4-34fdbd6b5997",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 70767,
+              "cached_input_tokens": 62208,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 2181,
+              "reasoning_output_tokens": 575,
+              "total_tokens": 72948,
+              "uncached_input_tokens": 8559
+            },
+            "cumulativeUsage": {
+              "input_tokens": 129188,
+              "cached_input_tokens": 105984,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 5538,
+              "reasoning_output_tokens": 1565
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "planCharacters": 7123
+        }
+      ],
+      "complete": true
+    },
+    {
+      "id": "offline-uploader-raw-K1",
+      "case": "offline-uploader",
+      "arm": "raw-K1",
+      "calls": 2,
+      "completedTurns": 2,
+      "totalTokens": 141303,
+      "uncachedPlusOutput": 27127,
+      "seconds": 256.39300000000003,
+      "unknownUsage": 0,
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "knowledgeReads": [],
+      "approvals": [],
+      "commands": [
+        "/bin/zsh -lc \"rg --files -g '\"'!node_modules'\"' -g '\"'!vendor'\"' | head -200\"",
+        "/bin/zsh -lc \"pwd && rg --files -g 'README.md' -g 'learning/*.md' -g '\"'!node_modules'\"' -g '\"'!vendor'\"'\"",
+        "/bin/zsh -lc 'cat README.md learning/*.md'",
+        "/bin/zsh -lc 'cat src/*.ts package.json tsconfig.json'",
+        "/bin/zsh -lc 'cat owner-answers.json questions.json'",
+        "/bin/zsh -lc 'cat README.md src/types.ts src/queue.ts src/retry.ts src/workspace.ts src/panel.ts learning/mutation-queue.md'"
+      ],
+      "audits": [
+        {
+          "id": "offline-uploader-raw-K1",
+          "phase": "questions",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 149.673,
+            "completedTurns": 1,
+            "threadId": "01a10cd6-7706-77e3-a746-53b927df2c61",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 59767,
+              "cached_input_tokens": 49024,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 3860,
+              "reasoning_output_tokens": 1195,
+              "total_tokens": 63627,
+              "uncached_input_tokens": 10743
+            },
+            "cumulativeUsage": {
+              "input_tokens": 59767,
+              "cached_input_tokens": 49024,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 3860,
+              "reasoning_output_tokens": 1195
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "questions": {
+            "count": 6,
+            "citations": [
+              {
+                "questionId": "q1",
+                "path": "README.md",
+                "quote": "A send may commit remotely and then reject locally. The sender currently has no idempotency key or cancellation acknowledgement.",
+                "exact": true
+              },
+              {
+                "questionId": "q1",
+                "path": "src/retry.ts",
+                "quote": "export async function retry<T>(fn:()=>Promise<T>):Promise<T>{try{return await fn();}catch{return fn();}}",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "README.md",
+                "quote": "Keep the existing injected sender and public enqueue/cancel operations. Clarify retries, cancellation and workspace lifetime before implementation.",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/queue.ts",
+                "quote": "return {enqueue,cancel(id:string){canceled.add(id);}};",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/queue.ts",
+                "quote": "catch{events.failed(job.id);}",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "README.md",
+                "quote": "Plan a reusable file upload queue for two independent workspaces.",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/queue.ts",
+                "quote": "const jobs:Job[]=[];",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/queue.ts",
+                "quote": "async function enqueue(job:Job){jobs.push(job);events.pending(jobs.length);",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "README.md",
+                "quote": "Workspace credentials can change while uploads are pending.",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/workspace.ts",
+                "quote": "const queue=createQueue(sender,events,()=>current);return {...queue,replaceToken(next:string){current=next;},close(){}};",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/queue.ts",
+                "quote": "try{const result=await retry(()=>sender.uploadChunk(job,token()));if(!canceled.has(job.id))events.done(job.id,result.receipt);}",
+                "exact": true
+              },
+              {
+                "questionId": "q5",
+                "path": "README.md",
+                "quote": "Clarify retries, cancellation and workspace lifetime before implementation.",
+                "exact": true
+              },
+              {
+                "questionId": "q5",
+                "path": "src/workspace.ts",
+                "quote": "const queue=createQueue(sender,events,()=>current);return {...queue,replaceToken(next:string){current=next;},close(){}};",
+                "exact": true
+              },
+              {
+                "questionId": "q5",
+                "path": "src/panel.ts",
+                "quote": "export function panel(root:HTMLElement,id:string,sender:Sender){return openWorkspace(id,sender,{done:(_,r)=>{root.textContent=r;},failed:()=>{root.textContent='Upload failed';},pending:n=>{root.dataset.pending=String(n);}});}",
+                "exact": true
+              },
+              {
+                "questionId": "q6",
+                "path": "src/types.ts",
+                "quote": "export type Job={id:string;workspace:string;file:string;attempt:number};",
+                "exact": true
+              },
+              {
+                "questionId": "q6",
+                "path": "src/workspace.ts",
+                "quote": "export function openWorkspace(id:string,sender:Sender,events:Events){let current='token-'+id;",
+                "exact": true
+              },
+              {
+                "questionId": "q6",
+                "path": "src/queue.ts",
+                "quote": "try{const result=await retry(()=>sender.uploadChunk(job,token()));if(!canceled.has(job.id))events.done(job.id,result.receipt);}",
+                "exact": true
+              }
+            ],
+            "allQuotesExact": true
+          }
+        },
+        {
+          "id": "offline-uploader-raw-K1",
+          "phase": "plan",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 106.72,
+            "completedTurns": 1,
+            "threadId": "01a10cd6-7706-77e3-a746-53b927df2c61",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 74947,
+              "cached_input_tokens": 65152,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 2729,
+              "reasoning_output_tokens": 654,
+              "total_tokens": 77676,
+              "uncached_input_tokens": 9795
+            },
+            "cumulativeUsage": {
+              "input_tokens": 134714,
+              "cached_input_tokens": 114176,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 6589,
+              "reasoning_output_tokens": 1849
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "planCharacters": 7970
+        }
+      ],
+      "complete": true
+    },
+    {
+      "id": "plugin-shell-fs-K1",
+      "case": "plugin-shell",
+      "arm": "fs-K1",
+      "calls": 2,
+      "completedTurns": 2,
+      "totalTokens": 1163911,
+      "uncachedPlusOutput": 81671,
+      "seconds": 672.419,
+      "unknownUsage": 0,
+      "mcpCalls": 12,
+      "mcpErrors": 0,
+      "knowledgeReads": [
+        {
+          "id": [
+            "extension-lifecycle"
+          ]
+        },
+        {
+          "id": [
+            "extension-lifecycle",
+            "control-contracts"
+          ]
+        }
+      ],
+      "approvals": [],
+      "commands": [
+        "/bin/zsh -lc 'cat ../runtime/skills/fs-plan/SKILL.md'",
+        "/bin/zsh -lc \"pwd && rg --files -g 'README.md' -g 'AGENTS.md' -g '\"'!node_modules'\"' -g '\"'!dist'\"' -g '\"'!build'\"' | head -80\"",
+        "/bin/zsh -lc \"rg --files -g 'questions.json' && cat questions.json\"",
+        "/bin/zsh -lc 'cat owner-answers.json'",
+        "/bin/zsh -lc 'node ../runtime/bundle/tool-help.mjs save_revision'",
+        "/bin/zsh -lc \"rg --files -g 'AGENTS.md' -g 'questions.json' -g 'plan.md' -g '.frontend-system/**' | head -80\"",
+        "/bin/zsh -lc 'mkdir -p .frontend-system/drafts'",
+        "/bin/zsh -lc 'git status --short'",
+        "/bin/zsh -lc 'rg --files .frontend-system/plans/portal-refactor'",
+        "/bin/zsh -lc 'cp .frontend-system/plans/portal-refactor/plan.md plan.md'",
+        "/bin/zsh -lc \"rg -n 'contractDiagnostics|approved|\\\"hash\\\"' .frontend-system/plans/portal-refactor/revision.json | head -20\"",
+        "/bin/zsh -lc 'cmp -s plan.md .frontend-system/plans/portal-refactor/plan.md && wc -l plan.md'",
+        "/bin/zsh -lc 'git status --short'"
+      ],
+      "audits": [
+        {
+          "id": "plugin-shell-fs-K1",
+          "phase": "questions",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 268.126,
+            "completedTurns": 1,
+            "threadId": "01a10cd6-aaa0-7951-a2ca-730caced9bdd",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 351065,
+              "cached_input_tokens": 316544,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 5303,
+              "reasoning_output_tokens": 796,
+              "total_tokens": 356368,
+              "uncached_input_tokens": 34521
+            },
+            "cumulativeUsage": {
+              "input_tokens": 351065,
+              "cached_input_tokens": 316544,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 5303,
+              "reasoning_output_tokens": 796
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "questions": {
+            "count": 5,
+            "citations": [
+              {
+                "questionId": "q1",
+                "path": "README.md",
+                "quote": "The current bus is also imported by two mounted dashboards; no global broadcast contract is documented.",
+                "exact": true
+              },
+              {
+                "questionId": "q1",
+                "path": "src/dashboard.ts",
+                "quote": "import {emit} from './bus';",
+                "exact": true
+              },
+              {
+                "questionId": "q1",
+                "path": "src/extension.ts",
+                "quote": "import {subscribe} from './bus';",
+                "exact": true
+              },
+              {
+                "questionId": "q1",
+                "path": "src/commands.ts",
+                "quote": "export function run(id:string){commands.get(id)?.();}",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "README.md",
+                "quote": "Extensions can unload themselves from inside a callback.",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/bus.ts",
+                "quote": "export function emit(value:string){for(const listener of listeners)listener(value);}",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/bus.ts",
+                "quote": "export function subscribe(fn:Listener){listeners.push(fn);return()=>{listeners.splice(listeners.indexOf(fn),1);};}",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/bus.ts",
+                "quote": "export function emit(value:string){for(const listener of listeners)listener(value);}",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/commands.ts",
+                "quote": "export function run(id:string){commands.get(id)?.();}",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/telemetry.ts",
+                "quote": "export function diagnostics(){const entries:Diagnostic[]=[];return {report(d:Diagnostic){entries.push(d);},entries:()=>entries.slice()};}",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/dashboard.ts",
+                "quote": "load(e:Extension){stops.set(e.id,activate(e));},unload(id:string){stops.get(id)?.();stops.delete(id);},",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/commands.ts",
+                "quote": "export function register(id:string,run:()=>void){commands.set(id,run);return()=>commands.delete(id);}",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/extension.ts",
+                "quote": "export function activate(extension:Extension){const a=subscribe(extension.event),b=register(extension.id,extension.run);return()=>{a();b();};}",
+                "exact": true
+              },
+              {
+                "questionId": "q5",
+                "path": "src/dashboard.ts",
+                "quote": "publish(value:string){emit(value);},dispose(){for(const stop of stops.values())stop();stops.clear();}};}",
+                "exact": true
+              },
+              {
+                "questionId": "q5",
+                "path": "src/extension.ts",
+                "quote": "export function activate(extension:Extension){const a=subscribe(extension.event),b=register(extension.id,extension.run);return()=>{a();b();};}",
+                "exact": true
+              },
+              {
+                "questionId": "q5",
+                "path": "src/bus.ts",
+                "quote": "export function subscribe(fn:Listener){listeners.push(fn);return()=>{listeners.splice(listeners.indexOf(fn),1);};}",
+                "exact": true
+              }
+            ],
+            "allQuotesExact": true
+          }
+        },
+        {
+          "id": "plugin-shell-fs-K1",
+          "phase": "plan",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 404.293,
+            "completedTurns": 1,
+            "threadId": "01a10cd6-aaa0-7951-a2ca-730caced9bdd",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 798291,
+              "cached_input_tokens": 765696,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 9252,
+              "reasoning_output_tokens": 4020,
+              "total_tokens": 807543,
+              "uncached_input_tokens": 32595
+            },
+            "cumulativeUsage": {
+              "input_tokens": 1149356,
+              "cached_input_tokens": 1082240,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 14555,
+              "reasoning_output_tokens": 4816
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "planCharacters": 14677
+        }
+      ],
+      "complete": true
+    },
+    {
+      "id": "plugin-shell-ordinary",
+      "case": "plugin-shell",
+      "arm": "ordinary",
+      "calls": 2,
+      "completedTurns": 2,
+      "totalTokens": 138376,
+      "uncachedPlusOutput": 49800,
+      "seconds": 287.28700000000003,
+      "unknownUsage": 0,
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "knowledgeReads": [],
+      "approvals": [],
+      "commands": [
+        "/bin/zsh -lc \"pwd && rg --files -g 'README.md' -g 'AGENTS.md' -g '\"'!node_modules'\"' -g '\"'!vendor'\"'\"",
+        "/bin/zsh -lc \"rg --files -g '\"'!node_modules'\"' -g '\"'!vendor'\"' | head -100\"",
+        "/bin/zsh -lc 'cat package.json'",
+        "/bin/zsh -lc 'cat README.md'",
+        "/bin/zsh -lc 'cat src/extension.ts'",
+        "/bin/zsh -lc 'cat tsconfig.json'",
+        "/bin/zsh -lc 'cat src/commands.ts'",
+        "/bin/zsh -lc 'cat src/bus.ts'",
+        "/bin/zsh -lc 'cat src/dashboard.ts'",
+        "/bin/zsh -lc 'cat src/telemetry.ts'",
+        "/bin/zsh -lc 'cat owner-answers.json'",
+        "/bin/zsh -lc 'cat questions.json'",
+        "/bin/zsh -lc 'cat README.md'",
+        "/bin/zsh -lc 'cat src/dashboard.ts'",
+        "/bin/zsh -lc 'cat src/extension.ts'",
+        "/bin/zsh -lc 'cat src/bus.ts'",
+        "/bin/zsh -lc 'cat src/commands.ts'",
+        "/bin/zsh -lc 'cat src/telemetry.ts'"
+      ],
+      "audits": [
+        {
+          "id": "plugin-shell-ordinary",
+          "phase": "questions",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 158.59,
+            "completedTurns": 1,
+            "threadId": "01a10cd8-bfd1-7d31-a716-0e5461e2be3e",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 58129,
+              "cached_input_tokens": 25600,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 4050,
+              "reasoning_output_tokens": 1662,
+              "total_tokens": 62179,
+              "uncached_input_tokens": 32529
+            },
+            "cumulativeUsage": {
+              "input_tokens": 58129,
+              "cached_input_tokens": 25600,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 4050,
+              "reasoning_output_tokens": 1662
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "questions": {
+            "count": 5,
+            "citations": [
+              {
+                "questionId": "q1",
+                "path": "README.md",
+                "quote": "The current bus is also imported by two mounted dashboards; no global broadcast contract is documented.",
+                "exact": true
+              },
+              {
+                "questionId": "q1",
+                "path": "src/bus.ts",
+                "quote": "const listeners:Listener[]=[];",
+                "exact": true
+              },
+              {
+                "questionId": "q1",
+                "path": "src/dashboard.ts",
+                "quote": "publish(value:string){emit(value);},dispose(){for(const stop of stops.values())stop();stops.clear();}};",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/bus.ts",
+                "quote": "export function emit(value:string){for(const listener of listeners)listener(value);}",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/commands.ts",
+                "quote": "export function run(id:string){commands.get(id)?.();}",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/telemetry.ts",
+                "quote": "export function diagnostics(){const entries:Diagnostic[]=[];return {report(d:Diagnostic){entries.push(d);},entries:()=>entries.slice()};}",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "README.md",
+                "quote": "Clarify extension failure, disposal and reload policy.",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/dashboard.ts",
+                "quote": "load(e:Extension){stops.set(e.id,activate(e));},unload(id:string){stops.get(id)?.();stops.delete(id);},",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/commands.ts",
+                "quote": "export function register(id:string,run:()=>void){commands.set(id,run);return()=>commands.delete(id);}",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/extension.ts",
+                "quote": "export type Extension={id:string;event(value:string):void;run():void};",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/extension.ts",
+                "quote": "export function activate(extension:Extension){const a=subscribe(extension.event),b=register(extension.id,extension.run);return()=>{a();b();};}",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/dashboard.ts",
+                "quote": "publish(value:string){emit(value);},dispose(){for(const stop of stops.values())stop();stops.clear();}};",
+                "exact": true
+              },
+              {
+                "questionId": "q5",
+                "path": "README.md",
+                "quote": "Extensions can unload themselves from inside a callback.",
+                "exact": true
+              },
+              {
+                "questionId": "q5",
+                "path": "src/bus.ts",
+                "quote": "export function subscribe(fn:Listener){listeners.push(fn);return()=>{listeners.splice(listeners.indexOf(fn),1);};}",
+                "exact": true
+              },
+              {
+                "questionId": "q5",
+                "path": "src/bus.ts",
+                "quote": "export function emit(value:string){for(const listener of listeners)listener(value);}",
+                "exact": true
+              }
+            ],
+            "allQuotesExact": true
+          }
+        },
+        {
+          "id": "plugin-shell-ordinary",
+          "phase": "plan",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 128.697,
+            "completedTurns": 1,
+            "threadId": "01a10cd8-bfd1-7d31-a716-0e5461e2be3e",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 72936,
+              "cached_input_tokens": 62976,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 3261,
+              "reasoning_output_tokens": 1193,
+              "total_tokens": 76197,
+              "uncached_input_tokens": 9960
+            },
+            "cumulativeUsage": {
+              "input_tokens": 131065,
+              "cached_input_tokens": 88576,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 7311,
+              "reasoning_output_tokens": 2855
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "planCharacters": 8622
+        }
+      ],
+      "complete": true
+    },
+    {
+      "id": "offline-uploader-ordinary",
+      "case": "offline-uploader",
+      "arm": "ordinary",
+      "calls": 2,
+      "completedTurns": 2,
+      "totalTokens": 204252,
+      "uncachedPlusOutput": 29916,
+      "seconds": 305.769,
+      "unknownUsage": 0,
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "knowledgeReads": [],
+      "approvals": [],
+      "commands": [
+        "/bin/zsh -lc \"pwd; rg --files -g 'README.md' -g 'AGENTS.md' -g '\"'!node_modules'\"' -g '\"'!dist'\"' -g '\"'!build'\"'\"",
+        "/bin/zsh -lc \"rg --files -g '\"'!node_modules'\"' -g '\"'!dist'\"' -g '\"'!build'\"' | head -200\"",
+        "/bin/zsh -lc 'cat src/queue.ts src/types.ts src/retry.ts'",
+        "/bin/zsh -lc 'cat README.md'",
+        "/bin/zsh -lc 'cat src/workspace.ts src/panel.ts package.json tsconfig.json'",
+        "/bin/zsh -lc 'cat questions.json'",
+        "/bin/zsh -lc 'cat owner-answers.json'",
+        "/bin/zsh -lc 'cat README.md questions.json'",
+        "/bin/zsh -lc 'cat src/queue.ts src/retry.ts src/types.ts src/workspace.ts src/panel.ts'",
+        "/bin/zsh -lc 'cat plan.md'"
+      ],
+      "audits": [
+        {
+          "id": "offline-uploader-ordinary",
+          "phase": "questions",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 168.452,
+            "completedTurns": 1,
+            "threadId": "01a10cda-c233-7c83-a2c7-dbe950fc7ba4",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 90007,
+              "cached_input_tokens": 78208,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 3747,
+              "reasoning_output_tokens": 910,
+              "total_tokens": 93754,
+              "uncached_input_tokens": 11799
+            },
+            "cumulativeUsage": {
+              "input_tokens": 90007,
+              "cached_input_tokens": 78208,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 3747,
+              "reasoning_output_tokens": 910
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "questions": {
+            "count": 6,
+            "citations": [
+              {
+                "questionId": "q1",
+                "path": "README.md",
+                "quote": "A send may commit remotely and then reject locally. The sender currently has no idempotency key or cancellation acknowledgement.",
+                "exact": true
+              },
+              {
+                "questionId": "q1",
+                "path": "src/retry.ts",
+                "quote": "export async function retry<T>(fn:()=>Promise<T>):Promise<T>{try{return await fn();}catch{return fn();}}",
+                "exact": true
+              },
+              {
+                "questionId": "q1",
+                "path": "src/types.ts",
+                "quote": "export type Sender={uploadChunk(job:Job,token:string):Promise<{receipt:string}>};",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/queue.ts",
+                "quote": "const canceled=new Set<string>();",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/queue.ts",
+                "quote": "if(!canceled.has(job.id))events.done(job.id,result.receipt);",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/queue.ts",
+                "quote": "catch{events.failed(job.id);}finally{jobs.splice(jobs.indexOf(job),1);events.pending(jobs.length);}",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "README.md",
+                "quote": "The sender currently has no idempotency key or cancellation acknowledgement.",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "README.md",
+                "quote": "Plan a reusable file upload queue for two independent workspaces.",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/queue.ts",
+                "quote": "const jobs:Job[]=[];",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/queue.ts",
+                "quote": "async function enqueue(job:Job){jobs.push(job);events.pending(jobs.length);",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/types.ts",
+                "quote": "export type Job={id:string;workspace:string;file:string;attempt:number};",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/workspace.ts",
+                "quote": "const queue=createQueue(sender,events,()=>current);return {...queue,replaceToken(next:string){current=next;},close(){}};",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/panel.ts",
+                "quote": "export function panel(root:HTMLElement,id:string,sender:Sender){return openWorkspace(id,sender,{done:(_,r)=>{root.textContent=r;},failed:()=>{root.textContent='Upload failed';},pending:n=>{root.dataset.pending=String(n);}});}",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "README.md",
+                "quote": "Clarify retries, cancellation and workspace lifetime before implementation.",
+                "exact": true
+              },
+              {
+                "questionId": "q5",
+                "path": "README.md",
+                "quote": "Workspace credentials can change while uploads are pending.",
+                "exact": true
+              },
+              {
+                "questionId": "q5",
+                "path": "src/queue.ts",
+                "quote": "try{const result=await retry(()=>sender.uploadChunk(job,token()));if(!canceled.has(job.id))events.done(job.id,result.receipt);}",
+                "exact": true
+              },
+              {
+                "questionId": "q5",
+                "path": "src/workspace.ts",
+                "quote": "const queue=createQueue(sender,events,()=>current);return {...queue,replaceToken(next:string){current=next;},close(){}};",
+                "exact": true
+              },
+              {
+                "questionId": "q6",
+                "path": "README.md",
+                "quote": "Plan a reusable file upload queue for two independent workspaces.",
+                "exact": true
+              },
+              {
+                "questionId": "q6",
+                "path": "src/queue.ts",
+                "quote": "async function enqueue(job:Job){jobs.push(job);events.pending(jobs.length);",
+                "exact": true
+              },
+              {
+                "questionId": "q6",
+                "path": "src/queue.ts",
+                "quote": "try{const result=await retry(()=>sender.uploadChunk(job,token()));if(!canceled.has(job.id))events.done(job.id,result.receipt);}",
+                "exact": true
+              }
+            ],
+            "allQuotesExact": true
+          }
+        },
+        {
+          "id": "offline-uploader-ordinary",
+          "phase": "plan",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 137.317,
+            "completedTurns": 1,
+            "threadId": "01a10cda-c233-7c83-a2c7-dbe950fc7ba4",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 107724,
+              "cached_input_tokens": 96128,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 2774,
+              "reasoning_output_tokens": 775,
+              "total_tokens": 110498,
+              "uncached_input_tokens": 11596
+            },
+            "cumulativeUsage": {
+              "input_tokens": 197731,
+              "cached_input_tokens": 174336,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 6521,
+              "reasoning_output_tokens": 1685
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "planCharacters": 7950
+        }
+      ],
+      "complete": true
+    },
+    {
+      "id": "ssr-storefront-ordinary",
+      "case": "ssr-storefront",
+      "arm": "ordinary",
+      "calls": 2,
+      "completedTurns": 2,
+      "totalTokens": 146719,
+      "uncachedPlusOutput": 52383,
+      "seconds": 200.78300000000002,
+      "unknownUsage": 0,
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "knowledgeReads": [],
+      "approvals": [],
+      "commands": [
+        "/bin/zsh -lc \"rg --files -g '\"'!node_modules'\"' -g '\"'!dist'\"' | head -200\"",
+        "/bin/zsh -lc \"pwd && rg --files -g 'README.md' -g 'AGENTS.md' -g '\"'!node_modules'\"' -g '\"'!dist'\"' | head -80\"",
+        "/bin/zsh -lc 'cat README.md'",
+        "/bin/zsh -lc 'cat src/server.ts src/cart.ts src/widget.ts'",
+        "/bin/zsh -lc 'cat src/storage.ts src/login.ts package.json tsconfig.json'",
+        "/bin/zsh -lc 'cat owner-answers.json questions.json'",
+        "/bin/zsh -lc 'cat README.md src/server.ts src/cart.ts src/widget.ts src/storage.ts src/login.ts'",
+        "/bin/zsh -lc \"rg --files -g 'AGENTS.md' -g 'package.json' -g 'tsconfig.json'\""
+      ],
+      "audits": [
+        {
+          "id": "ssr-storefront-ordinary",
+          "phase": "questions",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 85.666,
+            "completedTurns": 1,
+            "threadId": "01a10cdb-2bb1-7fc0-a38b-17047b2c3151",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 55389,
+              "cached_input_tokens": 25472,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 2006,
+              "reasoning_output_tokens": 506,
+              "total_tokens": 57395,
+              "uncached_input_tokens": 29917
+            },
+            "cumulativeUsage": {
+              "input_tokens": 55389,
+              "cached_input_tokens": 25472,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 2006,
+              "reasoning_output_tokens": 506
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "questions": {
+            "count": 3,
+            "citations": [
+              {
+                "questionId": "q1",
+                "path": "README.md",
+                "quote": "The host has not documented how guest persistence and account carts should combine.",
+                "exact": true
+              },
+              {
+                "questionId": "q1",
+                "path": "src/storage.ts",
+                "quote": "export function persist(){localStorage.setItem('cart',JSON.stringify(snapshot()));}",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/widget.ts",
+                "quote": "export function hydrate(root:HTMLElement,server:Cart){loadCart(server);restore();root.textContent=String(snapshot().items.length);",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/storage.ts",
+                "quote": "export function restore(){const raw=localStorage.getItem('cart');if(raw)loadCart(JSON.parse(raw));}",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/login.ts",
+                "quote": "export async function login(user:string,fetchCart:(user:string)=>Promise<Cart>){loadCart(await fetchCart(user));}",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/server.ts",
+                "quote": "export type Api={cart(user:string):Promise<Cart>};",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/cart.ts",
+                "quote": "export type Cart={owner:string;items:string[]};",
+                "exact": true
+              }
+            ],
+            "allQuotesExact": true
+          }
+        },
+        {
+          "id": "ssr-storefront-ordinary",
+          "phase": "plan",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 115.117,
+            "completedTurns": 1,
+            "threadId": "01a10cdb-2bb1-7fc0-a38b-17047b2c3151",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 86485,
+              "cached_input_tokens": 68864,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 2839,
+              "reasoning_output_tokens": 892,
+              "total_tokens": 89324,
+              "uncached_input_tokens": 17621
+            },
+            "cumulativeUsage": {
+              "input_tokens": 141874,
+              "cached_input_tokens": 94336,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 4845,
+              "reasoning_output_tokens": 1398
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "planCharacters": 6130
+        }
+      ],
+      "complete": true
+    }
+  ]
+}

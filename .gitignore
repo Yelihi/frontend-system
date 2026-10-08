@@ -5,3 +5,13 @@ knowledge/.cache/
 test/fixtures/**/.next/
 test/fixtures/**/test-results/
 test/fixtures/**/playwright-report/
+
+# Local analysis exports must not enter isolated evaluation inputs.
+test/evals/fs-comparison/v12/projects/*/.frontend-system/
+
+# Local model transcripts and copied execution worktrees; keep runners and reports in docs.
+test/evals/**/results/
+test/evals/availability/
+__pycache__/
+.DS_Store
+.*.swp

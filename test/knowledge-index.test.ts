@@ -1,9 +1,10 @@
+import { approveFixtureSource } from "./source-review-fixture.js";
 import assert from "node:assert/strict";
 import { mkdtemp, mkdir, readFile, writeFile, rm, symlink } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
-import { catalogKnowledgeDocument, knowledgeStatus, loadKnowledgeCatalog, markKnowledgeSynced } from "../src/application/knowledge/catalog.js";
+import { catalogKnowledgeDocument, knowledgeStatus, loadKnowledgeCatalog, markKnowledgeSynced, validateKnowledgeSync } from "../src/application/knowledge/catalog.js";
 import { contentHash, readIndexedReference, readReferenceIndex, searchReferenceIndex, type ReferenceEntry, type ReferenceIndex } from "../src/application/knowledge/reference-index.js";
 import { KnowledgeResolver } from "../src/application/knowledge/knowledge-resolver.js";
 import { RuleResolver } from "../src/application/rules/rule-resolver.js";
@@ -144,7 +145,8 @@ test("sync validates source evidence, records deferrals, tracks corrections/dele
     await mkdir(learned, { recursive: true });
     await writeFile(join(root, "knowledge/source/manual/source.md"), "source");
     await catalogKnowledgeDocument(root, { id: "source", path: "knowledge/source/manual/source.md", title: "Source", summary: "Concept", sourceType: "manual", facets: {} });
-    const index: ReferenceIndex = { version: 1, entries: [entry("snapshot", ["상태"], ["react"])], outcomes: [{ sourceId: "source", sourceHash: contentHash("source"), action: "represented", reason: "Concept retained without a prescription" }] };
+    const snapshot = { ...entry("snapshot", ["상태"], ["react"]), exclusions: ["Non-React state"], routing: { mode: "direct" as const, reason: "Review React snapshot semantics" }, triggers: [{ kind: "semantic" as const, value: "react.snapshot", description: "State read after setter" }], checks: [{ id: "snapshot", question: "Which render supplied the value?", guidance: "Check the handler closure", verification: "review" as const }] };
+    const index: ReferenceIndex = { version: 3, entries: [snapshot], triggerChecks: [{ signals: [{kind: "semantic", value: "react.snapshot"}], technologies: ["react"], expectedIds: ["snapshot"], forbiddenIds: [] }, { signals: [{kind: "semantic", value: "react.snapshot"}], technologies: ["vue"], expectedIds: [], forbiddenIds: ["snapshot"] }], outcomes: [{ sourceId: "source", sourceHash: contentHash("source"), action: "represented", reason: "Concept retained without a prescription" }] };
     const save = () => writeFile(join(learned, "index.json"), JSON.stringify(index));
     await save();
     const context = await new KnowledgeResolver(learned).resolve({ technologies: [{ name: "React", category: "framework" }] } as ProjectProfile, { raw: "상태" } as WorkRequest);
@@ -152,6 +154,26 @@ test("sync validates source evidence, records deferrals, tracks corrections/dele
     assert.deepEqual(context.applicable[0]?.conditions, ["Check version and domain"]);
     // No Markdown exists yet: metadata retrieval must not open reference bodies.
     await writeFile(join(learned, "snapshot.md"), "body");
+    await approveFixtureSource(root, "source");
+    const beforeSync = await readFile(join(root, "knowledge/catalog.json"), "utf8");
+    const audit = await validateKnowledgeSync(root, ["source"]);
+    assert.match(audit.warnings[0]!, /No recorded retrieval/);
+    assert.equal(await readFile(join(root, "knowledge/catalog.json"), "utf8"), beforeSync, "Dry validation must not publish");
+    index.retrievalChecks = [{ query: "상태", technologies: ["react"], expectedIds: ["snapshot"], forbiddenIds: [] }];
+    await save();
+    assert.equal((await validateKnowledgeSync(root, ["source"])).retrievalChecks[0]?.passed, true);
+    index.retrievalChecks[0]!.expectedIds = [];
+    index.retrievalChecks[0]!.forbiddenIds = ["snapshot"];
+    await save();
+    await assert.rejects(markKnowledgeSynced(root, ["source"]), /Failed sync retrieval/);
+    assert.equal(await readFile(join(root, "knowledge/catalog.json"), "utf8"), beforeSync);
+    index.retrievalChecks[0]!.forbiddenIds = [];
+    index.retrievalChecks[0]!.expectEmpty = true;
+    await save();
+    await assert.rejects(validateKnowledgeSync(root, ["source"]), /Failed sync retrieval/, "Abstention must actually return no candidates");
+    delete index.retrievalChecks[0]!.expectEmpty;
+    index.retrievalChecks[0]!.expectedIds = ["snapshot"];
+    await save();
     await markKnowledgeSynced(root, ["source"]);
     assert.deepEqual((await knowledgeStatus(root)).unpublished, []);
     assert.equal((await readIndexedReference(learned, "snapshot", 0, 2)).content, "bo");
@@ -162,7 +184,7 @@ test("sync validates source evidence, records deferrals, tracks corrections/dele
     await writeFile(join(learned, "snapshot.md"), "body");
     await writeFile(join(root, "knowledge/source/manual/second.md"), "second");
     await catalogKnowledgeDocument(root, { id: "second", path: "knowledge/source/manual/second.md", title: "Second", summary: "Independent evidence", sourceType: "manual", facets: {} });
-    index.entries.push({ ...entry("dependent", ["decision"]), kind: "decision", sources: { second: contentHash("second") }, related: ["snapshot"] });
+    index.entries.push({ ...entry("dependent", ["decision"]), kind: "decision", routing: { mode: "supporting", reason: "Context for snapshot" }, sources: { second: contentHash("second") }, related: ["snapshot"] });
     await save();
     await writeFile(join(root, "knowledge/source/manual/source.md"), "corrected source");
     assert.deepEqual((await knowledgeStatus(root)).affectedReferences, ["snapshot", "dependent"]);
@@ -207,5 +229,27 @@ test("concepts and uncertain decisions are context, not engineering rules", asyn
     const rules = await new RuleResolver(root).resolve(profile, request, knowledge, []);
     assert.deepEqual(rules.filter((rule) => rule.source === "knowledge").map((rule) => rule.id), ["decision"]);
     assert.equal(rules[0]?.mandatory, false);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+test("search explains candidates, rejects stopword/substrings and uses code observations", async () => {
+  const root = await mkdtemp(join(tmpdir(), "fs-selection-"));
+  try {
+    const index: ReferenceIndex = { version: 1, entries: [
+      entry("pending", ["pending", "state", "response"], ["React"]),
+      entry("unrelated", ["painting", "constraint"]),
+      { ...entry("vue-only", ["pending", "response"], ["Vue"]), excludedTechnologies: ["React"] },
+    ], outcomes: [] };
+    await writeFile(join(root, "index.json"), JSON.stringify(index));
+    assert.deepEqual(searchReferenceIndex(index, "Implement approved TASK.md in the project"), []);
+    assert.deepEqual(searchReferenceIndex(index, "paint"), [], "English substrings must not match painting");
+    const profile = { technologies: [{ name: "React" }] } as ProjectProfile;
+    const resolved = await new KnowledgeResolver(root).resolve(profile, { raw: "Implement approved TASK.md", mode: "implement",
+      constraints: [], observations: [{ path: "src/search.tsx", observation: "pending response state" }] });
+    assert.deepEqual(resolved.applicable.map(({ id }) => id), ["pending"]);
+    const candidate = searchReferenceIndex(index, "pending response", ["React"])[0]!;
+    assert.deepEqual(candidate.matchedTerms, ["pending", "response"]);
+    assert.equal(candidate.contentHash, contentHash("body"));
+    assert.equal(candidate.applicability, "candidate-needs-context-review");
   } finally { await rm(root, { recursive: true, force: true }); }
 });

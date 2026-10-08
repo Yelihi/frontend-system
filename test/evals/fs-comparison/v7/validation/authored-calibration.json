@@ -1,0 +1,72 @@
+{
+  "mode": "authored-only",
+  "modelCalls": 0,
+  "matched": 13,
+  "rows": [
+    {
+      "variant": "reference",
+      "matched": true,
+      "functionalEquivalence": true
+    },
+    {
+      "variant": "cva-import-alias",
+      "matched": true,
+      "functionalEquivalence": true
+    },
+    {
+      "variant": "local-cva-result",
+      "matched": true,
+      "functionalEquivalence": true
+    },
+    {
+      "variant": "theme-comment",
+      "matched": true,
+      "functionalEquivalence": true
+    },
+    {
+      "variant": "ternary-ActionButton",
+      "matched": true,
+      "functionalEquivalence": true
+    },
+    {
+      "variant": "ternary-StatusBadge",
+      "matched": true,
+      "functionalEquivalence": true
+    },
+    {
+      "variant": "ternary-PanelCard",
+      "matched": true,
+      "functionalEquivalence": true
+    },
+    {
+      "variant": "map-Amount",
+      "matched": true,
+      "functionalEquivalence": true
+    },
+    {
+      "variant": "map-App",
+      "matched": true,
+      "functionalEquivalence": true
+    },
+    {
+      "variant": "unselected-theme",
+      "matched": true,
+      "functionalEquivalence": true
+    },
+    {
+      "variant": "unused-cva",
+      "matched": true,
+      "functionalEquivalence": true
+    },
+    {
+      "variant": "event-dropped",
+      "matched": true,
+      "functionalEquivalence": true
+    },
+    {
+      "variant": "invented-dark-mode",
+      "matched": true,
+      "functionalEquivalence": true
+    }
+  ]
+}

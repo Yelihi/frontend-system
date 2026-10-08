@@ -1,0 +1,47 @@
+{
+  "checkedAt": "2026-10-07T05:58:45.554605+00:00",
+  "core": {
+    "command": "npm run check",
+    "tests": 124,
+    "passed": 124,
+    "failed": 0,
+    "typecheck": "passed",
+    "lint": "passed",
+    "log": "../reliability/check.log"
+  },
+  "actualCodeExecution": {
+    "project": "v12/projects/request",
+    "method": "TypeScript erasure and actual modules; mock HTTP and EventTarget",
+    "verified": [
+      "validation short circuit",
+      "optimistic list update",
+      "401/500 rollback",
+      "caller headers mutation",
+      "newer input dirty defect",
+      "error display persists on success",
+      "editor/list cleanup"
+    ]
+  },
+  "ticketStoreExecution": {
+    "method": "actual store module, registered subscriber callbacks",
+    "verified": [
+      "shared snapshot notifications",
+      "individual subscription cleanup"
+    ],
+    "reactRendering": "not measured"
+  },
+  "cli": {
+    "list": "passed",
+    "render": "passed",
+    "initialScenario": "newer-input",
+    "language": "en passed; original citations preserved"
+  },
+  "skillFormat": "passed (uv with PyYAML)",
+  "browserVerification": {
+    "status": "blocked",
+    "reason": "Browser tool security policy blocked local file URL navigation. No workaround used; current visual layout/interaction not verified in a browser."
+  },
+  "scope": "Actual fixture code/export reliability. Separate fresh-model results in test/evals/fs-comparison/v13/README.md.",
+  "package": "passed",
+  "packageLog": "../reliability/package.log"
+}

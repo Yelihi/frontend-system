@@ -1,0 +1,12 @@
+{
+  "mode": "authored fixture only, no model calls",
+  "stage": "before correction",
+  "failed": [
+    {
+      "id": "S-complete-class-tokens",
+      "status": "failed",
+      "reason": "Partial class interpolation"
+    }
+  ],
+  "functionalPassed": true
+}

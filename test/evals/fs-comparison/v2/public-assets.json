@@ -1,0 +1,11 @@
+{
+  "package.json": "8645dbcb75b54940720d77a107cbf549a67931661a03885d7ce93345dbff99ce",
+  "package-lock.json": "7f094df62e4f1addb2cd14603df0c66729eb5abf4e9355ef65005e560153aedd",
+  "eslint.config.mjs": "3624563f6cccab80896a35c9461fc1ae30389554349374bf453a5667590b361c",
+  "next.config.mjs": "e53d0c8d3f690e8bd0b06f1ee16a5e871738fc56f9cd56c7790c906bd4d94505",
+  "jsconfig.json": "b5e74988174abcf48c53f7d9eed03d8690dba1471cca6edcaa44d2911bda7179",
+  "tsconfig.check.json": "5b031b39a40649e07621dd92ee31f1e6a92c7526ab0af89d607907243fef68c7",
+  "playwright.config.mjs": "fbf7e6f145aef04bf1b6d1e323d2c898b2444e29729aa10eb1759a33b0dab61f",
+  "tests/catalog.test.mjs": "2328b9e518bed3932077ef018f3b124b87089389edce4ec3ac9ed57725a182f6",
+  "e2e/catalog.spec.mjs": "a73d2188c368c419bd2addc7e8b50778f69531c1d4fde62d06d3f59ee35234f6"
+}

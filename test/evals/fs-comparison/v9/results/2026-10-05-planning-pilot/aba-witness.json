@@ -1,0 +1,26 @@
+{
+  "classification": "Exploratory semantic witness, not a preregistered score or an implementation test",
+  "trace": [
+    {
+      "event": "request starts",
+      "token": "A",
+      "generation": 0
+    },
+    {
+      "event": "replace",
+      "token": "B",
+      "generation": 1
+    },
+    {
+      "event": "replace",
+      "token": "A",
+      "generation": 2
+    }
+  ],
+  "tokenEqualityWouldAccept": true,
+  "identityGenerationWouldAccept": false,
+  "ownerContract": "A different token denotes changed identity. Each panel owns its own session.",
+  "planEvidence": "A token captured at dispatch and compared after each asynchronous boundary is sufficient for the supplied host rule",
+  "plan": "independent-fs-K1/plan/project/plan.md",
+  "limit": "The generated plan specifies a token-only sufficiency claim; no generated implementation exists or was executed. A later implementation could correct it, but that correction is absent from this plan."
+}

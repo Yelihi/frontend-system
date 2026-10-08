@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import {readFile,writeFile} from 'node:fs/promises';
+import {chromium} from '../test/fixtures/frontend/node_modules/playwright/index.mjs';
+if(!process.argv[2])throw Error('Supply local Mermaid 11.12.0 browser bundle; this verifier does not download or add a runtime dependency');
+const browser=await chromium.launch({headless:true});const page=await browser.newPage({viewport:{width:1560,height:1000}});
+await page.setContent('<html><body style="margin:20px"><div id="diagram"></div></body></html>');
+await page.addScriptTag({path:process.argv[2]});
+const source=await readFile(new URL('../docs/examples/frontend-flow.mmd',import.meta.url),'utf8');
+const svg=await page.evaluate(async source=>{mermaid.initialize({startOnLoad:false,securityLevel:'strict',theme:'neutral'});return (await mermaid.render('flow',source)).svg;},source);
+assert.ok(svg.includes('<svg'));await writeFile(new URL('../docs/examples/frontend-flow-mermaid.svg',import.meta.url),svg);
+await page.locator('#diagram').evaluate((el,svg)=>{el.innerHTML=svg;},svg);
+await page.screenshot({path:new URL('../docs/examples/frontend-flow-mermaid.png',import.meta.url).pathname,fullPage:true});
+await browser.close();console.log('Mermaid 11.12.0 rendered nested flow successfully');

@@ -1,0 +1,64 @@
+{
+  "modelCalls": 0,
+  "cases": [
+    {
+      "name": "flat",
+      "expectedFailures": [],
+      "failures": [],
+      "notRun": [],
+      "passed": true
+    },
+    {
+      "name": "layered",
+      "expectedFailures": [],
+      "failures": [],
+      "notRun": [],
+      "passed": true
+    },
+    {
+      "name": "stale-failure",
+      "expectedFailures": [
+        "late-failure"
+      ],
+      "failures": [
+        "late-failure"
+      ],
+      "notRun": [],
+      "passed": true
+    },
+    {
+      "name": "stale-success",
+      "expectedFailures": [
+        "late-success"
+      ],
+      "failures": [
+        "late-success"
+      ],
+      "notRun": [],
+      "passed": true
+    },
+    {
+      "name": "stale-quote-order",
+      "expectedFailures": [
+        "pending-quote-prevents-order"
+      ],
+      "failures": [
+        "pending-quote-prevents-order"
+      ],
+      "notRun": [],
+      "passed": true
+    },
+    {
+      "name": "stuck-order-lock",
+      "expectedFailures": [
+        "order-lock-failure-retry"
+      ],
+      "failures": [
+        "order-lock-failure-retry"
+      ],
+      "notRun": [],
+      "passed": true
+    }
+  ],
+  "passed": true
+}

@@ -1,0 +1,119 @@
+{
+  "reviewKind": "separate-workflow-and-document-adjudication",
+  "documents": {
+    "passed": true,
+    "project": "source/project.md:3",
+    "plan": "source/plan.md:3",
+    "rulesToChecks": "source/plan.md:9",
+    "finalEvidence": "source/plan.md:23",
+    "limits": "source/project.md:21",
+    "observation": "Structure, scope, responsibility-to-verification mapping and final check evidence provided. Nonimplemented payment/auth/persistence/inventory scope explicit; no hidden Q10 score asserted."
+  },
+  "H10": {
+    "passed": true,
+    "lastProductEdit": "item_23",
+    "lastTestEdit": "item_34",
+    "finalChecks": [
+      "item_37",
+      "item_38",
+      "item_39",
+      "item_40",
+      "item_41"
+    ],
+    "postCheckHashVerification": [
+      "item_42",
+      "item_43"
+    ],
+    "ownSourceHashesVerified": {
+      "src/checkout.js": "24b8a74cf853fef63e7f14c34b691e1cb2e5acfb48ba15df6d0efd8ee4ac708e",
+      "src/catalog.js": "1dc06e0cc60a9d61d76eb110955846c722bf79e6b81c5e52c5a9ad0648e726b6",
+      "src/handle-checkout.js": "908a4ee1040b1d67ce652080789dd02b0cafc3a8fa590953055d708a2e48f451",
+      "app/checkout.jsx": "e6f3550f913d149123911e1c9eb98fec23450afb2726d5a89dc83ffc3e61ca41",
+      "app/api/quote/route.js": "bdabb2b65f9d56a4aea2c6b04bfe4a50cd731b7ac0bca028a55d8ca8de4f3fa9",
+      "app/api/orders/route.js": "4bd9a466f889c2521fda17297ea02cc8d14380cafb0265488417b7902183bf7f",
+      "tests/checkout.test.mjs": "ccf0c81e2dd2b5eac031b2b90d1503cce41bfb35e37a7c9fd7f984ae75fdccfa",
+      "e2e/checkout.spec.mjs": "4692f3e04a14360f886263e98839a9fe802763fff5e510e2a1c5a906c04feb8b"
+    },
+    "combinedHashVerified": "34a001719fdac43097dbbd3cc2f1a508e4bca5b0b2144c326ae829f12ddff88e",
+    "externalSourceBeforeAfterMatchesFinal": true,
+    "protectedAssetsPassed": 9,
+    "checks": [
+      "lint",
+      "typecheck",
+      "test:unit",
+      "build",
+      "test:e2e"
+    ]
+  },
+  "R9": {
+    "passed": true,
+    "evidence": "Five final check exits and unit4/E2E4 counts match actual logs; hash42/43 verifies retained files. External functional failures adjudicated separately."
+  },
+  "conditionAdherence": {
+    "passed": true,
+    "arm": "plain",
+    "evidence": "Supplied project/rules and installed Next docs only; no FS tools/knowledge, other model, external service, install or commit. Port-specific development server process cleanup in own fixture."
+  },
+  "fullValidationAttempts": 2,
+  "attemptBudgetRespected": true,
+  "attemptEvidence": "Initial implementation12-14, focused unit failures18/20 corrected expectations and existing catalog output, stylesheet scoped23. All later edits were new E2E development, including wrong status/unnamed alert selectors and shell quoting failure27. Full final five37-41 passed; focused E2E repeats are not whole product repair cycles.",
+  "procedureObservations": [
+    "Initial E2E selected unrelated development alert; final tests use named Checkout error.",
+    "Source hash covers eight selected implementation/test files; all final product including stylesheet additionally bound by retained external source maps."
+  ],
+  "eligibleComplete": false,
+  "eligibilityEvidence": [
+    "Historical pre-correction: Original six exact-label failures are evaluator errors under global regrading hold, not confirmed accessibility violations.",
+    "Historical pre-correction: ../blind-review/f131fff24020/review.json Q90,R5/R6 fail: ready/pending equal-payload quote starvation and same-task double-submit produces two order POSTs. These genuine independent failures establish ineligibility regardless of locator correction.",
+    "Final: corrected 110/110; independentQ90; product R1-R8 fail; eligibleComplete=False. Details and original adjudication preserved."
+  ],
+  "qualitySource": "../blind-review/f131fff24020/review.json",
+  "evaluatorAdjudication": {
+    "status": "final",
+    "revision": "accessible-name-v2",
+    "originalPassed": 104,
+    "correctedPassed": 110,
+    "changedCases": [
+      {
+        "id": "default-and-updated-total",
+        "category": "browser",
+        "original": "failed",
+        "corrected": "passed"
+      },
+      {
+        "id": "late-success",
+        "category": "browser",
+        "original": "failed",
+        "corrected": "passed"
+      },
+      {
+        "id": "late-failure",
+        "category": "browser",
+        "original": "failed",
+        "corrected": "passed"
+      },
+      {
+        "id": "order-lock-failure-retry",
+        "category": "browser",
+        "original": "failed",
+        "corrected": "passed"
+      },
+      {
+        "id": "keyboard-order",
+        "category": "browser",
+        "original": "failed",
+        "corrected": "passed"
+      },
+      {
+        "id": "mobile-and-runtime",
+        "category": "browser",
+        "original": "failed",
+        "corrected": "passed"
+      }
+    ],
+    "sourceUnchanged": true,
+    "independentCorrectionReview": "../blind-review/f131fff24020/regrade-review.json",
+    "qualityAndRulesUnchanged": true,
+    "eligibleComplete": false
+  }
+}

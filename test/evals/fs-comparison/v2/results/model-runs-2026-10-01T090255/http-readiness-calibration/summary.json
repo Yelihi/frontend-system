@@ -1,0 +1,29 @@
+{
+  "passed": true,
+  "modelCalls": 0,
+  "cases": [
+    {
+      "name": "flat",
+      "passed": true,
+      "automatedPassed": 110,
+      "failures": []
+    },
+    {
+      "name": "http-500",
+      "passed": true,
+      "automatedPassed": 102,
+      "failures": [
+        "default-and-updated-total",
+        "late-success",
+        "late-failure",
+        "pending-quote-prevents-order",
+        "failed-quote-retry",
+        "order-lock-failure-retry",
+        "keyboard-order",
+        "mobile-and-runtime"
+      ]
+    }
+  ],
+  "correction": "A completed HTTP error response means server is reachable, not that product passed. Run unchanged browser assertions against it.",
+  "graderSha256": "66d351e2ce0413ed9c779aa470ffdc1f00d88334a1a41ad1ed5ea0bde177db91"
+}

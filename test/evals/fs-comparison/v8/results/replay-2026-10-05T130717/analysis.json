@@ -1,0 +1,43 @@
+{
+  "kind": "diagnostic-replay",
+  "rows": [
+    {
+      "arm": "informed",
+      "eligible": true,
+      "first": {
+        "satisfied": 97,
+        "total": 97
+      },
+      "final": {
+        "satisfied": 97,
+        "total": 97
+      },
+      "tokens": 470957,
+      "uncachedInputPlusOutput": 32173,
+      "seconds": 134.214,
+      "repairs": 0,
+      "mcpErrors": 0
+    },
+    {
+      "arm": "fs",
+      "eligible": true,
+      "first": {
+        "satisfied": 97,
+        "total": 97
+      },
+      "final": {
+        "satisfied": 97,
+        "total": 97
+      },
+      "tokens": 2100553,
+      "uncachedInputPlusOutput": 163401,
+      "seconds": 520.367,
+      "repairs": 0,
+      "mcpErrors": 3
+    }
+  ],
+  "modelCalls": 4,
+  "manifestHash": "d3d63cb7c72e375f298b68d84d56c60a4f7505f9ba3786d915348214c97bb8e4",
+  "limits": "Both arms receive the same successful variants code and public documents. Fresh plan records, fresh conversation. This diagnoses a discovered case, not held-out or full-journey superiority.",
+  "conclusion": "Both first grades passed; FS has higher cost. This observed diagnostic recovery does not isolate causality or demonstrate general superiority."
+}

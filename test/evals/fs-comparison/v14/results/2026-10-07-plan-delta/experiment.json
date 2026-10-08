@@ -1,0 +1,15 @@
+{
+  "sourceCohort": "test/evals/fs-comparison/v14/results/2026-10-07-grouped-records",
+  "changedRuntimeFiles": [
+    "skills/fs-plan/SKILL.md"
+  ],
+  "calls": 6,
+  "frozenBeforeCalls": true,
+  "initialArtifacts": "Exact prior analysis snapshots, plus pinned original main Git commit only. No previously generated plan is passed. The known .eval/analysis.md path correction is copied byte-for-byte and retains its failed audit.",
+  "accounting": "Only six new plan calls count. Imported analysis results preserve provenance and support existing recovery guards, not new usage.",
+  "hypothesis": "Retaining prior narrative analysis as a snapshot avoids unrequested report rewrites during planning while refreshing affected typed evidence and recording the delta in the requested plan.",
+  "quality": "Same owner contracts and scoped plan review as grouped-records. Retain unapproved status, citation/freshness guards, candidate judgment and known failure costs.",
+  "limits": "Sequential n=3 replay; no ordinary-model rerun here. This measures planning only and does not estimate whole-journey savings.",
+  "schedule": "First styles replay overlapped the single location-recovered grouped-records follow-up. Request repeat 1 then used the free slot. Subsequent repeats are sequential within each case, at most one request and one styles session active. Global model concurrency remains at most two. Scheduling differs from the full cohort; cache/provider effects are not controlled.",
+  "reproducibilityAmendment": "After the measured calls, pinned main Git bundles were archived from the source cohort and independently fetch-verified. replan.py now prefers these bundles so replay preparation survives temporary clone cleanup. Measured runtime, prompts, counters and inputs are unchanged."
+}

@@ -1,0 +1,271 @@
+{
+  "kind": "Post-hoc local integrity/routing diagnosis; not a held-out model evaluation",
+  "date": "2026-10-02T05:49:22.753Z",
+  "modelCalls": 0,
+  "experimentManifestHash": "05b2fe48fad251a9fed6a0429d32e3e9dd8a4467f74a2a2586dad422e94a3358",
+  "currentIndexMatchesExperiment": true,
+  "integrity": {
+    "sourceCount": 479,
+    "referenceCount": 69,
+    "changed": [],
+    "deleted": [],
+    "uncataloged": [],
+    "affectedReferences": [],
+    "unpublishedCount": 0,
+    "sourceReviewCounts": {
+      "on-review": 0,
+      "approved": 0,
+      "changes-requested": 0,
+      "stale": 0,
+      "legacy-unreviewed": 479
+    },
+    "retrievalChecks": {
+      "passed": 7,
+      "total": 7
+    },
+    "triggerChecks": {
+      "passed": 135,
+      "total": 135
+    },
+    "sampleSourceReviewGate": {
+      "id": "frontend-fundamentals-code-quality-coupling-allow-duplication",
+      "result": "Source review required before sync: frontend-fundamentals-code-quality-coupling-allow-duplication"
+    }
+  },
+  "routing": {
+    "directCount": 64,
+    "semanticOnlyCount": 46,
+    "localDiscoveryProbes": [
+      {
+        "input": {
+          "query": "shared domain policy injected load send"
+        },
+        "ids": [
+          "web-api-network-streams-and-urls",
+          "web-api-retired-features"
+        ]
+      },
+      {
+        "input": {
+          "query": "응집도 결합도 중복 변경 경계",
+          "domains": [
+            "architecture"
+          ]
+        },
+        "ids": [
+          "code-quality-change-boundaries"
+        ]
+      },
+      {
+        "input": {
+          "domains": [
+            "code-quality"
+          ]
+        },
+        "ids": []
+      },
+      {
+        "input": {
+          "domains": [
+            "architecture"
+          ]
+        },
+        "ids": [
+          "code-quality-context-and-contracts",
+          "code-quality-change-boundaries",
+          "react-compound-component-boundaries",
+          "nextjs-server-client-boundary",
+          "micro-frontends-adoption-tradeoffs"
+        ]
+      }
+    ],
+    "diagnosticInspection": {
+      "source": "FS policy-change completed snapshot; explicit host interpretation added for diagnosis only",
+      "staticOnlyIds": [],
+      "withHostInterpretationIds": [
+        "code-quality-change-boundaries"
+      ]
+    }
+  },
+  "observedModelRouting": [
+    {
+      "stage": "initial",
+      "log": "gpt-6-sol-0-fs/initial/0/model/events.jsonl",
+      "judgmentSaves": 0,
+      "routing": [
+        {
+          "tool": "discover_knowledge_triggers",
+          "input": {
+            "query": "JavaScript promise asynchronous state error handling validation shared domain policy",
+            "technologies": [
+              "JavaScript"
+            ]
+          },
+          "ids": [
+            "javascript-iteration-promises-and-resources",
+            "javascript-dates-and-internationalization",
+            "javascript-functions-objects-and-scope",
+            "javascript-language-and-host-boundaries",
+            "javascript-regexp-pattern-structure",
+            "javascript-syntax-control-and-templates",
+            "javascript-values-equality-and-collections"
+          ],
+          "checklistCount": null
+        },
+        {
+          "tool": "inspect_code_knowledge",
+          "input": {
+            "files": [
+              "policy.mjs",
+              "checkout.mjs"
+            ],
+            "interpretations": [
+              {
+                "path": "policy.mjs",
+                "line": 1,
+                "signal": "domain policy",
+                "evidence": "export function quote() { throw new Error(\"Not implemented\"); }",
+                "interpretation": "The quote policy is not implemented."
+              },
+              {
+                "path": "checkout.mjs",
+                "line": 1,
+                "signal": "async state",
+                "evidence": "export function createCheckout() { throw new Error(\"Not implemented\"); }",
+                "interpretation": "The controller and state transitions are not implemented."
+              }
+            ]
+          },
+          "error": "Unknown semantic trigger: domain policy"
+        },
+        {
+          "tool": "inspect_code_knowledge",
+          "input": {
+            "files": [
+              "policy.mjs",
+              "checkout.mjs"
+            ],
+            "interpretations": [
+              {
+                "path": "checkout.mjs",
+                "line": 1,
+                "signal": "javascript-iteration-promises-and-resources",
+                "evidence": "export function createCheckout() { throw new Error(\"Not implemented\"); }",
+                "interpretation": "Controller must connect asynchronous load/send completion and failures; currently absent."
+              }
+            ]
+          },
+          "ids": [
+            "javascript-iteration-promises-and-resources"
+          ],
+          "checklistCount": 1
+        }
+      ]
+    },
+    {
+      "stage": "policy-change",
+      "log": "gpt-6-sol-0-fs/policy-change/0/model/events.jsonl",
+      "judgmentSaves": 0,
+      "routing": [
+        {
+          "tool": "discover_knowledge_triggers",
+          "input": {
+            "query": "JavaScript integer cents arithmetic floor percentage discount and asynchronous checkout state with injected load and send",
+            "technologies": [
+              "javascript"
+            ]
+          },
+          "ids": [
+            "javascript-dates-and-internationalization",
+            "javascript-functions-objects-and-scope",
+            "javascript-iteration-promises-and-resources",
+            "javascript-language-and-host-boundaries",
+            "javascript-regexp-pattern-structure",
+            "javascript-syntax-control-and-templates",
+            "javascript-values-equality-and-collections",
+            "web-api-network-streams-and-urls",
+            "web-api-permissions-identity-and-injection"
+          ],
+          "checklistCount": null
+        },
+        {
+          "tool": "inspect_code_knowledge",
+          "input": {
+            "files": [
+              "policy.mjs",
+              "checkout.mjs"
+            ],
+            "technologies": [
+              "javascript"
+            ],
+            "interpretations": [
+              {
+                "path": "policy.mjs",
+                "line": 9,
+                "signal": "javascript-values-equality-and-collections",
+                "evidence": "quote validates Number.isInteger(subtotalCents) before arithmetic and applies member/delivery thresholds.",
+                "interpretation": "The new percentages and thresholds should remain numeric operations on validated cents; the checkout controller can keep delegating to quote."
+              }
+            ]
+          },
+          "error": "Interpretation evidence does not match cited lines"
+        },
+        {
+          "tool": "inspect_code_knowledge",
+          "input": {
+            "files": [
+              "policy.mjs",
+              "checkout.mjs"
+            ],
+            "technologies": [
+              "javascript"
+            ]
+          },
+          "ids": [],
+          "checklistCount": 0
+        }
+      ]
+    },
+    {
+      "stage": "transport-change",
+      "log": "gpt-6-sol-0-fs/transport-change/0/model/events.jsonl",
+      "judgmentSaves": 0,
+      "routing": [
+        {
+          "tool": "discover_knowledge_triggers",
+          "input": {
+            "query": "injected asynchronous load send Promise failure retry state domain policy shared between preview and submit",
+            "domains": [
+              "javascript",
+              "code-quality"
+            ]
+          },
+          "ids": [
+            "javascript-iteration-promises-and-resources"
+          ],
+          "checklistCount": null
+        },
+        {
+          "tool": "inspect_code_knowledge",
+          "input": {
+            "files": [
+              "checkout.mjs",
+              "policy.mjs",
+              "checkout.test.mjs",
+              "policy.test.mjs"
+            ]
+          },
+          "ids": [],
+          "checklistCount": 0
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "Hash and mapping checks do not establish faithful preservation of every original claim.",
+    "legacy-unreviewed means no new structured source-review record; older prose review notes may exist.",
+    "Known development checks and post-hoc probes do not measure held-out retrieval accuracy.",
+    "Missing dedicated judgment records do not prove knowledge was ignored: direct shell reads and plan notes also occurred.",
+    "The original experiment provided fixed requirements and no user answer loop; tradeoff elicitation was not tested."
+  ]
+}

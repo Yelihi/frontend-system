@@ -1,0 +1,7 @@
+{
+  "status": "blocked-before-comparison",
+  "reason": "Restricted execution/oracle isolation unavailable",
+  "manifestHash": "499961e32797686814ac0f675cccdf13ab214add9568779f8aaea201d134aed4",
+  "journeys": [],
+  "usage": null
+}

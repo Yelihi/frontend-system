@@ -1,0 +1,71 @@
+{
+  "reviewKind": "separate-workflow-and-document-adjudication",
+  "documents": {
+    "passed": true,
+    "scope": "B plain has no project.md/plan.md obligation. Final message records checks and untested async scenarios.",
+    "finalEvidence": "model/final.md and events.jsonl"
+  },
+  "H10": {
+    "passed": false,
+    "currentSourceValidationPassed": true,
+    "lastProductEdit": "item_16",
+    "lastTestEdit": "item_25",
+    "finalChecks": [
+      "item_22 (first four scripts)",
+      "item_25 (E2E after test-only fixes)"
+    ],
+    "ownSourceHashesVerified": {
+      "src/checkout.js": "54a7a64c9be17b9a01d19f74be3818093867c5d1f5ca55df993e4c25ec985318",
+      "app/checkout.jsx": "1077b663a63928a7584717cc6d1a05b31169dd4d2680704318130c462ca45b2d",
+      "app/api/quote/route.js": "91d76fe8cc21407eb48a9693ae794f9cb0d106892843f5ef7babf10617a70b4d",
+      "app/api/orders/route.js": "dad69267c29b6d357b584cefa9b685dca0063d21af017ce360d148ccadad6ba5",
+      "tests/checkout.test.mjs": "987d5f5fa6498feafe2a418aa8af121f97baad0327af7371d542fa898560bbb2",
+      "e2e/catalog.spec.mjs": "eb1567a80edb05a48213ba4a8207d710baacfe69042374033ac29c365c1cf23e"
+    },
+    "externalSourceBeforeAfterMatchesFinal": true,
+    "protectedAssetsPassed": 8,
+    "protectedFailure": "e2e/catalog.spec.mjs rewritten and expanded; frozen byte-preservation fails. Independent AST comparison confirms original heading/description assertions intact; R8 semantic preservation passes.",
+    "checks": [
+      "npm run lint",
+      "npm run typecheck",
+      "npm run test:unit",
+      "npm run build",
+      "npm run test:e2e"
+    ]
+  },
+  "R9": {
+    "passed": false,
+    "evidence": "Final message asserts 360px overflow verification. Only candidate browser file checks overflow at default viewport; no setViewportSize, test.use viewport, or configured360px appears in retained source/trace. Actual external360px pass does not retroactively substantiate author test claim. Final hashes do exist at item25 before the subsequent git error. Unverified async races/retry are honestly disclosed."
+  },
+  "conditionAdherence": {
+    "passed": true,
+    "arm": "plain",
+    "evidence": "Supplied project/rules only; no FS tools/knowledge, additional models/install/services/commits observed. Protected-file failure handled separately under H10."
+  },
+  "fullValidationAttempts": 2,
+  "attemptBudgetRespected": true,
+  "attemptEvidence": "Initial product9-11 fails lint14 due literal escaped quotes; product syntax repair16. Remaining retries17/19/20/21/23/25 only repair/add tests, with no further product changes.",
+  "procedureObservations": [
+    "Native file write escaping failures retained.",
+    "After final test-only edit25, E2E2passed and six file hashes emitted; subsequent gitconfig denied gives exit128, not E2E failure.",
+    "Four non-E2E scripts passed22 after last product edit; only affected E2E rerun23/25."
+  ],
+  "eligibleComplete": false,
+  "eligibilityEvidence": [
+    "Historical pre-correction: Original109/110: protected E2E hash changed. IndependentQ100 but R6/H8 fail: same-task two submits initiate two order POSTs.",
+    "Historical pre-correction: Unsupported author360px-test claim separately fails R9. Fixed Q6.2 covers unlock/input retention/retry, which pass; duplicate acquisition remains a mandatory failure and is not offset by Q100.",
+    "Final: corrected 109/110; independentQ100; product R1-R8 fail; eligibleComplete=False. Details and original adjudication preserved."
+  ],
+  "qualitySource": "../blind-review/3cc34ba3eebe/review.json",
+  "evaluatorAdjudication": {
+    "status": "final",
+    "revision": "accessible-name-v2",
+    "originalPassed": 109,
+    "correctedPassed": 109,
+    "changedCases": [],
+    "sourceUnchanged": true,
+    "independentCorrectionReview": "../blind-review/3cc34ba3eebe/regrade-review.json",
+    "qualityAndRulesUnchanged": true,
+    "eligibleComplete": false
+  }
+}

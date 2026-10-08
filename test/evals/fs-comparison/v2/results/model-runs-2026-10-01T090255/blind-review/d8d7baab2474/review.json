@@ -1,0 +1,576 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "d8d7baab2474",
+  "reviewer": {
+    "identity": "/root/calibration_review",
+    "session": "independent-blind-review-d8d7baab2474-2026-10-01",
+    "implementationParticipation": false,
+    "conditionMappingRead": false,
+    "additionalModels": false
+  },
+  "criteria": {
+    "Q1": {
+      "score": 10,
+      "items": [
+        {
+          "id": "Q1.1",
+          "criterion": "React/HTTP 없는 실행",
+          "score": 5,
+          "reason": "calculateQuote는 React/HTTP import 없이 input/catalog 인자로 실행된다.",
+          "sourceLocations": [
+            "source/src/checkout.js:10",
+            "source/tests/checkout.test.mjs:20"
+          ],
+          "executionEvidence": [
+            "probes/candidate-unit.stdout.log",
+            "external-evidence.json"
+          ],
+          "limitation": "교정된 외부 브라우저 근거와 실제 코드/기존 독립 probe를 구분해 판단했다. 리뷰어는 브라우저/AX tree/서버를 새로 실행하지 않았다. 직접 POST는 Next HTTP E2E가 아니며 JSX probe는 완전한 React renderer가 아니다. 전체 접근 이름 교정 검사가 완료됐다. 동일 110개 사례의 교정 결과와 불변 소스 해시를 확인했고 원 결과는 external-evidence-original.json에 보존했다. getByLabel exact 탐색 오류를 계산된 접근 이름 위반으로 간주하지 않는다."
+        },
+        {
+          "id": "Q1.2",
+          "criterion": "상품·재고 데이터를 바꿔 실행 가능",
+          "score": 5,
+          "reason": "catalog 배열의 상품 가격·재고를 사용한다. 후보의 X가격50123 및 평가자의 경계 상품 주입이 실행됐다.",
+          "sourceLocations": [
+            "source/src/checkout.js:36",
+            "source/src/checkout.js:39",
+            "source/tests/checkout.test.mjs:27"
+          ],
+          "executionEvidence": [
+            "probes/candidate-unit.stdout.log",
+            "external-evidence.json"
+          ],
+          "limitation": "교정된 외부 브라우저 근거와 실제 코드/기존 독립 probe를 구분해 판단했다. 리뷰어는 브라우저/AX tree/서버를 새로 실행하지 않았다. 직접 POST는 Next HTTP E2E가 아니며 JSX probe는 완전한 React renderer가 아니다. 전체 접근 이름 교정 검사가 완료됐다. 동일 110개 사례의 교정 결과와 불변 소스 해시를 확인했고 원 결과는 external-evidence-original.json에 보존했다. getByLabel exact 탐색 오류를 계산된 접근 이름 위반으로 간주하지 않는다."
+        }
+      ]
+    },
+    "Q2": {
+      "score": 10,
+      "items": [
+        {
+          "id": "Q2.1",
+          "criterion": "견적·주문이 같은 계산 규칙 사용",
+          "score": 5,
+          "reason": "quote/orders POST가 같은 calculateQuote와 loadCatalog를 호출한다.",
+          "sourceLocations": [
+            "source/app/api/quote/route.js:7",
+            "source/app/api/orders/route.js:7"
+          ],
+          "executionEvidence": [],
+          "limitation": "교정된 외부 브라우저 근거와 실제 코드/기존 독립 probe를 구분해 판단했다. 리뷰어는 브라우저/AX tree/서버를 새로 실행하지 않았다. 직접 POST는 Next HTTP E2E가 아니며 JSX probe는 완전한 React renderer가 아니다. 전체 접근 이름 교정 검사가 완료됐다. 동일 110개 사례의 교정 결과와 불변 소스 해시를 확인했고 원 결과는 external-evidence-original.json에 보존했다. getByLabel exact 탐색 오류를 계산된 접근 이름 위반으로 간주하지 않는다."
+        },
+        {
+          "id": "Q2.2",
+          "criterion": "할인·배송 판단을 다른 경로에 재구현하지 않음",
+          "score": 5,
+          "reason": "쿠폰·할인·배송은 checkout.js에만 정의되며 UI는 currentQuote.total을 표시한다.",
+          "sourceLocations": [
+            "source/src/checkout.js:48",
+            "source/src/checkout.js:50",
+            "source/app/checkout.jsx:106"
+          ],
+          "executionEvidence": [],
+          "limitation": "교정된 외부 브라우저 근거와 실제 코드/기존 독립 probe를 구분해 판단했다. 리뷰어는 브라우저/AX tree/서버를 새로 실행하지 않았다. 직접 POST는 Next HTTP E2E가 아니며 JSX probe는 완전한 React renderer가 아니다. 전체 접근 이름 교정 검사가 완료됐다. 동일 110개 사례의 교정 결과와 불변 소스 해시를 확인했고 원 결과는 external-evidence-original.json에 보존했다. getByLabel exact 탐색 오류를 계산된 접근 이름 위반으로 간주하지 않는다."
+        }
+      ]
+    },
+    "Q3": {
+      "score": 10,
+      "items": [
+        {
+          "id": "Q3.1",
+          "criterion": "업무 코드가 UI·프레임워크·구체 I/O에 의존하지 않음",
+          "score": 5,
+          "reason": "계산 모듈은 순수 입력/catalog에 의존하며 프레임워크/네트워크 의존이 없다.",
+          "sourceLocations": [
+            "source/src/checkout.js:10",
+            "source/src/checkout.js:36"
+          ],
+          "executionEvidence": [],
+          "limitation": "교정된 외부 브라우저 근거와 실제 코드/기존 독립 probe를 구분해 판단했다. 리뷰어는 브라우저/AX tree/서버를 새로 실행하지 않았다. 직접 POST는 Next HTTP E2E가 아니며 JSX probe는 완전한 React renderer가 아니다. 전체 접근 이름 교정 검사가 완료됐다. 동일 110개 사례의 교정 결과와 불변 소스 해시를 확인했고 원 결과는 external-evidence-original.json에 보존했다. getByLabel exact 탐색 오류를 계산된 접근 이름 위반으로 간주하지 않는다."
+        },
+        {
+          "id": "Q3.2",
+          "criterion": "I/O 연결이 바깥 경계에 있음",
+          "score": 5,
+          "reason": "route가 JSON과 상품 조회를 연결한다. catalog.js만 교체해 두 POST가 동작했다.",
+          "sourceLocations": [
+            "source/app/api/quote/route.js:6",
+            "source/app/api/orders/route.js:7"
+          ],
+          "executionEvidence": [],
+          "limitation": "교정된 외부 브라우저 근거와 실제 코드/기존 독립 probe를 구분해 판단했다. 리뷰어는 브라우저/AX tree/서버를 새로 실행하지 않았다. 직접 POST는 Next HTTP E2E가 아니며 JSX probe는 완전한 React renderer가 아니다. 전체 접근 이름 교정 검사가 완료됐다. 동일 110개 사례의 교정 결과와 불변 소스 해시를 확인했고 원 결과는 external-evidence-original.json에 보존했다. getByLabel exact 탐색 오류를 계산된 접근 이름 위반으로 간주하지 않는다."
+        }
+      ]
+    },
+    "Q4": {
+      "score": 10,
+      "items": [
+        {
+          "id": "Q4.1",
+          "criterion": "UI가 가격 정책·서버 신뢰 판단을 소유하지 않음",
+          "score": 5,
+          "reason": "UI quoteInput은 입력 직렬화, currentQuote는 표시만 맡고 최종 신뢰 가격/재고는 서버 계산이 담당한다.",
+          "sourceLocations": [
+            "source/app/checkout.jsx:18",
+            "source/app/checkout.jsx:106",
+            "source/src/checkout.js:36"
+          ],
+          "executionEvidence": [],
+          "limitation": "교정된 외부 브라우저 근거와 실제 코드/기존 독립 probe를 구분해 판단했다. 리뷰어는 브라우저/AX tree/서버를 새로 실행하지 않았다. 직접 POST는 Next HTTP E2E가 아니며 JSX probe는 완전한 React renderer가 아니다. 전체 접근 이름 교정 검사가 완료됐다. 동일 110개 사례의 교정 결과와 불변 소스 해시를 확인했고 원 결과는 external-evidence-original.json에 보존했다. getByLabel exact 탐색 오류를 계산된 접근 이름 위반으로 간주하지 않는다."
+        },
+        {
+          "id": "Q4.2",
+          "criterion": "전송 코드와 업무 결정의 책임이 식별 가능",
+          "score": 5,
+          "reason": "UI postJson/effect/placeOrder는 원격 전송과 수명, route는 HTTP, calculateQuote는 정책이다. 작은 helper의 파일 위치를 감점하지 않았다.",
+          "sourceLocations": [
+            "source/app/checkout.jsx:7",
+            "source/app/checkout.jsx:40",
+            "source/app/checkout.jsx:67",
+            "source/app/api/orders/route.js:7"
+          ],
+          "executionEvidence": [],
+          "limitation": "교정된 외부 브라우저 근거와 실제 코드/기존 독립 probe를 구분해 판단했다. 리뷰어는 브라우저/AX tree/서버를 새로 실행하지 않았다. 직접 POST는 Next HTTP E2E가 아니며 JSX probe는 완전한 React renderer가 아니다. 전체 접근 이름 교정 검사가 완료됐다. 동일 110개 사례의 교정 결과와 불변 소스 해시를 확인했고 원 결과는 external-evidence-original.json에 보존했다. getByLabel exact 탐색 오류를 계산된 접근 이름 위반으로 간주하지 않는다."
+        }
+      ]
+    },
+    "Q5": {
+      "score": 10,
+      "items": [
+        {
+          "id": "Q5.1",
+          "criterion": "불필요한 전역 장바구니·파생 합계 복제 없음",
+          "score": 5,
+          "reason": "상태는 component 소유이고 total 복제나 전역 장바구니가 없다.",
+          "sourceLocations": [
+            "source/app/checkout.jsx:28",
+            "source/app/checkout.jsx:31",
+            "source/app/checkout.jsx:106"
+          ],
+          "executionEvidence": [
+            "probes/lifecycle-evidence.json",
+            "external-evidence.json"
+          ],
+          "limitation": "교정된 외부 브라우저 근거와 실제 코드/기존 독립 probe를 구분해 판단했다. 리뷰어는 브라우저/AX tree/서버를 새로 실행하지 않았다. 직접 POST는 Next HTTP E2E가 아니며 JSX probe는 완전한 React renderer가 아니다. 전체 접근 이름 교정 검사가 완료됐다. 동일 110개 사례의 교정 결과와 불변 소스 해시를 확인했고 원 결과는 external-evidence-original.json에 보존했다. getByLabel exact 탐색 오류를 계산된 접근 이름 위반으로 간주하지 않는다."
+        },
+        {
+          "id": "Q5.2",
+          "criterion": "원격 견적·입력·오류의 수명과 소유자가 명확함",
+          "score": 5,
+          "reason": "견적 key와 최신 request id를 관리하며 매 수량 handler가 새 객체를 만든다. useMemo request 객체도 effect dependency라 같은 inputKey라도 새 요청이 실행되어 동등입력 ready/pending4경로가 복구된다.",
+          "sourceLocations": [
+            "source/app/checkout.jsx:37",
+            "source/app/checkout.jsx:54",
+            "source/app/checkout.jsx:56",
+            "source/app/checkout.jsx:62"
+          ],
+          "executionEvidence": [
+            "probes/lifecycle-evidence.json",
+            "external-evidence.json"
+          ],
+          "limitation": "교정된 외부 브라우저 근거와 실제 코드/기존 독립 probe를 구분해 판단했다. 리뷰어는 브라우저/AX tree/서버를 새로 실행하지 않았다. 직접 POST는 Next HTTP E2E가 아니며 JSX probe는 완전한 React renderer가 아니다. 전체 접근 이름 교정 검사가 완료됐다. 동일 110개 사례의 교정 결과와 불변 소스 해시를 확인했고 원 결과는 external-evidence-original.json에 보존했다. getByLabel exact 탐색 오류를 계산된 접근 이름 위반으로 간주하지 않는다."
+        }
+      ]
+    },
+    "Q6": {
+      "score": 10,
+      "items": [
+        {
+          "id": "Q6.1",
+          "criterion": "오래된 성공과 실패 모두 무시",
+          "score": 5,
+          "reason": "resolve와 catch 양쪽이 requestId를 검사하고 cleanup은 id를 올려 이전 응답을 무효화한다.",
+          "sourceLocations": [
+            "source/app/checkout.jsx:46",
+            "source/app/checkout.jsx:48",
+            "source/app/checkout.jsx:53"
+          ],
+          "executionEvidence": [
+            "probes/lifecycle-evidence.json",
+            "external-evidence.json"
+          ],
+          "limitation": "교정된 외부 브라우저 근거와 실제 코드/기존 독립 probe를 구분해 판단했다. 리뷰어는 브라우저/AX tree/서버를 새로 실행하지 않았다. 직접 POST는 Next HTTP E2E가 아니며 JSX probe는 완전한 React renderer가 아니다. 전체 접근 이름 교정 검사가 완료됐다. 동일 110개 사례의 교정 결과와 불변 소스 해시를 확인했고 원 결과는 external-evidence-original.json에 보존했다. getByLabel exact 탐색 오류를 계산된 접근 이름 위반으로 간주하지 않는다."
+        },
+        {
+          "id": "Q6.2",
+          "criterion": "잠금 해제·입력 보존·재시도가 일관됨",
+          "score": 5,
+          "reason": "orderLock은 전송 전에 동기 설정되고 finally에서 ref/화면 잠금을 해제한다. 입력은 유지되며 quote retryVersion과 새주문/성공 오류제거가 있다. 실제 같은-task2submit은 POST1건이었다.",
+          "sourceLocations": [
+            "source/app/checkout.jsx:69",
+            "source/app/checkout.jsx:75",
+            "source/app/checkout.jsx:79",
+            "source/app/checkout.jsx:112"
+          ],
+          "executionEvidence": [
+            "probes/lifecycle-evidence.json",
+            "external-evidence.json"
+          ],
+          "limitation": "교정된 외부 브라우저 근거와 실제 코드/기존 독립 probe를 구분해 판단했다. 리뷰어는 브라우저/AX tree/서버를 새로 실행하지 않았다. 직접 POST는 Next HTTP E2E가 아니며 JSX probe는 완전한 React renderer가 아니다. 전체 접근 이름 교정 검사가 완료됐다. 동일 110개 사례의 교정 결과와 불변 소스 해시를 확인했고 원 결과는 external-evidence-original.json에 보존했다. getByLabel exact 탐색 오류를 계산된 접근 이름 위반으로 간주하지 않는다."
+        }
+      ]
+    },
+    "Q7": {
+      "score": 10,
+      "items": [
+        {
+          "id": "Q7.1",
+          "criterion": "이름·자료형이 단위와 의미를 드러냄",
+          "score": 5,
+          "reason": "명시적 수량/배송 상수와 subtotal/discountedSubtotal, quoteRequestId/orderLock 이름이 단위·역할을 나타낸다.",
+          "sourceLocations": [
+            "source/src/checkout.js:1",
+            "source/src/checkout.js:48",
+            "source/app/checkout.jsx:35"
+          ],
+          "executionEvidence": [],
+          "limitation": "교정된 외부 브라우저 근거와 실제 코드/기존 독립 probe를 구분해 판단했다. 리뷰어는 브라우저/AX tree/서버를 새로 실행하지 않았다. 직접 POST는 Next HTTP E2E가 아니며 JSX probe는 완전한 React renderer가 아니다. 전체 접근 이름 교정 검사가 완료됐다. 동일 110개 사례의 교정 결과와 불변 소스 해시를 확인했고 원 결과는 external-evidence-original.json에 보존했다. getByLabel exact 탐색 오류를 계산된 접근 이름 위반으로 간주하지 않는다."
+        },
+        {
+          "id": "Q7.2",
+          "criterion": "검증·정상·오류 흐름을 불필요한 간접 호출 없이 추적 가능",
+          "score": 5,
+          "reason": "형식/쿠폰을 먼저 확인하고 재고 실패409와 금액 계산을 구분한다. route와 UI try/catch/finally를 직접 추적할 수 있다.",
+          "sourceLocations": [
+            "source/src/checkout.js:25",
+            "source/src/checkout.js:42",
+            "source/src/checkout.js:46",
+            "source/app/checkout.jsx:73"
+          ],
+          "executionEvidence": [],
+          "limitation": "교정된 외부 브라우저 근거와 실제 코드/기존 독립 probe를 구분해 판단했다. 리뷰어는 브라우저/AX tree/서버를 새로 실행하지 않았다. 직접 POST는 Next HTTP E2E가 아니며 JSX probe는 완전한 React renderer가 아니다. 전체 접근 이름 교정 검사가 완료됐다. 동일 110개 사례의 교정 결과와 불변 소스 해시를 확인했고 원 결과는 external-evidence-original.json에 보존했다. getByLabel exact 탐색 오류를 계산된 접근 이름 위반으로 간주하지 않는다."
+        }
+      ]
+    },
+    "Q8": {
+      "score": 10,
+      "items": [
+        {
+          "id": "Q8.1",
+          "criterion": "사용하지 않는 확장점·서비스·추상화 없음",
+          "score": 5,
+          "reason": "현재 요구에 필요한 순수 정책/catalog/route와 실제 사용 UI helper만 있고 미사용 확장 구조가 없다.",
+          "sourceLocations": [
+            "source/src/checkout.js:10",
+            "source/app/api/orders/route.js:1",
+            "source/app/checkout.jsx:7"
+          ],
+          "executionEvidence": [],
+          "limitation": "교정된 외부 브라우저 근거와 실제 코드/기존 독립 probe를 구분해 판단했다. 리뷰어는 브라우저/AX tree/서버를 새로 실행하지 않았다. 직접 POST는 Next HTTP E2E가 아니며 JSX probe는 완전한 React renderer가 아니다. 전체 접근 이름 교정 검사가 완료됐다. 동일 110개 사례의 교정 결과와 불변 소스 해시를 확인했고 원 결과는 external-evidence-original.json에 보존했다. getByLabel exact 탐색 오류를 계산된 접근 이름 위반으로 간주하지 않는다."
+        },
+        {
+          "id": "Q8.2",
+          "criterion": "새 의존성·계층마다 현재 요구에서 확인되는 역할이 있음",
+          "score": 5,
+          "reason": "quoteInput/postJson/useMemo는 현재 직렬화·전송·effect request identity 역할이 있고 package/lockfile은 보존됐다.",
+          "sourceLocations": [
+            "source/app/checkout.jsx:18",
+            "source/app/checkout.jsx:37",
+            "source/package.json:13"
+          ],
+          "executionEvidence": [],
+          "limitation": "교정된 외부 브라우저 근거와 실제 코드/기존 독립 probe를 구분해 판단했다. 리뷰어는 브라우저/AX tree/서버를 새로 실행하지 않았다. 직접 POST는 Next HTTP E2E가 아니며 JSX probe는 완전한 React renderer가 아니다. 전체 접근 이름 교정 검사가 완료됐다. 동일 110개 사례의 교정 결과와 불변 소스 해시를 확인했고 원 결과는 external-evidence-original.json에 보존했다. getByLabel exact 탐색 오류를 계산된 접근 이름 위반으로 간주하지 않는다."
+        }
+      ]
+    },
+    "Q9": {
+      "score": 10,
+      "items": [
+        {
+          "id": "Q9.1",
+          "criterion": "실제 업무 로직이 경계·오류 계약으로 검증됨",
+          "score": 5,
+          "reason": "후보 계산 테스트는 기본/할인/배송, X상품, 형식·쿠폰·중복·수량 오류 및 유효성 우선400/재고409를 실제 함수로 검증한다.",
+          "sourceLocations": [
+            "source/tests/checkout.test.mjs:20",
+            "source/tests/checkout.test.mjs:34"
+          ],
+          "executionEvidence": [
+            "probes/candidate-unit.stdout.log",
+            "external-evidence.json"
+          ],
+          "limitation": "후보 자체 함수/POST/e2e 소스와 단위 재실행·첨부 e2e exit0을 근거로 판정했다. 리뷰어 probe를 후보 coverage에 넣지 않았다."
+        },
+        {
+          "id": "Q9.2",
+          "criterion": "경계 통합·비동기 전이가 구현 자체 mock 없이 검증됨",
+          "score": 5,
+          "reason": "실제 두 POST 변조/응답/JSON/재고 검사가 있고 e2e는 실제 UI의 외부 응답만 제어해 오래된 성공/실패, quote retry, 주문 실패·잠금·키보드를 확인한다.",
+          "sourceLocations": [
+            "source/tests/checkout.test.mjs:51",
+            "source/tests/checkout.test.mjs:69",
+            "source/e2e/checkout.spec.mjs:14",
+            "source/e2e/checkout.spec.mjs:46",
+            "source/e2e/checkout.spec.mjs:80"
+          ],
+          "executionEvidence": [
+            "probes/candidate-unit.stdout.log",
+            "external-evidence.json"
+          ],
+          "limitation": "후보 자체 함수/POST/e2e 소스와 단위 재실행·첨부 e2e exit0을 근거로 판정했다. 리뷰어 probe를 후보 coverage에 넣지 않았다."
+        }
+      ]
+    },
+    "Q10": {
+      "score": 10,
+      "items": [
+        {
+          "id": "Q10.1",
+          "criterion": "배송 기준 변경이 정책 소유 위치에 한정됨",
+          "score": 5,
+          "reason": "FREE_SHIPPING_THRESHOLD 상수 한 위치만50000→60000으로 변경해 두 POST의 total53400과 원/변경 경계6개를 확인했다.",
+          "sourceLocations": [
+            "source/src/checkout.js:3",
+            "source/src/checkout.js:50",
+            "source/app/api/orders/route.js:7"
+          ],
+          "executionEvidence": [
+            "probes/shipping-policy/change.diff",
+            "probes/shipping-policy/evidence.json",
+            "probes/baseline/evidence.json"
+          ],
+          "limitation": "교정된 외부 브라우저 근거와 실제 코드/기존 독립 probe를 구분해 판단했다. 리뷰어는 브라우저/AX tree/서버를 새로 실행하지 않았다. 직접 POST는 Next HTTP E2E가 아니며 JSX probe는 완전한 React renderer가 아니다. 전체 접근 이름 교정 검사가 완료됐다. 동일 110개 사례의 교정 결과와 불변 소스 해시를 확인했고 원 결과는 external-evidence-original.json에 보존했다. getByLabel exact 탐색 오류를 계산된 접근 이름 위반으로 간주하지 않는다."
+        },
+        {
+          "id": "Q10.2",
+          "criterion": "상품 조회 대체가 UI·순수 계산의 재작성 없이 가능",
+          "score": 5,
+          "reason": "catalog.js만 메모리/지연/실패로 변경했다. 메모리/지연 두 POST는 total79200, 실패 두 POST는400 Catalog unavailable이며 UI/계산 재작성은 없었다.",
+          "sourceLocations": [
+            "source/src/catalog.js:1",
+            "source/app/api/quote/route.js:7",
+            "source/app/api/quote/route.js:10",
+            "source/app/api/orders/route.js:7"
+          ],
+          "executionEvidence": [
+            "probes/catalog-memory/change.diff",
+            "probes/catalog-memory/evidence.json",
+            "probes/catalog-delay/change.diff",
+            "probes/catalog-delay/evidence.json",
+            "probes/catalog-failure/change.diff",
+            "probes/catalog-failure/evidence.json"
+          ],
+          "limitation": "교정된 외부 브라우저 근거와 실제 코드/기존 독립 probe를 구분해 판단했다. 리뷰어는 브라우저/AX tree/서버를 새로 실행하지 않았다. 직접 POST는 Next HTTP E2E가 아니며 JSX probe는 완전한 React renderer가 아니다. 전체 접근 이름 교정 검사가 완료됐다. 동일 110개 사례의 교정 결과와 불변 소스 해시를 확인했고 원 결과는 external-evidence-original.json에 보존했다. getByLabel exact 탐색 오류를 계산된 접근 이름 위반으로 간주하지 않는다."
+        }
+      ]
+    }
+  },
+  "rules": {
+    "R1": {
+      "status": "pass",
+      "criterion": "가격·할인·배송·유효성 판단의 독립 실행",
+      "reason": "독립 순수 계산과 대체 상품 실행을 확인했다.",
+      "evidence": [
+        "source/src/checkout.js:10",
+        "source/tests/checkout.test.mjs:27",
+        "probes/summary.json"
+      ]
+    },
+    "R2": {
+      "status": "pass",
+      "criterion": "계산 규칙 단일 소유",
+      "reason": "두 endpoint의 실제 경로가 같은 정책을 공유한다.",
+      "evidence": [
+        "source/app/api/quote/route.js:7",
+        "source/app/api/orders/route.js:7",
+        "probes/summary.json"
+      ]
+    },
+    "R3": {
+      "status": "pass",
+      "criterion": "서버 가격·재고 재검증",
+      "reason": "서버 상품 price/stock을 신뢰하고 조작된 클라이언트 금액은 무시한다.",
+      "evidence": [
+        "source/src/checkout.js:36",
+        "source/tests/checkout.test.mjs:51",
+        "probes/summary.json"
+      ]
+    },
+    "R4": {
+      "status": "pass",
+      "criterion": "책임·의존 방향 구분",
+      "reason": "UI 원격조정과 HTTP 경계, 순수 정책의 역할과 의존 방향이 구분된다.",
+      "evidence": [
+        "source/app/checkout.jsx:7",
+        "source/app/checkout.jsx:40",
+        "source/app/api/quote/route.js:7",
+        "source/src/checkout.js:10",
+        "probes/summary.json"
+      ]
+    },
+    "R5": {
+      "status": "pass",
+      "criterion": "상태 소유와 입력 식별",
+      "reason": "remote key/id와 form 상태 소유가 명확하며 새 request 객체 dependency로 같은 payload 입력도 최신 요청으로 복구된다.",
+      "evidence": [
+        "source/app/checkout.jsx:37",
+        "source/app/checkout.jsx:54",
+        "source/app/checkout.jsx:62",
+        "probes/summary.json",
+        "probes/lifecycle-evidence.json",
+        "probes/label-inspection.json"
+      ]
+    },
+    "R6": {
+      "status": "pass",
+      "criterion": "중복·오래된 응답·복구·접근성",
+      "reason": "양방향 idguard와 동기 orderLock/finally가 있으며 실제 동등입력4경로·동기2submit에서 최신ready와 주문1건을 확인했다. 전체 접근 이름 교정 검사가 완료됐다. 동일 110개 사례의 교정 결과와 불변 소스 해시를 확인했고 원 결과는 external-evidence-original.json에 보존했다. getByLabel exact 탐색 오류를 계산된 접근 이름 위반으로 간주하지 않는다.",
+      "evidence": [
+        "source/app/checkout.jsx:46",
+        "source/app/checkout.jsx:48",
+        "source/app/checkout.jsx:69",
+        "source/app/checkout.jsx:79",
+        "source/app/checkout.jsx:95",
+        "probes/summary.json",
+        "probes/lifecycle-evidence.json",
+        "probes/label-inspection.json"
+      ]
+    },
+    "R7": {
+      "status": "pass",
+      "criterion": "현재 요구에 필요한 구조",
+      "reason": "각 helper/상수는 실제 요청/정책에 사용되고 불필요한 확장 계층이 없다.",
+      "evidence": [
+        "source/src/checkout.js:1",
+        "source/app/checkout.jsx:7",
+        "source/app/checkout.jsx:18",
+        "probes/summary.json"
+      ]
+    },
+    "R8": {
+      "status": "pass",
+      "criterion": "기존 검사 보존 및 업무 계약 실제 테스트",
+      "reason": "기존 공개 테스트/보호9개 해시가 보존되고 후보의 실제 계산/HTTP/비동기 회귀 테스트가 있다. 단위5개 재실행 통과.",
+      "evidence": [
+        "source/tests/checkout.test.mjs:20",
+        "source/tests/checkout.test.mjs:51",
+        "source/e2e/checkout.spec.mjs:14",
+        "probes/summary.json"
+      ]
+    }
+  },
+  "sourceHashes": {
+    "app/api/orders/route.js": "4963873e515f5df3761234f54a95ebdc2835c2718229039796379cabf08f7649",
+    "app/api/quote/route.js": "b3ce321e743c3a7bc8dcd1dfb4e4080e68ba06e38ac411f4e496ca379dbffe00",
+    "app/checkout.jsx": "c7d2a5f797c00b45a1ba77dab096c3408c1bb37d84f97dcc3b98ca79a70121c8",
+    "app/layout.jsx": "8e5bd10067458aabd9faa12758742379b73c4f73a9502fca9cfa01545b64483c",
+    "app/page.jsx": "dba6b4167f656d98c97a8aaa9446b7607c7b588f3c92e60c98257cfdf48bffd6",
+    "checkout.contract.json": "1fca04104f4a8b12f88b8fdfcdbac26fda530b3618ad5583feabfde4f7e056ae",
+    "e2e/catalog.spec.mjs": "a73d2188c368c419bd2addc7e8b50778f69531c1d4fde62d06d3f59ee35234f6",
+    "e2e/checkout.spec.mjs": "fea4cb649e39c3691f6c80c477ce15d8dcc37f3356b84b04069d8bdbc2ff7074",
+    "eslint.config.mjs": "3624563f6cccab80896a35c9461fc1ae30389554349374bf453a5667590b361c",
+    "jsconfig.json": "b5e74988174abcf48c53f7d9eed03d8690dba1471cca6edcaa44d2911bda7179",
+    "next.config.mjs": "e53d0c8d3f690e8bd0b06f1ee16a5e871738fc56f9cd56c7790c906bd4d94505",
+    "package-lock.json": "7f094df62e4f1addb2cd14603df0c66729eb5abf4e9355ef65005e560153aedd",
+    "package.json": "8645dbcb75b54940720d77a107cbf549a67931661a03885d7ce93345dbff99ce",
+    "playwright.config.mjs": "fbf7e6f145aef04bf1b6d1e323d2c898b2444e29729aa10eb1759a33b0dab61f",
+    "src/catalog.js": "523ad6b97e81c57f895fed40752f458cd8cc754f92ea65654f1d59da9b2337ff",
+    "src/checkout.js": "7df53cf1566cf4defa05bb126187a90b01a147d3d645b0fea6551cb849211e79",
+    "tests/catalog.test.mjs": "2328b9e518bed3932077ef018f3b124b87089389edce4ec3ac9ed57725a182f6",
+    "tests/checkout.test.mjs": "5dab1137bb61ac39502763194ab147a32350311069b4163df3da53345954bdd7",
+    "tsconfig.check.json": "5b031b39a40649e07621dd92ee31f1e6a92c7526ab0af89d607907243fef68c7"
+  },
+  "qualityScore": 100,
+  "unknownItems": [],
+  "findings": [],
+  "functionalFailures": [],
+  "scope": {
+    "read": "익명 후보 d8d7baab2474, 공통 공개 명세/정답지, 이전 리뷰어 probe 코드만 읽음.",
+    "sourceEdited": false,
+    "probeCopiesEdited": true,
+    "browserLaunched": false,
+    "webUsed": false,
+    "packagesInstalled": false,
+    "commitsCreated": false,
+    "traceAndDocumentAdjudication": "R9/H10 completion chronology deferred to separate adjudication"
+  },
+  "limitations": [
+    "의미 Q 점수와 필수 R 보장은 실제 코드/호출 경로에서 판정했으며 원 고정 자동 기능 점수와 별도로 보존했다.",
+    "교정된 외부 브라우저 근거와 실제 코드/기존 독립 probe를 구분해 판단했다. 리뷰어는 브라우저/AX tree/서버를 새로 실행하지 않았다. 직접 POST는 Next HTTP E2E가 아니며 JSX probe는 완전한 React renderer가 아니다. 전체 접근 이름 교정 검사가 완료됐다. 동일 110개 사례의 교정 결과와 불변 소스 해시를 확인했고 원 결과는 external-evidence-original.json에 보존했다. getByLabel exact 탐색 오류를 계산된 접근 이름 위반으로 간주하지 않는다.",
+    "Q10 POST는 실제 export 직접 호출이며 실행 중인 Next HTTP 서버 E2E가 아니다. JSX 검사는 실제 handler/effect를 실행하는 결정적 hook 스케줄링으로 전체 React/브라우저 renderer가 아니다.",
+    "후보 단위 테스트는 재실행했고 후보 e2e는 소스와 첨부 exit0을 확인했다. 리뷰어가 서버/브라우저를 추가 실행하지 않았다.",
+    "Q9는 후보 작성 검사만으로 판정했다. 평가자 Q10/JSX probe와 외부 자동 사례는 후보 coverage가 아니다.",
+    "엄격한 정적 타입 보장 및 R9/H10 마지막 수정 이후 완료 chronology·저자 문서는 별도 판정이다.",
+    "외부 접근 이름 검사는 교정 완료 상태다. 원 외부 결과·원 리뷰·기존 probe는 보존했으며 평가기 수정으로 제품 자체 테스트 coverage를 늘려 평가하지 않았다."
+  ],
+  "executionEvidence": {
+    "probeSummary": "probes/summary.json",
+    "probeRunner": "probes/run-probes.py",
+    "probeAssertions": "probes/check-probe.mjs",
+    "candidateUnitLog": "probes/candidate-unit.stdout.log",
+    "attached": "external-evidence.json",
+    "unitTests": {
+      "passed": 5,
+      "failed": 0
+    },
+    "probeModesPassed": 5,
+    "actualPostCallsPassed": 10,
+    "directPolicyBoundaryChecksPassed": 6,
+    "originalSourceUnchanged": true,
+    "attachedHashesMatch": true,
+    "lifecycleHarness": "probes/lifecycle-harness.mjs",
+    "lifecycleEvidence": "probes/lifecycle-evidence.json",
+    "lifecycleScenarios": 5,
+    "labelInspection": "probes/label-inspection.json"
+  },
+  "functionalEvidence": {
+    "source": "external-evidence.json",
+    "passed": 110,
+    "failed": 0,
+    "unexecuted": 0,
+    "categories": {
+      "protected-assets": 9,
+      "domain": 33,
+      "api": 60,
+      "browser": 8
+    },
+    "pageErrors": [],
+    "qualification": "전체 접근 이름 교정 후 고정 110개 사례는 110개 통과, 0개 실패다. 원 결과와 원 리뷰는 별도 파일에 보존했다. 기존 독립 수명/동시 제출 및 Q10 증거는 불변 소스에 유효하며 별도 필수 결함을 자동 110개 분모에 합산하지 않는다. Q 점수와 R 판정은 변경하지 않았다. R9/H10 완료 순서·문서는 별도 판정이다.",
+    "originalSource": "external-evidence-original.json",
+    "accessibleNameCorrection": "../accessible-name-correction.json",
+    "correctionPending": false,
+    "fixedCaseCount": 110,
+    "statusChanges": [
+      {
+        "category": "browser",
+        "id": "default-and-updated-total",
+        "rule": "H1",
+        "before": "failed",
+        "after": "passed",
+        "statusChanged": true,
+        "evidenceChanged": true
+      },
+      {
+        "category": "browser",
+        "id": "order-lock-failure-retry",
+        "rule": "H8",
+        "before": "failed",
+        "after": "passed",
+        "statusChanged": true,
+        "evidenceChanged": true
+      }
+    ],
+    "supplementalFailures": 0
+  },
+  "rubricClarifications": [
+    "전체 접근 이름 교정 검사가 완료됐다. 동일 110개 사례의 교정 결과와 불변 소스 해시를 확인했고 원 결과는 external-evidence-original.json에 보존했다. getByLabel exact 탐색 오류를 계산된 접근 이름 위반으로 간주하지 않는다.",
+    "동적 주문 버튼 텍스트는 고정 aria-label Place order를 유지하므로 접근 이름 변경 위반이 아니다.",
+    "useMemo의 request 객체가 effect dependency에 포함돼 normalized key만 비교하는 정체 결함이 발생하지 않는다."
+  ],
+  "originalFunctionalFailures": {
+    "source": "review-original.json",
+    "externalEvidence": "external-evidence-original.json",
+    "count": 2,
+    "preservedUnchanged": true
+  },
+  "externalRegrade": {
+    "reviewed": true,
+    "sourceHashesVerified": true,
+    "criteriaUnchanged": true,
+    "report": "regrade-review.json",
+    "source": "external-evidence.json",
+    "correctionPending": false
+  }
+}

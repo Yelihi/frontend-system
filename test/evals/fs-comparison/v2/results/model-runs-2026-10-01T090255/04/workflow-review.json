@@ -1,0 +1,99 @@
+{
+  "reviewKind": "separate-workflow-and-document-adjudication",
+  "documents": {
+    "passed": true,
+    "project": "source/project.md:3",
+    "plan": "source/plan.md:3",
+    "rulesToChecks": "source/plan.md:12",
+    "finalEvidence": "model/final.md and source/.frontend-system/plans/checkout/execution.json",
+    "limits": "source/project.md:15 and model/final.md",
+    "observation": "Native FS plan/context preceded implementation; root project.md/plan.md duplicated later although duplicates were not required. Both costs remain included."
+  },
+  "H10": {
+    "passed": true,
+    "lastProductEdit": "item_69",
+    "lastTestEdit": "item_49",
+    "finalChecks": "item_70",
+    "postCheckReview": "item_73",
+    "fsFinalCheckId": "5f19be9b-83ab-4712-ba16-cdf284dbb610",
+    "fsSourceHash": "59275aaceefe7737bc0f7af1526e5e1dc22a8d18cc34276e7982c8ea71f09e6a",
+    "ownSourceHashesVerified": {
+      ".gitignore": "53429a314b0070c0d9e957ddccf84cb0f5d3b914a694acc12776828380ab2d6f",
+      "AGENTS.md": "63f2c50380ed6303237cce215ce27af1d620d094c215e28d1b1538a3c070e3bb",
+      "TASK.md": "47ac2bbaab12335573c01c84c3a14fe5c6dad43614c4832e8d08235cfd678045",
+      "app/api/orders/route.js": "6babbdfd3f877d8760e9fcf5d11baaa49101b5711440b5ee1c4d590d26a0547c",
+      "app/api/quote/route.js": "5c57add6a73dc9ffd7a659c5aadce19cb5a00d5d39c082bb0e54b139d9c5b71d",
+      "app/checkout.jsx": "c20c10af1fddf06cbd73db3104ade2554a5411dab3799ef42e97bada98ede062",
+      "app/layout.jsx": "8e5bd10067458aabd9faa12758742379b73c4f73a9502fca9cfa01545b64483c",
+      "app/page.jsx": "57ce7b06995d10c8f974c4670b666c7c01ea64c3e4f9d85105ab14d9d9cf569d",
+      "checkout.contract.json": "1fca04104f4a8b12f88b8fdfcdbac26fda530b3618ad5583feabfde4f7e056ae",
+      "common-rules.md": "e71158712eaf1e3dcc0f9452cd20019d40beaa3fe9b886005d6db3b13e971f68",
+      "e2e/catalog.spec.mjs": "a73d2188c368c419bd2addc7e8b50778f69531c1d4fde62d06d3f59ee35234f6",
+      "e2e/checkout.spec.mjs": "dd5bd3d5fd3d21c41f9f7f59b94c231faeb99e9adabad45aae97a5c2acb6fefa",
+      "eslint.config.mjs": "3624563f6cccab80896a35c9461fc1ae30389554349374bf453a5667590b361c",
+      "frontend-quality.md": "a2670348378de9113ef2e61c445acceeaaf8c12171cd0802f2d6fc8946ee2957",
+      "jsconfig.json": "b5e74988174abcf48c53f7d9eed03d8690dba1471cca6edcaa44d2911bda7179",
+      "mandatory-rules/common/review.md": "e71158712eaf1e3dcc0f9452cd20019d40beaa3fe9b886005d6db3b13e971f68",
+      "mandatory-rules/nextjs/core.md": "d9614c63030aa71f160bd1bc443c4c017718d73d40c0699423607d9941459d52",
+      "mandatory-rules/react/core.md": "f820abcdd9f20281118906868f322d83495943a9bdb0a835865d5727c3d22cdb",
+      "mandatory-rules/vue/core.md": "ebcf6d6e28fd0c4e7166113f7901345b4ff819f7d5dd91d7722c376151d3ecc6",
+      "next.config.mjs": "e53d0c8d3f690e8bd0b06f1ee16a5e871738fc56f9cd56c7790c906bd4d94505",
+      "package-lock.json": "7f094df62e4f1addb2cd14603df0c66729eb5abf4e9355ef65005e560153aedd",
+      "package.json": "8645dbcb75b54940720d77a107cbf549a67931661a03885d7ce93345dbff99ce",
+      "plan.md": "4d0d91d1c1e9eac77ab990e4776974d8581072fa6507bb33d37731f753ff088c",
+      "playwright.config.mjs": "fbf7e6f145aef04bf1b6d1e323d2c898b2444e29729aa10eb1759a33b0dab61f",
+      "project.md": "a3b973f84017f21caf1d3605b813f3fc0d94b22126b41abd2a9d3cdc6f4a8c69",
+      "src/catalog.js": "523ad6b97e81c57f895fed40752f458cd8cc754f92ea65654f1d59da9b2337ff",
+      "src/checkout.js": "abe4756398fe5e1266f2cb840d07007b3a87ff260baed4778cc21168204ae3fe",
+      "tests/catalog.test.mjs": "2328b9e518bed3932077ef018f3b124b87089389edce4ec3ac9ed57725a182f6",
+      "tests/checkout.test.mjs": "48b24686b921a02ef70be2be9b6a5b20823b24933cc3db5d4a4899d445296f50",
+      "tests/routes.test.mjs": "6443a798a97da32897faccf17500cb66616296ad1a373a70f8cd57ffa11f0c4e",
+      "tsconfig.check.json": "5b031b39a40649e07621dd92ee31f1e6a92c7526ab0af89d607907243fef68c7"
+    },
+    "externalSourceBeforeAfterMatchesFinal": true,
+    "protectedAssetsPassed": 9,
+    "checks": [
+      "lint",
+      "typecheck",
+      "test:unit",
+      "test:e2e",
+      "build"
+    ]
+  },
+  "conditionAdherence": {
+    "passed": true,
+    "arm": "fs",
+    "evidence": "Used supplied procedural skills/references, installed Next documentation, native plan/policy/attempt/check/review/completion tools. No learned/source knowledge, extra models, installations, web or services in trace."
+  },
+  "fullValidationAttempts": 3,
+  "attemptBudgetRespected": true,
+  "attemptEvidence": "Conservative count: policy-blocked full issue check item54, corrected policy issue check item61, delivery after final display-string repair item70. Earlier unit/E2E development excluded by public TASK; repeated item74 did not change product or repair another failure.",
+  "procedureObservations": [
+    "Required boolean/schema and pinned command mistakes were rejected and repaired within the same approved scope.",
+    "Native apply_patch unavailable in common sandbox; used shell writes. Malformed display bytes and one shell quoting error repaired during local development.",
+    "Own checks and native FS completion passed, but external H8 case failed because Place order accessible name changes during pending order. This is not evidence that the underlying ref/disabled lock itself is broken.",
+    "Final text mirror was recovered verbatim from provider JSONL after CLI relative -o write failure; product and usage unchanged."
+  ],
+  "eligibleComplete": false,
+  "eligibilityEvidence": [
+    "Historical pre-correction: checks/grade/score.json: browser/order-lock-failure-retry failed (109/110); public accessible name contract violated during pending order.",
+    "Final: corrected 109/110; independentQ100; product R1-R8 fail; eligibleComplete=False. Details and original adjudication preserved."
+  ],
+  "qualitySource": "../blind-review/efc6de5536e1/review.json",
+  "R9": {
+    "passed": true,
+    "evidence": "Explicit field normalized from existing H10/documents adjudication: current-source final checks and retained hashes support reported commands/results. Final message leaves hidden Q10 U and does not claim definitive100. Scope-limited absence-of-observed-failures is not independent grading.",
+    "schemaNote": "Earlier workflow record contained this reasoning under H10/documents; no product, score or eligibility changed."
+  },
+  "evaluatorAdjudication": {
+    "status": "final",
+    "revision": "accessible-name-v2",
+    "originalPassed": 109,
+    "correctedPassed": 109,
+    "changedCases": [],
+    "sourceUnchanged": true,
+    "independentCorrectionReview": "../blind-review/efc6de5536e1/regrade-review.json",
+    "qualityAndRulesUnchanged": true,
+    "eligibleComplete": false
+  }
+}

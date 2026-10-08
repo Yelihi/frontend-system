@@ -1,0 +1,29 @@
+{
+  "checkedAt": "2026-09-30T00:53:18.362Z",
+  "node": "v24.12.0",
+  "platform": "darwin",
+  "modelCalls": 0,
+  "checks": {
+    "localHttp": {
+      "passed": true
+    },
+    "chromium": {
+      "passed": true
+    },
+    "oracleIsolation": {
+      "passed": false,
+      "status": "not-configured",
+      "message": "A separate cwd and instructions are insufficient. Verify read-denial in the actual implementation/reviewer execution environment before model calls."
+    },
+    "fullCalibration": {
+      "passed": false,
+      "status": "not-complete",
+      "message": "Browser and independent architecture-review/change-probe calibration are required in addition to domain/API/controller checks."
+    },
+    "frozenManifest": {
+      "passed": false,
+      "status": "not-frozen"
+    }
+  },
+  "readyForModelRuns": false
+}

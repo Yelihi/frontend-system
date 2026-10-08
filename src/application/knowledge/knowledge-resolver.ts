@@ -1,7 +1,7 @@
 import { readFile, readdir } from "node:fs/promises";
 import { basename, join, relative } from "node:path";
 
-import { readReferenceIndex, searchReferenceIndex } from "./reference-index.js";
+import { readReferenceIndex, searchReferenceIndex, terms } from "./reference-index.js";
 
 import type {
   KnowledgeGap,
@@ -10,11 +10,7 @@ import type {
   WorkRequest,
 } from "../../domain/types.js";
 
-const ignoredWords = new Set(["the", "and", "for", "with", "this", "that", "현재", "기능", "분석", "개선"]);
-
-export function terms(value: string): string[] {
-  return [...new Set(value.toLowerCase().split(/[^\p{L}\p{N}]+/u).filter((word) => word.length > 1 && !ignoredWords.has(word)))];
-}
+export { terms } from "./reference-index.js";
 
 async function markdownFiles(root: string): Promise<string[]> {
   const found: string[] = [];
@@ -52,7 +48,7 @@ export class KnowledgeResolver {
 
     const index = await readReferenceIndex(this.root);
     if (index) {
-      for (const entry of searchReferenceIndex(index, request.raw, profile.technologies.map((item) => item.name))) {
+      for (const entry of searchReferenceIndex(index, [request.raw, ...(request.constraints ?? []), ...(request.observations ?? []).map((item) => item.observation)].join(" "), profile.technologies.map((item) => item.name))) {
         applicable.push({ ...entry, path: join(this.root, entry.path) });
       }
     }

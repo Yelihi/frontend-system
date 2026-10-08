@@ -1,0 +1,575 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "e6d4fd93cbf9",
+  "reviewer": {
+    "identity": "/root/calibration_review",
+    "session": "independent-blind-review-e6d4fd93cbf9-2026-10-01",
+    "implementationParticipation": false,
+    "conditionMappingRead": false,
+    "additionalModels": false
+  },
+  "criteria": {
+    "Q1": {
+      "score": 10,
+      "items": [
+        {
+          "id": "Q1.1",
+          "criterion": "React/HTTP 없는 실행",
+          "score": 5,
+          "reason": "calculateQuote와 오류 helper는 외부 import/I/O 없이 입력과 catalog만 처리한다. 후보 테스트가 함수를 직접 실행한다.",
+          "sourceLocations": [
+            "source/src/checkout.js:2",
+            "source/src/checkout.js:6",
+            "source/tests/checkout.test.mjs:9"
+          ],
+          "executionEvidence": [
+            "probes/candidate-unit.stdout.log"
+          ],
+          "limitation": "고정 공개 기준의 의미 판정이며 브라우저 증거는 첨부된 source hash 일치 결과다."
+        },
+        {
+          "id": "Q1.2",
+          "criterion": "상품·재고 데이터를 바꿔 실행 가능",
+          "score": 5,
+          "reason": "catalog 인자로 상품 가격·재고를 조회한다. 후보 테스트의 가격11원 및 X/Y 경계 데이터가 실제 함수를 실행한다.",
+          "sourceLocations": [
+            "source/src/checkout.js:27",
+            "source/src/checkout.js:29",
+            "source/tests/checkout.test.mjs:13",
+            "source/tests/checkout.test.mjs:33"
+          ],
+          "executionEvidence": [
+            "probes/candidate-unit.stdout.log",
+            "probes/shipping-policy/evidence.json"
+          ],
+          "limitation": "고정 공개 기준의 의미 판정이며 브라우저 증거는 첨부된 source hash 일치 결과다."
+        }
+      ]
+    },
+    "Q2": {
+      "score": 10,
+      "items": [
+        {
+          "id": "Q2.1",
+          "criterion": "견적·주문이 같은 계산 규칙 사용",
+          "score": 5,
+          "reason": "두 route는 quoteResponse를 공유하고 그 함수가 한 calculateQuote를 호출한다. order 플래그는 응답 봉투만 바꾼다.",
+          "sourceLocations": [
+            "source/app/api/quote/route.js:3",
+            "source/app/api/orders/route.js:3",
+            "source/src/checkout-request.js:12"
+          ],
+          "executionEvidence": [
+            "probes/shipping-policy/evidence.json"
+          ],
+          "limitation": "고정 공개 기준의 의미 판정이며 브라우저 증거는 첨부된 source hash 일치 결과다."
+        },
+        {
+          "id": "Q2.2",
+          "criterion": "할인·배송 판단을 다른 경로에 재구현하지 않음",
+          "score": 5,
+          "reason": "할인·배송 규칙은 checkout.js에만 있으며 UI는 서버 total을 표시한다. 수량 요청 직렬화는 가격 정책 복제가 아니다.",
+          "sourceLocations": [
+            "source/src/checkout.js:33",
+            "source/src/checkout.js:35",
+            "source/app/checkout.jsx:31",
+            "source/app/checkout.jsx:109"
+          ],
+          "executionEvidence": [],
+          "limitation": "고정 공개 기준의 의미 판정이며 브라우저 증거는 첨부된 source hash 일치 결과다."
+        }
+      ]
+    },
+    "Q3": {
+      "score": 10,
+      "items": [
+        {
+          "id": "Q3.1",
+          "criterion": "업무 코드가 UI·프레임워크·구체 I/O에 의존하지 않음",
+          "score": 5,
+          "reason": "업무 계산 파일은 외부 import가 없고 input/catalog 배열 계약만 사용한다.",
+          "sourceLocations": [
+            "source/src/checkout.js:1",
+            "source/src/checkout.js:6",
+            "source/src/checkout.js:27"
+          ],
+          "executionEvidence": [],
+          "limitation": "고정 공개 기준의 의미 판정이며 브라우저 증거는 첨부된 source hash 일치 결과다."
+        },
+        {
+          "id": "Q3.2",
+          "criterion": "I/O 연결이 바깥 경계에 있음",
+          "score": 5,
+          "reason": "HTTP adapter가 loadCatalog를 연결하며 fetch는 UI의 send helper에서 수행된다. 계산이 adapter에 의존하지 않는다.",
+          "sourceLocations": [
+            "source/src/checkout-request.js:2",
+            "source/src/checkout-request.js:12",
+            "source/app/checkout.jsx:7"
+          ],
+          "executionEvidence": [
+            "probes/catalog-memory/evidence.json",
+            "probes/catalog-delay/evidence.json",
+            "probes/catalog-failure/evidence.json"
+          ],
+          "limitation": "고정 공개 기준의 의미 판정이며 브라우저 증거는 첨부된 source hash 일치 결과다."
+        }
+      ]
+    },
+    "Q4": {
+      "score": 10,
+      "items": [
+        {
+          "id": "Q4.1",
+          "criterion": "UI가 가격 정책·서버 신뢰 판단을 소유하지 않음",
+          "score": 5,
+          "reason": "UI는 입력·버전·원격 응답·표시를 담당하고 신뢰 가격/재고/할인은 서버 함수가 판정한다.",
+          "sourceLocations": [
+            "source/app/checkout.jsx:31",
+            "source/app/checkout.jsx:77",
+            "source/app/checkout.jsx:109",
+            "source/src/checkout.js:27",
+            "source/src/checkout.js:33"
+          ],
+          "executionEvidence": [],
+          "limitation": "고정 공개 기준의 의미 판정이며 브라우저 증거는 첨부된 source hash 일치 결과다."
+        },
+        {
+          "id": "Q4.2",
+          "criterion": "전송 코드와 업무 결정의 책임이 식별 가능",
+          "score": 5,
+          "reason": "send의 전송/응답 변환, effect의 견적 수명, placeOrder의 잠금, HTTP adapter의 status 변환, calculateQuote의 업무가 실제 호출로 식별된다.",
+          "sourceLocations": [
+            "source/app/checkout.jsx:7",
+            "source/app/checkout.jsx:39",
+            "source/app/checkout.jsx:79",
+            "source/src/checkout-request.js:4",
+            "source/src/checkout.js:6"
+          ],
+          "executionEvidence": [],
+          "limitation": "고정 공개 기준의 의미 판정이며 브라우저 증거는 첨부된 source hash 일치 결과다."
+        }
+      ]
+    },
+    "Q5": {
+      "score": 10,
+      "items": [
+        {
+          "id": "Q5.1",
+          "criterion": "불필요한 전역 장바구니·파생 합계 복제 없음",
+          "score": 5,
+          "reason": "컴포넌트별 폼/quoteState만 소유하고 total은 직접 표시한다. version ref와 state의 version은 원격 응답 식별 역할이 있으며 파생 합계 복제가 아니다.",
+          "sourceLocations": [
+            "source/app/checkout.jsx:20",
+            "source/app/checkout.jsx:24",
+            "source/app/checkout.jsx:28",
+            "source/app/checkout.jsx:77",
+            "source/app/checkout.jsx:109"
+          ],
+          "executionEvidence": [],
+          "limitation": "고정 공개 기준의 의미 판정이며 브라우저 증거는 첨부된 source hash 일치 결과다."
+        },
+        {
+          "id": "Q5.2",
+          "criterion": "원격 견적·입력·오류의 수명과 소유자가 명확함",
+          "score": 5,
+          "reason": "변경은 version을 즉시 증가시켜 이전 견적을 무효화하고 effect는 raw 수량/쿠폰/retry를 추적한다. B=0→빈칸→0에도 새 요청이 생기며 ready는 현재 version 일치를 요구한다.",
+          "sourceLocations": [
+            "source/app/checkout.jsx:40",
+            "source/app/checkout.jsx:60",
+            "source/app/checkout.jsx:62",
+            "source/app/checkout.jsx:77"
+          ],
+          "executionEvidence": [
+            "probes/normalized-input-inspection.json",
+            "external-evidence.json:browser/pending-quote-prevents-order"
+          ],
+          "limitation": "고정 공개 기준의 의미 판정이며 브라우저 증거는 첨부된 source hash 일치 결과다."
+        }
+      ]
+    },
+    "Q6": {
+      "score": 10,
+      "items": [
+        {
+          "id": "Q6.1",
+          "criterion": "오래된 성공과 실패 모두 무시",
+          "score": 5,
+          "reason": "성공·실패가 모두 version 일치와 비중단 signal을 확인한다. cleanup은 abort를 호출하며 input 변경은 version을 증가시킨다.",
+          "sourceLocations": [
+            "source/app/checkout.jsx:45",
+            "source/app/checkout.jsx:51",
+            "source/app/checkout.jsx:57",
+            "source/app/checkout.jsx:63"
+          ],
+          "executionEvidence": [
+            "external-evidence.json:browser/late-success",
+            "external-evidence.json:browser/late-failure"
+          ],
+          "limitation": "고정 공개 기준의 의미 판정이며 브라우저 증거는 첨부된 source hash 일치 결과다."
+        },
+        {
+          "id": "Q6.2",
+          "criterion": "잠금 해제·입력 보존·재시도가 일관됨",
+          "score": 5,
+          "reason": "orderLock은 전송 전에 잠그고 finally에서 ref와 placing 상태를 해제한다. 실패는 입력을 바꾸지 않으며 성공은 오류를 지운다. quote retry는 version과 retry를 함께 변경한다.",
+          "sourceLocations": [
+            "source/app/checkout.jsx:70",
+            "source/app/checkout.jsx:81",
+            "source/app/checkout.jsx:88",
+            "source/app/checkout.jsx:94",
+            "source/app/checkout.jsx:96",
+            "source/app/checkout.jsx:103",
+            "source/app/checkout.jsx:113"
+          ],
+          "executionEvidence": [
+            "external-evidence.json:browser/order-lock-failure-retry",
+            "external-evidence.json:browser/failed-quote-retry"
+          ],
+          "limitation": "고정 공개 기준의 의미 판정이며 브라우저 증거는 첨부된 source hash 일치 결과다."
+        }
+      ]
+    },
+    "Q7": {
+      "score": 10,
+      "items": [
+        {
+          "id": "Q7.1",
+          "criterion": "이름·자료형이 단위와 의미를 드러냄",
+          "score": 5,
+          "reason": "정수 KRW 주석과 subtotal/discounted/shipping, quantityA/B, quoteState.version, orderLock이 단위·역할을 드러낸다.",
+          "sourceLocations": [
+            "source/src/checkout.js:1",
+            "source/src/checkout.js:17",
+            "source/src/checkout.js:34",
+            "source/app/checkout.jsx:20",
+            "source/app/checkout.jsx:24",
+            "source/app/checkout.jsx:29"
+          ],
+          "executionEvidence": [],
+          "limitation": "명명·검증·단위 의미에 근거하며 엄격한 정적 타입이나 선호 포맷을 추가 기준으로 삼지 않았다."
+        },
+        {
+          "id": "Q7.2",
+          "criterion": "검증·정상·오류 흐름을 불필요한 간접 호출 없이 추적 가능",
+          "score": 5,
+          "reason": "계산 입력/라인 가드와 상품 검증·계산은 직선적이다. 공유 HTTP adapter와 UI의 promise 양분기/주문 finally도 직접 추적된다.",
+          "sourceLocations": [
+            "source/src/checkout.js:7",
+            "source/src/checkout.js:19",
+            "source/src/checkout-request.js:6",
+            "source/src/checkout-request.js:14",
+            "source/app/checkout.jsx:43",
+            "source/app/checkout.jsx:86"
+          ],
+          "executionEvidence": [],
+          "limitation": "명명·검증·단위 의미에 근거하며 엄격한 정적 타입이나 선호 포맷을 추가 기준으로 삼지 않았다."
+        }
+      ]
+    },
+    "Q8": {
+      "score": 10,
+      "items": [
+        {
+          "id": "Q8.1",
+          "criterion": "사용하지 않는 확장점·서비스·추상화 없음",
+          "score": 5,
+          "reason": "quoteResponse는 두 route가, send는 견적/주문이 실제 사용한다. 미요구 service/provider/DI 또는 미사용 factory는 없다.",
+          "sourceLocations": [
+            "source/src/checkout-request.js:4",
+            "source/app/api/quote/route.js:1",
+            "source/app/api/orders/route.js:1",
+            "source/app/checkout.jsx:7",
+            "source/app/checkout.jsx:43",
+            "source/app/checkout.jsx:87"
+          ],
+          "executionEvidence": [],
+          "limitation": "고정 공개 기준의 의미 판정이며 브라우저 증거는 첨부된 source hash 일치 결과다."
+        },
+        {
+          "id": "Q8.2",
+          "criterion": "새 의존성·계층마다 현재 요구에서 확인되는 역할이 있음",
+          "score": 5,
+          "reason": "adapter는 공통 HTTP 경계를, send는 공통 전송을, effect/ref는 현재 비동기 요구를 해결한다. 패키지/lockfile은 보호 검사에 통과했다.",
+          "sourceLocations": [
+            "source/src/checkout-request.js:4",
+            "source/app/checkout.jsx:7",
+            "source/app/checkout.jsx:39",
+            "source/app/checkout.jsx:79"
+          ],
+          "executionEvidence": [
+            "external-evidence.json:protected-assets/package.json",
+            "external-evidence.json:protected-assets/package-lock.json"
+          ],
+          "limitation": "고정 공개 기준의 의미 판정이며 브라우저 증거는 첨부된 source hash 일치 결과다."
+        }
+      ]
+    },
+    "Q9": {
+      "score": 10,
+      "items": [
+        {
+          "id": "Q9.1",
+          "criterion": "실제 업무 로직이 경계·오류 계약으로 검증됨",
+          "score": 5,
+          "reason": "후보 테스트는 실제 계산의 정상/쿠폰/대체 catalog·내림, 오류 400·stock409 및 할인 후 inclusive 배송 경계를 검증한다.",
+          "sourceLocations": [
+            "source/tests/checkout.test.mjs:9",
+            "source/tests/checkout.test.mjs:15",
+            "source/tests/checkout.test.mjs:33"
+          ],
+          "executionEvidence": [
+            "probes/candidate-unit.stdout.log"
+          ],
+          "limitation": "고정 공개 기준의 의미 판정이며 브라우저 증거는 첨부된 source hash 일치 결과다."
+        },
+        {
+          "id": "Q9.2",
+          "criterion": "경계 통합·비동기 전이가 구현 자체 mock 없이 검증됨",
+          "score": 5,
+          "reason": "후보 실제 POST 검사와 실제 화면을 유지한 네트워크 경계 지연/실패 테스트가 금액 신뢰·JSON/stock 오류, stale 성공/실패, 견적 재시도 및 주문 실패 복구를 검증한다.",
+          "sourceLocations": [
+            "source/tests/checkout.test.mjs:20",
+            "source/e2e/checkout.spec.mjs:17",
+            "source/e2e/checkout.spec.mjs:43",
+            "source/e2e/checkout.spec.mjs:66"
+          ],
+          "executionEvidence": [
+            "probes/candidate-unit.stdout.log",
+            "external-evidence.json:checks/test:e2e"
+          ],
+          "limitation": "후보 stale 테스트는 abort가 가능한 환경이며 직접 중복 submit 이벤트를 보내지 않는다. 테스트 완전성을 주장하지 않고 외부/리뷰어 검사를 후보 자체 커버리지로 대신하지 않았다."
+        }
+      ]
+    },
+    "Q10": {
+      "score": 10,
+      "items": [
+        {
+          "id": "Q10.1",
+          "criterion": "배송 기준 변경이 정책 소유 위치에 한정됨",
+          "score": 5,
+          "reason": "독립 사본의 checkout.js 한 위치만 60000으로 바꾸면 두 POST의 subtotal56000/discount5600/shipping3000/total53400이 일치한다. 새 기준 세 경계도 통과했다.",
+          "sourceLocations": [
+            "source/src/checkout.js:35",
+            "source/src/checkout-request.js:12"
+          ],
+          "executionEvidence": [
+            "probes/shipping-policy/change.diff",
+            "probes/shipping-policy/evidence.json"
+          ],
+          "limitation": "실제 POST export 직접 호출이며 HTTP 서버/브라우저 E2E는 아니다. 실패의 정확한 status를 새 요구로 추가하지 않았다."
+        },
+        {
+          "id": "Q10.2",
+          "criterion": "상품 조회 대체가 UI·순수 계산의 재작성 없이 가능",
+          "score": 5,
+          "reason": "각 사본에서 catalog.js만 메모리/10ms 지연/실패 함수로 교체했다. 메모리·지연 양 POST는 네 필드(total79200)가 맞고 실패는 500 Checkout unavailable로 전파됐다. UI와 계산은 바꾸지 않았다.",
+          "sourceLocations": [
+            "source/src/catalog.js:1",
+            "source/src/checkout-request.js:12",
+            "source/src/checkout-request.js:18"
+          ],
+          "executionEvidence": [
+            "probes/catalog-memory/change.diff",
+            "probes/catalog-memory/evidence.json",
+            "probes/catalog-delay/change.diff",
+            "probes/catalog-delay/evidence.json",
+            "probes/catalog-failure/change.diff",
+            "probes/catalog-failure/evidence.json"
+          ],
+          "limitation": "실제 POST export 직접 호출이며 HTTP 서버/브라우저 E2E는 아니다. 실패의 정확한 status를 새 요구로 추가하지 않았다."
+        }
+      ]
+    }
+  },
+  "rules": {
+    "R1": {
+      "status": "pass",
+      "criterion": "규칙 독립 실행",
+      "reason": "순수 계산과 대체 상품 데이터 직접 실행이 확인됐다.",
+      "evidence": [
+        "source/src/checkout.js:6",
+        "source/tests/checkout.test.mjs:13",
+        "probes/candidate-unit.stdout.log"
+      ]
+    },
+    "R2": {
+      "status": "pass",
+      "criterion": "정책 단일 정의",
+      "reason": "양 route→quoteResponse→calculateQuote 경로가 동일하며 정책 probe도 일치한다.",
+      "evidence": [
+        "source/app/api/quote/route.js:3",
+        "source/app/api/orders/route.js:3",
+        "source/src/checkout-request.js:12",
+        "probes/shipping-policy/evidence.json"
+      ]
+    },
+    "R3": {
+      "status": "pass",
+      "criterion": "서버 가격·재고 재검증",
+      "reason": "catalog price/stock으로 재계산한다. 후보 POST 테스트와 첨부 H4/H5가 조작 금액 비신뢰를 확인한다.",
+      "evidence": [
+        "source/src/checkout.js:27",
+        "source/src/checkout.js:29",
+        "source/tests/checkout.test.mjs:20",
+        "external-evidence.json"
+      ]
+    },
+    "R4": {
+      "status": "pass",
+      "criterion": "책임·의존 방향",
+      "reason": "업무는 외부에 의존하지 않고 adapter가 catalog를 연결한다. UI send/effect/placeOrder가 전송과 요청 수명을 담당한다.",
+      "evidence": [
+        "source/src/checkout.js:6",
+        "source/src/checkout-request.js:12",
+        "source/app/checkout.jsx:7",
+        "source/app/checkout.jsx:39"
+      ]
+    },
+    "R5": {
+      "status": "pass",
+      "criterion": "원격 상태와 입력 수명",
+      "reason": "version 식별과 raw 입력 effect 의존성으로 현재 입력의 견적을 사용하며 same-normalized 입력 복귀도 재요청된다. 합계 state 복제가 없다.",
+      "evidence": [
+        "source/app/checkout.jsx:24",
+        "source/app/checkout.jsx:60",
+        "source/app/checkout.jsx:62",
+        "source/app/checkout.jsx:77",
+        "probes/normalized-input-inspection.json"
+      ]
+    },
+    "R6": {
+      "status": "pass",
+      "criterion": "비동기·오류·접근성 보존",
+      "reason": "양 응답 최신성/abort 가드, 동기 주문 잠금/finally 해제, 입력 보존과 retry 및 접근 이름/output/alert가 있다. 첨부 브라우저8개도 통과했다.",
+      "evidence": [
+        "source/app/checkout.jsx:45",
+        "source/app/checkout.jsx:51",
+        "source/app/checkout.jsx:81",
+        "source/app/checkout.jsx:96",
+        "source/app/checkout.jsx:104",
+        "source/app/checkout.jsx:109",
+        "external-evidence.json"
+      ]
+    },
+    "R7": {
+      "status": "pass",
+      "criterion": "필요한 구조",
+      "reason": "공유 adapter/send와 계산·조회/UI는 실제 호출 역할이 있으며 미사용 확장점이 없다.",
+      "evidence": [
+        "source/src/checkout-request.js:4",
+        "source/app/checkout.jsx:7",
+        "source/src/checkout.js:6"
+      ]
+    },
+    "R8": {
+      "status": "pass",
+      "criterion": "기존 검사 보존·실제 계약 테스트",
+      "reason": "보호 파일9개와 현재 source hash 일치를 확인했고 실제 후보 단위5개를 재실행했다. 후보 e2e도 실 구현의 원격 응답/복구를 검증한다.",
+      "evidence": [
+        "source/tests/catalog.test.mjs:4",
+        "source/e2e/catalog.spec.mjs:2",
+        "source/tests/checkout.test.mjs:20",
+        "source/e2e/checkout.spec.mjs:43",
+        "probes/candidate-unit.stdout.log",
+        "external-evidence.json"
+      ]
+    }
+  },
+  "sourceHashes": {
+    "app/api/orders/route.js": "609fbb073fa47706bebabc2c81fcbc29dcac1c29c720229e2510ee0c597d9657",
+    "app/api/quote/route.js": "167a0cab3daa89fa2d01e6bb9f4857e501a60013094e03810398747958f488e7",
+    "app/checkout.jsx": "89fcac80e5a217cb10e6ca3cf4611dc97dbc98ab0f1238a556181b2adb51338f",
+    "app/layout.jsx": "8e5bd10067458aabd9faa12758742379b73c4f73a9502fca9cfa01545b64483c",
+    "app/page.jsx": "57ce7b06995d10c8f974c4670b666c7c01ea64c3e4f9d85105ab14d9d9cf569d",
+    "checkout.contract.json": "1fca04104f4a8b12f88b8fdfcdbac26fda530b3618ad5583feabfde4f7e056ae",
+    "e2e/catalog.spec.mjs": "a73d2188c368c419bd2addc7e8b50778f69531c1d4fde62d06d3f59ee35234f6",
+    "e2e/checkout.spec.mjs": "1b5c31b8a58ee8b281ac07546b42ff3eeec4d8770a0eec18cdf1d07be6d83992",
+    "eslint.config.mjs": "3624563f6cccab80896a35c9461fc1ae30389554349374bf453a5667590b361c",
+    "jsconfig.json": "b5e74988174abcf48c53f7d9eed03d8690dba1471cca6edcaa44d2911bda7179",
+    "next.config.mjs": "e53d0c8d3f690e8bd0b06f1ee16a5e871738fc56f9cd56c7790c906bd4d94505",
+    "package-lock.json": "7f094df62e4f1addb2cd14603df0c66729eb5abf4e9355ef65005e560153aedd",
+    "package.json": "8645dbcb75b54940720d77a107cbf549a67931661a03885d7ce93345dbff99ce",
+    "playwright.config.mjs": "fbf7e6f145aef04bf1b6d1e323d2c898b2444e29729aa10eb1759a33b0dab61f",
+    "src/catalog.js": "523ad6b97e81c57f895fed40752f458cd8cc754f92ea65654f1d59da9b2337ff",
+    "src/checkout-request.js": "d39755631d2bd44abc0abf963a7ad2769522941c3ed0be665bf27aa3298de6bd",
+    "src/checkout.js": "7febffe4b7d96773ae04d9e69fd2e1a254df252a4f46fdebb45ba423812ff234",
+    "tests/catalog.test.mjs": "2328b9e518bed3932077ef018f3b124b87089389edce4ec3ac9ed57725a182f6",
+    "tests/checkout.test.mjs": "6d2e9dac93457da7ed7d8ebd91fcdcc6df191bcd6899ae8cb1b034e92bf9151d",
+    "tsconfig.check.json": "5b031b39a40649e07621dd92ee31f1e6a92c7526ab0af89d607907243fef68c7"
+  },
+  "qualityScore": 100,
+  "unknownItems": [],
+  "findings": [],
+  "functionalFailures": [],
+  "scope": {
+    "read": "blind-review README, supplied protocol/oracle, assigned anonymous candidate only",
+    "sourceEdited": false,
+    "probeCopiesEdited": true,
+    "browserLaunched": false,
+    "webUsed": false,
+    "packagesInstalled": false,
+    "commitsCreated": false,
+    "traceAndDocumentAdjudication": "R9/H10 completion chronology deferred to separate adjudication"
+  },
+  "limitations": [
+    "의미 점수는 코드와 실제 호출 그래프에서 판정했다. 외부 기능 통과 수로 아키텍처 점수를 계산하지 않았다.",
+    "후보 단위 테스트와 변경 probe는 리뷰어가 재실행했다. 브라우저는 실행하지 않았고 해시가 일치하는 첨부 브라우저 증거를 사용했다.",
+    "POST probe는 실제 export 직접 호출이며 실행 중인 Next HTTP 서버 검사가 아니다.",
+    "Q9의 테스트 품질 근거는 후보가 작성한 tests/checkout.test.mjs 및 e2e/checkout.spec.mjs다. 외부 채점 사례를 후보 테스트로 계산하지 않았다.",
+    "엄격한 정적 타입 보장·문서 완성·마지막 제품 수정 이후 완료 절차 준수는 이 코드 리뷰로 판정하지 않는다.",
+    "외부 접근 이름 검사는 교정 완료 상태다. 원 외부 결과·원 리뷰·기존 probe는 보존했으며 평가기 수정으로 제품 자체 테스트 coverage를 늘려 평가하지 않았다."
+  ],
+  "executionEvidence": {
+    "probeSummary": "probes/summary.json",
+    "probeRunner": "probes/run-probes.py",
+    "probeAssertions": "probes/check-probe.mjs",
+    "candidateUnitLog": "probes/candidate-unit.stdout.log",
+    "attached": "external-evidence.json",
+    "unitTests": {
+      "passed": 5,
+      "failed": 0
+    },
+    "probeModesPassed": 5,
+    "actualPostCallsPassed": 10,
+    "directPolicyBoundaryChecksPassed": 6,
+    "originalSourceUnchanged": true,
+    "attachedHashesMatch": true,
+    "normalizedInputInspection": "probes/normalized-input-inspection.json"
+  },
+  "functionalEvidence": {
+    "source": "external-evidence.json",
+    "passed": 110,
+    "failed": 0,
+    "unexecuted": 0,
+    "categories": {
+      "protected-assets": 9,
+      "domain": 33,
+      "api": 60,
+      "browser": 8
+    },
+    "pageErrors": [],
+    "qualification": "전체 접근 이름 교정 후 고정 110개 사례는 110개 통과, 0개 실패다. 원 결과와 원 리뷰는 별도 파일에 보존했다. 기존 독립 수명/동시 제출 및 Q10 증거는 불변 소스에 유효하며 별도 필수 결함을 자동 110개 분모에 합산하지 않는다. Q 점수와 R 판정은 변경하지 않았다. R9/H10 완료 순서·문서는 별도 판정이다.",
+    "originalSource": "external-evidence-original.json",
+    "accessibleNameCorrection": "../accessible-name-correction.json",
+    "correctionPending": false,
+    "fixedCaseCount": 110,
+    "statusChanges": [],
+    "supplementalFailures": 0
+  },
+  "observations": [],
+  "originalFunctionalFailures": {
+    "source": "review-original.json",
+    "externalEvidence": "external-evidence-original.json",
+    "count": 0,
+    "preservedUnchanged": true
+  },
+  "externalRegrade": {
+    "reviewed": true,
+    "sourceHashesVerified": true,
+    "criteriaUnchanged": true,
+    "report": "regrade-review.json",
+    "source": "external-evidence.json",
+    "correctionPending": false
+  }
+}

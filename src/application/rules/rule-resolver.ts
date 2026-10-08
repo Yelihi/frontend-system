@@ -87,6 +87,8 @@ export class RuleResolver {
         priority: 3,
         appliesTo: reference.domains,
         evidence: [reference.path],
+        ...(reference.conditions ? { conditions: reference.conditions } : {}),
+        ...(reference.exclusions ? { exclusions: reference.exclusions } : {}),
         mandatory: false,
       })),
       ...(await mandatoryRules(this.mandatoryRoot, profile)),

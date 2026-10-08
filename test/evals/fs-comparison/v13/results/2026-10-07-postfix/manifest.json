@@ -1,0 +1,20 @@
+{
+  "model": "gpt-6-sol",
+  "timeout": 900,
+  "cells": [
+    {
+      "arm": "ordinary",
+      "project": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v13-l87thkks/ordinary/project",
+      "runtime": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v13-l87thkks/ordinary/runtime"
+    },
+    {
+      "arm": "fs",
+      "project": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v13-l87thkks/fs/project",
+      "runtime": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v13-l87thkks/fs/runtime"
+    }
+  ],
+  "brief": "Analyze the existing order frontend and show its actual event/state/error flows as an HTML diagram, with code evidence and stated limitations. Write analysis.md explaining the flows and material improvement points. Do not refactor or draft an implementation plan yet. The requirement is to preserve the current positive-integer validation, per-instance duplicate suppression, and ability to retry after failure. Do not add automatic retries or new domain rules. There is no request to change UI styling. Explain unknown deployment/runtime behavior rather than inventing it.",
+  "delta": "import { price } from '../cart/index.js';\nimport { createOrderSubmitter } from '../../domain/orders.js';\nexport const total = price;\nexport function createQuickOrder(send, changed) { return createOrderSubmitter(send, changed); }\n",
+  "change": "An existing checkout module now exports createQuickOrder as another consumer of the order submitter. The wrapper is supplied for future integration; it is not wired to a page. Refresh the actual flow analysis and HTML for this change. Then write a scoped plan.md to make the shared submission contract explicit and test both entry points. Owner answer: each created submitter has independent pending state; different instances may submit independently. Preserve validation and failure/retry behavior. Do not share one singleton pending flag, introduce automatic retries, add domain input restrictions or wire a new UI. Existing total export remains compatible. No implementation or approval yet. Reuse current evidence; inspect affected scope before deciding what changed.",
+  "protocolHash": "8b206b8dcf9e93416efe2a42c750739f4578ff5232634db9c465f9c2d1d5de19"
+}

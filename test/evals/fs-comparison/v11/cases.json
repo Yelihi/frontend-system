@@ -1,0 +1,20 @@
+{
+  "direct": {
+    "contract": "For this task the supplied source contains all consumers of Edit and applyEdit. No command persistence, replay, transport or external API compatibility is required. The next change adds two editor operations. We may change internal caller interfaces, but no refactor is approved yet. Preserve validation, return/error behavior, immutable transformations and the needs-review transition. Sequential edits must consume the latest successful result. Choose a structure based on this scope, not a mandatory class or pattern.",
+    "wiring": "import {createEditor} from './editor';\nimport {events} from './events';\nimport type {Document} from './model';\nexport function mount(initial: Document, render: (value: Document) => void) { const editor = createEditor(initial, render); return {handlers: events(editor.dispatch), snapshot: editor.snapshot}; }\n"
+  },
+  "replay": {
+    "contract": "The editor must support replay of recorded Edit[] through the public applyEdit(document, edit) entry. Existing Edit discriminants and field shapes are a compatibility contract. Preserve that entry and replay semantics; internal operation helpers may change. The next change adds two operations, but their wire shapes are not yet specified. Preserve validation, return/error behavior, immutable transformations and the needs-review transition. Sequential edits must consume the latest successful result. No refactor is approved yet.",
+    "wiring": "import {createEditor} from './editor';\nimport {events} from './events';\nimport type {Document, Edit} from './model';\nexport function mount(initial: Document, render: (value: Document) => void) { const editor = createEditor(initial, render); const history: Edit[] = []; const record = (edit: Edit) => { const result = editor.dispatch(edit); if (result.ok) history.push(edit); return result; }; return {handlers: events(record), history, snapshot: editor.snapshot}; }\n",
+    "replay": true
+  },
+  "mixed": {
+    "contract": "The browser handlers and a separate replay consumer both exist. Existing Edit discriminants, field shapes and public applyEdit(document, edit) must stay compatible for replay. Browser-facing internal APIs may be changed separately. The next change adds two browser actions; whether they should also become recorded commands needs an owner decision. Preserve validation, return/error behavior, immutable transformations and the needs-review transition. Sequential edits must consume the latest successful result. No refactor is approved yet.",
+    "wiring": "import {createEditor} from './editor';\nimport {events} from './events';\nimport type {Document} from './model';\nexport function mount(initial: Document, render: (value: Document) => void) { const editor = createEditor(initial, render); return {handlers: events(editor.dispatch), snapshot: editor.snapshot}; }\n",
+    "replay": true
+  },
+  "unknown": {
+    "contract": "The supplied source is the browser editor excerpt. Other consumers of Edit and applyEdit may exist outside this excerpt; compatibility, command persistence and replay requirements have not been supplied. The next change adds two editor operations, whose interfaces are not yet specified. Preserve validation, return/error behavior, immutable transformations and the needs-review transition. Sequential edits must consume the latest successful result. No refactor is approved yet. Do not infer a negative product requirement from a search of this excerpt.",
+    "wiring": "import {createEditor} from './editor';\nimport {events} from './events';\nimport type {Document} from './model';\nexport function mount(initial: Document, render: (value: Document) => void) { const editor = createEditor(initial, render); return {handlers: events(editor.dispatch), snapshot: editor.snapshot}; }\n"
+  }
+}

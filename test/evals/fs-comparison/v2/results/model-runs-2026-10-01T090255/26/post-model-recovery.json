@@ -1,0 +1,9 @@
+{
+  "at": "2026-10-01T10:44:46.188550+00:00",
+  "modelRerun": false,
+  "usageUnchanged": true,
+  "sourceMatchesRecordedFinalHashes": true,
+  "observed": "Incomplete checkout module produced HTTP500. Original readiness helper required HTTP200 and stopped before scoring.",
+  "action": "Retained original postprocessing logs, recalibrated HTTP readiness, repeated only external checks on unchanged source with original110 assertions.",
+  "calibration": "../http-readiness-calibration/summary.json"
+}

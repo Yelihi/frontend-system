@@ -1,0 +1,32 @@
+{
+  "status": "invalid-comparison-user-stopped",
+  "usableForPerformanceComparison": false,
+  "reason": [
+    "baseline startup failed because quoted dotted filesystem override made the path invalid",
+    "FS MCP snapshot attempted denied personal .gitconfig",
+    "FS patch helper could not execute Codex symlink target",
+    "old runner continued to FS after baseline infrastructure failure"
+  ],
+  "originalLogsPreserved": true,
+  "modelUsage": {
+    "connectionProbe": 10166,
+    "baselineInitial": null,
+    "fsInitial": 690844,
+    "note": "Reported total tokens, including cached input. FS initial only; not a paired result or full journey cost."
+  },
+  "changes": [
+    "inline filesystem table",
+    "clean Git environment for shell/MCP",
+    "main branch initialized explicitly",
+    "exact resolved CLI binary readable",
+    "zero-model preflight for both arms and MCP",
+    "stop entire comparison on infrastructure errors",
+    "print stage progress"
+  ],
+  "verification": {
+    "localRegressionTests": 3,
+    "modelCallsInRegressionTests": 0,
+    "realFixedExternalPreflight": "pending",
+    "internalPreflight": "blocked by parent sandbox_apply EPERM"
+  }
+}

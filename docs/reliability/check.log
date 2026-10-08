@@ -1,0 +1,235 @@
+
+> frontend-system@0.2.0 check
+> npm run typecheck && npm run lint && npm test
+
+
+> frontend-system@0.2.0 typecheck
+> tsc -p tsconfig.json --noEmit
+
+
+> frontend-system@0.2.0 lint
+> eslint src test
+
+
+> frontend-system@0.2.0 test
+> npm run build && node --test dist/test/**/*.test.js
+
+
+> frontend-system@0.2.0 prebuild
+> node -e "for (const path of ['dist', 'bundle']) require('node:fs').rmSync(path, { recursive: true, force: true })"
+
+
+> frontend-system@0.2.0 build
+> tsc -p tsconfig.json && npm run bundle:mcp && node scripts/export-tool-schemas.mjs
+
+
+> frontend-system@0.2.0 bundle:mcp
+> esbuild src/mcp.ts src/style-check.ts --bundle --splitting --platform=node --format=esm --target=node18 --outdir=bundle --chunk-names=chunks/[name]-[hash] --banner:js="import { createRequire as __fsCreateRequire } from 'node:module'; import { fileURLToPath as __fsFileURLToPath } from 'node:url'; import { dirname as __fsDirname } from 'node:path'; const require = __fsCreateRequire(import.meta.url); const __filename = __fsFileURLToPath(import.meta.url); const __dirname = __fsDirname(__filename);"
+
+
+  bundle/chunks/chunk-RTYRLEKU.js         9.5mb ⚠️
+  bundle/mcp.js                           1.1mb ⚠️
+  bundle/chunks/chunk-6CLLSHCT.js       197.2kb
+  bundle/style-check.js                  13.5kb
+  bundle/chunks/chunk-2R6PZYWP.js         2.2kb
+  bundle/chunks/typescript-77ZD5HFR.js    458b 
+
+⚡ Done in 226ms
+Exported read-only help for 48 MCP tools.
+✔ main evidence defaults only the wire version, preserving explicit versions and reuse requirements (3.044083ms)
+✔ unique exact citations resolve line numbers without accepting ambiguous, stale or misplaced evidence (17.222083ms)
+✔ model discretion cannot authorize a new mandatory domain outcome, while supplied contracts remain usable (1121.9775ms)
+✔ combined start retains approval, issue, baseline, freshness and attempt-budget guards (1730.012042ms)
+✔ combined start reports a failing baseline without claiming completion or hiding its logs (735.975209ms)
+✔ combined completion requires every host review, current checks and the exact execution (1179.834291ms)
+✔ combined completion preserves check failures and never records a successful execution (686.935958ms)
+✔ declared check assets are pinned once without duplicated guard input and remain protected (279.854375ms)
+✔ decision ID updates preserve untouched records and cannot reuse old user consent or stale routing (301.32825ms)
+✔ decision view and partial revision saves preserve contracts, stale-write checks and approval gates (340.57175ms)
+✔ routing executes from work context, detects direct requests, and distinguishes shadows and indirect boundaries (219.4075ms)
+✔ abstract plan requests retrieve scope hints without adopting them and report missing project prerequisites (59.879542ms)
+✔ long work requests keep discovery within its budget while full request and scope retrieval survive (30.88875ms)
+✔ main inspection and interpretations never read working tree code or alias configuration (286.800125ms)
+✔ project evidence rejects missing coverage, invented citations, and unscoped absence claims (88.119875ms)
+✔ new plans require decisions and evidence; mutation cannot complete; valid implementation can (653.901625ms)
+✔ influence audit preserves decisions, paginates, and withholds changed or missing metadata (122.235917ms)
+✔ linked knowledge metadata and source changes require review; unrelated index updates do not (184.53975ms)
+✔ compact receipts pin separate requirements, preserve decision gates, and detect stale or foreign evidence (407.636083ms)
+✔ known context suppresses only identical routing payload; changed evidence and policy remain visible (515.853958ms)
+✔ summary removes repeated facts while retaining all candidates, required rules and uncertainty (52.596042ms)
+✔ pinned main citations may omit hashes and lines; stale quotes and unversioned unpinned evidence still fail (181.405667ms)
+✔ plan approval and work start pin the exact flow version; delivery can retain historical analysis (231.00575ms)
+✔ Git review paths preserve filenames, both rename sides, and individual untracked files (467.482417ms)
+✔ published knowledge: symptom retrieval, technology boundaries and evidence hashes (969.902125ms)
+ℹ {"query":"아이콘 삭제 버튼 이름","ids":["accessibility-names-and-alternatives"]}
+ℹ {"query":"선택한 radio 다시 누르면 해제","ids":["accessibility-widget-interactions","css-boxes-sizing-and-layout","web-api-input-and-user-mediated-access"]}
+ℹ {"query":"modal focus trap","ids":["accessibility-modal-focus"]}
+ℹ {"query":"재정렬 뒤 입력 값 남음","ids":["react-identity-and-state","html-editing-and-localization","web-api-input-and-user-mediated-access","webgl-shader-data-flow"]}
+ℹ {"query":"state snapshot","ids":["react-rendering-state-model","react-fiber-work-in-progress","web-api-permissions-identity-and-injection"]}
+ℹ {"query":"state snapshot","ids":["web-api-permissions-identity-and-injection"]}
+ℹ {"query":"alternate memoizedState","ids":["react-fiber-work-in-progress"]}
+ℹ {"query":"행 클릭 table","ids":["accessibility-native-controls-and-forms","web-performance-interaction-diagnosis"]}
+ℹ {"query":"polymorphic as","ids":["accessibility-static-validation"]}
+ℹ {"query":"zzunmatchedknowledgeprobezz","ids":[]}
+ℹ {"query":"가독성 반환 타입","ids":["code-quality-context-and-contracts","react-identity-and-state"]}
+ℹ {"query":"module not found alias","ids":["bundling-module-graph-and-transforms","typescript-module-environment"]}
+ℹ {"query":"sideEffects production CSS","ids":["bundling-output-and-optimization"]}
+ℹ {"query":"최소 재현","ids":["debugging-evidence-and-reproduction"]}
+ℹ {"query":"refetch","ids":["debugging-react-integration-cases","tanstack-query-freshness-and-retention"]}
+ℹ {"query":"refetch","ids":[]}
+ℹ {"query":"inputmode","ids":["html-editing-and-localization"]}
+ℹ {"query":"inert","ids":["accessibility-modal-focus","html-focus-visibility-and-popovers"]}
+ℹ {"query":"exportparts","ids":["html-shadow-parts-and-experimental-headings"]}
+ℹ {"query":"microdata","ids":["html-microdata-and-csp-nonces"]}
+ℹ {"query":"margin collapsing","ids":["css-boxes-sizing-and-layout"]}
+ℹ {"query":"specificity","ids":["css-cascade-and-value-resolution"]}
+ℹ {"query":"will-change","ids":["css-motion-and-rendering-hints"]}
+ℹ {"query":"Object.is","ids":["javascript-functions-objects-and-scope","javascript-values-equality-and-collections"]}
+ℹ {"query":"Symbol.iterator","ids":["javascript-iteration-promises-and-resources"]}
+ℹ {"query":"렉시컬 클로저","ids":["javascript-functions-objects-and-scope"]}
+ℹ {"query":"Intl","ids":["javascript-dates-and-internationalization"]}
+ℹ {"query":"manifest","ids":["web-platform-protocols-and-delivery"]}
+ℹ {"query":"XPath","ids":["web-xml-query-transform-and-automation"]}
+ℹ {"query":"fetch HTTP 오류","ids":["request-policy-boundaries","web-api-network-streams-and-urls","web-platform-protocols-and-delivery"]}
+ℹ {"query":"BroadcastChannel 저장소 파티션","ids":["web-api-workers-and-coordination"]}
+ℹ {"query":"IndexedDB","ids":["web-api-files-and-storage"]}
+ℹ {"query":"getDisplayMedia","ids":["web-api-media-pipelines-and-speech"]}
+ℹ {"query":"Trusted Types","ids":["web-api-permissions-identity-and-injection"]}
+ℹ {"query":"WebVR","ids":["web-api-retired-features","web-api-graphics-and-xr","web-api-network-streams-and-urls","webgl-shader-data-flow"]}
+ℹ {"query":"WebUSB","ids":["web-api-hardware-transports","web-api-graphics-and-xr","web-api-network-streams-and-urls","web-api-retired-features","webgl-shader-data-flow"]}
+ℹ {"query":"Summarizer","ids":["web-api-browser-ai-capabilities"]}
+ℹ {"query":"tsconfig 배포 import 실패","ids":["typescript-module-environment","bundling-output-and-optimization","bundling-module-graph-and-transforms","micro-frontends-adoption-tradeoffs"]}
+ℹ {"query":"compound cloneElement 중첩","ids":["react-compound-component-boundaries"]}
+ℹ {"query":"클릭 반응 INP forced reflow","ids":["web-performance-interaction-diagnosis"]}
+ℹ {"query":"오프라인 저장 동기화 대기","ids":["pwa-offline-state-feedback","web-api-files-and-storage"]}
+ℹ {"query":"관리자 버튼 객체 소유권 IDOR","ids":["security-server-authorization-boundary","javascript-functions-objects-and-scope"]}
+ℹ {"query":"use client 서버 children","ids":["nextjs-server-client-boundary"]}
+ℹ {"query":"필터 목록 파생 상태 useEffect","ids":["react-derived-state-and-effects","react-rendering-state-model"]}
+ℹ {"query":"이전 검색 응답 최신 결과 덮어쓰기","ids":["react-derived-state-and-effects"]}
+ℹ {"query":"useSyncExternalStore snapshot 구독","ids":["react-derived-state-and-effects","react-rendering-state-model"]}
+ℹ {"query":"useSyncExternalStore snapshot 구독","ids":["web-api-background-and-app-integration","web-api-files-and-storage","code-quality-change-boundaries","javascript-iteration-promises-and-resources"]}
+ℹ {"query":"staleTime gcTime 창 포커스","ids":["tanstack-query-freshness-and-retention"]}
+ℹ {"query":"팀 독립 배포 의존성 중복","ids":["micro-frontends-adoption-tradeoffs"]}
+ℹ {"query":"RenderingNG compositor raster","ids":["chromium-rendering-pipeline"]}
+ℹ {"query":"WebGL varying attribute","ids":["webgl-shader-data-flow","web-api-graphics-and-xr"]}
+ℹ {"query":"스타일이 덮어써지거나 우선순위 충돌","ids":["css-cascade-and-value-resolution","css-shadow-style-boundaries"]}
+ℹ {"query":"용량 초과 데이터가 사라지거나","ids":["web-api-files-and-storage","debugging-data-and-toolchain-incidents"]}
+ℹ {"query":"gcTime staleTime","ids":[]}
+ℹ {"cases":54,"retrievedPrecisionAt5":0.5813953488372093,"recallAt5":1,"returnedCharacters":131172,"synthetic":true}
+✔ knowledge retrieval evaluation: paraphrases, irrelevant technologies, CS and abstention (0.565167ms)
+ℹ {"cases":6,"retrievedPrecisionAt5":1,"recallAt5":1,"forbiddenResults":0,"returnedCharacters":2723,"synthetic":true}
+✔ sync validates source evidence, records deferrals, tracks corrections/deletion and bounds reads (82.955625ms)
+✔ source template is excluded while authored copies remain discoverable (22.573625ms)
+✔ concepts and uncertain decisions are context, not engineering rules (1.402167ms)
+✔ search explains candidates, rejects stopword/substrings and uses code observations (5.0455ms)
+✔ bounded facts link JSX callback, fixed argument, imported function and parameter dispatch without calling it a defect (487.447792ms)
+✔ same syntax supports different decisions only with contextual evidence; unknown intent and automatic repair cannot bypass gates (1.427167ms)
+✔ sync binds investigation metadata; strict publication requires migration without fabricating old knowledge (45.771584ms)
+✔ review validates caller and owner evidence and invalidates it when caller or contract changes (47.986417ms)
+✔ plan binding enforces investigation too, including grouped dismissals and requirement freshness (283.2745ms)
+✔ published effect investigation keeps valid synchronization and abstains on unspecified owner intent (8.218542ms)
+✔ source approval gates sync, binds evidence and invalidates on source/provenance/review changes (69.586167ms)
+✔ legacy published sources remain explicitly unreviewed and need review on the next sync (9.825917ms)
+✔ plain notes → v3 publication → artifact changes invalidate only affected sources (457.009ms)
+✔ scoped semantic discovery is paginated; JSX facts do not assume wrapper DOM (94.121458ms)
+✔ all published references have explicit usage and direct routing cases (341.266458ms)
+✔ sync refuses unextractable calls even when synthetic trigger cases agree (34.288625ms)
+✔ syntax routing resolves binding aliases, ignores shadows, and exposes unresolved boundaries (297.4345ms)
+✔ trigger checks bypass lexical ranking; review covers each occurrence and rejects stale or invented evidence (359.601708ms)
+✔ sync rejects malformed trigger metadata and failed routing cases (17.808458ms)
+✔ reference edits invalidate review even when code is unchanged (29.131833ms)
+✔ maintenance evaluator accepts the reference journey and rejects known policy/state/I-O/keep defects (1038.669917ms)
+✔ observed order flow matches actual events, rollback, caller mutation, newer-input defect and cleanup (71.148416ms)
+✔ actual ticket store notifies both registered subscribers and removes only the unsubscribed callback (21.595041ms)
+✔ reviewed real-project diagrams validate source pins and citations through the production export path (184.76425ms)
+✔ named plans isolate approvals, attempts and evidence while preserving legacy records (1850.6835ms)
+✔ plan contracts reject unknown checks, cycles and unsafe paths before writing (259.797542ms)
+✔ baseline excludes build and delivery cannot be narrowed to an issue (1118.839125ms)
+✔ project context uses main objects, detects drift and preserves prior documents on stale saves (1225.285792ms)
+✔ batched main source reads bound output, preserve hashes and pagination, and reject stale or untracked scope (333.009667ms)
+✔ large source requests page unread paths without raising the per-page read budget (637.147875ms)
+✔ mixed-size main sources use the aggregate budget before requesting another page (128.033709ms)
+✔ MCP and CLI expose named workflows and migrate init.md with canonical document hashes (1061.107958ms)
+✔ an approved aggregate behavior checker can complete without inventing child executions (423.039916ms)
+✔ approval validates pinned commands and files without silently refreshing a revision (147.086958ms)
+✔ semantic policy keys accept requirement and resolver IDs without widening filesystem IDs (0.581417ms)
+✔ Git configuration errors are not reported as an unversioned project (5.562792ms)
+✔ direct npm self-invocation remains a repairable draft but cannot be approved (130.714667ms)
+✔ policy binds approval; deleted, changed and protected checks cannot pass CLI (899.046083ms)
+✔ policy completion needs attempts, complete checks and current semantic evidence (1150.250959ms)
+✔ attempt budgets survive checkpoints; cycles and unfinished dependencies fail (139.805375ms)
+✔ migration exceptions require a resolution step, matching review and final checks (717.69575ms)
+✔ policy validates contracts and legacy projects do not acquire enforcement silently (36.408792ms)
+✔ a real domain regression connects evidence, examples, required checks and completion (993.794666ms)
+✔ saved project facts route implicit boundaries across processes and invalidate dependencies, not unrelated edits (1617.756583ms)
+✔ fact reuse respects configuration additions, knowledge sync, absence claims, explicit interpretations and legacy records (501.802375ms)
+✔ reusable facts require inspected dependency citations and stay pinned to main snapshots (1452.550334ms)
+✔ bundled MCP resolves a new user answer through atomic route/decision patches without losing evidence gates (1730.356334ms)
+✔ flows survive fresh reads without registered knowledge and invalidate changed callers and new consumers (57.367666ms)
+✔ analysis rejects invented evidence, missing endpoints and cyclic containment before persistence (8.17825ms)
+✔ findings require authority and closure evidence while preserving immutable history (81.570916ms)
+✔ diagram projections preserve nesting and scenario identity without executing labels (2.153041ms)
+✔ bundled MCP stores confined flow drafts, serves bounded summaries and renders the pinned record (233.5905ms)
+✔ finding reuse invalidates changed knowledge metadata and a body changed without republishing (190.093209ms)
+✔ source discovery ignores generated Markdown, retains explicit document guards and supports all-content mode (57.586125ms)
+✔ findings can cite their main-snapshot flow without mixing working-only answers (1276.644167ms)
+✔ actual flow export rejects stale/proposed records, preserves the prior artifact and exposes evidence (37.98525ms)
+✔ changes in existing unlisted discovery sources invalidate flow reuse and legacy records require reanalysis (18.978ms)
+✔ one paginated request shares inventory/content reads, without reusing cached hashes across calls (57.243375ms)
+✔ flow citations must start on the declared line, not merely occur nearby (15.539084ms)
+✔ mixed-size batches fit complete content instead of forcing avoidable continuation reads (0.701292ms)
+✔ large batches stay bounded, preserve metadata/order and reconstruct all windows without gaps (1.594333ms)
+✔ reliability eval 1/3: pending, stale progress, weakened oracle, repair (1249.014ms)
+ℹ {"round":1,"contract":"pending","revisionHash":"136c31e623394471edb7990b208f00507c22c04f3dfe189580ff170a58c9e96a","sourceHash":"36659d69a2c2f167f691a80f737a8de224143e4fe1b7cd0e6699bff5ccf107b3","rejected":["invalid product","stale check","weakened oracle"],"repaired":true}
+✔ reliability eval 1/3: quantity, stale progress, weakened oracle, repair (1125.8955ms)
+ℹ {"round":1,"contract":"quantity","revisionHash":"136c31e623394471edb7990b208f00507c22c04f3dfe189580ff170a58c9e96a","sourceHash":"36659d69a2c2f167f691a80f737a8de224143e4fe1b7cd0e6699bff5ccf107b3","rejected":["invalid product","stale check","weakened oracle"],"repaired":true}
+✔ reliability eval 1/3: retry, stale progress, weakened oracle, repair (815.305917ms)
+ℹ {"round":1,"contract":"retry","revisionHash":"136c31e623394471edb7990b208f00507c22c04f3dfe189580ff170a58c9e96a","sourceHash":"36659d69a2c2f167f691a80f737a8de224143e4fe1b7cd0e6699bff5ccf107b3","rejected":["invalid product","stale check","weakened oracle"],"repaired":true}
+✔ reliability eval 2/3: pending, stale progress, weakened oracle, repair (768.008958ms)
+ℹ {"round":2,"contract":"pending","revisionHash":"136c31e623394471edb7990b208f00507c22c04f3dfe189580ff170a58c9e96a","sourceHash":"36659d69a2c2f167f691a80f737a8de224143e4fe1b7cd0e6699bff5ccf107b3","rejected":["invalid product","stale check","weakened oracle"],"repaired":true}
+✔ reliability eval 2/3: quantity, stale progress, weakened oracle, repair (754.229833ms)
+ℹ {"round":2,"contract":"quantity","revisionHash":"136c31e623394471edb7990b208f00507c22c04f3dfe189580ff170a58c9e96a","sourceHash":"36659d69a2c2f167f691a80f737a8de224143e4fe1b7cd0e6699bff5ccf107b3","rejected":["invalid product","stale check","weakened oracle"],"repaired":true}
+✔ reliability eval 2/3: retry, stale progress, weakened oracle, repair (654.009042ms)
+ℹ {"round":2,"contract":"retry","revisionHash":"136c31e623394471edb7990b208f00507c22c04f3dfe189580ff170a58c9e96a","sourceHash":"36659d69a2c2f167f691a80f737a8de224143e4fe1b7cd0e6699bff5ccf107b3","rejected":["invalid product","stale check","weakened oracle"],"repaired":true}
+✔ reliability eval 3/3: pending, stale progress, weakened oracle, repair (658.829417ms)
+ℹ {"round":3,"contract":"pending","revisionHash":"136c31e623394471edb7990b208f00507c22c04f3dfe189580ff170a58c9e96a","sourceHash":"36659d69a2c2f167f691a80f737a8de224143e4fe1b7cd0e6699bff5ccf107b3","rejected":["invalid product","stale check","weakened oracle"],"repaired":true}
+✔ reliability eval 3/3: quantity, stale progress, weakened oracle, repair (564.262459ms)
+ℹ {"round":3,"contract":"quantity","revisionHash":"136c31e623394471edb7990b208f00507c22c04f3dfe189580ff170a58c9e96a","sourceHash":"36659d69a2c2f167f691a80f737a8de224143e4fe1b7cd0e6699bff5ccf107b3","rejected":["invalid product","stale check","weakened oracle"],"repaired":true}
+✔ reliability eval 3/3: retry, stale progress, weakened oracle, repair (536.320208ms)
+ℹ {"round":3,"contract":"retry","revisionHash":"136c31e623394471edb7990b208f00507c22c04f3dfe189580ff170a58c9e96a","sourceHash":"36659d69a2c2f167f691a80f737a8de224143e4fe1b7cd0e6699bff5ccf107b3","rejected":["invalid product","stale check","weakened oracle"],"repaired":true}
+✔ unguarded policies remain repairable but cannot be approved or reported as verified (175.881667ms)
+✔ revision draft transport is bounded JSON confined to the project draft directory (10.135208ms)
+✔ routing can be the first ESM import without weakening persisted route validation (87.294ms)
+✔ project analysis payload can be the first ESM import and retains user-decision validation (80.113375ms)
+✔ shared rules need exact proposal approval; changed sources or candidates invalidate it (71.044208ms)
+✔ source checks preserve pending differences, bound output and avoid unchanged bodies (215.316208ms)
+✔ failed, HTML, oversized and private sources never overwrite a valid snapshot (51.2315ms)
+✔ capture deduplication checks current files and retains distinct URL provenance (45.354208ms)
+✔ team class policy distinguishes inline/classes, maps, data objects and partial tokens (88.275709ms)
+✔ CVA needs a bound imported definition consumed by JSX with the approved axes (102.4155ms)
+✔ CVA default policy preserves an approved no-default contract without weakening legacy checks (29.739291ms)
+✔ published team knowledge routes from actual JSX and excludes unrelated technology (203.268792ms)
+✔ discovers framework, safe capabilities, and design-system evidence (78.957583ms)
+✔ persists project configuration and evidence-backed context (98.471125ms)
+✔ Vue inspection and rule selection stay framework-specific (53.369708ms)
+✔ OpenDesign settings survive MCP updates and stay isolated in work context (317.20875ms)
+✔ user knowledge outranks project convention and security keeps a fallback (1.112792ms)
+✔ knowledge catalog shortlists, detects duplicates, and tracks publication (20.868083ms)
+✔ whole inventory includes deep and large areas and reports exclusions (1624.4075ms)
+✔ legacy facts migrate without losing decisions or changing the target (345.143292ms)
+✔ revision approvals bind exact content and scoped records reject lost updates (23.788625ms)
+✔ workflow writes reject symbolic-link escapes before creating children (2.138375ms)
+✔ test relocation and contract rewriting preserve guarantees; resume rejects stale proof (823.191875ms)
+✔ empty and selected checks distinguish missing verification and new failures (960.885458ms)
+✔ baseline discovers scoped lint/types scripts without build, fixes or watch commands (474.292625ms)
+✔ project constraints and conflicting knowledge remain distinct evidence (28.940917ms)
+✔ MCP exposes inventory, approval, bounded records and both new context modes (1154.452875ms)
+✔ failed check summaries retain the early cause without losing the original log (205.036666ms)
+ℹ tests 124
+ℹ suites 0
+ℹ pass 124
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9528.334667

@@ -1,0 +1,28 @@
+{
+  "mode": "authored-only",
+  "modelCalls": 0,
+  "rows": [
+    {
+      "name": "dataCondition",
+      "status": "failed",
+      "rules": [
+        "inline-static-classes"
+      ]
+    },
+    {
+      "name": "predicate",
+      "status": "failed",
+      "rules": [
+        "unresolved-class-helper"
+      ]
+    },
+    {
+      "name": "completeConcatenation",
+      "status": "failed",
+      "rules": [
+        "complete-class-tokens"
+      ]
+    }
+  ],
+  "stage": "before correction"
+}

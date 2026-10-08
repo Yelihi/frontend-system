@@ -1,0 +1,393 @@
+{
+  "status": "completed",
+  "manifestHash": "05b2fe48fad251a9fed6a0429d32e3e9dd8a4467f74a2a2586dad422e94a3358",
+  "journeys": [
+    {
+      "model": "gpt-6-sol",
+      "replica": 0,
+      "arm": "baseline",
+      "manifestHash": "05b2fe48fad251a9fed6a0429d32e3e9dd8a4467f74a2a2586dad422e94a3358",
+      "stages": [
+        {
+          "id": "initial",
+          "repairRounds": 0,
+          "attempts": [
+            {
+              "grade": {
+                "stage": "initial",
+                "eligible": true,
+                "passed": 8,
+                "required": 8,
+                "results": [
+                  {
+                    "id": "policy-boundaries",
+                    "status": "passed"
+                  },
+                  {
+                    "id": "invalid-input",
+                    "status": "passed"
+                  },
+                  {
+                    "id": "preview-entry",
+                    "status": "passed"
+                  },
+                  {
+                    "id": "submit-entry",
+                    "status": "passed"
+                  },
+                  {
+                    "id": "replaceable-io",
+                    "status": "passed"
+                  },
+                  {
+                    "id": "pending-guard",
+                    "status": "passed"
+                  },
+                  {
+                    "id": "failure-retry",
+                    "status": "passed"
+                  },
+                  {
+                    "id": "keep-valid-code",
+                    "status": "passed"
+                  }
+                ]
+              },
+              "invocation": {
+                "requestedModel": "gpt-6-sol",
+                "exitCode": 0,
+                "timedOut": false,
+                "elapsedSeconds": 109.272,
+                "completedTurns": 1,
+                "usage": {
+                  "cache_write_input_tokens": 0,
+                  "output_tokens": 5090,
+                  "input_tokens": 178237,
+                  "reasoning_output_tokens": 1369,
+                  "cached_input_tokens": 160384,
+                  "total_tokens": 183327,
+                  "uncached_input_tokens": 17853
+                },
+                "errors": []
+              }
+            }
+          ]
+        },
+        {
+          "id": "policy-change",
+          "repairRounds": 0,
+          "attempts": [
+            {
+              "grade": {
+                "stage": "policy-change",
+                "eligible": true,
+                "passed": 8,
+                "required": 8,
+                "results": [
+                  {
+                    "id": "policy-boundaries",
+                    "status": "passed"
+                  },
+                  {
+                    "id": "invalid-input",
+                    "status": "passed"
+                  },
+                  {
+                    "id": "preview-entry",
+                    "status": "passed"
+                  },
+                  {
+                    "id": "submit-entry",
+                    "status": "passed"
+                  },
+                  {
+                    "id": "replaceable-io",
+                    "status": "passed"
+                  },
+                  {
+                    "id": "pending-guard",
+                    "status": "passed"
+                  },
+                  {
+                    "id": "failure-retry",
+                    "status": "passed"
+                  },
+                  {
+                    "id": "keep-valid-code",
+                    "status": "passed"
+                  }
+                ]
+              },
+              "invocation": {
+                "requestedModel": "gpt-6-sol",
+                "exitCode": 0,
+                "timedOut": false,
+                "elapsedSeconds": 65.429,
+                "completedTurns": 1,
+                "usage": {
+                  "cache_write_input_tokens": 0,
+                  "output_tokens": 2595,
+                  "input_tokens": 182410,
+                  "reasoning_output_tokens": 654,
+                  "cached_input_tokens": 150528,
+                  "total_tokens": 185005,
+                  "uncached_input_tokens": 31882
+                },
+                "errors": []
+              }
+            }
+          ]
+        },
+        {
+          "id": "transport-change",
+          "repairRounds": 0,
+          "attempts": [
+            {
+              "grade": {
+                "stage": "transport-change",
+                "eligible": true,
+                "passed": 8,
+                "required": 8,
+                "results": [
+                  {
+                    "id": "policy-boundaries",
+                    "status": "passed"
+                  },
+                  {
+                    "id": "invalid-input",
+                    "status": "passed"
+                  },
+                  {
+                    "id": "preview-entry",
+                    "status": "passed"
+                  },
+                  {
+                    "id": "submit-entry",
+                    "status": "passed"
+                  },
+                  {
+                    "id": "replaceable-io",
+                    "status": "passed"
+                  },
+                  {
+                    "id": "pending-guard",
+                    "status": "passed"
+                  },
+                  {
+                    "id": "failure-retry",
+                    "status": "passed"
+                  },
+                  {
+                    "id": "keep-valid-code",
+                    "status": "passed"
+                  }
+                ]
+              },
+              "invocation": {
+                "requestedModel": "gpt-6-sol",
+                "exitCode": 0,
+                "timedOut": false,
+                "elapsedSeconds": 82.511,
+                "completedTurns": 1,
+                "usage": {
+                  "cache_write_input_tokens": 0,
+                  "output_tokens": 3043,
+                  "input_tokens": 227692,
+                  "reasoning_output_tokens": 556,
+                  "cached_input_tokens": 208768,
+                  "total_tokens": 230735,
+                  "uncached_input_tokens": 18924
+                },
+                "errors": []
+              }
+            }
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens": 588339,
+        "output_tokens": 10728,
+        "total_tokens": 599067,
+        "cached_input_tokens": 519680,
+        "reasoning_output_tokens": 2579
+      },
+      "eligible": true,
+      "repairRounds": 0,
+      "wallSeconds": 257.59,
+      "keepViolatingSubmissions": 0,
+      "treatmentAdherence": "requires raw tool-log review; FS assignment alone does not prove use",
+      "humanReview": "unverified",
+      "context": "Fresh model session at every stage/repair; code and local records persist within the journey."
+    },
+    {
+      "model": "gpt-6-sol",
+      "replica": 0,
+      "arm": "fs",
+      "manifestHash": "05b2fe48fad251a9fed6a0429d32e3e9dd8a4467f74a2a2586dad422e94a3358",
+      "stages": [
+        {
+          "id": "initial",
+          "repairRounds": 0,
+          "attempts": [
+            {
+              "grade": {
+                "stage": "initial",
+                "eligible": true,
+                "passed": 8,
+                "required": 8,
+                "results": [
+                  {
+                    "id": "policy-boundaries",
+                    "status": "passed"
+                  },
+                  {
+                    "id": "invalid-input",
+                    "status": "passed"
+                  },
+                  {
+                    "id": "preview-entry",
+                    "status": "passed"
+                  },
+                  {
+                    "id": "submit-entry",
+                    "status": "passed"
+                  },
+                  {
+                    "id": "replaceable-io",
+                    "status": "passed"
+                  },
+                  {
+                    "id": "pending-guard",
+                    "status": "passed"
+                  },
+                  {
+                    "id": "failure-retry",
+                    "status": "passed"
+                  },
+                  {
+                    "id": "keep-valid-code",
+                    "status": "passed"
+                  }
+                ]
+              },
+              "invocation": {
+                "requestedModel": "gpt-6-sol",
+                "exitCode": 0,
+                "timedOut": false,
+                "elapsedSeconds": 200.45,
+                "completedTurns": 1,
+                "usage": {
+                  "cache_write_input_tokens": 0,
+                  "output_tokens": 8102,
+                  "input_tokens": 941841,
+                  "reasoning_output_tokens": 1496,
+                  "cached_input_tokens": 889600,
+                  "total_tokens": 949943,
+                  "uncached_input_tokens": 52241
+                },
+                "errors": []
+              }
+            }
+          ]
+        },
+        {
+          "id": "policy-change",
+          "repairRounds": 0,
+          "attempts": [
+            {
+              "grade": {
+                "stage": "policy-change",
+                "eligible": true,
+                "passed": 8,
+                "required": 8,
+                "results": [
+                  {
+                    "id": "policy-boundaries",
+                    "status": "passed"
+                  },
+                  {
+                    "id": "invalid-input",
+                    "status": "passed"
+                  },
+                  {
+                    "id": "preview-entry",
+                    "status": "passed"
+                  },
+                  {
+                    "id": "submit-entry",
+                    "status": "passed"
+                  },
+                  {
+                    "id": "replaceable-io",
+                    "status": "passed"
+                  },
+                  {
+                    "id": "pending-guard",
+                    "status": "passed"
+                  },
+                  {
+                    "id": "failure-retry",
+                    "status": "passed"
+                  },
+                  {
+                    "id": "keep-valid-code",
+                    "status": "passed"
+                  }
+                ]
+              },
+              "invocation": {
+                "requestedModel": "gpt-6-sol",
+                "exitCode": 0,
+                "timedOut": false,
+                "elapsedSeconds": 163.144,
+                "completedTurns": 1,
+                "usage": {
+                  "cache_write_input_tokens": 0,
+                  "output_tokens": 6438,
+                  "input_tokens": 1048315,
+                  "reasoning_output_tokens": 1610,
+                  "cached_input_tokens": 995200,
+                  "total_tokens": 1054753,
+                  "uncached_input_tokens": 53115
+                },
+                "errors": []
+              }
+            }
+          ]
+        },
+        {
+          "id": "transport-change",
+          "repairRounds": 0,
+          "attempts": [
+            {
+              "grade": {
+                "stage": "transport-change",
+                "eligible": false,
+                "status": "unverified",
+                "reason": "Model invocation did not complete",
+                "results": []
+              },
+              "invocation": {
+                "requestedModel": "gpt-6-sol",
+                "exitCode": -9,
+                "timedOut": true,
+                "elapsedSeconds": 300.011,
+                "completedTurns": 0,
+                "usage": null,
+                "errors": []
+              }
+            }
+          ]
+        }
+      ],
+      "usage": null,
+      "eligible": false,
+      "repairRounds": 0,
+      "wallSeconds": 663.912,
+      "keepViolatingSubmissions": 0,
+      "treatmentAdherence": "requires raw tool-log review; FS assignment alone does not prove use",
+      "humanReview": "unverified",
+      "context": "Fresh model session at every stage/repair; code and local records persist within the journey."
+    }
+  ]
+}

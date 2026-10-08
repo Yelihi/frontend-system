@@ -1,0 +1,248 @@
+{
+  "meaning": "Artifact/hash/record audit; not semantic correctness, browser execution or a causal model-quality score.",
+  "rows": [
+    {
+      "arm": "ordinary",
+      "stage": "initial",
+      "threadId": "01a114e8-30a6-7863-893b-156f5ea1dd9f",
+      "seconds": 90.931,
+      "usage": {
+        "input_tokens": 115472,
+        "cached_input_tokens": 97920,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 6444,
+        "reasoning_output_tokens": 862,
+        "total_tokens": 121916,
+        "uncached_input_tokens": 17552
+      },
+      "artifactAudit": {
+        "sourceUnchanged": true,
+        "runtimeUnchanged": true,
+        "requiredArtifacts": {
+          "analysis.md": true
+        },
+        "html": [
+          ".eval/order-flow.html"
+        ],
+        "environmentFailure": null,
+        "complete": true
+      },
+      "errors": [],
+      "responses": {
+        "shell:other": {
+          "calls": 8,
+          "characters": 15818
+        }
+      },
+      "staleReasons": [],
+      "renders": [],
+      "savedPlans": [],
+      "contractDiagnostics": null,
+      "protectedSourceMatches": true,
+      "exportIntegrity": null,
+      "deliveryComplete": true
+    },
+    {
+      "arm": "ordinary",
+      "stage": "change",
+      "threadId": "01a114ec-0919-7cf3-a900-50dc40b45c17",
+      "seconds": 87.419,
+      "usage": {
+        "input_tokens": 193782,
+        "cached_input_tokens": 169984,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 6855,
+        "reasoning_output_tokens": 408,
+        "total_tokens": 200637,
+        "uncached_input_tokens": 23798
+      },
+      "artifactAudit": {
+        "sourceUnchanged": true,
+        "runtimeUnchanged": true,
+        "requiredArtifacts": {
+          "analysis.md": true,
+          "plan.md": true
+        },
+        "html": [
+          ".eval/order-flow.html"
+        ],
+        "environmentFailure": null,
+        "complete": true
+      },
+      "errors": [],
+      "responses": {
+        "shell:other": {
+          "calls": 25,
+          "characters": 42859
+        }
+      },
+      "staleReasons": [],
+      "renders": [],
+      "savedPlans": [],
+      "contractDiagnostics": null,
+      "protectedSourceMatches": true,
+      "exportIntegrity": null,
+      "deliveryComplete": true
+    },
+    {
+      "arm": "fs",
+      "stage": "initial",
+      "threadId": "01a114e9-9455-7553-8b92-ea027e75e8a3",
+      "seconds": 145.665,
+      "usage": {
+        "input_tokens": 809764,
+        "cached_input_tokens": 765312,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 9331,
+        "reasoning_output_tokens": 1092,
+        "total_tokens": 819095,
+        "uncached_input_tokens": 44452
+      },
+      "artifactAudit": {
+        "sourceUnchanged": true,
+        "runtimeUnchanged": true,
+        "requiredArtifacts": {
+          "analysis.md": true
+        },
+        "html": [
+          ".frontend-system/diagrams/order-frontend-actual.html"
+        ],
+        "environmentFailure": null,
+        "complete": true
+      },
+      "errors": [],
+      "responses": {
+        "inspect_project": {
+          "calls": 1,
+          "characters": 3335
+        },
+        "shell:other": {
+          "calls": 16,
+          "characters": 59593
+        },
+        "get_project_analysis": {
+          "calls": 1,
+          "characters": 220
+        },
+        "shell:tool-help": {
+          "calls": 1,
+          "characters": 8062
+        },
+        "get_work_context": {
+          "calls": 1,
+          "characters": 37873
+        },
+        "save_project_analysis": {
+          "calls": 1,
+          "characters": 229
+        },
+        "render_project_flow": {
+          "calls": 1,
+          "characters": 637
+        }
+      },
+      "staleReasons": [],
+      "renders": [
+        {
+          "path": ".frontend-system/diagrams/order-frontend-actual.html",
+          "expectedHash": "71584e372f141826afcb11bbba5d20f254e49a5f0648b1890e3851972f99ea7c",
+          "actualHash": "318b580d46f5e6ff79ac7a5d56e27b2f825b784ea911184dcad2d3deb365ce06",
+          "language": "ko"
+        }
+      ],
+      "savedPlans": [],
+      "contractDiagnostics": null,
+      "protectedSourceMatches": true,
+      "exportIntegrity": false,
+      "deliveryComplete": false
+    },
+    {
+      "arm": "fs",
+      "stage": "change",
+      "threadId": "01a114ec-b75d-7bc1-8bb8-5e74baa5688c",
+      "seconds": 174.615,
+      "usage": {
+        "input_tokens": 827217,
+        "cached_input_tokens": 772096,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 7884,
+        "reasoning_output_tokens": 1037,
+        "total_tokens": 835101,
+        "uncached_input_tokens": 55121
+      },
+      "artifactAudit": {
+        "sourceUnchanged": true,
+        "runtimeUnchanged": true,
+        "requiredArtifacts": {
+          "analysis.md": true,
+          "plan.md": true
+        },
+        "html": [
+          ".frontend-system/diagrams/order-frontend-actual.html"
+        ],
+        "environmentFailure": null,
+        "complete": true
+      },
+      "errors": [
+        {
+          "tool": "save_project_analysis",
+          "message": "Analysis quote not found: src/features/checkout/index.js"
+        },
+        {
+          "tool": "save_revision",
+          "message": "ENOENT: no such file or directory, open '/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v13-cl5bul9r/fs/project/.frontend-system/project.md'"
+        }
+      ],
+      "responses": {
+        "shell:other": {
+          "calls": 16,
+          "characters": 89309
+        },
+        "list_plans": {
+          "calls": 1,
+          "characters": 2
+        },
+        "get_project_analysis": {
+          "calls": 1,
+          "characters": 989
+        },
+        "shell:tool-help": {
+          "calls": 3,
+          "characters": 52979
+        },
+        "get_work_context": {
+          "calls": 2,
+          "characters": 52352
+        },
+        "save_project_analysis": {
+          "calls": 1,
+          "characters": 229
+        },
+        "render_project_flow": {
+          "calls": 1,
+          "characters": 637
+        },
+        "read_learned_knowledge": {
+          "calls": 1,
+          "characters": 3602
+        }
+      },
+      "staleReasons": [
+        "Changed discovery source: src/features/checkout/index.js"
+      ],
+      "renders": [
+        {
+          "path": ".frontend-system/diagrams/order-frontend-actual.html",
+          "expectedHash": "5be9c0583e549ff8dc9bbbf5d7ee0fdacf3102e360d1eef5c864122844c88c87",
+          "actualHash": "5be9c0583e549ff8dc9bbbf5d7ee0fdacf3102e360d1eef5c864122844c88c87",
+          "language": "ko"
+        }
+      ],
+      "savedPlans": [],
+      "contractDiagnostics": null,
+      "protectedSourceMatches": true,
+      "exportIntegrity": true,
+      "deliveryComplete": false
+    }
+  ]
+}

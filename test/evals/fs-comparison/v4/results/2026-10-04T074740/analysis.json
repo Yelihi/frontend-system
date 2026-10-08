@@ -1,0 +1,645 @@
+{
+  "source": "summary.json, manifest.json and completed per-call events",
+  "model": "gpt-6-sol",
+  "track": "implementation",
+  "manifestHash": "6f4745504f65f1f20225364e27ea2ad0cf24c3b8adbbc964f525909040c85dea",
+  "modelCalls": 12,
+  "timeoutPerInvocation": 300,
+  "rows": [
+    {
+      "case": "duplicated",
+      "arm": "plain",
+      "eligible": true,
+      "workflow": "observed",
+      "usage": {
+        "input_tokens": 281152,
+        "output_tokens": 5996,
+        "total_tokens": 287148,
+        "cached_input_tokens": 263808
+      },
+      "modelElapsedSeconds": 173.258,
+      "phases": [
+        {
+          "phase": "prepare",
+          "attempt": 0,
+          "elapsedSeconds": 63.294,
+          "usage": {
+            "input_tokens": 115136,
+            "cached_input_tokens": 105472,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 2041,
+            "reasoning_output_tokens": 681,
+            "total_tokens": 117177,
+            "uncached_input_tokens": 9664
+          },
+          "grade": {
+            "status": "recorded-not-semantically-graded",
+            "eligible": true
+          },
+          "mcpCalls": 0,
+          "mcpFailures": 0,
+          "shellCalls": 15
+        },
+        {
+          "phase": "work",
+          "attempt": 0,
+          "elapsedSeconds": 109.964,
+          "usage": {
+            "input_tokens": 166016,
+            "cached_input_tokens": 158336,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 3955,
+            "reasoning_output_tokens": 1533,
+            "total_tokens": 169971,
+            "uncached_input_tokens": 7680
+          },
+          "grade": {
+            "status": "graded",
+            "eligible": true,
+            "results": [
+              {
+                "id": "public-interface",
+                "status": "passed"
+              },
+              {
+                "id": "success-and-input-ownership",
+                "status": "passed"
+              },
+              {
+                "id": "unauthorized-once-no-retry",
+                "status": "passed"
+              },
+              {
+                "id": "business-error-remains-caller-owned",
+                "status": "passed"
+              },
+              {
+                "id": "transport-failure-no-retry",
+                "status": "passed"
+              },
+              {
+                "id": "ui-build-and-direct-request-boundary",
+                "status": "passed"
+              }
+            ],
+            "semanticReview": "unverified",
+            "limits": "Named App/client boundary only; indirect aliases and runtime UI behavior require review."
+          },
+          "mcpCalls": 0,
+          "mcpFailures": 0,
+          "shellCalls": 7
+        }
+      ],
+      "failures": [],
+      "adoptedKnowledge": [],
+      "contextIdsUsed": [],
+      "mcpResponseCharacters": 0
+    },
+    {
+      "case": "duplicated",
+      "arm": "fs",
+      "eligible": true,
+      "workflow": "observed",
+      "usage": {
+        "input_tokens": 1944378,
+        "output_tokens": 13889,
+        "total_tokens": 1958267,
+        "cached_input_tokens": 1845376
+      },
+      "modelElapsedSeconds": 407.317,
+      "phases": [
+        {
+          "phase": "prepare",
+          "attempt": 0,
+          "elapsedSeconds": 179.996,
+          "usage": {
+            "input_tokens": 548164,
+            "cached_input_tokens": 477568,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 6237,
+            "reasoning_output_tokens": 830,
+            "total_tokens": 554401,
+            "uncached_input_tokens": 70596
+          },
+          "grade": {
+            "status": "recorded-not-semantically-graded",
+            "eligible": true
+          },
+          "mcpCalls": 15,
+          "mcpFailures": 2,
+          "shellCalls": 15
+        },
+        {
+          "phase": "work",
+          "attempt": 0,
+          "elapsedSeconds": 227.321,
+          "usage": {
+            "input_tokens": 1396214,
+            "cached_input_tokens": 1367808,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 7652,
+            "reasoning_output_tokens": 2298,
+            "total_tokens": 1403866,
+            "uncached_input_tokens": 28406
+          },
+          "grade": {
+            "status": "graded",
+            "eligible": true,
+            "results": [
+              {
+                "id": "public-interface",
+                "status": "passed"
+              },
+              {
+                "id": "success-and-input-ownership",
+                "status": "passed"
+              },
+              {
+                "id": "unauthorized-once-no-retry",
+                "status": "passed"
+              },
+              {
+                "id": "business-error-remains-caller-owned",
+                "status": "passed"
+              },
+              {
+                "id": "transport-failure-no-retry",
+                "status": "passed"
+              },
+              {
+                "id": "ui-build-and-direct-request-boundary",
+                "status": "passed"
+              }
+            ],
+            "semanticReview": "unverified",
+            "limits": "Named App/client boundary only; indirect aliases and runtime UI behavior require review."
+          },
+          "mcpCalls": 12,
+          "mcpFailures": 1,
+          "shellCalls": 8
+        }
+      ],
+      "failures": [
+        {
+          "phase": "prepare",
+          "tool": "save_project_context",
+          "message": "Absence claims require an inspected scope"
+        },
+        {
+          "phase": "prepare",
+          "tool": "get_work_context",
+          "message": "Unknown semantic trigger: request-input-mutation"
+        },
+        {
+          "phase": "work",
+          "tool": "save_execution",
+          "message": "ENOENT: no such file or directory, open '/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-network-pilot-73v64xhi/project/.frontend-system/plans/request-boundary/checks/2b28333b2-b16c-4b7e-99cb-a0d4a37bf231.json'"
+        }
+      ],
+      "adoptedKnowledge": [
+        "request-policy-boundaries"
+      ],
+      "contextIdsUsed": [
+        "9a1143246b54028d3abcacd43085602262c7205d699a536dd0fac7802929ac53"
+      ],
+      "mcpResponseCharacters": 134578
+    },
+    {
+      "case": "existing-good",
+      "arm": "fs",
+      "eligible": true,
+      "workflow": "observed",
+      "usage": {
+        "input_tokens": 1888721,
+        "output_tokens": 17760,
+        "total_tokens": 1906481,
+        "cached_input_tokens": 1820416
+      },
+      "modelElapsedSeconds": 485.591,
+      "phases": [
+        {
+          "phase": "prepare",
+          "attempt": 0,
+          "elapsedSeconds": 292.389,
+          "usage": {
+            "input_tokens": 600260,
+            "cached_input_tokens": 554240,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 11187,
+            "reasoning_output_tokens": 1312,
+            "total_tokens": 611447,
+            "uncached_input_tokens": 46020
+          },
+          "grade": {
+            "status": "recorded-not-semantically-graded",
+            "eligible": true
+          },
+          "mcpCalls": 18,
+          "mcpFailures": 3,
+          "shellCalls": 12
+        },
+        {
+          "phase": "work",
+          "attempt": 0,
+          "elapsedSeconds": 193.202,
+          "usage": {
+            "input_tokens": 1288461,
+            "cached_input_tokens": 1266176,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 6573,
+            "reasoning_output_tokens": 1478,
+            "total_tokens": 1295034,
+            "uncached_input_tokens": 22285
+          },
+          "grade": {
+            "status": "graded",
+            "eligible": true,
+            "results": [
+              {
+                "id": "public-interface",
+                "status": "passed"
+              },
+              {
+                "id": "success-and-input-ownership",
+                "status": "passed"
+              },
+              {
+                "id": "unauthorized-once-no-retry",
+                "status": "passed"
+              },
+              {
+                "id": "business-error-remains-caller-owned",
+                "status": "passed"
+              },
+              {
+                "id": "transport-failure-no-retry",
+                "status": "passed"
+              },
+              {
+                "id": "ui-build-and-direct-request-boundary",
+                "status": "passed"
+              },
+              {
+                "id": "preserve-valid-client",
+                "status": "passed"
+              }
+            ],
+            "semanticReview": "unverified",
+            "limits": "Named App/client boundary only; indirect aliases and runtime UI behavior require review."
+          },
+          "mcpCalls": 13,
+          "mcpFailures": 0,
+          "shellCalls": 9
+        }
+      ],
+      "failures": [
+        {
+          "phase": "prepare",
+          "tool": "save_revision",
+          "message": "MCP error -32602: Input validation error: Invalid arguments for tool save_revision: Invalid option: expected one of \"existing-tool\"|\"custom-check\"|\"behavior-test\"|\"review\" at policy.rules[0].verification\nInvalid option: expected one of \"existing-tool\"|\"custom-check\"|\"behavior-test\"|\"review\" at policy.rules[8].verification\nInvalid option: expected one of \"existing-tool\"|\"custom-check\"|\"behavior-test\"|\"review\" at policy.rules[9].verification"
+        },
+        {
+          "phase": "prepare",
+          "tool": "save_revision",
+          "message": "Decision must cite routed source or a pinned requirement: package.json. Add code to get_work_context.files, or documents to requirements, and refresh the contextId. Available: App.jsx, api.mjs, money.mjs, PROVIDED_PLAN.md, CONTRACT.md"
+        },
+        {
+          "phase": "prepare",
+          "tool": "get_revision",
+          "message": "MCP error -32602: Input validation error: Invalid arguments for tool get_revision: Too big: expected number to be <=500 at limit"
+        }
+      ],
+      "adoptedKnowledge": [
+        "request-policy-boundaries"
+      ],
+      "contextIdsUsed": [
+        "03f326ca5573bdccaa58b9f808e763c06ceae30010d7c73eeb8622005d17e3c7"
+      ],
+      "mcpResponseCharacters": 118986
+    },
+    {
+      "case": "existing-good",
+      "arm": "plain",
+      "eligible": true,
+      "workflow": "observed",
+      "usage": {
+        "input_tokens": 474632,
+        "output_tokens": 9436,
+        "total_tokens": 484068,
+        "cached_input_tokens": 437376
+      },
+      "modelElapsedSeconds": 260.456,
+      "phases": [
+        {
+          "phase": "prepare",
+          "attempt": 0,
+          "elapsedSeconds": 60.52,
+          "usage": {
+            "input_tokens": 122777,
+            "cached_input_tokens": 100608,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 2044,
+            "reasoning_output_tokens": 756,
+            "total_tokens": 124821,
+            "uncached_input_tokens": 22169
+          },
+          "grade": {
+            "status": "recorded-not-semantically-graded",
+            "eligible": true
+          },
+          "mcpCalls": 0,
+          "mcpFailures": 0,
+          "shellCalls": 14
+        },
+        {
+          "phase": "work",
+          "attempt": 0,
+          "elapsedSeconds": 199.936,
+          "usage": {
+            "input_tokens": 351855,
+            "cached_input_tokens": 336768,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 7392,
+            "reasoning_output_tokens": 2635,
+            "total_tokens": 359247,
+            "uncached_input_tokens": 15087
+          },
+          "grade": {
+            "status": "graded",
+            "eligible": true,
+            "results": [
+              {
+                "id": "public-interface",
+                "status": "passed"
+              },
+              {
+                "id": "success-and-input-ownership",
+                "status": "passed"
+              },
+              {
+                "id": "unauthorized-once-no-retry",
+                "status": "passed"
+              },
+              {
+                "id": "business-error-remains-caller-owned",
+                "status": "passed"
+              },
+              {
+                "id": "transport-failure-no-retry",
+                "status": "passed"
+              },
+              {
+                "id": "ui-build-and-direct-request-boundary",
+                "status": "passed"
+              },
+              {
+                "id": "preserve-valid-client",
+                "status": "passed"
+              }
+            ],
+            "semanticReview": "unverified",
+            "limits": "Named App/client boundary only; indirect aliases and runtime UI behavior require review."
+          },
+          "mcpCalls": 0,
+          "mcpFailures": 0,
+          "shellCalls": 9
+        }
+      ],
+      "failures": [],
+      "adoptedKnowledge": [],
+      "contextIdsUsed": [],
+      "mcpResponseCharacters": 0
+    },
+    {
+      "case": "different-policies",
+      "arm": "plain",
+      "eligible": true,
+      "workflow": "observed",
+      "usage": {
+        "input_tokens": 245127,
+        "output_tokens": 7779,
+        "total_tokens": 252906,
+        "cached_input_tokens": 219136
+      },
+      "modelElapsedSeconds": 214.709,
+      "phases": [
+        {
+          "phase": "prepare",
+          "attempt": 0,
+          "elapsedSeconds": 54.153,
+          "usage": {
+            "input_tokens": 57989,
+            "cached_input_tokens": 50304,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 1890,
+            "reasoning_output_tokens": 955,
+            "total_tokens": 59879,
+            "uncached_input_tokens": 7685
+          },
+          "grade": {
+            "status": "recorded-not-semantically-graded",
+            "eligible": true
+          },
+          "mcpCalls": 0,
+          "mcpFailures": 0,
+          "shellCalls": 11
+        },
+        {
+          "phase": "work",
+          "attempt": 0,
+          "elapsedSeconds": 160.556,
+          "usage": {
+            "input_tokens": 187138,
+            "cached_input_tokens": 168832,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 5889,
+            "reasoning_output_tokens": 2637,
+            "total_tokens": 193027,
+            "uncached_input_tokens": 18306
+          },
+          "grade": {
+            "status": "graded",
+            "eligible": true,
+            "results": [
+              {
+                "id": "public-interface",
+                "status": "passed"
+              },
+              {
+                "id": "success-and-input-ownership",
+                "status": "passed"
+              },
+              {
+                "id": "unauthorized-once-no-retry",
+                "status": "passed"
+              },
+              {
+                "id": "business-error-remains-caller-owned",
+                "status": "passed"
+              },
+              {
+                "id": "transport-failure-no-retry",
+                "status": "passed"
+              },
+              {
+                "id": "ui-build-and-direct-request-boundary",
+                "status": "passed"
+              }
+            ],
+            "semanticReview": "unverified",
+            "limits": "Named App/client boundary only; indirect aliases and runtime UI behavior require review."
+          },
+          "mcpCalls": 0,
+          "mcpFailures": 0,
+          "shellCalls": 7
+        }
+      ],
+      "failures": [],
+      "adoptedKnowledge": [],
+      "contextIdsUsed": [],
+      "mcpResponseCharacters": 0
+    },
+    {
+      "case": "different-policies",
+      "arm": "fs",
+      "eligible": true,
+      "workflow": "observed",
+      "usage": {
+        "input_tokens": 2007211,
+        "output_tokens": 16183,
+        "total_tokens": 2023394,
+        "cached_input_tokens": 1929216
+      },
+      "modelElapsedSeconds": 464.09,
+      "phases": [
+        {
+          "phase": "prepare",
+          "attempt": 0,
+          "elapsedSeconds": 214.956,
+          "usage": {
+            "input_tokens": 547111,
+            "cached_input_tokens": 503552,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 7604,
+            "reasoning_output_tokens": 943,
+            "total_tokens": 554715,
+            "uncached_input_tokens": 43559
+          },
+          "grade": {
+            "status": "recorded-not-semantically-graded",
+            "eligible": true
+          },
+          "mcpCalls": 13,
+          "mcpFailures": 1,
+          "shellCalls": 15
+        },
+        {
+          "phase": "work",
+          "attempt": 0,
+          "elapsedSeconds": 249.134,
+          "usage": {
+            "input_tokens": 1460100,
+            "cached_input_tokens": 1425664,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 8579,
+            "reasoning_output_tokens": 2699,
+            "total_tokens": 1468679,
+            "uncached_input_tokens": 34436
+          },
+          "grade": {
+            "status": "graded",
+            "eligible": true,
+            "results": [
+              {
+                "id": "public-interface",
+                "status": "passed"
+              },
+              {
+                "id": "success-and-input-ownership",
+                "status": "passed"
+              },
+              {
+                "id": "unauthorized-once-no-retry",
+                "status": "passed"
+              },
+              {
+                "id": "business-error-remains-caller-owned",
+                "status": "passed"
+              },
+              {
+                "id": "transport-failure-no-retry",
+                "status": "passed"
+              },
+              {
+                "id": "ui-build-and-direct-request-boundary",
+                "status": "passed"
+              }
+            ],
+            "semanticReview": "unverified",
+            "limits": "Named App/client boundary only; indirect aliases and runtime UI behavior require review."
+          },
+          "mcpCalls": 15,
+          "mcpFailures": 0,
+          "shellCalls": 7
+        }
+      ],
+      "failures": [
+        {
+          "phase": "prepare",
+          "tool": "save_revision",
+          "message": "MCP error -32602: Input validation error: Invalid arguments for tool save_revision: Invalid option: expected one of \"existing-tool\"|\"custom-check\"|\"behavior-test\"|\"review\" at policy.rules[5].verification"
+        }
+      ],
+      "adoptedKnowledge": [
+        "request-policy-boundaries"
+      ],
+      "contextIdsUsed": [
+        "ab0257970e47b9a00cb75fe0882046899198d9b1dbf2957eba41770b1907afbd"
+      ],
+      "mcpResponseCharacters": 78540
+    }
+  ],
+  "totals": {
+    "plain": {
+      "usage": {
+        "input_tokens": 1000911,
+        "cached_input_tokens": 920320,
+        "output_tokens": 23211,
+        "total_tokens": 1024122,
+        "uncached_input_tokens": 80591
+      },
+      "modelElapsedSeconds": 648.423,
+      "passed": 3,
+      "mcpCalls": 0,
+      "mcpFailures": 0
+    },
+    "fs": {
+      "usage": {
+        "input_tokens": 5840310,
+        "cached_input_tokens": 5595008,
+        "output_tokens": 47832,
+        "total_tokens": 5888142,
+        "uncached_input_tokens": 245302
+      },
+      "modelElapsedSeconds": 1356.998,
+      "passed": 3,
+      "mcpCalls": 86,
+      "mcpFailures": 7
+    }
+  },
+  "fsToPlainRatios": {
+    "total_tokens": 5.74945367837035,
+    "uncached_input_tokens": 3.0437890086982415,
+    "output_tokens": 2.060747059583818,
+    "cached_input_tokens": 6.079415855354659,
+    "modelElapsedSeconds": 2.0927666045158793
+  },
+  "runtimeMatchesCurrentCheckout": true,
+  "limits": [
+    "One model; each of three cases run once.",
+    "Same supplied implementation plan and available knowledge; question/planning quality is not measured.",
+    "External checks passed; aggregate semanticReview remains unverified. Host FS review records are not an independent review.",
+    "Input includes cache hits across model turns; token ratio is not a billing ratio.",
+    "After/before completion difference is observed, not statistical proof or measured token savings over previous FS timeouts."
+  ]
+}

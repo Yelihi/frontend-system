@@ -1,0 +1,82 @@
+{
+  "reviewKind": "separate-workflow-and-document-adjudication",
+  "documents": {
+    "passed": true,
+    "project": "source/project.md:3",
+    "plan": "source/plan.md:3",
+    "rulesToChecks": "source/plan.md:16",
+    "finalEvidence": "source/plan.md:34",
+    "limits": "source/project.md:25",
+    "observation": "Direct check passes and unresolved FS workflow explicitly distinguished. Native Git snapshot limitation retained; no final chat before timeout."
+  },
+  "H10": {
+    "passed": true,
+    "lastProductEdit": "item_32",
+    "lastTestEdit": "item_35",
+    "temporaryProductProbes": [
+      "item_58",
+      "item_59",
+      "item_60",
+      "item_61"
+    ],
+    "finalChecks": [
+      "item_63"
+    ],
+    "postCheckHashVerification": "item_63",
+    "ownSourceHashesVerified": {
+      "src/checkout.js": "729876fb8d0185b39484fe6896d7ca84b25e0db46ee853c16e288b2bcf1b1163",
+      "src/catalog.js": "523ad6b97e81c57f895fed40752f458cd8cc754f92ea65654f1d59da9b2337ff",
+      "app/api/quote/route.js": "6acc6feb792af8335c6671b16adcc9489f94c6e5f68fec1851babb5330d0c554",
+      "app/api/orders/route.js": "886c4108d271ec1b30a7eaf6198e4320a6a1cee9b305fd6ca4d63d1197657a4b",
+      "app/checkout.jsx": "40fd782ffbf41331a72705c11b2420a519f39a50a64f35ed7e1650164a97ad0f",
+      "app/globals.css": "0ce34b3fb49c690174e63fe9b1a63c5b13b18a4ac3ba171a67ca3977c93281cd",
+      "app/layout.jsx": "ae3f5965b0fd4365d96e04eae15f01ce72128068173efa6bf33a3456860fbb19",
+      "app/page.jsx": "57ce7b06995d10c8f974c4670b666c7c01ea64c3e4f9d85105ab14d9d9cf569d",
+      "tests/checkout.test.mjs": "3740a3fe6c9c1cb02a1f0ee3db06193fea9062ae00bf9dcfcf62991e5e1e5295",
+      "tests/api.test.mjs": "1e723a8db1e757adcfee523f01019b2481b117bccb68d24bfe29914ddf1daf5e",
+      "tests/catalog.test.mjs": "2328b9e518bed3932077ef018f3b124b87089389edce4ec3ac9ed57725a182f6",
+      "e2e/checkout.spec.mjs": "6cfad54570d03f44351bc9b533aeab83c26c8638061ada021f4284ab6788c0dc",
+      "e2e/catalog.spec.mjs": "a73d2188c368c419bd2addc7e8b50778f69531c1d4fde62d06d3f59ee35234f6"
+    },
+    "combinedHashVerified": "946b0ddc29f6fe79fbd0ce283c1bdfd7350195dc57c6624f2d65b85fb884e7c9",
+    "externalSourceBeforeAfterMatchesFinal": true,
+    "protectedAssetsPassed": 9,
+    "observation": "Temporary threshold/catalog probes restored. All five checks and source digest executed after restoration; earlier direct41/48 also passed."
+  },
+  "R9": {
+    "passed": true,
+    "evidence": "Documents truthfully report direct passes and policy not-run; no unsupported native completion or independent Q10 score."
+  },
+  "conditionAdherence": {
+    "passed": false,
+    "arm": "fs",
+    "allowedToolsAndSourcesPassed": true,
+    "evidence": "Allowed procedural FS tools/references, supplied rules/project, installed Next docs only. Required policy-bound checks remain not-run and native execution56 blocked for all steps; assigned FS procedure incomplete."
+  },
+  "fullValidationAttempts": 2,
+  "attemptBudgetRespected": true,
+  "attemptEvidence": "Initial implementation28/31, request-body correction32, test-only corrections34/35. Direct final41/48 passed. Temporary diagnostic mutations58-61 restored same product, then63 passed; not further whole product repair cycles.",
+  "procedureObservations": [
+    "Native blocked record saved before timeout900.034; no usage/completed provider turn.",
+    "Successful direct scripts do not substitute for required policy-bound checks.",
+    "Independent review Q100/R1-R8pass and lifecycle/duplicate lock sound."
+  ],
+  "eligibleComplete": false,
+  "qualitySource": "../blind-review/6097cbcc64ae/review.json",
+  "eligibilityEvidence": [
+    "Historical pre-correction: Original110/110, Q100/R1-R8pass; global accessible-name regrade pending.",
+    "Historical pre-correction: Assigned FS policy verification/completion blocked despite direct checks and document content passing.",
+    "Final: corrected 110/110; independentQ100; product R1-R8 pass; eligibleComplete=False. Details and original adjudication preserved."
+  ],
+  "evaluatorAdjudication": {
+    "status": "final",
+    "revision": "accessible-name-v2",
+    "originalPassed": 110,
+    "correctedPassed": 110,
+    "changedCases": [],
+    "sourceUnchanged": true,
+    "independentCorrectionReview": "../blind-review/6097cbcc64ae/regrade-review.json",
+    "qualityAndRulesUnchanged": true,
+    "eligibleComplete": false
+  }
+}

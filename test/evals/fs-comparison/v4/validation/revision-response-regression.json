@@ -1,0 +1,79 @@
+{
+  "modelCalls": 0,
+  "archivedRun": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/test/evals/fs-comparison/v4/results/2026-10-04T074740",
+  "rows": [
+    {
+      "case": "duplicated",
+      "responses": 2,
+      "previousCharacters": 38627,
+      "currentCharacters": 1415,
+      "reductionPercent": 96.3,
+      "entries": [
+        {
+          "tool": "save_revision",
+          "previousCharacters": 19314,
+          "currentCharacters": 708
+        },
+        {
+          "tool": "approve_revision",
+          "previousCharacters": 19313,
+          "currentCharacters": 707
+        }
+      ]
+    },
+    {
+      "case": "existing-good",
+      "responses": 4,
+      "previousCharacters": 61443,
+      "currentCharacters": 20801,
+      "reductionPercent": 66.1,
+      "entries": [
+        {
+          "tool": "save_revision",
+          "previousCharacters": 15344,
+          "currentCharacters": 723
+        },
+        {
+          "tool": "get_revision",
+          "previousCharacters": 15378,
+          "currentCharacters": 9678
+        },
+        {
+          "tool": "get_revision",
+          "previousCharacters": 15378,
+          "currentCharacters": 9678
+        },
+        {
+          "tool": "approve_revision",
+          "previousCharacters": 15343,
+          "currentCharacters": 722
+        }
+      ]
+    },
+    {
+      "case": "different-policies",
+      "responses": 3,
+      "previousCharacters": 34089,
+      "currentCharacters": 8033,
+      "reductionPercent": 76.4,
+      "entries": [
+        {
+          "tool": "save_revision",
+          "previousCharacters": 11352,
+          "currentCharacters": 570
+        },
+        {
+          "tool": "get_revision",
+          "previousCharacters": 11386,
+          "currentCharacters": 6894
+        },
+        {
+          "tool": "approve_revision",
+          "previousCharacters": 11351,
+          "currentCharacters": 569
+        }
+      ]
+    }
+  ],
+  "limits": "Pure archived response projection, not an AI rerun or token/latency benchmark. Contract text, policy, issues, hashes, approval and full evidence access are preserved."
+}

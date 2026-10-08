@@ -1,0 +1,462 @@
+{
+  "runnerStatus": "completed",
+  "modelCalls": 4,
+  "rows": [
+    {
+      "case": "tailwind-authorship",
+      "arm": "plain",
+      "completed": true,
+      "missingPhases": [],
+      "eligible": true,
+      "timedOut": false,
+      "planSatisfied": 93,
+      "planTotal": 93,
+      "totalTokens": 439367,
+      "uncachedInputTokens": 31258,
+      "seconds": 166.209,
+      "phaseUsage": [
+        {
+          "phase": "prepare",
+          "attempt": 0,
+          "usage": {
+            "input_tokens": 88469,
+            "cached_input_tokens": 70144,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 1202,
+            "reasoning_output_tokens": 300,
+            "total_tokens": 89671,
+            "uncached_input_tokens": 18325
+          }
+        },
+        {
+          "phase": "work",
+          "attempt": 0,
+          "usage": {
+            "input_tokens": 343941,
+            "cached_input_tokens": 331008,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 5755,
+            "reasoning_output_tokens": 1363,
+            "total_tokens": 349696,
+            "uncached_input_tokens": 12933
+          }
+        }
+      ],
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "mcpTools": {},
+      "projectSaveCalls": 0,
+      "savedStatements": 0,
+      "registeredReuse": 0,
+      "explicitReuseExclusions": 0,
+      "reuseObservable": false,
+      "reusedTriggers": 0,
+      "patchCalls": 0,
+      "patchSuccesses": 0,
+      "routePatchCalls": 0,
+      "fullRevisionReads": 0
+    },
+    {
+      "case": "tailwind-authorship",
+      "arm": "fs",
+      "completed": true,
+      "missingPhases": [],
+      "eligible": true,
+      "timedOut": false,
+      "planSatisfied": 93,
+      "planTotal": 93,
+      "totalTokens": 2048086,
+      "uncachedInputTokens": 87121,
+      "seconds": 355.734,
+      "phaseUsage": [
+        {
+          "phase": "prepare",
+          "attempt": 0,
+          "usage": {
+            "input_tokens": 218022,
+            "cached_input_tokens": 175872,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 1727,
+            "reasoning_output_tokens": 414,
+            "total_tokens": 219749,
+            "uncached_input_tokens": 42150
+          }
+        },
+        {
+          "phase": "work",
+          "attempt": 0,
+          "usage": {
+            "input_tokens": 1815723,
+            "cached_input_tokens": 1770752,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 12614,
+            "reasoning_output_tokens": 2188,
+            "total_tokens": 1828337,
+            "uncached_input_tokens": 44971
+          }
+        }
+      ],
+      "mcpCalls": 24,
+      "mcpErrors": 0,
+      "mcpTools": {
+        "list_mcp_resource_templates": 1,
+        "list_mcp_resources": 1,
+        "list_plans": 1,
+        "get_project_snapshot": 1,
+        "read_project_source": 2,
+        "get_work_context": 2,
+        "read_learned_knowledge": 1,
+        "save_project_context": 1,
+        "save_revision": 2,
+        "approve_revision": 1,
+        "get_workflow_context": 3,
+        "save_execution": 2,
+        "begin_work_attempt": 1,
+        "run_project_checks": 4,
+        "save_semantic_review": 1
+      },
+      "projectSaveCalls": 1,
+      "savedStatements": 4,
+      "registeredReuse": 1,
+      "explicitReuseExclusions": 3,
+      "reuseObservable": true,
+      "reusedTriggers": 1,
+      "patchCalls": 0,
+      "patchSuccesses": 0,
+      "routePatchCalls": 0,
+      "fullRevisionReads": 0
+    }
+  ],
+  "limits": [
+    "Missing usage/grades remain null, never zero or a pass.",
+    "Reuse counters record tool behavior, not semantic correctness or causal token savings.",
+    "Runner completed does not imply completed model turns. Fixed-order single pairs do not establish general superiority."
+  ],
+  "summarySha256": "1f23b29c072166df04fe98105694c11b3ccca576b4e9ff6322af1924b0fd2625",
+  "productFiles": [
+    {
+      "case": "tailwind-authorship",
+      "path": "App.jsx",
+      "equal": true,
+      "hashes": {
+        "plain": "47cd4e562af6b1e6563e85a99609439e7623a03737bcac8a7598e6455bca5d90",
+        "fs": "47cd4e562af6b1e6563e85a99609439e7623a03737bcac8a7598e6455bca5d90"
+      }
+    },
+    {
+      "case": "tailwind-authorship",
+      "path": "application/checkout.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "b948abfb69a30d9f9f06445791f6b8ce9001728ae051c0510e96714f0a724615",
+        "fs": "b948abfb69a30d9f9f06445791f6b8ce9001728ae051c0510e96714f0a724615"
+      }
+    },
+    {
+      "case": "tailwind-authorship",
+      "path": "application/inventory.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "b7073ba43bbcf51d046cb1e8e28e3e384bd6f9b443171f2c2ee7bd0b5695b522",
+        "fs": "b7073ba43bbcf51d046cb1e8e28e3e384bd6f9b443171f2c2ee7bd0b5695b522"
+      }
+    },
+    {
+      "case": "tailwind-authorship",
+      "path": "application/orders.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "209843ac4a42c62843bb2c3671b6a44233a7de4f5c74692b853987e17bd94495",
+        "fs": "209843ac4a42c62843bb2c3671b6a44233a7de4f5c74692b853987e17bd94495"
+      }
+    },
+    {
+      "case": "tailwind-authorship",
+      "path": "application/refund.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "2b6541d2a8c80cf234fbdcfe9292f29f95dc1f7d6b8fea8653f2439e4aa9ff0c",
+        "fs": "2b6541d2a8c80cf234fbdcfe9292f29f95dc1f7d6b8fea8653f2439e4aa9ff0c"
+      }
+    },
+    {
+      "case": "tailwind-authorship",
+      "path": "application/returns.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "152823815c690e3848fb2016ef8a4204817f7af20f98be74eb0140ae8014c1ed",
+        "fs": "152823815c690e3848fb2016ef8a4204817f7af20f98be74eb0140ae8014c1ed"
+      }
+    },
+    {
+      "case": "tailwind-authorship",
+      "path": "application/system.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "0e7ad8e7f6ee8cdce1489e8cf12c5aacc77888bf38ada07c50e250eb976d4bc1",
+        "fs": "0e7ad8e7f6ee8cdce1489e8cf12c5aacc77888bf38ada07c50e250eb976d4bc1"
+      }
+    },
+    {
+      "case": "tailwind-authorship",
+      "path": "application/wallet.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "6837459d91b2e30e768ae142e89ebd066465d7b857c6a43d47e52bf242aa2333",
+        "fs": "6837459d91b2e30e768ae142e89ebd066465d7b857c6a43d47e52bf242aa2333"
+      }
+    },
+    {
+      "case": "tailwind-authorship",
+      "path": "data/inventory.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "75cd94254b6c113aa24f95c755d9980859ba6c539791ee186c1a33761bd1da85",
+        "fs": "75cd94254b6c113aa24f95c755d9980859ba6c539791ee186c1a33761bd1da85"
+      }
+    },
+    {
+      "case": "tailwind-authorship",
+      "path": "data/orders.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "944f687aee3e7eecb646af9dffda8a464d9cc844927302468d1f681dfa26f7f1",
+        "fs": "944f687aee3e7eecb646af9dffda8a464d9cc844927302468d1f681dfa26f7f1"
+      }
+    },
+    {
+      "case": "tailwind-authorship",
+      "path": "data/returns.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "2224009dc2071d8c6b8bf9503791457dcc6e288758f8d95a8f5c8b66a160392f",
+        "fs": "2224009dc2071d8c6b8bf9503791457dcc6e288758f8d95a8f5c8b66a160392f"
+      }
+    },
+    {
+      "case": "tailwind-authorship",
+      "path": "data/wallet.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "e927764cd96acd90ae86d524e55b2c584e628e8ff815169422dd03f3b0492e39",
+        "fs": "e927764cd96acd90ae86d524e55b2c584e628e8ff815169422dd03f3b0492e39"
+      }
+    },
+    {
+      "case": "tailwind-authorship",
+      "path": "domain/inventory.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "e9955e1b7a1fa227abd854934e111ef3471db3eabd000b830ba05599799cf957",
+        "fs": "e9955e1b7a1fa227abd854934e111ef3471db3eabd000b830ba05599799cf957"
+      }
+    },
+    {
+      "case": "tailwind-authorship",
+      "path": "domain/order.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "d3ea12efdd1482f52905090dd1349faca1707a6473dd6d54bfb829d61e210d96",
+        "fs": "d3ea12efdd1482f52905090dd1349faca1707a6473dd6d54bfb829d61e210d96"
+      }
+    },
+    {
+      "case": "tailwind-authorship",
+      "path": "domain/promotion.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "cebdf7386a1ed4d5202bf054d51f79ed75fe33cb1df5a6a420523b97a5dffa50",
+        "fs": "cebdf7386a1ed4d5202bf054d51f79ed75fe33cb1df5a6a420523b97a5dffa50"
+      }
+    },
+    {
+      "case": "tailwind-authorship",
+      "path": "domain/returns.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "8846a0587be3a958571e79f2ba32e32c13de77e3e5bfb1b8320d489d57911568",
+        "fs": "8846a0587be3a958571e79f2ba32e32c13de77e3e5bfb1b8320d489d57911568"
+      }
+    },
+    {
+      "case": "tailwind-authorship",
+      "path": "domain/shipping.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "d4db4f54b9c48b89e5aa2935a1764e7fe2d7d9686910b238ea4c53d620bba010",
+        "fs": "d4db4f54b9c48b89e5aa2935a1764e7fe2d7d9686910b238ea4c53d620bba010"
+      }
+    },
+    {
+      "case": "tailwind-authorship",
+      "path": "domain/wallet.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "513c0f677c87210f5bc53501287bf0c57ba3bc1d5d6f68557e27c22436f38ddc",
+        "fs": "513c0f677c87210f5bc53501287bf0c57ba3bc1d5d6f68557e27c22436f38ddc"
+      }
+    },
+    {
+      "case": "tailwind-authorship",
+      "path": "shared/http.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "56169a9713121eca4f8a82b0b83ce97019155a1a5df49120f54e7b6de931b27d",
+        "fs": "56169a9713121eca4f8a82b0b83ce97019155a1a5df49120f54e7b6de931b27d"
+      }
+    },
+    {
+      "case": "tailwind-authorship",
+      "path": "shared/inflight.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "5b55668fb517ac6db870f10827b068c8e93e0abf6b5059568fff7f8a4f1981ba",
+        "fs": "5b55668fb517ac6db870f10827b068c8e93e0abf6b5059568fff7f8a4f1981ba"
+      }
+    },
+    {
+      "case": "tailwind-authorship",
+      "path": "shared/resource.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "fb83100559626ea251aff851339d87ac49743c2febb6a6d2f788a95561e3edb8",
+        "fs": "fb83100559626ea251aff851339d87ac49743c2febb6a6d2f788a95561e3edb8"
+      }
+    },
+    {
+      "case": "tailwind-authorship",
+      "path": "shared/session.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "3455f4b1b045b602f89af0afc9900e41780b1b811151dde715a9ad9549aa838c",
+        "fs": "3455f4b1b045b602f89af0afc9900e41780b1b811151dde715a9ad9549aa838c"
+      }
+    },
+    {
+      "case": "tailwind-authorship",
+      "path": "ui/Amount.jsx",
+      "equal": true,
+      "hashes": {
+        "plain": "88f51873d06a4a300ac568ca9f3d8b253e934964a4a5a28cfad5352f15fa8481",
+        "fs": "88f51873d06a4a300ac568ca9f3d8b253e934964a4a5a28cfad5352f15fa8481"
+      }
+    },
+    {
+      "case": "tailwind-authorship",
+      "path": "ui/CheckoutForm.jsx",
+      "equal": true,
+      "hashes": {
+        "plain": "0e769f8a3d0d01a70beda7a50c11f949336d2da3f90a559a179fb80a9aa26843",
+        "fs": "0e769f8a3d0d01a70beda7a50c11f949336d2da3f90a559a179fb80a9aa26843"
+      }
+    },
+    {
+      "case": "tailwind-authorship",
+      "path": "ui/InventoryPanel.jsx",
+      "equal": true,
+      "hashes": {
+        "plain": "0a7130ecc8c86b49c10edcc0bc9be84efd664b81d49accc21e91d03faf37905e",
+        "fs": "0a7130ecc8c86b49c10edcc0bc9be84efd664b81d49accc21e91d03faf37905e"
+      }
+    },
+    {
+      "case": "tailwind-authorship",
+      "path": "ui/OrderPanel.jsx",
+      "equal": true,
+      "hashes": {
+        "plain": "93c9ad5c6d0c0ca06413e046768c413f39096dc4db7efcc24383c59cc2a51dea",
+        "fs": "93c9ad5c6d0c0ca06413e046768c413f39096dc4db7efcc24383c59cc2a51dea"
+      }
+    },
+    {
+      "case": "tailwind-authorship",
+      "path": "ui/ReturnForm.jsx",
+      "equal": true,
+      "hashes": {
+        "plain": "8fb62160b8a40ef7c7535a8a120979d633a1a20773ed2f8e6f5f03803cb53bc4",
+        "fs": "8fb62160b8a40ef7c7535a8a120979d633a1a20773ed2f8e6f5f03803cb53bc4"
+      }
+    },
+    {
+      "case": "tailwind-authorship",
+      "path": "ui/ReturnsPanel.jsx",
+      "equal": true,
+      "hashes": {
+        "plain": "b5c854af1e7cc6fda2184c3c3ca935473ee687e4ac32171f1e1cca156c3c2902",
+        "fs": "b5c854af1e7cc6fda2184c3c3ca935473ee687e4ac32171f1e1cca156c3c2902"
+      }
+    },
+    {
+      "case": "tailwind-authorship",
+      "path": "ui/SessionBar.jsx",
+      "equal": true,
+      "hashes": {
+        "plain": "6b9b82f68f7138d98699be04a5401ff37dd2d8b15e667dc2d2b3952b1782bc30",
+        "fs": "6b9b82f68f7138d98699be04a5401ff37dd2d8b15e667dc2d2b3952b1782bc30"
+      }
+    },
+    {
+      "case": "tailwind-authorship",
+      "path": "ui/Status.jsx",
+      "equal": true,
+      "hashes": {
+        "plain": "c123d901fad82e00c010ab718d566da1174cbebd3ee5b28b51ca5dfe1bcf9dc8",
+        "fs": "c123d901fad82e00c010ab718d566da1174cbebd3ee5b28b51ca5dfe1bcf9dc8"
+      }
+    },
+    {
+      "case": "tailwind-authorship",
+      "path": "ui/WalletPanel.jsx",
+      "equal": true,
+      "hashes": {
+        "plain": "41016cda04f8f0ab15d19c907878ff886e8d8977c9871831c0f61e582ba81532",
+        "fs": "41016cda04f8f0ab15d19c907878ff886e8d8977c9871831c0f61e582ba81532"
+      }
+    },
+    {
+      "case": "tailwind-authorship",
+      "path": "ui/useAction.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "623438ac2154cbf49c822246a8b45ae0a05a41a440d3cd0e2b64a982e71056a3",
+        "fs": "623438ac2154cbf49c822246a8b45ae0a05a41a440d3cd0e2b64a982e71056a3"
+      }
+    },
+    {
+      "case": "tailwind-authorship",
+      "path": "ui/ActionButton.jsx",
+      "equal": false,
+      "hashes": {
+        "plain": "99068b9dce60f817f189e8a9d7578502367262590eb12e08fe4e08560f9f21ec",
+        "fs": "eb6508499759490a175b3d8c9f7f8730eefe7a3ee4b60e8253168e0efa32663c"
+      }
+    },
+    {
+      "case": "tailwind-authorship",
+      "path": "ui/StatusBadge.jsx",
+      "equal": false,
+      "hashes": {
+        "plain": "34e2432348ea8e0eca6b66957ce81717030b83cb3cda0b198764d732949e536e",
+        "fs": "cb095ce9ae5230ed5d3c08c564582f7a39d6df7ba15d3e253f76ee08825c1fd1"
+      }
+    },
+    {
+      "case": "tailwind-authorship",
+      "path": "ui/PanelCard.jsx",
+      "equal": false,
+      "hashes": {
+        "plain": "c5e6195dc278c939ef34c8e9e78953d82a10ef179bb44b646303f07fa3dde80c",
+        "fs": "c46e2b3faa359c75087d6b5e2cd0c225efdd23b20fa84eec79bf3047598559e0"
+      }
+    },
+    {
+      "case": "tailwind-authorship",
+      "path": "theme.css",
+      "equal": true,
+      "hashes": {
+        "plain": "89475ac924b52f5e2bbdc131a1d780233fd42788f6bba2568e9e839d6b9317f8",
+        "fs": "89475ac924b52f5e2bbdc131a1d780233fd42788f6bba2568e9e839d6b9317f8"
+      }
+    }
+  ]
+}

@@ -1,0 +1,2465 @@
+{
+  "method": "Only item.completed events; count failed MCP status separately from successful calls whose policy checks report not-run. Text characters are summed MCP content text, not tokens or billing cost. This diagnostic pools tool counts only; A/B effect estimates remain separate. No model rerun or rescoring.",
+  "comparisonSha256": "c92e4476d4cbbfa4d364c962e484f6ae1da9cb06e4ea61a9262fbb6c5151a155",
+  "rows": [
+    {
+      "run": "01",
+      "experiment": "A",
+      "model": "gpt-6-astra",
+      "arm": "plain",
+      "productContractPassed": true,
+      "eligibleComplete": true,
+      "timedOut": false,
+      "eventsSha256": "53db3b6bb3fb5aaf051ad32eae5e06ab76df64cb5d449056872486458eb6d527",
+      "completedItems": 23,
+      "mcpCalls": 0,
+      "failedMcpCalls": 0,
+      "policyBlockedCalls": [],
+      "acceptedCompleteItems": []
+    },
+    {
+      "run": "02",
+      "experiment": "A",
+      "model": "gpt-6-astra",
+      "arm": "fs",
+      "productContractPassed": true,
+      "eligibleComplete": true,
+      "timedOut": false,
+      "eventsSha256": "97572fe5a4ce85f0e4b1b9eba17583b88209274067a655fd77cfeb0cca3dcd73",
+      "completedItems": 63,
+      "mcpCalls": 37,
+      "failedMcpCalls": 3,
+      "policyBlockedCalls": [
+        {
+          "itemId": "item_38",
+          "reasons": [
+            "Missing or changed required script: lint",
+            "Missing or changed required script: typecheck",
+            "Missing or changed required script: test:unit",
+            "Missing or changed required script: build",
+            "Missing or changed required script: test:e2e"
+          ]
+        }
+      ],
+      "acceptedCompleteItems": [
+        "item_56"
+      ]
+    },
+    {
+      "run": "03",
+      "experiment": "A",
+      "model": "gpt-6-sol",
+      "arm": "plain",
+      "productContractPassed": true,
+      "eligibleComplete": true,
+      "timedOut": false,
+      "eventsSha256": "d0cf20b5abdd2649f74992fb95e1902f7edcafecb4d15540ddb97c4f486e0fcb",
+      "completedItems": 56,
+      "mcpCalls": 0,
+      "failedMcpCalls": 0,
+      "policyBlockedCalls": [],
+      "acceptedCompleteItems": []
+    },
+    {
+      "run": "04",
+      "experiment": "A",
+      "model": "gpt-6-sol",
+      "arm": "fs",
+      "productContractPassed": false,
+      "eligibleComplete": false,
+      "timedOut": false,
+      "eventsSha256": "ade41bd975df63bf89549d15610f5c919723a003af47608340660395a0ff8618",
+      "completedItems": 81,
+      "mcpCalls": 32,
+      "failedMcpCalls": 3,
+      "policyBlockedCalls": [
+        {
+          "itemId": "item_54",
+          "reasons": [
+            "Missing or changed required script: lint",
+            "Missing or changed required script: typecheck",
+            "Missing or changed required script: test:unit",
+            "Missing or changed required script: build",
+            "Missing or changed required script: test:e2e"
+          ]
+        }
+      ],
+      "acceptedCompleteItems": [
+        "item_78"
+      ]
+    },
+    {
+      "run": "05",
+      "experiment": "A",
+      "model": "gpt-6-luna",
+      "arm": "plain",
+      "productContractPassed": false,
+      "eligibleComplete": false,
+      "timedOut": false,
+      "eventsSha256": "a5fa77a5e923b97e70f8c49c062461dafa71b84389f3bd60d79ca860b5193a7f",
+      "completedItems": 65,
+      "mcpCalls": 0,
+      "failedMcpCalls": 0,
+      "policyBlockedCalls": [],
+      "acceptedCompleteItems": []
+    },
+    {
+      "run": "06",
+      "experiment": "A",
+      "model": "gpt-6-luna",
+      "arm": "fs",
+      "productContractPassed": false,
+      "eligibleComplete": false,
+      "timedOut": true,
+      "eventsSha256": "23564a9ad91caf85529a45ffe6b6d00735b4a2e3aeb080263f8b1abfab1962c6",
+      "completedItems": 76,
+      "mcpCalls": 29,
+      "failedMcpCalls": 8,
+      "policyBlockedCalls": [
+        {
+          "itemId": "item_44",
+          "reasons": [
+            "Missing or changed required script: lint",
+            "Missing or changed required script: typecheck",
+            "Missing or changed required script: test:unit",
+            "Missing or changed required script: test:e2e",
+            "Missing or changed required script: build"
+          ]
+        },
+        {
+          "itemId": "item_66",
+          "reasons": [
+            "Missing or changed required script: lint",
+            "Missing or changed required script: typecheck",
+            "Missing or changed required script: test:unit",
+            "Missing or changed required script: test:e2e",
+            "Missing or changed required script: build"
+          ]
+        }
+      ],
+      "acceptedCompleteItems": []
+    },
+    {
+      "run": "07",
+      "experiment": "A",
+      "model": "gpt-6-sol",
+      "arm": "fs",
+      "productContractPassed": true,
+      "eligibleComplete": true,
+      "timedOut": false,
+      "eventsSha256": "8454faaa527720aa2d24b97c06b118e5fbaad5ce9da5db8afcf7aebd115e5a21",
+      "completedItems": 75,
+      "mcpCalls": 31,
+      "failedMcpCalls": 6,
+      "policyBlockedCalls": [
+        {
+          "itemId": "item_49",
+          "reasons": [
+            "Missing or changed required script: lint",
+            "Missing or changed required script: typecheck",
+            "Missing or changed required script: test:unit",
+            "Missing or changed required script: build",
+            "Missing or changed required script: test:e2e"
+          ]
+        }
+      ],
+      "acceptedCompleteItems": [
+        "item_72"
+      ]
+    },
+    {
+      "run": "08",
+      "experiment": "A",
+      "model": "gpt-6-sol",
+      "arm": "plain",
+      "productContractPassed": true,
+      "eligibleComplete": true,
+      "timedOut": false,
+      "eventsSha256": "a3b2b104911be35245999af45d3b5898a18bd458c50a74709f3e09fd624ba728",
+      "completedItems": 63,
+      "mcpCalls": 0,
+      "failedMcpCalls": 0,
+      "policyBlockedCalls": [],
+      "acceptedCompleteItems": []
+    },
+    {
+      "run": "09",
+      "experiment": "A",
+      "model": "gpt-6-luna",
+      "arm": "fs",
+      "productContractPassed": false,
+      "eligibleComplete": false,
+      "timedOut": true,
+      "eventsSha256": "f4126a393faff5db589df8e8925b709f751f9de06442530a34ecd2b0519bae62",
+      "completedItems": 106,
+      "mcpCalls": 32,
+      "failedMcpCalls": 8,
+      "policyBlockedCalls": [
+        {
+          "itemId": "item_61",
+          "reasons": [
+            "Missing or changed required script: lint",
+            "Missing or changed required script: typecheck",
+            "Missing or changed required script: test:unit",
+            "Missing or changed required script: build",
+            "Missing or changed required script: test:e2e"
+          ]
+        },
+        {
+          "itemId": "item_62",
+          "reasons": [
+            "Missing or changed required script: lint",
+            "Missing or changed required script: typecheck",
+            "Missing or changed required script: test:unit",
+            "Missing or changed required script: build",
+            "Missing or changed required script: test:e2e"
+          ]
+        },
+        {
+          "itemId": "item_66",
+          "reasons": [
+            "Missing or changed required script: lint",
+            "Missing or changed required script: typecheck",
+            "Missing or changed required script: test:unit",
+            "Missing or changed required script: build",
+            "Missing or changed required script: test:e2e"
+          ]
+        },
+        {
+          "itemId": "item_69",
+          "reasons": [
+            "Missing or changed required script: lint",
+            "Missing or changed required script: typecheck",
+            "Missing or changed required script: test:unit",
+            "Missing or changed required script: build",
+            "Missing or changed required script: test:e2e"
+          ]
+        },
+        {
+          "itemId": "item_79",
+          "reasons": [
+            "Missing or changed required script: lint",
+            "Missing or changed required script: typecheck",
+            "Missing or changed required script: test:unit",
+            "Missing or changed required script: build",
+            "Missing or changed required script: test:e2e"
+          ]
+        }
+      ],
+      "acceptedCompleteItems": []
+    },
+    {
+      "run": "10",
+      "experiment": "A",
+      "model": "gpt-6-luna",
+      "arm": "plain",
+      "productContractPassed": false,
+      "eligibleComplete": false,
+      "timedOut": false,
+      "eventsSha256": "aa693badd6480f77e76db0f7b1bf25f400c01c25b57d29ad43bb275148e12927",
+      "completedItems": 39,
+      "mcpCalls": 0,
+      "failedMcpCalls": 0,
+      "policyBlockedCalls": [],
+      "acceptedCompleteItems": []
+    },
+    {
+      "run": "11",
+      "experiment": "A",
+      "model": "gpt-6-astra",
+      "arm": "fs",
+      "productContractPassed": true,
+      "eligibleComplete": true,
+      "timedOut": true,
+      "eventsSha256": "3b2f4c9b5dcf3971df0ddba077baf352ede1d2ba002b92e14a907d7cf4d74657",
+      "completedItems": 62,
+      "mcpCalls": 34,
+      "failedMcpCalls": 4,
+      "policyBlockedCalls": [
+        {
+          "itemId": "item_40",
+          "reasons": [
+            "Missing or changed required script: lint",
+            "Missing or changed required script: typecheck",
+            "Missing or changed required script: test:unit",
+            "Missing or changed required script: build",
+            "Missing or changed required script: test:e2e"
+          ]
+        }
+      ],
+      "acceptedCompleteItems": [
+        "item_61"
+      ]
+    },
+    {
+      "run": "12",
+      "experiment": "A",
+      "model": "gpt-6-astra",
+      "arm": "plain",
+      "productContractPassed": true,
+      "eligibleComplete": true,
+      "timedOut": false,
+      "eventsSha256": "d1361375ad5bda61df9089dcda51ab3b55fb5311975f1e3d5c89c6e6cc99030b",
+      "completedItems": 35,
+      "mcpCalls": 0,
+      "failedMcpCalls": 0,
+      "policyBlockedCalls": [],
+      "acceptedCompleteItems": []
+    },
+    {
+      "run": "13",
+      "experiment": "A",
+      "model": "gpt-6-luna",
+      "arm": "plain",
+      "productContractPassed": false,
+      "eligibleComplete": false,
+      "timedOut": false,
+      "eventsSha256": "be41bb5e0856a28bf7c01ac2b2151f4bf5cb63dc8dd81dca696f4d97340e8d9e",
+      "completedItems": 46,
+      "mcpCalls": 0,
+      "failedMcpCalls": 0,
+      "policyBlockedCalls": [],
+      "acceptedCompleteItems": []
+    },
+    {
+      "run": "14",
+      "experiment": "A",
+      "model": "gpt-6-luna",
+      "arm": "fs",
+      "productContractPassed": true,
+      "eligibleComplete": false,
+      "timedOut": true,
+      "eventsSha256": "130ab4466b610a4e3ab738cfaaf6c1af314b870b82f72496cf1811f05139556b",
+      "completedItems": 65,
+      "mcpCalls": 30,
+      "failedMcpCalls": 9,
+      "policyBlockedCalls": [
+        {
+          "itemId": "item_29",
+          "reasons": [
+            "Missing or changed required script: lint",
+            "Missing or changed required script: typecheck",
+            "Missing or changed required script: test:unit",
+            "Missing or changed required script: build",
+            "Missing or changed required script: test:e2e"
+          ]
+        },
+        {
+          "itemId": "item_40",
+          "reasons": [
+            "Missing or changed required script: lint",
+            "Missing or changed required script: typecheck",
+            "Missing or changed required script: test:unit",
+            "Missing or changed required script: build",
+            "Missing or changed required script: test:e2e"
+          ]
+        }
+      ],
+      "acceptedCompleteItems": []
+    },
+    {
+      "run": "15",
+      "experiment": "A",
+      "model": "gpt-6-astra",
+      "arm": "plain",
+      "productContractPassed": true,
+      "eligibleComplete": true,
+      "timedOut": false,
+      "eventsSha256": "d763213b807775345a99e1db079a718b19fe602e99dd04b3070ced5855c25ccf",
+      "completedItems": 31,
+      "mcpCalls": 0,
+      "failedMcpCalls": 0,
+      "policyBlockedCalls": [],
+      "acceptedCompleteItems": []
+    },
+    {
+      "run": "16",
+      "experiment": "A",
+      "model": "gpt-6-astra",
+      "arm": "fs",
+      "productContractPassed": true,
+      "eligibleComplete": false,
+      "timedOut": true,
+      "eventsSha256": "1a3f1d2d0fc5da47a55b23e9c5be389293966e438ae5eedbf198a4785102724c",
+      "completedItems": 73,
+      "mcpCalls": 30,
+      "failedMcpCalls": 4,
+      "policyBlockedCalls": [
+        {
+          "itemId": "item_57",
+          "reasons": [
+            "Missing or changed required script: lint",
+            "Missing or changed required script: typecheck",
+            "Missing or changed required script: test:unit",
+            "Missing or changed required script: build",
+            "Missing or changed required script: test:e2e"
+          ]
+        }
+      ],
+      "acceptedCompleteItems": []
+    },
+    {
+      "run": "17",
+      "experiment": "A",
+      "model": "gpt-6-sol",
+      "arm": "plain",
+      "productContractPassed": true,
+      "eligibleComplete": true,
+      "timedOut": false,
+      "eventsSha256": "7400de2f62492d724c33c3f99a1748a5de708c79838b825677b482ba6d2ec297",
+      "completedItems": 49,
+      "mcpCalls": 0,
+      "failedMcpCalls": 0,
+      "policyBlockedCalls": [],
+      "acceptedCompleteItems": []
+    },
+    {
+      "run": "18",
+      "experiment": "A",
+      "model": "gpt-6-sol",
+      "arm": "fs",
+      "productContractPassed": true,
+      "eligibleComplete": true,
+      "timedOut": false,
+      "eventsSha256": "adf58974090041415e9a275a8e06fc160c81db0af885f269f9c2fa6a82ddb942",
+      "completedItems": 84,
+      "mcpCalls": 36,
+      "failedMcpCalls": 8,
+      "policyBlockedCalls": [
+        {
+          "itemId": "item_53",
+          "reasons": [
+            "Missing or changed required script: lint",
+            "Missing or changed required script: typecheck",
+            "Missing or changed required script: test:unit",
+            "Missing or changed required script: build",
+            "Missing or changed required script: test:e2e"
+          ]
+        }
+      ],
+      "acceptedCompleteItems": [
+        "item_81"
+      ]
+    },
+    {
+      "run": "19",
+      "experiment": "B",
+      "model": "gpt-6-astra",
+      "arm": "fs",
+      "productContractPassed": true,
+      "eligibleComplete": true,
+      "timedOut": false,
+      "eventsSha256": "098c7ce1da13a0f5e92eefe0b7484a738bdb5b7e71b594c429d53a5abb5f6360",
+      "completedItems": 65,
+      "mcpCalls": 35,
+      "failedMcpCalls": 4,
+      "policyBlockedCalls": [
+        {
+          "itemId": "item_27",
+          "reasons": [
+            "Missing or changed required script: lint",
+            "Missing or changed required script: typecheck",
+            "Missing or changed required script: test:unit",
+            "Missing or changed required script: build",
+            "Missing or changed required script: test:e2e"
+          ]
+        }
+      ],
+      "acceptedCompleteItems": [
+        "item_58"
+      ]
+    },
+    {
+      "run": "20",
+      "experiment": "B",
+      "model": "gpt-6-astra",
+      "arm": "plain",
+      "productContractPassed": true,
+      "eligibleComplete": true,
+      "timedOut": false,
+      "eventsSha256": "afeca3fcc96f3528463317082cee8cdd496b733920f1b166bd07fe14da307e20",
+      "completedItems": 26,
+      "mcpCalls": 0,
+      "failedMcpCalls": 0,
+      "policyBlockedCalls": [],
+      "acceptedCompleteItems": []
+    },
+    {
+      "run": "21",
+      "experiment": "B",
+      "model": "gpt-6-sol",
+      "arm": "fs",
+      "productContractPassed": true,
+      "eligibleComplete": true,
+      "timedOut": false,
+      "eventsSha256": "be8a336728529b20aba4497ecb819c079876b9d3d73530e8eb559a5fa14a774d",
+      "completedItems": 72,
+      "mcpCalls": 32,
+      "failedMcpCalls": 5,
+      "policyBlockedCalls": [
+        {
+          "itemId": "item_52",
+          "reasons": [
+            "Missing or changed required script: lint",
+            "Missing or changed required script: typecheck",
+            "Missing or changed required script: test:unit",
+            "Missing or changed required script: build",
+            "Missing or changed required script: test:e2e"
+          ]
+        }
+      ],
+      "acceptedCompleteItems": [
+        "item_67"
+      ]
+    },
+    {
+      "run": "22",
+      "experiment": "B",
+      "model": "gpt-6-sol",
+      "arm": "plain",
+      "productContractPassed": true,
+      "eligibleComplete": true,
+      "timedOut": false,
+      "eventsSha256": "3cf08a57865fdbb0f71a5756d02e210bc11a71908b8fe8d8c286d9e132fa90f8",
+      "completedItems": 48,
+      "mcpCalls": 0,
+      "failedMcpCalls": 0,
+      "policyBlockedCalls": [],
+      "acceptedCompleteItems": []
+    },
+    {
+      "run": "23",
+      "experiment": "B",
+      "model": "gpt-6-luna",
+      "arm": "fs",
+      "productContractPassed": false,
+      "eligibleComplete": false,
+      "timedOut": true,
+      "eventsSha256": "c47e860002c10e60ded430a3f251a954eb6a539937f3b5eb96b6fc16aa6a1eaa",
+      "completedItems": 80,
+      "mcpCalls": 35,
+      "failedMcpCalls": 9,
+      "policyBlockedCalls": [
+        {
+          "itemId": "item_17",
+          "reasons": [
+            "Missing or changed required script: lint",
+            "Missing or changed required script: typecheck",
+            "Missing or changed required script: test:unit",
+            "Missing or changed required script: build",
+            "Missing or changed required script: test:e2e"
+          ]
+        },
+        {
+          "itemId": "item_44",
+          "reasons": [
+            "Missing or changed required script: lint",
+            "Missing or changed required script: typecheck",
+            "Missing or changed required script: test:unit",
+            "Missing or changed required script: build",
+            "Missing or changed required script: test:e2e"
+          ]
+        },
+        {
+          "itemId": "item_58",
+          "reasons": [
+            "Missing or changed required script: lint",
+            "Missing or changed required script: typecheck",
+            "Missing or changed required script: test:unit",
+            "Missing or changed required script: build",
+            "Missing or changed required script: test:e2e"
+          ]
+        },
+        {
+          "itemId": "item_64",
+          "reasons": [
+            "Missing or changed required script: eslint app src",
+            "Missing or changed required script: tsc --noEmit -p tsconfig.check.json",
+            "Missing or changed required script: node --test tests/*.test.mjs",
+            "Missing or changed required script: next build --webpack",
+            "Missing or changed required script: playwright test"
+          ]
+        }
+      ],
+      "acceptedCompleteItems": [
+        "item_79"
+      ]
+    },
+    {
+      "run": "24",
+      "experiment": "B",
+      "model": "gpt-6-luna",
+      "arm": "plain",
+      "productContractPassed": false,
+      "eligibleComplete": false,
+      "timedOut": false,
+      "eventsSha256": "d96b457bb488002ac3d4472e47afc324c5d10e7f6212cd79a901e5c9e3100207",
+      "completedItems": 27,
+      "mcpCalls": 0,
+      "failedMcpCalls": 0,
+      "policyBlockedCalls": [],
+      "acceptedCompleteItems": []
+    },
+    {
+      "run": "25",
+      "experiment": "B",
+      "model": "gpt-6-sol",
+      "arm": "plain",
+      "productContractPassed": true,
+      "eligibleComplete": true,
+      "timedOut": false,
+      "eventsSha256": "92e708ce198d14205eecd270364744f498a261ad47d1b448b91a0818868d6364",
+      "completedItems": 43,
+      "mcpCalls": 0,
+      "failedMcpCalls": 0,
+      "policyBlockedCalls": [],
+      "acceptedCompleteItems": []
+    },
+    {
+      "run": "26",
+      "experiment": "B",
+      "model": "gpt-6-sol",
+      "arm": "fs",
+      "productContractPassed": false,
+      "eligibleComplete": false,
+      "timedOut": true,
+      "eventsSha256": "53975224580b3bbf16665f0a562e651ac3f374411eb7682ed4fce8ee50750dda",
+      "completedItems": 15,
+      "mcpCalls": 5,
+      "failedMcpCalls": 0,
+      "policyBlockedCalls": [],
+      "acceptedCompleteItems": []
+    },
+    {
+      "run": "27",
+      "experiment": "B",
+      "model": "gpt-6-luna",
+      "arm": "plain",
+      "productContractPassed": false,
+      "eligibleComplete": false,
+      "timedOut": false,
+      "eventsSha256": "79076449b715a6ae2062f7315dca5db61a0ce7a0d32c6b9121971772ed99f7cc",
+      "completedItems": 23,
+      "mcpCalls": 0,
+      "failedMcpCalls": 0,
+      "policyBlockedCalls": [],
+      "acceptedCompleteItems": []
+    },
+    {
+      "run": "28",
+      "experiment": "B",
+      "model": "gpt-6-luna",
+      "arm": "fs",
+      "productContractPassed": true,
+      "eligibleComplete": false,
+      "timedOut": false,
+      "eventsSha256": "41cc7cda459ef82d4f519659a68c3cf132f2c254d52e982a928b9c5dadd8d975",
+      "completedItems": 76,
+      "mcpCalls": 42,
+      "failedMcpCalls": 8,
+      "policyBlockedCalls": [
+        {
+          "itemId": "item_38",
+          "reasons": [
+            "Missing or changed required script: lint",
+            "Missing or changed required script: typecheck",
+            "Missing or changed required script: test:unit",
+            "Missing or changed required script: build",
+            "Missing or changed required script: test:e2e"
+          ]
+        },
+        {
+          "itemId": "item_42",
+          "reasons": [
+            "Missing or changed required script: lint",
+            "Missing or changed required script: typecheck",
+            "Missing or changed required script: test:unit",
+            "Missing or changed required script: build",
+            "Missing or changed required script: test:e2e"
+          ]
+        },
+        {
+          "itemId": "item_43",
+          "reasons": [
+            "Missing or changed required script: lint",
+            "Missing or changed required script: typecheck",
+            "Missing or changed required script: test:unit",
+            "Missing or changed required script: build",
+            "Missing or changed required script: test:e2e"
+          ]
+        },
+        {
+          "itemId": "item_49",
+          "reasons": [
+            "Missing or changed required script: eslint app src",
+            "Missing or changed required script: tsc --noEmit -p tsconfig.check.json",
+            "Missing or changed required script: node --test tests/*.test.mjs",
+            "Missing or changed required script: next build --webpack",
+            "Missing or changed required script: playwright test"
+          ]
+        }
+      ],
+      "acceptedCompleteItems": [
+        "item_67"
+      ]
+    },
+    {
+      "run": "29",
+      "experiment": "B",
+      "model": "gpt-6-astra",
+      "arm": "plain",
+      "productContractPassed": true,
+      "eligibleComplete": true,
+      "timedOut": false,
+      "eventsSha256": "3ccd20ea3b251ee2db8c7ea04e4e8edcb7f02ad5dcb3dee9f7089df4dd69dbe4",
+      "completedItems": 18,
+      "mcpCalls": 0,
+      "failedMcpCalls": 0,
+      "policyBlockedCalls": [],
+      "acceptedCompleteItems": []
+    },
+    {
+      "run": "30",
+      "experiment": "B",
+      "model": "gpt-6-astra",
+      "arm": "fs",
+      "productContractPassed": true,
+      "eligibleComplete": true,
+      "timedOut": false,
+      "eventsSha256": "2ce4e92f205f2ca10134c09a59153f7d0c6b87f047ad1b02ad2ff351a9568fa5",
+      "completedItems": 64,
+      "mcpCalls": 36,
+      "failedMcpCalls": 3,
+      "policyBlockedCalls": [
+        {
+          "itemId": "item_37",
+          "reasons": [
+            "Missing or changed required script: lint",
+            "Missing or changed required script: typecheck",
+            "Missing or changed required script: test:unit",
+            "Missing or changed required script: build",
+            "Missing or changed required script: test:e2e"
+          ]
+        }
+      ],
+      "acceptedCompleteItems": [
+        "item_60"
+      ]
+    },
+    {
+      "run": "31",
+      "experiment": "B",
+      "model": "gpt-6-luna",
+      "arm": "fs",
+      "productContractPassed": false,
+      "eligibleComplete": false,
+      "timedOut": false,
+      "eventsSha256": "81ca6807d51b50ce00d26da3a06526156c86e7e8494476a8544190a48ccbc839",
+      "completedItems": 80,
+      "mcpCalls": 18,
+      "failedMcpCalls": 2,
+      "policyBlockedCalls": [],
+      "acceptedCompleteItems": []
+    },
+    {
+      "run": "32",
+      "experiment": "B",
+      "model": "gpt-6-luna",
+      "arm": "plain",
+      "productContractPassed": false,
+      "eligibleComplete": false,
+      "timedOut": false,
+      "eventsSha256": "ee3de34ce95b30122d16f48ddcb06f9da7b441009b3a4c9b8a25a3e5718164ba",
+      "completedItems": 16,
+      "mcpCalls": 0,
+      "failedMcpCalls": 0,
+      "policyBlockedCalls": [],
+      "acceptedCompleteItems": []
+    },
+    {
+      "run": "33",
+      "experiment": "B",
+      "model": "gpt-6-astra",
+      "arm": "fs",
+      "productContractPassed": true,
+      "eligibleComplete": true,
+      "timedOut": false,
+      "eventsSha256": "bc9f0b4c246a5545f431d10fa821a38997fb6e527886075295f8059301aebd6f",
+      "completedItems": 47,
+      "mcpCalls": 31,
+      "failedMcpCalls": 5,
+      "policyBlockedCalls": [
+        {
+          "itemId": "item_17",
+          "reasons": [
+            "Missing or changed required script: lint",
+            "Missing or changed required script: typecheck",
+            "Missing or changed required script: test:unit",
+            "Missing or changed required script: build",
+            "Missing or changed required script: test:e2e"
+          ]
+        }
+      ],
+      "acceptedCompleteItems": [
+        "item_42"
+      ]
+    },
+    {
+      "run": "34",
+      "experiment": "B",
+      "model": "gpt-6-astra",
+      "arm": "plain",
+      "productContractPassed": true,
+      "eligibleComplete": true,
+      "timedOut": false,
+      "eventsSha256": "6e5c585d721726fdead27874d2031ae20ab73098f8e7bffeebffc61f40801b96",
+      "completedItems": 20,
+      "mcpCalls": 0,
+      "failedMcpCalls": 0,
+      "policyBlockedCalls": [],
+      "acceptedCompleteItems": []
+    },
+    {
+      "run": "35",
+      "experiment": "B",
+      "model": "gpt-6-sol",
+      "arm": "fs",
+      "productContractPassed": true,
+      "eligibleComplete": true,
+      "timedOut": false,
+      "eventsSha256": "78deb3d96d597f44736a92fff71107ea5908ed70f16563f38cc63f3b39bcc39c",
+      "completedItems": 72,
+      "mcpCalls": 26,
+      "failedMcpCalls": 3,
+      "policyBlockedCalls": [
+        {
+          "itemId": "item_57",
+          "reasons": [
+            "Missing or changed required script: lint",
+            "Missing or changed required script: typecheck",
+            "Missing or changed required script: test:unit",
+            "Missing or changed required script: build",
+            "Missing or changed required script: test:e2e"
+          ]
+        }
+      ],
+      "acceptedCompleteItems": [
+        "item_68"
+      ]
+    },
+    {
+      "run": "36",
+      "experiment": "B",
+      "model": "gpt-6-sol",
+      "arm": "plain",
+      "productContractPassed": true,
+      "eligibleComplete": true,
+      "timedOut": false,
+      "eventsSha256": "a34ab4453a1489065eee21fb89df3050b79cb122abd45d70324b141947a8e8e9",
+      "completedItems": 55,
+      "mcpCalls": 0,
+      "failedMcpCalls": 0,
+      "policyBlockedCalls": [],
+      "acceptedCompleteItems": []
+    }
+  ],
+  "groups": [
+    {
+      "experiment": "A",
+      "arm": "plain",
+      "runs": 9,
+      "medianCompletedItems": 46,
+      "medianMcpCalls": 0,
+      "productPasses": 6,
+      "eligibleCompletions": 6,
+      "timeouts": 0
+    },
+    {
+      "experiment": "A",
+      "arm": "fs",
+      "runs": 9,
+      "medianCompletedItems": 75,
+      "medianMcpCalls": 32,
+      "productPasses": 6,
+      "eligibleCompletions": 4,
+      "timeouts": 5
+    },
+    {
+      "experiment": "B",
+      "arm": "plain",
+      "runs": 9,
+      "medianCompletedItems": 26,
+      "medianMcpCalls": 0,
+      "productPasses": 6,
+      "eligibleCompletions": 6,
+      "timeouts": 0
+    },
+    {
+      "experiment": "B",
+      "arm": "fs",
+      "runs": 9,
+      "medianCompletedItems": 72,
+      "medianMcpCalls": 32,
+      "productPasses": 6,
+      "eligibleCompletions": 5,
+      "timeouts": 2
+    }
+  ],
+  "mcpTotals": {
+    "calls": 551,
+    "failedCalls": 92,
+    "callsByTool": {
+      "list_plans": 18,
+      "list_project_files": 9,
+      "get_project_snapshot": 17,
+      "get_work_context": 46,
+      "run_project_checks": 107,
+      "record_project_refresh": 3,
+      "save_project_record": 12,
+      "save_project_context": 12,
+      "save_revision": 48,
+      "approve_revision": 32,
+      "save_execution": 68,
+      "get_change_context": 8,
+      "begin_work_attempt": 43,
+      "get_project_document": 5,
+      "inspect_project": 19,
+      "get_revision": 4,
+      "get_workflow_context": 50,
+      "get_check_record": 24,
+      "save_semantic_review": 25,
+      "get_project_record": 1
+    },
+    "failedByTool": {
+      "save_revision": 16,
+      "get_change_context": 8,
+      "get_revision": 2,
+      "run_project_checks": 21,
+      "approve_revision": 1,
+      "begin_work_attempt": 12,
+      "save_execution": 24,
+      "save_semantic_review": 8
+    },
+    "textCharactersByTool": {
+      "list_plans": 36,
+      "list_project_files": 8004,
+      "get_project_snapshot": 6018,
+      "get_work_context": 1439646,
+      "run_project_checks": 236077,
+      "record_project_refresh": 369,
+      "save_project_record": 2722,
+      "save_project_context": 5004,
+      "save_revision": 459728,
+      "approve_revision": 368397,
+      "save_execution": 13047,
+      "get_change_context": 560,
+      "begin_work_attempt": 7271,
+      "get_project_document": 5136,
+      "inspect_project": 95722,
+      "get_revision": 19919,
+      "get_workflow_context": 721144,
+      "get_check_record": 28186,
+      "save_semantic_review": 66846,
+      "get_project_record": 3164
+    }
+  },
+  "failedCalls": [
+    {
+      "run": "02",
+      "itemId": "item_17",
+      "tool": "save_revision",
+      "message": "MCP error -32602: Input validation error: Invalid arguments for tool save_revision: Invalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[0].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[1].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[2].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[3].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[4].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[5].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[6].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[7].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[8].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[8]"
+    },
+    {
+      "run": "02",
+      "itemId": "item_33",
+      "tool": "get_change_context",
+      "message": "fatal: '/Users/yelihi/.gitconfig'에 접근할 수 없습니다: Operation not permitted"
+    },
+    {
+      "run": "02",
+      "itemId": "item_41",
+      "tool": "get_revision",
+      "message": "MCP error -32602: Input validation error: Invalid arguments for tool get_revision: Too big: expected number to be <=500 at limit"
+    },
+    {
+      "run": "04",
+      "itemId": "item_17",
+      "tool": "run_project_checks",
+      "message": "Choose a stage/required checks or a capability selection, not both"
+    },
+    {
+      "run": "04",
+      "itemId": "item_22",
+      "tool": "save_revision",
+      "message": "MCP error -32602: Input validation error: Invalid arguments for tool save_revision: Invalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[0].id\nInvalid input: expected number, received undefined at policy.rules[0].version\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[1].id\nInvalid input: expected number, received undefined at policy.rules[1].version\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[2].id\nInvalid input: expected number, received undefined at policy.rules[2].version\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[3].id\nInvalid input: expected number, received undefined at policy.rules[3].version\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[4].id\nInvalid input: expected number, received undefined at policy.rules[4].version\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[5].id\nInvalid input: expected number, received undefined at policy.rules[5].version\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[6].id\nInvalid input: expected number, received undefined at policy.rules[6].version\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[7].id\nInvalid input: expected number, received undefined at policy.rules[7].version\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[8].id\nInvalid input: expected number, received undefined at policy.rules[8].version\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[8]"
+    },
+    {
+      "run": "04",
+      "itemId": "item_53",
+      "tool": "run_project_checks",
+      "message": "Required checks cannot be narrowed by a stage"
+    },
+    {
+      "run": "06",
+      "itemId": "item_14",
+      "tool": "save_revision",
+      "message": "MCP error -32602: Input validation error: Invalid arguments for tool save_revision: Invalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[0].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[1].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[2].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[3].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[4].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[5].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[6].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[7].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[8].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[8]"
+    },
+    {
+      "run": "06",
+      "itemId": "item_16",
+      "tool": "approve_revision",
+      "message": "Required rule needs an automated check: r9"
+    },
+    {
+      "run": "06",
+      "itemId": "item_22",
+      "tool": "begin_work_attempt",
+      "message": "Reread the current approved execution"
+    },
+    {
+      "run": "06",
+      "itemId": "item_24",
+      "tool": "save_execution",
+      "message": "Execution must preserve approved issue contracts; revise the plan to change them"
+    },
+    {
+      "run": "06",
+      "itemId": "item_25",
+      "tool": "save_execution",
+      "message": "ENOENT: no such file or directory, open '/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-ssp10g_k/project/.frontend-system/plans/checkout-contract/checks/85e9437b-16b3-447e-b647-2bcbe9ffc624.json'"
+    },
+    {
+      "run": "06",
+      "itemId": "item_27",
+      "tool": "begin_work_attempt",
+      "message": "Reread the current approved execution"
+    },
+    {
+      "run": "06",
+      "itemId": "item_29",
+      "tool": "begin_work_attempt",
+      "message": "Reread the current approved execution"
+    },
+    {
+      "run": "06",
+      "itemId": "item_43",
+      "tool": "run_project_checks",
+      "message": "Choose a stage/required checks or a capability selection, not both"
+    },
+    {
+      "run": "07",
+      "itemId": "item_15",
+      "tool": "run_project_checks",
+      "message": "Choose a stage/required checks or a capability selection, not both"
+    },
+    {
+      "run": "07",
+      "itemId": "item_18",
+      "tool": "run_project_checks",
+      "message": "Choose a stage/required checks or a capability selection, not both"
+    },
+    {
+      "run": "07",
+      "itemId": "item_21",
+      "tool": "save_revision",
+      "message": "MCP error -32602: Input validation error: Invalid arguments for tool save_revision: Invalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[0].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[1].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[2].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[3].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[4].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[5].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[6].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[7].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[8].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[8]"
+    },
+    {
+      "run": "07",
+      "itemId": "item_44",
+      "tool": "begin_work_attempt",
+      "message": "Reread the current approved execution"
+    },
+    {
+      "run": "07",
+      "itemId": "item_46",
+      "tool": "save_execution",
+      "message": "ENOENT: no such file or directory, open '/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-7482n2s8/project/.frontend-system/plans/checkout/checks/20e1265d-a3d1-4e66-83ad-4451e3ebd0cc.json'"
+    },
+    {
+      "run": "07",
+      "itemId": "item_69",
+      "tool": "save_execution",
+      "message": "ENOENT: no such file or directory, open '/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-7482n2s8/project/.frontend-system/plans/checkout/reviews/checkout-review.json'"
+    },
+    {
+      "run": "09",
+      "itemId": "item_16",
+      "tool": "save_revision",
+      "message": "MCP error -32602: Input validation error: Invalid arguments for tool save_revision: Invalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[0].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[1].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[2].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[3].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[4].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[5].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[6].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[7].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[8].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[8]"
+    },
+    {
+      "run": "09",
+      "itemId": "item_21",
+      "tool": "begin_work_attempt",
+      "message": "Reread the current approved execution"
+    },
+    {
+      "run": "09",
+      "itemId": "item_22",
+      "tool": "save_execution",
+      "message": "Execution must preserve approved issue contracts; revise the plan to change them"
+    },
+    {
+      "run": "09",
+      "itemId": "item_26",
+      "tool": "save_execution",
+      "message": "ENOENT: no such file or directory, open '/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-id_jwy5u/project/.frontend-system/plans/checkout-contract-2026-10/checks/51d033e1-507b-4904-b68c-6794975e85db.json'"
+    },
+    {
+      "run": "09",
+      "itemId": "item_59",
+      "tool": "run_project_checks",
+      "message": "Choose a stage/required checks or a capability selection, not both"
+    },
+    {
+      "run": "09",
+      "itemId": "item_60",
+      "tool": "run_project_checks",
+      "message": "Required checks cannot be narrowed by a stage"
+    },
+    {
+      "run": "09",
+      "itemId": "item_84",
+      "tool": "get_change_context",
+      "message": "fatal: '/Users/yelihi/.gitconfig'에 접근할 수 없습니다: Operation not permitted"
+    },
+    {
+      "run": "09",
+      "itemId": "item_86",
+      "tool": "save_semantic_review",
+      "message": "MCP error -32602: Input validation error: Invalid arguments for tool save_semantic_review: Too small: expected array to have >=1 items at review.findings"
+    },
+    {
+      "run": "11",
+      "itemId": "item_16",
+      "tool": "save_revision",
+      "message": "MCP error -32602: Input validation error: Invalid arguments for tool save_revision: Invalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[0].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[1].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[2].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[3].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[4].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[5].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[6].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[7].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[8].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[8]"
+    },
+    {
+      "run": "11",
+      "itemId": "item_30",
+      "tool": "get_change_context",
+      "message": "fatal: '/Users/yelihi/.gitconfig'에 접근할 수 없습니다: Operation not permitted"
+    },
+    {
+      "run": "11",
+      "itemId": "item_34",
+      "tool": "begin_work_attempt",
+      "message": "Reread the current approved execution"
+    },
+    {
+      "run": "11",
+      "itemId": "item_60",
+      "tool": "save_execution",
+      "message": "Check d7c032bf-6f16-4aa1-80f5-db3c623c7882 does not verify the current source and revision"
+    },
+    {
+      "run": "14",
+      "itemId": "item_11",
+      "tool": "save_revision",
+      "message": "MCP error -32602: Input validation error: Invalid arguments for tool save_revision: Invalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[0].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[1].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[2].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[3].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[4].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[5].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[5]\nInvalid input: expected array, received undefined at policy.guards"
+    },
+    {
+      "run": "14",
+      "itemId": "item_12",
+      "tool": "save_revision",
+      "message": "MCP error -32602: Input validation error: Invalid arguments for tool save_revision: Invalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].id"
+    },
+    {
+      "run": "14",
+      "itemId": "item_17",
+      "tool": "begin_work_attempt",
+      "message": "Reread the current approved execution"
+    },
+    {
+      "run": "14",
+      "itemId": "item_19",
+      "tool": "save_execution",
+      "message": "Execution must preserve approved issue contracts; revise the plan to change them"
+    },
+    {
+      "run": "14",
+      "itemId": "item_21",
+      "tool": "save_execution",
+      "message": "Execution must preserve approved issue contracts; revise the plan to change them"
+    },
+    {
+      "run": "14",
+      "itemId": "item_24",
+      "tool": "begin_work_attempt",
+      "message": "Reread the current approved execution"
+    },
+    {
+      "run": "14",
+      "itemId": "item_39",
+      "tool": "run_project_checks",
+      "message": "Choose a stage/required checks or a capability selection, not both"
+    },
+    {
+      "run": "14",
+      "itemId": "item_50",
+      "tool": "save_semantic_review",
+      "message": "MCP error -32602: Input validation error: Invalid arguments for tool save_semantic_review: Too small: expected array to have >=1 items at review.findings"
+    },
+    {
+      "run": "14",
+      "itemId": "item_51",
+      "tool": "save_semantic_review",
+      "message": "Passing review cannot have remaining work"
+    },
+    {
+      "run": "16",
+      "itemId": "item_19",
+      "tool": "save_revision",
+      "message": "MCP error -32602: Input validation error: Invalid arguments for tool save_revision: Invalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[0].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[1].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[2].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[3].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[4].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[5].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[6].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[7].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[8].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[8]"
+    },
+    {
+      "run": "16",
+      "itemId": "item_33",
+      "tool": "get_change_context",
+      "message": "fatal: '/Users/yelihi/.gitconfig'에 접근할 수 없습니다: Operation not permitted"
+    },
+    {
+      "run": "16",
+      "itemId": "item_53",
+      "tool": "begin_work_attempt",
+      "message": "Reread the current approved execution"
+    },
+    {
+      "run": "16",
+      "itemId": "item_56",
+      "tool": "run_project_checks",
+      "message": "Choose a stage/required checks or a capability selection, not both"
+    },
+    {
+      "run": "18",
+      "itemId": "item_17",
+      "tool": "run_project_checks",
+      "message": "Choose a stage/required checks or a capability selection, not both"
+    },
+    {
+      "run": "18",
+      "itemId": "item_23",
+      "tool": "save_revision",
+      "message": "MCP error -32602: Input validation error: Invalid arguments for tool save_revision: Invalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[0].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[1].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[2].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[3].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[4].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[5].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[6].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[7].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[8].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[8]"
+    },
+    {
+      "run": "18",
+      "itemId": "item_28",
+      "tool": "save_execution",
+      "message": "ENOENT: no such file or directory, open '/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-nd74e5sy/project/.frontend-system/plans/checkout/checks/85af788f-e9a8-4483-965b-79759c5a4c5e.json'"
+    },
+    {
+      "run": "18",
+      "itemId": "item_52",
+      "tool": "run_project_checks",
+      "message": "Required checks cannot be narrowed by a stage"
+    },
+    {
+      "run": "18",
+      "itemId": "item_64",
+      "tool": "get_change_context",
+      "message": "fatal: '/Users/yelihi/.gitconfig'에 접근할 수 없습니다: Operation not permitted"
+    },
+    {
+      "run": "18",
+      "itemId": "item_76",
+      "tool": "save_execution",
+      "message": "Check b9f920b2-0222-415f-8bf6-1750e7420138 does not verify the current source and revision"
+    },
+    {
+      "run": "18",
+      "itemId": "item_77",
+      "tool": "save_execution",
+      "message": "Step checks must belong to its attempt"
+    },
+    {
+      "run": "18",
+      "itemId": "item_79",
+      "tool": "save_execution",
+      "message": "Final verification requires an execution attempt"
+    },
+    {
+      "run": "19",
+      "itemId": "item_15",
+      "tool": "save_revision",
+      "message": "MCP error -32602: Input validation error: Invalid arguments for tool save_revision: Invalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[0].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[1].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[2].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[3].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[4].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[5].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[6].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[7].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[8].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[8]"
+    },
+    {
+      "run": "19",
+      "itemId": "item_41",
+      "tool": "get_change_context",
+      "message": "fatal: '/Users/yelihi/.gitconfig'에 접근할 수 없습니다: Operation not permitted"
+    },
+    {
+      "run": "19",
+      "itemId": "item_56",
+      "tool": "save_execution",
+      "message": "Step checks must belong to its attempt"
+    },
+    {
+      "run": "19",
+      "itemId": "item_57",
+      "tool": "save_execution",
+      "message": "Final verification requires an execution attempt"
+    },
+    {
+      "run": "21",
+      "itemId": "item_17",
+      "tool": "run_project_checks",
+      "message": "Choose a stage/required checks or a capability selection, not both"
+    },
+    {
+      "run": "21",
+      "itemId": "item_23",
+      "tool": "save_revision",
+      "message": "MCP error -32602: Input validation error: Invalid arguments for tool save_revision: Invalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[0].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[1].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[2].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[3].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[4].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[5].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[6].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[7].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[8].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[8]"
+    },
+    {
+      "run": "21",
+      "itemId": "item_48",
+      "tool": "save_execution",
+      "message": "Execution must preserve approved issue contracts; revise the plan to change them"
+    },
+    {
+      "run": "21",
+      "itemId": "item_49",
+      "tool": "save_execution",
+      "message": "ENOENT: no such file or directory, open '/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-mkb3_l7y/project/.frontend-system/plans/checkout/checks/2ffef5a2-21bd-4e91-b431-33a5db33b9d3.json'"
+    },
+    {
+      "run": "21",
+      "itemId": "item_65",
+      "tool": "save_semantic_review",
+      "message": "Review must address all required rules"
+    },
+    {
+      "run": "23",
+      "itemId": "item_14",
+      "tool": "begin_work_attempt",
+      "message": "Reread the current approved execution"
+    },
+    {
+      "run": "23",
+      "itemId": "item_15",
+      "tool": "save_execution",
+      "message": "Execution must preserve approved issue contracts; revise the plan to change them"
+    },
+    {
+      "run": "23",
+      "itemId": "item_16",
+      "tool": "save_execution",
+      "message": "ENOENT: no such file or directory, open '/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-msx54z6v/project/.frontend-system/plans/checkout-contract/checks/5a7fdb98-0e77-45eb-b514-a94db2ae48a0.json'"
+    },
+    {
+      "run": "23",
+      "itemId": "item_53",
+      "tool": "get_change_context",
+      "message": "fatal: '/Users/yelihi/.gitconfig'에 접근할 수 없습니다: Operation not permitted"
+    },
+    {
+      "run": "23",
+      "itemId": "item_57",
+      "tool": "run_project_checks",
+      "message": "Choose a stage/required checks or a capability selection, not both"
+    },
+    {
+      "run": "23",
+      "itemId": "item_71",
+      "tool": "save_semantic_review",
+      "message": "MCP error -32602: Input validation error: Invalid arguments for tool save_semantic_review: Too small: expected array to have >=1 items at review.findings"
+    },
+    {
+      "run": "23",
+      "itemId": "item_72",
+      "tool": "save_semantic_review",
+      "message": "Review requires an approved policy and execution step"
+    },
+    {
+      "run": "23",
+      "itemId": "item_75",
+      "tool": "save_semantic_review",
+      "message": "Review requires an approved policy and execution step"
+    },
+    {
+      "run": "23",
+      "itemId": "item_77",
+      "tool": "save_execution",
+      "message": "ENOENT: no such file or directory, open '/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-msx54z6v/project/.frontend-system/plans/checkout-contract/reviews/contract-review.json'"
+    },
+    {
+      "run": "28",
+      "itemId": "item_14",
+      "tool": "save_execution",
+      "message": "ENOENT: no such file or directory, open '/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-m92ih9cd/project/.frontend-system/plans/checkout-implementation/checks/170b306b-5934-400c-8471-90fe5a931bc1.json'"
+    },
+    {
+      "run": "28",
+      "itemId": "item_15",
+      "tool": "begin_work_attempt",
+      "message": "Reread the current approved execution"
+    },
+    {
+      "run": "28",
+      "itemId": "item_41",
+      "tool": "run_project_checks",
+      "message": "Choose a stage/required checks or a capability selection, not both"
+    },
+    {
+      "run": "28",
+      "itemId": "item_52",
+      "tool": "save_revision",
+      "message": "MCP error -32602: Input validation error: Invalid arguments for tool save_revision: Invalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].id"
+    },
+    {
+      "run": "28",
+      "itemId": "item_55",
+      "tool": "get_revision",
+      "message": "MCP error -32602: Input validation error: Invalid arguments for tool get_revision: Too big: expected number to be <=500 at limit"
+    },
+    {
+      "run": "28",
+      "itemId": "item_63",
+      "tool": "save_semantic_review",
+      "message": "MCP error -32602: Input validation error: Invalid arguments for tool save_semantic_review: Too small: expected array to have >=1 items at review.findings"
+    },
+    {
+      "run": "28",
+      "itemId": "item_65",
+      "tool": "save_execution",
+      "message": "Execution must preserve approved issue contracts; revise the plan to change them"
+    },
+    {
+      "run": "28",
+      "itemId": "item_66",
+      "tool": "save_execution",
+      "message": "Policy steps require a recorded attempt"
+    },
+    {
+      "run": "30",
+      "itemId": "item_16",
+      "tool": "run_project_checks",
+      "message": "Choose a stage/required checks or a capability selection, not both"
+    },
+    {
+      "run": "30",
+      "itemId": "item_19",
+      "tool": "save_revision",
+      "message": "MCP error -32602: Input validation error: Invalid arguments for tool save_revision: Invalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[0].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[1].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[2].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[3].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[4].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[5].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[6].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[7].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[8].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[8]"
+    },
+    {
+      "run": "30",
+      "itemId": "item_36",
+      "tool": "run_project_checks",
+      "message": "Required checks cannot be narrowed by a stage"
+    },
+    {
+      "run": "31",
+      "itemId": "item_21",
+      "tool": "run_project_checks",
+      "message": "Choose a stage/required checks or a capability selection, not both"
+    },
+    {
+      "run": "31",
+      "itemId": "item_55",
+      "tool": "run_project_checks",
+      "message": "Required checks need an approved verification policy"
+    },
+    {
+      "run": "33",
+      "itemId": "item_12",
+      "tool": "save_revision",
+      "message": "MCP error -32602: Input validation error: Invalid arguments for tool save_revision: Invalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[0].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[1].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[2].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[3].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[4].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[5].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[6].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[7].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.rules[8].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[0].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[1].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[3].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].ruleIds[8]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[1]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[2]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[3]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[4]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[5]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[6]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[7]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.reviews[0].ruleIds[8]"
+    },
+    {
+      "run": "33",
+      "itemId": "item_15",
+      "tool": "run_project_checks",
+      "message": "Choose a stage/required checks or a capability selection, not both"
+    },
+    {
+      "run": "33",
+      "itemId": "item_30",
+      "tool": "begin_work_attempt",
+      "message": "Reread the current approved execution"
+    },
+    {
+      "run": "33",
+      "itemId": "item_33",
+      "tool": "get_change_context",
+      "message": "fatal: '/Users/yelihi/.gitconfig'에 접근할 수 없습니다: Operation not permitted"
+    },
+    {
+      "run": "33",
+      "itemId": "item_35",
+      "tool": "run_project_checks",
+      "message": "Required checks cannot be narrowed by a stage"
+    },
+    {
+      "run": "35",
+      "itemId": "item_15",
+      "tool": "run_project_checks",
+      "message": "Choose a stage/required checks or a capability selection, not both"
+    },
+    {
+      "run": "35",
+      "itemId": "item_19",
+      "tool": "save_revision",
+      "message": "MCP error -32602: Input validation error: Invalid arguments for tool save_revision: Invalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[2].id\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at policy.checks[4].id"
+    },
+    {
+      "run": "35",
+      "itemId": "item_23",
+      "tool": "save_execution",
+      "message": "ENOENT: no such file or directory, open '/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-s1koactn/project/.frontend-system/plans/checkout/checks/5985705b-4496-49e7-9e52-0b745b05d7e2.json'"
+    }
+  ],
+  "retrievalReplay": {
+    "indexSha256": "b84f506f7bb55ada4a3ac6bc70a803bb656a24a43719a4ce2f343ba2b342b326",
+    "note": "Deterministic retrieval only. Second query is a post-hoc diagnostic, not a new model result or demonstrated quality improvement.",
+    "cases": [
+      {
+        "query": "Implement approved checkout contract in TASK.md",
+        "technologies": [
+          "next",
+          "react"
+        ],
+        "hits": [
+          {
+            "id": "code-quality-context-and-contracts",
+            "score": 2,
+            "matched": [
+              "contract",
+              "in"
+            ]
+          },
+          {
+            "id": "accessibility-modal-focus",
+            "score": 1,
+            "matched": [
+              "in"
+            ]
+          },
+          {
+            "id": "accessibility-static-validation",
+            "score": 1,
+            "matched": [
+              "in"
+            ]
+          },
+          {
+            "id": "bundling-output-and-optimization",
+            "score": 1,
+            "matched": [
+              "in"
+            ]
+          },
+          {
+            "id": "chromium-rendering-pipeline",
+            "score": 1,
+            "matched": [
+              "in"
+            ]
+          }
+        ]
+      },
+      {
+        "query": "React checkout stale response failure request generation synchronous duplicate submit effect state",
+        "technologies": [
+          "next",
+          "react"
+        ],
+        "hits": [
+          {
+            "id": "react-rendering-state-model",
+            "score": 3,
+            "matched": [
+              "react",
+              "effect",
+              "state"
+            ]
+          },
+          {
+            "id": "debugging-react-integration-cases",
+            "score": 2,
+            "matched": [
+              "react",
+              "stale"
+            ]
+          },
+          {
+            "id": "react-derived-state-and-effects",
+            "score": 2,
+            "matched": [
+              "react",
+              "effect"
+            ]
+          },
+          {
+            "id": "react-fiber-work-in-progress",
+            "score": 2,
+            "matched": [
+              "react",
+              "state"
+            ]
+          },
+          {
+            "id": "tanstack-query-freshness-and-retention",
+            "score": 2,
+            "matched": [
+              "react",
+              "stale"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "repeatedChecks": {
+    "definition": "Actual passed/failed script results returned by MCP only. Repeated sourceHash+revisionHash+capability+command within a run; compare to previous result of same tuple. Does not prove environment identity, zero value or saved runtime. Shell-direct checks excluded.",
+    "executedScriptResults": 251,
+    "repeatCount": 75,
+    "runs": [
+      "02",
+      "04",
+      "11",
+      "18",
+      "19",
+      "21",
+      "31",
+      "33",
+      "35"
+    ],
+    "sameAttemptBothPassedStable": 65,
+    "items": [
+      {
+        "run": "02",
+        "previousItem": "item_48",
+        "item": "item_54",
+        "script": "lint",
+        "sourceHash": "6a8178c91c0efa173b01d4c99f8c53781dda9838393279a063b4b63815e78df7",
+        "revisionHash": "643bb30d7fb7d243543c10379ababb14bc03c38203cdb8959a2850fab68e067d",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "02",
+        "previousItem": "item_48",
+        "item": "item_54",
+        "script": "typecheck",
+        "sourceHash": "6a8178c91c0efa173b01d4c99f8c53781dda9838393279a063b4b63815e78df7",
+        "revisionHash": "643bb30d7fb7d243543c10379ababb14bc03c38203cdb8959a2850fab68e067d",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "02",
+        "previousItem": "item_48",
+        "item": "item_54",
+        "script": "test:unit",
+        "sourceHash": "6a8178c91c0efa173b01d4c99f8c53781dda9838393279a063b4b63815e78df7",
+        "revisionHash": "643bb30d7fb7d243543c10379ababb14bc03c38203cdb8959a2850fab68e067d",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "02",
+        "previousItem": "item_48",
+        "item": "item_54",
+        "script": "test:e2e",
+        "sourceHash": "6a8178c91c0efa173b01d4c99f8c53781dda9838393279a063b4b63815e78df7",
+        "revisionHash": "643bb30d7fb7d243543c10379ababb14bc03c38203cdb8959a2850fab68e067d",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "02",
+        "previousItem": "item_48",
+        "item": "item_54",
+        "script": "build",
+        "sourceHash": "6a8178c91c0efa173b01d4c99f8c53781dda9838393279a063b4b63815e78df7",
+        "revisionHash": "643bb30d7fb7d243543c10379ababb14bc03c38203cdb8959a2850fab68e067d",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "04",
+        "previousItem": "item_70",
+        "item": "item_74",
+        "script": "lint",
+        "sourceHash": "59275aaceefe7737bc0f7af1526e5e1dc22a8d18cc34276e7982c8ea71f09e6a",
+        "revisionHash": "f2e1a1bea4ef0facd905db68301426c7801d806c5e2e70c1ecee91334dea50e5",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "04",
+        "previousItem": "item_70",
+        "item": "item_74",
+        "script": "typecheck",
+        "sourceHash": "59275aaceefe7737bc0f7af1526e5e1dc22a8d18cc34276e7982c8ea71f09e6a",
+        "revisionHash": "f2e1a1bea4ef0facd905db68301426c7801d806c5e2e70c1ecee91334dea50e5",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "04",
+        "previousItem": "item_70",
+        "item": "item_74",
+        "script": "test:unit",
+        "sourceHash": "59275aaceefe7737bc0f7af1526e5e1dc22a8d18cc34276e7982c8ea71f09e6a",
+        "revisionHash": "f2e1a1bea4ef0facd905db68301426c7801d806c5e2e70c1ecee91334dea50e5",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "04",
+        "previousItem": "item_70",
+        "item": "item_74",
+        "script": "test:e2e",
+        "sourceHash": "59275aaceefe7737bc0f7af1526e5e1dc22a8d18cc34276e7982c8ea71f09e6a",
+        "revisionHash": "f2e1a1bea4ef0facd905db68301426c7801d806c5e2e70c1ecee91334dea50e5",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "04",
+        "previousItem": "item_70",
+        "item": "item_74",
+        "script": "build",
+        "sourceHash": "59275aaceefe7737bc0f7af1526e5e1dc22a8d18cc34276e7982c8ea71f09e6a",
+        "revisionHash": "f2e1a1bea4ef0facd905db68301426c7801d806c5e2e70c1ecee91334dea50e5",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "11",
+        "previousItem": "item_55",
+        "item": "item_57",
+        "script": "lint",
+        "sourceHash": "5c2ca6737095b90ae7faa7dcc98973135163946572718e35fe37c1bca4ce50f3",
+        "revisionHash": "9c52cb5988366f8b7248a90720d4369ba1433b12c3541d750cd31807380bbc0a",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "11",
+        "previousItem": "item_55",
+        "item": "item_57",
+        "script": "typecheck",
+        "sourceHash": "5c2ca6737095b90ae7faa7dcc98973135163946572718e35fe37c1bca4ce50f3",
+        "revisionHash": "9c52cb5988366f8b7248a90720d4369ba1433b12c3541d750cd31807380bbc0a",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "11",
+        "previousItem": "item_55",
+        "item": "item_57",
+        "script": "test:unit",
+        "sourceHash": "5c2ca6737095b90ae7faa7dcc98973135163946572718e35fe37c1bca4ce50f3",
+        "revisionHash": "9c52cb5988366f8b7248a90720d4369ba1433b12c3541d750cd31807380bbc0a",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "11",
+        "previousItem": "item_55",
+        "item": "item_57",
+        "script": "test:e2e",
+        "sourceHash": "5c2ca6737095b90ae7faa7dcc98973135163946572718e35fe37c1bca4ce50f3",
+        "revisionHash": "9c52cb5988366f8b7248a90720d4369ba1433b12c3541d750cd31807380bbc0a",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "11",
+        "previousItem": "item_55",
+        "item": "item_57",
+        "script": "build",
+        "sourceHash": "5c2ca6737095b90ae7faa7dcc98973135163946572718e35fe37c1bca4ce50f3",
+        "revisionHash": "9c52cb5988366f8b7248a90720d4369ba1433b12c3541d750cd31807380bbc0a",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "18",
+        "previousItem": "item_72",
+        "item": "item_73",
+        "script": "lint",
+        "sourceHash": "1a7f6b514d75952aa57dd53f0bf2e1dc8ff653f0a2c2c38265568f6bcc2a81a1",
+        "revisionHash": "c88e7471df71a89992ff14c63f7af5d154e72b39961e820e82decb98291b1a39",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "18",
+        "previousItem": "item_72",
+        "item": "item_73",
+        "script": "typecheck",
+        "sourceHash": "1a7f6b514d75952aa57dd53f0bf2e1dc8ff653f0a2c2c38265568f6bcc2a81a1",
+        "revisionHash": "c88e7471df71a89992ff14c63f7af5d154e72b39961e820e82decb98291b1a39",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "18",
+        "previousItem": "item_72",
+        "item": "item_73",
+        "script": "test:unit",
+        "sourceHash": "1a7f6b514d75952aa57dd53f0bf2e1dc8ff653f0a2c2c38265568f6bcc2a81a1",
+        "revisionHash": "c88e7471df71a89992ff14c63f7af5d154e72b39961e820e82decb98291b1a39",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "18",
+        "previousItem": "item_72",
+        "item": "item_73",
+        "script": "test:e2e",
+        "sourceHash": "1a7f6b514d75952aa57dd53f0bf2e1dc8ff653f0a2c2c38265568f6bcc2a81a1",
+        "revisionHash": "c88e7471df71a89992ff14c63f7af5d154e72b39961e820e82decb98291b1a39",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "18",
+        "previousItem": "item_72",
+        "item": "item_73",
+        "script": "build",
+        "sourceHash": "1a7f6b514d75952aa57dd53f0bf2e1dc8ff653f0a2c2c38265568f6bcc2a81a1",
+        "revisionHash": "c88e7471df71a89992ff14c63f7af5d154e72b39961e820e82decb98291b1a39",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "18",
+        "previousItem": "item_73",
+        "item": "item_78",
+        "script": "lint",
+        "sourceHash": "1a7f6b514d75952aa57dd53f0bf2e1dc8ff653f0a2c2c38265568f6bcc2a81a1",
+        "revisionHash": "c88e7471df71a89992ff14c63f7af5d154e72b39961e820e82decb98291b1a39",
+        "sameAttempt": false,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "18",
+        "previousItem": "item_73",
+        "item": "item_78",
+        "script": "typecheck",
+        "sourceHash": "1a7f6b514d75952aa57dd53f0bf2e1dc8ff653f0a2c2c38265568f6bcc2a81a1",
+        "revisionHash": "c88e7471df71a89992ff14c63f7af5d154e72b39961e820e82decb98291b1a39",
+        "sameAttempt": false,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "18",
+        "previousItem": "item_73",
+        "item": "item_78",
+        "script": "test:unit",
+        "sourceHash": "1a7f6b514d75952aa57dd53f0bf2e1dc8ff653f0a2c2c38265568f6bcc2a81a1",
+        "revisionHash": "c88e7471df71a89992ff14c63f7af5d154e72b39961e820e82decb98291b1a39",
+        "sameAttempt": false,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "18",
+        "previousItem": "item_73",
+        "item": "item_78",
+        "script": "test:e2e",
+        "sourceHash": "1a7f6b514d75952aa57dd53f0bf2e1dc8ff653f0a2c2c38265568f6bcc2a81a1",
+        "revisionHash": "c88e7471df71a89992ff14c63f7af5d154e72b39961e820e82decb98291b1a39",
+        "sameAttempt": false,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "18",
+        "previousItem": "item_73",
+        "item": "item_78",
+        "script": "build",
+        "sourceHash": "1a7f6b514d75952aa57dd53f0bf2e1dc8ff653f0a2c2c38265568f6bcc2a81a1",
+        "revisionHash": "c88e7471df71a89992ff14c63f7af5d154e72b39961e820e82decb98291b1a39",
+        "sameAttempt": false,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "18",
+        "previousItem": "item_78",
+        "item": "item_80",
+        "script": "lint",
+        "sourceHash": "1a7f6b514d75952aa57dd53f0bf2e1dc8ff653f0a2c2c38265568f6bcc2a81a1",
+        "revisionHash": "c88e7471df71a89992ff14c63f7af5d154e72b39961e820e82decb98291b1a39",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "18",
+        "previousItem": "item_78",
+        "item": "item_80",
+        "script": "typecheck",
+        "sourceHash": "1a7f6b514d75952aa57dd53f0bf2e1dc8ff653f0a2c2c38265568f6bcc2a81a1",
+        "revisionHash": "c88e7471df71a89992ff14c63f7af5d154e72b39961e820e82decb98291b1a39",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "18",
+        "previousItem": "item_78",
+        "item": "item_80",
+        "script": "test:unit",
+        "sourceHash": "1a7f6b514d75952aa57dd53f0bf2e1dc8ff653f0a2c2c38265568f6bcc2a81a1",
+        "revisionHash": "c88e7471df71a89992ff14c63f7af5d154e72b39961e820e82decb98291b1a39",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "18",
+        "previousItem": "item_78",
+        "item": "item_80",
+        "script": "test:e2e",
+        "sourceHash": "1a7f6b514d75952aa57dd53f0bf2e1dc8ff653f0a2c2c38265568f6bcc2a81a1",
+        "revisionHash": "c88e7471df71a89992ff14c63f7af5d154e72b39961e820e82decb98291b1a39",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "18",
+        "previousItem": "item_78",
+        "item": "item_80",
+        "script": "build",
+        "sourceHash": "1a7f6b514d75952aa57dd53f0bf2e1dc8ff653f0a2c2c38265568f6bcc2a81a1",
+        "revisionHash": "c88e7471df71a89992ff14c63f7af5d154e72b39961e820e82decb98291b1a39",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "19",
+        "previousItem": "item_36",
+        "item": "item_52",
+        "script": "lint",
+        "sourceHash": "e0120619375339bb8010961abefa7f24bd9f810e63ba481623ddd169c9714f57",
+        "revisionHash": "8721cf5ec6f3d0dbc4a95ecb90b447ccc986322786914de61aee54a28befa5e2",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "19",
+        "previousItem": "item_36",
+        "item": "item_52",
+        "script": "typecheck",
+        "sourceHash": "e0120619375339bb8010961abefa7f24bd9f810e63ba481623ddd169c9714f57",
+        "revisionHash": "8721cf5ec6f3d0dbc4a95ecb90b447ccc986322786914de61aee54a28befa5e2",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "19",
+        "previousItem": "item_36",
+        "item": "item_52",
+        "script": "test:unit",
+        "sourceHash": "e0120619375339bb8010961abefa7f24bd9f810e63ba481623ddd169c9714f57",
+        "revisionHash": "8721cf5ec6f3d0dbc4a95ecb90b447ccc986322786914de61aee54a28befa5e2",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "19",
+        "previousItem": "item_36",
+        "item": "item_52",
+        "script": "test:e2e",
+        "sourceHash": "e0120619375339bb8010961abefa7f24bd9f810e63ba481623ddd169c9714f57",
+        "revisionHash": "8721cf5ec6f3d0dbc4a95ecb90b447ccc986322786914de61aee54a28befa5e2",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "19",
+        "previousItem": "item_36",
+        "item": "item_52",
+        "script": "build",
+        "sourceHash": "e0120619375339bb8010961abefa7f24bd9f810e63ba481623ddd169c9714f57",
+        "revisionHash": "8721cf5ec6f3d0dbc4a95ecb90b447ccc986322786914de61aee54a28befa5e2",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "19",
+        "previousItem": "item_52",
+        "item": "item_53",
+        "script": "lint",
+        "sourceHash": "e0120619375339bb8010961abefa7f24bd9f810e63ba481623ddd169c9714f57",
+        "revisionHash": "8721cf5ec6f3d0dbc4a95ecb90b447ccc986322786914de61aee54a28befa5e2",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "19",
+        "previousItem": "item_52",
+        "item": "item_53",
+        "script": "typecheck",
+        "sourceHash": "e0120619375339bb8010961abefa7f24bd9f810e63ba481623ddd169c9714f57",
+        "revisionHash": "8721cf5ec6f3d0dbc4a95ecb90b447ccc986322786914de61aee54a28befa5e2",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "19",
+        "previousItem": "item_52",
+        "item": "item_53",
+        "script": "test:unit",
+        "sourceHash": "e0120619375339bb8010961abefa7f24bd9f810e63ba481623ddd169c9714f57",
+        "revisionHash": "8721cf5ec6f3d0dbc4a95ecb90b447ccc986322786914de61aee54a28befa5e2",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "19",
+        "previousItem": "item_52",
+        "item": "item_53",
+        "script": "test:e2e",
+        "sourceHash": "e0120619375339bb8010961abefa7f24bd9f810e63ba481623ddd169c9714f57",
+        "revisionHash": "8721cf5ec6f3d0dbc4a95ecb90b447ccc986322786914de61aee54a28befa5e2",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "19",
+        "previousItem": "item_52",
+        "item": "item_53",
+        "script": "build",
+        "sourceHash": "e0120619375339bb8010961abefa7f24bd9f810e63ba481623ddd169c9714f57",
+        "revisionHash": "8721cf5ec6f3d0dbc4a95ecb90b447ccc986322786914de61aee54a28befa5e2",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "19",
+        "previousItem": "item_53",
+        "item": "item_55",
+        "script": "lint",
+        "sourceHash": "e0120619375339bb8010961abefa7f24bd9f810e63ba481623ddd169c9714f57",
+        "revisionHash": "8721cf5ec6f3d0dbc4a95ecb90b447ccc986322786914de61aee54a28befa5e2",
+        "sameAttempt": false,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "19",
+        "previousItem": "item_53",
+        "item": "item_55",
+        "script": "typecheck",
+        "sourceHash": "e0120619375339bb8010961abefa7f24bd9f810e63ba481623ddd169c9714f57",
+        "revisionHash": "8721cf5ec6f3d0dbc4a95ecb90b447ccc986322786914de61aee54a28befa5e2",
+        "sameAttempt": false,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "19",
+        "previousItem": "item_53",
+        "item": "item_55",
+        "script": "test:unit",
+        "sourceHash": "e0120619375339bb8010961abefa7f24bd9f810e63ba481623ddd169c9714f57",
+        "revisionHash": "8721cf5ec6f3d0dbc4a95ecb90b447ccc986322786914de61aee54a28befa5e2",
+        "sameAttempt": false,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "19",
+        "previousItem": "item_53",
+        "item": "item_55",
+        "script": "test:e2e",
+        "sourceHash": "e0120619375339bb8010961abefa7f24bd9f810e63ba481623ddd169c9714f57",
+        "revisionHash": "8721cf5ec6f3d0dbc4a95ecb90b447ccc986322786914de61aee54a28befa5e2",
+        "sameAttempt": false,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "19",
+        "previousItem": "item_53",
+        "item": "item_55",
+        "script": "build",
+        "sourceHash": "e0120619375339bb8010961abefa7f24bd9f810e63ba481623ddd169c9714f57",
+        "revisionHash": "8721cf5ec6f3d0dbc4a95ecb90b447ccc986322786914de61aee54a28befa5e2",
+        "sameAttempt": false,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "21",
+        "previousItem": "item_60",
+        "item": "item_62",
+        "script": "lint",
+        "sourceHash": "1b357acdf02c71b485e9c9855d71d59d6919747211890750b8a003979f69daf1",
+        "revisionHash": "d8bce9f13b033aac0791956b12665ba36d09e9cb5e4e2ddea7407c4afaf85d51",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "21",
+        "previousItem": "item_60",
+        "item": "item_62",
+        "script": "typecheck",
+        "sourceHash": "1b357acdf02c71b485e9c9855d71d59d6919747211890750b8a003979f69daf1",
+        "revisionHash": "d8bce9f13b033aac0791956b12665ba36d09e9cb5e4e2ddea7407c4afaf85d51",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "21",
+        "previousItem": "item_60",
+        "item": "item_62",
+        "script": "test:unit",
+        "sourceHash": "1b357acdf02c71b485e9c9855d71d59d6919747211890750b8a003979f69daf1",
+        "revisionHash": "d8bce9f13b033aac0791956b12665ba36d09e9cb5e4e2ddea7407c4afaf85d51",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "21",
+        "previousItem": "item_60",
+        "item": "item_62",
+        "script": "test:e2e",
+        "sourceHash": "1b357acdf02c71b485e9c9855d71d59d6919747211890750b8a003979f69daf1",
+        "revisionHash": "d8bce9f13b033aac0791956b12665ba36d09e9cb5e4e2ddea7407c4afaf85d51",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "21",
+        "previousItem": "item_60",
+        "item": "item_62",
+        "script": "build",
+        "sourceHash": "1b357acdf02c71b485e9c9855d71d59d6919747211890750b8a003979f69daf1",
+        "revisionHash": "d8bce9f13b033aac0791956b12665ba36d09e9cb5e4e2ddea7407c4afaf85d51",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "21",
+        "previousItem": "item_62",
+        "item": "item_63",
+        "script": "lint",
+        "sourceHash": "1b357acdf02c71b485e9c9855d71d59d6919747211890750b8a003979f69daf1",
+        "revisionHash": "d8bce9f13b033aac0791956b12665ba36d09e9cb5e4e2ddea7407c4afaf85d51",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "21",
+        "previousItem": "item_62",
+        "item": "item_63",
+        "script": "typecheck",
+        "sourceHash": "1b357acdf02c71b485e9c9855d71d59d6919747211890750b8a003979f69daf1",
+        "revisionHash": "d8bce9f13b033aac0791956b12665ba36d09e9cb5e4e2ddea7407c4afaf85d51",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "21",
+        "previousItem": "item_62",
+        "item": "item_63",
+        "script": "test:unit",
+        "sourceHash": "1b357acdf02c71b485e9c9855d71d59d6919747211890750b8a003979f69daf1",
+        "revisionHash": "d8bce9f13b033aac0791956b12665ba36d09e9cb5e4e2ddea7407c4afaf85d51",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "21",
+        "previousItem": "item_62",
+        "item": "item_63",
+        "script": "test:e2e",
+        "sourceHash": "1b357acdf02c71b485e9c9855d71d59d6919747211890750b8a003979f69daf1",
+        "revisionHash": "d8bce9f13b033aac0791956b12665ba36d09e9cb5e4e2ddea7407c4afaf85d51",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "21",
+        "previousItem": "item_62",
+        "item": "item_63",
+        "script": "build",
+        "sourceHash": "1b357acdf02c71b485e9c9855d71d59d6919747211890750b8a003979f69daf1",
+        "revisionHash": "d8bce9f13b033aac0791956b12665ba36d09e9cb5e4e2ddea7407c4afaf85d51",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "31",
+        "previousItem": "item_73",
+        "item": "item_78",
+        "script": "lint",
+        "sourceHash": "20437de42d7f95f0f9ea8bfd1587176dc496834e4c3c3524fc4e152b37b3b663",
+        "revisionHash": null,
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "31",
+        "previousItem": "item_73",
+        "item": "item_78",
+        "script": "typecheck",
+        "sourceHash": "20437de42d7f95f0f9ea8bfd1587176dc496834e4c3c3524fc4e152b37b3b663",
+        "revisionHash": null,
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "31",
+        "previousItem": "item_73",
+        "item": "item_78",
+        "script": "test:unit",
+        "sourceHash": "20437de42d7f95f0f9ea8bfd1587176dc496834e4c3c3524fc4e152b37b3b663",
+        "revisionHash": null,
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "31",
+        "previousItem": "item_73",
+        "item": "item_78",
+        "script": "test:e2e",
+        "sourceHash": "20437de42d7f95f0f9ea8bfd1587176dc496834e4c3c3524fc4e152b37b3b663",
+        "revisionHash": null,
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "31",
+        "previousItem": "item_73",
+        "item": "item_78",
+        "script": "build",
+        "sourceHash": "20437de42d7f95f0f9ea8bfd1587176dc496834e4c3c3524fc4e152b37b3b663",
+        "revisionHash": null,
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "33",
+        "previousItem": "item_37",
+        "item": "item_40",
+        "script": "lint",
+        "sourceHash": "d72a6f12fa0cf0817065f129308a34c50afbf55ba0204c3a25e2959fb4a3d63b",
+        "revisionHash": "ce0b56434dc8dd78771e9e67923e41964b6805baab5771639ec2828e34eb4d94",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "33",
+        "previousItem": "item_37",
+        "item": "item_40",
+        "script": "typecheck",
+        "sourceHash": "d72a6f12fa0cf0817065f129308a34c50afbf55ba0204c3a25e2959fb4a3d63b",
+        "revisionHash": "ce0b56434dc8dd78771e9e67923e41964b6805baab5771639ec2828e34eb4d94",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "33",
+        "previousItem": "item_37",
+        "item": "item_40",
+        "script": "test:unit",
+        "sourceHash": "d72a6f12fa0cf0817065f129308a34c50afbf55ba0204c3a25e2959fb4a3d63b",
+        "revisionHash": "ce0b56434dc8dd78771e9e67923e41964b6805baab5771639ec2828e34eb4d94",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "33",
+        "previousItem": "item_37",
+        "item": "item_40",
+        "script": "test:e2e",
+        "sourceHash": "d72a6f12fa0cf0817065f129308a34c50afbf55ba0204c3a25e2959fb4a3d63b",
+        "revisionHash": "ce0b56434dc8dd78771e9e67923e41964b6805baab5771639ec2828e34eb4d94",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "33",
+        "previousItem": "item_37",
+        "item": "item_40",
+        "script": "build",
+        "sourceHash": "d72a6f12fa0cf0817065f129308a34c50afbf55ba0204c3a25e2959fb4a3d63b",
+        "revisionHash": "ce0b56434dc8dd78771e9e67923e41964b6805baab5771639ec2828e34eb4d94",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "35",
+        "previousItem": "item_63",
+        "item": "item_66",
+        "script": "lint",
+        "sourceHash": "50e103efecf17107d5226fb2a217dc5cefcd106e71adb96cfc4bdd22d2812363",
+        "revisionHash": "3ce25d0393941ae0153b72c2c78f75943aa237184baed200e7941b2cda6f336e",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "35",
+        "previousItem": "item_63",
+        "item": "item_66",
+        "script": "typecheck",
+        "sourceHash": "50e103efecf17107d5226fb2a217dc5cefcd106e71adb96cfc4bdd22d2812363",
+        "revisionHash": "3ce25d0393941ae0153b72c2c78f75943aa237184baed200e7941b2cda6f336e",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "35",
+        "previousItem": "item_63",
+        "item": "item_66",
+        "script": "test:unit",
+        "sourceHash": "50e103efecf17107d5226fb2a217dc5cefcd106e71adb96cfc4bdd22d2812363",
+        "revisionHash": "3ce25d0393941ae0153b72c2c78f75943aa237184baed200e7941b2cda6f336e",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "35",
+        "previousItem": "item_63",
+        "item": "item_66",
+        "script": "test:e2e",
+        "sourceHash": "50e103efecf17107d5226fb2a217dc5cefcd106e71adb96cfc4bdd22d2812363",
+        "revisionHash": "3ce25d0393941ae0153b72c2c78f75943aa237184baed200e7941b2cda6f336e",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "35",
+        "previousItem": "item_63",
+        "item": "item_66",
+        "script": "build",
+        "sourceHash": "50e103efecf17107d5226fb2a217dc5cefcd106e71adb96cfc4bdd22d2812363",
+        "revisionHash": "3ce25d0393941ae0153b72c2c78f75943aa237184baed200e7941b2cda6f336e",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "35",
+        "previousItem": "item_66",
+        "item": "item_67",
+        "script": "lint",
+        "sourceHash": "50e103efecf17107d5226fb2a217dc5cefcd106e71adb96cfc4bdd22d2812363",
+        "revisionHash": "3ce25d0393941ae0153b72c2c78f75943aa237184baed200e7941b2cda6f336e",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "35",
+        "previousItem": "item_66",
+        "item": "item_67",
+        "script": "typecheck",
+        "sourceHash": "50e103efecf17107d5226fb2a217dc5cefcd106e71adb96cfc4bdd22d2812363",
+        "revisionHash": "3ce25d0393941ae0153b72c2c78f75943aa237184baed200e7941b2cda6f336e",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "35",
+        "previousItem": "item_66",
+        "item": "item_67",
+        "script": "test:unit",
+        "sourceHash": "50e103efecf17107d5226fb2a217dc5cefcd106e71adb96cfc4bdd22d2812363",
+        "revisionHash": "3ce25d0393941ae0153b72c2c78f75943aa237184baed200e7941b2cda6f336e",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "35",
+        "previousItem": "item_66",
+        "item": "item_67",
+        "script": "test:e2e",
+        "sourceHash": "50e103efecf17107d5226fb2a217dc5cefcd106e71adb96cfc4bdd22d2812363",
+        "revisionHash": "3ce25d0393941ae0153b72c2c78f75943aa237184baed200e7941b2cda6f336e",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      },
+      {
+        "run": "35",
+        "previousItem": "item_66",
+        "item": "item_67",
+        "script": "build",
+        "sourceHash": "50e103efecf17107d5226fb2a217dc5cefcd106e71adb96cfc4bdd22d2812363",
+        "revisionHash": "3ce25d0393941ae0153b72c2c78f75943aa237184baed200e7941b2cda6f336e",
+        "sameAttempt": true,
+        "bothPassed": true,
+        "bothStable": true
+      }
+    ]
+  }
+}

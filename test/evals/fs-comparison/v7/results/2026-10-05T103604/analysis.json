@@ -1,0 +1,167 @@
+{
+  "manifestHash": "9b5dc03191e781132fc9f17b08f6a25d51154ad10cbfadf193217c0c022e74d0",
+  "status": "completed",
+  "modelCalls": 4,
+  "rows": [
+    {
+      "arm": "plain",
+      "eligible": true,
+      "workflow": "observed",
+      "grades": {
+        "F": {
+          "passed": 64,
+          "total": 64
+        },
+        "S": {
+          "passed": 17,
+          "total": 17
+        },
+        "Q": {
+          "passed": 10,
+          "total": 10
+        },
+        "N": {
+          "passed": 2,
+          "total": 2
+        }
+      },
+      "firstPass": true,
+      "externalRepairs": 0,
+      "totalTokens": 539628,
+      "uncachedInput": 39244,
+      "outputTokens": 6560,
+      "seconds": 174.667,
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "failedCommands": [
+        {
+          "command": "/bin/zsh -lc \"rg --files -g '*.test.*' -g 'AGENTS.md' && true\"",
+          "exitCode": 1
+        },
+        {
+          "command": "/bin/zsh -lc 'npm run lint:styles'",
+          "exitCode": 1
+        }
+      ],
+      "checks": [],
+      "knowledgeTrace": [],
+      "failedGrades": []
+    },
+    {
+      "arm": "fs",
+      "eligible": true,
+      "workflow": "observed",
+      "grades": {
+        "F": {
+          "passed": 64,
+          "total": 64
+        },
+        "S": {
+          "passed": 17,
+          "total": 17
+        },
+        "Q": {
+          "passed": 10,
+          "total": 10
+        },
+        "N": {
+          "passed": 2,
+          "total": 2
+        }
+      },
+      "firstPass": true,
+      "externalRepairs": 0,
+      "totalTokens": 2107787,
+      "uncachedInput": 86625,
+      "outputTokens": 14890,
+      "seconds": 381.632,
+      "mcpCalls": 28,
+      "mcpErrors": 2,
+      "failedCommands": [
+        {
+          "command": "/bin/zsh -lc \"git status --short; rg --files -g '*.test.mjs' -g '*.test.jsx' -g '*.test.js'\"",
+          "exitCode": 1
+        },
+        {
+          "command": "/bin/zsh -lc \"cat USER_DECISIONS.md; git status --short; rg --files -g '*.test.mjs' -g '*.test.jsx' -g '*.test.js'\"",
+          "exitCode": 1
+        }
+      ],
+      "checks": [
+        {
+          "tool": "run_project_checks",
+          "arguments": {
+            "planId": "operations-console-style",
+            "stage": "baseline"
+          }
+        },
+        {
+          "tool": "run_project_checks",
+          "arguments": {
+            "planId": "operations-console-style",
+            "attemptId": "65847584-b66e-4da4-9da2-2fb0ecab6a0b",
+            "capabilities": [
+              "lint:styles",
+              "test"
+            ]
+          }
+        },
+        {
+          "tool": "run_project_checks",
+          "arguments": {
+            "planId": "operations-console-style",
+            "attemptId": "65847584-b66e-4da4-9da2-2fb0ecab6a0b",
+            "stage": "delivery",
+            "baselineCheckId": "4063da9b-b172-4a62-b6f9-6545bbba4931"
+          }
+        }
+      ],
+      "knowledgeTrace": [
+        {
+          "tool": "search_learned_knowledge",
+          "error": false,
+          "arguments": {
+            "query": "Tailwind theme strategy dark mode brand tokens CSS variables existing theme classes static authoring policy",
+            "technologies": [
+              "tailwindcss",
+              "react"
+            ]
+          }
+        },
+        {
+          "tool": "discover_knowledge_triggers",
+          "error": false,
+          "arguments": {
+            "query": "Tailwind team style policy static JSX CVA variants unresolved theme strategy brand dark mode",
+            "technologies": [
+              "Tailwind CSS",
+              "React"
+            ]
+          }
+        },
+        {
+          "tool": "read_learned_knowledge",
+          "error": false,
+          "arguments": {
+            "id": [
+              "tailwind-team-authorship"
+            ]
+          }
+        },
+        {
+          "tool": "read_learned_knowledge",
+          "error": false,
+          "arguments": {
+            "id": [
+              "accessibility-semantics",
+              "accessibility-names-and-alternatives",
+              "accessibility-native-controls-and-forms",
+              "accessibility-static-validation"
+            ]
+          }
+        }
+      ],
+      "failedGrades": []
+    }
+  ]
+}

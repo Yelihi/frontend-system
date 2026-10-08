@@ -1,0 +1,162 @@
+{
+  "manifestHash": "2271e900ac36d164a5db0ed73fda0cca3a8ba58390fd84040d949b7674d02f33",
+  "status": "completed",
+  "modelCalls": 4,
+  "rows": [
+    {
+      "arm": "plain",
+      "eligible": true,
+      "workflow": "observed",
+      "grades": {
+        "F": {
+          "passed": 64,
+          "total": 64
+        },
+        "S": {
+          "passed": 17,
+          "total": 17
+        },
+        "Q": {
+          "passed": 10,
+          "total": 10
+        },
+        "N": {
+          "passed": 2,
+          "total": 2
+        }
+      },
+      "firstPass": true,
+      "externalRepairs": 0,
+      "totalTokens": 565563,
+      "uncachedInput": 35761,
+      "outputTokens": 7434,
+      "seconds": 186.473,
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "failedCommands": [
+        {
+          "command": "/bin/zsh -lc \"rg --files -g '*.test.mjs' -g '*.test.jsx' -g 'README*' -g 'USER_DECISIONS.md'\"",
+          "exitCode": 1
+        },
+        {
+          "command": "/bin/zsh -lc 'git status --short && node ../runtime/bundle/style-check.js . style-policy.json'",
+          "exitCode": 1
+        },
+        {
+          "command": "/bin/zsh -lc 'npm run lint:styles'",
+          "exitCode": 1
+        }
+      ],
+      "checks": [],
+      "knowledgeTrace": [],
+      "failedGrades": []
+    },
+    {
+      "arm": "fs",
+      "eligible": true,
+      "workflow": "observed",
+      "grades": {
+        "F": {
+          "passed": 64,
+          "total": 64
+        },
+        "S": {
+          "passed": 17,
+          "total": 17
+        },
+        "Q": {
+          "passed": 10,
+          "total": 10
+        },
+        "N": {
+          "passed": 2,
+          "total": 2
+        }
+      },
+      "firstPass": true,
+      "externalRepairs": 0,
+      "totalTokens": 2247581,
+      "uncachedInput": 85011,
+      "outputTokens": 15242,
+      "seconds": 434.452,
+      "mcpCalls": 22,
+      "mcpErrors": 0,
+      "failedCommands": [
+        {
+          "command": "/bin/zsh -lc \"cat '../runtime/references/learned/evidence-led-design.md'\"",
+          "exitCode": 1
+        },
+        {
+          "command": "/bin/zsh -lc \"cat USER_DECISIONS.md; git status --short; rg --files -g '*.test.*' -g '\"'!node_modules/**'\"'\"",
+          "exitCode": 1
+        },
+        {
+          "command": "/bin/zsh -lc \"node --input-type=module -e 'import {readFile} from \\\"node:fs/promises\\\"; import {chromium} from \\\"../runtime/node_modules/playwright/index.mjs\\\"; const css=await readFile(\\\"dist/theme.css\\\",\\\"utf8\\\"); const browser=await chromium.launch({headless:true}); try { const page=await browser.newPage(); await page.setContent(\"'`<style>${css}</style><button class=\"bg-action text-on-action\">action</button><section class=\"border border-action\"></section>`); const colors=await page.evaluate(()=>({background:getComputedStyle(document.querySelector(\"button\")).backgroundColor,foreground:getComputedStyle(document.querySelector(\"button\")).color,border:getComputedStyle(document.querySelector(\"section\")).borderTopColor})); if(colors.background!==\"rgb(21, 93, 252)\"||colors.foreground!==\"rgb(255, 255, 255)\"||colors.border!==\"rgb(21, 93, 252)\") throw new Error(JSON.stringify(colors)); process.stdout.write(JSON.stringify(colors)); } finally { await browser.close(); }'\"'\"",
+          "exitCode": 1
+        }
+      ],
+      "checks": [
+        {
+          "tool": "run_project_checks",
+          "arguments": {
+            "planId": "console-style-policy",
+            "stage": "baseline"
+          }
+        },
+        {
+          "tool": "run_project_checks",
+          "arguments": {
+            "planId": "console-style-policy",
+            "attemptId": "b4ea8fe1-3242-439c-9b83-c1ff41c7bb0c",
+            "capabilities": [
+              "lint:styles",
+              "test",
+              "build"
+            ]
+          }
+        },
+        {
+          "tool": "run_project_checks",
+          "arguments": {
+            "planId": "console-style-policy",
+            "attemptId": "b4ea8fe1-3242-439c-9b83-c1ff41c7bb0c",
+            "capabilities": [
+              "test"
+            ]
+          }
+        },
+        {
+          "tool": "run_project_checks",
+          "arguments": {
+            "planId": "console-style-policy",
+            "attemptId": "b4ea8fe1-3242-439c-9b83-c1ff41c7bb0c",
+            "capabilities": [
+              "lint:styles",
+              "test",
+              "build"
+            ]
+          }
+        },
+        {
+          "tool": "run_project_checks",
+          "arguments": {
+            "planId": "console-style-policy",
+            "attemptId": "b4ea8fe1-3242-439c-9b83-c1ff41c7bb0c",
+            "stage": "delivery",
+            "stepId": "style-alignment"
+          }
+        }
+      ],
+      "knowledgeTrace": [
+        {
+          "tool": "read_learned_knowledge",
+          "error": false,
+          "arguments": {
+            "id": "tailwind-team-authorship"
+          }
+        }
+      ],
+      "failedGrades": []
+    }
+  ]
+}

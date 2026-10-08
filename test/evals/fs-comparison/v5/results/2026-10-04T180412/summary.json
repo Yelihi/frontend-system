@@ -1,0 +1,8 @@
+{
+  "status": "blocked",
+  "reason": "Isolation/evidence preflight failed; no model calls",
+  "modelCalls": 0,
+  "manifestHash": "cd32f36cece0160ce93356a4c6004c240331853665b2f384a3832c7fad4464e9",
+  "journeys": [],
+  "comparison": []
+}

@@ -44,8 +44,13 @@ function run(capability: ProjectCapability, id: string, definition: string): Pro
 }
 
 export function summarizeChecks<T extends { results: Array<{ status?: string; output: string }> }>(record: T) {
+  const excerpt = (output: string) => {
+    if (output.length <= 2000) return output;
+    const omitted = "\n[... omitted; read get_check_record with capability/offset for the original log ...]\n";
+    return output.slice(0, 1500) + omitted + output.slice(-(500 - omitted.length));
+  };
   return { ...record, results: record.results.map((item) => ({
-    ...item, output: item.status === "passed" ? "" : item.output.slice(-2000),
+    ...item, output: item.status === "passed" ? "" : excerpt(item.output),
     outputCharacters: item.output.length,
     outputTruncated: item.output.length > (item.status === "passed" ? 0 : 2000),
   })) };
@@ -98,7 +103,7 @@ export async function runProjectChecks(profile: ProjectProfile, options: {
   if (options.stage === "baseline" && options.purpose === "verification") throw new Error("Baseline stage records baseline evidence");
   let selected = required ? requiredScripts(revision.policy!) : options.capabilities;
   if (options.stage === "baseline") selected = profile.capabilities.filter((item) =>
-    ["lint", "typecheck", "test:unit", "test:integration"].includes(item.name) ||
+    /^(lint|typecheck)(:|$)/.test(item.name) || ["test:unit", "test:integration"].includes(item.name) ||
     (item.name === "test" && !profile.capabilities.some((other) => other.workingDirectory === item.workingDirectory && ["test:unit", "test:integration"].includes(other.name))))
     .map((item) => relative(root, item.workingDirectory) ? `${relative(root, item.workingDirectory)}:${item.script}` : item.script);
   if (options.stage === "issue") {
@@ -127,7 +132,12 @@ export async function runProjectChecks(profile: ProjectProfile, options: {
       : await runCapabilities(eligible, selected);
   const after = digest(JSON.stringify(await sourceSnapshot(root)));
   const afterRevision = await readRevision(root, options.planId);
+  const requiredPolicyScripts = revision.policy ? requiredScripts(revision.policy) : [];
+  const missingOrFailedScripts = requiredPolicyScripts.filter((script) =>
+    !results.some((result) => result.capability === script && result.status === "passed"));
   const record = {
+    ...(revision.policy ? { coverage: { requiredScripts: requiredPolicyScripts, missingOrFailedScripts,
+      allRequiredPassed: requiredPolicyScripts.length > 0 && missingOrFailedScripts.length === 0 } } : {}),
     id: randomUUID(), planId: options.planId ?? null, stage: options.stage, purpose: options.stage === "baseline" ? "baseline" : options.purpose ?? "verification", revisionHash: revision.hash,
     sourceHash: after, stable: before === after && revision.hash === afterRevision.hash, full: !options.capabilities && !required && !options.stage,
     results: results.map((result) => ({ ...result, status: result.status ?? "not-run" as const })),

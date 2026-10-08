@@ -1,0 +1,1301 @@
+{
+  "status": "blocked",
+  "reason": "Model process failed before completing a turn",
+  "modelCalls": 1,
+  "manifestHash": "61570958f5f9eb995523bfb1dd0ea4e16ea984d685872a5f5eeb4f50428f94e6",
+  "journeys": [
+    {
+      "arm": "fs",
+      "stage": "initial",
+      "records": [
+        {
+          "phase": "prepare",
+          "attempt": 0,
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 1,
+            "timedOut": false,
+            "elapsedSeconds": 151.514,
+            "completedTurns": 0,
+            "threadId": "01a10a08-5c6a-7e80-b17e-2c61a4f4d71a",
+            "sessionError": null,
+            "usage": null,
+            "cumulativeUsage": null,
+            "usageError": null,
+            "errors": [
+              {
+                "type": "error",
+                "message": "Selected model is at capacity. Please try a different model."
+              },
+              {
+                "type": "turn.failed",
+                "error": {
+                  "message": "Selected model is at capacity. Please try a different model."
+                }
+              }
+            ]
+          },
+          "grade": {
+            "status": "unverified",
+            "eligible": false,
+            "reason": "Model process failed before completing a turn"
+          }
+        }
+      ],
+      "trace": [
+        {
+          "tool": "inspect_project",
+          "arguments": {
+            "overall": true
+          },
+          "response": {
+            "overall": true,
+            "profile": {
+              "project": {
+                "id": "project",
+                "name": "project",
+                "rootPath": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v8-maintenance-yz7e8ykd/project",
+                "git": {
+                  "repositoryRoot": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v8-maintenance-yz7e8ykd/project",
+                  "defaultBranch": "main",
+                  "commit": "b449176f1412e3f5b1c8d66bf487c789d77bafbb"
+                }
+              },
+              "inventory": {
+                "fileCount": 43,
+                "excluded": [
+                  ".git"
+                ],
+                "warnings": [
+                  "Not followed (symbolic link): node_modules"
+                ]
+              },
+              "runtime": {
+                "name": "node",
+                "evidence": [
+                  "package.json detected"
+                ]
+              },
+              "packageManager": {
+                "name": "npm",
+                "evidence": [
+                  "package.json fallback"
+                ]
+              },
+              "technologies": [
+                {
+                  "name": "React",
+                  "packageName": "react",
+                  "version": "19.3.0",
+                  "category": "library",
+                  "confidence": 1,
+                  "evidence": [
+                    "package.json: react"
+                  ]
+                },
+                {
+                  "name": "Tailwind CSS",
+                  "packageName": "tailwindcss",
+                  "version": "4.3.3",
+                  "category": "styling",
+                  "confidence": 1,
+                  "evidence": [
+                    "package.json: tailwindcss"
+                  ]
+                }
+              ],
+              "scripts": {
+                "test": "node --test",
+                "build": "node ../runtime/build.mjs",
+                "lint:styles": "node ../runtime/bundle/style-check.js . style-policy.json"
+              },
+              "paths": {
+                "root": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v8-maintenance-yz7e8ykd/project",
+                "manifests": [
+                  "package.json"
+                ],
+                "sourceDirectories": [],
+                "configFiles": []
+              },
+              "architecture": {
+                "style": "single application",
+                "roots": [],
+                "evidence": []
+              },
+              "design": {
+                "systems": [
+                  "Tailwind CSS"
+                ],
+                "files": [],
+                "evidence": [
+                  "package.json: tailwindcss"
+                ]
+              },
+              "conventions": [],
+              "capabilities": [
+                {
+                  "name": "test",
+                  "script": "test",
+                  "command": "npm run test",
+                  "packageManager": "npm",
+                  "workingDirectory": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v8-maintenance-yz7e8ykd/project"
+                },
+                {
+                  "name": "build",
+                  "script": "build",
+                  "command": "npm run build",
+                  "packageManager": "npm",
+                  "workingDirectory": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v8-maintenance-yz7e8ykd/project"
+                },
+                {
+                  "name": "lint:styles",
+                  "script": "lint:styles",
+                  "command": "npm run lint:styles",
+                  "packageManager": "npm",
+                  "workingDirectory": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v8-maintenance-yz7e8ykd/project"
+                }
+              ],
+              "constraints": []
+            },
+            "projectDocument": "",
+            "changedFiles": [
+              "REQUEST-initial.md"
+            ]
+          },
+          "error": false
+        },
+        {
+          "tool": "get_project_snapshot",
+          "arguments": {
+            "limit": 100
+          },
+          "response": {
+            "baseRef": "main",
+            "commit": "b449176f1412e3f5b1c8d66bf487c789d77bafbb",
+            "sourceHash": "a510a07f49c0f232bd951b3b1f1e47008edb6525c31a2cc30b424a21f0498223",
+            "files": [
+              "App.jsx",
+              "application/checkout.mjs",
+              "application/inventory.mjs",
+              "application/orders.mjs",
+              "application/refund.mjs",
+              "application/returns.mjs",
+              "application/system.mjs",
+              "application/wallet.mjs",
+              "CONTRACT.md",
+              "data/inventory.mjs",
+              "data/orders.mjs",
+              "data/returns.mjs",
+              "data/wallet.mjs",
+              "domain/inventory.mjs",
+              "domain/order.mjs",
+              "domain/promotion.mjs",
+              "domain/returns.mjs",
+              "domain/shipping.mjs",
+              "domain/wallet.mjs",
+              "money.mjs",
+              "node_modules",
+              "package.json",
+              "shared/format.mjs",
+              "shared/http.mjs",
+              "shared/inflight.mjs",
+              "shared/resource.mjs",
+              "shared/session.mjs",
+              "style-policy.json",
+              "TEAM_POLICY.md",
+              "theme.css",
+              "ui/ActionButton.jsx",
+              "ui/Amount.jsx",
+              "ui/CheckoutForm.jsx",
+              "ui/InventoryPanel.jsx",
+              "ui/OrderPanel.jsx",
+              "ui/PanelCard.jsx",
+              "ui/ReturnForm.jsx",
+              "ui/ReturnsPanel.jsx",
+              "ui/SessionBar.jsx",
+              "ui/Status.jsx",
+              "ui/StatusBadge.jsx",
+              "ui/useAction.mjs",
+              "ui/WalletPanel.jsx"
+            ],
+            "manifests": {
+              "package.json": {
+                "type": "module",
+                "scripts": {
+                  "test": "node --test",
+                  "build": "node ../runtime/build.mjs",
+                  "lint:styles": "node ../runtime/bundle/style-check.js . style-policy.json"
+                },
+                "dependencies": {
+                  "react": "19.3.0",
+                  "tailwindcss": "4.3.3",
+                  "class-variance-authority": "0.7.1"
+                }
+              }
+            },
+            "workingChanges": [
+              "REQUEST-initial.md"
+            ],
+            "status": "versioned",
+            "totalFiles": 43,
+            "nextOffset": null,
+            "documentHash": null,
+            "documentStatus": {
+              "status": "missing",
+              "analyzedCommit": null
+            }
+          },
+          "error": false
+        },
+        {
+          "tool": "read_project_source",
+          "arguments": {
+            "expectedCommit": "b449176f1412e3f5b1c8d66bf487c789d77bafbb",
+            "path": [
+              "App.jsx",
+              "theme.css",
+              "ui/ActionButton.jsx",
+              "ui/Amount.jsx",
+              "ui/CheckoutForm.jsx",
+              "ui/InventoryPanel.jsx",
+              "ui/OrderPanel.jsx",
+              "ui/PanelCard.jsx",
+              "ui/ReturnForm.jsx",
+              "ui/ReturnsPanel.jsx",
+              "ui/SessionBar.jsx",
+              "ui/Status.jsx",
+              "ui/StatusBadge.jsx",
+              "ui/WalletPanel.jsx",
+              "ui/useAction.mjs",
+              "shared/format.mjs",
+              "application/system.mjs"
+            ],
+            "limit": 12000
+          },
+          "response": {
+            "files": [
+              {
+                "commit": "b449176f1412e3f5b1c8d66bf487c789d77bafbb",
+                "path": "App.jsx",
+                "hash": "604b2521dcd9449d95371d2ca8c74fb6ec7a0546e0125fd9eec7dcfb4439127d",
+                "content": "const styles = {root:\"mx-auto max-w-5xl space-y-4 p-6\"};\nimport React from 'react';\nimport OrderPanel from './ui/OrderPanel.jsx';\nimport InventoryPanel from './ui/InventoryPanel.jsx';\nimport ReturnsPanel from './ui/ReturnsPanel.jsx';\nimport WalletPanel from './ui/WalletPanel.jsx';\nimport CheckoutForm from './ui/CheckoutForm.jsx';\nimport ReturnForm from './ui/ReturnForm.jsx';\nimport SessionBar from './ui/SessionBar.jsx';\nexport default function App({system, checkoutInput, refundInput}) {\n  return <main className={styles.root}><h1>운영 콘솔</h1><SessionBar onLogin={system.login} onLogout={system.logout}/>\n    <OrderPanel orders={system.orders}/><InventoryPanel inventory={system.inventory}/>\n    <ReturnsPanel returns={system.returns}/><WalletPanel wallet={system.wallet}/>\n    <CheckoutForm checkout={system.checkout} input={checkoutInput}/><ReturnForm refund={system.refund} input={refundInput}/></main>;\n}\n",
+                "totalCharacters": 911,
+                "nextOffset": null
+              },
+              {
+                "commit": "b449176f1412e3f5b1c8d66bf487c789d77bafbb",
+                "path": "theme.css",
+                "hash": "8acc64d3258731c9dc7ad8b5fe788ee1bc9194043ee97644230323e737311bbc",
+                "content": "@import \"tailwindcss\";\n@utility bg-action { background-color: var(--color-blue-600); }\n@utility text-on-action { color: var(--color-white); }\n@utility border-action { border-color: var(--color-blue-600); }\n",
+                "totalCharacters": 206,
+                "nextOffset": null
+              },
+              {
+                "commit": "b449176f1412e3f5b1c8d66bf487c789d77bafbb",
+                "path": "ui/ActionButton.jsx",
+                "hash": "efde9aaa1f3b3bc3fdd388d788ef57351a1ec651459b328c93399e863c80efa8",
+                "content": "import React from 'react';\nimport {cva} from 'class-variance-authority';\nconst classes = ({tone=\"primary\",size=\"sm\",className}) => [\"inline-flex items-center justify-center rounded font-medium disabled:opacity-50\",(tone === \"primary\" ? \"bg-action text-on-action\" : \"bg-slate-100 text-slate-900\"),(size === \"sm\" ? \"px-3 py-1 text-sm\" : \"px-4 py-2 text-base\"),className].filter(Boolean).join(\" \");\nexport default function ActionButton({tone,size,className,...props}) {\n  return <button {...props} className={classes({tone,size,className})}/>;\n}\n",
+                "totalCharacters": 543,
+                "nextOffset": null
+              },
+              {
+                "commit": "b449176f1412e3f5b1c8d66bf487c789d77bafbb",
+                "path": "ui/Amount.jsx",
+                "hash": "f00a0d64b6c87ec8782eb448d331a6985feabe25c3d03abf00cae5abdf11710a",
+                "content": "const styles = {root:\"tabular-nums font-medium\"};\nimport React from 'react';\nimport {formatAmount} from '../shared/format.mjs';\nexport default function Amount({value}) {\n  return <output className={styles.root} aria-label=\"금액\">{formatAmount(value)}</output>;\n}\n",
+                "totalCharacters": 261,
+                "nextOffset": null
+              },
+              {
+                "commit": "b449176f1412e3f5b1c8d66bf487c789d77bafbb",
+                "path": "ui/CheckoutForm.jsx",
+                "hash": "0e769f8a3d0d01a70beda7a50c11f949336d2da3f90a559a179fb80a9aa26843",
+                "content": "import ActionButton from './ActionButton.jsx';\nimport React from 'react';\nimport {useAction} from './useAction.mjs';\nexport default function CheckoutForm({checkout, input}) {\n  const action = useAction(() => checkout.submit(input));\n  return <section><ActionButton disabled={action.pending} onClick={action.run}>결제</ActionButton>\n    {action.result && <output>{action.result.order.id}</output>}\n    {action.error && <p role=\"alert\">결제에 실패했습니다.</p>}</section>;\n}\n",
+                "totalCharacters": 462,
+                "nextOffset": null
+              },
+              {
+                "commit": "b449176f1412e3f5b1c8d66bf487c789d77bafbb",
+                "path": "ui/InventoryPanel.jsx",
+                "hash": "0a7130ecc8c86b49c10edcc0bc9be84efd664b81d49accc21e91d03faf37905e",
+                "content": "import PanelCard from './PanelCard.jsx';\nimport ActionButton from './ActionButton.jsx';\nimport React from 'react';\nimport {useAction} from './useAction.mjs';\nimport Status from './Status.jsx';\nexport default function InventoryPanel({inventory}) {\n  const action = useAction(async () => { await inventory.load(); return inventory.getState(); });\n  const state = action.result ?? inventory.getState();\n  return <PanelCard aria-label=\"재고\"><ActionButton disabled={action.pending} onClick={action.run}>재고 조회</ActionButton>\n    <Status state={state}/><ul>{state.items.map(item => <li key={item.id}>{item.sku}: {item.available}</li>)}</ul></PanelCard>;\n}\n",
+                "totalCharacters": 648,
+                "nextOffset": null
+              },
+              {
+                "commit": "b449176f1412e3f5b1c8d66bf487c789d77bafbb",
+                "path": "ui/OrderPanel.jsx",
+                "hash": "93c9ad5c6d0c0ca06413e046768c413f39096dc4db7efcc24383c59cc2a51dea",
+                "content": "import PanelCard from './PanelCard.jsx';\nimport ActionButton from './ActionButton.jsx';\nimport React from 'react';\nimport {useAction} from './useAction.mjs';\nimport Status from './Status.jsx';\nexport default function OrderPanel({orders}) {\n  const action = useAction(async () => { await orders.load(); return orders.getState(); });\n  const state = action.result ?? orders.getState();\n  return <PanelCard aria-label=\"주문\"><ActionButton disabled={action.pending} onClick={action.run}>주문 조회</ActionButton>\n    <Status state={state}/><ul>{state.items.map(item => <li key={item.id}>{item.id}</li>)}</ul></PanelCard>;\n}\n",
+                "totalCharacters": 613,
+                "nextOffset": null
+              },
+              {
+                "commit": "b449176f1412e3f5b1c8d66bf487c789d77bafbb",
+                "path": "ui/PanelCard.jsx",
+                "hash": "0feea5c2aedecdcc8d919244931debef1d46d3e638083298651ab6ca92cecd38",
+                "content": "import React from 'react';\nimport {cva} from 'class-variance-authority';\nconst classes = ({tone=\"neutral\",density=\"comfortable\",className}) => [\"rounded border\",(tone === \"neutral\" ? \"border-slate-200 bg-white\" : \"border-action bg-white\"),(density === \"compact\" ? \"p-2\" : \"p-4\"),className].filter(Boolean).join(\" \");\nexport default function PanelCard({tone,density,className,...props}) {\n  return <section {...props} className={classes({tone,density,className})}/>;\n}\n",
+                "totalCharacters": 468,
+                "nextOffset": null
+              },
+              {
+                "commit": "b449176f1412e3f5b1c8d66bf487c789d77bafbb",
+                "path": "ui/ReturnForm.jsx",
+                "hash": "8fb62160b8a40ef7c7535a8a120979d633a1a20773ed2f8e6f5f03803cb53bc4",
+                "content": "import ActionButton from './ActionButton.jsx';\nimport React from 'react';\nimport {useAction} from './useAction.mjs';\nexport default function ReturnForm({refund, input}) {\n  const action = useAction(() => refund.submit(input));\n  return <section><ActionButton disabled={action.pending} onClick={action.run}>환불</ActionButton>\n    {action.result && <output>{action.result.record.id}{action.result.restockPending ? ' 재입고 대기' : ''}</output>}\n    {action.error && <p role=\"alert\">환불에 실패했습니다.</p>}</section>;\n}\n",
+                "totalCharacters": 504,
+                "nextOffset": null
+              },
+              {
+                "commit": "b449176f1412e3f5b1c8d66bf487c789d77bafbb",
+                "path": "ui/ReturnsPanel.jsx",
+                "hash": "b5c854af1e7cc6fda2184c3c3ca935473ee687e4ac32171f1e1cca156c3c2902",
+                "content": "import PanelCard from './PanelCard.jsx';\nimport ActionButton from './ActionButton.jsx';\nimport React from 'react';\nimport {useAction} from './useAction.mjs';\nimport Status from './Status.jsx';\nexport default function ReturnsPanel({returns}) {\n  const action = useAction(async () => { await returns.load(); return returns.getState(); });\n  const state = action.result ?? returns.getState();\n  return <PanelCard aria-label=\"반품\"><ActionButton disabled={action.pending} onClick={action.run}>반품 조회</ActionButton>\n    <Status state={state}/><ul>{state.items.map(item => <li key={item.id}>{item.id}: {item.reason}</li>)}</ul></PanelCard>;\n}\n",
+                "totalCharacters": 634,
+                "nextOffset": null
+              },
+              {
+                "commit": "b449176f1412e3f5b1c8d66bf487c789d77bafbb",
+                "path": "ui/SessionBar.jsx",
+                "hash": "6b9b82f68f7138d98699be04a5401ff37dd2d8b15e667dc2d2b3952b1782bc30",
+                "content": "import ActionButton from './ActionButton.jsx';\nimport React, {useState} from 'react';\nexport default function SessionBar({onLogin, onLogout}) {\n  const [token, setToken] = useState('');\n  return <section><input aria-label=\"세션 토큰\" type=\"password\" value={token} onChange={event => setToken(event.target.value)}/>\n    <ActionButton onClick={() => onLogin(token)}>로그인</ActionButton><ActionButton onClick={onLogout}>로그아웃</ActionButton></section>;\n}\n",
+                "totalCharacters": 444,
+                "nextOffset": null
+              },
+              {
+                "commit": "b449176f1412e3f5b1c8d66bf487c789d77bafbb",
+                "path": "ui/Status.jsx",
+                "hash": "c123d901fad82e00c010ab718d566da1174cbebd3ee5b28b51ca5dfe1bcf9dc8",
+                "content": "import StatusBadge from './StatusBadge.jsx';\nimport React from 'react';\nexport default function Status({state}) {\n  return <div><p role=\"status\"><StatusBadge status={state.status}>{state.status}</StatusBadge></p>{state.error && <p role=\"alert\">요청을 처리하지 못했습니다.</p>}</div>;\n}\n",
+                "totalCharacters": 274,
+                "nextOffset": null
+              },
+              {
+                "commit": "b449176f1412e3f5b1c8d66bf487c789d77bafbb",
+                "path": "ui/StatusBadge.jsx",
+                "hash": "55540c8197d7a7ac83032ba7f20073238904c6379586884b0553d5d6354f7d22",
+                "content": "import React from 'react';\nimport {cva} from 'class-variance-authority';\nconst classes = ({status=\"idle\",density=\"compact\",className}) => [\"inline-flex rounded font-medium\",(status === \"idle\" ? \"bg-slate-100 text-slate-900\" : (status === \"loading\" ? \"bg-amber-100 text-amber-900\" : (status === \"success\" ? \"bg-green-100 text-green-900\" : \"bg-red-100 text-red-900\"))),(density === \"compact\" ? \"px-1 py-0.5 text-xs\" : \"px-2 py-1 text-sm\"),className].filter(Boolean).join(\" \");\nexport default function StatusBadge({status,density,className,...props}) {\n  return <span {...props} className={classes({status,density,className})}/>;\n}\n",
+                "totalCharacters": 629,
+                "nextOffset": null
+              },
+              {
+                "commit": "b449176f1412e3f5b1c8d66bf487c789d77bafbb",
+                "path": "ui/WalletPanel.jsx",
+                "hash": "41016cda04f8f0ab15d19c907878ff886e8d8977c9871831c0f61e582ba81532",
+                "content": "import PanelCard from './PanelCard.jsx';\nimport ActionButton from './ActionButton.jsx';\nimport React from 'react';\nimport {useAction} from './useAction.mjs';\nimport Status from './Status.jsx';\nimport Amount from './Amount.jsx';\nexport default function WalletPanel({wallet}) {\n  const action = useAction(async () => { await wallet.load(); return wallet.getState(); });\n  const state = action.result ?? wallet.getState();\n  return <PanelCard aria-label=\"지갑\"><ActionButton disabled={action.pending} onClick={action.run}>지갑 조회</ActionButton>\n    <Status state={state}/>{state.items.map(item => <Amount key={item.id} value={item.balance}/>)}</PanelCard>;\n}\n",
+                "totalCharacters": 652,
+                "nextOffset": null
+              },
+              {
+                "commit": "b449176f1412e3f5b1c8d66bf487c789d77bafbb",
+                "path": "ui/useAction.mjs",
+                "hash": "623438ac2154cbf49c822246a8b45ae0a05a41a440d3cd0e2b64a982e71056a3",
+                "content": "import {useRef, useState} from 'react';\nexport function useAction(task) {\n  const [state, setState] = useState({pending: false, result: null, error: null});\n  const active = useRef(false);\n  async function run(...args) {\n    if (active.current) return;\n    active.current = true;\n    setState({pending: true, result: null, error: null});\n    try { setState({pending: false, result: await task(...args), error: null}); }\n    catch (error) { setState({pending: false, result: null, error}); }\n    finally { active.current = false; }\n  }\n  return {...state, run};\n}\n",
+                "totalCharacters": 563,
+                "nextOffset": null
+              },
+              {
+                "commit": "b449176f1412e3f5b1c8d66bf487c789d77bafbb",
+                "path": "shared/format.mjs",
+                "hash": "22ff67d23a0b0efc9f930d09335d9755092925115f182b6762e91a666fd8d5ab",
+                "content": "export function formatAmount(value) { return `${value.toLocaleString('en-US')}원`; }\n",
+                "totalCharacters": 84,
+                "nextOffset": null
+              },
+              {
+                "commit": "b449176f1412e3f5b1c8d66bf487c789d77bafbb",
+                "path": "application/system.mjs",
+                "hash": "0e7ad8e7f6ee8cdce1489e8cf12c5aacc77888bf38ada07c50e250eb976d4bc1",
+                "content": "import {createSession} from '../shared/session.mjs';\nimport {createClient} from '../shared/http.mjs';\nimport {createInflight} from '../shared/inflight.mjs';\nimport {createOrderRepository} from '../data/orders.mjs';\nimport {createInventoryRepository} from '../data/inventory.mjs';\nimport {createReturnRepository} from '../data/returns.mjs';\nimport {createWalletRepository} from '../data/wallet.mjs';\nimport {createOrders} from './orders.mjs';\nimport {createInventory} from './inventory.mjs';\nimport {createReturns} from './returns.mjs';\nimport {createWallet} from './wallet.mjs';\nimport {createCheckout} from './checkout.mjs';\nimport {createRefundFlow} from './refund.mjs';\nexport function createSystem({transport, onUnauthorized, initialToken = null}) {\n  const session = createSession(initialToken);\n  const client = createClient({transport, onUnauthorized, session});\n  const inflight = createInflight();\n  const orders = createOrders({repository: createOrderRepository({client}), session});\n  const inventory = createInventory({repository: createInventoryRepository({client}), session});\n  const returns = createReturns({repository: createReturnRepository({client}), session});\n  const wallet = createWallet({repository: createWalletRepository({client}), session});\n  const checkout = createCheckout({orders, inventory, wallet, inflight});\n  const refund = createRefundFlow({returns, inventory, wallet, inflight});\n  function switchToken(token) {\n    session.setToken(token);\n    for (const resource of [orders, inventory, returns, wallet]) resource.reset();\n  }\n  return {orders, inventory, returns, wallet, checkout, refund, login: token => switchToken(token), logout: () => switchToken(null)};\n}\n",
+                "totalCharacters": 1702,
+                "nextOffset": null
+              }
+            ],
+            "nextPaths": []
+          },
+          "error": false
+        },
+        {
+          "tool": "discover_knowledge_triggers",
+          "arguments": {
+            "technologies": [
+              "React",
+              "Tailwind CSS"
+            ],
+            "query": "Tailwind JSX static className CVA variants theme palette semantic tokens preserving React props and render purity",
+            "limit": 20
+          },
+          "response": {
+            "hash": "ae171fd4e8d0338ef20e199a019918384926512eef3233e7c90f8dcd11fe444c",
+            "total": 2,
+            "nextOffset": null,
+            "queryLimit": 20,
+            "domains": [
+              "accessibility",
+              "architecture",
+              "authorization",
+              "build",
+              "components",
+              "css",
+              "debugging",
+              "delivery",
+              "graphics",
+              "html",
+              "javascript",
+              "maintainability",
+              "modules",
+              "networking",
+              "performance",
+              "pwa",
+              "react",
+              "rendering",
+              "security",
+              "state",
+              "tooling",
+              "ux",
+              "web-api",
+              "web-platform"
+            ],
+            "entries": [
+              {
+                "id": "tailwind-team-authorship",
+                "title": "Tailwind 팀 클래스 작성·CVA 변형·테마 선택",
+                "triggers": [
+                  {
+                    "kind": "semantic",
+                    "value": "tailwind-team-style-contract",
+                    "description": "팀 정책이 승인된 UI에서 정적 클래스 객체 또는 복수 prop 스타일 변형/미정 테마를 조사했다"
+                  }
+                ],
+                "conditions": [
+                  "Tailwind 프로젝트에서 이 팀의 작성 정책을 명시적으로 채택한 범위"
+                ],
+                "exclusions": [
+                  "프레임워크 전체에 강제하는 규칙",
+                  "단순 boolean 토글/일반 데이터 객체"
+                ]
+              },
+              {
+                "id": "react-rendering-state-model",
+                "title": "React 상태 스냅샷, 순수 렌더, DOM 커밋과 paint",
+                "triggers": [
+                  {
+                    "kind": "semantic",
+                    "value": "react-rendering-state-model",
+                    "description": "React setter 직후 이전 값이 읽히거나 렌더 로그 횟수와 화면 갱신 횟수가 달라 보일 때."
+                  }
+                ],
+                "conditions": [
+                  "React setter 직후 이전 값이 읽히거나 렌더 로그 횟수와 화면 갱신 횟수가 달라 보일 때.",
+                  "React 대상의 상태·렌더링 원인 분석",
+                  "실제 태그·속성·문맥과 버전을 확인"
+                ],
+                "exclusions": [
+                  "다른 프레임워크의 계약이나 실제 성능 향상·고정 Effect 실행 시점을 단정하는 근거가 아니다.",
+                  "다른 프레임워크의 상태·렌더링 계약",
+                  "개념을 공용 필수 규칙이나 검증 완료 보고로 사용하지 않음"
+                ]
+              }
+            ],
+            "authority": "Discovery candidates only; read scoped code and cite evidence before emitting a semantic signal"
+          },
+          "error": false
+        },
+        {
+          "tool": "save_project_context",
+          "arguments": {
+            "expectedCommit": "b449176f1412e3f5b1c8d66bf487c789d77bafbb",
+            "expectedHash": null,
+            "analysis": {
+              "version": 1,
+              "summary": "운영 콘솔은 React UI와 Tailwind CSS로 구성된다. 기능 경계는 계약상 보존하며 팀의 클래스/CVA 작성 규칙에 맞게 UI를 정리할 계획이다. 테마 전략은 미결정이다.",
+              "architecture": [
+                "App가 system 서비스와 workflow를 각 패널과 양식에 주입한다.",
+                "UI 공용 ActionButton, PanelCard, StatusBadge가 스타일 변형을 소유한다."
+              ],
+              "conventions": [
+                "팀 정책은 고정 클래스를 JSX className에 직접 표기하고 세 변형 컴포넌트의 tone/size, tone/density, status/density를 CVA로 구성한다.",
+                "완전한 Tailwind 클래스 토큰을 사용한다."
+              ],
+              "decisions": [
+                "기존 Q1~Q8 결정은 계약에 확정되어 있으며 다시 묻지 않는다.",
+                "새 테마 전략은 사용자 선택 전까지 보류한다."
+              ],
+              "styles": [
+                "theme.css는 blue-600, white에 연결된 action 유틸리티를 정의한다.",
+                "UI는 slate 배경/테두리와 amber/green/red 상태 색을 사용한다."
+              ],
+              "tests": [
+                "npm run lint:styles, npm test, npm run build가 공개 검증 script다.",
+                "계획 단계에서는 제품 및 테스트 코드를 수정하지 않는다."
+              ],
+              "questions": [
+                {
+                  "id": "theme-strategy",
+                  "question": "기존 팔레트 유지, 현 색상을 의미 토큰화, 브랜드 및 dark mode 재설계 중 어느 테마 전략을 선택할까요?",
+                  "reason": "theme.css와 UI의 색 사용은 현재 정해져 있으나 요청은 새 테마 변경 범위를 결정하지 않았다."
+                }
+              ],
+              "evidence": {
+                "coverage": [
+                  {
+                    "path": "App.jsx",
+                    "reason": "UI 작성 형식과 테마 범위 분석",
+                    "status": "inspected"
+                  },
+                  {
+                    "path": "theme.css",
+                    "reason": "UI 작성 형식과 테마 범위 분석",
+                    "status": "inspected"
+                  },
+                  {
+                    "path": "ui/ActionButton.jsx",
+                    "reason": "UI 작성 형식과 테마 범위 분석",
+                    "status": "inspected"
+                  },
+                  {
+                    "path": "ui/Amount.jsx",
+                    "reason": "UI 작성 형식과 테마 범위 분석",
+                    "status": "inspected"
+                  },
+                  {
+                    "path": "ui/CheckoutForm.jsx",
+                    "reason": "UI 작성 형식과 테마 범위 분석",
+                    "status": "inspected"
+                  },
+                  {
+                    "path": "ui/InventoryPanel.jsx",
+                    "reason": "UI 작성 형식과 테마 범위 분석",
+                    "status": "inspected"
+                  },
+                  {
+                    "path": "ui/OrderPanel.jsx",
+                    "reason": "UI 작성 형식과 테마 범위 분석",
+                    "status": "inspected"
+                  },
+                  {
+                    "path": "ui/PanelCard.jsx",
+                    "reason": "UI 작성 형식과 테마 범위 분석",
+                    "status": "inspected"
+                  },
+                  {
+                    "path": "ui/ReturnForm.jsx",
+                    "reason": "UI 작성 형식과 테마 범위 분석",
+                    "status": "inspected"
+                  },
+                  {
+                    "path": "ui/ReturnsPanel.jsx",
+                    "reason": "UI 작성 형식과 테마 범위 분석",
+                    "status": "inspected"
+                  },
+                  {
+                    "path": "ui/SessionBar.jsx",
+                    "reason": "UI 작성 형식과 테마 범위 분석",
+                    "status": "inspected"
+                  },
+                  {
+                    "path": "ui/Status.jsx",
+                    "reason": "UI 작성 형식과 테마 범위 분석",
+                    "status": "inspected"
+                  },
+                  {
+                    "path": "ui/StatusBadge.jsx",
+                    "reason": "UI 작성 형식과 테마 범위 분석",
+                    "status": "inspected"
+                  },
+                  {
+                    "path": "ui/WalletPanel.jsx",
+                    "reason": "UI 작성 형식과 테마 범위 분석",
+                    "status": "inspected"
+                  },
+                  {
+                    "path": "ui/useAction.mjs",
+                    "reason": "UI 작성 형식과 테마 범위 분석",
+                    "status": "inspected"
+                  },
+                  {
+                    "path": "shared/format.mjs",
+                    "reason": "UI 작성 형식과 테마 범위 분석",
+                    "status": "inspected"
+                  },
+                  {
+                    "path": "application/system.mjs",
+                    "reason": "UI 작성 형식과 테마 범위 분석",
+                    "status": "inspected"
+                  },
+                  {
+                    "path": "domain/*, data/*, application/* (system 제외), shared/* (format 제외)",
+                    "reason": "기존 기능 계약으로 보호되며 이번 UI 작성 형식 범위 밖",
+                    "status": "excluded"
+                  }
+                ],
+                "statements": [
+                  {
+                    "id": "ui-composition",
+                    "kind": "fact",
+                    "statement": "App는 system 서비스를 네 패널 및 두 양식에 전달한다.",
+                    "scope": [
+                      "App.jsx"
+                    ],
+                    "evidence": [
+                      {
+                        "path": "App.jsx",
+                        "quote": "<OrderPanel orders={system.orders}/><InventoryPanel inventory={system.inventory}/>"
+                      },
+                      {
+                        "path": "App.jsx",
+                        "quote": "<CheckoutForm checkout={system.checkout} input={checkoutInput}/><ReturnForm refund={system.refund} input={refundInput}/>"
+                      }
+                    ],
+                    "reuseReason": "이 UI 전달 구조에 대한 별도 등록 semantic signal은 없다."
+                  },
+                  {
+                    "id": "style-authoring",
+                    "kind": "fact",
+                    "statement": "App와 Amount는 고정 클래스를 styles 객체에서 읽고, 세 변형 컴포넌트는 cva를 import하지만 조건식으로 클래스를 조합한다.",
+                    "scope": [
+                      "App.jsx",
+                      "ui/Amount.jsx",
+                      "ui/ActionButton.jsx",
+                      "ui/PanelCard.jsx",
+                      "ui/StatusBadge.jsx"
+                    ],
+                    "evidence": [
+                      {
+                        "path": "App.jsx",
+                        "quote": "const styles = {root:\"mx-auto max-w-5xl space-y-4 p-6\"};"
+                      },
+                      {
+                        "path": "ui/ActionButton.jsx",
+                        "quote": "const classes = ({tone=\"primary\",size=\"sm\",className}) =>"
+                      },
+                      {
+                        "path": "ui/PanelCard.jsx",
+                        "quote": "const classes = ({tone=\"neutral\",density=\"comfortable\",className}) =>"
+                      },
+                      {
+                        "path": "ui/StatusBadge.jsx",
+                        "quote": "const classes = ({status=\"idle\",density=\"compact\",className}) =>"
+                      }
+                    ],
+                    "reuse": {
+                      "dependencies": [
+                        "App.jsx",
+                        "ui/Amount.jsx",
+                        "ui/ActionButton.jsx",
+                        "ui/PanelCard.jsx",
+                        "ui/StatusBadge.jsx",
+                        "TEAM_POLICY.md",
+                        "style-policy.json"
+                      ],
+                      "interpretations": [
+                        {
+                          "path": "App.jsx",
+                          "line": 1,
+                          "evidence": "const styles = {root:\"mx-auto max-w-5xl space-y-4 p-6\"};",
+                          "interpretation": "승인된 팀 정책 범위에서 고정 스타일 객체 사용이 관찰됨",
+                          "signal": "tailwind-team-style-contract"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "id": "theme-current",
+                    "kind": "fact",
+                    "statement": "테마는 action 유틸리티의 blue-600/white와 UI의 slate 및 상태색으로 구성되어 있다.",
+                    "scope": [
+                      "theme.css",
+                      "ui/ActionButton.jsx",
+                      "ui/StatusBadge.jsx"
+                    ],
+                    "evidence": [
+                      {
+                        "path": "theme.css",
+                        "quote": "@utility bg-action { background-color: var(--color-blue-600); }"
+                      },
+                      {
+                        "path": "ui/StatusBadge.jsx",
+                        "quote": "bg-amber-100 text-amber-900"
+                      }
+                    ],
+                    "reuseReason": "현재 색상 재고 자체는 재사용할 별도 semantic signal이 없다."
+                  },
+                  {
+                    "id": "theme-open",
+                    "kind": "unknown",
+                    "statement": "색상 유지/의미 토큰화/브랜드 및 dark mode 재설계 중 새 테마 전략이 미결정이다.",
+                    "scope": [
+                      "REQUEST-initial.md",
+                      "theme.css"
+                    ],
+                    "evidence": [
+                      {
+                        "path": "theme.css",
+                        "quote": "@import \"tailwindcss\";"
+                      }
+                    ],
+                    "reuseReason": "사용자 선택 전이라 semantic design choice로 재사용할 수 없다."
+                  }
+                ]
+              },
+              "limitations": [
+                "실제 브라우저 검증은 아직 수행하지 않았다.",
+                "현재 저장소에 추적된 테스트 파일이 없다."
+              ]
+            }
+          },
+          "response": null,
+          "error": true
+        },
+        {
+          "tool": "save_project_context",
+          "arguments": {
+            "expectedCommit": "b449176f1412e3f5b1c8d66bf487c789d77bafbb",
+            "expectedHash": null,
+            "analysis": {
+              "summary": "React/Tailwind 운영 콘솔. 팀 클래스/CVA 정책을 적용할 UI 정리 계획. 테마 전략은 미결정.",
+              "architecture": [
+                "App가 system을 패널과 양식에 주입한다."
+              ],
+              "conventions": [
+                "고정 클래스 JSX 직접 표기와 세 컴포넌트의 CVA 변형이 승인된 팀 정책이다."
+              ],
+              "styles": [
+                "theme.css action 유틸리티는 blue-600/white를 사용한다."
+              ],
+              "tests": [
+                "npm run lint:styles, npm test, npm run build가 검증 script다."
+              ],
+              "questions": [
+                {
+                  "id": "theme-strategy",
+                  "question": "기존 팔레트 유지, 현재 색을 의미 토큰으로 옮기기, 브랜드/dark mode 재설계 중 무엇을 선택할까요?",
+                  "reason": "요청 문서가 테마 전략을 미결정으로 명시한다."
+                }
+              ],
+              "evidence": {
+                "version": 1,
+                "coverage": [
+                  {
+                    "path": "App.jsx",
+                    "status": "inspected",
+                    "reason": "UI 작성 형식과 테마 범위 확인"
+                  },
+                  {
+                    "path": "theme.css",
+                    "status": "inspected",
+                    "reason": "UI 작성 형식과 테마 범위 확인"
+                  },
+                  {
+                    "path": "ui/ActionButton.jsx",
+                    "status": "inspected",
+                    "reason": "UI 작성 형식과 테마 범위 확인"
+                  },
+                  {
+                    "path": "ui/Amount.jsx",
+                    "status": "inspected",
+                    "reason": "UI 작성 형식과 테마 범위 확인"
+                  },
+                  {
+                    "path": "ui/CheckoutForm.jsx",
+                    "status": "inspected",
+                    "reason": "UI 작성 형식과 테마 범위 확인"
+                  },
+                  {
+                    "path": "ui/InventoryPanel.jsx",
+                    "status": "inspected",
+                    "reason": "UI 작성 형식과 테마 범위 확인"
+                  },
+                  {
+                    "path": "ui/OrderPanel.jsx",
+                    "status": "inspected",
+                    "reason": "UI 작성 형식과 테마 범위 확인"
+                  },
+                  {
+                    "path": "ui/PanelCard.jsx",
+                    "status": "inspected",
+                    "reason": "UI 작성 형식과 테마 범위 확인"
+                  },
+                  {
+                    "path": "ui/ReturnForm.jsx",
+                    "status": "inspected",
+                    "reason": "UI 작성 형식과 테마 범위 확인"
+                  },
+                  {
+                    "path": "ui/ReturnsPanel.jsx",
+                    "status": "inspected",
+                    "reason": "UI 작성 형식과 테마 범위 확인"
+                  },
+                  {
+                    "path": "ui/SessionBar.jsx",
+                    "status": "inspected",
+                    "reason": "UI 작성 형식과 테마 범위 확인"
+                  },
+                  {
+                    "path": "ui/Status.jsx",
+                    "status": "inspected",
+                    "reason": "UI 작성 형식과 테마 범위 확인"
+                  },
+                  {
+                    "path": "ui/StatusBadge.jsx",
+                    "status": "inspected",
+                    "reason": "UI 작성 형식과 테마 범위 확인"
+                  },
+                  {
+                    "path": "ui/WalletPanel.jsx",
+                    "status": "inspected",
+                    "reason": "UI 작성 형식과 테마 범위 확인"
+                  },
+                  {
+                    "path": "ui/useAction.mjs",
+                    "status": "inspected",
+                    "reason": "UI 작성 형식과 테마 범위 확인"
+                  },
+                  {
+                    "path": "shared/format.mjs",
+                    "status": "inspected",
+                    "reason": "UI 작성 형식과 테마 범위 확인"
+                  },
+                  {
+                    "path": "application/system.mjs",
+                    "status": "inspected",
+                    "reason": "UI 작성 형식과 테마 범위 확인"
+                  }
+                ],
+                "statements": [
+                  {
+                    "id": "ui-composition",
+                    "kind": "fact",
+                    "statement": "App는 system 서비스와 workflow를 UI에 전달한다.",
+                    "evidence": [
+                      {
+                        "path": "App.jsx",
+                        "quote": "<OrderPanel orders={system.orders}/><InventoryPanel inventory={system.inventory}/>"
+                      },
+                      {
+                        "path": "App.jsx",
+                        "quote": "<CheckoutForm checkout={system.checkout} input={checkoutInput}/><ReturnForm refund={system.refund} input={refundInput}/>"
+                      }
+                    ],
+                    "reuseReason": "등록된 팀 스타일 signal은 이 서비스 전달 구조 자체에 해당하지 않는다."
+                  },
+                  {
+                    "id": "style-authoring",
+                    "kind": "fact",
+                    "statement": "App는 고정 클래스 style 객체를 사용하고 ActionButton은 조건식으로 변형 클래스를 구성한다.",
+                    "evidence": [
+                      {
+                        "path": "App.jsx",
+                        "quote": "const styles = {root:\"mx-auto max-w-5xl space-y-4 p-6\"};"
+                      },
+                      {
+                        "path": "ui/ActionButton.jsx",
+                        "quote": "const classes = ({tone=\"primary\",size=\"sm\",className}) =>"
+                      }
+                    ],
+                    "reuse": {
+                      "dependencies": [
+                        "App.jsx",
+                        "ui/ActionButton.jsx",
+                        "ui/PanelCard.jsx",
+                        "ui/StatusBadge.jsx",
+                        "TEAM_POLICY.md",
+                        "style-policy.json"
+                      ],
+                      "interpretations": [
+                        {
+                          "path": "App.jsx",
+                          "line": 1,
+                          "evidence": "const styles = {root:\"mx-auto max-w-5xl space-y-4 p-6\"};",
+                          "signal": "tailwind-team-style-contract",
+                          "interpretation": "승인된 팀 정책 범위에서 고정 스타일 객체 사용 관찰"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "id": "theme-current",
+                    "kind": "fact",
+                    "statement": "action 색은 blue-600/white이며 상태 색은 amber/green/red를 사용한다.",
+                    "evidence": [
+                      {
+                        "path": "theme.css",
+                        "quote": "@utility bg-action { background-color: var(--color-blue-600); }"
+                      },
+                      {
+                        "path": "ui/StatusBadge.jsx",
+                        "quote": "bg-amber-100 text-amber-900"
+                      }
+                    ],
+                    "reuseReason": "현재 색상 재고 자체에 해당하는 별도 semantic signal은 없다."
+                  }
+                ]
+              }
+            }
+          },
+          "response": null,
+          "error": true
+        },
+        {
+          "tool": "save_project_context",
+          "arguments": {
+            "expectedCommit": "b449176f1412e3f5b1c8d66bf487c789d77bafbb",
+            "expectedHash": null,
+            "analysis": {
+              "summary": "React/Tailwind 운영 콘솔. 팀 클래스/CVA 정책을 적용할 UI 정리 계획. 테마 전략은 미결정.",
+              "architecture": [
+                "App가 system을 패널과 양식에 주입한다."
+              ],
+              "conventions": [
+                "고정 클래스 JSX 직접 표기와 세 컴포넌트의 CVA 변형이 승인된 팀 정책이다."
+              ],
+              "styles": [
+                "theme.css action 유틸리티는 blue-600/white를 사용한다."
+              ],
+              "tests": [
+                "npm run lint:styles, npm test, npm run build가 검증 script다."
+              ],
+              "questions": [
+                {
+                  "id": "theme-strategy",
+                  "question": "기존 팔레트 유지, 현재 색을 의미 토큰으로 옮기기, 브랜드/dark mode 재설계 중 무엇을 선택할까요?",
+                  "reason": "요청 문서가 테마 전략을 미결정으로 명시한다."
+                }
+              ],
+              "evidence": {
+                "version": 1,
+                "coverage": [
+                  {
+                    "path": "App.jsx",
+                    "status": "inspected",
+                    "reason": "UI 작성 형식과 테마 분석"
+                  },
+                  {
+                    "path": "theme.css",
+                    "status": "inspected",
+                    "reason": "UI 작성 형식과 테마 분석"
+                  },
+                  {
+                    "path": "ui/ActionButton.jsx",
+                    "status": "inspected",
+                    "reason": "UI 작성 형식과 테마 분석"
+                  },
+                  {
+                    "path": "ui/Amount.jsx",
+                    "status": "inspected",
+                    "reason": "UI 작성 형식과 테마 분석"
+                  },
+                  {
+                    "path": "ui/CheckoutForm.jsx",
+                    "status": "inspected",
+                    "reason": "UI 작성 형식과 테마 분석"
+                  },
+                  {
+                    "path": "ui/InventoryPanel.jsx",
+                    "status": "inspected",
+                    "reason": "UI 작성 형식과 테마 분석"
+                  },
+                  {
+                    "path": "ui/OrderPanel.jsx",
+                    "status": "inspected",
+                    "reason": "UI 작성 형식과 테마 분석"
+                  },
+                  {
+                    "path": "ui/PanelCard.jsx",
+                    "status": "inspected",
+                    "reason": "UI 작성 형식과 테마 분석"
+                  },
+                  {
+                    "path": "ui/ReturnForm.jsx",
+                    "status": "inspected",
+                    "reason": "UI 작성 형식과 테마 분석"
+                  },
+                  {
+                    "path": "ui/ReturnsPanel.jsx",
+                    "status": "inspected",
+                    "reason": "UI 작성 형식과 테마 분석"
+                  },
+                  {
+                    "path": "ui/SessionBar.jsx",
+                    "status": "inspected",
+                    "reason": "UI 작성 형식과 테마 분석"
+                  },
+                  {
+                    "path": "ui/Status.jsx",
+                    "status": "inspected",
+                    "reason": "UI 작성 형식과 테마 분석"
+                  },
+                  {
+                    "path": "ui/StatusBadge.jsx",
+                    "status": "inspected",
+                    "reason": "UI 작성 형식과 테마 분석"
+                  },
+                  {
+                    "path": "ui/WalletPanel.jsx",
+                    "status": "inspected",
+                    "reason": "UI 작성 형식과 테마 분석"
+                  },
+                  {
+                    "path": "ui/useAction.mjs",
+                    "status": "inspected",
+                    "reason": "UI 작성 형식과 테마 분석"
+                  },
+                  {
+                    "path": "shared/format.mjs",
+                    "status": "inspected",
+                    "reason": "UI 작성 형식과 테마 분석"
+                  },
+                  {
+                    "path": "application/system.mjs",
+                    "status": "inspected",
+                    "reason": "UI 작성 형식과 테마 분석"
+                  },
+                  {
+                    "path": "application/checkout.mjs",
+                    "status": "excluded",
+                    "reason": "계약 또는 스크립트 확인, 그 외 파일은 UI 작성 형식 변경 범위 밖"
+                  },
+                  {
+                    "path": "application/inventory.mjs",
+                    "status": "excluded",
+                    "reason": "계약 또는 스크립트 확인, 그 외 파일은 UI 작성 형식 변경 범위 밖"
+                  },
+                  {
+                    "path": "application/orders.mjs",
+                    "status": "excluded",
+                    "reason": "계약 또는 스크립트 확인, 그 외 파일은 UI 작성 형식 변경 범위 밖"
+                  },
+                  {
+                    "path": "application/refund.mjs",
+                    "status": "excluded",
+                    "reason": "계약 또는 스크립트 확인, 그 외 파일은 UI 작성 형식 변경 범위 밖"
+                  },
+                  {
+                    "path": "application/returns.mjs",
+                    "status": "excluded",
+                    "reason": "계약 또는 스크립트 확인, 그 외 파일은 UI 작성 형식 변경 범위 밖"
+                  },
+                  {
+                    "path": "application/wallet.mjs",
+                    "status": "excluded",
+                    "reason": "계약 또는 스크립트 확인, 그 외 파일은 UI 작성 형식 변경 범위 밖"
+                  },
+                  {
+                    "path": "CONTRACT.md",
+                    "status": "inspected",
+                    "reason": "계약 또는 스크립트 확인, 그 외 파일은 UI 작성 형식 변경 범위 밖"
+                  },
+                  {
+                    "path": "data/inventory.mjs",
+                    "status": "excluded",
+                    "reason": "계약 또는 스크립트 확인, 그 외 파일은 UI 작성 형식 변경 범위 밖"
+                  },
+                  {
+                    "path": "data/orders.mjs",
+                    "status": "excluded",
+                    "reason": "계약 또는 스크립트 확인, 그 외 파일은 UI 작성 형식 변경 범위 밖"
+                  },
+                  {
+                    "path": "data/returns.mjs",
+                    "status": "excluded",
+                    "reason": "계약 또는 스크립트 확인, 그 외 파일은 UI 작성 형식 변경 범위 밖"
+                  },
+                  {
+                    "path": "data/wallet.mjs",
+                    "status": "excluded",
+                    "reason": "계약 또는 스크립트 확인, 그 외 파일은 UI 작성 형식 변경 범위 밖"
+                  },
+                  {
+                    "path": "domain/inventory.mjs",
+                    "status": "excluded",
+                    "reason": "계약 또는 스크립트 확인, 그 외 파일은 UI 작성 형식 변경 범위 밖"
+                  },
+                  {
+                    "path": "domain/order.mjs",
+                    "status": "excluded",
+                    "reason": "계약 또는 스크립트 확인, 그 외 파일은 UI 작성 형식 변경 범위 밖"
+                  },
+                  {
+                    "path": "domain/promotion.mjs",
+                    "status": "excluded",
+                    "reason": "계약 또는 스크립트 확인, 그 외 파일은 UI 작성 형식 변경 범위 밖"
+                  },
+                  {
+                    "path": "domain/returns.mjs",
+                    "status": "excluded",
+                    "reason": "계약 또는 스크립트 확인, 그 외 파일은 UI 작성 형식 변경 범위 밖"
+                  },
+                  {
+                    "path": "domain/shipping.mjs",
+                    "status": "excluded",
+                    "reason": "계약 또는 스크립트 확인, 그 외 파일은 UI 작성 형식 변경 범위 밖"
+                  },
+                  {
+                    "path": "domain/wallet.mjs",
+                    "status": "excluded",
+                    "reason": "계약 또는 스크립트 확인, 그 외 파일은 UI 작성 형식 변경 범위 밖"
+                  },
+                  {
+                    "path": "money.mjs",
+                    "status": "excluded",
+                    "reason": "계약 또는 스크립트 확인, 그 외 파일은 UI 작성 형식 변경 범위 밖"
+                  },
+                  {
+                    "path": "node_modules",
+                    "status": "excluded",
+                    "reason": "계약 또는 스크립트 확인, 그 외 파일은 UI 작성 형식 변경 범위 밖"
+                  },
+                  {
+                    "path": "package.json",
+                    "status": "inspected",
+                    "reason": "계약 또는 스크립트 확인, 그 외 파일은 UI 작성 형식 변경 범위 밖"
+                  },
+                  {
+                    "path": "shared/http.mjs",
+                    "status": "excluded",
+                    "reason": "계약 또는 스크립트 확인, 그 외 파일은 UI 작성 형식 변경 범위 밖"
+                  },
+                  {
+                    "path": "shared/inflight.mjs",
+                    "status": "excluded",
+                    "reason": "계약 또는 스크립트 확인, 그 외 파일은 UI 작성 형식 변경 범위 밖"
+                  },
+                  {
+                    "path": "shared/resource.mjs",
+                    "status": "excluded",
+                    "reason": "계약 또는 스크립트 확인, 그 외 파일은 UI 작성 형식 변경 범위 밖"
+                  },
+                  {
+                    "path": "shared/session.mjs",
+                    "status": "excluded",
+                    "reason": "계약 또는 스크립트 확인, 그 외 파일은 UI 작성 형식 변경 범위 밖"
+                  },
+                  {
+                    "path": "style-policy.json",
+                    "status": "inspected",
+                    "reason": "계약 또는 스크립트 확인, 그 외 파일은 UI 작성 형식 변경 범위 밖"
+                  },
+                  {
+                    "path": "TEAM_POLICY.md",
+                    "status": "inspected",
+                    "reason": "계약 또는 스크립트 확인, 그 외 파일은 UI 작성 형식 변경 범위 밖"
+                  }
+                ],
+                "statements": [
+                  {
+                    "id": "ui-composition",
+                    "kind": "fact",
+                    "statement": "App는 system 서비스와 workflow를 UI에 전달한다.",
+                    "evidence": [
+                      {
+                        "path": "App.jsx",
+                        "quote": "<OrderPanel orders={system.orders}/><InventoryPanel inventory={system.inventory}/>"
+                      },
+                      {
+                        "path": "App.jsx",
+                        "quote": "<CheckoutForm checkout={system.checkout} input={checkoutInput}/><ReturnForm refund={system.refund} input={refundInput}/>"
+                      }
+                    ],
+                    "reuseReason": "등록된 팀 스타일 signal은 이 서비스 전달 구조 자체에 해당하지 않는다."
+                  },
+                  {
+                    "id": "style-authoring",
+                    "kind": "fact",
+                    "statement": "App는 고정 클래스 style 객체를 사용하고 ActionButton은 조건식으로 변형 클래스를 구성한다.",
+                    "evidence": [
+                      {
+                        "path": "App.jsx",
+                        "quote": "const styles = {root:\"mx-auto max-w-5xl space-y-4 p-6\"};"
+                      },
+                      {
+                        "path": "ui/ActionButton.jsx",
+                        "quote": "const classes = ({tone=\"primary\",size=\"sm\",className}) =>"
+                      }
+                    ],
+                    "reuse": {
+                      "dependencies": [
+                        "App.jsx",
+                        "ui/ActionButton.jsx",
+                        "ui/PanelCard.jsx",
+                        "ui/StatusBadge.jsx",
+                        "TEAM_POLICY.md",
+                        "style-policy.json"
+                      ],
+                      "interpretations": [
+                        {
+                          "path": "App.jsx",
+                          "line": 1,
+                          "evidence": "const styles = {root:\"mx-auto max-w-5xl space-y-4 p-6\"};",
+                          "signal": "tailwind-team-style-contract",
+                          "interpretation": "승인된 팀 정책 범위에서 고정 스타일 객체 사용 관찰"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "id": "theme-current",
+                    "kind": "fact",
+                    "statement": "action 색은 blue-600/white이며 상태 색은 amber/green/red를 사용한다.",
+                    "evidence": [
+                      {
+                        "path": "theme.css",
+                        "quote": "@utility bg-action { background-color: var(--color-blue-600); }"
+                      },
+                      {
+                        "path": "ui/StatusBadge.jsx",
+                        "quote": "bg-amber-100 text-amber-900"
+                      }
+                    ],
+                    "reuseReason": "현재 색상 재고 자체에 해당하는 별도 semantic signal은 없다."
+                  }
+                ]
+              }
+            }
+          },
+          "response": {
+            "projectDocument": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v8-maintenance-yz7e8ykd/project/.frontend-system/project.md",
+            "status": {
+              "baseRef": "main",
+              "analyzedCommit": "b449176f1412e3f5b1c8d66bf487c789d77bafbb",
+              "sourceHash": "a510a07f49c0f232bd951b3b1f1e47008edb6525c31a2cc30b424a21f0498223",
+              "updatedAt": "2026-10-05T03:10:32.673Z",
+              "mainCommit": "b449176f1412e3f5b1c8d66bf487c789d77bafbb",
+              "workingChanges": [
+                "REQUEST-initial.md"
+              ],
+              "status": "current"
+            },
+            "reuse": {
+              "bound": [
+                "style-authoring"
+              ],
+              "excluded": [
+                {
+                  "id": "ui-composition",
+                  "reason": "등록된 팀 스타일 signal은 이 서비스 전달 구조 자체에 해당하지 않는다."
+                },
+                {
+                  "id": "theme-current",
+                  "reason": "현재 색상 재고 자체에 해당하는 별도 semantic signal은 없다."
+                }
+              ],
+              "meaning": "Bound statements can emit saved triggers after dependency validation. Excluded statements remain review context; never imply cache hits."
+            }
+          },
+          "error": false
+        }
+      ],
+      "usage": null,
+      "modelSeconds": 151.514,
+      "workflow": "workflow-failed",
+      "firstGrade": null,
+      "finalGrade": {
+        "status": "unverified",
+        "eligible": false,
+        "reason": "Model process failed before completing a turn"
+      },
+      "eligible": false,
+      "infra": "Model process failed before completing a turn"
+    }
+  ]
+}

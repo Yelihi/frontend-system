@@ -1,0 +1,55 @@
+{
+  "flows": 12,
+  "discoveryFiles": 32,
+  "samples": [
+    {
+      "round": 0,
+      "mode": "separate",
+      "elapsedMs": 35.02875000000002,
+      "inventoryReads": 12,
+      "sourceReads": 384,
+      "sourceBytes": 431760
+    },
+    {
+      "round": 0,
+      "mode": "batch",
+      "elapsedMs": 4.28925000000001,
+      "inventoryReads": 1,
+      "sourceReads": 32,
+      "sourceBytes": 35980
+    },
+    {
+      "round": 1,
+      "mode": "batch",
+      "elapsedMs": 4.374500000000012,
+      "inventoryReads": 1,
+      "sourceReads": 32,
+      "sourceBytes": 35980
+    },
+    {
+      "round": 1,
+      "mode": "separate",
+      "elapsedMs": 33.476,
+      "inventoryReads": 12,
+      "sourceReads": 384,
+      "sourceBytes": 431760
+    },
+    {
+      "round": 2,
+      "mode": "separate",
+      "elapsedMs": 31.494624999999985,
+      "inventoryReads": 12,
+      "sourceReads": 384,
+      "sourceBytes": 431760
+    },
+    {
+      "round": 2,
+      "mode": "batch",
+      "elapsedMs": 3.766750000000002,
+      "inventoryReads": 1,
+      "sourceReads": 32,
+      "sourceBytes": 35980
+    }
+  ],
+  "meaning": "Same correct content coverage. One batch vs 12 independent queries; request-local sharing only. Warm OS cache/order affects timing. Not model tokens or the former incomplete freshness algorithm."
+}

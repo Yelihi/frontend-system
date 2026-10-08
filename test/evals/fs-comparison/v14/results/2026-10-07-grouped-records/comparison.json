@@ -1,0 +1,57 @@
+{
+  "fs-K1": {
+    "before": {
+      "totalTokens": 14703486,
+      "uncachedPlusOutput": 968446,
+      "requests": 297,
+      "meanInput": 49042.75084175084,
+      "complete": 12,
+      "mcpErrors": 21
+    },
+    "after": {
+      "totalTokens": 15026869,
+      "uncachedPlusOutput": 949045,
+      "requests": 293,
+      "meanInput": 50801.98634812287,
+      "complete": 11,
+      "mcpErrors": 22
+    },
+    "changePercent": {
+      "totalTokens": 2.199362790565451,
+      "uncachedPlusOutput": -2.0033125233621663,
+      "requests": -1.3468013468013518,
+      "meanInput": 3.587146879359704,
+      "complete": -8.333333333333337,
+      "mcpErrors": 4.761904761904767
+    }
+  },
+  "ordinary": {
+    "before": {
+      "totalTokens": 1513394,
+      "uncachedPlusOutput": 311986,
+      "requests": 83,
+      "meanInput": 17659.602409638555,
+      "complete": 11,
+      "mcpErrors": 0
+    },
+    "after": {
+      "totalTokens": 1413321,
+      "uncachedPlusOutput": 320329,
+      "requests": 77,
+      "meanInput": 17799.324675324675,
+      "complete": 8,
+      "mcpErrors": 0
+    },
+    "changePercent": {
+      "totalTokens": -6.612488221837798,
+      "uncachedPlusOutput": 2.674158455828146,
+      "requests": -7.2289156626506035,
+      "meanInput": 0.7911971200997181,
+      "complete": -27.27272727272727,
+      "mcpErrors": null
+    }
+  },
+  "limits": "Sequential before/after cohorts, n=3 per case/stage/arm; no causal claim. Failures included. Semantic review is separate.",
+  "baseline": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/test/evals/fs-comparison/v14/results/2026-10-07-trajectories",
+  "treatment": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/test/evals/fs-comparison/v14/results/2026-10-07-grouped-records"
+}

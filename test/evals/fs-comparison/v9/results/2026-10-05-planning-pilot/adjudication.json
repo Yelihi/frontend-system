@@ -1,0 +1,30 @@
+{
+  "method": "Coordinator verified the secondary review against original public inputs and archived native records. Coordinator knows arm identity; secondary reviewer saw neutral packet IDs but could infer FS from writing. No aggregate quality score.",
+  "confirmed": [
+    {
+      "packetId": "P01",
+      "cell": "shared-ordinary",
+      "finding": "Same-token replacement was made an implementation policy without a supplied identity decision.",
+      "classification": "Unsupported design assumption / needs owner confirmation, not a demonstrated contradiction of a supplied identity answer or an executed product defect.",
+      "planQuote": "including replacement with an equal token string",
+      "evidence": "shared-ordinary/plan/project/plan.md"
+    },
+    {
+      "packetId": "P06",
+      "cell": "independent-fs-K1",
+      "finding": "The claimed sufficiency of captured-token equality fails the owner's changed-identity contract for A -> B -> A.",
+      "classification": "Plan-level semantic counterexample. Independently identified by the coordinator and secondary reviewer; no generated implementation was executed.",
+      "planQuote": "A token captured at dispatch and compared after each asynchronous boundary is sufficient for the supplied host rule",
+      "evidence": "aba-witness.json"
+    }
+  ],
+  "discardedReviewerFindings": [
+    {"packetIds": ["P02", "P03", "P06", "P08"], "finding": "No evidence that package.json has no scripts", "reason": "Evaluator packet omitted the manifest. Actual public package.json has scripts: {}, and every generator could read it. See review-supplement.json."},
+    {"packetIds": ["P08"], "finding": "No evidence of the structured FS draft and semantic reviews", "reason": "Native FS records were intentionally omitted from the common readable-plan packet. Actual successful save_revision stores three semantic reviews and zero automated checks. See recovery/shared-fs-K1/mcp-trace.json."}
+  ],
+  "notScored": [
+    {"packetIds": ["P02", "P06"], "finding": "Request-boundary architecture questions are unnecessary", "reason": "Whether to retain duplication, use stateless reuse, or introduce scoped instances is a valid design tradeoff for this user's intended workflow. Known identity ownership does not settle the extraction choice. Necessity is preference-dependent; not an objective defect count."},
+    {"packetIds": ["P01", "P03", "P06"], "finding": "Latest-read ordering is extended to current-session 401 expiration", "reason": "The answer says latest invocation wins including errors, but the scope of a session-wide auth side effect is ambiguous. Treat this as a clarification opportunity, not a proven answer contradiction. The secondary reviewer explicitly raised P06; coordinator also checked equivalent wording in P01/P03."}
+  ],
+  "limits": "Exact citations establish that text exists, not that a judgment is true. The corpus is authored and small; one completed run per case is not causal proof or a statistical quality estimate. The ABA witness is an exploratory counterexample discovered after generation, not a retroactively added score."
+}

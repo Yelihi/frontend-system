@@ -1,0 +1,12 @@
+{
+  "runnerStatus": "blocked",
+  "modelCalls": 0,
+  "rows": [],
+  "limits": [
+    "Missing usage/grades remain null, never zero or a pass.",
+    "Reuse counters record tool behavior, not semantic correctness or causal token savings.",
+    "Runner completed does not imply completed model turns. Fixed-order single pairs do not establish general superiority."
+  ],
+  "summarySha256": "2186d679e4ae860b1435cbdbd4d914ffe252210cb2135d58b4eedc9415abaef9",
+  "productFiles": []
+}

@@ -1,0 +1,215 @@
+{
+  "checks": [
+    {
+      "id": "lint",
+      "passed": true,
+      "code": 0,
+      "timedOut": false,
+      "seconds": 0.684
+    },
+    {
+      "id": "typecheck",
+      "passed": true,
+      "code": 0,
+      "timedOut": false,
+      "seconds": 0.337
+    },
+    {
+      "id": "check:boundaries",
+      "passed": true,
+      "code": 0,
+      "timedOut": false,
+      "seconds": 0.35
+    },
+    {
+      "id": "test:unit",
+      "passed": true,
+      "code": 0,
+      "timedOut": false,
+      "seconds": 0.22
+    },
+    {
+      "id": "build",
+      "passed": true,
+      "code": 0,
+      "timedOut": false,
+      "seconds": 6.47
+    },
+    {
+      "id": "test:e2e",
+      "passed": true,
+      "code": 0,
+      "timedOut": false,
+      "seconds": 3.13
+    }
+  ],
+  "requirements": [
+    {
+      "category": "domain",
+      "id": "accept-1",
+      "passed": true
+    },
+    {
+      "category": "domain",
+      "id": "accept-10",
+      "passed": true
+    },
+    {
+      "category": "domain",
+      "id": "reject-zero",
+      "passed": true
+    },
+    {
+      "category": "domain",
+      "id": "reject-negative",
+      "passed": true
+    },
+    {
+      "category": "domain",
+      "id": "reject-fraction",
+      "passed": true
+    },
+    {
+      "category": "domain",
+      "id": "reject-above-max",
+      "passed": true
+    },
+    {
+      "category": "domain",
+      "id": "reject-nan",
+      "passed": true
+    },
+    {
+      "category": "domain",
+      "id": "reject-infinity",
+      "passed": true
+    },
+    {
+      "category": "domain",
+      "id": "reject-string",
+      "passed": true
+    },
+    {
+      "category": "domain",
+      "id": "reject-missing",
+      "passed": true
+    },
+    {
+      "category": "domain",
+      "id": "pending-deduplication",
+      "passed": true
+    },
+    {
+      "category": "domain",
+      "id": "failure-retry-clears-error",
+      "passed": true
+    },
+    {
+      "category": "api",
+      "id": "accept-1",
+      "passed": true
+    },
+    {
+      "category": "api",
+      "id": "accept-10",
+      "passed": true
+    },
+    {
+      "category": "api",
+      "id": "reject-zero",
+      "passed": true
+    },
+    {
+      "category": "api",
+      "id": "reject-negative",
+      "passed": true
+    },
+    {
+      "category": "api",
+      "id": "reject-fraction",
+      "passed": true
+    },
+    {
+      "category": "api",
+      "id": "reject-above-max",
+      "passed": true
+    },
+    {
+      "category": "api",
+      "id": "reject-string",
+      "passed": true
+    },
+    {
+      "category": "api",
+      "id": "reject-null",
+      "passed": true
+    },
+    {
+      "category": "api",
+      "id": "reject-missing",
+      "passed": true
+    },
+    {
+      "category": "api",
+      "id": "reject-malformed",
+      "passed": true
+    },
+    {
+      "category": "browser",
+      "id": "default-label-total-catalogue",
+      "passed": true
+    },
+    {
+      "category": "browser",
+      "id": "quantity-total-payload",
+      "passed": true
+    },
+    {
+      "category": "browser",
+      "id": "reject-empty-without-request",
+      "passed": true
+    },
+    {
+      "category": "browser",
+      "id": "reject-zero-without-request",
+      "passed": true
+    },
+    {
+      "category": "browser",
+      "id": "reject-negative-without-request",
+      "passed": true
+    },
+    {
+      "category": "browser",
+      "id": "reject-fraction-without-request",
+      "passed": true
+    },
+    {
+      "category": "browser",
+      "id": "reject-above-max-without-request",
+      "passed": true
+    },
+    {
+      "category": "browser",
+      "id": "pending-controls-deduplication",
+      "passed": true
+    },
+    {
+      "category": "browser",
+      "id": "accessible-error-retry-preserves-quantity",
+      "passed": true
+    },
+    {
+      "category": "browser",
+      "id": "keyboard-order",
+      "passed": true
+    },
+    {
+      "category": "browser",
+      "id": "mobile-no-horizontal-overflow",
+      "passed": true
+    }
+  ],
+  "pageErrors": [],
+  "gzipJavaScriptBytes": 283052
+}

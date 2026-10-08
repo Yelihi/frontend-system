@@ -1,0 +1,74 @@
+[
+  {
+    "name": "ternary-ActionButton",
+    "file": "ui/ActionButton.jsx",
+    "before": "const classes = cva(\"inline-flex items-center justify-center rounded font-medium disabled:opacity-50\",{\"variants\": {\"tone\": {\"primary\": \"bg-action text-on-action\", \"quiet\": \"bg-slate-100 text-slate-900\"}, \"size\": {\"sm\": \"px-3 py-1 text-sm\", \"lg\": \"px-4 py-2 text-base\"}}, \"defaultVariants\": {\"tone\": \"primary\", \"size\": \"sm\"}});",
+    "after": "const classes = ({tone=\"primary\",size=\"sm\",className}) => [\"inline-flex items-center justify-center rounded font-medium disabled:opacity-50\",(tone === \"primary\" ? \"bg-action text-on-action\" : \"bg-slate-100 text-slate-900\"),(size === \"sm\" ? \"px-3 py-1 text-sm\" : \"px-4 py-2 text-base\"),className].filter(Boolean).join(\" \");",
+    "starter": true,
+    "diagnostic": "S-cva-ActionButton"
+  },
+  {
+    "name": "ternary-StatusBadge",
+    "file": "ui/StatusBadge.jsx",
+    "before": "const classes = cva(\"inline-flex rounded font-medium\",{\"variants\": {\"status\": {\"idle\": \"bg-slate-100 text-slate-900\", \"loading\": \"bg-amber-100 text-amber-900\", \"success\": \"bg-green-100 text-green-900\", \"error\": \"bg-red-100 text-red-900\"}, \"density\": {\"compact\": \"px-1 py-0.5 text-xs\", \"comfortable\": \"px-2 py-1 text-sm\"}}, \"defaultVariants\": {\"status\": \"idle\", \"density\": \"compact\"}});",
+    "after": "const classes = ({status=\"idle\",density=\"compact\",className}) => [\"inline-flex rounded font-medium\",(status === \"idle\" ? \"bg-slate-100 text-slate-900\" : (status === \"loading\" ? \"bg-amber-100 text-amber-900\" : (status === \"success\" ? \"bg-green-100 text-green-900\" : \"bg-red-100 text-red-900\"))),(density === \"compact\" ? \"px-1 py-0.5 text-xs\" : \"px-2 py-1 text-sm\"),className].filter(Boolean).join(\" \");",
+    "starter": true,
+    "diagnostic": "S-cva-StatusBadge"
+  },
+  {
+    "name": "ternary-PanelCard",
+    "file": "ui/PanelCard.jsx",
+    "before": "const classes = cva(\"rounded border\",{\"variants\": {\"tone\": {\"neutral\": \"border-slate-200 bg-white\", \"accent\": \"border-action bg-white\"}, \"density\": {\"compact\": \"p-2\", \"comfortable\": \"p-4\"}}, \"defaultVariants\": {\"tone\": \"neutral\", \"density\": \"comfortable\"}});",
+    "after": "const classes = ({tone=\"neutral\",density=\"comfortable\",className}) => [\"rounded border\",(tone === \"neutral\" ? \"border-slate-200 bg-white\" : \"border-action bg-white\"),(density === \"compact\" ? \"p-2\" : \"p-4\"),className].filter(Boolean).join(\" \");",
+    "starter": true,
+    "diagnostic": "S-cva-PanelCard"
+  },
+  {
+    "name": "map-Amount",
+    "file": "ui/Amount.jsx",
+    "before": "import React from 'react';\nimport {formatAmount} from '../shared/format.mjs';\nexport default function Amount({value}) {\n  return <output className=\"tabular-nums font-medium\" aria-label=\"금액\">{formatAmount(value)}</output>;\n}\n",
+    "after": "const styles = {root:\"tabular-nums font-medium\"};\nimport React from 'react';\nimport {formatAmount} from '../shared/format.mjs';\nexport default function Amount({value}) {\n  return <output className={styles.root} aria-label=\"금액\">{formatAmount(value)}</output>;\n}\n",
+    "starter": true,
+    "diagnostic": "S-inline-Amount"
+  },
+  {
+    "name": "map-App",
+    "file": "App.jsx",
+    "before": "import React from 'react';\nimport OrderPanel from './ui/OrderPanel.jsx';\nimport InventoryPanel from './ui/InventoryPanel.jsx';\nimport ReturnsPanel from './ui/ReturnsPanel.jsx';\nimport WalletPanel from './ui/WalletPanel.jsx';\nimport CheckoutForm from './ui/CheckoutForm.jsx';\nimport ReturnForm from './ui/ReturnForm.jsx';\nimport SessionBar from './ui/SessionBar.jsx';\nexport default function App({system, checkoutInput, refundInput}) {\n  return <main className=\"mx-auto max-w-5xl space-y-4 p-6\"><h1>운영 콘솔</h1><SessionBar onLogin={system.login} onLogout={system.logout}/>\n    <OrderPanel orders={system.orders}/><InventoryPanel inventory={system.inventory}/>\n    <ReturnsPanel returns={system.returns}/><WalletPanel wallet={system.wallet}/>\n    <CheckoutForm checkout={system.checkout} input={checkoutInput}/><ReturnForm refund={system.refund} input={refundInput}/></main>;\n}\n",
+    "after": "const styles = {root:\"mx-auto max-w-5xl space-y-4 p-6\"};\nimport React from 'react';\nimport OrderPanel from './ui/OrderPanel.jsx';\nimport InventoryPanel from './ui/InventoryPanel.jsx';\nimport ReturnsPanel from './ui/ReturnsPanel.jsx';\nimport WalletPanel from './ui/WalletPanel.jsx';\nimport CheckoutForm from './ui/CheckoutForm.jsx';\nimport ReturnForm from './ui/ReturnForm.jsx';\nimport SessionBar from './ui/SessionBar.jsx';\nexport default function App({system, checkoutInput, refundInput}) {\n  return <main className={styles.root}><h1>운영 콘솔</h1><SessionBar onLogin={system.login} onLogout={system.logout}/>\n    <OrderPanel orders={system.orders}/><InventoryPanel inventory={system.inventory}/>\n    <ReturnsPanel returns={system.returns}/><WalletPanel wallet={system.wallet}/>\n    <CheckoutForm checkout={system.checkout} input={checkoutInput}/><ReturnForm refund={system.refund} input={refundInput}/></main>;\n}\n",
+    "starter": true,
+    "diagnostic": "S-inline-App"
+  },
+  {
+    "name": "unselected-theme",
+    "file": "theme.css",
+    "before": "@theme inline {\n  --color-action: var(--color-blue-600);\n  --color-on-action: var(--color-white);\n}",
+    "after": "@utility bg-action { background-color: var(--color-blue-600); }\n@utility text-on-action { color: var(--color-white); }\n@utility border-action { border-color: var(--color-blue-600); }",
+    "starter": true,
+    "diagnostic": "Q-theme-strategy"
+  },
+  {
+    "name": "unused-cva",
+    "file": "ui/ActionButton.jsx",
+    "before": "className={classes({tone,size,className})}",
+    "after": "className=\"inline-flex items-center justify-center rounded font-medium disabled:opacity-50 bg-action text-on-action px-3 py-1 text-sm\"",
+    "starter": false,
+    "diagnostic": "S-cva-ActionButton"
+  },
+  {
+    "name": "event-dropped",
+    "file": "ui/ActionButton.jsx",
+    "before": "<button {...props}",
+    "after": "<button",
+    "starter": false,
+    "diagnostic": "F-style-native-props"
+  },
+  {
+    "name": "invented-dark-mode",
+    "file": "theme.css",
+    "before": "@import \"tailwindcss\";",
+    "after": "@import \"tailwindcss\";\n@custom-variant dark (&:where(.dark, .dark *));",
+    "starter": false,
+    "diagnostic": "Q-no-unapproved-dark-mode"
+  }
+]

@@ -1,0 +1,5 @@
+{
+  "exitCode": 1,
+  "stdout": "{\"output\":\"/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/test/evals/fs-comparison/v4/results/2026-10-03T170525/isolation/calibration.json\",\"correctAccepted\":3,\"mutantsRejected\":21,\"modelCalls\":0}\nPreflight: baseline permissions / Git / nested CLI\nPreflight blocked: baseline: permissions/Git/nested CLI preflight failed\n/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/test/evals/fs-comparison/v4/results/2026-10-03T170525/isolation\n",
+  "stderr": "WARNING: proceeding, even though we could not create PATH aliases: Operation not permitted (os error 1)\n"
+}

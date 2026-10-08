@@ -1,0 +1,862 @@
+{
+  "id": "order-workspace",
+  "title": "실제 v12 주문 프로젝트 · 이벤트와 상태 흐름",
+  "basis": "observed",
+  "summary": "src/pages.ts의 실제 DOM 이벤트, saveOrder의 낙관적 목록 변경, HTTP 오류 및 구독 해제를 코드에서 추적했습니다.",
+  "scope": {
+    "files": [
+      "package.json",
+      "README.md",
+      "src/pages.ts",
+      "src/state.ts",
+      "src/save.ts",
+      "src/client.ts"
+    ],
+    "discoveryRoots": [
+      "src"
+    ],
+    "discoveryMode": "source"
+  },
+  "evidence": {
+    "editor": {
+      "path": "src/pages.ts",
+      "quote": "export function mountEditor(form:HTMLFormElement, quantity:HTMLInputElement,error:HTMLElement){"
+    },
+    "input": {
+      "path": "src/pages.ts",
+      "quote": "const change=()=>setQuantity(Number(quantity.value));"
+    },
+    "submit": {
+      "path": "src/pages.ts",
+      "quote": "const submit=async(e:Event)=>{e.preventDefault(); const result=await saveOrder({...draft.value},headers); if(!result.ok)error.textContent=result.message;};"
+    },
+    "headers": {
+      "path": "src/pages.ts",
+      "quote": "const headers={'X-Workspace':'w1'};"
+    },
+    "bind": {
+      "path": "src/pages.ts",
+      "quote": "quantity.addEventListener('input',change);form.addEventListener('submit',submit);"
+    },
+    "unbind": {
+      "path": "src/pages.ts",
+      "quote": "return ()=>{quantity.removeEventListener('input',change);form.removeEventListener('submit',submit);};"
+    },
+    "list": {
+      "path": "src/pages.ts",
+      "quote": "export function mountList(container:HTMLElement){"
+    },
+    "render": {
+      "path": "src/pages.ts",
+      "quote": "const render=()=>{container.textContent=orders.rows.map(x=>x.id+':'+x.quantity).join(',');};"
+    },
+    "subscribe": {
+      "path": "src/pages.ts",
+      "quote": "orders.listeners.add(render);render();return ()=>{orders.listeners.delete(render);};"
+    },
+    "draft": {
+      "path": "src/state.ts",
+      "quote": "export const draft={value:{id:'o1',quantity:1},dirty:false};"
+    },
+    "orders": {
+      "path": "src/state.ts",
+      "quote": "export const orders={rows:[] as Draft[],listeners:new Set<()=>void>()};"
+    },
+    "publish": {
+      "path": "src/state.ts",
+      "quote": "export function publish(rows:Draft[]){orders.rows=rows;orders.listeners.forEach(f=>f());}"
+    },
+    "quantity": {
+      "path": "src/state.ts",
+      "quote": "export function setQuantity(quantity:number){draft.value={...draft.value,quantity};draft.dirty=true;}"
+    },
+    "save": {
+      "path": "src/save.ts",
+      "quote": "export async function saveOrder(input:Draft, headers:Record<string,string>){"
+    },
+    "invalid": {
+      "path": "src/save.ts",
+      "quote": "if(input.quantity<1) return {ok:false as const,message:'quantity'};"
+    },
+    "optimistic": {
+      "path": "src/save.ts",
+      "quote": "const previous=orders.rows;\n  publish(previous.map(row=>row.id===input.id?{...input}:row));"
+    },
+    "request": {
+      "path": "src/save.ts",
+      "quote": "const saved=await request('/orders/'+input.id,{body:JSON.stringify(input),headers});"
+    },
+    "confirm": {
+      "path": "src/save.ts",
+      "quote": "publish(orders.rows.map(row=>row.id===input.id?saved:row));"
+    },
+    "dirty": {
+      "path": "src/save.ts",
+      "quote": "draft.dirty=false;"
+    },
+    "ok": {
+      "path": "src/save.ts",
+      "quote": "return {ok:true as const};"
+    },
+    "rollback": {
+      "path": "src/save.ts",
+      "quote": "} catch(error){publish(previous);return {ok:false as const,message:String(error)};}"
+    },
+    "client": {
+      "path": "src/client.ts",
+      "quote": "export async function request(path: string, input: {headers: Record<string,string>; body?: string}) {"
+    },
+    "auth": {
+      "path": "src/client.ts",
+      "quote": "input.headers.Authorization = 'Bearer interactive-session';"
+    },
+    "fetch": {
+      "path": "src/client.ts",
+      "quote": "const response = await fetch(path, {method: input.body ? 'POST' : 'GET', ...input});"
+    },
+    "401": {
+      "path": "src/client.ts",
+      "quote": "if (response.status === 401) throw new Error('session-expired');"
+    },
+    "http-error": {
+      "path": "src/client.ts",
+      "quote": "if (!response.ok) throw new Error('request-failed');"
+    },
+    "json": {
+      "path": "src/client.ts",
+      "quote": "return response.json();"
+    }
+  },
+  "nodes": [
+    {
+      "id": "editor",
+      "kind": "page",
+      "label": "mountEditor · 편집 화면 연결",
+      "evidence": [
+        "editor",
+        "bind",
+        "unbind"
+      ],
+      "props": [],
+      "state": [],
+      "events": [
+        "mount / cleanup"
+      ],
+      "lifecycle": []
+    },
+    {
+      "id": "form",
+      "kind": "component",
+      "label": "form / quantity / error · DOM 요소",
+      "evidence": [
+        "editor",
+        "input",
+        "submit",
+        "headers"
+      ],
+      "props": [
+        "form: HTMLFormElement",
+        "quantity: HTMLInputElement",
+        "error: HTMLElement"
+      ],
+      "state": [
+        "headers: 편집 연결당 객체",
+        "error.textContent"
+      ],
+      "events": [
+        "input → change",
+        "submit → submit"
+      ],
+      "lifecycle": [
+        "이벤트 리스너 등록 / 제거"
+      ],
+      "parent": "editor"
+    },
+    {
+      "id": "list",
+      "kind": "page",
+      "label": "mountList · 목록 화면 연결",
+      "evidence": [
+        "list",
+        "subscribe"
+      ],
+      "props": [],
+      "state": [],
+      "events": [],
+      "lifecycle": [
+        "등록 직후 render()",
+        "cleanup: listener 제거"
+      ]
+    },
+    {
+      "id": "container",
+      "kind": "component",
+      "label": "container · 목록 DOM",
+      "evidence": [
+        "render"
+      ],
+      "props": [],
+      "state": [
+        "container.textContent"
+      ],
+      "events": [],
+      "lifecycle": [],
+      "parent": "list"
+    },
+    {
+      "id": "draft",
+      "kind": "store",
+      "label": "draft · 공유 편집 상태",
+      "evidence": [
+        "draft",
+        "quantity"
+      ],
+      "props": [],
+      "state": [
+        "value: {id, quantity}",
+        "dirty"
+      ],
+      "events": [],
+      "lifecycle": []
+    },
+    {
+      "id": "orders",
+      "kind": "cache",
+      "label": "orders · 메모리 목록과 리스너",
+      "evidence": [
+        "orders",
+        "publish"
+      ],
+      "props": [],
+      "state": [
+        "rows: Draft[]",
+        "listeners: Set<callback>"
+      ],
+      "events": [],
+      "lifecycle": []
+    },
+    {
+      "id": "save",
+      "kind": "module",
+      "label": "saveOrder(input, headers)",
+      "evidence": [
+        "save",
+        "optimistic"
+      ],
+      "props": [],
+      "state": [
+        "previous: 저장 전 rows 참조"
+      ],
+      "events": [],
+      "lifecycle": []
+    },
+    {
+      "id": "client",
+      "kind": "module",
+      "label": "request(path, input)",
+      "evidence": [
+        "client",
+        "auth"
+      ],
+      "props": [],
+      "state": [],
+      "events": [
+        "401 → session-expired",
+        "!ok → request-failed"
+      ],
+      "lifecycle": []
+    },
+    {
+      "id": "http",
+      "kind": "external",
+      "label": "fetch · /orders/:id",
+      "evidence": [
+        "fetch",
+        "request"
+      ],
+      "props": [],
+      "state": [],
+      "events": [
+        "응답 / 네트워크 실패"
+      ],
+      "lifecycle": []
+    }
+  ],
+  "edges": [
+    {
+      "id": "input",
+      "from": "form",
+      "to": "draft",
+      "kind": "write",
+      "label": "setQuantity(Number(value))",
+      "evidence": [
+        "input",
+        "quantity"
+      ]
+    },
+    {
+      "id": "submit",
+      "from": "form",
+      "to": "save",
+      "kind": "call",
+      "label": "saveOrder({...draft.value}, headers)",
+      "evidence": [
+        "submit"
+      ]
+    },
+    {
+      "id": "invalid",
+      "from": "save",
+      "to": "form",
+      "kind": "return",
+      "label": "quantity < 1 → {ok:false}",
+      "evidence": [
+        "invalid",
+        "submit"
+      ]
+    },
+    {
+      "id": "optimistic",
+      "from": "save",
+      "to": "orders",
+      "kind": "write",
+      "label": "기존 id만 낙관적으로 교체 · publish",
+      "evidence": [
+        "optimistic",
+        "publish"
+      ]
+    },
+    {
+      "id": "notify",
+      "from": "orders",
+      "to": "container",
+      "kind": "write",
+      "label": "등록된 render → textContent",
+      "evidence": [
+        "publish",
+        "render",
+        "subscribe"
+      ]
+    },
+    {
+      "id": "request",
+      "from": "save",
+      "to": "client",
+      "kind": "call",
+      "label": "주문 JSON과 headers 전달",
+      "evidence": [
+        "request"
+      ]
+    },
+    {
+      "id": "auth",
+      "from": "client",
+      "to": "form",
+      "kind": "write",
+      "label": "호출자가 전달한 headers.Authorization 변경",
+      "evidence": [
+        "auth",
+        "headers",
+        "submit",
+        "request"
+      ]
+    },
+    {
+      "id": "fetch",
+      "from": "client",
+      "to": "http",
+      "kind": "call",
+      "label": "fetch(POST) · body 존재",
+      "evidence": [
+        "fetch"
+      ]
+    },
+    {
+      "id": "json",
+      "from": "http",
+      "to": "client",
+      "kind": "return",
+      "label": "정상 HTTP 응답의 JSON 파싱",
+      "evidence": [
+        "fetch",
+        "json"
+      ]
+    },
+    {
+      "id": "saved",
+      "from": "client",
+      "to": "save",
+      "kind": "return",
+      "label": "파싱 결과 await 완료",
+      "evidence": [
+        "json",
+        "request"
+      ]
+    },
+    {
+      "id": "confirm",
+      "from": "save",
+      "to": "orders",
+      "kind": "write",
+      "label": "응답 객체로 기존 id 교체 · publish",
+      "evidence": [
+        "confirm",
+        "publish"
+      ]
+    },
+    {
+      "id": "dirty",
+      "from": "save",
+      "to": "draft",
+      "kind": "write",
+      "label": "draft.dirty = false (버전 비교 없음)",
+      "evidence": [
+        "dirty"
+      ]
+    },
+    {
+      "id": "success",
+      "from": "save",
+      "to": "form",
+      "kind": "return",
+      "label": "{ok:true} · 성공 시 error.textContent 변경 없음",
+      "evidence": [
+        "ok",
+        "submit"
+      ]
+    },
+    {
+      "id": "401",
+      "from": "http",
+      "to": "client",
+      "kind": "return",
+      "label": "401 응답 → session-expired 예외",
+      "evidence": [
+        "fetch",
+        "401"
+      ]
+    },
+    {
+      "id": "http-error",
+      "from": "http",
+      "to": "client",
+      "kind": "return",
+      "label": "401 외 !ok → request-failed 예외",
+      "evidence": [
+        "fetch",
+        "401",
+        "http-error"
+      ]
+    },
+    {
+      "id": "rejected",
+      "from": "client",
+      "to": "save",
+      "kind": "return",
+      "label": "요청/JSON 예외가 catch로 전달",
+      "evidence": [
+        "request",
+        "rollback"
+      ]
+    },
+    {
+      "id": "rollback",
+      "from": "save",
+      "to": "orders",
+      "kind": "write",
+      "label": "저장 전 previous rows 복원 · publish",
+      "evidence": [
+        "rollback",
+        "publish"
+      ]
+    },
+    {
+      "id": "error",
+      "from": "save",
+      "to": "form",
+      "kind": "return",
+      "label": "실패 message → error.textContent",
+      "evidence": [
+        "rollback",
+        "submit"
+      ]
+    },
+    {
+      "id": "subscribe",
+      "from": "list",
+      "to": "orders",
+      "kind": "subscribe",
+      "label": "orders.listeners.add(render)",
+      "evidence": [
+        "subscribe"
+      ]
+    },
+    {
+      "id": "initial-render",
+      "from": "orders",
+      "to": "container",
+      "kind": "read",
+      "label": "등록 직후 render()로 rows 표시",
+      "evidence": [
+        "subscribe",
+        "render"
+      ]
+    },
+    {
+      "id": "unsubscribe",
+      "from": "list",
+      "to": "orders",
+      "kind": "cleanup",
+      "label": "orders.listeners.delete(render)",
+      "evidence": [
+        "subscribe"
+      ]
+    },
+    {
+      "id": "cleanup",
+      "from": "editor",
+      "to": "form",
+      "kind": "cleanup",
+      "label": "input / submit listener 제거",
+      "evidence": [
+        "unbind"
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "input",
+      "title": "수량 입력",
+      "entry": "form",
+      "event": "input",
+      "steps": [
+        {
+          "edge": "input",
+          "effect": "Number(value)를 저장하고 dirty=true로 바꿉니다."
+        }
+      ],
+      "outcome": "draft 갱신; 목록 또는 HTTP 호출 없음",
+      "limitations": []
+    },
+    {
+      "id": "save-success",
+      "title": "저장 성공",
+      "entry": "form",
+      "event": "submit · quantity >= 1",
+      "steps": [
+        {
+          "edge": "submit",
+          "effect": "현재 draft.value를 얕게 복사합니다."
+        },
+        {
+          "edge": "optimistic",
+          "effect": "현재 rows의 일치 id만 바꿉니다. 새 행을 추가하지 않습니다."
+        },
+        {
+          "edge": "notify",
+          "effect": "마운트되어 등록된 목록 소비자만 DOM textContent를 갱신합니다."
+        },
+        {
+          "edge": "request",
+          "effect": "같은 headers 참조와 직렬화한 입력을 전달합니다."
+        },
+        {
+          "edge": "auth",
+          "effect": "호출자 소유 headers를 직접 변경합니다."
+        },
+        {
+          "edge": "fetch",
+          "effect": "POST 요청을 한 번 보냅니다."
+        },
+        {
+          "edge": "json",
+          "effect": "response.ok 이후 JSON을 파싱합니다."
+        },
+        {
+          "edge": "saved",
+          "effect": "saved 객체를 받습니다."
+        },
+        {
+          "edge": "confirm",
+          "effect": "일치하는 행을 응답으로 교체합니다."
+        },
+        {
+          "edge": "notify",
+          "effect": "현재 구독자에게 목록 변경을 통지합니다."
+        },
+        {
+          "edge": "dirty",
+          "effect": "더 최신 입력이 있는지 검사하지 않고 dirty를 해제합니다."
+        },
+        {
+          "edge": "success",
+          "effect": "성공 반환. 과거 오류 문구를 지우는 코드는 없습니다."
+        }
+      ],
+      "outcome": "응답 목록 반영 / dirty=false",
+      "limitations": [
+        "해당 id가 rows에 없으면 삽입하지 않습니다. 초기 rows는 비어 있습니다.",
+        "오래된 오류 문구가 성공 후에도 남을 수 있습니다."
+      ]
+    },
+    {
+      "id": "invalid",
+      "title": "검증 실패",
+      "entry": "form",
+      "event": "submit · quantity < 1",
+      "steps": [
+        {
+          "edge": "submit",
+          "effect": "현재 draft.value를 얕게 복사합니다."
+        },
+        {
+          "edge": "invalid",
+          "effect": "즉시 quantity 오류를 반환하고 화면에 표시합니다."
+        }
+      ],
+      "outcome": "cache 변경과 HTTP 요청 없음",
+      "limitations": [
+        "NaN과 Infinity를 차단하는 검증은 코드에 없습니다."
+      ]
+    },
+    {
+      "id": "unauthorized",
+      "title": "인증 실패 · 401",
+      "entry": "form",
+      "event": "submit → HTTP 401",
+      "steps": [
+        {
+          "edge": "submit",
+          "effect": "현재 draft.value를 얕게 복사합니다."
+        },
+        {
+          "edge": "optimistic",
+          "effect": "현재 rows의 일치 id만 바꿉니다. 새 행을 추가하지 않습니다."
+        },
+        {
+          "edge": "notify",
+          "effect": "마운트되어 등록된 목록 소비자만 DOM textContent를 갱신합니다."
+        },
+        {
+          "edge": "request",
+          "effect": "같은 headers 참조와 직렬화한 입력을 전달합니다."
+        },
+        {
+          "edge": "auth",
+          "effect": "호출자 소유 headers를 직접 변경합니다."
+        },
+        {
+          "edge": "fetch",
+          "effect": "POST 요청을 한 번 보냅니다."
+        },
+        {
+          "edge": "401",
+          "effect": "session-expired 예외를 던집니다."
+        },
+        {
+          "edge": "rejected",
+          "effect": "await request가 reject되어 catch로 이동합니다."
+        },
+        {
+          "edge": "rollback",
+          "effect": "이전 rows 참조 전체를 복원합니다."
+        },
+        {
+          "edge": "notify",
+          "effect": "현재 구독자에게 복원을 통지합니다."
+        },
+        {
+          "edge": "error",
+          "effect": "편집 화면이 오류 문구를 표시합니다."
+        }
+      ],
+      "outcome": "이전 목록 복구 / 오류 표시 / dirty 해제 없음",
+      "limitations": []
+    },
+    {
+      "id": "http-failure",
+      "title": "일반 HTTP 실패",
+      "entry": "form",
+      "event": "submit → HTTP 500 등",
+      "steps": [
+        {
+          "edge": "submit",
+          "effect": "현재 draft.value를 얕게 복사합니다."
+        },
+        {
+          "edge": "optimistic",
+          "effect": "현재 rows의 일치 id만 바꿉니다. 새 행을 추가하지 않습니다."
+        },
+        {
+          "edge": "notify",
+          "effect": "마운트되어 등록된 목록 소비자만 DOM textContent를 갱신합니다."
+        },
+        {
+          "edge": "request",
+          "effect": "같은 headers 참조와 직렬화한 입력을 전달합니다."
+        },
+        {
+          "edge": "auth",
+          "effect": "호출자 소유 headers를 직접 변경합니다."
+        },
+        {
+          "edge": "fetch",
+          "effect": "POST 요청을 한 번 보냅니다."
+        },
+        {
+          "edge": "http-error",
+          "effect": "request-failed 예외를 던집니다."
+        },
+        {
+          "edge": "rejected",
+          "effect": "await request가 reject되어 catch로 이동합니다."
+        },
+        {
+          "edge": "rollback",
+          "effect": "이전 rows 참조 전체를 복원합니다."
+        },
+        {
+          "edge": "notify",
+          "effect": "현재 구독자에게 복원을 통지합니다."
+        },
+        {
+          "edge": "error",
+          "effect": "편집 화면이 오류 문구를 표시합니다."
+        }
+      ],
+      "outcome": "이전 목록 복구 / 오류 표시",
+      "limitations": []
+    },
+    {
+      "id": "newer-input",
+      "title": "저장 중 추가 입력 · 현재 코드의 문제",
+      "entry": "form",
+      "event": "submit → 응답 대기 중 input → 저장 성공",
+      "steps": [
+        {
+          "edge": "submit",
+          "effect": "현재 draft.value를 얕게 복사합니다."
+        },
+        {
+          "edge": "optimistic",
+          "effect": "현재 rows의 일치 id만 바꿉니다. 새 행을 추가하지 않습니다."
+        },
+        {
+          "edge": "notify",
+          "effect": "마운트되어 등록된 목록 소비자만 DOM textContent를 갱신합니다."
+        },
+        {
+          "edge": "request",
+          "effect": "같은 headers 참조와 직렬화한 입력을 전달합니다."
+        },
+        {
+          "edge": "auth",
+          "effect": "호출자 소유 headers를 직접 변경합니다."
+        },
+        {
+          "edge": "fetch",
+          "effect": "POST 요청을 한 번 보냅니다."
+        },
+        {
+          "edge": "input",
+          "effect": "요청 시작 뒤 새 수량을 입력하여 draft.value와 dirty=true를 갱신합니다."
+        },
+        {
+          "edge": "json",
+          "effect": "response.ok 이후 JSON을 파싱합니다."
+        },
+        {
+          "edge": "saved",
+          "effect": "saved 객체를 받습니다."
+        },
+        {
+          "edge": "confirm",
+          "effect": "일치하는 행을 응답으로 교체합니다."
+        },
+        {
+          "edge": "notify",
+          "effect": "현재 구독자에게 목록 변경을 통지합니다."
+        },
+        {
+          "edge": "dirty",
+          "effect": "더 최신 입력이 있는지 검사하지 않고 dirty를 해제합니다."
+        },
+        {
+          "edge": "success",
+          "effect": "성공 반환. 과거 오류 문구를 지우는 코드는 없습니다."
+        }
+      ],
+      "outcome": "새 draft.value는 남지만 dirty=false가 됩니다. 이는 개선안이 아니라 현 코드의 동작입니다.",
+      "limitations": [
+        "동시 submit 또는 다른 writer와의 경합은 여기서 검증하지 않았습니다."
+      ]
+    },
+    {
+      "id": "list-lifecycle",
+      "title": "목록 등록과 해제",
+      "entry": "list",
+      "event": "mountList → cleanup",
+      "steps": [
+        {
+          "edge": "subscribe",
+          "effect": "render를 구독자로 등록합니다."
+        },
+        {
+          "edge": "initial-render",
+          "effect": "현재 rows를 즉시 표시합니다."
+        },
+        {
+          "edge": "unsubscribe",
+          "effect": "cleanup 호출 시 구독을 제거합니다."
+        }
+      ],
+      "outcome": "해제된 목록은 이후 publish에 반응하지 않습니다.",
+      "limitations": []
+    },
+    {
+      "id": "editor-cleanup",
+      "title": "편집 이벤트 해제",
+      "entry": "editor",
+      "event": "mountEditor 반환 cleanup 호출",
+      "steps": [
+        {
+          "edge": "cleanup",
+          "effect": "수량과 폼에서 이벤트 리스너를 제거합니다."
+        }
+      ],
+      "outcome": "새 input/submit 처리 없음",
+      "limitations": [
+        "이미 진행 중인 요청은 취소하지 않습니다."
+      ]
+    }
+  ],
+  "invariants": [
+    {
+      "id": "guard",
+      "statement": "quantity < 1 분기에서 publish/request보다 먼저 반환합니다.",
+      "authority": "observed",
+      "evidence": [
+        "invalid",
+        "optimistic",
+        "request"
+      ]
+    },
+    {
+      "id": "header-mutation",
+      "statement": "request는 전달받은 headers 객체의 Authorization을 직접 변경합니다.",
+      "authority": "observed",
+      "evidence": [
+        "auth",
+        "request",
+        "submit"
+      ]
+    }
+  ],
+  "limitations": [
+    "v12/projects/request의 실제 코드에 대한 정적 해석입니다. 배포된 서비스나 전체 앱의 런타임 추적이 아닙니다.",
+    "DOM 요소와 mount 함수는 있지만 라우터/HTML 부트스트랩은 제공되지 않습니다. 두 mount 함수가 실제 화면에서 함께 실행된다고 단정하지 않습니다.",
+    "성공·401·HTTP 실패·검증 실패·새 입력·cleanup을 표현했습니다. 네트워크 실패와 JSON 파싱 실패는 같은 catch로 연결되나 별도 시나리오로 펼치지 않았습니다.",
+    "AbortController, 자동 재시도, 다중 writer 보장과 서버 동작은 구현에서 확인되지 않습니다.",
+    "코드의 문제도 현재 동작으로 표시했습니다. 이 분석은 리팩터링을 적용하지 않습니다."
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "kind": "connectivity-check-not-benchmark",
+  "requestedModel": "gpt-6-astra",
+  "sandbox": "read-only",
+  "exitCode": 1,
+  "timedOut": false,
+  "elapsedSeconds": 0.08,
+  "completedTurns": 0,
+  "usage": [],
+  "errors": []
+}

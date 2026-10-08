@@ -1,0 +1,105 @@
+{
+  "reviewKind": "separate-workflow-and-document-adjudication",
+  "documents": {
+    "passed": true,
+    "scope": "B no separate project document obligation; native plan/inspection or evidence records and final message provide scope, checks and limits.",
+    "finalEvidence": ".frontend-system/plans/checkout-implementation/progress.md; .frontend-system/evidence/"
+  },
+  "H10": {
+    "passed": true,
+    "nativeFinalCheckId": "62539626-2d73-469d-a8a2-97f9a09cda8b",
+    "nativeSourceHash": "dd4690b14662b81382007857db84695bfdfe1ac77ef51bac97d3ee94b0842910",
+    "ownSourceHashesVerified": {
+      ".gitignore": "53429a314b0070c0d9e957ddccf84cb0f5d3b914a694acc12776828380ab2d6f",
+      "AGENTS.md": "63f2c50380ed6303237cce215ce27af1d620d094c215e28d1b1538a3c070e3bb",
+      "TASK.md": "6b70f1900ad06b66c5fa998a35d24c49ba7194ddba118cf109aa61d1f06503eb",
+      "app/api/orders/route.js": "4963873e515f5df3761234f54a95ebdc2835c2718229039796379cabf08f7649",
+      "app/api/quote/route.js": "b3ce321e743c3a7bc8dcd1dfb4e4080e68ba06e38ac411f4e496ca379dbffe00",
+      "app/checkout.jsx": "c7d2a5f797c00b45a1ba77dab096c3408c1bb37d84f97dcc3b98ca79a70121c8",
+      "app/layout.jsx": "8e5bd10067458aabd9faa12758742379b73c4f73a9502fca9cfa01545b64483c",
+      "app/page.jsx": "dba6b4167f656d98c97a8aaa9446b7607c7b588f3c92e60c98257cfdf48bffd6",
+      "checkout.contract.json": "1fca04104f4a8b12f88b8fdfcdbac26fda530b3618ad5583feabfde4f7e056ae",
+      "common-rules.md": "e71158712eaf1e3dcc0f9452cd20019d40beaa3fe9b886005d6db3b13e971f68",
+      "e2e/catalog.spec.mjs": "a73d2188c368c419bd2addc7e8b50778f69531c1d4fde62d06d3f59ee35234f6",
+      "e2e/checkout.spec.mjs": "fea4cb649e39c3691f6c80c477ce15d8dcc37f3356b84b04069d8bdbc2ff7074",
+      "eslint.config.mjs": "3624563f6cccab80896a35c9461fc1ae30389554349374bf453a5667590b361c",
+      "frontend-quality.md": "a2670348378de9113ef2e61c445acceeaaf8c12171cd0802f2d6fc8946ee2957",
+      "jsconfig.json": "b5e74988174abcf48c53f7d9eed03d8690dba1471cca6edcaa44d2911bda7179",
+      "mandatory-rules/common/review.md": "e71158712eaf1e3dcc0f9452cd20019d40beaa3fe9b886005d6db3b13e971f68",
+      "mandatory-rules/nextjs/core.md": "d9614c63030aa71f160bd1bc443c4c017718d73d40c0699423607d9941459d52",
+      "mandatory-rules/react/core.md": "f820abcdd9f20281118906868f322d83495943a9bdb0a835865d5727c3d22cdb",
+      "mandatory-rules/vue/core.md": "ebcf6d6e28fd0c4e7166113f7901345b4ff819f7d5dd91d7722c376151d3ecc6",
+      "next.config.mjs": "e53d0c8d3f690e8bd0b06f1ee16a5e871738fc56f9cd56c7790c906bd4d94505",
+      "package-lock.json": "7f094df62e4f1addb2cd14603df0c66729eb5abf4e9355ef65005e560153aedd",
+      "package.json": "8645dbcb75b54940720d77a107cbf549a67931661a03885d7ce93345dbff99ce",
+      "playwright.config.mjs": "fbf7e6f145aef04bf1b6d1e323d2c898b2444e29729aa10eb1759a33b0dab61f",
+      "src/catalog.js": "523ad6b97e81c57f895fed40752f458cd8cc754f92ea65654f1d59da9b2337ff",
+      "src/checkout.js": "7df53cf1566cf4defa05bb126187a90b01a147d3d645b0fea6551cb849211e79",
+      "tests/catalog.test.mjs": "2328b9e518bed3932077ef018f3b124b87089389edce4ec3ac9ed57725a182f6",
+      "tests/checkout.test.mjs": "5dab1137bb61ac39502763194ab147a32350311069b4163df3da53345954bdd7",
+      "tsconfig.check.json": "5b031b39a40649e07621dd92ee31f1e6a92c7526ab0af89d607907243fef68c7"
+    },
+    "externalSourceBeforeAfterMatchesFinal": true,
+    "protectedAssetsPassed": 9,
+    "checks": [
+      "npm run lint",
+      "npm run typecheck",
+      "npm run test:unit",
+      "npm run test:e2e",
+      "npm run build"
+    ],
+    "lastProductEdit": "item_31 (permanent); item_71 temporary shipping probe restored exact bytes",
+    "lastTestEdit": "item_36",
+    "finalChecks": [
+      "item_59"
+    ],
+    "postCheckHashVerification": "item_74 and current native inventory reproduced after restored probe"
+  },
+  "conditionAdherence": {
+    "passed": true,
+    "arm": "fs",
+    "evidence": "Full frozen FS runtime/rules and allowed local sources only; policy, current checks, semantic review and native completion persisted. No external models/install/service/commit observed."
+  },
+  "attemptBudgetRespected": true,
+  "qualitySource": "../blind-review/d8d7baab2474/review.json",
+  "eligibleComplete": false,
+  "R9": {
+    "passed": false,
+    "evidence": "Final answer declares100/100 including Q10. item71 changes shipping threshold50000→30000 and calls domain with alternate catalog parameters; it does not perform fixed60000/actualPOST policy probe or replacement asynchronous catalog I/O. Q10 full score exceeds executed evidence, despite all5 current-source checks passing."
+  },
+  "fullValidationAttempts": 3,
+  "attemptEvidence": "Initial implementation/test development19-22 includes correcting false shipping expectation and refining validation priority. Lint repair26/27 is one corrective phase; page text/button accessible-name repair31 is next. Later35/36 change tests only; policy reservations/commands do not revise product.",
+  "eligibilityEvidence": [
+    "Historical pre-correction: IndependentQ100/R1-R8pass; original two Coupon locator failures await global correction.",
+    "Historical pre-correction: R9 fails unsupported definitiveQ10/100 claim: performed domain threshold30000/alternate catalog parameters, not required fixed policy/actual POST and substitute I/O experiments. Product quality is recorded separately.",
+    "Final: corrected 110/110; independentQ100; product R1-R8 pass; eligibleComplete=False. Details and original adjudication preserved."
+  ],
+  "procedureObservations": [
+    "Several native policy mappings rejected, final59 all5 pass and complete67 persisted.",
+    "Temporary shipping probe71 restores original source in finally; exact current hashes match prior native verification, no permanent post-check product change."
+  ],
+  "evaluatorAdjudication": {
+    "status": "final",
+    "revision": "accessible-name-v2",
+    "originalPassed": 108,
+    "correctedPassed": 110,
+    "changedCases": [
+      {
+        "id": "default-and-updated-total",
+        "category": "browser",
+        "original": "failed",
+        "corrected": "passed"
+      },
+      {
+        "id": "order-lock-failure-retry",
+        "category": "browser",
+        "original": "failed",
+        "corrected": "passed"
+      }
+    ],
+    "sourceUnchanged": true,
+    "independentCorrectionReview": "../blind-review/d8d7baab2474/regrade-review.json",
+    "qualityAndRulesUnchanged": true,
+    "eligibleComplete": false
+  }
+}

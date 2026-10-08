@@ -2,9 +2,15 @@
 
 The current top-level model owns the analysis. Do not launch a nested model.
 
+Follow [project-flow-analysis](project-flow-analysis.md) for the ordered environment →
+dependencies → flows → knowledge → findings pass. Reuse existing records before
+rescanning. The full inventory below is for first analysis or an explicit overall
+refresh; ordinary tasks inspect only affected scopes. Save main context on first
+authorized analysis or explicit manual refresh, not automatically after work.
+
 1. Read `../project-plans.md`. Use get_project_snapshot and read_project_source for
    official main facts; use inspect_project for working-tree diagnostics. Pass `overall: true` when the user supplied `--overall` or explicitly asked for autonomous inspection.
-2. Page through `list_project_files` until `nextOffset` is null, retaining the inventory hash between pages. Inventory all first-party source, configuration and test areas; record generated/vendor exclusions, unfollowed symlinks, unresolved dynamic dependencies and inaccessible areas. A shortlist or directory-name heuristic is not whole-project analysis. Read each area in bounded batches and persist area evidence with `save_project_record` (kind `evidence`); do not silently drop deep or large areas.
+2. Page through `list_project_files` until `nextOffset` is null, retaining the inventory hash between pages. Inventory all first-party source, configuration and test areas; record generated/vendor exclusions, unfollowed symlinks, unresolved dynamic dependencies and inaccessible areas. A shortlist or directory-name heuristic is not whole-project analysis. Read each area in bounded batches and persist typed flows/findings with `save_project_analysis`; use `save_project_record` (kind `evidence`) only for non-flow area evidence; do not silently drop deep or large areas.
 3. Trace entry points, actual imports/callers, layer boundaries, domain events and invariants, state/data ownership, caching, async/error paths, design tokens/components, tests and runtime requirements. Distinguish explicit team rules from repeated implementation habits. Use framework-aware tools/search to follow aliases and re-exports and report unresolved edges. Save a coverage index linking every area to evidence and inspected/pending/blocked status, with file references and limitations. Full inspection requires every area to be accounted for; it does not guarantee every defect has been found.
 4. Distinguish evidence, established decisions, and assumptions. Check installed framework versions before applying version-sensitive guidance. Reconcile existing project.md/init.md decisions; preserve their history. On later inspections, use changed-source evidence to refresh affected areas and recheck their dependencies without needlessly repeating unchanged analysis.
 5. Outside overall mode, ask only about ambiguity that materially changes architecture, ownership or quality gates. In overall mode, record conservative assumptions instead; it does not authorize installations, design changes or external writes.

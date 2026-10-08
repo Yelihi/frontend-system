@@ -1,0 +1,1551 @@
+{
+  "scope": "Observed completed tool results and command text only. Injected summaries are exposure, not proof of adoption or causal effect; no token estimates. Full provided snapshot is not equivalent to reading every document.",
+  "complete": true,
+  "rows": [
+    {
+      "experiment": "A",
+      "model": "gpt-6-astra",
+      "arm": "plain",
+      "repeat": 1,
+      "run": "01",
+      "eventsSha256": "53db3b6bb3fb5aaf051ad32eae5e06ab76df64cb5d449056872486458eb6d527",
+      "mcpToolCounts": {},
+      "injectedKnowledgeContexts": [],
+      "knowledgeNamedToolCalls": [],
+      "explicitKnowledgePathCommands": []
+    },
+    {
+      "experiment": "A",
+      "model": "gpt-6-astra",
+      "arm": "fs",
+      "repeat": 1,
+      "run": "02",
+      "eventsSha256": "97572fe5a4ce85f0e4b1b9eba17583b88209274067a655fd77cfeb0cca3dcd73",
+      "mcpToolCounts": {
+        "list_plans": 1,
+        "list_project_files": 1,
+        "get_project_snapshot": 1,
+        "get_work_context": 3,
+        "run_project_checks": 4,
+        "record_project_refresh": 1,
+        "save_project_record": 3,
+        "save_project_context": 3,
+        "save_revision": 3,
+        "approve_revision": 2,
+        "save_execution": 3,
+        "get_change_context": 1,
+        "begin_work_attempt": 2,
+        "get_project_document": 2,
+        "inspect_project": 1,
+        "get_revision": 1,
+        "get_workflow_context": 2,
+        "get_check_record": 2,
+        "save_semantic_review": 1
+      },
+      "injectedKnowledgeContexts": [],
+      "knowledgeNamedToolCalls": [],
+      "explicitKnowledgePathCommands": []
+    },
+    {
+      "experiment": "A",
+      "model": "gpt-6-sol",
+      "arm": "plain",
+      "repeat": 1,
+      "run": "03",
+      "eventsSha256": "d0cf20b5abdd2649f74992fb95e1902f7edcafecb4d15540ddb97c4f486e0fcb",
+      "mcpToolCounts": {},
+      "injectedKnowledgeContexts": [],
+      "knowledgeNamedToolCalls": [],
+      "explicitKnowledgePathCommands": []
+    },
+    {
+      "experiment": "A",
+      "model": "gpt-6-sol",
+      "arm": "fs",
+      "repeat": 1,
+      "run": "04",
+      "eventsSha256": "ade41bd975df63bf89549d15610f5c919723a003af47608340660395a0ff8618",
+      "mcpToolCounts": {
+        "list_plans": 1,
+        "list_project_files": 1,
+        "get_project_snapshot": 1,
+        "inspect_project": 1,
+        "get_project_document": 1,
+        "get_workflow_context": 4,
+        "get_work_context": 2,
+        "run_project_checks": 7,
+        "save_project_context": 1,
+        "save_revision": 3,
+        "approve_revision": 2,
+        "save_execution": 3,
+        "begin_work_attempt": 2,
+        "get_revision": 1,
+        "get_check_record": 1,
+        "save_semantic_review": 1
+      },
+      "injectedKnowledgeContexts": [],
+      "knowledgeNamedToolCalls": [],
+      "explicitKnowledgePathCommands": []
+    },
+    {
+      "experiment": "A",
+      "model": "gpt-6-luna",
+      "arm": "plain",
+      "repeat": 1,
+      "run": "05",
+      "eventsSha256": "a5fa77a5e923b97e70f8c49c062461dafa71b84389f3bd60d79ca860b5193a7f",
+      "mcpToolCounts": {},
+      "injectedKnowledgeContexts": [],
+      "knowledgeNamedToolCalls": [],
+      "explicitKnowledgePathCommands": []
+    },
+    {
+      "experiment": "A",
+      "model": "gpt-6-luna",
+      "arm": "fs",
+      "repeat": 1,
+      "run": "06",
+      "eventsSha256": "23564a9ad91caf85529a45ffe6b6d00735b4a2e3aeb080263f8b1abfab1962c6",
+      "mcpToolCounts": {
+        "list_plans": 1,
+        "get_work_context": 2,
+        "inspect_project": 2,
+        "get_project_snapshot": 1,
+        "run_project_checks": 5,
+        "save_revision": 3,
+        "approve_revision": 2,
+        "get_workflow_context": 5,
+        "begin_work_attempt": 4,
+        "save_execution": 3,
+        "get_check_record": 1
+      },
+      "injectedKnowledgeContexts": [],
+      "knowledgeNamedToolCalls": [],
+      "explicitKnowledgePathCommands": []
+    },
+    {
+      "experiment": "A",
+      "model": "gpt-6-sol",
+      "arm": "fs",
+      "repeat": 2,
+      "run": "07",
+      "eventsSha256": "8454faaa527720aa2d24b97c06b118e5fbaad5ce9da5db8afcf7aebd115e5a21",
+      "mcpToolCounts": {
+        "list_plans": 1,
+        "get_project_snapshot": 1,
+        "inspect_project": 1,
+        "run_project_checks": 6,
+        "get_work_context": 2,
+        "save_project_context": 1,
+        "save_revision": 3,
+        "approve_revision": 2,
+        "get_workflow_context": 5,
+        "begin_work_attempt": 3,
+        "save_execution": 5,
+        "save_semantic_review": 1
+      },
+      "injectedKnowledgeContexts": [],
+      "knowledgeNamedToolCalls": [],
+      "explicitKnowledgePathCommands": []
+    },
+    {
+      "experiment": "A",
+      "model": "gpt-6-sol",
+      "arm": "plain",
+      "repeat": 2,
+      "run": "08",
+      "eventsSha256": "a3b2b104911be35245999af45d3b5898a18bd458c50a74709f3e09fd624ba728",
+      "mcpToolCounts": {},
+      "injectedKnowledgeContexts": [],
+      "knowledgeNamedToolCalls": [],
+      "explicitKnowledgePathCommands": []
+    },
+    {
+      "experiment": "A",
+      "model": "gpt-6-luna",
+      "arm": "fs",
+      "repeat": 2,
+      "run": "09",
+      "eventsSha256": "f4126a393faff5db589df8e8925b709f751f9de06442530a34ecd2b0519bae62",
+      "mcpToolCounts": {
+        "list_plans": 1,
+        "get_work_context": 3,
+        "inspect_project": 2,
+        "list_project_files": 1,
+        "run_project_checks": 8,
+        "get_project_snapshot": 1,
+        "save_revision": 2,
+        "approve_revision": 1,
+        "get_workflow_context": 4,
+        "begin_work_attempt": 2,
+        "save_execution": 3,
+        "get_check_record": 1,
+        "get_change_context": 1,
+        "save_semantic_review": 2
+      },
+      "injectedKnowledgeContexts": [],
+      "knowledgeNamedToolCalls": [],
+      "explicitKnowledgePathCommands": []
+    },
+    {
+      "experiment": "A",
+      "model": "gpt-6-luna",
+      "arm": "plain",
+      "repeat": 2,
+      "run": "10",
+      "eventsSha256": "aa693badd6480f77e76db0f7b1bf25f400c01c25b57d29ad43bb275148e12927",
+      "mcpToolCounts": {},
+      "injectedKnowledgeContexts": [],
+      "knowledgeNamedToolCalls": [],
+      "explicitKnowledgePathCommands": []
+    },
+    {
+      "experiment": "A",
+      "model": "gpt-6-astra",
+      "arm": "fs",
+      "repeat": 2,
+      "run": "11",
+      "eventsSha256": "3b2f4c9b5dcf3971df0ddba077baf352ede1d2ba002b92e14a907d7cf4d74657",
+      "mcpToolCounts": {
+        "list_plans": 1,
+        "inspect_project": 2,
+        "get_work_context": 3,
+        "get_project_snapshot": 1,
+        "list_project_files": 1,
+        "run_project_checks": 5,
+        "record_project_refresh": 1,
+        "save_project_context": 1,
+        "save_revision": 3,
+        "approve_revision": 2,
+        "save_execution": 4,
+        "get_change_context": 1,
+        "begin_work_attempt": 3,
+        "get_workflow_context": 1,
+        "get_check_record": 3,
+        "save_semantic_review": 2
+      },
+      "injectedKnowledgeContexts": [],
+      "knowledgeNamedToolCalls": [],
+      "explicitKnowledgePathCommands": []
+    },
+    {
+      "experiment": "A",
+      "model": "gpt-6-astra",
+      "arm": "plain",
+      "repeat": 2,
+      "run": "12",
+      "eventsSha256": "d1361375ad5bda61df9089dcda51ab3b55fb5311975f1e3d5c89c6e6cc99030b",
+      "mcpToolCounts": {},
+      "injectedKnowledgeContexts": [],
+      "knowledgeNamedToolCalls": [],
+      "explicitKnowledgePathCommands": []
+    },
+    {
+      "experiment": "A",
+      "model": "gpt-6-luna",
+      "arm": "plain",
+      "repeat": 3,
+      "run": "13",
+      "eventsSha256": "be41bb5e0856a28bf7c01ac2b2151f4bf5cb63dc8dd81dca696f4d97340e8d9e",
+      "mcpToolCounts": {},
+      "injectedKnowledgeContexts": [],
+      "knowledgeNamedToolCalls": [],
+      "explicitKnowledgePathCommands": []
+    },
+    {
+      "experiment": "A",
+      "model": "gpt-6-luna",
+      "arm": "fs",
+      "repeat": 3,
+      "run": "14",
+      "eventsSha256": "130ab4466b610a4e3ab738cfaaf6c1af314b870b82f72496cf1811f05139556b",
+      "mcpToolCounts": {
+        "list_plans": 1,
+        "inspect_project": 1,
+        "get_work_context": 2,
+        "get_workflow_context": 4,
+        "run_project_checks": 4,
+        "save_revision": 3,
+        "approve_revision": 1,
+        "get_project_snapshot": 1,
+        "begin_work_attempt": 3,
+        "save_execution": 4,
+        "get_check_record": 1,
+        "save_semantic_review": 5
+      },
+      "injectedKnowledgeContexts": [],
+      "knowledgeNamedToolCalls": [],
+      "explicitKnowledgePathCommands": []
+    },
+    {
+      "experiment": "A",
+      "model": "gpt-6-astra",
+      "arm": "plain",
+      "repeat": 3,
+      "run": "15",
+      "eventsSha256": "d763213b807775345a99e1db079a718b19fe602e99dd04b3070ced5855c25ccf",
+      "mcpToolCounts": {},
+      "injectedKnowledgeContexts": [],
+      "knowledgeNamedToolCalls": [],
+      "explicitKnowledgePathCommands": []
+    },
+    {
+      "experiment": "A",
+      "model": "gpt-6-astra",
+      "arm": "fs",
+      "repeat": 3,
+      "run": "16",
+      "eventsSha256": "1a3f1d2d0fc5da47a55b23e9c5be389293966e438ae5eedbf198a4785102724c",
+      "mcpToolCounts": {
+        "list_plans": 1,
+        "get_work_context": 3,
+        "get_project_snapshot": 1,
+        "run_project_checks": 4,
+        "list_project_files": 1,
+        "record_project_refresh": 1,
+        "save_project_record": 2,
+        "save_project_context": 1,
+        "save_revision": 3,
+        "approve_revision": 2,
+        "save_execution": 2,
+        "get_change_context": 1,
+        "begin_work_attempt": 3,
+        "get_workflow_context": 1,
+        "inspect_project": 1,
+        "get_check_record": 3
+      },
+      "injectedKnowledgeContexts": [],
+      "knowledgeNamedToolCalls": [],
+      "explicitKnowledgePathCommands": []
+    },
+    {
+      "experiment": "A",
+      "model": "gpt-6-sol",
+      "arm": "plain",
+      "repeat": 3,
+      "run": "17",
+      "eventsSha256": "7400de2f62492d724c33c3f99a1748a5de708c79838b825677b482ba6d2ec297",
+      "mcpToolCounts": {},
+      "injectedKnowledgeContexts": [],
+      "knowledgeNamedToolCalls": [],
+      "explicitKnowledgePathCommands": []
+    },
+    {
+      "experiment": "A",
+      "model": "gpt-6-sol",
+      "arm": "fs",
+      "repeat": 3,
+      "run": "18",
+      "eventsSha256": "adf58974090041415e9a275a8e06fc160c81db0af885f269f9c2fa6a82ddb942",
+      "mcpToolCounts": {
+        "list_plans": 1,
+        "list_project_files": 1,
+        "get_project_snapshot": 1,
+        "inspect_project": 1,
+        "get_work_context": 2,
+        "run_project_checks": 9,
+        "save_project_context": 1,
+        "save_revision": 3,
+        "approve_revision": 2,
+        "get_workflow_context": 4,
+        "save_execution": 7,
+        "begin_work_attempt": 2,
+        "get_change_context": 1,
+        "save_semantic_review": 1
+      },
+      "injectedKnowledgeContexts": [],
+      "knowledgeNamedToolCalls": [],
+      "explicitKnowledgePathCommands": []
+    },
+    {
+      "experiment": "B",
+      "model": "gpt-6-astra",
+      "arm": "fs",
+      "repeat": 1,
+      "run": "19",
+      "eventsSha256": "098c7ce1da13a0f5e92eefe0b7484a738bdb5b7e71b594c429d53a5abb5f6360",
+      "mcpToolCounts": {
+        "list_plans": 1,
+        "get_work_context": 3,
+        "get_project_snapshot": 2,
+        "run_project_checks": 6,
+        "save_project_context": 1,
+        "save_revision": 3,
+        "approve_revision": 2,
+        "save_execution": 5,
+        "begin_work_attempt": 2,
+        "get_revision": 1,
+        "get_workflow_context": 3,
+        "get_check_record": 1,
+        "get_change_context": 1,
+        "save_semantic_review": 1,
+        "save_project_record": 2,
+        "get_project_record": 1
+      },
+      "injectedKnowledgeContexts": [
+        {
+          "itemId": "item_7",
+          "tool": "get_work_context",
+          "knowledge": [
+            {
+              "id": "code-quality-context-and-contracts",
+              "kind": "decision",
+              "title": "코드 읽기 맥락과 예측 가능한 인터페이스",
+              "summary": "조건 분기·숨은 계약이 읽기 어렵거나 작은 변경에도 래퍼·파일을 계속 따라갈 때. 추상화 abstraction의 탐색 비용과 검증·재사용·변경 경계의 편익을 비교하여 유지·인라인·분리를 판단한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-dpfa_cuw/runtime/references/learned/code-quality-context-and-contracts.md"
+            },
+            {
+              "id": "css-cascade-and-value-resolution",
+              "kind": "concept",
+              "title": "CSS 캐스케이드와 값 결정",
+              "summary": "스타일이 덮어써지거나 !important 없이 CSS 우선순위 충돌을 해결해야 할 때. 출처·중요도·레이어·구체성·상속과 단축 속성의 생략 값을 순서대로 비교해 최종 값의 원인을 찾는다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-dpfa_cuw/runtime/references/learned/css-cascade-and-value-resolution.md"
+            },
+            {
+              "id": "web-api-background-and-app-integration",
+              "kind": "concept",
+              "title": "백그라운드 작업·알림·PWA 통합",
+              "summary": "앱을 닫은 뒤 작업·알림이 안 되거나 service worker 반복 실행이 예정 시각과 다를 때. 이벤트 수명, 동기화 기회와 다운로드, Push 수신·알림 표시, 설치 플랫폼별 통합 조건을 나누어 확인한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-dpfa_cuw/runtime/references/learned/web-api-background-and-app-integration.md"
+            },
+            {
+              "id": "web-api-dom-editing-and-components",
+              "kind": "concept",
+              "title": "DOM·편집·컴포넌트 상호작용",
+              "summary": "IME 편집·선택·클립보드가 어긋나거나 custom element와 popover의 책임을 나눌 때. 문서 트리·편집 상태·사용자 입력 경로와 선언형 표시·컴포넌트 캡슐화의 역할을 구분한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-dpfa_cuw/runtime/references/learned/web-api-dom-editing-and-components.md"
+            },
+            {
+              "id": "web-api-files-and-storage",
+              "kind": "concept",
+              "title": "파일·쿠키·구조화 저장소",
+              "summary": "파일 저장 기능이나 오프라인 데이터 저장소를 고르고 데이터가 사라지거나 용량 초과가 발생할 때. 파일 handle과 origin 저장소, 구조화 트랜잭션·동기 키값 저장 및 권한·할당량·삭제 조건을 비교한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-dpfa_cuw/runtime/references/learned/web-api-files-and-storage.md"
+            }
+          ]
+        },
+        {
+          "itemId": "item_19",
+          "tool": "get_work_context",
+          "knowledge": [
+            {
+              "id": "code-quality-context-and-contracts",
+              "kind": "decision",
+              "title": "코드 읽기 맥락과 예측 가능한 인터페이스",
+              "summary": "조건 분기·숨은 계약이 읽기 어렵거나 작은 변경에도 래퍼·파일을 계속 따라갈 때. 추상화 abstraction의 탐색 비용과 검증·재사용·변경 경계의 편익을 비교하여 유지·인라인·분리를 판단한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-dpfa_cuw/runtime/references/learned/code-quality-context-and-contracts.md"
+            }
+          ]
+        },
+        {
+          "itemId": "item_40",
+          "tool": "get_work_context",
+          "knowledge": [
+            {
+              "id": "bundling-output-and-optimization",
+              "kind": "concept",
+              "title": "청크·캐시·트리 셰이킹과 번들 분석",
+              "summary": "초기 JavaScript가 크거나 분할 청크 로딩이 실패하고 production에서 CSS·초기화가 사라질 때. 청크 로드 시점·실패 경로·배포 캐시와 sideEffects 표시를 확인하고 번들 크기와 실제 사용자 지표를 따로 비교한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-dpfa_cuw/runtime/references/learned/bundling-output-and-optimization.md"
+            },
+            {
+              "id": "css-cascade-and-value-resolution",
+              "kind": "concept",
+              "title": "CSS 캐스케이드와 값 결정",
+              "summary": "스타일이 덮어써지거나 !important 없이 CSS 우선순위 충돌을 해결해야 할 때. 출처·중요도·레이어·구체성·상속과 단축 속성의 생략 값을 순서대로 비교해 최종 값의 원인을 찾는다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-dpfa_cuw/runtime/references/learned/css-cascade-and-value-resolution.md"
+            },
+            {
+              "id": "javascript-iteration-promises-and-resources",
+              "kind": "concept",
+              "title": "JavaScript 반복·Promise·자원 수명",
+              "summary": "Promise 후속 완료·오류가 연결되지 않거나 반복 소비와 구독·파일 정리 시점을 판단할 때. iterable·iterator의 소비 모델, then의 반환 연결과 메모리 수집·명시적 자원 정리를 구분한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-dpfa_cuw/runtime/references/learned/javascript-iteration-promises-and-resources.md"
+            },
+            {
+              "id": "javascript-regexp-pattern-structure",
+              "kind": "concept",
+              "title": "JavaScript 정규식의 패턴 구조",
+              "summary": "정규식 캡처 결과가 다르거나 g 플래그·match·matchAll·문자열 이스케이프가 혼동될 때. 문자 집합·위치 조건·그룹·반복 범위와 소비 메서드의 반환 형식을 각각 대조한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-dpfa_cuw/runtime/references/learned/javascript-regexp-pattern-structure.md"
+            },
+            {
+              "id": "web-api-background-and-app-integration",
+              "kind": "concept",
+              "title": "백그라운드 작업·알림·PWA 통합",
+              "summary": "앱을 닫은 뒤 작업·알림이 안 되거나 service worker 반복 실행이 예정 시각과 다를 때. 이벤트 수명, 동기화 기회와 다운로드, Push 수신·알림 표시, 설치 플랫폼별 통합 조건을 나누어 확인한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-dpfa_cuw/runtime/references/learned/web-api-background-and-app-integration.md"
+            }
+          ]
+        }
+      ],
+      "knowledgeNamedToolCalls": [],
+      "explicitKnowledgePathCommands": []
+    },
+    {
+      "experiment": "B",
+      "model": "gpt-6-astra",
+      "arm": "plain",
+      "repeat": 1,
+      "run": "20",
+      "eventsSha256": "afeca3fcc96f3528463317082cee8cdd496b733920f1b166bd07fe14da307e20",
+      "mcpToolCounts": {},
+      "injectedKnowledgeContexts": [],
+      "knowledgeNamedToolCalls": [],
+      "explicitKnowledgePathCommands": []
+    },
+    {
+      "experiment": "B",
+      "model": "gpt-6-sol",
+      "arm": "fs",
+      "repeat": 1,
+      "run": "21",
+      "eventsSha256": "be8a336728529b20aba4497ecb819c079876b9d3d73530e8eb559a5fa14a774d",
+      "mcpToolCounts": {
+        "list_plans": 1,
+        "list_project_files": 1,
+        "get_project_snapshot": 1,
+        "inspect_project": 1,
+        "get_work_context": 2,
+        "run_project_checks": 6,
+        "save_project_context": 1,
+        "save_revision": 3,
+        "approve_revision": 2,
+        "get_workflow_context": 3,
+        "save_execution": 5,
+        "begin_work_attempt": 2,
+        "get_check_record": 2,
+        "save_semantic_review": 2
+      },
+      "injectedKnowledgeContexts": [
+        {
+          "itemId": "item_13",
+          "tool": "get_work_context",
+          "knowledge": [
+            {
+              "id": "code-quality-context-and-contracts",
+              "kind": "decision",
+              "title": "코드 읽기 맥락과 예측 가능한 인터페이스",
+              "summary": "조건 분기·숨은 계약이 읽기 어렵거나 작은 변경에도 래퍼·파일을 계속 따라갈 때. 추상화 abstraction의 탐색 비용과 검증·재사용·변경 경계의 편익을 비교하여 유지·인라인·분리를 판단한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-mkb3_l7y/runtime/references/learned/code-quality-context-and-contracts.md"
+            },
+            {
+              "id": "accessibility-modal-focus",
+              "kind": "concept",
+              "title": "모달의 배경 차단과 포커스 생명주기",
+              "summary": "모달 밖으로 Tab이 빠지거나 모달을 닫은 뒤 포커스를 잃을 때. 초기 포커스, 배경 비활성화, 내부 순환, Escape 종료와 복귀 위치를 모달 생명주기별로 점검한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-mkb3_l7y/runtime/references/learned/accessibility-modal-focus.md"
+            },
+            {
+              "id": "accessibility-static-validation",
+              "kind": "concept",
+              "title": "JSX 접근성 lint가 확인하는 범위와 디자인 시스템 매핑",
+              "summary": "접근성 lint를 통과했는데 조작이 안 되거나 디자인 시스템 컴포넌트에서 경고가 어긋날 때. JSX 정적 검사 범위와 실제 DOM을 비교하고 컴포넌트·다형성 prop 매핑 및 별도 실행 검증 필요성을 판단한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-mkb3_l7y/runtime/references/learned/accessibility-static-validation.md"
+            },
+            {
+              "id": "bundling-output-and-optimization",
+              "kind": "concept",
+              "title": "청크·캐시·트리 셰이킹과 번들 분석",
+              "summary": "초기 JavaScript가 크거나 분할 청크 로딩이 실패하고 production에서 CSS·초기화가 사라질 때. 청크 로드 시점·실패 경로·배포 캐시와 sideEffects 표시를 확인하고 번들 크기와 실제 사용자 지표를 따로 비교한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-mkb3_l7y/runtime/references/learned/bundling-output-and-optimization.md"
+            },
+            {
+              "id": "chromium-rendering-pipeline",
+              "kind": "concept",
+              "title": "Chromium의 style·layout·paint·합성 단계",
+              "summary": "화면 갱신 trace에서 Layout·Paint·Raster·Composite 비용을 구분하거나 CSS 모션이 어느 단계를 거치는지 설명할 때. 단계별 입력·출력과 메인·compositor·Viz의 책임을 구분하고 실제 trace에서 생략 또는 반복되는 단계를 찾는다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-mkb3_l7y/runtime/references/learned/chromium-rendering-pipeline.md"
+            }
+          ]
+        }
+      ],
+      "knowledgeNamedToolCalls": [],
+      "explicitKnowledgePathCommands": []
+    },
+    {
+      "experiment": "B",
+      "model": "gpt-6-sol",
+      "arm": "plain",
+      "repeat": 1,
+      "run": "22",
+      "eventsSha256": "3cf08a57865fdbb0f71a5756d02e210bc11a71908b8fe8d8c286d9e132fa90f8",
+      "mcpToolCounts": {},
+      "injectedKnowledgeContexts": [],
+      "knowledgeNamedToolCalls": [],
+      "explicitKnowledgePathCommands": []
+    },
+    {
+      "experiment": "B",
+      "model": "gpt-6-luna",
+      "arm": "fs",
+      "repeat": 1,
+      "run": "23",
+      "eventsSha256": "c47e860002c10e60ded430a3f251a954eb6a539937f3b5eb96b6fc16aa6a1eaa",
+      "mcpToolCounts": {
+        "list_plans": 1,
+        "inspect_project": 1,
+        "get_work_context": 2,
+        "run_project_checks": 7,
+        "save_revision": 3,
+        "approve_revision": 3,
+        "begin_work_attempt": 4,
+        "save_execution": 8,
+        "get_change_context": 1,
+        "save_semantic_review": 4,
+        "get_workflow_context": 1
+      },
+      "injectedKnowledgeContexts": [
+        {
+          "itemId": "item_7",
+          "tool": "get_work_context",
+          "knowledge": [
+            {
+              "id": "code-quality-context-and-contracts",
+              "kind": "decision",
+              "title": "코드 읽기 맥락과 예측 가능한 인터페이스",
+              "summary": "조건 분기·숨은 계약이 읽기 어렵거나 작은 변경에도 래퍼·파일을 계속 따라갈 때. 추상화 abstraction의 탐색 비용과 검증·재사용·변경 경계의 편익을 비교하여 유지·인라인·분리를 판단한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-msx54z6v/runtime/references/learned/code-quality-context-and-contracts.md"
+            },
+            {
+              "id": "css-cascade-and-value-resolution",
+              "kind": "concept",
+              "title": "CSS 캐스케이드와 값 결정",
+              "summary": "스타일이 덮어써지거나 !important 없이 CSS 우선순위 충돌을 해결해야 할 때. 출처·중요도·레이어·구체성·상속과 단축 속성의 생략 값을 순서대로 비교해 최종 값의 원인을 찾는다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-msx54z6v/runtime/references/learned/css-cascade-and-value-resolution.md"
+            },
+            {
+              "id": "typescript-module-environment",
+              "kind": "concept",
+              "title": "TypeScript 모듈 옵션과 실행 환경",
+              "summary": "TypeScript 검사는 통과했는데 배포한 Node 코드·라이브러리 import가 실패하거나 모듈 옵션을 선택할 때. 누가 JS를 실행·변환하는지와 소비 환경을 확인하고 앱·라이브러리, 번들 내부·external 의존 및 선언 파일 경로를 나누어 판단한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-msx54z6v/runtime/references/learned/typescript-module-environment.md"
+            },
+            {
+              "id": "web-api-background-and-app-integration",
+              "kind": "concept",
+              "title": "백그라운드 작업·알림·PWA 통합",
+              "summary": "앱을 닫은 뒤 작업·알림이 안 되거나 service worker 반복 실행이 예정 시각과 다를 때. 이벤트 수명, 동기화 기회와 다운로드, Push 수신·알림 표시, 설치 플랫폼별 통합 조건을 나누어 확인한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-msx54z6v/runtime/references/learned/web-api-background-and-app-integration.md"
+            },
+            {
+              "id": "web-api-dom-editing-and-components",
+              "kind": "concept",
+              "title": "DOM·편집·컴포넌트 상호작용",
+              "summary": "IME 편집·선택·클립보드가 어긋나거나 custom element와 popover의 책임을 나눌 때. 문서 트리·편집 상태·사용자 입력 경로와 선언형 표시·컴포넌트 캡슐화의 역할을 구분한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-msx54z6v/runtime/references/learned/web-api-dom-editing-and-components.md"
+            }
+          ]
+        },
+        {
+          "itemId": "item_54",
+          "tool": "get_work_context",
+          "knowledge": [
+            {
+              "id": "accessibility-widget-interactions",
+              "kind": "concept",
+              "title": "탭·아코디언·선택 컨트롤의 키보드 상호작용",
+              "summary": "탭 방향키가 동작하지 않거나 라디오·스위치의 선택 상태와 포커스가 어긋날 때. 위젯 종류에 맞는 Tab 진입점, 방향키·Space·Enter 처리, 선택 상태와 패널 연결을 대조한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-msx54z6v/runtime/references/learned/accessibility-widget-interactions.md"
+            },
+            {
+              "id": "code-quality-context-and-contracts",
+              "kind": "decision",
+              "title": "코드 읽기 맥락과 예측 가능한 인터페이스",
+              "summary": "조건 분기·숨은 계약이 읽기 어렵거나 작은 변경에도 래퍼·파일을 계속 따라갈 때. 추상화 abstraction의 탐색 비용과 검증·재사용·변경 경계의 편익을 비교하여 유지·인라인·분리를 판단한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-msx54z6v/runtime/references/learned/code-quality-context-and-contracts.md"
+            },
+            {
+              "id": "css-cascade-and-value-resolution",
+              "kind": "concept",
+              "title": "CSS 캐스케이드와 값 결정",
+              "summary": "스타일이 덮어써지거나 !important 없이 CSS 우선순위 충돌을 해결해야 할 때. 출처·중요도·레이어·구체성·상속과 단축 속성의 생략 값을 순서대로 비교해 최종 값의 원인을 찾는다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-msx54z6v/runtime/references/learned/css-cascade-and-value-resolution.md"
+            },
+            {
+              "id": "html-editing-and-localization",
+              "kind": "concept",
+              "title": "HTML 입력 보조·언어·방향",
+              "summary": "모바일 입력 키보드·Enter 표시, 편집 영역의 줄바꿈 또는 다국어 문자 방향이 예상과 다를 때. inputmode·enterkeyhint의 힌트와 검증·제출 동작을 구분하고 lang·dir·translate·contenteditable의 역할을 확인한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-msx54z6v/runtime/references/learned/html-editing-and-localization.md"
+            },
+            {
+              "id": "javascript-iteration-promises-and-resources",
+              "kind": "concept",
+              "title": "JavaScript 반복·Promise·자원 수명",
+              "summary": "Promise 후속 완료·오류가 연결되지 않거나 반복 소비와 구독·파일 정리 시점을 판단할 때. iterable·iterator의 소비 모델, then의 반환 연결과 메모리 수집·명시적 자원 정리를 구분한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-msx54z6v/runtime/references/learned/javascript-iteration-promises-and-resources.md"
+            }
+          ]
+        }
+      ],
+      "knowledgeNamedToolCalls": [],
+      "explicitKnowledgePathCommands": []
+    },
+    {
+      "experiment": "B",
+      "model": "gpt-6-luna",
+      "arm": "plain",
+      "repeat": 1,
+      "run": "24",
+      "eventsSha256": "d96b457bb488002ac3d4472e47afc324c5d10e7f6212cd79a901e5c9e3100207",
+      "mcpToolCounts": {},
+      "injectedKnowledgeContexts": [],
+      "knowledgeNamedToolCalls": [],
+      "explicitKnowledgePathCommands": []
+    },
+    {
+      "experiment": "B",
+      "model": "gpt-6-sol",
+      "arm": "plain",
+      "repeat": 2,
+      "run": "25",
+      "eventsSha256": "92e708ce198d14205eecd270364744f498a261ad47d1b448b91a0818868d6364",
+      "mcpToolCounts": {},
+      "injectedKnowledgeContexts": [],
+      "knowledgeNamedToolCalls": [],
+      "explicitKnowledgePathCommands": []
+    },
+    {
+      "experiment": "B",
+      "model": "gpt-6-sol",
+      "arm": "fs",
+      "repeat": 2,
+      "run": "26",
+      "eventsSha256": "53975224580b3bbf16665f0a562e651ac3f374411eb7682ed4fce8ee50750dda",
+      "mcpToolCounts": {
+        "list_plans": 1,
+        "inspect_project": 1,
+        "get_project_snapshot": 1,
+        "get_work_context": 1,
+        "run_project_checks": 1
+      },
+      "injectedKnowledgeContexts": [
+        {
+          "itemId": "item_9",
+          "tool": "get_work_context",
+          "knowledge": [
+            {
+              "id": "code-quality-context-and-contracts",
+              "kind": "decision",
+              "title": "코드 읽기 맥락과 예측 가능한 인터페이스",
+              "summary": "조건 분기·숨은 계약이 읽기 어렵거나 작은 변경에도 래퍼·파일을 계속 따라갈 때. 추상화 abstraction의 탐색 비용과 검증·재사용·변경 경계의 편익을 비교하여 유지·인라인·분리를 판단한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-8s_3c4mn/runtime/references/learned/code-quality-context-and-contracts.md"
+            },
+            {
+              "id": "accessibility-modal-focus",
+              "kind": "concept",
+              "title": "모달의 배경 차단과 포커스 생명주기",
+              "summary": "모달 밖으로 Tab이 빠지거나 모달을 닫은 뒤 포커스를 잃을 때. 초기 포커스, 배경 비활성화, 내부 순환, Escape 종료와 복귀 위치를 모달 생명주기별로 점검한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-8s_3c4mn/runtime/references/learned/accessibility-modal-focus.md"
+            },
+            {
+              "id": "accessibility-static-validation",
+              "kind": "concept",
+              "title": "JSX 접근성 lint가 확인하는 범위와 디자인 시스템 매핑",
+              "summary": "접근성 lint를 통과했는데 조작이 안 되거나 디자인 시스템 컴포넌트에서 경고가 어긋날 때. JSX 정적 검사 범위와 실제 DOM을 비교하고 컴포넌트·다형성 prop 매핑 및 별도 실행 검증 필요성을 판단한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-8s_3c4mn/runtime/references/learned/accessibility-static-validation.md"
+            },
+            {
+              "id": "bundling-output-and-optimization",
+              "kind": "concept",
+              "title": "청크·캐시·트리 셰이킹과 번들 분석",
+              "summary": "초기 JavaScript가 크거나 분할 청크 로딩이 실패하고 production에서 CSS·초기화가 사라질 때. 청크 로드 시점·실패 경로·배포 캐시와 sideEffects 표시를 확인하고 번들 크기와 실제 사용자 지표를 따로 비교한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-8s_3c4mn/runtime/references/learned/bundling-output-and-optimization.md"
+            },
+            {
+              "id": "chromium-rendering-pipeline",
+              "kind": "concept",
+              "title": "Chromium의 style·layout·paint·합성 단계",
+              "summary": "화면 갱신 trace에서 Layout·Paint·Raster·Composite 비용을 구분하거나 CSS 모션이 어느 단계를 거치는지 설명할 때. 단계별 입력·출력과 메인·compositor·Viz의 책임을 구분하고 실제 trace에서 생략 또는 반복되는 단계를 찾는다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-8s_3c4mn/runtime/references/learned/chromium-rendering-pipeline.md"
+            }
+          ]
+        }
+      ],
+      "knowledgeNamedToolCalls": [],
+      "explicitKnowledgePathCommands": []
+    },
+    {
+      "experiment": "B",
+      "model": "gpt-6-luna",
+      "arm": "plain",
+      "repeat": 2,
+      "run": "27",
+      "eventsSha256": "79076449b715a6ae2062f7315dca5db61a0ce7a0d32c6b9121971772ed99f7cc",
+      "mcpToolCounts": {},
+      "injectedKnowledgeContexts": [],
+      "knowledgeNamedToolCalls": [],
+      "explicitKnowledgePathCommands": []
+    },
+    {
+      "experiment": "B",
+      "model": "gpt-6-luna",
+      "arm": "fs",
+      "repeat": 2,
+      "run": "28",
+      "eventsSha256": "41cc7cda459ef82d4f519659a68c3cf132f2c254d52e982a928b9c5dadd8d975",
+      "mcpToolCounts": {
+        "list_plans": 1,
+        "inspect_project": 2,
+        "get_work_context": 3,
+        "run_project_checks": 7,
+        "save_revision": 4,
+        "approve_revision": 3,
+        "get_workflow_context": 5,
+        "save_execution": 7,
+        "begin_work_attempt": 4,
+        "get_check_record": 2,
+        "get_revision": 1,
+        "save_semantic_review": 2,
+        "save_project_record": 1
+      },
+      "injectedKnowledgeContexts": [
+        {
+          "itemId": "item_6",
+          "tool": "get_work_context",
+          "knowledge": [
+            {
+              "id": "code-quality-context-and-contracts",
+              "kind": "decision",
+              "title": "코드 읽기 맥락과 예측 가능한 인터페이스",
+              "summary": "조건 분기·숨은 계약이 읽기 어렵거나 작은 변경에도 래퍼·파일을 계속 따라갈 때. 추상화 abstraction의 탐색 비용과 검증·재사용·변경 경계의 편익을 비교하여 유지·인라인·분리를 판단한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-m92ih9cd/runtime/references/learned/code-quality-context-and-contracts.md"
+            },
+            {
+              "id": "css-cascade-and-value-resolution",
+              "kind": "concept",
+              "title": "CSS 캐스케이드와 값 결정",
+              "summary": "스타일이 덮어써지거나 !important 없이 CSS 우선순위 충돌을 해결해야 할 때. 출처·중요도·레이어·구체성·상속과 단축 속성의 생략 값을 순서대로 비교해 최종 값의 원인을 찾는다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-m92ih9cd/runtime/references/learned/css-cascade-and-value-resolution.md"
+            },
+            {
+              "id": "tanstack-query-freshness-and-retention",
+              "kind": "concept",
+              "title": "TanStack Query의 신선도·재조회·캐시 수명",
+              "summary": "창을 다시 선택하면 요청이 나가거나 캐시가 있는데도 재조회되고 staleTime과 gcTime이 혼동될 때. 신선도와 inactive 수거, 마운트·포커스·재연결·polling·실패 retry를 나누어 실제 요청 원인을 확인한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-m92ih9cd/runtime/references/learned/tanstack-query-freshness-and-retention.md"
+            },
+            {
+              "id": "typescript-module-environment",
+              "kind": "concept",
+              "title": "TypeScript 모듈 옵션과 실행 환경",
+              "summary": "TypeScript 검사는 통과했는데 배포한 Node 코드·라이브러리 import가 실패하거나 모듈 옵션을 선택할 때. 누가 JS를 실행·변환하는지와 소비 환경을 확인하고 앱·라이브러리, 번들 내부·external 의존 및 선언 파일 경로를 나누어 판단한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-m92ih9cd/runtime/references/learned/typescript-module-environment.md"
+            },
+            {
+              "id": "web-api-background-and-app-integration",
+              "kind": "concept",
+              "title": "백그라운드 작업·알림·PWA 통합",
+              "summary": "앱을 닫은 뒤 작업·알림이 안 되거나 service worker 반복 실행이 예정 시각과 다를 때. 이벤트 수명, 동기화 기회와 다운로드, Push 수신·알림 표시, 설치 플랫폼별 통합 조건을 나누어 확인한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-m92ih9cd/runtime/references/learned/web-api-background-and-app-integration.md"
+            }
+          ]
+        },
+        {
+          "itemId": "item_13",
+          "tool": "get_work_context",
+          "knowledge": [
+            {
+              "id": "web-api-files-and-storage",
+              "kind": "concept",
+              "title": "파일·쿠키·구조화 저장소",
+              "summary": "파일 저장 기능이나 오프라인 데이터 저장소를 고르고 데이터가 사라지거나 용량 초과가 발생할 때. 파일 handle과 origin 저장소, 구조화 트랜잭션·동기 키값 저장 및 권한·할당량·삭제 조건을 비교한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-m92ih9cd/runtime/references/learned/web-api-files-and-storage.md"
+            },
+            {
+              "id": "css-cascade-and-value-resolution",
+              "kind": "concept",
+              "title": "CSS 캐스케이드와 값 결정",
+              "summary": "스타일이 덮어써지거나 !important 없이 CSS 우선순위 충돌을 해결해야 할 때. 출처·중요도·레이어·구체성·상속과 단축 속성의 생략 값을 순서대로 비교해 최종 값의 원인을 찾는다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-m92ih9cd/runtime/references/learned/css-cascade-and-value-resolution.md"
+            },
+            {
+              "id": "html-editing-and-localization",
+              "kind": "concept",
+              "title": "HTML 입력 보조·언어·방향",
+              "summary": "모바일 입력 키보드·Enter 표시, 편집 영역의 줄바꿈 또는 다국어 문자 방향이 예상과 다를 때. inputmode·enterkeyhint의 힌트와 검증·제출 동작을 구분하고 lang·dir·translate·contenteditable의 역할을 확인한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-m92ih9cd/runtime/references/learned/html-editing-and-localization.md"
+            },
+            {
+              "id": "html-shadow-parts-and-experimental-headings",
+              "kind": "concept",
+              "title": "Shadow DOM 연결과 실험적 HTML 속성",
+              "summary": "Web Component 슬롯·part 연결이 안 되거나 실험적 anchor·제목 수준 속성을 도입하려 할 때. 콘텐츠 배정과 스타일 공개 지점, 중첩 exportparts 및 실험 기능의 지원 조건을 구분한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-m92ih9cd/runtime/references/learned/html-shadow-parts-and-experimental-headings.md"
+            },
+            {
+              "id": "javascript-language-and-host-boundaries",
+              "kind": "concept",
+              "title": "JavaScript 언어와 호스트 경계",
+              "summary": "브라우저에서는 되던 코드가 Node·worker에서 API 없음 오류를 내거나 언어 문서와 Web API를 혼동할 때. ECMAScript 내장 기능과 호스트 제공 기능, 모듈 문법과 실행 환경의 로딩을 나누어 확인한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-m92ih9cd/runtime/references/learned/javascript-language-and-host-boundaries.md"
+            }
+          ]
+        },
+        {
+          "itemId": "item_56",
+          "tool": "get_work_context",
+          "knowledge": [
+            {
+              "id": "bundling-development-and-diagnostics",
+              "kind": "concept",
+              "title": "개발 서버·HMR·소스맵의 동작 경계",
+              "summary": "HMR 뒤 상태가 사라지거나 로컬 프록시에서만 요청이 성공하고 압축 스택을 추적하기 어려울 때. HMR 경계·리로드, 개발 프록시·배포 CORS, 소스맵 생성·제공·버전 일치를 각각 확인한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-m92ih9cd/runtime/references/learned/bundling-development-and-diagnostics.md"
+            },
+            {
+              "id": "css-cascade-and-value-resolution",
+              "kind": "concept",
+              "title": "CSS 캐스케이드와 값 결정",
+              "summary": "스타일이 덮어써지거나 !important 없이 CSS 우선순위 충돌을 해결해야 할 때. 출처·중요도·레이어·구체성·상속과 단축 속성의 생략 값을 순서대로 비교해 최종 값의 원인을 찾는다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-m92ih9cd/runtime/references/learned/css-cascade-and-value-resolution.md"
+            },
+            {
+              "id": "html-editing-and-localization",
+              "kind": "concept",
+              "title": "HTML 입력 보조·언어·방향",
+              "summary": "모바일 입력 키보드·Enter 표시, 편집 영역의 줄바꿈 또는 다국어 문자 방향이 예상과 다를 때. inputmode·enterkeyhint의 힌트와 검증·제출 동작을 구분하고 lang·dir·translate·contenteditable의 역할을 확인한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-m92ih9cd/runtime/references/learned/html-editing-and-localization.md"
+            },
+            {
+              "id": "web-api-background-and-app-integration",
+              "kind": "concept",
+              "title": "백그라운드 작업·알림·PWA 통합",
+              "summary": "앱을 닫은 뒤 작업·알림이 안 되거나 service worker 반복 실행이 예정 시각과 다를 때. 이벤트 수명, 동기화 기회와 다운로드, Push 수신·알림 표시, 설치 플랫폼별 통합 조건을 나누어 확인한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-m92ih9cd/runtime/references/learned/web-api-background-and-app-integration.md"
+            },
+            {
+              "id": "web-api-dom-editing-and-components",
+              "kind": "concept",
+              "title": "DOM·편집·컴포넌트 상호작용",
+              "summary": "IME 편집·선택·클립보드가 어긋나거나 custom element와 popover의 책임을 나눌 때. 문서 트리·편집 상태·사용자 입력 경로와 선언형 표시·컴포넌트 캡슐화의 역할을 구분한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-m92ih9cd/runtime/references/learned/web-api-dom-editing-and-components.md"
+            }
+          ]
+        }
+      ],
+      "knowledgeNamedToolCalls": [],
+      "explicitKnowledgePathCommands": []
+    },
+    {
+      "experiment": "B",
+      "model": "gpt-6-astra",
+      "arm": "plain",
+      "repeat": 2,
+      "run": "29",
+      "eventsSha256": "3ccd20ea3b251ee2db8c7ea04e4e8edcb7f02ad5dcb3dee9f7089df4dd69dbe4",
+      "mcpToolCounts": {},
+      "injectedKnowledgeContexts": [],
+      "knowledgeNamedToolCalls": [],
+      "explicitKnowledgePathCommands": []
+    },
+    {
+      "experiment": "B",
+      "model": "gpt-6-astra",
+      "arm": "fs",
+      "repeat": 2,
+      "run": "30",
+      "eventsSha256": "2ce4e92f205f2ca10134c09a59153f7d0c6b87f047ad1b02ad2ff351a9568fa5",
+      "mcpToolCounts": {
+        "list_plans": 1,
+        "get_work_context": 3,
+        "get_project_snapshot": 2,
+        "run_project_checks": 7,
+        "list_project_files": 1,
+        "save_project_record": 2,
+        "save_revision": 3,
+        "approve_revision": 2,
+        "save_execution": 3,
+        "get_workflow_context": 5,
+        "begin_work_attempt": 3,
+        "get_check_record": 3,
+        "save_semantic_review": 1
+      },
+      "injectedKnowledgeContexts": [
+        {
+          "itemId": "item_6",
+          "tool": "get_work_context",
+          "knowledge": [
+            {
+              "id": "code-quality-context-and-contracts",
+              "kind": "decision",
+              "title": "코드 읽기 맥락과 예측 가능한 인터페이스",
+              "summary": "조건 분기·숨은 계약이 읽기 어렵거나 작은 변경에도 래퍼·파일을 계속 따라갈 때. 추상화 abstraction의 탐색 비용과 검증·재사용·변경 경계의 편익을 비교하여 유지·인라인·분리를 판단한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-n_r2ybjs/runtime/references/learned/code-quality-context-and-contracts.md"
+            },
+            {
+              "id": "typescript-module-environment",
+              "kind": "concept",
+              "title": "TypeScript 모듈 옵션과 실행 환경",
+              "summary": "TypeScript 검사는 통과했는데 배포한 Node 코드·라이브러리 import가 실패하거나 모듈 옵션을 선택할 때. 누가 JS를 실행·변환하는지와 소비 환경을 확인하고 앱·라이브러리, 번들 내부·external 의존 및 선언 파일 경로를 나누어 판단한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-n_r2ybjs/runtime/references/learned/typescript-module-environment.md"
+            },
+            {
+              "id": "bundling-module-graph-and-transforms",
+              "kind": "concept",
+              "title": "번들 의존성 그래프와 모듈 탐색·변환",
+              "summary": "Module not found가 발생하거나 TypeScript 별칭은 통과하지만 빌드·런타임에서 import가 실패할 때. entry부터 resolve·변환·출력까지 추적하고 패키지 exports, 별칭, CSS·이미지 처리와 타입 검사를 구분한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-n_r2ybjs/runtime/references/learned/bundling-module-graph-and-transforms.md"
+            },
+            {
+              "id": "html-microdata-and-csp-nonces",
+              "kind": "concept",
+              "title": "HTML 메타데이터와 CSP nonce",
+              "summary": "구조화 데이터의 id 연결이 혼동되거나 CSP nonce가 있는데도 스크립트 허용이 맞지 않을 때. microdata 어휘의 식별자와 DOM id를 구분하고, 별개 주제인 nonce의 응답별 생성·헤더 일치를 확인한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-n_r2ybjs/runtime/references/learned/html-microdata-and-csp-nonces.md"
+            },
+            {
+              "id": "javascript-language-and-host-boundaries",
+              "kind": "concept",
+              "title": "JavaScript 언어와 호스트 경계",
+              "summary": "브라우저에서는 되던 코드가 Node·worker에서 API 없음 오류를 내거나 언어 문서와 Web API를 혼동할 때. ECMAScript 내장 기능과 호스트 제공 기능, 모듈 문법과 실행 환경의 로딩을 나누어 확인한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-n_r2ybjs/runtime/references/learned/javascript-language-and-host-boundaries.md"
+            }
+          ]
+        },
+        {
+          "itemId": "item_22",
+          "tool": "get_work_context",
+          "knowledge": [
+            {
+              "id": "code-quality-context-and-contracts",
+              "kind": "decision",
+              "title": "코드 읽기 맥락과 예측 가능한 인터페이스",
+              "summary": "조건 분기·숨은 계약이 읽기 어렵거나 작은 변경에도 래퍼·파일을 계속 따라갈 때. 추상화 abstraction의 탐색 비용과 검증·재사용·변경 경계의 편익을 비교하여 유지·인라인·분리를 판단한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-n_r2ybjs/runtime/references/learned/code-quality-context-and-contracts.md"
+            }
+          ]
+        },
+        {
+          "itemId": "item_56",
+          "tool": "get_work_context",
+          "knowledge": [
+            {
+              "id": "web-api-observability-and-speculation",
+              "kind": "concept",
+              "title": "플랫폼 측정·보고와 예상 탐색",
+              "summary": "브라우저 계측·오류 보고 범위를 정하거나 prefetch·prerender를 추가할지 판단할 때. 타임라인·표본·근사 신호·정책 보고를 구분하고 예상 탐색의 네트워크 비용과 부수 효과를 확인한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-n_r2ybjs/runtime/references/learned/web-api-observability-and-speculation.md"
+            },
+            {
+              "id": "bundling-output-and-optimization",
+              "kind": "concept",
+              "title": "청크·캐시·트리 셰이킹과 번들 분석",
+              "summary": "초기 JavaScript가 크거나 분할 청크 로딩이 실패하고 production에서 CSS·초기화가 사라질 때. 청크 로드 시점·실패 경로·배포 캐시와 sideEffects 표시를 확인하고 번들 크기와 실제 사용자 지표를 따로 비교한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-n_r2ybjs/runtime/references/learned/bundling-output-and-optimization.md"
+            },
+            {
+              "id": "code-quality-change-boundaries",
+              "kind": "concept",
+              "title": "함께 바뀌는 코드와 변경 영향의 경계",
+              "summary": "비슷한 코드를 합칠지, 함께 수정되는 파일·폼 검증·페이지 Hook을 나눌지 고민할 때. 모양의 유사성보다 업무 의미·변경 이유·실제 의존을 비교해 공통화와 분리의 경계를 판단한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-n_r2ybjs/runtime/references/learned/code-quality-change-boundaries.md"
+            },
+            {
+              "id": "css-cascade-and-value-resolution",
+              "kind": "concept",
+              "title": "CSS 캐스케이드와 값 결정",
+              "summary": "스타일이 덮어써지거나 !important 없이 CSS 우선순위 충돌을 해결해야 할 때. 출처·중요도·레이어·구체성·상속과 단축 속성의 생략 값을 순서대로 비교해 최종 값의 원인을 찾는다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-n_r2ybjs/runtime/references/learned/css-cascade-and-value-resolution.md"
+            },
+            {
+              "id": "css-motion-and-rendering-hints",
+              "kind": "concept",
+              "title": "CSS 모션과 렌더링 힌트",
+              "summary": "상태 전환·스크롤 연동 모션을 구현하거나 will-change를 붙여도 애니메이션이 느릴 때. transition·keyframes·transform·timeline의 역할과 비용을 구분하고 해당 속성 지원과 실제 렌더링을 확인한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-n_r2ybjs/runtime/references/learned/css-motion-and-rendering-hints.md"
+            }
+          ]
+        }
+      ],
+      "knowledgeNamedToolCalls": [],
+      "explicitKnowledgePathCommands": []
+    },
+    {
+      "experiment": "B",
+      "model": "gpt-6-luna",
+      "arm": "fs",
+      "repeat": 3,
+      "run": "31",
+      "eventsSha256": "81ca6807d51b50ce00d26da3a06526156c86e7e8494476a8544190a48ccbc839",
+      "mcpToolCounts": {
+        "list_plans": 1,
+        "inspect_project": 1,
+        "get_project_document": 2,
+        "get_work_context": 3,
+        "run_project_checks": 8,
+        "get_check_record": 3
+      },
+      "injectedKnowledgeContexts": [
+        {
+          "itemId": "item_9",
+          "tool": "get_work_context",
+          "knowledge": [
+            {
+              "id": "web-performance-interaction-diagnosis",
+              "kind": "concept",
+              "title": "느린 상호작용과 동기 레이아웃 진단",
+              "summary": "클릭·타이핑 반응이 늦거나 INP가 나쁘고 trace에 긴 작업·반복 Layout이 보일 때. 입력 대기·이벤트 처리·다음 화면 표시 지연을 분리하고 재현한 작업에서 스타일 읽기·쓰기와 병목을 연결한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-b3kzvjq9/runtime/references/learned/web-performance-interaction-diagnosis.md"
+            },
+            {
+              "id": "accessibility-names-and-alternatives",
+              "kind": "concept",
+              "title": "컨트롤 이름과 이미지 대체 텍스트의 문맥",
+              "summary": "아이콘 버튼이 이름 없이 읽히거나 반복된 삭제 버튼의 대상·이미지 정보가 구별되지 않을 때. 보이는 라벨, 계산된 이름, 부가 설명, 이미지의 정보·기능·장식 목적을 비교해 이름과 대체 텍스트를 결정한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-b3kzvjq9/runtime/references/learned/accessibility-names-and-alternatives.md"
+            },
+            {
+              "id": "chromium-rendering-pipeline",
+              "kind": "concept",
+              "title": "Chromium의 style·layout·paint·합성 단계",
+              "summary": "화면 갱신 trace에서 Layout·Paint·Raster·Composite 비용을 구분하거나 CSS 모션이 어느 단계를 거치는지 설명할 때. 단계별 입력·출력과 메인·compositor·Viz의 책임을 구분하고 실제 trace에서 생략 또는 반복되는 단계를 찾는다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-b3kzvjq9/runtime/references/learned/chromium-rendering-pipeline.md"
+            },
+            {
+              "id": "code-quality-context-and-contracts",
+              "kind": "decision",
+              "title": "코드 읽기 맥락과 예측 가능한 인터페이스",
+              "summary": "조건 분기·숨은 계약이 읽기 어렵거나 작은 변경에도 래퍼·파일을 계속 따라갈 때. 추상화 abstraction의 탐색 비용과 검증·재사용·변경 경계의 편익을 비교하여 유지·인라인·분리를 판단한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-b3kzvjq9/runtime/references/learned/code-quality-context-and-contracts.md"
+            },
+            {
+              "id": "css-cascade-and-value-resolution",
+              "kind": "concept",
+              "title": "CSS 캐스케이드와 값 결정",
+              "summary": "스타일이 덮어써지거나 !important 없이 CSS 우선순위 충돌을 해결해야 할 때. 출처·중요도·레이어·구체성·상속과 단축 속성의 생략 값을 순서대로 비교해 최종 값의 원인을 찾는다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-b3kzvjq9/runtime/references/learned/css-cascade-and-value-resolution.md"
+            }
+          ]
+        },
+        {
+          "itemId": "item_14",
+          "tool": "get_work_context",
+          "knowledge": [
+            {
+              "id": "accessibility-names-and-alternatives",
+              "kind": "concept",
+              "title": "컨트롤 이름과 이미지 대체 텍스트의 문맥",
+              "summary": "아이콘 버튼이 이름 없이 읽히거나 반복된 삭제 버튼의 대상·이미지 정보가 구별되지 않을 때. 보이는 라벨, 계산된 이름, 부가 설명, 이미지의 정보·기능·장식 목적을 비교해 이름과 대체 텍스트를 결정한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-b3kzvjq9/runtime/references/learned/accessibility-names-and-alternatives.md"
+            },
+            {
+              "id": "chromium-rendering-pipeline",
+              "kind": "concept",
+              "title": "Chromium의 style·layout·paint·합성 단계",
+              "summary": "화면 갱신 trace에서 Layout·Paint·Raster·Composite 비용을 구분하거나 CSS 모션이 어느 단계를 거치는지 설명할 때. 단계별 입력·출력과 메인·compositor·Viz의 책임을 구분하고 실제 trace에서 생략 또는 반복되는 단계를 찾는다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-b3kzvjq9/runtime/references/learned/chromium-rendering-pipeline.md"
+            },
+            {
+              "id": "code-quality-context-and-contracts",
+              "kind": "decision",
+              "title": "코드 읽기 맥락과 예측 가능한 인터페이스",
+              "summary": "조건 분기·숨은 계약이 읽기 어렵거나 작은 변경에도 래퍼·파일을 계속 따라갈 때. 추상화 abstraction의 탐색 비용과 검증·재사용·변경 경계의 편익을 비교하여 유지·인라인·분리를 판단한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-b3kzvjq9/runtime/references/learned/code-quality-context-and-contracts.md"
+            },
+            {
+              "id": "css-cascade-and-value-resolution",
+              "kind": "concept",
+              "title": "CSS 캐스케이드와 값 결정",
+              "summary": "스타일이 덮어써지거나 !important 없이 CSS 우선순위 충돌을 해결해야 할 때. 출처·중요도·레이어·구체성·상속과 단축 속성의 생략 값을 순서대로 비교해 최종 값의 원인을 찾는다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-b3kzvjq9/runtime/references/learned/css-cascade-and-value-resolution.md"
+            },
+            {
+              "id": "html-shadow-parts-and-experimental-headings",
+              "kind": "concept",
+              "title": "Shadow DOM 연결과 실험적 HTML 속성",
+              "summary": "Web Component 슬롯·part 연결이 안 되거나 실험적 anchor·제목 수준 속성을 도입하려 할 때. 콘텐츠 배정과 스타일 공개 지점, 중첩 exportparts 및 실험 기능의 지원 조건을 구분한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-b3kzvjq9/runtime/references/learned/html-shadow-parts-and-experimental-headings.md"
+            }
+          ]
+        },
+        {
+          "itemId": "item_26",
+          "tool": "get_work_context",
+          "knowledge": [
+            {
+              "id": "code-quality-context-and-contracts",
+              "kind": "decision",
+              "title": "코드 읽기 맥락과 예측 가능한 인터페이스",
+              "summary": "조건 분기·숨은 계약이 읽기 어렵거나 작은 변경에도 래퍼·파일을 계속 따라갈 때. 추상화 abstraction의 탐색 비용과 검증·재사용·변경 경계의 편익을 비교하여 유지·인라인·분리를 판단한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-b3kzvjq9/runtime/references/learned/code-quality-context-and-contracts.md"
+            },
+            {
+              "id": "javascript-iteration-promises-and-resources",
+              "kind": "concept",
+              "title": "JavaScript 반복·Promise·자원 수명",
+              "summary": "Promise 후속 완료·오류가 연결되지 않거나 반복 소비와 구독·파일 정리 시점을 판단할 때. iterable·iterator의 소비 모델, then의 반환 연결과 메모리 수집·명시적 자원 정리를 구분한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-b3kzvjq9/runtime/references/learned/javascript-iteration-promises-and-resources.md"
+            },
+            {
+              "id": "web-performance-interaction-diagnosis",
+              "kind": "concept",
+              "title": "느린 상호작용과 동기 레이아웃 진단",
+              "summary": "클릭·타이핑 반응이 늦거나 INP가 나쁘고 trace에 긴 작업·반복 Layout이 보일 때. 입력 대기·이벤트 처리·다음 화면 표시 지연을 분리하고 재현한 작업에서 스타일 읽기·쓰기와 병목을 연결한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-b3kzvjq9/runtime/references/learned/web-performance-interaction-diagnosis.md"
+            },
+            {
+              "id": "accessibility-modal-focus",
+              "kind": "concept",
+              "title": "모달의 배경 차단과 포커스 생명주기",
+              "summary": "모달 밖으로 Tab이 빠지거나 모달을 닫은 뒤 포커스를 잃을 때. 초기 포커스, 배경 비활성화, 내부 순환, Escape 종료와 복귀 위치를 모달 생명주기별로 점검한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-b3kzvjq9/runtime/references/learned/accessibility-modal-focus.md"
+            },
+            {
+              "id": "accessibility-static-validation",
+              "kind": "concept",
+              "title": "JSX 접근성 lint가 확인하는 범위와 디자인 시스템 매핑",
+              "summary": "접근성 lint를 통과했는데 조작이 안 되거나 디자인 시스템 컴포넌트에서 경고가 어긋날 때. JSX 정적 검사 범위와 실제 DOM을 비교하고 컴포넌트·다형성 prop 매핑 및 별도 실행 검증 필요성을 판단한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-b3kzvjq9/runtime/references/learned/accessibility-static-validation.md"
+            }
+          ]
+        }
+      ],
+      "knowledgeNamedToolCalls": [],
+      "explicitKnowledgePathCommands": []
+    },
+    {
+      "experiment": "B",
+      "model": "gpt-6-luna",
+      "arm": "plain",
+      "repeat": 3,
+      "run": "32",
+      "eventsSha256": "ee3de34ce95b30122d16f48ddcb06f9da7b441009b3a4c9b8a25a3e5718164ba",
+      "mcpToolCounts": {},
+      "injectedKnowledgeContexts": [],
+      "knowledgeNamedToolCalls": [],
+      "explicitKnowledgePathCommands": []
+    },
+    {
+      "experiment": "B",
+      "model": "gpt-6-astra",
+      "arm": "fs",
+      "repeat": 3,
+      "run": "33",
+      "eventsSha256": "bc9f0b4c246a5545f431d10fa821a38997fb6e527886075295f8059301aebd6f",
+      "mcpToolCounts": {
+        "list_plans": 1,
+        "get_project_snapshot": 1,
+        "get_work_context": 3,
+        "list_project_files": 1,
+        "run_project_checks": 7,
+        "save_revision": 3,
+        "save_project_record": 2,
+        "approve_revision": 2,
+        "save_execution": 2,
+        "save_project_context": 1,
+        "begin_work_attempt": 2,
+        "get_workflow_context": 3,
+        "get_change_context": 1,
+        "save_semantic_review": 1,
+        "get_check_record": 1
+      },
+      "injectedKnowledgeContexts": [
+        {
+          "itemId": "item_6",
+          "tool": "get_work_context",
+          "knowledge": [
+            {
+              "id": "code-quality-context-and-contracts",
+              "kind": "decision",
+              "title": "코드 읽기 맥락과 예측 가능한 인터페이스",
+              "summary": "조건 분기·숨은 계약이 읽기 어렵거나 작은 변경에도 래퍼·파일을 계속 따라갈 때. 추상화 abstraction의 탐색 비용과 검증·재사용·변경 경계의 편익을 비교하여 유지·인라인·분리를 판단한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-jvtj052b/runtime/references/learned/code-quality-context-and-contracts.md"
+            },
+            {
+              "id": "css-cascade-and-value-resolution",
+              "kind": "concept",
+              "title": "CSS 캐스케이드와 값 결정",
+              "summary": "스타일이 덮어써지거나 !important 없이 CSS 우선순위 충돌을 해결해야 할 때. 출처·중요도·레이어·구체성·상속과 단축 속성의 생략 값을 순서대로 비교해 최종 값의 원인을 찾는다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-jvtj052b/runtime/references/learned/css-cascade-and-value-resolution.md"
+            },
+            {
+              "id": "web-api-background-and-app-integration",
+              "kind": "concept",
+              "title": "백그라운드 작업·알림·PWA 통합",
+              "summary": "앱을 닫은 뒤 작업·알림이 안 되거나 service worker 반복 실행이 예정 시각과 다를 때. 이벤트 수명, 동기화 기회와 다운로드, Push 수신·알림 표시, 설치 플랫폼별 통합 조건을 나누어 확인한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-jvtj052b/runtime/references/learned/web-api-background-and-app-integration.md"
+            },
+            {
+              "id": "web-api-dom-editing-and-components",
+              "kind": "concept",
+              "title": "DOM·편집·컴포넌트 상호작용",
+              "summary": "IME 편집·선택·클립보드가 어긋나거나 custom element와 popover의 책임을 나눌 때. 문서 트리·편집 상태·사용자 입력 경로와 선언형 표시·컴포넌트 캡슐화의 역할을 구분한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-jvtj052b/runtime/references/learned/web-api-dom-editing-and-components.md"
+            },
+            {
+              "id": "web-api-files-and-storage",
+              "kind": "concept",
+              "title": "파일·쿠키·구조화 저장소",
+              "summary": "파일 저장 기능이나 오프라인 데이터 저장소를 고르고 데이터가 사라지거나 용량 초과가 발생할 때. 파일 handle과 origin 저장소, 구조화 트랜잭션·동기 키값 저장 및 권한·할당량·삭제 조건을 비교한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-jvtj052b/runtime/references/learned/web-api-files-and-storage.md"
+            }
+          ]
+        },
+        {
+          "itemId": "item_21",
+          "tool": "get_work_context",
+          "knowledge": [
+            {
+              "id": "code-quality-context-and-contracts",
+              "kind": "decision",
+              "title": "코드 읽기 맥락과 예측 가능한 인터페이스",
+              "summary": "조건 분기·숨은 계약이 읽기 어렵거나 작은 변경에도 래퍼·파일을 계속 따라갈 때. 추상화 abstraction의 탐색 비용과 검증·재사용·변경 경계의 편익을 비교하여 유지·인라인·분리를 판단한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-jvtj052b/runtime/references/learned/code-quality-context-and-contracts.md"
+            }
+          ]
+        },
+        {
+          "itemId": "item_34",
+          "tool": "get_work_context",
+          "knowledge": [
+            {
+              "id": "bundling-development-and-diagnostics",
+              "kind": "concept",
+              "title": "개발 서버·HMR·소스맵의 동작 경계",
+              "summary": "HMR 뒤 상태가 사라지거나 로컬 프록시에서만 요청이 성공하고 압축 스택을 추적하기 어려울 때. HMR 경계·리로드, 개발 프록시·배포 CORS, 소스맵 생성·제공·버전 일치를 각각 확인한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-jvtj052b/runtime/references/learned/bundling-development-and-diagnostics.md"
+            },
+            {
+              "id": "css-cascade-and-value-resolution",
+              "kind": "concept",
+              "title": "CSS 캐스케이드와 값 결정",
+              "summary": "스타일이 덮어써지거나 !important 없이 CSS 우선순위 충돌을 해결해야 할 때. 출처·중요도·레이어·구체성·상속과 단축 속성의 생략 값을 순서대로 비교해 최종 값의 원인을 찾는다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-jvtj052b/runtime/references/learned/css-cascade-and-value-resolution.md"
+            },
+            {
+              "id": "javascript-iteration-promises-and-resources",
+              "kind": "concept",
+              "title": "JavaScript 반복·Promise·자원 수명",
+              "summary": "Promise 후속 완료·오류가 연결되지 않거나 반복 소비와 구독·파일 정리 시점을 판단할 때. iterable·iterator의 소비 모델, then의 반환 연결과 메모리 수집·명시적 자원 정리를 구분한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-jvtj052b/runtime/references/learned/javascript-iteration-promises-and-resources.md"
+            },
+            {
+              "id": "web-api-background-and-app-integration",
+              "kind": "concept",
+              "title": "백그라운드 작업·알림·PWA 통합",
+              "summary": "앱을 닫은 뒤 작업·알림이 안 되거나 service worker 반복 실행이 예정 시각과 다를 때. 이벤트 수명, 동기화 기회와 다운로드, Push 수신·알림 표시, 설치 플랫폼별 통합 조건을 나누어 확인한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-jvtj052b/runtime/references/learned/web-api-background-and-app-integration.md"
+            },
+            {
+              "id": "web-api-dom-editing-and-components",
+              "kind": "concept",
+              "title": "DOM·편집·컴포넌트 상호작용",
+              "summary": "IME 편집·선택·클립보드가 어긋나거나 custom element와 popover의 책임을 나눌 때. 문서 트리·편집 상태·사용자 입력 경로와 선언형 표시·컴포넌트 캡슐화의 역할을 구분한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-jvtj052b/runtime/references/learned/web-api-dom-editing-and-components.md"
+            }
+          ]
+        }
+      ],
+      "knowledgeNamedToolCalls": [],
+      "explicitKnowledgePathCommands": []
+    },
+    {
+      "experiment": "B",
+      "model": "gpt-6-astra",
+      "arm": "plain",
+      "repeat": 3,
+      "run": "34",
+      "eventsSha256": "6e5c585d721726fdead27874d2031ae20ab73098f8e7bffeebffc61f40801b96",
+      "mcpToolCounts": {},
+      "injectedKnowledgeContexts": [],
+      "knowledgeNamedToolCalls": [],
+      "explicitKnowledgePathCommands": []
+    },
+    {
+      "experiment": "B",
+      "model": "gpt-6-sol",
+      "arm": "fs",
+      "repeat": 3,
+      "run": "35",
+      "eventsSha256": "78deb3d96d597f44736a92fff71107ea5908ed70f16563f38cc63f3b39bcc39c",
+      "mcpToolCounts": {
+        "list_plans": 1,
+        "get_project_snapshot": 1,
+        "inspect_project": 1,
+        "get_work_context": 4,
+        "run_project_checks": 6,
+        "save_project_context": 1,
+        "save_revision": 3,
+        "approve_revision": 2,
+        "save_execution": 4,
+        "begin_work_attempt": 2,
+        "save_semantic_review": 1
+      },
+      "injectedKnowledgeContexts": [
+        {
+          "itemId": "item_10",
+          "tool": "get_work_context",
+          "knowledge": [
+            {
+              "id": "code-quality-context-and-contracts",
+              "kind": "decision",
+              "title": "코드 읽기 맥락과 예측 가능한 인터페이스",
+              "summary": "조건 분기·숨은 계약이 읽기 어렵거나 작은 변경에도 래퍼·파일을 계속 따라갈 때. 추상화 abstraction의 탐색 비용과 검증·재사용·변경 경계의 편익을 비교하여 유지·인라인·분리를 판단한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-s1koactn/runtime/references/learned/code-quality-context-and-contracts.md"
+            },
+            {
+              "id": "css-cascade-and-value-resolution",
+              "kind": "concept",
+              "title": "CSS 캐스케이드와 값 결정",
+              "summary": "스타일이 덮어써지거나 !important 없이 CSS 우선순위 충돌을 해결해야 할 때. 출처·중요도·레이어·구체성·상속과 단축 속성의 생략 값을 순서대로 비교해 최종 값의 원인을 찾는다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-s1koactn/runtime/references/learned/css-cascade-and-value-resolution.md"
+            },
+            {
+              "id": "web-api-background-and-app-integration",
+              "kind": "concept",
+              "title": "백그라운드 작업·알림·PWA 통합",
+              "summary": "앱을 닫은 뒤 작업·알림이 안 되거나 service worker 반복 실행이 예정 시각과 다를 때. 이벤트 수명, 동기화 기회와 다운로드, Push 수신·알림 표시, 설치 플랫폼별 통합 조건을 나누어 확인한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-s1koactn/runtime/references/learned/web-api-background-and-app-integration.md"
+            },
+            {
+              "id": "web-api-dom-editing-and-components",
+              "kind": "concept",
+              "title": "DOM·편집·컴포넌트 상호작용",
+              "summary": "IME 편집·선택·클립보드가 어긋나거나 custom element와 popover의 책임을 나눌 때. 문서 트리·편집 상태·사용자 입력 경로와 선언형 표시·컴포넌트 캡슐화의 역할을 구분한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-s1koactn/runtime/references/learned/web-api-dom-editing-and-components.md"
+            },
+            {
+              "id": "web-api-files-and-storage",
+              "kind": "concept",
+              "title": "파일·쿠키·구조화 저장소",
+              "summary": "파일 저장 기능이나 오프라인 데이터 저장소를 고르고 데이터가 사라지거나 용량 초과가 발생할 때. 파일 handle과 origin 저장소, 구조화 트랜잭션·동기 키값 저장 및 권한·할당량·삭제 조건을 비교한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-s1koactn/runtime/references/learned/web-api-files-and-storage.md"
+            }
+          ]
+        },
+        {
+          "itemId": "item_55",
+          "tool": "get_work_context",
+          "knowledge": [
+            {
+              "id": "css-cascade-and-value-resolution",
+              "kind": "concept",
+              "title": "CSS 캐스케이드와 값 결정",
+              "summary": "스타일이 덮어써지거나 !important 없이 CSS 우선순위 충돌을 해결해야 할 때. 출처·중요도·레이어·구체성·상속과 단축 속성의 생략 값을 순서대로 비교해 최종 값의 원인을 찾는다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-s1koactn/runtime/references/learned/css-cascade-and-value-resolution.md"
+            },
+            {
+              "id": "javascript-iteration-promises-and-resources",
+              "kind": "concept",
+              "title": "JavaScript 반복·Promise·자원 수명",
+              "summary": "Promise 후속 완료·오류가 연결되지 않거나 반복 소비와 구독·파일 정리 시점을 판단할 때. iterable·iterator의 소비 모델, then의 반환 연결과 메모리 수집·명시적 자원 정리를 구분한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-s1koactn/runtime/references/learned/javascript-iteration-promises-and-resources.md"
+            },
+            {
+              "id": "web-api-background-and-app-integration",
+              "kind": "concept",
+              "title": "백그라운드 작업·알림·PWA 통합",
+              "summary": "앱을 닫은 뒤 작업·알림이 안 되거나 service worker 반복 실행이 예정 시각과 다를 때. 이벤트 수명, 동기화 기회와 다운로드, Push 수신·알림 표시, 설치 플랫폼별 통합 조건을 나누어 확인한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-s1koactn/runtime/references/learned/web-api-background-and-app-integration.md"
+            },
+            {
+              "id": "web-api-dom-editing-and-components",
+              "kind": "concept",
+              "title": "DOM·편집·컴포넌트 상호작용",
+              "summary": "IME 편집·선택·클립보드가 어긋나거나 custom element와 popover의 책임을 나눌 때. 문서 트리·편집 상태·사용자 입력 경로와 선언형 표시·컴포넌트 캡슐화의 역할을 구분한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-s1koactn/runtime/references/learned/web-api-dom-editing-and-components.md"
+            },
+            {
+              "id": "web-api-files-and-storage",
+              "kind": "concept",
+              "title": "파일·쿠키·구조화 저장소",
+              "summary": "파일 저장 기능이나 오프라인 데이터 저장소를 고르고 데이터가 사라지거나 용량 초과가 발생할 때. 파일 handle과 origin 저장소, 구조화 트랜잭션·동기 키값 저장 및 권한·할당량·삭제 조건을 비교한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-s1koactn/runtime/references/learned/web-api-files-and-storage.md"
+            }
+          ]
+        },
+        {
+          "itemId": "item_58",
+          "tool": "get_work_context",
+          "knowledge": [
+            {
+              "id": "accessibility-native-controls-and-forms",
+              "kind": "concept",
+              "title": "네이티브 버튼·링크·폼과 실제 HTML 구조",
+              "summary": "클릭만 되는 행·가짜 버튼, 중첩 버튼 또는 Enter 제출 오류를 조사할 때. 최종 DOM의 button·a·form 의미, 콘텐츠 모델과 제출 경로를 확인해 키보드와 탐색 동작의 누락을 찾는다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-s1koactn/runtime/references/learned/accessibility-native-controls-and-forms.md"
+            },
+            {
+              "id": "css-motion-and-rendering-hints",
+              "kind": "concept",
+              "title": "CSS 모션과 렌더링 힌트",
+              "summary": "상태 전환·스크롤 연동 모션을 구현하거나 will-change를 붙여도 애니메이션이 느릴 때. transition·keyframes·transform·timeline의 역할과 비용을 구분하고 해당 속성 지원과 실제 렌더링을 확인한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-s1koactn/runtime/references/learned/css-motion-and-rendering-hints.md"
+            },
+            {
+              "id": "debugging-react-integration-cases",
+              "kind": "concept",
+              "title": "React 통합 오류의 계약과 수명 확인",
+              "summary": "React 쿼리·폼·Suspense·애니메이션을 조합한 뒤 상태·응답·구독 수명이 어긋날 때. 실제 응답과 선언 타입, 클로저, 쿼리 상태, 자원 정리와 설치 버전을 분리해 최소 사례를 만든다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-s1koactn/runtime/references/learned/debugging-react-integration-cases.md"
+            },
+            {
+              "id": "html-editing-and-localization",
+              "kind": "concept",
+              "title": "HTML 입력 보조·언어·방향",
+              "summary": "모바일 입력 키보드·Enter 표시, 편집 영역의 줄바꿈 또는 다국어 문자 방향이 예상과 다를 때. inputmode·enterkeyhint의 힌트와 검증·제출 동작을 구분하고 lang·dir·translate·contenteditable의 역할을 확인한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-s1koactn/runtime/references/learned/html-editing-and-localization.md"
+            },
+            {
+              "id": "web-api-device-signals-and-windows",
+              "kind": "concept",
+              "title": "장치 신호·화면·탐색 환경",
+              "summary": "센서·위치·화면 유지가 실패하거나 탭 가시성·PiP·다중 화면 기능을 판단할 때. 인터페이스 존재와 권한·장치 가용성, 근사 신호와 실제 상태, 기능별 사용자 동작 조건을 비교한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-s1koactn/runtime/references/learned/web-api-device-signals-and-windows.md"
+            }
+          ]
+        },
+        {
+          "itemId": "item_69",
+          "tool": "get_work_context",
+          "knowledge": [
+            {
+              "id": "javascript-iteration-promises-and-resources",
+              "kind": "concept",
+              "title": "JavaScript 반복·Promise·자원 수명",
+              "summary": "Promise 후속 완료·오류가 연결되지 않거나 반복 소비와 구독·파일 정리 시점을 판단할 때. iterable·iterator의 소비 모델, then의 반환 연결과 메모리 수집·명시적 자원 정리를 구분한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-s1koactn/runtime/references/learned/javascript-iteration-promises-and-resources.md"
+            },
+            {
+              "id": "react-fiber-work-in-progress",
+              "kind": "concept",
+              "title": "React 19.2.0 Fiber alternate와 Hook 상태 구조",
+              "summary": "React Fiber의 두 트리가 DOM 두 벌인지, memoizedState가 개별 useState 값인지 해석할 때. React v19.2.0의 alternate 생성·재사용과 Hook 연결 구조를 읽어 내부 도식의 오해를 바로잡는다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-s1koactn/runtime/references/learned/react-fiber-work-in-progress.md"
+            },
+            {
+              "id": "react-rendering-state-model",
+              "kind": "concept",
+              "title": "React 상태 스냅샷, 순수 렌더, DOM 커밋과 paint",
+              "summary": "React setter 직후 이전 값이 읽히거나 렌더 로그 횟수와 화면 갱신 횟수가 달라 보일 때. 렌더별 상태 스냅샷, updater와 배칭, DOM commit과 브라우저 paint를 구분해 관찰한 현상을 설명한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-s1koactn/runtime/references/learned/react-rendering-state-model.md"
+            },
+            {
+              "id": "web-api-permissions-identity-and-injection",
+              "kind": "concept",
+              "title": "권한·인증·결제 통합과 안전한 삽입",
+              "summary": "권한 조회는 성공하지만 기능이 거부되거나 인증·결제·HTML 삽입 API의 보호 범위를 판단할 때. 권한 질의와 요청, 신원 입력과 서버 검증, Trusted Types 정책과 실제 정화·키 관리의 책임을 구분한다.",
+              "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v2-run-s1koactn/runtime/references/learned/web-api-permissions-identity-and-injection.md"
+            }
+          ]
+        }
+      ],
+      "knowledgeNamedToolCalls": [],
+      "explicitKnowledgePathCommands": []
+    },
+    {
+      "experiment": "B",
+      "model": "gpt-6-sol",
+      "arm": "plain",
+      "repeat": 3,
+      "run": "36",
+      "eventsSha256": "a34ab4453a1489065eee21fb89df3050b79cb122abd45d70324b141947a8e8e9",
+      "mcpToolCounts": {},
+      "injectedKnowledgeContexts": [],
+      "knowledgeNamedToolCalls": [],
+      "explicitKnowledgePathCommands": []
+    }
+  ]
+}

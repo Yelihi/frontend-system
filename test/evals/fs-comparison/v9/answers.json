@@ -1,0 +1,20 @@
+{
+  "shared": {
+    "identity": "Every host session replacement denotes a new logical context, even if the token string is identical. Both panels share this identity. Old success, failure, pending and auth effects must be ignored after replacement.",
+    "auth": "Both panels share one login realm. Notify expiration once for a current logical session, not once per concurrent request; obsolete requests must never expire the replacement session. Keep business-error messages owned by each screen.",
+    "ordering": "For searches and refreshes, latest invocation wins, including items, errors and pending. Disposed views receive no later updates. Canceling a read may save resources but correctness must also cover late completion.",
+    "mutation": "There is no server idempotency contract. Do not automatically retry POST. An uncertain submit outcome must not be announced as definite failure or success; show a scoped indeterminate-outcome notice without resubmitting.",
+    "structure": "You may introduce an instance-scoped request interface using the existing injected transport. Keep domain mapping and messages in each controller. Keep public controller methods. No dependency migration or global singleton.",
+    "scope": "This is a planning-only refactor. Keep public controller methods and existing successful/domain-error messages. Call out correctness fixes. Add focused tests with transport/view doubles; choose the smallest sufficient internal structure.",
+    "unknown": "That product choice is not available from the owner in this experiment. Keep it explicitly open and isolate any dependent work; do not invent consent."
+  },
+  "independent": {
+    "identity": "Host same-value replacements are credential refreshes that preserve logical identity; do not invalidate pending work on these calls. A different token denotes changed identity. Each panel owns its own session; changes in one must not invalidate the other.",
+    "auth": "The panels use independent login realms and expiration notifications. Deduplicate expiration only within the affected current session. Never expire or notify the other panel. Keep business-error messages with their screen.",
+    "ordering": "For searches and refreshes, latest invocation wins, including items, errors and pending. Disposed views receive no later updates. Canceling a read may save resources but correctness must also cover late completion.",
+    "mutation": "There is no server idempotency contract. Do not automatically retry POST. An uncertain submit outcome must not be announced as definite failure or success; show a scoped indeterminate-outcome notice without resubmitting.",
+    "structure": "Keep independent policy ownership. Reuse a stateless request mechanism or separate instances only if it reduces duplication without sharing mutable identity state. Keep domain mapping/messages in controllers and their public methods. No library migration.",
+    "scope": "This is a planning-only refactor. Keep public controller methods and existing successful/domain-error messages. Call out correctness fixes. Add focused tests with transport/view doubles; choose the smallest sufficient internal structure.",
+    "unknown": "That product choice is not available from the owner in this experiment. Keep it explicitly open and isolate any dependent work; do not invent consent."
+  }
+}

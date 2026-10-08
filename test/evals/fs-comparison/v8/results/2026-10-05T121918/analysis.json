@@ -1,0 +1,282 @@
+{
+  "manifestHash": "8f7c72df1e02e46db067f0818405d5a4a7815cb980425fd80548dc56adbd79f4",
+  "status": "completed",
+  "rows": [
+    {
+      "arm": "ordinary",
+      "stage": "initial",
+      "eligible": true,
+      "stageRecorded": true,
+      "firstGrade": {
+        "satisfied": 97,
+        "total": 97
+      },
+      "finalGrade": {
+        "satisfied": 97,
+        "total": 97
+      },
+      "workflow": "not-applicable",
+      "totalTokens": 814154,
+      "uncachedInputPlusOutput": 80842,
+      "reportedTokenLowerBound": 814154,
+      "seconds": 321.532,
+      "timeScope": "recorded calls; unfinished calls may be absent",
+      "calls": 2,
+      "repairs": 0,
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "threadIds": [
+        "01a10a32-3458-76a3-8b9b-1bf03493d08d"
+      ]
+    },
+    {
+      "arm": "ordinary",
+      "stage": "variants",
+      "eligible": true,
+      "stageRecorded": true,
+      "firstGrade": {
+        "satisfied": 97,
+        "total": 97
+      },
+      "finalGrade": {
+        "satisfied": 97,
+        "total": 97
+      },
+      "workflow": "not-applicable",
+      "totalTokens": 523993,
+      "uncachedInputPlusOutput": 34265,
+      "reportedTokenLowerBound": 523993,
+      "seconds": 158.543,
+      "timeScope": "recorded calls; unfinished calls may be absent",
+      "calls": 2,
+      "repairs": 0,
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "threadIds": [
+        "01a10a37-1f95-7362-8b0f-aeabb2b67463"
+      ]
+    },
+    {
+      "arm": "ordinary",
+      "stage": "defaults",
+      "eligible": true,
+      "stageRecorded": true,
+      "firstGrade": {
+        "satisfied": 97,
+        "total": 97
+      },
+      "finalGrade": {
+        "satisfied": 97,
+        "total": 97
+      },
+      "workflow": "not-applicable",
+      "totalTokens": 598030,
+      "uncachedInputPlusOutput": 38158,
+      "reportedTokenLowerBound": 598030,
+      "seconds": 143.90800000000002,
+      "timeScope": "recorded calls; unfinished calls may be absent",
+      "calls": 2,
+      "repairs": 0,
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "threadIds": [
+        "01a10a39-8d9f-7582-9c22-93e9edff0179"
+      ]
+    },
+    {
+      "arm": "informed",
+      "stage": "initial",
+      "eligible": true,
+      "stageRecorded": true,
+      "firstGrade": {
+        "satisfied": 97,
+        "total": 97
+      },
+      "finalGrade": {
+        "satisfied": 97,
+        "total": 97
+      },
+      "workflow": "not-applicable",
+      "totalTokens": 655125,
+      "uncachedInputPlusOutput": 52245,
+      "reportedTokenLowerBound": 655125,
+      "seconds": 302.29,
+      "timeScope": "recorded calls; unfinished calls may be absent",
+      "calls": 2,
+      "repairs": 0,
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "threadIds": [
+        "01a10a27-6ab7-7011-9a89-7a3716701748"
+      ]
+    },
+    {
+      "arm": "informed",
+      "stage": "variants",
+      "eligible": true,
+      "stageRecorded": true,
+      "firstGrade": {
+        "satisfied": 97,
+        "total": 97
+      },
+      "finalGrade": {
+        "satisfied": 97,
+        "total": 97
+      },
+      "workflow": "not-applicable",
+      "totalTokens": 547664,
+      "uncachedInputPlusOutput": 40528,
+      "reportedTokenLowerBound": 547664,
+      "seconds": 154.54000000000002,
+      "timeScope": "recorded calls; unfinished calls may be absent",
+      "calls": 2,
+      "repairs": 0,
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "threadIds": [
+        "01a10a2c-0a4e-7830-88f6-8146371ea0bd"
+      ]
+    },
+    {
+      "arm": "informed",
+      "stage": "defaults",
+      "eligible": true,
+      "stageRecorded": true,
+      "firstGrade": {
+        "satisfied": 97,
+        "total": 97
+      },
+      "finalGrade": {
+        "satisfied": 97,
+        "total": 97
+      },
+      "workflow": "not-applicable",
+      "totalTokens": 601923,
+      "uncachedInputPlusOutput": 40259,
+      "reportedTokenLowerBound": 601923,
+      "seconds": 247.244,
+      "timeScope": "recorded calls; unfinished calls may be absent",
+      "calls": 2,
+      "repairs": 0,
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "threadIds": [
+        "01a10a2e-6920-7a82-b2f8-c63cb4bb8dc5"
+      ]
+    },
+    {
+      "arm": "fs",
+      "stage": "initial",
+      "eligible": true,
+      "stageRecorded": true,
+      "firstGrade": {
+        "satisfied": 97,
+        "total": 97
+      },
+      "finalGrade": {
+        "satisfied": 97,
+        "total": 97
+      },
+      "workflow": "observed",
+      "totalTokens": 2455915,
+      "uncachedInputPlusOutput": 110315,
+      "reportedTokenLowerBound": 2455915,
+      "seconds": 529.216,
+      "timeScope": "recorded calls; unfinished calls may be absent",
+      "calls": 2,
+      "repairs": 0,
+      "mcpCalls": 19,
+      "mcpErrors": 1,
+      "threadIds": [
+        "01a10a12-edfa-7672-a8ed-95f99a075ffb"
+      ]
+    },
+    {
+      "arm": "fs",
+      "stage": "variants",
+      "eligible": true,
+      "stageRecorded": true,
+      "firstGrade": {
+        "satisfied": 97,
+        "total": 97
+      },
+      "finalGrade": {
+        "satisfied": 97,
+        "total": 97
+      },
+      "workflow": "observed",
+      "totalTokens": 1223196,
+      "uncachedInputPlusOutput": 93084,
+      "reportedTokenLowerBound": 1223196,
+      "seconds": 260.956,
+      "timeScope": "recorded calls; unfinished calls may be absent",
+      "calls": 2,
+      "repairs": 0,
+      "mcpCalls": 15,
+      "mcpErrors": 0,
+      "threadIds": [
+        "01a10a1b-0414-7022-8570-d19728bbb445"
+      ]
+    },
+    {
+      "arm": "fs",
+      "stage": "defaults",
+      "eligible": false,
+      "stageRecorded": true,
+      "firstGrade": {
+        "satisfied": 95,
+        "total": 97
+      },
+      "finalGrade": {
+        "satisfied": 95,
+        "total": 97
+      },
+      "workflow": "observed",
+      "totalTokens": 3752909,
+      "uncachedInputPlusOutput": 128077,
+      "reportedTokenLowerBound": 3752909,
+      "seconds": 548.983,
+      "timeScope": "recorded calls; unfinished calls may be absent",
+      "calls": 3,
+      "repairs": 1,
+      "mcpCalls": 22,
+      "mcpErrors": 0,
+      "threadIds": [
+        "01a10a1f-02a5-7370-b036-6a97a6160e31"
+      ]
+    }
+  ],
+  "totals": [
+    {
+      "arm": "ordinary",
+      "allStagesRecorded": true,
+      "allStagesEligible": true,
+      "stagesRecorded": 3,
+      "totalTokens": 1936177,
+      "uncachedInputPlusOutput": 153265,
+      "reportedTokenLowerBound": 1936177,
+      "seconds": 623.983
+    },
+    {
+      "arm": "informed",
+      "allStagesRecorded": true,
+      "allStagesEligible": true,
+      "stagesRecorded": 3,
+      "totalTokens": 1804712,
+      "uncachedInputPlusOutput": 133032,
+      "reportedTokenLowerBound": 1804712,
+      "seconds": 704.0740000000001
+    },
+    {
+      "arm": "fs",
+      "allStagesRecorded": true,
+      "allStagesEligible": false,
+      "stagesRecorded": 3,
+      "totalTokens": 7432020,
+      "uncachedInputPlusOutput": 331476,
+      "reportedTokenLowerBound": 7432020,
+      "seconds": 1339.155
+    }
+  ],
+  "limits": "Task-contract scores, not hidden preference obedience. Ordinary vs informed measures document-location guidance; informed vs FS adds workflow. Incomplete cumulative costs remain unknown. No statistical superiority from one run."
+}

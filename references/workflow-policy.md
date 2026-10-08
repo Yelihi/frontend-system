@@ -5,12 +5,22 @@ exclusions, provenance, verification method, pass/fail/excluded examples and lim
 `verified` means the cited examples were exercised, not that all code is correct.
 
 `save_revision` accepts `policy` (version 1): rules are full pinned definitions;
-checks map IDs to exact package script IDs/commands and rule IDs; reviews map IDs
+checks map IDs to package script IDs and rule IDs; reviews map IDs
 to rule IDs and descriptions; guards pin hashes of checker/config/test assets;
 exceptions record rule, exact files, reason/risk, verification, resolution step and
 reconsideration condition. Omitting policy preserves it. An explicit replacement,
 including removal of requirements, invalidates approval. Legacy text-only revisions
 remain readable but are labeled legacy and cannot use `fs checks --required`.
+
+Omit each check's `command` and each guard's `hash` to let `save_revision` pin
+the current values. A supplied command means the exact package.json script body
+(e.g. `eslint app src`), not the launcher (`npm run lint`). Explicit values are
+preserved. Approval rejects changed/missing scripts or guard assets before work
+starts; it never silently refreshes pins. Omitting the entire policy on a later
+save preserves its pins. Inspect the returned policy before approving it.
+Policy keys accept requirement IDs such as `R1` and resolver IDs such as
+`mandatory:common:clean-code`; filesystem record/source/proposal IDs keep their
+existing restrictions.
 
 Use scripts actually declared by the project. Existing check/test/lint/build names
 are discovered; policy may explicitly name another non-watch verification script.
@@ -19,7 +29,7 @@ ESLint or TypeScript already provides the check. Test aliases, re-exports and ac
 dynamic import forms where relevant. Unsupported cases stay documented, not passed.
 
 Initial enforcement setup is a preparation step: establish tools/checkers, validate
-normal/invalid examples, calculate guard hashes, then approve the concrete policy.
+normal/invalid examples, save to pin verification assets, then approve the concrete policy.
 Do not pin mutable product source as a verification guard. A guard asset change
 requires reviewing and updating the policy; ordinary product edits do not.
 
@@ -44,6 +54,15 @@ retain the exception's resolution step. No new violations may enter the baseline
 Resolution needs current review evidence and the corresponding checks; final work
 cannot complete with unresolved exceptions. An exception requiring semantic review
 must have a review requirement in the policy.
+
+Check records include `coverage.requiredScripts`, `missingOrFailedScripts`, and
+`allRequiredPassed` when a policy exists. This describes script coverage only:
+source stability, matching attempts, behavioral evidence and required reviews
+are still checked at completion. `full` retains its legacy meaning (an unfiltered
+discovery run); `full: false` on delivery does not require another check run.
+For unchanged source/revision, a passing delivery record can serve both the
+applicable step's `checkIds` and execution's `finalCheckId`. Supply that record's
+`attemptId` on its step and complete required semantic reviews.
 
 Execution steps support `dependsOn`, `requiredCheckIds`, `attemptId`, and `reviewIds`.
 Missing step check selection defaults to all policy checks; final completion always

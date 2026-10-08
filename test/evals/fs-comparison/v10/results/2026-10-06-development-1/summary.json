@@ -1,0 +1,1758 @@
+{
+  "summary": {
+    "calls": 18,
+    "completedTurns": 17,
+    "totalTokens": 3145794,
+    "uncachedPlusOutput": 400194,
+    "seconds": 3248.423,
+    "unknownUsage": 1,
+    "mcpErrors": 0,
+    "completedJourneys": 8
+  },
+  "rows": [
+    {
+      "id": "design-system-fs-K1",
+      "case": "design-system",
+      "arm": "fs-K1",
+      "calls": 2,
+      "completedTurns": 1,
+      "totalTokens": 267064,
+      "uncachedPlusOutput": 36408,
+      "seconds": 466.988,
+      "unknownUsage": 1,
+      "mcpCalls": 10,
+      "mcpErrors": 0,
+      "knowledgeReads": [
+        {
+          "id": [
+            "control-contracts"
+          ]
+        }
+      ],
+      "approvals": [],
+      "commands": [
+        "/bin/zsh -lc 'cat ../runtime/skills/fs-plan/SKILL.md'",
+        "/bin/zsh -lc \"pwd && rg --files -g 'README.md' -g 'AGENTS.md' -g 'package.json' -g 'src/**' | head -200\"",
+        "/bin/zsh -lc 'cat questions.json'",
+        "/bin/zsh -lc 'cat owner-answers.json'",
+        "/bin/zsh -lc 'git status --short'",
+        "/bin/zsh -lc 'ls -l ../runtime/bundle/tool-help.mjs'",
+        "/bin/zsh -lc 'node ../runtime/bundle/tool-help.mjs save_revision'"
+      ],
+      "audits": [
+        {
+          "id": "design-system-fs-K1",
+          "phase": "questions",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 240.573,
+            "completedTurns": 1,
+            "threadId": "01a10c97-e2f8-7912-a859-14e7800766d6",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 262550,
+              "cached_input_tokens": 230656,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 4514,
+              "reasoning_output_tokens": 1016,
+              "total_tokens": 267064,
+              "uncached_input_tokens": 31894
+            },
+            "cumulativeUsage": {
+              "input_tokens": 262550,
+              "cached_input_tokens": 230656,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 4514,
+              "reasoning_output_tokens": 1016
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "questions": {
+            "count": 4,
+            "citations": [
+              {
+                "questionId": "q1",
+                "path": "src/mount.ts",
+                "quote": "const a=purchaseToolbar(root,buy,true), b=navigationCard(root,true);",
+                "exact": true
+              },
+              {
+                "questionId": "q1",
+                "path": "src/purchase.ts",
+                "quote": "const button=createAction({label:'Buy now',disabled:blocked,onPress:buy});",
+                "exact": true
+              },
+              {
+                "questionId": "q1",
+                "path": "src/action.ts",
+                "quote": "if (props.disabled) element.setAttribute('aria-disabled', 'true');",
+                "exact": true
+              },
+              {
+                "questionId": "q1",
+                "path": "src/action.ts",
+                "quote": "element.addEventListener('click', () => props.onPress?.());",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/purchase.ts",
+                "quote": "const form=document.createElement('form'); form.append(button); root.append(form);",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/action.ts",
+                "quote": "const element = document.createElement(props.href ? 'a' : 'button');",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/action.ts",
+                "quote": "element.addEventListener('click', () => props.onPress?.());",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "README.md",
+                "quote": "It has no established disabled-link or theme scope contract. Both screens can coexist under different host roots.",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/navigation.ts",
+                "quote": "const link=createAction({label:'Open order',href:'/orders/current',disabled});",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/action.ts",
+                "quote": "if (props.href) element.setAttribute('href', props.href);",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/action.ts",
+                "quote": "if (props.disabled) element.setAttribute('aria-disabled', 'true');",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "README.md",
+                "quote": "It has no established disabled-link or theme scope contract. Both screens can coexist under different host roots.",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/mount.ts",
+                "quote": "applyTheme('blue');",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/styles.ts",
+                "quote": "export function applyTheme(color:string) { document.documentElement.style.setProperty('--accent', color); }",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/styles.ts",
+                "quote": "export const styles = { primary:'bg-blue-600 text-white px-4 py-2', quiet:'bg-gray-100 text-gray-900 px-4 py-2' };",
+                "exact": true
+              }
+            ],
+            "allQuotesExact": true
+          }
+        },
+        {
+          "id": "design-system-fs-K1",
+          "phase": "plan",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 1,
+            "timedOut": false,
+            "elapsedSeconds": 226.415,
+            "completedTurns": 0,
+            "threadId": "01a10c97-e2f8-7912-a859-14e7800766d6",
+            "sessionError": null,
+            "usage": null,
+            "cumulativeUsage": null,
+            "usageError": null,
+            "errors": [
+              {
+                "type": "error",
+                "message": "Selected model is at capacity. Please try a different model."
+              },
+              {
+                "type": "turn.failed",
+                "error": {
+                  "message": "Selected model is at capacity. Please try a different model."
+                }
+              }
+            ]
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": "Model process failed before completing a turn",
+          "artifactError": "Missing or unsafe artifact: plan.md"
+        }
+      ],
+      "complete": false
+    },
+    {
+      "id": "design-system-raw-K1",
+      "case": "design-system",
+      "arm": "raw-K1",
+      "calls": 2,
+      "completedTurns": 2,
+      "totalTokens": 172252,
+      "uncachedPlusOutput": 24412,
+      "seconds": 236.39600000000002,
+      "unknownUsage": 0,
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "knowledgeReads": [],
+      "approvals": [],
+      "commands": [
+        "/bin/zsh -lc \"pwd\nrg --files -g 'README.md' -g 'learning/*.md' -g '\"'!node_modules'\"' -g '\"'!vendor'\"'\nrg --files -g '\"'!node_modules'\"' -g '\"'!vendor'\"' | head -200\"",
+        "/bin/zsh -lc \"cat README.md learning/*.md\ncat package.json tsconfig.json\nfor f in src/*.ts; do printf '\\\\nFILE %s\\\\n' \\\"\"'$f\"; cat \"$f\"; done'",
+        "/bin/zsh -lc 'cat questions.json'",
+        "/bin/zsh -lc \"cat owner-answers.json\ncat README.md\ncat questions.json\nfor f in src/*.ts; do printf '\\\\nFILE %s\\\\n' \\\"\"'$f\"; cat \"$f\"; done'",
+        "/bin/zsh -lc 'cat plan.md'"
+      ],
+      "audits": [
+        {
+          "id": "design-system-raw-K1",
+          "phase": "questions",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 121.724,
+            "completedTurns": 1,
+            "threadId": "01a10c97-e2f8-7662-9a48-1dc6dfa6f800",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 74521,
+              "cached_input_tokens": 64128,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 2555,
+              "reasoning_output_tokens": 722,
+              "total_tokens": 77076,
+              "uncached_input_tokens": 10393
+            },
+            "cumulativeUsage": {
+              "input_tokens": 74521,
+              "cached_input_tokens": 64128,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 2555,
+              "reasoning_output_tokens": 722
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "questions": {
+            "count": 4,
+            "citations": [
+              {
+                "questionId": "q1",
+                "path": "src/navigation.ts",
+                "quote": "const link=createAction({label:'Open order',href:'/orders/current',disabled});",
+                "exact": true
+              },
+              {
+                "questionId": "q1",
+                "path": "src/action.ts",
+                "quote": "if (props.href) element.setAttribute('href', props.href);",
+                "exact": true
+              },
+              {
+                "questionId": "q1",
+                "path": "src/action.ts",
+                "quote": "if (props.disabled) element.setAttribute('aria-disabled', 'true');",
+                "exact": true
+              },
+              {
+                "questionId": "q1",
+                "path": "README.md",
+                "quote": "It has no established disabled-link or theme scope contract.",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/purchase.ts",
+                "quote": "const button=createAction({label:'Buy now',disabled:blocked,onPress:buy});",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/purchase.ts",
+                "quote": "const form=document.createElement('form'); form.append(button); root.append(form);",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/action.ts",
+                "quote": "const element = document.createElement(props.href ? 'a' : 'button');",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/action.ts",
+                "quote": "element.addEventListener('click', () => props.onPress?.());",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "README.md",
+                "quote": "Both screens can coexist under different host roots.",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/styles.ts",
+                "quote": "export function applyTheme(color:string) { document.documentElement.style.setProperty('--accent', color); }",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/mount.ts",
+                "quote": "applyTheme('blue');",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/styles.ts",
+                "quote": "export const styles = { primary:'bg-blue-600 text-white px-4 py-2', quiet:'bg-gray-100 text-gray-900 px-4 py-2' };",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "README.md",
+                "quote": "Refactor our native DOM action controls into a reusable component boundary for the next product screen.",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/action.ts",
+                "quote": "export type Action = { label:string; href?:string; disabled?:boolean; tone?:Tone; onPress?:()=>void };",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/action.ts",
+                "quote": "element.textContent = props.label;",
+                "exact": true
+              }
+            ],
+            "allQuotesExact": true
+          }
+        },
+        {
+          "id": "design-system-raw-K1",
+          "phase": "plan",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 114.672,
+            "completedTurns": 1,
+            "threadId": "01a10c97-e2f8-7662-9a48-1dc6dfa6f800",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 92619,
+              "cached_input_tokens": 83712,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 2557,
+              "reasoning_output_tokens": 524,
+              "total_tokens": 95176,
+              "uncached_input_tokens": 8907
+            },
+            "cumulativeUsage": {
+              "input_tokens": 167140,
+              "cached_input_tokens": 147840,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 5112,
+              "reasoning_output_tokens": 1246
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "planCharacters": 8790
+        }
+      ],
+      "complete": true
+    },
+    {
+      "id": "draft-editor-fs-K1",
+      "case": "draft-editor",
+      "arm": "fs-K1",
+      "calls": 2,
+      "completedTurns": 2,
+      "totalTokens": 932146,
+      "uncachedPlusOutput": 88626,
+      "seconds": 561.192,
+      "unknownUsage": 0,
+      "mcpCalls": 14,
+      "mcpErrors": 0,
+      "knowledgeReads": [
+        {
+          "id": [
+            "draft-ownership"
+          ]
+        }
+      ],
+      "approvals": [],
+      "commands": [
+        "/bin/zsh -lc 'cat ../runtime/skills/fs-plan/SKILL.md'",
+        "/bin/zsh -lc \"rg --files -g 'README.md' -g 'AGENTS.md' -g '\"'!node_modules'\"' -g '\"'!dist'\"' -g '\"'!build'\"' | head -80\"",
+        "/bin/zsh -lc \"rg --files -g '\"'!node_modules'\"' -g '\"'!dist'\"' -g '\"'!build'\"' | head -200\"",
+        "/bin/zsh -lc 'cat questions.json'",
+        "/bin/zsh -lc 'cat owner-answers.json'",
+        "/bin/zsh -lc 'rg --files .frontend-system'",
+        "/bin/zsh -lc 'node ../runtime/bundle/tool-help.mjs save_revision'",
+        "/bin/zsh -lc 'cat .frontend-system/drafts/portal-refactor.json'",
+        "/bin/zsh -lc 'rg --files .frontend-system/plans/portal-refactor'",
+        "/bin/zsh -lc 'cp .frontend-system/plans/portal-refactor/plan.md plan.md'",
+        "/bin/zsh -lc \"rg -n \\\"Stale load|Record an acknowledged|failure \\\\[open|approved\\\" plan.md\""
+      ],
+      "audits": [
+        {
+          "id": "draft-editor-fs-K1",
+          "phase": "questions",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 227.397,
+            "completedTurns": 1,
+            "threadId": "01a10c99-be64-75d3-9421-dc9977aa5480",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 304275,
+              "cached_input_tokens": 255744,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 5374,
+              "reasoning_output_tokens": 696,
+              "total_tokens": 309649,
+              "uncached_input_tokens": 48531
+            },
+            "cumulativeUsage": {
+              "input_tokens": 304275,
+              "cached_input_tokens": 255744,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 5374,
+              "reasoning_output_tokens": 696
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "questions": {
+            "count": 4,
+            "citations": [
+              {
+                "questionId": "q1",
+                "path": "README.md",
+                "quote": "Repository revisions exist but the host has not defined conflict resolution, unsaved navigation, or cross-pane draft ownership.",
+                "exact": true
+              },
+              {
+                "questionId": "q1",
+                "path": "src/editor.ts",
+                "quote": "async function open(id:string) { doc=await repo.load(id); view.body(doc.body); view.status('Loaded'); }",
+                "exact": true
+              },
+              {
+                "questionId": "q1",
+                "path": "src/editor.ts",
+                "quote": "timer=setTimeout(async()=>{const result=await repo.saveDraft(doc);",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/types.ts",
+                "quote": "export type SaveResult={kind:'saved';document:Doc}|{kind:'conflict';remote:Doc};",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/editor.ts",
+                "quote": "else {doc=result.remote;view.body(doc.body);view.status('Updated');}",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/memory-repository.ts",
+                "quote": "async saveDraft(doc){const current=store.get(doc.id);if(current&&current.revision!==doc.revision)return {kind:'conflict',remote:{...current}};",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "README.md",
+                "quote": "Repository revisions exist but the host has not defined conflict resolution, unsaved navigation, or cross-pane draft ownership.",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/drafts.ts",
+                "quote": "const drafts=new Map<string,Doc>();",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/drafts.ts",
+                "quote": "export function remember(doc:Doc) { drafts.set(doc.id,doc); }",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/mount.ts",
+                "quote": "const editor=createEditor(repo,{body:v=>{input.value=v;},status:v=>{status.textContent=v;}});",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/types.ts",
+                "quote": "export type Repository={load(id:string):Promise<Doc>;saveDraft(doc:Doc):Promise<SaveResult>};",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/memory-repository.ts",
+                "quote": "return {async load(id){const d=store.get(id);if(!d)throw Error('missing');return {...d};},",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/editor.ts",
+                "quote": "timer=setTimeout(async()=>{const result=await repo.saveDraft(doc);",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/types.ts",
+                "quote": "export type View={body(value:string):void;status(value:string):void};",
+                "exact": true
+              }
+            ],
+            "allQuotesExact": true
+          }
+        },
+        {
+          "id": "draft-editor-fs-K1",
+          "phase": "plan",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 333.795,
+            "completedTurns": 1,
+            "threadId": "01a10c99-be64-75d3-9421-dc9977aa5480",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 614276,
+              "cached_input_tokens": 587776,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 8221,
+              "reasoning_output_tokens": 2240,
+              "total_tokens": 622497,
+              "uncached_input_tokens": 26500
+            },
+            "cumulativeUsage": {
+              "input_tokens": 918551,
+              "cached_input_tokens": 843520,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 13595,
+              "reasoning_output_tokens": 2936
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "planCharacters": 14239
+        }
+      ],
+      "complete": true
+    },
+    {
+      "id": "pricing-console-raw-K1",
+      "case": "pricing-console",
+      "arm": "raw-K1",
+      "calls": 2,
+      "completedTurns": 2,
+      "totalTokens": 178023,
+      "uncachedPlusOutput": 49511,
+      "seconds": 284.554,
+      "unknownUsage": 0,
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "knowledgeReads": [],
+      "approvals": [],
+      "commands": [
+        "/bin/zsh -lc pwd",
+        "/bin/zsh -lc \"rg --files -g 'README.md' -g 'learning/*.md' -g 'src/**' -g 'app/**' -g 'package.json' -g 'AGENTS.md' -g '\"'!node_modules'\"'\"",
+        "/bin/zsh -lc 'cat README.md'",
+        "/bin/zsh -lc \"for f in learning/*.md; do printf '\\\\nFILE %s\\\\n' \\\"\"'$f\"; cat \"$f\"; done'",
+        "/bin/zsh -lc \"rg --files -g '\"'!node_modules'\"'\"",
+        "/bin/zsh -lc 'cat package.json'",
+        "/bin/zsh -lc 'cat src/model.ts'",
+        "/bin/zsh -lc 'cat src/pricing.ts'",
+        "/bin/zsh -lc 'cat src/transport.ts'",
+        "/bin/zsh -lc 'cat src/controller.ts'",
+        "/bin/zsh -lc 'cat src/preview.ts'",
+        "/bin/zsh -lc 'cat tsconfig.json'",
+        "/bin/zsh -lc 'cat README.md'",
+        "/bin/zsh -lc 'cat questions.json'",
+        "/bin/zsh -lc 'cat owner-answers.json'",
+        "/bin/zsh -lc \"rg --files -g 'AGENTS.md' -g 'src/**' -g 'learning/*.md' -g 'plan.md'\""
+      ],
+      "audits": [
+        {
+          "id": "pricing-console-raw-K1",
+          "phase": "questions",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 150.391,
+            "completedTurns": 1,
+            "threadId": "01a10c9b-8e88-75d2-b9e5-44ce6b593558",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 74038,
+              "cached_input_tokens": 40320,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 3763,
+              "reasoning_output_tokens": 1053,
+              "total_tokens": 77801,
+              "uncached_input_tokens": 33718
+            },
+            "cumulativeUsage": {
+              "input_tokens": 74038,
+              "cached_input_tokens": 40320,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 3763,
+              "reasoning_output_tokens": 1053
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "questions": {
+            "count": 6,
+            "citations": [
+              {
+                "questionId": "q1",
+                "path": "src/controller.ts",
+                "quote": "async confirm(id:string){await send('/orders',{method:'POST',body:JSON.stringify({quoteId:id,total})});show('Confirmed');}",
+                "exact": true
+              },
+              {
+                "questionId": "q1",
+                "path": "README.md",
+                "quote": "Signed server quotes are not yet part of the API.",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/pricing.ts",
+                "quote": "total*=1+Number(q.tax);",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/pricing.ts",
+                "quote": "if(q.promotion)total-=q.promotion.kind==='percent'?total*Number(q.promotion.value):Number(q.promotion.value);",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "README.md",
+                "quote": "Tax order, rounding, invalid promotions and quote freshness are undocumented.",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/model.ts",
+                "quote": "export type Line={sku:string;unit:string;quantity:number};",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/model.ts",
+                "quote": "export type Quote={currency:string;lines:Line[];promotion?:Promotion;tax:string};",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/pricing.ts",
+                "quote": "return Math.round(total*100)/100;",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/controller.ts",
+                "quote": "show(q.currency+' '+total.toFixed(2));",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/model.ts",
+                "quote": "export type Promotion={kind:'percent'|'fixed';value:string};",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/pricing.ts",
+                "quote": "if(q.promotion)total-=q.promotion.kind==='percent'?total*Number(q.promotion.value):Number(q.promotion.value);",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "README.md",
+                "quote": "Tax order, rounding, invalid promotions and quote freshness are undocumented.",
+                "exact": true
+              },
+              {
+                "questionId": "q5",
+                "path": "src/controller.ts",
+                "quote": "let total=0;return {async open(id:string){const q=await loadQuote(send,id);total=calculateTotal(q);show(q.currency+' '+total.toFixed(2));},",
+                "exact": true
+              },
+              {
+                "questionId": "q5",
+                "path": "src/controller.ts",
+                "quote": "async confirm(id:string){await send('/orders',{method:'POST',body:JSON.stringify({quoteId:id,total})});show('Confirmed');}",
+                "exact": true
+              },
+              {
+                "questionId": "q5",
+                "path": "README.md",
+                "quote": "Tax order, rounding, invalid promotions and quote freshness are undocumented.",
+                "exact": true
+              },
+              {
+                "questionId": "q6",
+                "path": "src/pricing.ts",
+                "quote": "q.lines.sort((a,b)=>a.sku.localeCompare(b.sku));",
+                "exact": true
+              },
+              {
+                "questionId": "q6",
+                "path": "src/preview.ts",
+                "quote": "export function preview(q:Quote){return {originalOrder:q.lines.map(l=>l.sku),amount:calculateTotal(q),lines:q.lines};}",
+                "exact": true
+              },
+              {
+                "questionId": "q6",
+                "path": "learning/pricing-policy.md",
+                "quote": "Preserve caller-owned objects and ordering unless mutation is expressly required.",
+                "exact": true
+              }
+            ],
+            "allQuotesExact": true
+          }
+        },
+        {
+          "id": "pricing-console-raw-K1",
+          "phase": "plan",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 134.163,
+            "completedTurns": 1,
+            "threadId": "01a10c9b-8e88-75d2-b9e5-44ce6b593558",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 96909,
+              "cached_input_tokens": 88192,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 3313,
+              "reasoning_output_tokens": 960,
+              "total_tokens": 100222,
+              "uncached_input_tokens": 8717
+            },
+            "cumulativeUsage": {
+              "input_tokens": 170947,
+              "cached_input_tokens": 128512,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 7076,
+              "reasoning_output_tokens": 2013
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "planCharacters": 8519
+        }
+      ],
+      "complete": true
+    },
+    {
+      "id": "draft-editor-raw-K1",
+      "case": "draft-editor",
+      "arm": "raw-K1",
+      "calls": 2,
+      "completedTurns": 2,
+      "totalTokens": 137389,
+      "uncachedPlusOutput": 34349,
+      "seconds": 261.359,
+      "unknownUsage": 0,
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "knowledgeReads": [],
+      "approvals": [],
+      "commands": [
+        "/bin/zsh -lc pwd",
+        "/bin/zsh -lc \"rg --files -g '\"'!node_modules'\"' -g '\"'!dist'\"' -g '\"'!build'\"' | head -200\"",
+        "/bin/zsh -lc \"rg --files -g 'README.md' -g 'learning/*.md' -g 'AGENTS.md' -g '\"'!node_modules'\"' -g '\"'!dist'\"' -g '\"'!build'\"'\"",
+        "/bin/zsh -lc \"cat 'learning/control-contracts.md'\"",
+        "/bin/zsh -lc \"cat 'learning/mutation-queue.md'\"",
+        "/bin/zsh -lc \"cat 'README.md'\"",
+        "/bin/zsh -lc \"cat 'learning/pricing-policy.md'\"",
+        "/bin/zsh -lc \"cat 'learning/extension-lifecycle.md'\"",
+        "/bin/zsh -lc \"cat 'learning/render-lifetime.md'\"",
+        "/bin/zsh -lc \"cat 'learning/draft-ownership.md'\"",
+        "/bin/zsh -lc \"cat 'src/types.ts'\"",
+        "/bin/zsh -lc \"cat 'src/drafts.ts'\"",
+        "/bin/zsh -lc \"cat 'src/editor.ts'\"",
+        "/bin/zsh -lc \"cat 'src/mount.ts'\"",
+        "/bin/zsh -lc \"cat 'src/memory-repository.ts'\"",
+        "/bin/zsh -lc \"cat 'package.json'\"",
+        "/bin/zsh -lc \"cat 'owner-answers.json'\"",
+        "/bin/zsh -lc \"cat 'questions.json'\"",
+        "/bin/zsh -lc \"cat 'README.md'\"",
+        "/bin/zsh -lc \"cat 'src/types.ts'\"",
+        "/bin/zsh -lc \"cat 'src/editor.ts'\"",
+        "/bin/zsh -lc \"cat 'src/drafts.ts'\"",
+        "/bin/zsh -lc \"cat 'src/mount.ts'\"",
+        "/bin/zsh -lc \"cat 'src/memory-repository.ts'\"",
+        "/bin/zsh -lc \"cat 'learning/mutation-queue.md'\"",
+        "/bin/zsh -lc \"cat 'learning/draft-ownership.md'\""
+      ],
+      "audits": [
+        {
+          "id": "draft-editor-raw-K1",
+          "phase": "questions",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 140.97,
+            "completedTurns": 1,
+            "threadId": "01a10c9d-36e9-7870-a0ce-a27dff74d033",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 59529,
+              "cached_input_tokens": 40576,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 3347,
+              "reasoning_output_tokens": 909,
+              "total_tokens": 62876,
+              "uncached_input_tokens": 18953
+            },
+            "cumulativeUsage": {
+              "input_tokens": 59529,
+              "cached_input_tokens": 40576,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 3347,
+              "reasoning_output_tokens": 909
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "questions": {
+            "count": 5,
+            "citations": [
+              {
+                "questionId": "q1",
+                "path": "src/types.ts",
+                "quote": "export type SaveResult={kind:'saved';document:Doc}|{kind:'conflict';remote:Doc};",
+                "exact": true
+              },
+              {
+                "questionId": "q1",
+                "path": "src/editor.ts",
+                "quote": "else {doc=result.remote;view.body(doc.body);view.status('Updated');}",
+                "exact": true
+              },
+              {
+                "questionId": "q1",
+                "path": "README.md",
+                "quote": "Repository revisions exist but the host has not defined conflict resolution, unsaved navigation, or cross-pane draft ownership.",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/editor.ts",
+                "quote": "async function open(id:string) { doc=await repo.load(id); view.body(doc.body); view.status('Loaded'); }",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/editor.ts",
+                "quote": "timer=setTimeout(async()=>{const result=await repo.saveDraft(doc);",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "learning/draft-ownership.md",
+                "quote": "Ask the owner about recovery and navigation before selecting blocking navigation, local retention or deliberate discard.",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "README.md",
+                "quote": "Plan a refactor of this document editor before adding a second editor pane. Autosave, navigation and conflict handling need clear ownership.",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/drafts.ts",
+                "quote": "const drafts=new Map<string,Doc>();",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "learning/draft-ownership.md",
+                "quote": "Two views may intentionally share a draft or be independent; do not introduce a module-global draft singleton by habit.",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/editor.ts",
+                "quote": "return {open,edit,dispose(){clearTimeout(timer);}};",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/mount.ts",
+                "quote": "input.oninput=()=>editor.edit(input.value);return {...editor,dispose(){editor.dispose();input.remove();status.remove();}};",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "learning/draft-ownership.md",
+                "quote": "Cancellation cannot undo a server commit.",
+                "exact": true
+              },
+              {
+                "questionId": "q5",
+                "path": "src/types.ts",
+                "quote": "export type Repository={load(id:string):Promise<Doc>;saveDraft(doc:Doc):Promise<SaveResult>};",
+                "exact": true
+              },
+              {
+                "questionId": "q5",
+                "path": "src/editor.ts",
+                "quote": "timer=setTimeout(async()=>{const result=await repo.saveDraft(doc);",
+                "exact": true
+              },
+              {
+                "questionId": "q5",
+                "path": "learning/mutation-queue.md",
+                "quote": "A rejected upload can have committed; replay safety requires an actual server idempotency contract, not a retry helper.",
+                "exact": true
+              }
+            ],
+            "allQuotesExact": true
+          }
+        },
+        {
+          "id": "draft-editor-raw-K1",
+          "phase": "plan",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 120.389,
+            "completedTurns": 1,
+            "threadId": "01a10c9d-36e9-7870-a0ce-a27dff74d033",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 71471,
+              "cached_input_tokens": 62464,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 3042,
+              "reasoning_output_tokens": 1245,
+              "total_tokens": 74513,
+              "uncached_input_tokens": 9007
+            },
+            "cumulativeUsage": {
+              "input_tokens": 131000,
+              "cached_input_tokens": 103040,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 6389,
+              "reasoning_output_tokens": 2154
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "planCharacters": 7307
+        }
+      ],
+      "complete": true
+    },
+    {
+      "id": "pricing-console-fs-K1",
+      "case": "pricing-console",
+      "arm": "fs-K1",
+      "calls": 2,
+      "completedTurns": 2,
+      "totalTokens": 1028927,
+      "uncachedPlusOutput": 87103,
+      "seconds": 748.826,
+      "unknownUsage": 0,
+      "mcpCalls": 14,
+      "mcpErrors": 0,
+      "knowledgeReads": [
+        {
+          "id": [
+            "pricing-policy"
+          ]
+        },
+        {
+          "id": [
+            "pricing-policy",
+            "render-lifetime",
+            "draft-ownership"
+          ]
+        }
+      ],
+      "approvals": [],
+      "commands": [
+        "/bin/zsh -lc 'cat ../runtime/skills/fs-plan/SKILL.md'",
+        "/bin/zsh -lc \"pwd && rg --files -g 'README.md' -g 'AGENTS.md' -g '\"'!node_modules'\"' -g '\"'!dist'\"' | head -80\"",
+        "/bin/zsh -lc 'cat owner-answers.json'",
+        "/bin/zsh -lc 'cat questions.json'",
+        "/bin/zsh -lc 'node ../runtime/bundle/tool-help.mjs save_revision'",
+        "/bin/zsh -lc 'rg --files .frontend-system/plans/portal-refactor'",
+        "/bin/zsh -lc 'cat .frontend-system/plans/portal-refactor/plan.md'",
+        "/bin/zsh -lc 'rg -n \"typed pricing outcome|1.01 percent|typed success/error result\" .frontend-system/drafts/portal-refactor.json'",
+        "/bin/zsh -lc 'cp .frontend-system/plans/portal-refactor/plan.md plan.md'"
+      ],
+      "audits": [
+        {
+          "id": "pricing-console-fs-K1",
+          "phase": "questions",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 275.752,
+            "completedTurns": 1,
+            "threadId": "01a10c9d-da3b-7073-96a8-9b82b0ab3aff",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 264811,
+              "cached_input_tokens": 233088,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 6260,
+              "reasoning_output_tokens": 1406,
+              "total_tokens": 271071,
+              "uncached_input_tokens": 31723
+            },
+            "cumulativeUsage": {
+              "input_tokens": 264811,
+              "cached_input_tokens": 233088,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 6260,
+              "reasoning_output_tokens": 1406
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "questions": {
+            "count": 6,
+            "citations": [
+              {
+                "questionId": "q1",
+                "path": "src/pricing.ts",
+                "quote": "total*=1+Number(q.tax);",
+                "exact": true
+              },
+              {
+                "questionId": "q1",
+                "path": "src/pricing.ts",
+                "quote": "if(q.promotion)total-=q.promotion.kind==='percent'?total*Number(q.promotion.value):Number(q.promotion.value);",
+                "exact": true
+              },
+              {
+                "questionId": "q1",
+                "path": "README.md",
+                "quote": "Tax order, rounding, invalid promotions and quote freshness are undocumented.",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/model.ts",
+                "quote": "export type Quote={currency:string;lines:Line[];promotion?:Promotion;tax:string};",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/pricing.ts",
+                "quote": "let total=q.lines.reduce((sum,l)=>sum+Number(l.unit)*l.quantity,0);",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/pricing.ts",
+                "quote": "return Math.round(total*100)/100;",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/controller.ts",
+                "quote": "let total=0;return {async open(id:string){const q=await loadQuote(send,id);total=calculateTotal(q);show(q.currency+' '+total.toFixed(2));},",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/model.ts",
+                "quote": "export type Promotion={kind:'percent'|'fixed';value:string};",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/model.ts",
+                "quote": "export type Line={sku:string;unit:string;quantity:number};",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/pricing.ts",
+                "quote": "if(q.promotion)total-=q.promotion.kind==='percent'?total*Number(q.promotion.value):Number(q.promotion.value);",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/controller.ts",
+                "quote": "async confirm(id:string){await send('/orders',{method:'POST',body:JSON.stringify({quoteId:id,total})});show('Confirmed');}};",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/transport.ts",
+                "quote": "export type Send=(path:string,init?:{method:string;body:string})=>Promise<Quote>;",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "README.md",
+                "quote": "Signed server quotes are not yet part of the API.",
+                "exact": true
+              },
+              {
+                "questionId": "q5",
+                "path": "src/pricing.ts",
+                "quote": "q.lines.sort((a,b)=>a.sku.localeCompare(b.sku));",
+                "exact": true
+              },
+              {
+                "questionId": "q5",
+                "path": "src/preview.ts",
+                "quote": "export function preview(q:Quote){return {originalOrder:q.lines.map(l=>l.sku),amount:calculateTotal(q),lines:q.lines};}",
+                "exact": true
+              },
+              {
+                "questionId": "q6",
+                "path": "src/controller.ts",
+                "quote": "let total=0;return {async open(id:string){const q=await loadQuote(send,id);total=calculateTotal(q);show(q.currency+' '+total.toFixed(2));},",
+                "exact": true
+              },
+              {
+                "questionId": "q6",
+                "path": "src/controller.ts",
+                "quote": "async confirm(id:string){await send('/orders',{method:'POST',body:JSON.stringify({quoteId:id,total})});show('Confirmed');}};",
+                "exact": true
+              },
+              {
+                "questionId": "q6",
+                "path": "src/model.ts",
+                "quote": "export type Quote={currency:string;lines:Line[];promotion?:Promotion;tax:string};",
+                "exact": true
+              }
+            ],
+            "allQuotesExact": true
+          }
+        },
+        {
+          "id": "pricing-console-fs-K1",
+          "phase": "plan",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 473.074,
+            "completedTurns": 1,
+            "threadId": "01a10c9d-da3b-7073-96a8-9b82b0ab3aff",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 746566,
+              "cached_input_tokens": 708736,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 11290,
+              "reasoning_output_tokens": 3191,
+              "total_tokens": 757856,
+              "uncached_input_tokens": 37830
+            },
+            "cumulativeUsage": {
+              "input_tokens": 1011377,
+              "cached_input_tokens": 941824,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 17550,
+              "reasoning_output_tokens": 4597
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "planCharacters": 13927
+        }
+      ],
+      "complete": true
+    },
+    {
+      "id": "pricing-console-ordinary",
+      "case": "pricing-console",
+      "arm": "ordinary",
+      "calls": 2,
+      "completedTurns": 2,
+      "totalTokens": 185800,
+      "uncachedPlusOutput": 25800,
+      "seconds": 246.225,
+      "unknownUsage": 0,
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "knowledgeReads": [],
+      "approvals": [],
+      "commands": [
+        "/bin/zsh -lc \"pwd && rg --files -g 'README.md' -g 'AGENTS.md' -g '\"'!node_modules'\"' -g '\"'!dist'\"' -g '\"'!build'\"' | head -80\"",
+        "/bin/zsh -lc \"rg --files -g '\"'!node_modules'\"' -g '\"'!dist'\"' -g '\"'!build'\"' | head -200\"",
+        "/bin/zsh -lc 'cat README.md'",
+        "/bin/zsh -lc 'ls -la'",
+        "/bin/zsh -lc 'cat src/model.ts'",
+        "/bin/zsh -lc 'cat src/pricing.ts'",
+        "/bin/zsh -lc 'cat src/transport.ts'",
+        "/bin/zsh -lc 'cat src/controller.ts'",
+        "/bin/zsh -lc 'cat src/preview.ts'",
+        "/bin/zsh -lc 'cat package.json'",
+        "/bin/zsh -lc 'cat tsconfig.json'",
+        "/bin/zsh -lc 'cat questions.json'",
+        "/bin/zsh -lc 'cat owner-answers.json'",
+        "/bin/zsh -lc 'cat README.md && cat questions.json'",
+        "/bin/zsh -lc \"rg --files -g 'AGENTS.md' -g 'src/**' -g 'plan.md'\"",
+        "/bin/zsh -lc 'cat plan.md'"
+      ],
+      "audits": [
+        {
+          "id": "pricing-console-ordinary",
+          "phase": "questions",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 123.521,
+            "completedTurns": 1,
+            "threadId": "01a10c9f-5db3-7dc1-8c01-0794fa5e5103",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 86671,
+              "cached_input_tokens": 76288,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 3009,
+              "reasoning_output_tokens": 891,
+              "total_tokens": 89680,
+              "uncached_input_tokens": 10383
+            },
+            "cumulativeUsage": {
+              "input_tokens": 86671,
+              "cached_input_tokens": 76288,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 3009,
+              "reasoning_output_tokens": 891
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "questions": {
+            "count": 5,
+            "citations": [
+              {
+                "questionId": "q1",
+                "path": "README.md",
+                "quote": "The API returns decimal strings; the current UI maps them to Number.",
+                "exact": true
+              },
+              {
+                "questionId": "q1",
+                "path": "src/pricing.ts",
+                "quote": "let total=q.lines.reduce((sum,l)=>sum+Number(l.unit)*l.quantity,0);",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "README.md",
+                "quote": "Tax order, rounding, invalid promotions and quote freshness are undocumented.",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/pricing.ts",
+                "quote": "total*=1+Number(q.tax);\n if(q.promotion)total-=q.promotion.kind==='percent'?total*Number(q.promotion.value):Number(q.promotion.value);",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/model.ts",
+                "quote": "export type Quote={currency:string;lines:Line[];promotion?:Promotion;tax:string};",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/pricing.ts",
+                "quote": "return Math.round(total*100)/100;",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/controller.ts",
+                "quote": "show(q.currency+' '+total.toFixed(2));",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/model.ts",
+                "quote": "export type Promotion={kind:'percent'|'fixed';value:string};",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/pricing.ts",
+                "quote": "if(q.promotion)total-=q.promotion.kind==='percent'?total*Number(q.promotion.value):Number(q.promotion.value);",
+                "exact": true
+              },
+              {
+                "questionId": "q5",
+                "path": "src/controller.ts",
+                "quote": "let total=0;return {async open(id:string){const q=await loadQuote(send,id);total=calculateTotal(q);show(q.currency+' '+total.toFixed(2));},",
+                "exact": true
+              },
+              {
+                "questionId": "q5",
+                "path": "src/controller.ts",
+                "quote": "async confirm(id:string){await send('/orders',{method:'POST',body:JSON.stringify({quoteId:id,total})});show('Confirmed');}};",
+                "exact": true
+              },
+              {
+                "questionId": "q5",
+                "path": "README.md",
+                "quote": "Signed server quotes are not yet part of the API.",
+                "exact": true
+              }
+            ],
+            "allQuotesExact": true
+          }
+        },
+        {
+          "id": "pricing-console-ordinary",
+          "phase": "plan",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 122.704,
+            "completedTurns": 1,
+            "threadId": "01a10c9f-5db3-7dc1-8c01-0794fa5e5103",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 93027,
+              "cached_input_tokens": 83712,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 3093,
+              "reasoning_output_tokens": 1058,
+              "total_tokens": 96120,
+              "uncached_input_tokens": 9315
+            },
+            "cumulativeUsage": {
+              "input_tokens": 179698,
+              "cached_input_tokens": 160000,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 6102,
+              "reasoning_output_tokens": 1949
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "planCharacters": 7745
+        }
+      ],
+      "complete": true
+    },
+    {
+      "id": "draft-editor-ordinary",
+      "case": "draft-editor",
+      "arm": "ordinary",
+      "calls": 2,
+      "completedTurns": 2,
+      "totalTokens": 124750,
+      "uncachedPlusOutput": 34254,
+      "seconds": 228.966,
+      "unknownUsage": 0,
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "knowledgeReads": [],
+      "approvals": [],
+      "commands": [
+        "/bin/zsh -lc pwd",
+        "/bin/zsh -lc \"rg --files -g 'README.md' -g 'AGENTS.md' -g '\"'!node_modules'\"' -g '\"'!vendor'\"'\"",
+        "/bin/zsh -lc \"rg --files -g '\"'!node_modules'\"' -g '\"'!vendor'\"' | head -100\"",
+        "/bin/zsh -lc \"cat 'README.md'\"",
+        "/bin/zsh -lc \"cat 'package.json'\"",
+        "/bin/zsh -lc \"cat 'src/types.ts'\"",
+        "/bin/zsh -lc \"cat 'src/drafts.ts'\"",
+        "/bin/zsh -lc \"cat 'src/memory-repository.ts'\"",
+        "/bin/zsh -lc \"cat 'src/editor.ts'\"",
+        "/bin/zsh -lc \"cat 'src/mount.ts'\"",
+        "/bin/zsh -lc \"cat 'tsconfig.json'\"",
+        "/bin/zsh -lc \"cat 'questions.json'\"",
+        "/bin/zsh -lc \"cat 'owner-answers.json'\"",
+        "/bin/zsh -lc \"cat 'README.md'\"",
+        "/bin/zsh -lc \"cat 'src/editor.ts'\"",
+        "/bin/zsh -lc \"cat 'src/drafts.ts'\"",
+        "/bin/zsh -lc \"cat 'src/types.ts'\"",
+        "/bin/zsh -lc \"cat 'src/mount.ts'\"",
+        "/bin/zsh -lc \"cat 'src/memory-repository.ts'\""
+      ],
+      "audits": [
+        {
+          "id": "draft-editor-ordinary",
+          "phase": "questions",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 115.754,
+            "completedTurns": 1,
+            "threadId": "01a10ca1-405a-7f60-8e25-1f33a47a5f67",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 56485,
+              "cached_input_tokens": 34944,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 2623,
+              "reasoning_output_tokens": 798,
+              "total_tokens": 59108,
+              "uncached_input_tokens": 21541
+            },
+            "cumulativeUsage": {
+              "input_tokens": 56485,
+              "cached_input_tokens": 34944,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 2623,
+              "reasoning_output_tokens": 798
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "questions": {
+            "count": 3,
+            "citations": [
+              {
+                "questionId": "q1",
+                "path": "src/editor.ts",
+                "quote": "async function open(id:string) { doc=await repo.load(id); view.body(doc.body); view.status('Loaded'); }",
+                "exact": true
+              },
+              {
+                "questionId": "q1",
+                "path": "src/editor.ts",
+                "quote": "timer=setTimeout(async()=>{const result=await repo.saveDraft(doc);",
+                "exact": true
+              },
+              {
+                "questionId": "q1",
+                "path": "src/editor.ts",
+                "quote": "return {open,edit,dispose(){clearTimeout(timer);}};",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/types.ts",
+                "quote": "export type SaveResult={kind:'saved';document:Doc}|{kind:'conflict';remote:Doc};",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/editor.ts",
+                "quote": "else {doc=result.remote;view.body(doc.body);view.status('Updated');}",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/drafts.ts",
+                "quote": "const drafts=new Map<string,Doc>();",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/editor.ts",
+                "quote": "let doc:Doc={id:'',body:'',revision:0}; let timer:ReturnType<typeof setTimeout>|undefined;",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/mount.ts",
+                "quote": "const editor=createEditor(repo,{body:v=>{input.value=v;},status:v=>{status.textContent=v;}});",
+                "exact": true
+              }
+            ],
+            "allQuotesExact": true
+          }
+        },
+        {
+          "id": "draft-editor-ordinary",
+          "phase": "plan",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 113.212,
+            "completedTurns": 1,
+            "threadId": "01a10ca1-405a-7f60-8e25-1f33a47a5f67",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 62976,
+              "cached_input_tokens": 55552,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 2666,
+              "reasoning_output_tokens": 897,
+              "total_tokens": 65642,
+              "uncached_input_tokens": 7424
+            },
+            "cumulativeUsage": {
+              "input_tokens": 119461,
+              "cached_input_tokens": 90496,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 5289,
+              "reasoning_output_tokens": 1695
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "planCharacters": 6504
+        }
+      ],
+      "complete": true
+    },
+    {
+      "id": "design-system-ordinary",
+      "case": "design-system",
+      "arm": "ordinary",
+      "calls": 2,
+      "completedTurns": 2,
+      "totalTokens": 119443,
+      "uncachedPlusOutput": 19731,
+      "seconds": 213.91699999999997,
+      "unknownUsage": 0,
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "knowledgeReads": [],
+      "approvals": [],
+      "commands": [
+        "/bin/zsh -lc \"rg --files -g 'README.md' -g 'AGENTS.md' -g '\"'!node_modules'\"'\"",
+        "/bin/zsh -lc \"rg --files -g '\"'!node_modules'\"'\"",
+        "/bin/zsh -lc 'cat README.md'",
+        "/bin/zsh -lc 'cat src/purchase.ts src/action.ts src/styles.ts src/mount.ts src/navigation.ts'",
+        "/bin/zsh -lc 'cat package.json tsconfig.json'",
+        "/bin/zsh -lc 'cat owner-answers.json README.md questions.json'",
+        "/bin/zsh -lc 'cat src/action.ts src/styles.ts src/purchase.ts src/navigation.ts src/mount.ts package.json tsconfig.json'",
+        "/bin/zsh -lc \"rg --files -g 'AGENTS.md' -g 'plan.md' -g 'owner-answers.json'\""
+      ],
+      "audits": [
+        {
+          "id": "design-system-ordinary",
+          "phase": "questions",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 104.57,
+            "completedTurns": 1,
+            "threadId": "01a10ca2-0f95-7502-b252-bf1bae4e8690",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 54955,
+              "cached_input_tokens": 47104,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 2298,
+              "reasoning_output_tokens": 643,
+              "total_tokens": 57253,
+              "uncached_input_tokens": 7851
+            },
+            "cumulativeUsage": {
+              "input_tokens": 54955,
+              "cached_input_tokens": 47104,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 2298,
+              "reasoning_output_tokens": 643
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "questions": {
+            "count": 3,
+            "citations": [
+              {
+                "questionId": "q1",
+                "path": "README.md",
+                "quote": "It has no established disabled-link or theme scope contract.",
+                "exact": true
+              },
+              {
+                "questionId": "q1",
+                "path": "src/action.ts",
+                "quote": "if (props.href) element.setAttribute('href', props.href);",
+                "exact": true
+              },
+              {
+                "questionId": "q1",
+                "path": "src/action.ts",
+                "quote": "if (props.disabled) element.setAttribute('aria-disabled', 'true');",
+                "exact": true
+              },
+              {
+                "questionId": "q1",
+                "path": "src/navigation.ts",
+                "quote": "const link=createAction({label:'Open order',href:'/orders/current',disabled});",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "README.md",
+                "quote": "Both screens can coexist under different host roots.",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/styles.ts",
+                "quote": "export function applyTheme(color:string) { document.documentElement.style.setProperty('--accent', color); }",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/mount.ts",
+                "quote": "applyTheme('blue');",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/action.ts",
+                "quote": "const element = document.createElement(props.href ? 'a' : 'button');",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/action.ts",
+                "quote": "element.addEventListener('click', () => props.onPress?.());",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/purchase.ts",
+                "quote": "const form=document.createElement('form'); form.append(button); root.append(form);",
+                "exact": true
+              }
+            ],
+            "allQuotesExact": true
+          }
+        },
+        {
+          "id": "design-system-ordinary",
+          "phase": "plan",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 109.347,
+            "completedTurns": 1,
+            "threadId": "01a10ca2-0f95-7502-b252-bf1bae4e8690",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 59457,
+              "cached_input_tokens": 52608,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 2733,
+              "reasoning_output_tokens": 962,
+              "total_tokens": 62190,
+              "uncached_input_tokens": 6849
+            },
+            "cumulativeUsage": {
+              "input_tokens": 114412,
+              "cached_input_tokens": 99712,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 5031,
+              "reasoning_output_tokens": 1605
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "planCharacters": 6373
+        }
+      ],
+      "complete": true
+    }
+  ]
+}

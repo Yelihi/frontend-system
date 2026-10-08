@@ -1,0 +1,39 @@
+{
+  "kind": "Post-hoc development routing probe; no model interpretation or implementation measured",
+  "modelCalls": 0,
+  "fixtureHashes": {
+    "App.jsx": "cc11754fe13ae3ff7cdb1826140146f8b3d556581717e1fb16c4e27d05a4181c",
+    "money.mjs": "29593f5d06b4de1f468b75d969065ce66f4d992b192098c059298103798c8a79"
+  },
+  "indexHash": "7f30c8a272f0398fae5a942caa2ce963081e332ec58e61b2515b9f4426114a11",
+  "staticCandidates": [
+    "accessibility-semantics",
+    "accessibility-names-and-alternatives",
+    "accessibility-widget-interactions",
+    "accessibility-native-controls-and-forms",
+    "react-rendering-state-model",
+    "html-attribute-values-and-identifiers"
+  ],
+  "discovery": [
+    {
+      "query": "일반 주문과 선물 주문의 흐름, 실패 복구와 정책 변경을 검토",
+      "ids": [
+        "javascript-syntax-control-and-templates",
+        "code-quality-change-boundaries",
+        "web-api-browser-ai-capabilities"
+      ]
+    },
+    {
+      "query": "같이 바뀌는 할인 정책과 서로 다른 변경 이유, 함수의 숨은 부작용",
+      "ids": [
+        "code-quality-change-boundaries",
+        "javascript-functions-objects-and-scope",
+        "code-quality-context-and-contracts"
+      ]
+    }
+  ],
+  "limits": [
+    "Queries chosen by the author after fixture design; not held-out accuracy.",
+    "Semantic code-quality candidates require model interpretation, applicability review and evidence; discovery is not adoption."
+  ]
+}

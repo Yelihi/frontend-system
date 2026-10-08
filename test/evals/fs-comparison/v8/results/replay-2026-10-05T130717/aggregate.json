@@ -1,0 +1,59 @@
+{
+  "runs": [
+    {
+      "id": "2026-10-05T112423",
+      "status": "blocked",
+      "manifestHash": "88b5722a8c9277bed214f7c3fd0da543a5e889c21af44630aafc003a11d75e9b",
+      "modelCalls": 15,
+      "completedTurns": 14,
+      "capacityAborts": 1,
+      "reportedTokenLowerBound": 5837408
+    },
+    {
+      "id": "2026-10-05T120746",
+      "status": "blocked",
+      "manifestHash": "61570958f5f9eb995523bfb1dd0ea4e16ea984d685872a5f5eeb4f50428f94e6",
+      "modelCalls": 1,
+      "completedTurns": 0,
+      "capacityAborts": 1,
+      "reportedTokenLowerBound": 0
+    },
+    {
+      "id": "2026-10-05T121510",
+      "status": "blocked",
+      "manifestHash": "61570958f5f9eb995523bfb1dd0ea4e16ea984d685872a5f5eeb4f50428f94e6",
+      "modelCalls": 1,
+      "completedTurns": 0,
+      "capacityAborts": 1,
+      "reportedTokenLowerBound": 0
+    },
+    {
+      "id": "2026-10-05T121918",
+      "status": "completed",
+      "manifestHash": "8f7c72df1e02e46db067f0818405d5a4a7815cb980425fd80548dc56adbd79f4",
+      "modelCalls": 19,
+      "completedTurns": 19,
+      "capacityAborts": 0,
+      "reportedTokenLowerBound": 11172909
+    }
+  ],
+  "modelCalls": 36,
+  "completedTurns": 33,
+  "capacityAborts": 3,
+  "reportedTokenLowerBound": 17010317,
+  "totalTokens": null,
+  "availabilityProbes": {
+    "calls": 1,
+    "tokens": 10188,
+    "includedInComparison": false
+  },
+  "conclusion": "D completed all calls. Ordinary/informed passed all stages first time; FS failed two default-change assertions before and after one repair, with higher cost. Prior capacity usage remains unknown.",
+  "diagnosticReplay": {
+    "id": "replay-2026-10-05T130717",
+    "modelCalls": 4,
+    "tokens": 2571510,
+    "heldOut": false
+  },
+  "allComparisonAndReplayCalls": 40,
+  "allComparisonAndReplayReportedTokenLowerBound": 19581827
+}

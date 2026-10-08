@@ -1,0 +1,59 @@
+{
+  "status": "blocked",
+  "reason": "Model process failed before completing a turn",
+  "modelCalls": 1,
+  "manifestHash": "61570958f5f9eb995523bfb1dd0ea4e16ea984d685872a5f5eeb4f50428f94e6",
+  "journeys": [
+    {
+      "arm": "fs",
+      "stage": "initial",
+      "records": [
+        {
+          "phase": "prepare",
+          "attempt": 0,
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 1,
+            "timedOut": false,
+            "elapsedSeconds": 46.014,
+            "completedTurns": 0,
+            "threadId": "01a10a0f-2518-7350-8d74-cf6f3388ec61",
+            "sessionError": null,
+            "usage": null,
+            "cumulativeUsage": null,
+            "usageError": null,
+            "errors": [
+              {
+                "type": "error",
+                "message": "Selected model is at capacity. Please try a different model."
+              },
+              {
+                "type": "turn.failed",
+                "error": {
+                  "message": "Selected model is at capacity. Please try a different model."
+                }
+              }
+            ]
+          },
+          "grade": {
+            "status": "unverified",
+            "eligible": false,
+            "reason": "Model process failed before completing a turn"
+          }
+        }
+      ],
+      "trace": [],
+      "usage": null,
+      "modelSeconds": 46.014,
+      "workflow": "workflow-failed",
+      "firstGrade": null,
+      "finalGrade": {
+        "status": "unverified",
+        "eligible": false,
+        "reason": "Model process failed before completing a turn"
+      },
+      "eligible": false,
+      "infra": "Model process failed before completing a turn"
+    }
+  ]
+}

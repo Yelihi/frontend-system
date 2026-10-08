@@ -83,6 +83,8 @@ export interface EngineeringRule {
   appliesTo: string[];
   evidence?: string[];
   mandatory: boolean;
+  conditions?: string[];
+  exclusions?: string[];
 }
 
 export interface KnowledgeReference {
@@ -105,9 +107,15 @@ export interface KnowledgeGap {
 }
 
 export interface WorkRequest {
+  includeRelations?: boolean;
   raw: string;
+  observations?: Array<{ path: string; observation: string }>;
   mode: "inspect" | "prepare" | "implement" | "verify" | "review" | "refactor";
   constraints: string[];
+  files?: string[];
+  requirements?: string[];
+  interpretations?: Array<{path: string; line: number; evidence: string; signal: string; interpretation: string; column?: number}>;
+  snapshot?: {baseRef: string; expectedCommit: string};
 }
 
 export interface WorkContext {
@@ -127,6 +135,7 @@ export interface InspectionQuestion {
 }
 
 export interface ProjectAnalysis {
+  evidence?: import('../application/design-evidence.js').ProjectEvidence;
   domains?: string[];
   events?: string[];
   state?: string[];

@@ -1,14 +1,20 @@
 # 링크 지식 수집과 스킬 반영
 
-블로그 URL도 `fs-knowledge`의 입력이다. 임의 링크·HTML·PDF는 호스트 웹 도구로 읽고 `knowledge/source/imported/<id>.md`를 작성한 뒤 `catalog_knowledge_document`에 등록한다. 반복 확인하도록 등록한 공개 문서는 MCP가 조건부 HTTP 요청으로 텍스트·Markdown의 변경을 확인할 수 있다. 사이트 전체 크롤러나 글별 스킬은 추가하지 않는다. [문서 갱신](source-updates.md)을 참고한다.
+블로그 URL도 `fs-knowledge add` 입력입니다. 호스트가 실제 본문을 읽어 출처와 허용된
+내용을 Markdown으로 정리한 뒤 기여 도구로 pending PR을 생성합니다. 공유 기여는
+로컬 FS checkout이나 catalog 편집 없이 동작합니다. 명시적인 로컬 수집/관리자 작업만
+원본 checkout의 imported 문서와 catalog를 사용합니다. [기여·배포 절차](contribution-release.md)
+
 
 ```mermaid
 flowchart LR
   A[블로그 URL] --> B[본문 접근 · 출처 · 보존 범위 확인]
   B --> C[허용된 본문 또는 출처와 요약 저장]
-  C --> D[기존 catalog 등록 · 해시 추적]
-  D --> E[sync: 주장 · 조건 · 반례 검토]
-  E --> F[개념 / 조건부 판단 reference와 index]
+  C --> D[pending 기여 PR · 관리자 병합]
+  D --> S[pending 보관 · 사용자 active 선택]
+  S --> E[active 정리 · review 검토]
+  E --> M[merged]
+  M --> F[sync: 개념 / 조건부 판단 reference와 index]
   E --> G[보류 / 생략 사유]
   F --> H[review · implement 등 기존 스킬에서 검색]
 ```
@@ -26,6 +32,10 @@ flowchart LR
 한 글은 하나의 Markdown으로 보관하고 원문과 해석을 구획으로 분리한다. 아래 메타데이터는 문서 내 관례이며 새로운 MCP 입력 필드가 아니다. 제목·요약·sourceUrl·분류는 기존 catalog 필드에 전달하고, 나머지는 필요할 때 본문에서 읽는다.
 
 ```markdown
+---
+state: pending
+---
+
 # 글 제목
 
 ## 출처와 수집 상태
@@ -54,11 +64,16 @@ summary이면 이 절을 생략한다. -->
 
 등록 전에 주제 검색과 함께 catalog의 sourceUrl을 비교한다. 제목이 같다는 이유만으로 다른 글을 합치지 않는다. 같은 글을 다시 요청하면 기존 ID와 경로를 사용한다. 본문과 해석에 변화가 없으면 수집 날짜만 바꾸어 불필요한 재동기화를 만들지 않는다.
 
-재수집은 요청하거나 `fs-knowledge sync`를 실행할 때 등록된 URL에 수행하며 주기 감시는 하지 않는다. 변경된 절과 이유, 사용자 주석을 보존한다. 전체 본문을 접근 실패나 부분 응답으로 덮어쓰지 않는다. 원격 확인 실패와 로컬 검토 결과를 구분하고, 확인하지 못한 글의 최신성을 주장하지 않는다. 저장 문서 해시가 바뀌면 knowledge_status의 영향 참조 추적을 사용한다.
+도구의 중복 판정은 현재 파일 내용과 출처 URL·원격 스냅샷 해시가 같은지 확인한다.
+삭제·수정된 파일의 오래된 catalog 해시만으로 새 메모를 버리지 않는다.
+본문이 같아도 서로 다른 URL의 출처는 별도로 유지한다. 기존 ID의 URL이나
+원격 해시가 바뀌면 요약이 같더라도 다시 sync 완료를 기록해야 한다.
+
+재수집은 요청하거나 `fs-knowledge sync`의 merged 대상에 연결된 URL을 확인할 때 수행하며 주기 감시는 하지 않는다. 변경된 절과 이유, 사용자 주석을 보존한다. 전체 본문을 접근 실패나 부분 응답으로 덮어쓰지 않는다. 원격 확인 실패와 로컬 검토 결과를 구분하고, 확인하지 못한 글의 최신성을 주장하지 않는다. 저장 문서 해시가 바뀌면 knowledge_status의 영향 참조 추적을 사용한다.
 
 ## sync와 배포
 
-글의 내용을 그대로 규칙으로 승격하지 않는다. [지식 검토와 인덱싱](knowledge-indexing.md)에 따라 주장별로 검토하고, 개념은 concept, 적용 조건과 근거를 갖춘 판단은 decision으로 저장한다. 부분 자료에서 읽지 못한 결론이나 반례를 추정하지 않는다. 근거가 부족한 주장은 uncertain 또는 deferred로 남긴다.
+새 문서는 pending으로 보관한다. 사용자가 active로 선택하고 active 준비와 review를 거쳐 merged가 된 문서만 sync한다. 글의 내용을 그대로 규칙으로 승격하지 않는다. [지식 검토와 인덱싱](knowledge-indexing.md)에 따라 주장별로 검토하고, 개념은 concept, 적용 조건과 근거를 갖춘 판단은 decision으로 저장한다. 부분 자료에서 읽지 못한 결론이나 반례를 추정하지 않는다. 근거가 부족한 주장은 uncertain 또는 deferred로 남긴다.
 
 새 참조 생성, 기존 참조 보강, 보류, 생략 중 결과와 이유를 보고한다. 배포 참조에는 출처 URL과 필요한 요약 근거·조건을 포함하되 원문 전체를 복사하지 않는다. 블로그를 추가했다는 이유만으로 SKILL.md를 확장하지 않는다. 기존 스킬이 인덱스를 통해 필요한 지식을 읽는 것이 기본 반영 방식이다.
 

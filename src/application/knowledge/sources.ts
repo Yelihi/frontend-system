@@ -8,7 +8,7 @@ import { join } from "node:path";
 import { promisify } from "node:util";
 import * as z from "zod/v4";
 import { ruleId } from "../policy.js";
-import { loadKnowledgeCatalog } from "./catalog.js";
+import { loadKnowledgeCatalog, validateKnowledgeSync } from "./catalog.js";
 
 const hash = (text: string) => createHash("sha256").update(text).digest("hex");
 const run = promisify(execFile);
@@ -144,6 +144,10 @@ export async function checkSources(root: string, ids?: string[], transport = fet
         if (!previous) throw new Error("304 without cached source");
         next = { ...previous, checkedAt: new Date().toISOString() };
       } else {
+        if (response.status === 206 || response.headers.has("content-range")) {
+          await response.body?.cancel();
+          throw new Error("Partial document response; previous capture preserved");
+        }
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const type = response.headers.get("content-type") ?? "";
         if (!/text\/(plain|markdown)|application\/(x-)?markdown/.test(type)) {
@@ -189,6 +193,8 @@ export async function acknowledgeSource(root: string, id: string, expectedHash: 
     if (current.hash !== expectedHash || (await sourceRegistry(root)).sources[id] !== current.url) throw new Error("Source changed; review again");
     const source = (await loadKnowledgeCatalog(root)).documents[sourceId];
     if (!source || source.remoteHash !== expectedHash || source.sourceUrl !== current.url || source.publishedHash !== source.contentHash) throw new Error("Publish the reviewed source with its remoteHash before acknowledging");
+    const validated = await validateKnowledgeSync(root, [sourceId]);
+    if (source.publishedArtifactsHash !== validated.artifactsHashes[sourceId]) throw new Error("Republish changed knowledge artifacts before acknowledging source review");
     await replace(path, JSON.stringify({ ...current, reviewedBody: current.body, reviewedHash: current.hash, diff: "" }));
     return { id, reviewedHash: current.hash };
   } finally { await rm(lock, { recursive: true }); }

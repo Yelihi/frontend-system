@@ -1,0 +1,974 @@
+{
+  "scope": "Tool delivery, scoped provenance and stored judgments; not semantic accuracy",
+  "rows": [
+    {
+      "id": "direct-ordinary",
+      "staticCandidate": false,
+      "fullNoteRead": false,
+      "relationRequests": [],
+      "savedReviews": [],
+      "toolErrors": [],
+      "approvalCalls": []
+    },
+    {
+      "id": "mixed-fs-K1",
+      "staticCandidate": true,
+      "fullNoteRead": true,
+      "relationRequests": [
+        "get_work_context",
+        "inspect_code_knowledge",
+        "inspect_code_knowledge"
+      ],
+      "savedReviews": [
+        {
+          "id": "document-editor-operation-boundary",
+          "status": "pending",
+          "sourceHashesCurrent": true,
+          "sourcePaths": [
+            "README.md",
+            "owner-contract.md",
+            "src/editor.ts",
+            "src/edits.ts",
+            "src/events.ts",
+            "src/model.ts",
+            "src/replay.ts",
+            "src/validate.ts",
+            "src/wiring.ts"
+          ],
+          "judgments": [
+            {
+              "investigation": {
+                "findings": [
+                  {
+                    "questionId": "dispatch",
+                    "status": "supported",
+                    "basis": "code",
+                    "rationale": "The edit discriminator selects three transformations, followed by common validation.",
+                    "citations": [
+                      {
+                        "path": "src/edits.ts",
+                        "line": 8,
+                        "quote": "switch (edit.type) {"
+                      },
+                      {
+                        "path": "src/edits.ts",
+                        "line": 24,
+                        "quote": "return validate({ ...document, segments, reviewStatus: 'needs-review' });"
+                      }
+                    ]
+                  },
+                  {
+                    "questionId": "callers",
+                    "status": "supported",
+                    "basis": "code",
+                    "rationale": "In supplied source, browser handlers construct literal command types, editor forwards an edit, and replay forwards recorded commands.",
+                    "citations": [
+                      {
+                        "path": "src/events.ts",
+                        "line": 4,
+                        "quote": "dispatch({ type: 'explain', id, explanation })"
+                      },
+                      {
+                        "path": "src/editor.ts",
+                        "line": 6,
+                        "quote": "applyEdit(document, edit)"
+                      },
+                      {
+                        "path": "src/replay.ts",
+                        "line": 3,
+                        "quote": "applyEdit(current,command)"
+                      }
+                    ]
+                  },
+                  {
+                    "questionId": "contract",
+                    "status": "supported",
+                    "basis": "owner",
+                    "rationale": "Owner distinguishes replay compatibility and changeable browser internals.",
+                    "citations": [
+                      {
+                        "path": "owner-contract.md",
+                        "line": 3,
+                        "quote": "Existing Edit discriminants, field shapes and public applyEdit(document, edit) must stay compatible for replay. Browser-facing internal APIs may be changed separately."
+                      }
+                    ],
+                    "confirmation": "Existing Edit discriminants, field shapes and public applyEdit(document, edit) must stay compatible for replay. Browser-facing internal APIs may be changed separately."
+                  },
+                  {
+                    "questionId": "preserve-command",
+                    "status": "supported",
+                    "basis": "owner",
+                    "rationale": "The public common command boundary is required for a separate replay consumer.",
+                    "citations": [
+                      {
+                        "path": "owner-contract.md",
+                        "line": 3,
+                        "quote": "The browser handlers and a separate replay consumer both exist. Existing Edit discriminants, field shapes and public applyEdit(document, edit) must stay compatible for replay."
+                      }
+                    ],
+                    "confirmation": "The browser handlers and a separate replay consumer both exist. Existing Edit discriminants, field shapes and public applyEdit(document, edit) must stay compatible for replay."
+                  },
+                  {
+                    "questionId": "invariants",
+                    "status": "supported",
+                    "basis": "code",
+                    "rationale": "Successful edit validates a copied candidate and marks needs-review. Browser editor and replay consume latest successful document.",
+                    "citations": [
+                      {
+                        "path": "src/edits.ts",
+                        "line": 24,
+                        "quote": "return validate({ ...document, segments, reviewStatus: 'needs-review' });"
+                      },
+                      {
+                        "path": "src/editor.ts",
+                        "line": 7,
+                        "quote": "if (result.ok) { document = result.document; render(document); }"
+                      },
+                      {
+                        "path": "src/replay.ts",
+                        "line": 3,
+                        "quote": "current=result.document;"
+                      }
+                    ]
+                  }
+                ],
+                "action": "ask",
+                "limitations": [
+                  "Selected scope includes all supplied source and owner contract; external consumers remain unknown.",
+                  "The two new browser actions and recording requirements are unspecified.",
+                  "No application checks or browser behavior were run."
+                ]
+              },
+              "itemId": "99b88550e4bc9f9fc3165d3eedbdeb662d682a17c83208e43a31331b7ec80ae2",
+              "decision": "needs-decision",
+              "rationale": "Public command replacement is excluded; whether the new browser actions should become recorded commands remains an owner decision.",
+              "evidence": "switch (edit.type) {",
+              "evidenceLine": 8,
+              "verification": {
+                "kind": "static",
+                "reason": "Source and owner contract inspected; no checks run."
+              }
+            }
+          ],
+          "citations": [
+            {
+              "questionId": "dispatch",
+              "path": "src/edits.ts",
+              "quote": "switch (edit.type) {",
+              "exact": true
+            },
+            {
+              "questionId": "dispatch",
+              "path": "src/edits.ts",
+              "quote": "return validate({ ...document, segments, reviewStatus: 'needs-review' });",
+              "exact": true
+            },
+            {
+              "questionId": "callers",
+              "path": "src/events.ts",
+              "quote": "dispatch({ type: 'explain', id, explanation })",
+              "exact": true
+            },
+            {
+              "questionId": "callers",
+              "path": "src/editor.ts",
+              "quote": "applyEdit(document, edit)",
+              "exact": true
+            },
+            {
+              "questionId": "callers",
+              "path": "src/replay.ts",
+              "quote": "applyEdit(current,command)",
+              "exact": true
+            },
+            {
+              "questionId": "contract",
+              "path": "owner-contract.md",
+              "quote": "Existing Edit discriminants, field shapes and public applyEdit(document, edit) must stay compatible for replay. Browser-facing internal APIs may be changed separately.",
+              "exact": true
+            },
+            {
+              "questionId": "preserve-command",
+              "path": "owner-contract.md",
+              "quote": "The browser handlers and a separate replay consumer both exist. Existing Edit discriminants, field shapes and public applyEdit(document, edit) must stay compatible for replay.",
+              "exact": true
+            },
+            {
+              "questionId": "invariants",
+              "path": "src/edits.ts",
+              "quote": "return validate({ ...document, segments, reviewStatus: 'needs-review' });",
+              "exact": true
+            },
+            {
+              "questionId": "invariants",
+              "path": "src/editor.ts",
+              "quote": "if (result.ok) { document = result.document; render(document); }",
+              "exact": true
+            },
+            {
+              "questionId": "invariants",
+              "path": "src/replay.ts",
+              "quote": "current=result.document;",
+              "exact": true
+            }
+          ],
+          "allQuotesExact": true,
+          "verification": "unverified; run existing project checks and policy reviews"
+        }
+      ],
+      "toolErrors": [
+        {
+          "tool": "discover_knowledge_triggers",
+          "response": [
+            {
+              "type": "text",
+              "text": "Unknown domains; use: architecture"
+            }
+          ]
+        },
+        {
+          "tool": "save_knowledge_review",
+          "response": [
+            {
+              "type": "text",
+              "text": "Investigation citation must match the current inspected scope; include callers and contracts in files"
+            }
+          ]
+        }
+      ],
+      "approvalCalls": []
+    },
+    {
+      "id": "mixed-raw-K1",
+      "staticCandidate": false,
+      "fullNoteRead": false,
+      "relationRequests": [],
+      "savedReviews": [],
+      "toolErrors": [],
+      "approvalCalls": []
+    },
+    {
+      "id": "unknown-ordinary",
+      "staticCandidate": false,
+      "fullNoteRead": false,
+      "relationRequests": [],
+      "savedReviews": [],
+      "toolErrors": [],
+      "approvalCalls": []
+    },
+    {
+      "id": "replay-raw-K1",
+      "staticCandidate": false,
+      "fullNoteRead": false,
+      "relationRequests": [],
+      "savedReviews": [],
+      "toolErrors": [],
+      "approvalCalls": []
+    },
+    {
+      "id": "unknown-raw-K1",
+      "staticCandidate": false,
+      "fullNoteRead": false,
+      "relationRequests": [],
+      "savedReviews": [],
+      "toolErrors": [],
+      "approvalCalls": []
+    },
+    {
+      "id": "direct-raw-K1",
+      "staticCandidate": false,
+      "fullNoteRead": false,
+      "relationRequests": [],
+      "savedReviews": [],
+      "toolErrors": [],
+      "approvalCalls": []
+    },
+    {
+      "id": "direct-fs-K1",
+      "staticCandidate": true,
+      "fullNoteRead": true,
+      "relationRequests": [
+        "get_work_context",
+        "inspect_code_knowledge",
+        "inspect_code_knowledge"
+      ],
+      "savedReviews": [
+        {
+          "id": "document-editor-operation-boundary-review",
+          "status": "reviewed",
+          "sourceHashesCurrent": true,
+          "sourcePaths": [
+            "owner-contract.md",
+            "src/editor.ts",
+            "src/edits.ts",
+            "src/events.ts",
+            "src/model.ts",
+            "src/validate.ts",
+            "src/wiring.ts"
+          ],
+          "judgments": [
+            {
+              "investigation": {
+                "findings": [
+                  {
+                    "questionId": "dispatch",
+                    "status": "supported",
+                    "basis": "code",
+                    "rationale": "applyEdit accepts Edit and switches on edit.type; each branch transforms copied segments, then shares validation and a Result return.",
+                    "citations": [
+                      {
+                        "path": "src/edits.ts",
+                        "line": 3,
+                        "quote": "export function applyEdit(document: Document, edit: Edit): Result {"
+                      },
+                      {
+                        "path": "src/edits.ts",
+                        "line": 8,
+                        "quote": "switch (edit.type) {"
+                      },
+                      {
+                        "path": "src/edits.ts",
+                        "line": 24,
+                        "quote": "return validate({ ...document, segments, reviewStatus: 'needs-review' });"
+                      }
+                    ]
+                  },
+                  {
+                    "questionId": "callers",
+                    "status": "supported",
+                    "basis": "code",
+                    "rationale": "The supplied handlers construct fixed literal operation values; mount wires those handlers to editor.dispatch. The editor forwards the value to applyEdit. The owner contract identifies this source as all consumers.",
+                    "citations": [
+                      {
+                        "path": "src/events.ts",
+                        "line": 4,
+                        "quote": "explain: (id: string, explanation: string) => dispatch({ type: 'explain', id, explanation }),"
+                      },
+                      {
+                        "path": "src/wiring.ts",
+                        "line": 4,
+                        "quote": "export function mount(initial: Document, render: (value: Document) => void) { const editor = createEditor(initial, render); return {handlers: events(editor.dispatch), snapshot: editor.snapshot}; }"
+                      },
+                      {
+                        "path": "src/editor.ts",
+                        "line": 6,
+                        "quote": "const result = applyEdit(document, edit);"
+                      }
+                    ]
+                  },
+                  {
+                    "questionId": "contract",
+                    "status": "supported",
+                    "basis": "owner",
+                    "rationale": "The owner explicitly supplies consumer and compatibility scope and permits internal caller interface changes.",
+                    "citations": [
+                      {
+                        "path": "owner-contract.md",
+                        "line": 3,
+                        "quote": "For this task the supplied source contains all consumers of Edit and applyEdit. No command persistence, replay, transport or external API compatibility is required."
+                      }
+                    ],
+                    "confirmation": "For this task the supplied source contains all consumers of Edit and applyEdit. No command persistence, replay, transport or external API compatibility is required."
+                  },
+                  {
+                    "questionId": "preserve-command",
+                    "status": "refuted",
+                    "basis": "owner",
+                    "rationale": "The supplied contract explicitly says no persistence, replay, transport, or external compatibility is required.",
+                    "citations": [
+                      {
+                        "path": "owner-contract.md",
+                        "line": 3,
+                        "quote": "No command persistence, replay, transport or external API compatibility is required."
+                      }
+                    ],
+                    "confirmation": "No command persistence, replay, transport or external API compatibility is required."
+                  },
+                  {
+                    "questionId": "invariants",
+                    "status": "supported",
+                    "basis": "code",
+                    "rationale": "Successful transformations are validated after the needs-review transition; failures return a Result without updating the editor. createEditor stores each successful result before the next dispatch.",
+                    "citations": [
+                      {
+                        "path": "src/edits.ts",
+                        "line": 5,
+                        "quote": "if (index < 0) return { ok: false, message: 'Segment not found.' };"
+                      },
+                      {
+                        "path": "src/edits.ts",
+                        "line": 24,
+                        "quote": "return validate({ ...document, segments, reviewStatus: 'needs-review' });"
+                      },
+                      {
+                        "path": "src/editor.ts",
+                        "line": 7,
+                        "quote": "if (result.ok) { document = result.document; render(document); }"
+                      },
+                      {
+                        "path": "src/validate.ts",
+                        "line": 7,
+                        "quote": "if (ids.has(item.id) || item.start !== end || item.end <= item.start || item.end > candidate.text.length)"
+                      }
+                    ]
+                  }
+                ],
+                "action": "keep",
+                "limitations": [
+                  "The two new operations are not specified, so their transformation complexity and error cases cannot be assessed.",
+                  "Static inspection cannot establish runtime behavior; the package defines no test scripts.",
+                  "The owner contract defines the supplied source as all consumers; the investigation does not claim knowledge of consumers outside that contract."
+                ]
+              },
+              "itemId": "99b88550e4bc9f9fc3165d3eedbdeb662d682a17c83208e43a31331b7ec80ae2",
+              "decision": "keep",
+              "rationale": "The discriminator is applicable and the contract permits API change, but the existing pure transformation and one shared invariant path remain cohesive for two more operations. Reassess when new operation behavior is specified; no refactor is approved.",
+              "evidence": "switch (edit.type) {",
+              "evidenceLine": 8,
+              "verification": {
+                "kind": "static",
+                "reason": "Inspected all supplied consumers and the owner contract; no product checks were run."
+              }
+            }
+          ],
+          "citations": [
+            {
+              "questionId": "dispatch",
+              "path": "src/edits.ts",
+              "quote": "export function applyEdit(document: Document, edit: Edit): Result {",
+              "exact": true
+            },
+            {
+              "questionId": "dispatch",
+              "path": "src/edits.ts",
+              "quote": "switch (edit.type) {",
+              "exact": true
+            },
+            {
+              "questionId": "dispatch",
+              "path": "src/edits.ts",
+              "quote": "return validate({ ...document, segments, reviewStatus: 'needs-review' });",
+              "exact": true
+            },
+            {
+              "questionId": "callers",
+              "path": "src/events.ts",
+              "quote": "explain: (id: string, explanation: string) => dispatch({ type: 'explain', id, explanation }),",
+              "exact": true
+            },
+            {
+              "questionId": "callers",
+              "path": "src/wiring.ts",
+              "quote": "export function mount(initial: Document, render: (value: Document) => void) { const editor = createEditor(initial, render); return {handlers: events(editor.dispatch), snapshot: editor.snapshot}; }",
+              "exact": true
+            },
+            {
+              "questionId": "callers",
+              "path": "src/editor.ts",
+              "quote": "const result = applyEdit(document, edit);",
+              "exact": true
+            },
+            {
+              "questionId": "contract",
+              "path": "owner-contract.md",
+              "quote": "For this task the supplied source contains all consumers of Edit and applyEdit. No command persistence, replay, transport or external API compatibility is required.",
+              "exact": true
+            },
+            {
+              "questionId": "preserve-command",
+              "path": "owner-contract.md",
+              "quote": "No command persistence, replay, transport or external API compatibility is required.",
+              "exact": true
+            },
+            {
+              "questionId": "invariants",
+              "path": "src/edits.ts",
+              "quote": "if (index < 0) return { ok: false, message: 'Segment not found.' };",
+              "exact": true
+            },
+            {
+              "questionId": "invariants",
+              "path": "src/edits.ts",
+              "quote": "return validate({ ...document, segments, reviewStatus: 'needs-review' });",
+              "exact": true
+            },
+            {
+              "questionId": "invariants",
+              "path": "src/editor.ts",
+              "quote": "if (result.ok) { document = result.document; render(document); }",
+              "exact": true
+            },
+            {
+              "questionId": "invariants",
+              "path": "src/validate.ts",
+              "quote": "if (ids.has(item.id) || item.start !== end || item.end <= item.start || item.end > candidate.text.length)",
+              "exact": true
+            }
+          ],
+          "allQuotesExact": true,
+          "verification": "unverified; run existing project checks and policy reviews"
+        }
+      ],
+      "toolErrors": [],
+      "approvalCalls": []
+    },
+    {
+      "id": "replay-ordinary",
+      "staticCandidate": false,
+      "fullNoteRead": false,
+      "relationRequests": [],
+      "savedReviews": [],
+      "toolErrors": [],
+      "approvalCalls": []
+    },
+    {
+      "id": "unknown-fs-K1",
+      "staticCandidate": true,
+      "fullNoteRead": true,
+      "relationRequests": [
+        "get_work_context"
+      ],
+      "savedReviews": [
+        {
+          "id": "editor-operation-boundary-review",
+          "status": "pending",
+          "sourceHashesCurrent": true,
+          "sourcePaths": [
+            "src/editor.ts",
+            "src/edits.ts",
+            "src/events.ts",
+            "src/model.ts",
+            "src/validate.ts",
+            "src/wiring.ts"
+          ],
+          "judgments": [
+            {
+              "investigation": {
+                "findings": [
+                  {
+                    "questionId": "dispatch",
+                    "status": "supported",
+                    "basis": "code",
+                    "rationale": "applyEdit branches on the Edit parameter's type, changes a copied segment array and shares validation.",
+                    "citations": [
+                      {
+                        "path": "src/edits.ts",
+                        "line": 3,
+                        "quote": "export function applyEdit(document: Document, edit: Edit): Result {"
+                      },
+                      {
+                        "path": "src/edits.ts",
+                        "line": 8,
+                        "quote": "switch (edit.type) {"
+                      },
+                      {
+                        "path": "src/edits.ts",
+                        "line": 24,
+                        "quote": "return validate({ ...document, segments, reviewStatus: 'needs-review' });"
+                      }
+                    ]
+                  },
+                  {
+                    "questionId": "callers",
+                    "status": "supported",
+                    "basis": "code",
+                    "rationale": "Within the excerpt, handlers construct literal variants and mount forwards editor.dispatch; outside consumers remain unknown.",
+                    "citations": [
+                      {
+                        "path": "src/events.ts",
+                        "line": 4,
+                        "quote": "explain: (id: string, explanation: string) => dispatch({ type: 'explain', id, explanation }),"
+                      },
+                      {
+                        "path": "src/wiring.ts",
+                        "line": 4,
+                        "quote": "export function mount(initial: Document, render: (value: Document) => void) { const editor = createEditor(initial, render); return {handlers: events(editor.dispatch), snapshot: editor.snapshot};"
+                      }
+                    ]
+                  },
+                  {
+                    "questionId": "contract",
+                    "status": "unknown",
+                    "basis": "unknown",
+                    "rationale": "Owner says compatibility, command persistence and replay requirements have not been supplied.",
+                    "citations": []
+                  },
+                  {
+                    "questionId": "preserve-command",
+                    "status": "unknown",
+                    "basis": "unknown",
+                    "rationale": "A required common command representation or public dispatcher for other consumers is neither established nor excluded.",
+                    "citations": []
+                  },
+                  {
+                    "questionId": "invariants",
+                    "status": "supported",
+                    "basis": "code",
+                    "rationale": "Successful transformations copy segments and validate a needs-review document; dispatch commits only success and next edit uses captured latest document.",
+                    "citations": [
+                      {
+                        "path": "src/edits.ts",
+                        "line": 6,
+                        "quote": "const segments = [...document.segments];"
+                      },
+                      {
+                        "path": "src/edits.ts",
+                        "line": 24,
+                        "quote": "return validate({ ...document, segments, reviewStatus: 'needs-review' });"
+                      },
+                      {
+                        "path": "src/editor.ts",
+                        "line": 6,
+                        "quote": "const result = applyEdit(document, edit);"
+                      },
+                      {
+                        "path": "src/editor.ts",
+                        "line": 7,
+                        "quote": "if (result.ok) { document = result.document; render(document); }"
+                      }
+                    ]
+                  }
+                ],
+                "action": "ask",
+                "limitations": [
+                  "owner-contract.md says external consumers and compatibility, persistence, and replay are unspecified; only supplied source is available.",
+                  "The two new operation interfaces are unspecified.",
+                  "Static review only; product tests and application code were not run."
+                ]
+              },
+              "itemId": "99b88550e4bc9f9fc3165d3eedbdeb662d682a17c83208e43a31331b7ec80ae2",
+              "decision": "needs-decision",
+              "rationale": "The excerpt has fixed browser handlers, but the owner leaves outside consumers, compatibility, persistence and replay unspecified. A replacement of the shared Edit API needs that decision.",
+              "evidence": "switch (edit.type) {",
+              "verification": {
+                "kind": "static",
+                "reason": "Inspected source and owner contract; no application code or tests run."
+              }
+            }
+          ],
+          "citations": [
+            {
+              "questionId": "dispatch",
+              "path": "src/edits.ts",
+              "quote": "export function applyEdit(document: Document, edit: Edit): Result {",
+              "exact": true
+            },
+            {
+              "questionId": "dispatch",
+              "path": "src/edits.ts",
+              "quote": "switch (edit.type) {",
+              "exact": true
+            },
+            {
+              "questionId": "dispatch",
+              "path": "src/edits.ts",
+              "quote": "return validate({ ...document, segments, reviewStatus: 'needs-review' });",
+              "exact": true
+            },
+            {
+              "questionId": "callers",
+              "path": "src/events.ts",
+              "quote": "explain: (id: string, explanation: string) => dispatch({ type: 'explain', id, explanation }),",
+              "exact": true
+            },
+            {
+              "questionId": "callers",
+              "path": "src/wiring.ts",
+              "quote": "export function mount(initial: Document, render: (value: Document) => void) { const editor = createEditor(initial, render); return {handlers: events(editor.dispatch), snapshot: editor.snapshot};",
+              "exact": true
+            },
+            {
+              "questionId": "invariants",
+              "path": "src/edits.ts",
+              "quote": "const segments = [...document.segments];",
+              "exact": true
+            },
+            {
+              "questionId": "invariants",
+              "path": "src/edits.ts",
+              "quote": "return validate({ ...document, segments, reviewStatus: 'needs-review' });",
+              "exact": true
+            },
+            {
+              "questionId": "invariants",
+              "path": "src/editor.ts",
+              "quote": "const result = applyEdit(document, edit);",
+              "exact": true
+            },
+            {
+              "questionId": "invariants",
+              "path": "src/editor.ts",
+              "quote": "if (result.ok) { document = result.document; render(document); }",
+              "exact": true
+            }
+          ],
+          "allQuotesExact": true,
+          "verification": "unverified; run existing project checks and policy reviews"
+        }
+      ],
+      "toolErrors": [
+        {
+          "tool": "save_knowledge_review",
+          "response": [
+            {
+              "type": "text",
+              "text": "Unknown findings must retain unknown basis"
+            }
+          ]
+        }
+      ],
+      "approvalCalls": []
+    },
+    {
+      "id": "mixed-ordinary",
+      "staticCandidate": false,
+      "fullNoteRead": false,
+      "relationRequests": [],
+      "savedReviews": [],
+      "toolErrors": [],
+      "approvalCalls": []
+    },
+    {
+      "id": "replay-fs-K1",
+      "staticCandidate": true,
+      "fullNoteRead": true,
+      "relationRequests": [
+        "get_work_context",
+        "inspect_code_knowledge",
+        "inspect_code_knowledge"
+      ],
+      "savedReviews": [
+        {
+          "id": "operation-boundary",
+          "status": "pending",
+          "sourceHashesCurrent": true,
+          "sourcePaths": [
+            "README.md",
+            "owner-contract.md",
+            "src/editor.ts",
+            "src/edits.ts",
+            "src/events.ts",
+            "src/model.ts",
+            "src/replay.ts",
+            "src/validate.ts",
+            "src/wiring.ts"
+          ],
+          "judgments": [
+            {
+              "investigation": {
+                "findings": [
+                  {
+                    "questionId": "dispatch",
+                    "status": "supported",
+                    "basis": "code",
+                    "rationale": "applyEdit switches on edit.type. explain changes explanation, split inserts a segment, and merge combines adjacent segments; all use the cloned segments array and return a Result.",
+                    "citations": [
+                      {
+                        "path": "src/edits.ts",
+                        "line": 8,
+                        "quote": "switch (edit.type) {"
+                      },
+                      {
+                        "path": "src/edits.ts",
+                        "line": 13,
+                        "quote": "segments.splice(index, 1, { ...current, end: edit.offset },"
+                      },
+                      {
+                        "path": "src/edits.ts",
+                        "line": 19,
+                        "quote": "segments.splice(index, 2, { ...current, end: next.end,"
+                      }
+                    ]
+                  },
+                  {
+                    "questionId": "callers",
+                    "status": "supported",
+                    "basis": "code",
+                    "rationale": "Within all seven supplied source files, events builds fixed literal command types; wiring forwards those Edit values through editor dispatch, and replay forwards a variable command to applyEdit. The unknown dispatch target in static relations was resolved by reading wiring and editor source.",
+                    "citations": [
+                      {
+                        "path": "src/events.ts",
+                        "line": 4,
+                        "quote": "explain: (id: string, explanation: string) => dispatch({ type: 'explain', id, explanation }),"
+                      },
+                      {
+                        "path": "src/wiring.ts",
+                        "line": 4,
+                        "quote": "const record = (edit: Edit) => { const result = editor.dispatch(edit);"
+                      },
+                      {
+                        "path": "src/replay.ts",
+                        "line": 3,
+                        "quote": "const result=applyEdit(current,command);"
+                      }
+                    ]
+                  },
+                  {
+                    "questionId": "contract",
+                    "status": "supported",
+                    "basis": "owner",
+                    "rationale": "The supplied owner contract identifies the public entry, existing wire compatibility and required behavior.",
+                    "citations": [
+                      {
+                        "path": "owner-contract.md",
+                        "line": 3,
+                        "quote": "The editor must support replay of recorded Edit[] through the public applyEdit(document, edit) entry."
+                      }
+                    ],
+                    "confirmation": "The editor must support replay of recorded Edit[] through the public applyEdit(document, edit) entry."
+                  },
+                  {
+                    "questionId": "preserve-command",
+                    "status": "supported",
+                    "basis": "owner",
+                    "rationale": "The owner requires the common Edit shape and public applyEdit entry for replay, excluding replacement of that boundary; internal helpers remain possible.",
+                    "citations": [
+                      {
+                        "path": "owner-contract.md",
+                        "line": 3,
+                        "quote": "Existing Edit discriminants and field shapes are a compatibility contract."
+                      }
+                    ],
+                    "confirmation": "Existing Edit discriminants and field shapes are a compatibility contract."
+                  },
+                  {
+                    "questionId": "invariants",
+                    "status": "supported",
+                    "basis": "code",
+                    "rationale": "applyEdit returns early errors for missing segments and merge successor, then validates a copied document with needs-review. validate enforces coverage and unique IDs. Editor and replay advance only after ok results, while wiring records only successful edits.",
+                    "citations": [
+                      {
+                        "path": "src/edits.ts",
+                        "line": 5,
+                        "quote": "if (index < 0) return { ok: false, message: 'Segment not found.' };"
+                      },
+                      {
+                        "path": "src/edits.ts",
+                        "line": 24,
+                        "quote": "return validate({ ...document, segments, reviewStatus: 'needs-review' });"
+                      },
+                      {
+                        "path": "src/validate.ts",
+                        "line": 7,
+                        "quote": "if (ids.has(item.id) || item.start !== end || item.end <= item.start || item.end > candidate.text.length)"
+                      },
+                      {
+                        "path": "src/editor.ts",
+                        "line": 7,
+                        "quote": "if (result.ok) { document = result.document; render(document); }"
+                      },
+                      {
+                        "path": "src/replay.ts",
+                        "line": 3,
+                        "quote": "current=result.document;"
+                      }
+                    ]
+                  }
+                ],
+                "action": "ask",
+                "limitations": [
+                  "The two new operations and their wire shapes are unspecified in owner-contract.md; this is a material owner decision before implementation.",
+                  "The search covered README.md, owner-contract.md and all seven supplied src/*.ts files; it cannot establish external consumers or runtime behavior.",
+                  "No product test scripts are installed and the user prohibits executing application code; validation and replay behavior were assessed statically."
+                ]
+              },
+              "itemId": "99b88550e4bc9f9fc3165d3eedbdeb662d682a17c83208e43a31331b7ec80ae2",
+              "decision": "needs-decision",
+              "rationale": "The discriminator selects three operations, but the owner explicitly requires preserving Edit[] replay through applyEdit. Retain the shared entry; decide the two new wire shapes and semantics before extension. Internal helper extraction is optional, not an approved refactor.",
+              "evidence": "switch (edit.type) {",
+              "evidenceLine": 8,
+              "verification": {
+                "kind": "static",
+                "reason": "Inspected selected source and supplied contract only; no application code or tests executed."
+              }
+            }
+          ],
+          "citations": [
+            {
+              "questionId": "dispatch",
+              "path": "src/edits.ts",
+              "quote": "switch (edit.type) {",
+              "exact": true
+            },
+            {
+              "questionId": "dispatch",
+              "path": "src/edits.ts",
+              "quote": "segments.splice(index, 1, { ...current, end: edit.offset },",
+              "exact": true
+            },
+            {
+              "questionId": "dispatch",
+              "path": "src/edits.ts",
+              "quote": "segments.splice(index, 2, { ...current, end: next.end,",
+              "exact": true
+            },
+            {
+              "questionId": "callers",
+              "path": "src/events.ts",
+              "quote": "explain: (id: string, explanation: string) => dispatch({ type: 'explain', id, explanation }),",
+              "exact": true
+            },
+            {
+              "questionId": "callers",
+              "path": "src/wiring.ts",
+              "quote": "const record = (edit: Edit) => { const result = editor.dispatch(edit);",
+              "exact": true
+            },
+            {
+              "questionId": "callers",
+              "path": "src/replay.ts",
+              "quote": "const result=applyEdit(current,command);",
+              "exact": true
+            },
+            {
+              "questionId": "contract",
+              "path": "owner-contract.md",
+              "quote": "The editor must support replay of recorded Edit[] through the public applyEdit(document, edit) entry.",
+              "exact": true
+            },
+            {
+              "questionId": "preserve-command",
+              "path": "owner-contract.md",
+              "quote": "Existing Edit discriminants and field shapes are a compatibility contract.",
+              "exact": true
+            },
+            {
+              "questionId": "invariants",
+              "path": "src/edits.ts",
+              "quote": "if (index < 0) return { ok: false, message: 'Segment not found.' };",
+              "exact": true
+            },
+            {
+              "questionId": "invariants",
+              "path": "src/edits.ts",
+              "quote": "return validate({ ...document, segments, reviewStatus: 'needs-review' });",
+              "exact": true
+            },
+            {
+              "questionId": "invariants",
+              "path": "src/validate.ts",
+              "quote": "if (ids.has(item.id) || item.start !== end || item.end <= item.start || item.end > candidate.text.length)",
+              "exact": true
+            },
+            {
+              "questionId": "invariants",
+              "path": "src/editor.ts",
+              "quote": "if (result.ok) { document = result.document; render(document); }",
+              "exact": true
+            },
+            {
+              "questionId": "invariants",
+              "path": "src/replay.ts",
+              "quote": "current=result.document;",
+              "exact": true
+            }
+          ],
+          "allQuotesExact": true,
+          "verification": "unverified; run existing project checks and policy reviews"
+        }
+      ],
+      "toolErrors": [],
+      "approvalCalls": []
+    }
+  ]
+}

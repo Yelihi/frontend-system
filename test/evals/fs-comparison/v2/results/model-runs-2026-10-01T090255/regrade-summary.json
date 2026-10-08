@@ -1,0 +1,374 @@
+{
+  "complete": true,
+  "graderSha256": "856e900d0edb7c8401459a5bc3407037735b49c4477dfe25a9dc571a25c76bfa",
+  "calibration": "label-semantics/calibration/summary.json",
+  "results": [
+    {
+      "run": "01",
+      "originalPassed": 110,
+      "correctedPassed": 110,
+      "changes": [],
+      "sourceUnchanged": true
+    },
+    {
+      "run": "02",
+      "originalPassed": 110,
+      "correctedPassed": 110,
+      "changes": [],
+      "sourceUnchanged": true
+    },
+    {
+      "run": "03",
+      "originalPassed": 110,
+      "correctedPassed": 110,
+      "changes": [],
+      "sourceUnchanged": true
+    },
+    {
+      "run": "04",
+      "originalPassed": 109,
+      "correctedPassed": 109,
+      "changes": [],
+      "sourceUnchanged": true
+    },
+    {
+      "run": "05",
+      "originalPassed": 109,
+      "correctedPassed": 109,
+      "changes": [],
+      "sourceUnchanged": true
+    },
+    {
+      "run": "06",
+      "originalPassed": 110,
+      "correctedPassed": 110,
+      "changes": [],
+      "sourceUnchanged": true
+    },
+    {
+      "run": "07",
+      "originalPassed": 110,
+      "correctedPassed": 110,
+      "changes": [],
+      "sourceUnchanged": true
+    },
+    {
+      "run": "08",
+      "originalPassed": 110,
+      "correctedPassed": 110,
+      "changes": [],
+      "sourceUnchanged": true
+    },
+    {
+      "run": "09",
+      "originalPassed": 107,
+      "correctedPassed": 107,
+      "changes": [],
+      "sourceUnchanged": true
+    },
+    {
+      "run": "10",
+      "originalPassed": 109,
+      "correctedPassed": 109,
+      "changes": [],
+      "sourceUnchanged": true
+    },
+    {
+      "run": "11",
+      "originalPassed": 110,
+      "correctedPassed": 110,
+      "changes": [],
+      "sourceUnchanged": true
+    },
+    {
+      "run": "12",
+      "originalPassed": 110,
+      "correctedPassed": 110,
+      "changes": [],
+      "sourceUnchanged": true
+    },
+    {
+      "run": "13",
+      "originalPassed": 104,
+      "correctedPassed": 110,
+      "changes": [
+        {
+          "id": "default-and-updated-total",
+          "category": "browser",
+          "original": "failed",
+          "corrected": "passed"
+        },
+        {
+          "id": "late-success",
+          "category": "browser",
+          "original": "failed",
+          "corrected": "passed"
+        },
+        {
+          "id": "late-failure",
+          "category": "browser",
+          "original": "failed",
+          "corrected": "passed"
+        },
+        {
+          "id": "order-lock-failure-retry",
+          "category": "browser",
+          "original": "failed",
+          "corrected": "passed"
+        },
+        {
+          "id": "keyboard-order",
+          "category": "browser",
+          "original": "failed",
+          "corrected": "passed"
+        },
+        {
+          "id": "mobile-and-runtime",
+          "category": "browser",
+          "original": "failed",
+          "corrected": "passed"
+        }
+      ],
+      "sourceUnchanged": true
+    },
+    {
+      "run": "14",
+      "originalPassed": 110,
+      "correctedPassed": 110,
+      "changes": [],
+      "sourceUnchanged": true
+    },
+    {
+      "run": "15",
+      "originalPassed": 108,
+      "correctedPassed": 110,
+      "changes": [
+        {
+          "id": "default-and-updated-total",
+          "category": "browser",
+          "original": "failed",
+          "corrected": "passed"
+        },
+        {
+          "id": "order-lock-failure-retry",
+          "category": "browser",
+          "original": "failed",
+          "corrected": "passed"
+        }
+      ],
+      "sourceUnchanged": true
+    },
+    {
+      "run": "16",
+      "originalPassed": 108,
+      "correctedPassed": 110,
+      "changes": [
+        {
+          "id": "default-and-updated-total",
+          "category": "browser",
+          "original": "failed",
+          "corrected": "passed"
+        },
+        {
+          "id": "order-lock-failure-retry",
+          "category": "browser",
+          "original": "failed",
+          "corrected": "passed"
+        }
+      ],
+      "sourceUnchanged": true
+    },
+    {
+      "run": "17",
+      "originalPassed": 110,
+      "correctedPassed": 110,
+      "changes": [],
+      "sourceUnchanged": true
+    },
+    {
+      "run": "18",
+      "originalPassed": 108,
+      "correctedPassed": 110,
+      "changes": [
+        {
+          "id": "default-and-updated-total",
+          "category": "browser",
+          "original": "failed",
+          "corrected": "passed"
+        },
+        {
+          "id": "order-lock-failure-retry",
+          "category": "browser",
+          "original": "failed",
+          "corrected": "passed"
+        }
+      ],
+      "sourceUnchanged": true
+    },
+    {
+      "run": "19",
+      "originalPassed": 110,
+      "correctedPassed": 110,
+      "changes": [],
+      "sourceUnchanged": true
+    },
+    {
+      "run": "20",
+      "originalPassed": 110,
+      "correctedPassed": 110,
+      "changes": [],
+      "sourceUnchanged": true
+    },
+    {
+      "run": "21",
+      "originalPassed": 110,
+      "correctedPassed": 110,
+      "changes": [],
+      "sourceUnchanged": true
+    },
+    {
+      "run": "22",
+      "originalPassed": 110,
+      "correctedPassed": 110,
+      "changes": [],
+      "sourceUnchanged": true
+    },
+    {
+      "run": "23",
+      "originalPassed": 110,
+      "correctedPassed": 110,
+      "changes": [],
+      "sourceUnchanged": true
+    },
+    {
+      "run": "24",
+      "originalPassed": 109,
+      "correctedPassed": 109,
+      "changes": [],
+      "sourceUnchanged": true
+    },
+    {
+      "run": "25",
+      "originalPassed": 108,
+      "correctedPassed": 110,
+      "changes": [
+        {
+          "id": "default-and-updated-total",
+          "category": "browser",
+          "original": "failed",
+          "corrected": "passed"
+        },
+        {
+          "id": "order-lock-failure-retry",
+          "category": "browser",
+          "original": "failed",
+          "corrected": "passed"
+        }
+      ],
+      "sourceUnchanged": true
+    },
+    {
+      "run": "26",
+      "originalPassed": 9,
+      "correctedPassed": 9,
+      "changes": [],
+      "sourceUnchanged": true
+    },
+    {
+      "run": "27",
+      "originalPassed": 110,
+      "correctedPassed": 110,
+      "changes": [],
+      "sourceUnchanged": true
+    },
+    {
+      "run": "28",
+      "originalPassed": 108,
+      "correctedPassed": 110,
+      "changes": [
+        {
+          "id": "default-and-updated-total",
+          "category": "browser",
+          "original": "failed",
+          "corrected": "passed"
+        },
+        {
+          "id": "order-lock-failure-retry",
+          "category": "browser",
+          "original": "failed",
+          "corrected": "passed"
+        }
+      ],
+      "sourceUnchanged": true
+    },
+    {
+      "run": "29",
+      "originalPassed": 110,
+      "correctedPassed": 110,
+      "changes": [],
+      "sourceUnchanged": true
+    },
+    {
+      "run": "30",
+      "originalPassed": 110,
+      "correctedPassed": 110,
+      "changes": [],
+      "sourceUnchanged": true
+    },
+    {
+      "run": "31",
+      "originalPassed": 110,
+      "correctedPassed": 110,
+      "changes": [],
+      "sourceUnchanged": true
+    },
+    {
+      "run": "32",
+      "originalPassed": 110,
+      "correctedPassed": 110,
+      "changes": [],
+      "sourceUnchanged": true
+    },
+    {
+      "run": "33",
+      "originalPassed": 110,
+      "correctedPassed": 110,
+      "changes": [],
+      "sourceUnchanged": true
+    },
+    {
+      "run": "34",
+      "originalPassed": 110,
+      "correctedPassed": 110,
+      "changes": [],
+      "sourceUnchanged": true
+    },
+    {
+      "run": "35",
+      "originalPassed": 108,
+      "correctedPassed": 110,
+      "changes": [
+        {
+          "id": "default-and-updated-total",
+          "category": "browser",
+          "original": "failed",
+          "corrected": "passed"
+        },
+        {
+          "id": "order-lock-failure-retry",
+          "category": "browser",
+          "original": "failed",
+          "corrected": "passed"
+        }
+      ],
+      "sourceUnchanged": true
+    },
+    {
+      "run": "36",
+      "originalPassed": 110,
+      "correctedPassed": 110,
+      "changes": [],
+      "sourceUnchanged": true
+    }
+  ]
+}

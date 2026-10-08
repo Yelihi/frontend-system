@@ -1,0 +1,57 @@
+{
+  "manifestHash": "61570958f5f9eb995523bfb1dd0ea4e16ea984d685872a5f5eeb4f50428f94e6",
+  "status": "blocked",
+  "rows": [
+    {
+      "arm": "fs",
+      "stage": "initial",
+      "eligible": false,
+      "stageRecorded": true,
+      "firstGrade": null,
+      "finalGrade": null,
+      "workflow": "workflow-failed",
+      "totalTokens": null,
+      "uncachedInputPlusOutput": null,
+      "reportedTokenLowerBound": 0,
+      "seconds": 46.014,
+      "timeScope": "recorded calls; unfinished calls may be absent",
+      "calls": 1,
+      "repairs": 0,
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "threadIds": [
+        "01a10a0f-2518-7350-8d74-cf6f3388ec61"
+      ]
+    }
+  ],
+  "totals": [
+    {
+      "arm": "ordinary",
+      "allStagesEligible": false,
+      "stagesRecorded": 0,
+      "totalTokens": null,
+      "uncachedInputPlusOutput": null,
+      "reportedTokenLowerBound": 0,
+      "seconds": null
+    },
+    {
+      "arm": "informed",
+      "allStagesEligible": false,
+      "stagesRecorded": 0,
+      "totalTokens": null,
+      "uncachedInputPlusOutput": null,
+      "reportedTokenLowerBound": 0,
+      "seconds": null
+    },
+    {
+      "arm": "fs",
+      "allStagesEligible": false,
+      "stagesRecorded": 1,
+      "totalTokens": null,
+      "uncachedInputPlusOutput": null,
+      "reportedTokenLowerBound": 0,
+      "seconds": null
+    }
+  ],
+  "limits": "Task-contract scores, not hidden preference obedience. Ordinary vs informed measures document-location guidance; informed vs FS adds workflow. Incomplete cumulative costs remain unknown. No statistical superiority from one run."
+}

@@ -1,0 +1,277 @@
+{
+  "summary": {
+    "calls": 12,
+    "complete": 10,
+    "knownTotalTokens": 7030662,
+    "knownUncachedPlusOutput": 550278,
+    "unknownUsage": 0,
+    "mcpErrors": 21,
+    "uniqueThreads": true
+  },
+  "rows": [
+    {
+      "id": "styles-ordinary",
+      "arm": "ordinary",
+      "case": "styles",
+      "stage": "analysis",
+      "complete": true,
+      "totalTokens": 95723,
+      "uncachedPlusOutput": 13675,
+      "seconds": 94.43,
+      "threadId": "01a11023-11c3-7b60-b9be-7c4312445a26",
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "audit": {
+        "sourceUnchanged": true,
+        "changedInputs": [],
+        "unexpectedFiles": [],
+        "runtimeUnchanged": true,
+        "environmentFailure": null,
+        "artifactCharacters": 5010,
+        "complete": true
+      }
+    },
+    {
+      "id": "styles-ordinary",
+      "arm": "ordinary",
+      "case": "styles",
+      "stage": "plan",
+      "complete": true,
+      "totalTokens": 122354,
+      "uncachedPlusOutput": 23026,
+      "seconds": 119.617,
+      "threadId": "01a1102b-c02d-7222-9237-0809d58f6d74",
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "audit": {
+        "sourceUnchanged": true,
+        "changedInputs": [],
+        "unexpectedFiles": [],
+        "runtimeUnchanged": true,
+        "environmentFailure": null,
+        "artifactCharacters": 5042,
+        "complete": true
+      }
+    },
+    {
+      "id": "styles-raw-K1",
+      "arm": "raw-K1",
+      "case": "styles",
+      "stage": "analysis",
+      "complete": true,
+      "totalTokens": 208985,
+      "uncachedPlusOutput": 43225,
+      "seconds": 90.21,
+      "threadId": "01a11023-11c3-7d81-bed1-bcd008410c73",
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "audit": {
+        "sourceUnchanged": true,
+        "changedInputs": [],
+        "unexpectedFiles": [],
+        "runtimeUnchanged": true,
+        "environmentFailure": null,
+        "artifactCharacters": 6995,
+        "complete": true
+      }
+    },
+    {
+      "id": "styles-raw-K1",
+      "arm": "raw-K1",
+      "case": "styles",
+      "stage": "plan",
+      "complete": false,
+      "totalTokens": 161426,
+      "uncachedPlusOutput": 27794,
+      "seconds": 115.629,
+      "threadId": "01a1102b-c023-7cb3-8214-e4c7b3c06d38",
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "audit": {
+        "sourceUnchanged": true,
+        "changedInputs": [],
+        "unexpectedFiles": [],
+        "runtimeUnchanged": true,
+        "environmentFailure": null,
+        "artifactError": "Missing or unsafe artifact: plan.md",
+        "complete": false
+      }
+    },
+    {
+      "id": "request-ordinary",
+      "arm": "ordinary",
+      "case": "request",
+      "stage": "analysis",
+      "complete": false,
+      "totalTokens": 102094,
+      "uncachedPlusOutput": 17870,
+      "seconds": 91.981,
+      "threadId": "01a11024-723c-7de0-8ac6-89f7e4686ad0",
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "audit": {
+        "sourceUnchanged": true,
+        "changedInputs": [],
+        "unexpectedFiles": [],
+        "runtimeUnchanged": true,
+        "environmentFailure": null,
+        "artifactError": "Missing or unsafe artifact: analysis.md",
+        "complete": false
+      }
+    },
+    {
+      "id": "request-ordinary",
+      "arm": "ordinary",
+      "case": "request",
+      "stage": "plan",
+      "complete": true,
+      "totalTokens": 132523,
+      "uncachedPlusOutput": 49067,
+      "seconds": 92.306,
+      "threadId": "01a1102d-844f-7f51-a822-4a76843bfbcd",
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "audit": {
+        "sourceUnchanged": true,
+        "changedInputs": [],
+        "unexpectedFiles": [],
+        "runtimeUnchanged": true,
+        "environmentFailure": null,
+        "artifactCharacters": 7195,
+        "complete": true
+      }
+    },
+    {
+      "id": "request-fs-K1",
+      "arm": "fs-K1",
+      "case": "request",
+      "stage": "analysis",
+      "complete": true,
+      "totalTokens": 818841,
+      "uncachedPlusOutput": 63257,
+      "seconds": 238.719,
+      "threadId": "01a11024-8254-7b21-a487-a4e7101f2acd",
+      "mcpCalls": 19,
+      "mcpErrors": 5,
+      "audit": {
+        "sourceUnchanged": true,
+        "changedInputs": [],
+        "unexpectedFiles": [],
+        "runtimeUnchanged": true,
+        "environmentFailure": null,
+        "artifactCharacters": 7066,
+        "complete": true
+      }
+    },
+    {
+      "id": "request-fs-K1",
+      "arm": "fs-K1",
+      "case": "request",
+      "stage": "plan",
+      "complete": true,
+      "totalTokens": 1790908,
+      "uncachedPlusOutput": 78780,
+      "seconds": 311.727,
+      "threadId": "01a1102d-93ac-7a21-a8c4-83979c28f2b9",
+      "mcpCalls": 28,
+      "mcpErrors": 8,
+      "audit": {
+        "sourceUnchanged": true,
+        "changedInputs": [],
+        "unexpectedFiles": [],
+        "runtimeUnchanged": true,
+        "environmentFailure": null,
+        "artifactCharacters": 10711,
+        "complete": true
+      }
+    },
+    {
+      "id": "styles-fs-K1",
+      "arm": "fs-K1",
+      "case": "styles",
+      "stage": "analysis",
+      "complete": true,
+      "totalTokens": 1105163,
+      "uncachedPlusOutput": 81547,
+      "seconds": 229.311,
+      "threadId": "01a11025-d9bc-7d12-80fc-1bb97f5004b3",
+      "mcpCalls": 17,
+      "mcpErrors": 2,
+      "audit": {
+        "sourceUnchanged": true,
+        "changedInputs": [],
+        "unexpectedFiles": [],
+        "runtimeUnchanged": true,
+        "environmentFailure": null,
+        "artifactCharacters": 7280,
+        "complete": true
+      }
+    },
+    {
+      "id": "styles-fs-K1",
+      "arm": "fs-K1",
+      "case": "styles",
+      "stage": "plan",
+      "complete": true,
+      "totalTokens": 2013991,
+      "uncachedPlusOutput": 91687,
+      "seconds": 280.765,
+      "threadId": "01a1102e-ed15-7d91-9a64-95b378a64e3a",
+      "mcpCalls": 25,
+      "mcpErrors": 6,
+      "audit": {
+        "sourceUnchanged": true,
+        "changedInputs": [],
+        "unexpectedFiles": [],
+        "runtimeUnchanged": true,
+        "environmentFailure": null,
+        "artifactCharacters": 7951,
+        "complete": true
+      }
+    },
+    {
+      "id": "request-raw-K1",
+      "arm": "raw-K1",
+      "case": "request",
+      "stage": "analysis",
+      "complete": true,
+      "totalTokens": 240616,
+      "uncachedPlusOutput": 30952,
+      "seconds": 116.645,
+      "threadId": "01a11028-276c-7072-8d92-9f33aa2974e1",
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "audit": {
+        "sourceUnchanged": true,
+        "changedInputs": [],
+        "unexpectedFiles": [],
+        "runtimeUnchanged": true,
+        "environmentFailure": null,
+        "artifactCharacters": 9849,
+        "complete": true
+      }
+    },
+    {
+      "id": "request-raw-K1",
+      "arm": "raw-K1",
+      "case": "request",
+      "stage": "plan",
+      "complete": true,
+      "totalTokens": 238038,
+      "uncachedPlusOutput": 29398,
+      "seconds": 150.339,
+      "threadId": "01a11032-55eb-79b1-95a2-7047aadf5927",
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "audit": {
+        "sourceUnchanged": true,
+        "changedInputs": [],
+        "unexpectedFiles": [],
+        "runtimeUnchanged": true,
+        "environmentFailure": null,
+        "artifactCharacters": 7867,
+        "complete": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "fs-K1": {
+    "before": {
+      "totalTokens": 10363304,
+      "uncachedPlusOutput": 556712,
+      "requests": 177,
+      "meanInput": 58091.745762711864,
+      "complete": 6,
+      "mcpErrors": 20
+    },
+    "after": {
+      "totalTokens": 8953538,
+      "uncachedPlusOutput": 463810,
+      "requests": 169,
+      "meanInput": 52580.12426035503,
+      "complete": 6,
+      "mcpErrors": 18
+    },
+    "changePercent": {
+      "totalTokens": -13.603441527914262,
+      "uncachedPlusOutput": -16.68762304387188,
+      "requests": -4.519774011299438,
+      "meanInput": -9.487787688237548,
+      "complete": 0.0,
+      "mcpErrors": -9.999999999999998
+    }
+  },
+  "limits": "Sequential before/after cohorts, n=3 per case/stage/arm; no causal claim. Failures included. Semantic review is separate.",
+  "baseline": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/test/evals/fs-comparison/v14/results/2026-10-07-grouped-records",
+  "treatment": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/test/evals/fs-comparison/v14/results/2026-10-07-plan-delta"
+}

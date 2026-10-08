@@ -1,0 +1,926 @@
+{
+  "summary": {
+    "calls": 12,
+    "completedTurns": 12,
+    "totalTokens": 2272384,
+    "uncachedPlusOutput": 258944,
+    "seconds": 1774.93,
+    "unknownUsage": 0,
+    "mcpErrors": 0,
+    "completedJourneys": 6
+  },
+  "rows": [
+    {
+      "id": "plugin-shell-ordinary",
+      "case": "plugin-shell",
+      "arm": "ordinary",
+      "calls": 2,
+      "completedTurns": 2,
+      "totalTokens": 133272,
+      "uncachedPlusOutput": 27544,
+      "seconds": 182.915,
+      "unknownUsage": 0,
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "knowledgeReads": [],
+      "approvals": [],
+      "commands": [
+        "/bin/zsh -lc \"pwd && rg --files -g 'README.md' -g 'AGENTS.md' -g '\"'!node_modules'\"' -g '\"'!dist'\"' -g '\"'!build'\"' | head -80\"",
+        "/bin/zsh -lc \"rg --files -g '\"'!node_modules'\"' -g '\"'!dist'\"' -g '\"'!build'\"' | head -160\"",
+        "/bin/zsh -lc 'for f in src/*.ts; do echo \"FILE: $f\"; cat \"$f\"; done'",
+        "/bin/zsh -lc 'cat README.md'",
+        "/bin/zsh -lc 'cat package.json tsconfig.json'",
+        "/bin/zsh -lc 'for f in src/*.ts; do echo \"FILE: $f\"; cat \"$f\"; done'",
+        "/bin/zsh -lc 'cat owner-answers.json README.md questions.json'",
+        "/bin/zsh -lc \"rg --files -g 'AGENTS.md' -g 'plan.md' -g '\"'!node_modules'\"'\""
+      ],
+      "audits": [
+        {
+          "id": "plugin-shell-ordinary",
+          "phase": "questions",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 84.088,
+            "completedTurns": 1,
+            "threadId": "01a10cf6-213d-7d62-9844-6dcf68a05f02",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 69545,
+              "cached_input_tokens": 53120,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 1952,
+              "reasoning_output_tokens": 560,
+              "total_tokens": 71497,
+              "uncached_input_tokens": 16425
+            },
+            "cumulativeUsage": {
+              "input_tokens": 69545,
+              "cached_input_tokens": 53120,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 1952,
+              "reasoning_output_tokens": 560
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "postprocessingRecovery": "Allowed prose evidence; original model output and usage retained; no model rerun.",
+          "questions": {
+            "count": 6,
+            "citations": [],
+            "uncitedEvidence": [
+              {
+                "questionId": "q1",
+                "evidence": "src/bus.ts and src/commands.ts hold module-level state used by every dashboard."
+              },
+              {
+                "questionId": "q1",
+                "evidence": "README.md says no global broadcast contract is documented."
+              },
+              {
+                "questionId": "q2",
+                "evidence": "README.md requires dependency injection, while extension.ts and dashboard.ts import the current services directly."
+              },
+              {
+                "questionId": "q2",
+                "evidence": "src/telemetry.ts defines diagnostics but the host does not use it."
+              },
+              {
+                "questionId": "q3",
+                "evidence": "dashboard.load overwrites the stored cleanup function without stopping the previous activation."
+              },
+              {
+                "questionId": "q4",
+                "evidence": "No current path reports errors or defines whether one extension failure affects others."
+              },
+              {
+                "questionId": "q5",
+                "evidence": "README.md says extensions can unload from a callback; bus.emit iterates the mutable listener array directly."
+              },
+              {
+                "questionId": "q6",
+                "evidence": "dashboard.dispose clears its map after calling cleanup functions and has no disposed-state guard."
+              }
+            ],
+            "allQuotesExact": true,
+            "note": "Optional citations; prose is retained for semantic review, never counted as verified quotations. Absence is not proof of grounding."
+          }
+        },
+        {
+          "id": "plugin-shell-ordinary",
+          "phase": "plan",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 98.827,
+            "completedTurns": 1,
+            "threadId": "01a10cf6-213d-7d62-9844-6dcf68a05f02",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 59365,
+              "cached_input_tokens": 52608,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 2410,
+              "reasoning_output_tokens": 674,
+              "total_tokens": 61775,
+              "uncached_input_tokens": 6757
+            },
+            "cumulativeUsage": {
+              "input_tokens": 128910,
+              "cached_input_tokens": 105728,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 4362,
+              "reasoning_output_tokens": 1234
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "planCharacters": 7247
+        }
+      ],
+      "complete": true
+    },
+    {
+      "id": "plugin-shell-raw-K1",
+      "case": "plugin-shell",
+      "arm": "raw-K1",
+      "calls": 2,
+      "completedTurns": 2,
+      "totalTokens": 124355,
+      "uncachedPlusOutput": 19907,
+      "seconds": 165.024,
+      "unknownUsage": 0,
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "knowledgeReads": [],
+      "approvals": [],
+      "commands": [
+        "/bin/zsh -lc \"pwd && rg --files -g 'README.md' -g 'AGENTS.md' -g 'learning/*.md' -g '\"'!node_modules'\"' -g '\"'!dist'\"' -g '\"'!build'\"' | sort && rg --files -g '\"'!node_modules'\"' -g '\"'!dist'\"' -g '\"'!build'\"' | head -100\"",
+        "/bin/zsh -lc 'cat package.json tsconfig.json'",
+        "/bin/zsh -lc 'cat README.md'",
+        "/bin/zsh -lc 'for f in src/*.ts; do echo \"### $f\"; cat \"$f\"; done'",
+        "/bin/zsh -lc 'for f in learning/*.md; do echo \"### $f\"; cat \"$f\"; done'",
+        "/bin/zsh -lc 'cat owner-answers.json'",
+        "/bin/zsh -lc 'cat questions.json'",
+        "/bin/zsh -lc 'for f in src/*.ts; do echo \"### $f\"; cat \"$f\"; done'",
+        "/bin/zsh -lc 'for f in learning/*.md; do echo \"### $f\"; cat \"$f\"; done'",
+        "/bin/zsh -lc 'cat README.md'"
+      ],
+      "audits": [
+        {
+          "id": "plugin-shell-raw-K1",
+          "phase": "questions",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 75.145,
+            "completedTurns": 1,
+            "threadId": "01a10cf6-213d-7322-9daf-0c35f5cb659e",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 57509,
+              "cached_input_tokens": 48896,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 1754,
+              "reasoning_output_tokens": 442,
+              "total_tokens": 59263,
+              "uncached_input_tokens": 8613
+            },
+            "cumulativeUsage": {
+              "input_tokens": 57509,
+              "cached_input_tokens": 48896,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 1754,
+              "reasoning_output_tokens": 442
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "postprocessingRecovery": "Allowed prose evidence; original model output and usage retained; no model rerun.",
+          "questions": {
+            "count": 6,
+            "citations": [],
+            "uncitedEvidence": [
+              {
+                "questionId": "q1",
+                "evidence": "The current bus and command map are module globals, while README.md asks for two dashboards with independent extensions and documents no global broadcast contract."
+              },
+              {
+                "questionId": "q2",
+                "evidence": "README.md permits unloading from a callback; src/bus.ts iterates a mutable listener array directly."
+              },
+              {
+                "questionId": "q3",
+                "evidence": "README.md asks to clarify extension failure policy; src/telemetry.ts defines diagnostics, but the host does not use them."
+              },
+              {
+                "questionId": "q4",
+                "evidence": "src/dashboard.ts overwrites the stored cleanup function; src/commands.ts overwrites the command, so old cleanup can affect a replacement."
+              },
+              {
+                "questionId": "q5",
+                "evidence": "src/dashboard.ts has no disposed state, and README.md asks to clarify disposal policy."
+              },
+              {
+                "questionId": "q6",
+                "evidence": "src/commands.ts exports a global run(id), but src/dashboard.ts exposes no command invocation method; README.md requires dependency injection and independent extensions."
+              }
+            ],
+            "allQuotesExact": true,
+            "note": "Optional citations; prose is retained for semantic review, never counted as verified quotations. Absence is not proof of grounding."
+          }
+        },
+        {
+          "id": "plugin-shell-raw-K1",
+          "phase": "plan",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 89.879,
+            "completedTurns": 1,
+            "threadId": "01a10cf6-213d-7322-9daf-0c35f5cb659e",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 62944,
+              "cached_input_tokens": 55552,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 2148,
+              "reasoning_output_tokens": 429,
+              "total_tokens": 65092,
+              "uncached_input_tokens": 7392
+            },
+            "cumulativeUsage": {
+              "input_tokens": 120453,
+              "cached_input_tokens": 104448,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 3902,
+              "reasoning_output_tokens": 871
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "planCharacters": 7035
+        }
+      ],
+      "complete": true
+    },
+    {
+      "id": "pricing-console-fs-K1",
+      "case": "pricing-console",
+      "arm": "fs-K1",
+      "calls": 2,
+      "completedTurns": 2,
+      "totalTokens": 1164969,
+      "uncachedPlusOutput": 79657,
+      "seconds": 716.715,
+      "unknownUsage": 0,
+      "mcpCalls": 13,
+      "mcpErrors": 0,
+      "knowledgeReads": [
+        {
+          "id": [
+            "pricing-policy"
+          ]
+        }
+      ],
+      "approvals": [],
+      "commands": [
+        "/bin/zsh -lc 'cat ../runtime/skills/fs-plan/SKILL.md'",
+        "/bin/zsh -lc \"pwd && rg --files -g 'README.md' -g 'AGENTS.md' -g '\"'!node_modules'\"' -g '\"'!dist'\"' | head -80 && rg --files -g '\"'!node_modules'\"' -g '\"'!dist'\"' | head -120\"",
+        "/bin/zsh -lc 'cat README.md && cat package.json && cat tsconfig.json'",
+        "/bin/zsh -lc \"cat owner-answers.json && cat README.md && rg --files -g 'AGENTS.md' -g 'plan.md' -g 'questions.json' -g 'owner-answers.json' -g '.frontend-system/**'\"",
+        "/bin/zsh -lc 'node ../runtime/bundle/tool-help.mjs save_revision'",
+        "/bin/zsh -lc 'nl -ba owner-answers.json && nl -ba README.md && nl -ba src/controller.ts && nl -ba src/pricing.ts && nl -ba src/preview.ts && nl -ba src/transport.ts && nl -ba src/model.ts'",
+        "/bin/zsh -lc 'node --version && command -v tsc || true'",
+        "/bin/zsh -lc \"rg -n '\\\"checks\\\"|\\\"requiredCheckIds\\\"|\\\"reviews\\\"' .frontend-system/drafts/portal-refactor.json\"",
+        "/bin/zsh -lc 'cp .frontend-system/plans/portal-refactor/plan.md plan.md'",
+        "/bin/zsh -lc 'cat .frontend-system/drafts/portal-refactor.json'",
+        "/bin/zsh -lc 'cp .frontend-system/plans/portal-refactor/plan.md plan.md'"
+      ],
+      "audits": [
+        {
+          "id": "pricing-console-fs-K1",
+          "phase": "questions",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 128.364,
+            "completedTurns": 1,
+            "threadId": "01a10cf7-46c7-7c42-a333-bc6151d6fea3",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 195310,
+              "cached_input_tokens": 170880,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 2374,
+              "reasoning_output_tokens": 549,
+              "total_tokens": 197684,
+              "uncached_input_tokens": 24430
+            },
+            "cumulativeUsage": {
+              "input_tokens": 195310,
+              "cached_input_tokens": 170880,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 2374,
+              "reasoning_output_tokens": 549
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "postprocessingRecovery": "Allowed prose evidence; original model output and usage retained; no model rerun.",
+          "questions": {
+            "count": 6,
+            "citations": [],
+            "uncitedEvidence": [
+              {
+                "questionId": "q1",
+                "evidence": "src/controller.ts posts {quoteId:id,total} to /orders"
+              },
+              {
+                "questionId": "q1",
+                "evidence": "README.md says signed server quotes are not yet part of the API"
+              },
+              {
+                "questionId": "q2",
+                "evidence": "src/pricing.ts converts decimal strings with Number and rounds only the final total to two places"
+              },
+              {
+                "questionId": "q2",
+                "evidence": "README.md says rounding is undocumented"
+              },
+              {
+                "questionId": "q3",
+                "evidence": "src/pricing.ts applies tax before either promotion"
+              },
+              {
+                "questionId": "q3",
+                "evidence": "README.md says tax order is undocumented"
+              },
+              {
+                "questionId": "q4",
+                "evidence": "src/model.ts types decimal fields as strings and quantity as number"
+              },
+              {
+                "questionId": "q4",
+                "evidence": "src/pricing.ts has no validation, so malformed values can produce NaN"
+              },
+              {
+                "questionId": "q4",
+                "evidence": "README.md says invalid promotions are undocumented"
+              },
+              {
+                "questionId": "q5",
+                "evidence": "src/controller.ts stores one total and confirm(id) can post it with any ID"
+              },
+              {
+                "questionId": "q5",
+                "evidence": "README.md says quote freshness is undocumented"
+              },
+              {
+                "questionId": "q6",
+                "evidence": "README.md asks for a second workflow and injectable transport but does not define that workflow"
+              },
+              {
+                "questionId": "q6",
+                "evidence": "src/preview.ts returns originalOrder and lines from the same quote"
+              },
+              {
+                "questionId": "q6",
+                "evidence": "src/pricing.ts sorts q.lines in place"
+              }
+            ],
+            "allQuotesExact": true,
+            "note": "Optional citations; prose is retained for semantic review, never counted as verified quotations. Absence is not proof of grounding."
+          }
+        },
+        {
+          "id": "pricing-console-fs-K1",
+          "phase": "plan",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 588.351,
+            "completedTurns": 1,
+            "threadId": "01a10cf7-46c7-7c42-a333-bc6151d6fea3",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 953670,
+              "cached_input_tokens": 914432,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 13615,
+              "reasoning_output_tokens": 5933,
+              "total_tokens": 967285,
+              "uncached_input_tokens": 39238
+            },
+            "cumulativeUsage": {
+              "input_tokens": 1148980,
+              "cached_input_tokens": 1085312,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 15989,
+              "reasoning_output_tokens": 6482
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "planCharacters": 13962
+        }
+      ],
+      "complete": true
+    },
+    {
+      "id": "plugin-shell-fs-K1",
+      "case": "plugin-shell",
+      "arm": "fs-K1",
+      "calls": 2,
+      "completedTurns": 2,
+      "totalTokens": 610541,
+      "uncachedPlusOutput": 77421,
+      "seconds": 424.171,
+      "unknownUsage": 0,
+      "mcpCalls": 10,
+      "mcpErrors": 0,
+      "knowledgeReads": [
+        {
+          "id": [
+            "extension-lifecycle"
+          ]
+        }
+      ],
+      "approvals": [],
+      "commands": [
+        "/bin/zsh -lc 'cat ../runtime/skills/fs-plan/SKILL.md'",
+        "/bin/zsh -lc \"pwd && rg --files -g 'README.md' -g 'AGENTS.md' -g '\"'!node_modules'\"' -g '\"'!dist'\"' -g '\"'!build'\"' | head -80\"",
+        "/bin/zsh -lc 'cat README.md'",
+        "/bin/zsh -lc \"rg --files -g '\"'!node_modules'\"' -g '\"'!dist'\"' -g '\"'!build'\"' | head -200\"",
+        "/bin/zsh -lc 'cat owner-answers.json'",
+        "/bin/zsh -lc \"git status --short && rg --files -g 'AGENTS.md' -g 'owner-answers.json' -g 'questions.json' -g 'README.md' -g 'plan.md'\"",
+        "/bin/zsh -lc 'node ../runtime/bundle/tool-help.mjs save_revision'",
+        "/bin/zsh -lc 'cp .frontend-system/plans/portal-refactor/plan.md plan.md'"
+      ],
+      "audits": [
+        {
+          "id": "plugin-shell-fs-K1",
+          "phase": "questions",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 119.675,
+            "completedTurns": 1,
+            "threadId": "01a10cf7-69b2-7432-aadd-b60ff650703a",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 207800,
+              "cached_input_tokens": 171008,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 2673,
+              "reasoning_output_tokens": 596,
+              "total_tokens": 210473,
+              "uncached_input_tokens": 36792
+            },
+            "cumulativeUsage": {
+              "input_tokens": 207800,
+              "cached_input_tokens": 171008,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 2673,
+              "reasoning_output_tokens": 596
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "postprocessingRecovery": "Allowed prose evidence; original model output and usage retained; no model rerun.",
+          "questions": {
+            "count": 6,
+            "citations": [],
+            "uncitedEvidence": [
+              {
+                "questionId": "q1",
+                "evidence": "README.md: Two dashboards must load and unload independent extensions; no global broadcast contract is documented."
+              },
+              {
+                "questionId": "q1",
+                "evidence": "src/dashboard.ts: publish calls the module-level emit function."
+              },
+              {
+                "questionId": "q1",
+                "evidence": "src/bus.ts: listeners are stored in a module-level array."
+              },
+              {
+                "questionId": "q2",
+                "evidence": "README.md: Extensions can unload themselves from inside a callback."
+              },
+              {
+                "questionId": "q2",
+                "evidence": "src/bus.ts: emit iterates the mutable listeners array while unsubscribe splices it."
+              },
+              {
+                "questionId": "q3",
+                "evidence": "README.md: Extension failure policy needs clarification."
+              },
+              {
+                "questionId": "q3",
+                "evidence": "src/extension.ts: activate subscribes and registers in sequence without rollback or error handling."
+              },
+              {
+                "questionId": "q3",
+                "evidence": "src/telemetry.ts: diagnostics can record extension messages but has no callers."
+              },
+              {
+                "questionId": "q4",
+                "evidence": "README.md: Reload policy needs clarification."
+              },
+              {
+                "questionId": "q4",
+                "evidence": "src/dashboard.ts: load overwrites the stored stop callback without calling the old one."
+              },
+              {
+                "questionId": "q4",
+                "evidence": "src/commands.ts: register overwrites an ID; a stale unregister can delete its replacement."
+              },
+              {
+                "questionId": "q5",
+                "evidence": "README.md: Disposal policy needs clarification."
+              },
+              {
+                "questionId": "q5",
+                "evidence": "src/dashboard.ts: dispose runs stored stops and clears them, with no disposed state or error handling."
+              },
+              {
+                "questionId": "q6",
+                "evidence": "README.md: Keep dependency injection and existing event contracts."
+              },
+              {
+                "questionId": "q6",
+                "evidence": "src/extension.ts: activate imports subscribe and register directly."
+              },
+              {
+                "questionId": "q6",
+                "evidence": "src/commands.ts: register and run use one module-level command map; src/dashboard.ts exposes no command runner."
+              }
+            ],
+            "allQuotesExact": true,
+            "note": "Optional citations; prose is retained for semantic review, never counted as verified quotations. Absence is not proof of grounding."
+          }
+        },
+        {
+          "id": "plugin-shell-fs-K1",
+          "phase": "plan",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 304.496,
+            "completedTurns": 1,
+            "threadId": "01a10cf7-69b2-7432-aadd-b60ff650703a",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 392363,
+              "cached_input_tokens": 362112,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 7705,
+              "reasoning_output_tokens": 1657,
+              "total_tokens": 400068,
+              "uncached_input_tokens": 30251
+            },
+            "cumulativeUsage": {
+              "input_tokens": 600163,
+              "cached_input_tokens": 533120,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 10378,
+              "reasoning_output_tokens": 2253
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "planCharacters": 14804
+        }
+      ],
+      "complete": true
+    },
+    {
+      "id": "pricing-console-raw-K1",
+      "case": "pricing-console",
+      "arm": "raw-K1",
+      "calls": 2,
+      "completedTurns": 2,
+      "totalTokens": 122456,
+      "uncachedPlusOutput": 18264,
+      "seconds": 144.53,
+      "unknownUsage": 0,
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "knowledgeReads": [],
+      "approvals": [],
+      "commands": [
+        "/bin/zsh -lc \"rg --files -g '\"'!node_modules'\"' -g '\"'!dist'\"' | head -80\"",
+        "/bin/zsh -lc \"pwd && rg --files -g 'README.md' -g 'AGENTS.md' -g 'learning/*.md' -g '\"'!node_modules'\"' -g '\"'!dist'\"'\"",
+        "/bin/zsh -lc \"for f in learning/*.md; do printf '\\\\nFILE %s\\\\n' \\\"\"'$f\"; cat \"$f\"; done'",
+        "/bin/zsh -lc 'cat README.md'",
+        "/bin/zsh -lc \"for f in package.json tsconfig.json src/*.ts; do printf '\\\\nFILE %s\\\\n' \\\"\"'$f\"; cat \"$f\"; done'",
+        "/bin/zsh -lc 'cat README.md && cat questions.json'",
+        "/bin/zsh -lc 'cat owner-answers.json'",
+        "/bin/zsh -lc \"for f in src/*.ts; do printf '\\\\nFILE %s\\\\n' \\\"\"'$f\"; cat \"$f\"; done'"
+      ],
+      "audits": [
+        {
+          "id": "pricing-console-raw-K1",
+          "phase": "questions",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 64.654,
+            "completedTurns": 1,
+            "threadId": "01a10cfb-c6b5-7df1-a5b8-095b89f684c5",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 58107,
+              "cached_input_tokens": 49536,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 1499,
+              "reasoning_output_tokens": 394,
+              "total_tokens": 59606,
+              "uncached_input_tokens": 8571
+            },
+            "cumulativeUsage": {
+              "input_tokens": 58107,
+              "cached_input_tokens": 49536,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 1499,
+              "reasoning_output_tokens": 394
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "questions": {
+            "count": 6,
+            "citations": [],
+            "uncitedEvidence": [
+              {
+                "questionId": "q1",
+                "evidence": "controller.ts sends its locally calculated total to /orders"
+              },
+              {
+                "questionId": "q1",
+                "evidence": "README.md says signed server quotes and quote freshness are not yet defined"
+              },
+              {
+                "questionId": "q2",
+                "evidence": "pricing.ts applies tax before either promotion type"
+              },
+              {
+                "questionId": "q2",
+                "evidence": "README.md says tax order is undocumented"
+              },
+              {
+                "questionId": "q3",
+                "evidence": "The API supplies decimal strings, but pricing.ts converts them to Number and rounds the final total to two places"
+              },
+              {
+                "questionId": "q4",
+                "evidence": "model.ts leaves numeric fields and promotion limits unconstrained"
+              },
+              {
+                "questionId": "q4",
+                "evidence": "README.md says invalid promotions are undocumented"
+              },
+              {
+                "questionId": "q5",
+                "evidence": "README.md requests reuse by a second sales workflow without describing that workflow"
+              },
+              {
+                "questionId": "q6",
+                "evidence": "pricing.ts sorts q.lines in place"
+              },
+              {
+                "questionId": "q6",
+                "evidence": "preview.ts exposes both originalOrder and the same lines array"
+              }
+            ],
+            "allQuotesExact": true,
+            "note": "Optional citations; prose is retained for semantic review, never counted as verified quotations. Absence is not proof of grounding."
+          }
+        },
+        {
+          "id": "pricing-console-raw-K1",
+          "phase": "plan",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 79.876,
+            "completedTurns": 1,
+            "threadId": "01a10cfb-c6b5-7df1-a5b8-095b89f684c5",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 60846,
+              "cached_input_tokens": 54656,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 2004,
+              "reasoning_output_tokens": 485,
+              "total_tokens": 62850,
+              "uncached_input_tokens": 6190
+            },
+            "cumulativeUsage": {
+              "input_tokens": 118953,
+              "cached_input_tokens": 104192,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 3503,
+              "reasoning_output_tokens": 879
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "planCharacters": 5918
+        }
+      ],
+      "complete": true
+    },
+    {
+      "id": "pricing-console-ordinary",
+      "case": "pricing-console",
+      "arm": "ordinary",
+      "calls": 2,
+      "completedTurns": 2,
+      "totalTokens": 116791,
+      "uncachedPlusOutput": 36151,
+      "seconds": 141.575,
+      "unknownUsage": 0,
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "knowledgeReads": [],
+      "approvals": [],
+      "commands": [
+        "/bin/zsh -lc 'git status --short'",
+        "/bin/zsh -lc \"rg --files -g '\"'!node_modules'\"' -g '\"'!dist'\"' -g '\"'!build'\"' | head -80\"",
+        "/bin/zsh -lc \"pwd && rg --files -g 'README.md' -g 'AGENTS.md' -g '\"'!node_modules'\"' -g '\"'!dist'\"' -g '\"'!build'\"'\"",
+        "/bin/zsh -lc 'cat README.md'",
+        "/bin/zsh -lc 'cat package.json tsconfig.json'",
+        "/bin/zsh -lc \"for f in src/*.ts; do printf '\\\\nFILE %s\\\\n' \\\"\"'$f\"; cat \"$f\"; done'",
+        "/bin/zsh -lc 'cat owner-answers.json README.md'",
+        "/bin/zsh -lc 'cat questions.json && git status --short'",
+        "/bin/zsh -lc \"for f in src/*.ts; do printf '\\\\nFILE %s\\\\n' \\\"\"'$f\"; cat \"$f\"; done'"
+      ],
+      "audits": [
+        {
+          "id": "pricing-console-ordinary",
+          "phase": "questions",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 63.049,
+            "completedTurns": 1,
+            "threadId": "01a10cfb-c6b5-7543-b4ab-1afad3aacf04",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 55654,
+              "cached_input_tokens": 35584,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 1429,
+              "reasoning_output_tokens": 350,
+              "total_tokens": 57083,
+              "uncached_input_tokens": 20070
+            },
+            "cumulativeUsage": {
+              "input_tokens": 55654,
+              "cached_input_tokens": 35584,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 1429,
+              "reasoning_output_tokens": 350
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "questions": {
+            "count": 6,
+            "citations": [],
+            "uncitedEvidence": [
+              {
+                "questionId": "q1",
+                "evidence": "README.md says tax order is undocumented."
+              },
+              {
+                "questionId": "q1",
+                "evidence": "src/pricing.ts currently applies tax before either promotion type."
+              },
+              {
+                "questionId": "q2",
+                "evidence": "The API supplies decimal strings, but src/pricing.ts converts them to Number and rounds only the final result to two decimal places."
+              },
+              {
+                "questionId": "q3",
+                "evidence": "README.md says invalid promotions are undocumented."
+              },
+              {
+                "questionId": "q3",
+                "evidence": "src/pricing.ts does not validate or cap promotions."
+              },
+              {
+                "questionId": "q4",
+                "evidence": "src/controller.ts posts its locally calculated total with the quote ID."
+              },
+              {
+                "questionId": "q4",
+                "evidence": "README.md says quote freshness is undocumented and signed server quotes are not yet available."
+              },
+              {
+                "questionId": "q5",
+                "evidence": "README.md calls for reuse by a second sales workflow."
+              },
+              {
+                "questionId": "q5",
+                "evidence": "src/pricing.ts sorts q.lines in place, while src/preview.ts returns both originalOrder and lines."
+              },
+              {
+                "questionId": "q6",
+                "evidence": "src/transport.ts defines an injectable Send function."
+              },
+              {
+                "questionId": "q6",
+                "evidence": "src/controller.ts has no explicit loading or confirmation error behavior."
+              }
+            ],
+            "allQuotesExact": true,
+            "note": "Optional citations; prose is retained for semantic review, never counted as verified quotations. Absence is not proof of grounding."
+          }
+        },
+        {
+          "id": "pricing-console-ordinary",
+          "phase": "plan",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 78.526,
+            "completedTurns": 1,
+            "threadId": "01a10cfb-c6b5-7543-b4ab-1afad3aacf04",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 57766,
+              "cached_input_tokens": 45056,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 1942,
+              "reasoning_output_tokens": 354,
+              "total_tokens": 59708,
+              "uncached_input_tokens": 12710
+            },
+            "cumulativeUsage": {
+              "input_tokens": 113420,
+              "cached_input_tokens": 80640,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 3371,
+              "reasoning_output_tokens": 704
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "planCharacters": 6192
+        }
+      ],
+      "complete": true
+    }
+  ]
+}

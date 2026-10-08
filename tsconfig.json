@@ -12,6 +12,14 @@
     "sourceMap": true,
     "skipLibCheck": true
   },
-  "include": ["src/**/*.ts", "test/**/*.ts"],
-  "exclude": ["test/fixtures"]
+  "include": [
+    "src/**/*.ts",
+    "test/**/*.ts"
+  ],
+  "exclude": [
+    "test/fixtures",
+    "test/evals/**/fixture/**",
+    "test/evals/**/results/**",
+    "test/evals/fs-comparison/v12"
+  ]
 }

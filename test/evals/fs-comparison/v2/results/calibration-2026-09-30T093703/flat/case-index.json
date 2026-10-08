@@ -1,0 +1,552 @@
+[
+  {
+    "category": "protected-assets",
+    "rule": "H10",
+    "id": "package.json"
+  },
+  {
+    "category": "protected-assets",
+    "rule": "H10",
+    "id": "package-lock.json"
+  },
+  {
+    "category": "protected-assets",
+    "rule": "H10",
+    "id": "eslint.config.mjs"
+  },
+  {
+    "category": "protected-assets",
+    "rule": "H10",
+    "id": "next.config.mjs"
+  },
+  {
+    "category": "protected-assets",
+    "rule": "H10",
+    "id": "jsconfig.json"
+  },
+  {
+    "category": "protected-assets",
+    "rule": "H10",
+    "id": "tsconfig.check.json"
+  },
+  {
+    "category": "protected-assets",
+    "rule": "H10",
+    "id": "playwright.config.mjs"
+  },
+  {
+    "category": "protected-assets",
+    "rule": "H10",
+    "id": "tests/catalog.test.mjs"
+  },
+  {
+    "category": "protected-assets",
+    "rule": "H10",
+    "id": "e2e/catalog.spec.mjs"
+  },
+  {
+    "category": "domain",
+    "rule": "H1",
+    "id": "default"
+  },
+  {
+    "category": "domain",
+    "rule": "H1",
+    "id": "mixed"
+  },
+  {
+    "category": "domain",
+    "rule": "H1",
+    "id": "discount-free-shipping"
+  },
+  {
+    "category": "domain",
+    "rule": "H1",
+    "id": "discount-paid-shipping"
+  },
+  {
+    "category": "domain",
+    "rule": "H1",
+    "id": "shipping-coupon"
+  },
+  {
+    "category": "domain",
+    "rule": "H1",
+    "id": "maximum-valid"
+  },
+  {
+    "category": "domain",
+    "rule": "H1",
+    "id": "coupon-omitted"
+  },
+  {
+    "category": "domain",
+    "rule": "H2",
+    "id": "null"
+  },
+  {
+    "category": "domain",
+    "rule": "H2",
+    "id": "array"
+  },
+  {
+    "category": "domain",
+    "rule": "H2",
+    "id": "missing-lines"
+  },
+  {
+    "category": "domain",
+    "rule": "H2",
+    "id": "empty-lines"
+  },
+  {
+    "category": "domain",
+    "rule": "H2",
+    "id": "nonarray-lines"
+  },
+  {
+    "category": "domain",
+    "rule": "H2",
+    "id": "null-line"
+  },
+  {
+    "category": "domain",
+    "rule": "H2",
+    "id": "unknown-product"
+  },
+  {
+    "category": "domain",
+    "rule": "H2",
+    "id": "missing-product"
+  },
+  {
+    "category": "domain",
+    "rule": "H2",
+    "id": "duplicate-product"
+  },
+  {
+    "category": "domain",
+    "rule": "H3",
+    "id": "quantity-string"
+  },
+  {
+    "category": "domain",
+    "rule": "H3",
+    "id": "quantity-zero"
+  },
+  {
+    "category": "domain",
+    "rule": "H3",
+    "id": "quantity-negative"
+  },
+  {
+    "category": "domain",
+    "rule": "H3",
+    "id": "quantity-fraction"
+  },
+  {
+    "category": "domain",
+    "rule": "H3",
+    "id": "quantity-above"
+  },
+  {
+    "category": "domain",
+    "rule": "H3",
+    "id": "quantity-null"
+  },
+  {
+    "category": "domain",
+    "rule": "H3",
+    "id": "quantity-missing"
+  },
+  {
+    "category": "domain",
+    "rule": "H3",
+    "id": "unknown-coupon"
+  },
+  {
+    "category": "domain",
+    "rule": "H3",
+    "id": "coupon-case"
+  },
+  {
+    "category": "domain",
+    "rule": "H3",
+    "id": "coupon-null"
+  },
+  {
+    "category": "domain",
+    "rule": "H3",
+    "id": "coupon-number"
+  },
+  {
+    "category": "domain",
+    "rule": "H4",
+    "id": "insufficient-stock"
+  },
+  {
+    "category": "domain",
+    "rule": "H1",
+    "id": "rounding"
+  },
+  {
+    "category": "domain",
+    "rule": "H1",
+    "id": "below-discounted-threshold"
+  },
+  {
+    "category": "domain",
+    "rule": "H1",
+    "id": "at-discounted-threshold"
+  },
+  {
+    "category": "domain",
+    "rule": "H1",
+    "id": "above-discounted-threshold"
+  },
+  {
+    "category": "domain",
+    "rule": "H5",
+    "id": "tampered-money"
+  },
+  {
+    "category": "api",
+    "rule": "H1",
+    "id": "quote/default"
+  },
+  {
+    "category": "api",
+    "rule": "H1",
+    "id": "quote/mixed"
+  },
+  {
+    "category": "api",
+    "rule": "H1",
+    "id": "quote/discount-free-shipping"
+  },
+  {
+    "category": "api",
+    "rule": "H1",
+    "id": "quote/discount-paid-shipping"
+  },
+  {
+    "category": "api",
+    "rule": "H1",
+    "id": "quote/shipping-coupon"
+  },
+  {
+    "category": "api",
+    "rule": "H1",
+    "id": "quote/maximum-valid"
+  },
+  {
+    "category": "api",
+    "rule": "H1",
+    "id": "quote/coupon-omitted"
+  },
+  {
+    "category": "api",
+    "rule": "H2",
+    "id": "quote/null"
+  },
+  {
+    "category": "api",
+    "rule": "H2",
+    "id": "quote/array"
+  },
+  {
+    "category": "api",
+    "rule": "H2",
+    "id": "quote/missing-lines"
+  },
+  {
+    "category": "api",
+    "rule": "H2",
+    "id": "quote/empty-lines"
+  },
+  {
+    "category": "api",
+    "rule": "H2",
+    "id": "quote/nonarray-lines"
+  },
+  {
+    "category": "api",
+    "rule": "H2",
+    "id": "quote/null-line"
+  },
+  {
+    "category": "api",
+    "rule": "H2",
+    "id": "quote/unknown-product"
+  },
+  {
+    "category": "api",
+    "rule": "H2",
+    "id": "quote/missing-product"
+  },
+  {
+    "category": "api",
+    "rule": "H2",
+    "id": "quote/duplicate-product"
+  },
+  {
+    "category": "api",
+    "rule": "H3",
+    "id": "quote/quantity-string"
+  },
+  {
+    "category": "api",
+    "rule": "H3",
+    "id": "quote/quantity-zero"
+  },
+  {
+    "category": "api",
+    "rule": "H3",
+    "id": "quote/quantity-negative"
+  },
+  {
+    "category": "api",
+    "rule": "H3",
+    "id": "quote/quantity-fraction"
+  },
+  {
+    "category": "api",
+    "rule": "H3",
+    "id": "quote/quantity-above"
+  },
+  {
+    "category": "api",
+    "rule": "H3",
+    "id": "quote/quantity-null"
+  },
+  {
+    "category": "api",
+    "rule": "H3",
+    "id": "quote/quantity-missing"
+  },
+  {
+    "category": "api",
+    "rule": "H3",
+    "id": "quote/unknown-coupon"
+  },
+  {
+    "category": "api",
+    "rule": "H3",
+    "id": "quote/coupon-case"
+  },
+  {
+    "category": "api",
+    "rule": "H3",
+    "id": "quote/coupon-null"
+  },
+  {
+    "category": "api",
+    "rule": "H3",
+    "id": "quote/coupon-number"
+  },
+  {
+    "category": "api",
+    "rule": "H2",
+    "id": "quote/malformed-json"
+  },
+  {
+    "category": "api",
+    "rule": "H4",
+    "id": "quote/insufficient-stock"
+  },
+  {
+    "category": "api",
+    "rule": "H5",
+    "id": "quote/tampered-money"
+  },
+  {
+    "category": "api",
+    "rule": "H1",
+    "id": "orders/default"
+  },
+  {
+    "category": "api",
+    "rule": "H1",
+    "id": "orders/mixed"
+  },
+  {
+    "category": "api",
+    "rule": "H1",
+    "id": "orders/discount-free-shipping"
+  },
+  {
+    "category": "api",
+    "rule": "H1",
+    "id": "orders/discount-paid-shipping"
+  },
+  {
+    "category": "api",
+    "rule": "H1",
+    "id": "orders/shipping-coupon"
+  },
+  {
+    "category": "api",
+    "rule": "H1",
+    "id": "orders/maximum-valid"
+  },
+  {
+    "category": "api",
+    "rule": "H1",
+    "id": "orders/coupon-omitted"
+  },
+  {
+    "category": "api",
+    "rule": "H2",
+    "id": "orders/null"
+  },
+  {
+    "category": "api",
+    "rule": "H2",
+    "id": "orders/array"
+  },
+  {
+    "category": "api",
+    "rule": "H2",
+    "id": "orders/missing-lines"
+  },
+  {
+    "category": "api",
+    "rule": "H2",
+    "id": "orders/empty-lines"
+  },
+  {
+    "category": "api",
+    "rule": "H2",
+    "id": "orders/nonarray-lines"
+  },
+  {
+    "category": "api",
+    "rule": "H2",
+    "id": "orders/null-line"
+  },
+  {
+    "category": "api",
+    "rule": "H2",
+    "id": "orders/unknown-product"
+  },
+  {
+    "category": "api",
+    "rule": "H2",
+    "id": "orders/missing-product"
+  },
+  {
+    "category": "api",
+    "rule": "H2",
+    "id": "orders/duplicate-product"
+  },
+  {
+    "category": "api",
+    "rule": "H3",
+    "id": "orders/quantity-string"
+  },
+  {
+    "category": "api",
+    "rule": "H3",
+    "id": "orders/quantity-zero"
+  },
+  {
+    "category": "api",
+    "rule": "H3",
+    "id": "orders/quantity-negative"
+  },
+  {
+    "category": "api",
+    "rule": "H3",
+    "id": "orders/quantity-fraction"
+  },
+  {
+    "category": "api",
+    "rule": "H3",
+    "id": "orders/quantity-above"
+  },
+  {
+    "category": "api",
+    "rule": "H3",
+    "id": "orders/quantity-null"
+  },
+  {
+    "category": "api",
+    "rule": "H3",
+    "id": "orders/quantity-missing"
+  },
+  {
+    "category": "api",
+    "rule": "H3",
+    "id": "orders/unknown-coupon"
+  },
+  {
+    "category": "api",
+    "rule": "H3",
+    "id": "orders/coupon-case"
+  },
+  {
+    "category": "api",
+    "rule": "H3",
+    "id": "orders/coupon-null"
+  },
+  {
+    "category": "api",
+    "rule": "H3",
+    "id": "orders/coupon-number"
+  },
+  {
+    "category": "api",
+    "rule": "H2",
+    "id": "orders/malformed-json"
+  },
+  {
+    "category": "api",
+    "rule": "H4",
+    "id": "orders/insufficient-stock"
+  },
+  {
+    "category": "api",
+    "rule": "H5",
+    "id": "orders/tampered-money"
+  },
+  {
+    "category": "browser",
+    "rule": "H1",
+    "id": "default-and-updated-total"
+  },
+  {
+    "category": "browser",
+    "rule": "H6",
+    "id": "late-success"
+  },
+  {
+    "category": "browser",
+    "rule": "H6",
+    "id": "late-failure"
+  },
+  {
+    "category": "browser",
+    "rule": "H7",
+    "id": "pending-quote-prevents-order"
+  },
+  {
+    "category": "browser",
+    "rule": "H7",
+    "id": "failed-quote-retry"
+  },
+  {
+    "category": "browser",
+    "rule": "H8",
+    "id": "order-lock-failure-retry"
+  },
+  {
+    "category": "browser",
+    "rule": "H9",
+    "id": "keyboard-order"
+  },
+  {
+    "category": "browser",
+    "rule": "H9",
+    "id": "mobile-and-runtime"
+  }
+]

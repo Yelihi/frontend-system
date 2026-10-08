@@ -1,5 +1,10 @@
 # Main context and request plans
 
+New named plans use evidence contract version 2. See [evidence-led design](workflows/evidence-led-design.md)
+for project claims, combined routing, user decisions and approval/completion gates.
+Historical plans without contractVersion retain their previous behavior and are
+labeled legacy in evidenceStatus. Supplying evidence explicitly upgrades them.
+
 Use this procedure from fs-plan/work. The host supplies semantic analysis; the tools
 collect facts, bind contracts and enforce evidence. No additional model is launched.
 
@@ -48,6 +53,12 @@ semantic-review call. IDs use lowercase letters, digits and hyphens. Omitted pla
 addresses legacy root records; those records are preserved, never silently migrated.
 
 Save new work with `save_revision(planId, content, policy, issues, expectedHash)`.
+Save and approval responses default to compact receipts; retain their hash/version.
+Read `get_revision` for the complete policy and issue contracts plus paged plan text;
+pass expectedHash when paging. Request detail: full only for stored routing/citation
+evidence (also supported on save/approve for consumers needing the full response).
+Do not treat a receipt as having read an unfamiliar contract. Persisted records and
+approval/completion requirements do not change with response detail.
 The readable design lives at `.frontend-system/plans/<id>/plan.md`. Its generated
 issue section is edited via the `issues` input. Each issue has `id`, `title`, `contract`,
 `files`, `dependsOn`, `requiredCheckIds` and `acceptance`. Put scope/exclusions,
@@ -62,7 +73,10 @@ invalidate approval. All plan records are isolated; identical text in another pl
 cannot reuse approval/checks/attempts. The legacy approval model remains readable.
 
 `save_execution` uses the issue IDs as step IDs and preserves their titles, file
-scope, dependencies and required checks. Status/check IDs/remaining work are progress,
+scope, dependencies and required checks. Omit `title`, `files`, `dependsOn` and
+`requiredCheckIds` in named-plan steps to reuse the approved issue contract; explicit
+values must still match. Legacy steps without issue contracts still need title/files.
+Status/check IDs/remaining work are progress,
 not design changes; `progress.md` renders them separately. Changed contracts go through
 save_revision, not a rewritten execution. Prerequisites must finish before dependent
 steps run; attempt budgets and stale-source checks apply within each plan.
@@ -85,6 +99,10 @@ steps run; attempt budgets and stale-source checks apply within each plan.
   approved policy script, including required browser/build checks. Issue-only results
   cannot complete a plan with missing final checks. Include required build/E2E in the
   policy when applicable, rather than silently expanding it at execution time.
+  Inspect `coverage.missingOrFailedScripts`, results and source stability; do not
+  rerun merely because the legacy `full` flag is false. Pass the attempt ID and use
+  this record for both applicable step `checkIds` and `finalCheckId` when source and
+  revision remain unchanged. Required reviews and attempt checks still apply.
 - Measurement review: run only the scenario/tools needed for the requested contract;
   see verification-tools.md. Approval of an improvement routes back through plan/work.
 

@@ -4,7 +4,8 @@ import { join, relative, resolve } from "node:path";
 import * as z from "zod/v4";
 
 import { FileSystemProjectDiscovery } from "../adapters/filesystem/project-discovery.js";
-import { localPath, policySchema, policyFailures, policyProtectionFailures, requiredScripts, type VerificationPolicy } from "./policy.js";
+import { localPath, policySchema, policyFailures, policyProtectionFailures, requiredScripts, policyInputSchema, type PolicyInput, type VerificationPolicy } from "./policy.js";
+import { bindDesignEvidence, boundEvidenceSchema, designContractFailures, evidenceFreshness, updateDesignDecisions, type DecisionUpdates, type DesignEvidence, type BoundEvidence } from './design-evidence.js';
 
 export const recordId = z.string().regex(/^[a-z0-9][a-z0-9-]{0,79}$/);
 export const digest = (value: string) => createHash("sha256").update(value).digest("hex");
@@ -21,7 +22,7 @@ export const issueSchema = z.strictObject({
 export const issuesSchema = z.array(issueSchema).min(1);
 type Issues = z.infer<typeof issuesSchema>;
 
-export const executionSchema = z.strictObject({
+const executionObject = z.strictObject({
   revisionHash: hash,
   status: z.enum(["in-progress", "blocked", "complete"]),
   baselineCheckId: recordId.optional(),
@@ -36,11 +37,20 @@ export const executionSchema = z.strictObject({
     attemptId: recordId.optional(),
   })).min(1),
   note: z.string(),
-}).refine((value) => new Set(value.steps.map((step) => step.id)).size === value.steps.length, "Duplicate step IDs");
+});
+export const executionSchema = executionObject.refine((value) => new Set(value.steps.map((step) => step.id)).size === value.steps.length, "Duplicate step IDs");
 type Execution = z.infer<typeof executionSchema>;
+export const executionInputSchema = executionObject.extend({
+  steps: z.array(executionSchema.shape.steps.element.partial({
+    title: true, files: true,
+  })).min(1),
+});
+type ExecutionInput = z.infer<typeof executionInputSchema>;
 const revisionSchema = z.object({
   version: z.number().int().positive(), hash, approved: z.boolean(), approval: z.string(),
   policy: policySchema.optional(), issues: issuesSchema.optional(),
+  // Evidence and storage call each other at runtime; defer schema lookup until parsing.
+  contractVersion: z.literal(2).optional(), evidence: z.lazy(() => boundEvidenceSchema).optional(),
 });
 const executionRecordSchema = z.object({
   execution: executionSchema, fileHashes: z.record(z.string(), z.string()), updatedAt: z.string(),
@@ -50,6 +60,10 @@ const checkRecordSchema = z.object({
   id: recordId, planId: recordId.nullable().optional(), stage: z.enum(["baseline", "issue", "delivery"]).optional(), purpose: z.enum(["baseline", "verification"]), revisionHash: hash.nullable(),
   sourceHash: hash, stable: z.boolean(), full: z.boolean(), results: checksSchema, createdAt: z.string(),
   attemptId: recordId.optional(),
+  coverage: z.object({
+    requiredScripts: z.array(z.string()), missingOrFailedScripts: z.array(z.string()),
+    allRequiredPassed: z.boolean(),
+  }).optional(),
 });
 export type CheckRecord = z.infer<typeof checkRecordSchema>;
 
@@ -131,35 +145,67 @@ export async function readRevision(root: string, planId?: string) {
   const content = await optional(join(root, ".frontend-system", scope(planId), planId ? "plan.md" : "revision.md"));
   const raw = await optional(join(root, ".frontend-system", scope(planId), "revision.json"));
   const metadata = raw ? revisionSchema.parse(JSON.parse(raw)) : undefined;
-  const currentHash = content ? revisionDigest(content, metadata?.policy, metadata?.issues, planId, metadata?.version) : null;
+  const currentHash = content ? revisionDigest(content, metadata?.policy, metadata?.issues, planId, metadata?.version, metadata?.contractVersion, metadata?.evidence) : null;
   return {
     planId: planId ?? null, content, hash: currentHash, version: metadata?.version ?? 0,
     approved: !!metadata?.approved && metadata.hash === currentHash,
     drifted: !!metadata && metadata.hash !== currentHash,
     policy: metadata?.policy, issues: metadata?.issues,
+    contractVersion: metadata?.contractVersion, evidence: metadata?.evidence,
+    evidenceStatus: metadata?.contractVersion === 2 ? metadata.evidence ? 'recorded' : 'missing' : 'legacy',
   };
 }
 
-function revisionDigest(content: string, policy?: VerificationPolicy, issues?: Issues, planId?: string, version?: number) {
-  return digest(policy || issues || planId ? JSON.stringify({ content, policy, issues, planId, ...(planId ? { version } : {}) }) : content);
+function revisionDigest(content: string, policy?: VerificationPolicy, issues?: Issues, planId?: string, version?: number, contractVersion?: 2, evidence?: BoundEvidence) {
+  return digest(policy || issues || planId ? JSON.stringify({ content, policy, issues, planId, ...(planId ? { version } : {}), ...(contractVersion ? {contractVersion, evidence} : {}) }) : content);
 }
 
-export async function saveRevision(root: string, content: string, expectedHash: string | null, policy?: VerificationPolicy, planId?: string, issues?: Issues) {
-  if (!content.trim()) throw new Error("Revision must not be empty");
+export async function saveRevision(root: string, content: string | undefined, expectedHash: string | null, policy?: PolicyInput, planId?: string, issues?: Issues, evidence?: DesignEvidence, decisionUpdates?: DecisionUpdates, evidenceRoutes?: DesignEvidence['routes']) {
   return locked(root, async () => {
     const current = await readRevision(root, planId);
     if (current.hash !== expectedHash) throw new Error("Revision changed; reread before saving");
+    content ??= current.content;
+    if (!content.trim()) throw new Error("Revision must not be empty; supply content for a new plan");
     const version = current.version + 1;
-    const nextPolicy = policy === undefined ? current.policy : policySchema.parse(policy);
+    if ((decisionUpdates || evidenceRoutes) && (evidence || !current.evidence)) throw new Error('Decision/route updates require existing evidence and cannot accompany evidence replacement');
+    const nextEvidence = decisionUpdates || evidenceRoutes ? await updateDesignDecisions(root, current.evidence!, decisionUpdates, evidenceRoutes)
+      : evidence ? await bindDesignEvidence(root, evidence) : current.evidence;
+    let nextPolicy = current.policy;
+    if (policy !== undefined) {
+      const input = policyInputSchema.parse(policy);
+      const discovery = new FileSystemProjectDiscovery();
+      const profile = await discovery.discover(await discovery.createRef(root));
+      const files = await sourceSnapshot(root);
+      const declaredCheckAssets = [...new Set(input.checks.flatMap(check => check.guardPaths ?? []))]
+        .filter(path => !input.guards.some(guard => guard.path === path));
+      nextPolicy = policySchema.parse({
+        ...input,
+        rules: input.rules.map((rule) => ({...rule, evidence: rule.evidence ?? nextEvidence?.decisions
+          .filter((decision) => decision.ruleIds.includes(rule.id))
+          .map((decision) => `Decision ${decision.id} [${decision.status}]: ${decision.rationale}; ${decision.evidence.map((cite) => `${cite.path}:${cite.line}`).join(', ')}`) ?? []})),
+        checks: input.checks.map((check) => {
+          const command = check.command ?? profile.scripts[check.script];
+          if (!command) throw new Error(`Missing required script: ${check.script}. Available scripts: ${Object.keys(profile.scripts).sort().join(', ') || '(none)'}. Inspect actual capabilities; keep unimplemented verification setup explicit and do not claim a check exists or passed.`);
+          return { ...check, command };
+        }),
+        guards: [...input.guards, ...declaredCheckAssets.map(path => ({path, hash: files[path]}))].map((guard) => {
+          const hash = guard.hash ?? files[guard.path];
+          if (!hash) throw new Error(`Missing verification asset: ${guard.path}`);
+          return { ...guard, hash };
+        }),
+      });
+    }
     const nextIssues = issues === undefined ? current.issues : issuesSchema.parse(issues);
+    const contractVersion = current.contractVersion ?? (evidence || (planId && !current.version) ? 2 : undefined);
     if (planId && (!nextPolicy || !nextIssues)) throw new Error("Named plans require a verification policy and issue contracts");
     if (nextIssues) validateIssues(nextIssues, nextPolicy);
     if (planId) {
       const marker = "\n<!-- fs-issue-contracts -->\n";
       const design = content.includes(marker) ? content.slice(0, content.indexOf(marker)) : content;
       content = `${design.trimEnd()}${marker}\n## Issue contracts\n\nEdit these through save_revision.issues; progress is recorded in [progress.md](progress.md).\n\n\`\`\`json\n${JSON.stringify(nextIssues, null, 2)}\n\`\`\`\n`;
+      if (nextEvidence) content += `\n## Decisions and evidence\n\nProject: ${nextEvidence.projectHash}\n\n${nextEvidence.decisions.map((item) => `- ${item.id} [${item.status}, ${item.authority}]: ${item.question}\n  Choice: ${item.selected ?? 'none'} — ${item.rationale}\n  Options: ${item.options.map((option) => `${option.id}: ${option.description} (cost: ${option.cost})`).join('; ')}\n  Evidence: ${item.evidence.map((cite) => `${cite.path}:${cite.line}`).join(', ')}; knowledge: ${item.knowledgeIds.join(', ') || 'none'}\n  Confirmation: ${item.confirmation || 'not supplied'}\n  Rules: ${item.ruleIds.join(', ')}; issues: ${item.issueIds.join(', ')}\n  Reconsider: ${item.reconsiderWhen}`).join('\n\n')}\n`;
     }
-    const nextHash = revisionDigest(content, nextPolicy, nextIssues, planId, version);
+    const nextHash = revisionDigest(content, nextPolicy, nextIssues, planId, version, contractVersion, nextEvidence);
     const base = await planDirectory(root, "", planId);
     const history = await planDirectory(root, "revisions", planId);
     const previousMetadata = await optional(join(base, "revision.json"));
@@ -167,7 +213,7 @@ export async function saveRevision(root: string, content: string, expectedHash: 
     if (current.content) await atomic(join(history, `${current.hash}.md`), current.content);
     await atomic(join(history, `${nextHash}.md`), content);
     await atomic(join(base, planId ? "plan.md" : "revision.md"), content);
-    await atomic(join(base, "revision.json"), JSON.stringify({ version, hash: nextHash, approved: false, approval: "", policy: nextPolicy, issues: nextIssues }));
+    await atomic(join(base, "revision.json"), JSON.stringify({ version, hash: nextHash, approved: false, approval: "", policy: nextPolicy, issues: nextIssues, contractVersion, evidence: nextEvidence }));
     return readRevision(root, planId);
   });
 }
@@ -177,14 +223,25 @@ export async function approveRevision(root: string, expectedHash: string, approv
   return locked(root, async () => {
     const current = await readRevision(root, planId);
     if (!current.version || current.drifted || current.hash !== expectedHash) throw new Error("Save and review the current revision before approval");
-    const failures = current.policy ? policyProtectionFailures(current.policy) : [];
+    await requireDesignEvidence(root, current, true);
+    const discovery = new FileSystemProjectDiscovery();
+    const failures = current.policy ? policyFailures(current.policy,
+      (await discovery.discover(await discovery.createRef(root))).scripts, await sourceSnapshot(root)) : [];
     if (failures.length) throw new Error(failures.join("; "));
     await atomic(join(await planDirectory(root, "", planId), "revision.json"), JSON.stringify({
       version: current.version, hash: current.hash, approved: true, approval,
       policy: current.policy, issues: current.issues,
+      contractVersion: current.contractVersion, evidence: current.evidence,
     }));
     return readRevision(root, planId);
-  });
+});
+}
+
+async function requireDesignEvidence(root: string, revision: Awaited<ReturnType<typeof readRevision>>, checkSources: boolean) {
+  if (revision.contractVersion !== 2) return;
+  const failures = designContractFailures(revision.evidence, revision.policy, revision.issues);
+  if (revision.evidence) failures.push(...await evidenceFreshness(root, revision.evidence, checkSources));
+  if (failures.length) throw new Error(failures.join('; '));
 }
 
 export async function saveProjectRecord(root: string, kind: "evidence" | "decisions", id: string, content: string, expectedHash: string | null) {
@@ -224,6 +281,10 @@ export async function workflowContext(root: string, planId?: string) {
   const changedFiles = saved && current ? [...new Set([...Object.keys(current), ...Object.keys(saved.fileHashes)])]
     .filter((path) => current[path] !== saved.fileHashes[path]).sort() : [];
   const protectionFailures = revision.policy ? policyProtectionFailures(revision.policy) : [];
+  if (revision.contractVersion === 2) {
+    protectionFailures.push(...designContractFailures(revision.evidence, revision.policy, revision.issues));
+    if (revision.evidence) protectionFailures.push(...await evidenceFreshness(root, revision.evidence, false));
+  }
   const needsRevalidation = !!saved && (saved.requiresRevalidation === true || changedFiles.length > 0 || saved.execution.revisionHash !== revision.hash || !revision.approved || protectionFailures.length > 0);
   return {
     revision: { ...revision, content: revision.content.slice(0, 12000), truncated: revision.content.length > 12000 }, records,
@@ -258,12 +319,21 @@ export async function readCheckRecord(root: string, id: string, planId?: string)
   return checkRecordSchema.parse(JSON.parse(await readFile(join(root, ".frontend-system", scope(planId), "checks", `${id}.json`), "utf8")));
 }
 
-export async function saveExecution(root: string, input: Execution, expectedHash: string | null, planId?: string) {
-  const execution = executionSchema.parse(input);
+export async function saveExecution(root: string, input: ExecutionInput, expectedHash: string | null, planId?: string) {
+  const parsed = executionInputSchema.parse(input);
   return locked(root, async () => {
     const state = await workflowContext(root, planId);
     if (state.executionHash !== expectedHash) throw new Error("Execution changed; reread before saving");
+    const execution = executionSchema.parse({
+      ...parsed,
+      steps: parsed.steps.map((step) => {
+        const issue = state.revision.issues?.find(({ id }) => id === step.id);
+        return issue ? { title: issue.title, files: issue.files, dependsOn: issue.dependsOn,
+          requiredCheckIds: issue.requiredCheckIds, ...step } : step;
+      }),
+    });
     if (!state.revision.approved || state.revision.hash !== execution.revisionHash) throw new Error("Execution requires the current approved revision");
+    await requireDesignEvidence(root, state.revision, !state.execution || state.execution.revisionHash !== execution.revisionHash);
     const fileHashes = await sourceSnapshot(root);
     const sourceHash = digest(JSON.stringify(fileHashes));
     validateSteps(execution);
@@ -388,6 +458,7 @@ export async function beginAttempt(root: string, stepId: string, expectedHash: s
     if ((step.dependsOn ?? []).some((id) => state.execution!.steps.find((entry) => entry.id === id)?.status !== "complete")) throw new Error("Prerequisites are incomplete");
     const folder = await planDirectory(root, "attempts", planId);
     const attempts = await Promise.all((await readdir(folder)).filter((name) => name.endsWith(".json")).map((name) => readAttempt(root, name.slice(0, -5), planId)));
+    await requireDesignEvidence(root, state.revision, !attempts.some((item) => item.revisionHash === state.revision.hash));
     const number = attempts.filter((item) => item.stepId === stepId && item.revisionHash === state.revision.hash).length + 1;
     if (number > 3) throw new Error("Attempt budget exhausted; record blocked state and resolve the cause");
     const attempt = attemptSchema.parse({ id: randomUUID(), stepId, revisionHash: state.revision.hash, number, createdAt: new Date().toISOString() });
@@ -397,7 +468,7 @@ export async function beginAttempt(root: string, stepId: string, expectedHash: s
 }
 
 export const reviewInputSchema = z.strictObject({
-  stepId: recordId, reviewId: z.string().min(1), attemptId: recordId,
+  stepId: recordId, reviewId: z.string().min(1).describe('Exact existing policy.reviews[].id (also workflow.revision.policy.reviewIds). Select the approved review requirement, not a new record name. The server generates the saved record id; attemptId identifies the attempt.'), attemptId: recordId,
   status: z.enum(["passed", "failed"]),
   findings: z.array(z.strictObject({ ruleId: z.string().min(1), files: z.array(z.string()).min(1), evidence: z.string().min(1), conclusion: z.string().min(1) })).min(1),
   remaining: z.array(z.string()), resolvedExceptions: z.array(z.string()),
@@ -414,12 +485,15 @@ export async function saveReview(root: string, input: z.infer<typeof reviewInput
     const state = await workflowContext(root, planId);
     const policy = state.revision.policy;
     const requirement = policy?.reviews.find(({ id }) => id === data.reviewId);
-    if (!state.revision.approved || !requirement || !state.execution?.steps.some(({ id }) => id === data.stepId)) throw new Error("Review requires an approved policy and execution step");
+    if (!state.revision.approved || !policy) throw new Error('Review requires the current approved policy');
+    if (!requirement) throw new Error(`Unknown policy reviewId ${data.reviewId}. Select an existing review requirement: ${policy.reviews.map(({id}) => id).join(', ') || 'none'}. The server generates the saved record id; do not invent a reviewId.`);
+    if (!state.execution?.steps.some(({ id }) => id === data.stepId)) throw new Error('Review requires an existing execution step; select its approved issue ID');
     const attempt = await readAttempt(root, data.attemptId, planId);
     if (attempt.revisionHash !== state.revision.hash || attempt.stepId !== data.stepId) throw new Error("Review attempt does not match");
     const snapshot = await sourceSnapshot(root);
     if (data.findings.some((finding) => !policy!.rules.some(({ id }) => id === finding.ruleId) || finding.files.some((file) => !snapshot[file]))) throw new Error("Review findings require existing files and policy rules");
-    if (requirement.ruleIds.some((id) => !data.findings.some((finding) => finding.ruleId === id))) throw new Error("Review must address all required rules");
+    const missingRules = requirement.ruleIds.filter((id) => !data.findings.some((finding) => finding.ruleId === id));
+    if (missingRules.length) throw new Error(`Review must address all required rules. Review ${data.reviewId} is missing: ${missingRules.join(', ')}. Supply findings for these approved rule IDs; do not remove obligations to pass.`);
     if (data.resolvedExceptions.some((id) => !policy!.exceptions.some((item) => item.id === id))) throw new Error("Unknown exception resolution");
     if (data.status === "passed" && data.remaining.length) throw new Error("Passing review cannot have remaining work");
     const review = reviewSchema.parse({ ...data, id: randomUUID(), revisionHash: state.revision.hash, sourceHash: digest(JSON.stringify(snapshot)), createdAt: new Date().toISOString(), authority: "host-model-review" });

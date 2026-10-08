@@ -1,0 +1,76 @@
+{
+  "reviewKind": "separate-workflow-and-document-adjudication",
+  "documents": {
+    "passed": false,
+    "project": "source/project.md:3",
+    "plan": "source/plan.md:3",
+    "rulesToChecks": "source/plan.md:14",
+    "missing": "plan.md Final-source validation remains Pending final delivery run; no final model response or completed FS execution at timeout.",
+    "limits": "source/project.md:29"
+  },
+  "H10": {
+    "passed": true,
+    "currentSourceValidationPassed": true,
+    "lastProductEdit": "item_56",
+    "lastTestEdit": "item_60",
+    "finalChecks": [
+      "item_71",
+      "item_72",
+      "item_73",
+      "item_74",
+      "item_75"
+    ],
+    "evidence": "All five direct npm commands completed with exit0 after the last product/test edit. No further product/test writes occurred before timeout; retained final hashes match external before/after. This verifies source execution, not document/procedure completion.",
+    "externalSourceBeforeAfterMatchesFinal": true,
+    "protectedAssetsPassed": 9,
+    "checks": [
+      "lint",
+      "typecheck",
+      "test:unit",
+      "build",
+      "test:e2e"
+    ]
+  },
+  "R9": {
+    "passed": true,
+    "evidence": "No unsupported final completion claim was made. Direct final-source checks exist; final delivery recording was interrupted and is separately incomplete."
+  },
+  "conditionAdherence": {
+    "passed": true,
+    "arm": "fs",
+    "evidence": "Supplied procedural skills/references and installed framework docs, native plan/policy tools. Mistaken relative reference path failed without reading external content. No learned/source knowledge, other models, installs, web, services or commits."
+  },
+  "procedureCompletion": {
+    "passed": false,
+    "evidence": "source/.frontend-system/plans/checkout-contract/execution.json remains in-progress with pending UI/delivery, no semantic-review completion; policy-bound checks were not-run because required command bodies were incorrectly pinned."
+  },
+  "fullValidationAttempts": 3,
+  "attemptBudgetRespected": true,
+  "attemptEvidence": "Initial heredoc implementation failed (33); direct-write restoration and first UI development (36-54); product/test correction (55-57), then added test coverage and final direct checks. Repeated schema/policy rejections made no new product repair.",
+  "procedureObservations": [
+    "900-second timeout is a model outcome, not an infrastructure exclusion; no rerun.",
+    "No turn.completed usage was emitted. Tokens remain null, never zero or estimated from output/commands.",
+    "Native policy checks stayed not-run while direct final five-script checks passed.",
+    "The product can pass all fixed automated cases while A delivery records and FS completion remain unfinished."
+  ],
+  "eligibleComplete": false,
+  "eligibilityEvidence": [
+    "Historical pre-correction: Timeout at900.012seconds without final delivery record",
+    "Historical pre-correction: project/plan final-record contract incomplete; native FS procedure incomplete",
+    "Historical pre-correction: checks/grade/score.json all110passed is insufficient alone",
+    "Historical pre-correction: ../blind-review/ad53c60716e0/review.json: R5/R6 fail and Q90; normalized-equivalent edit leaves pending quote/order with no retry recovery.",
+    "Final: corrected 110/110; independentQ90; product R1-R8 fail; eligibleComplete=False. Details and original adjudication preserved."
+  ],
+  "qualitySource": "../blind-review/ad53c60716e0/review.json",
+  "evaluatorAdjudication": {
+    "status": "final",
+    "revision": "accessible-name-v2",
+    "originalPassed": 110,
+    "correctedPassed": 110,
+    "changedCases": [],
+    "sourceUnchanged": true,
+    "independentCorrectionReview": "../blind-review/ad53c60716e0/regrade-review.json",
+    "qualityAndRulesUnchanged": true,
+    "eligibleComplete": false
+  }
+}

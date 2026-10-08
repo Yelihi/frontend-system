@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 3,
   "entries": [
     {
       "id": "accessibility-semantics",
@@ -48,6 +48,45 @@
       },
       "related": [
         "accessibility-names-and-alternatives"
+      ],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "jsx-attribute",
+          "value": "role"
+        },
+        {
+          "kind": "jsx-attribute",
+          "value": "aria-disabled"
+        },
+        {
+          "kind": "jsx-attribute",
+          "value": "aria-expanded"
+        },
+        {
+          "kind": "jsx-attribute",
+          "value": "aria-checked"
+        },
+        {
+          "kind": "jsx-attribute",
+          "value": "aria-selected"
+        },
+        {
+          "kind": "semantic",
+          "value": "accessibility-semantics",
+          "description": "role이나 aria-disabled를 추가했는데 키보드 조작·비활성 상태가 화면과 다를 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "실제 태그의 역할·이름·상태가 키보드 및 비활성 동작과 일치하는가?",
+          "guidance": "실제 태그의 기본 동작과 계산된 역할·이름·상태를 대조해, 의미 전달과 이벤트 구현 중 어디가 빠졌는지 찾는다.",
+          "verification": "behavior"
+        }
       ]
     },
     {
@@ -96,6 +135,41 @@
       },
       "related": [
         "accessibility-semantics"
+      ],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "jsx-element",
+          "value": "img"
+        },
+        {
+          "kind": "jsx-element",
+          "value": "button"
+        },
+        {
+          "kind": "jsx-element",
+          "value": "input"
+        },
+        {
+          "kind": "jsx-attribute",
+          "value": "aria-label"
+        },
+        {
+          "kind": "semantic",
+          "value": "accessibility-names-and-alternatives",
+          "description": "아이콘 버튼이 이름 없이 읽히거나 반복된 삭제 버튼의 대상·이미지 정보가 구별되지 않을 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "계산된 이름이 행동 대상을 구별하며 이미지의 정보·기능·장식 목적을 반영하는가?",
+          "guidance": "보이는 라벨, 계산된 이름, 부가 설명, 이미지의 정보·기능·장식 목적을 비교해 이름과 대체 텍스트를 결정한다.",
+          "verification": "behavior"
+        }
       ]
     },
     {
@@ -148,6 +222,29 @@
       },
       "related": [
         "accessibility-semantics"
+      ],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "jsx-attribute",
+          "value": "role"
+        },
+        {
+          "kind": "semantic",
+          "value": "accessibility-widget-interactions",
+          "description": "탭 방향키가 동작하지 않거나 라디오·스위치의 선택 상태와 포커스가 어긋날 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "해당 위젯의 Tab 진입점·방향키·활성화·선택 상태와 패널 연결이 함께 맞는가?",
+          "guidance": "위젯 종류에 맞는 Tab 진입점, 방향키·Space·Enter 처리, 선택 상태와 패널 연결을 대조한다.",
+          "verification": "behavior"
+        }
       ]
     },
     {
@@ -192,6 +289,33 @@
       },
       "related": [
         "accessibility-semantics"
+      ],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "jsx-element",
+          "value": "dialog"
+        },
+        {
+          "kind": "jsx-attribute",
+          "value": "aria-modal"
+        },
+        {
+          "kind": "semantic",
+          "value": "accessibility-modal-focus",
+          "description": "모달 밖으로 Tab이 빠지거나 모달을 닫은 뒤 포커스를 잃을 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "모달의 초기·내부·종료 포커스와 배경 차단이 요구에 맞으며 비모달과 구분되는가?",
+          "guidance": "초기 포커스, 배경 비활성화, 내부 순환, Escape 종료와 복귀 위치를 모달 생명주기별로 점검한다.",
+          "verification": "behavior"
+        }
       ]
     },
     {
@@ -242,6 +366,41 @@
       },
       "related": [
         "accessibility-semantics"
+      ],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "jsx-element",
+          "value": "button"
+        },
+        {
+          "kind": "jsx-element",
+          "value": "a"
+        },
+        {
+          "kind": "jsx-element",
+          "value": "form"
+        },
+        {
+          "kind": "jsx-attribute",
+          "value": "onClick"
+        },
+        {
+          "kind": "semantic",
+          "value": "accessibility-native-controls-and-forms",
+          "description": "클릭만 되는 행·가짜 버튼, 중첩 버튼 또는 Enter 제출 오류를 조사할 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "최종 DOM의 콘텐츠 모델과 키보드·탐색·제출 경로가 의도한 동작을 제공하는가?",
+          "guidance": "최종 DOM의 button·a·form 의미, 콘텐츠 모델과 제출 경로를 확인해 키보드와 탐색 동작의 누락을 찾는다.",
+          "verification": "behavior"
+        }
       ]
     },
     {
@@ -287,6 +446,29 @@
       },
       "related": [
         "accessibility-semantics"
+      ],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "import",
+          "value": "eslint-plugin-jsx-a11y"
+        },
+        {
+          "kind": "semantic",
+          "value": "accessibility-static-validation",
+          "description": "접근성 lint를 통과했는데 조작이 안 되거나 디자인 시스템 컴포넌트에서 경고가 어긋날 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "디자인 시스템 매핑이 실제 DOM과 맞으며 lint 밖의 키보드·포커스 검증이 남아 있는가?",
+          "guidance": "JSX 정적 검사 범위와 실제 DOM을 비교하고 컴포넌트·다형성 prop 매핑 및 별도 실행 검증 필요성을 판단한다.",
+          "verification": "static"
+        }
       ]
     },
     {
@@ -339,6 +521,33 @@
       "related": [
         "react-identity-and-state",
         "react-fiber-work-in-progress"
+      ],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "call",
+          "value": "react#useState"
+        },
+        {
+          "kind": "call",
+          "value": "react#useReducer"
+        },
+        {
+          "kind": "semantic",
+          "value": "react-rendering-state-model",
+          "description": "React setter 직후 이전 값이 읽히거나 렌더 로그 횟수와 화면 갱신 횟수가 달라 보일 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "상태 스냅샷·updater·순수 렌더와 DOM commit·paint를 구분해 증상을 설명했는가?",
+          "guidance": "렌더별 상태 스냅샷, updater와 배칭, DOM commit과 브라우저 paint를 구분해 관찰한 현상을 설명한다.",
+          "verification": "review"
+        }
       ]
     },
     {
@@ -388,7 +597,31 @@
       "related": [
         "react-rendering-state-model",
         "react-fiber-work-in-progress"
-      ]
+      ],
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "react.state-lifetime",
+          "description": "목록 재정렬 뒤 다른 항목의 입력이 남거나 사용자 전환 후 폼이 의도와 다르게 유지될 때."
+        },
+        {
+          "kind": "semantic",
+          "value": "react-identity-and-state",
+          "description": "목록 재정렬 뒤 다른 항목의 입력이 남거나 사용자 전환 후 폼이 의도와 다르게 유지될 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "state-preservation",
+          "question": "타입·위치·key 변화에서 보존하거나 초기화할 상태가 요구사항과 일치하는가?",
+          "guidance": "화면 전환·재정렬 전후 입력과 포커스 유지 요구를 확인한다. 불명확한 유지 범위는 사용자와 결정한다.",
+          "verification": "behavior"
+        }
+      ],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      }
     },
     {
       "id": "react-fiber-work-in-progress",
@@ -434,7 +667,11 @@
       "related": [
         "react-rendering-state-model",
         "react-identity-and-state"
-      ]
+      ],
+      "routing": {
+        "mode": "supporting",
+        "reason": "고정 버전 내부 구조 설명은 공개 렌더 계약의 보조 근거로만 읽는다."
+      }
     },
     {
       "id": "code-quality-context-and-contracts",
@@ -503,6 +740,25 @@
       "related": [
         "code-quality-change-boundaries",
         "react-compound-component-boundaries"
+      ],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "code-quality-context-and-contracts",
+          "description": "조건 분기가 읽기 어렵거나 함수 이름과 반환값·숨은 부작용이 호출자의 예상과 다를 때. 작은 변경에도 래퍼·팩토리·파일을 반복해서 따라가거나 디자인 패턴 도입의 실익이 불분명할 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "호출자의 계약과 불변식을 보존하면서 탐색 비용과 추상화 편익을 비교했는가?",
+          "guidance": "호출자가 알아야 할 맥락과 계약을 기준으로 명명·분리·인라인 유지의 이익과 비용을 비교한다. 유지·가까이 배치·인라인·새 경계 도입 중 실제 변경 목적에 맞는 선택을 한다. 이는 조건부 판단 자료이며 필수 규칙이나 자동 수정 지시가 아니다.",
+          "verification": "review"
+        }
       ]
     },
     {
@@ -552,7 +808,39 @@
       },
       "related": [
         "code-quality-context-and-contracts"
-      ]
+      ],
+      "triggers": [
+        {
+          "kind": "path",
+          "value": "src/domain"
+        },
+        {
+          "kind": "path",
+          "value": "src/application"
+        },
+        {
+          "kind": "semantic",
+          "value": "architecture.dependency-boundary",
+          "description": "비슷한 코드를 합칠지, 함께 수정되는 파일·폼 검증·페이지 Hook을 나눌지 고민할 때."
+        },
+        {
+          "kind": "semantic",
+          "value": "code-quality-change-boundaries",
+          "description": "비슷한 코드를 합칠지, 함께 수정되는 파일·폼 검증·페이지 Hook을 나눌지 고민할 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "dependency-direction",
+          "question": "실제 import와 호출 흐름이 합의된 책임·의존 방향을 지키는가?",
+          "guidance": "폴더 이름은 단서다. 실제 경계와 예외를 확인하고 기존 lint/의존성 검사를 재사용한다. 새 금지 정책을 임의로 만들지 않는다.",
+          "verification": "static"
+        }
+      ],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      }
     },
     {
       "id": "bundling-module-graph-and-transforms",
@@ -609,7 +897,34 @@
         "frontend-fundamentals-bundling-process-plugins": "a27a0b185a77df53bd26e46cd0cf0419b4d3420bfa4d821cadf048a132725370",
         "frontend-fundamentals-bundling-tutorial-basic-bundling": "3fa19d5b13ae77ce272e3fe3e8f80993bfeebec4024cfa397c332540b7bfec96"
       },
-      "related": []
+      "related": [],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "path",
+          "value": "webpack.config.js"
+        },
+        {
+          "kind": "path",
+          "value": "vite.config.ts"
+        },
+        {
+          "kind": "semantic",
+          "value": "bundling-module-graph-and-transforms",
+          "description": "Module not found가 발생하거나 TypeScript 별칭은 통과하지만 빌드·런타임에서 import가 실패할 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "실제 실행 환경의 import 해석·변환·출력을 추적하고 타입 검사와 구분했는가?",
+          "guidance": "entry부터 resolve·변환·출력까지 추적하고 패키지 exports, 별칭, CSS·이미지 처리와 타입 검사를 구분한다.",
+          "verification": "static"
+        }
+      ]
     },
     {
       "id": "bundling-development-and-diagnostics",
@@ -650,7 +965,26 @@
         "frontend-fundamentals-bundling-development-hot-module-replacement": "e28b7f7384109c47370c2b978c6ec494a89df016eedf9618544d9024758f1592",
         "frontend-fundamentals-bundling-development-source-maps": "047d5c20e05ac8cab88bb1607f629d8b801d9b006187a988d9b2f67d9747a36b"
       },
-      "related": []
+      "related": [],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "bundling-development-and-diagnostics",
+          "description": "HMR 뒤 상태가 사라지거나 로컬 프록시에서만 요청이 성공하고 압축 스택을 추적하기 어려울 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "HMR 경계·배포 프록시/CORS·소스맵 버전 및 공개 범위를 각각 확인했는가?",
+          "guidance": "HMR 경계·리로드, 개발 프록시·배포 CORS, 소스맵 생성·제공·버전 일치를 각각 확인한다.",
+          "verification": "review"
+        }
+      ]
     },
     {
       "id": "bundling-output-and-optimization",
@@ -693,7 +1027,26 @@
         "frontend-fundamentals-bundling-optimization-bundle-analysis": "1769aa68b71d5c2ccfffcbdafe2ee08e93858c9513261546c0c5f0bebb12d143",
         "patterns-loading-dynamic-import": "67ba8d9780802991b39ba2fbf116747ac0cae178ac8bad8a075c19c525323b66"
       },
-      "related": []
+      "related": [],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "bundling-output-and-optimization",
+          "description": "초기 JavaScript가 크거나 분할 청크 로딩이 실패하고 production에서 CSS·초기화가 사라질 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "분할 청크의 실패·배포 캐시와 필요한 부수 효과를 보존하며 실제 비용을 비교했는가?",
+          "guidance": "청크 로드 시점·실패 경로·배포 캐시와 sideEffects 표시를 확인하고 번들 크기와 실제 사용자 지표를 따로 비교한다.",
+          "verification": "behavior"
+        }
+      ]
     },
     {
       "id": "debugging-evidence-and-reproduction",
@@ -738,7 +1091,26 @@
         "frontend-fundamentals-debugging-reproduction-automation": "96c8022f5bf0d46ba5de5f947ba93ae3f967ae2126ef01e1b0c893fcb8e4bdd2",
         "frontend-fundamentals-debugging-reproduction-execution-tracing": "91b60cac3f6fbeb52370bb5ee567941a169e5e35a12c52d801223e1476fc6fee"
       },
-      "related": []
+      "related": [],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "debugging-evidence-and-reproduction",
+          "description": "간헐적 오류가 재현되지 않거나 여러 원인 가설을 구분할 근거가 부족할 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "입력·버전·행동·기대 결과를 보존한 재현으로 원인 가설을 구분했는가?",
+          "guidance": "입력·버전·행동 순서·기대 결과를 보존하고 최소 사례에서 가설 하나씩 비교한다.",
+          "verification": "behavior"
+        }
+      ]
     },
     {
       "id": "debugging-fixes-and-prevention",
@@ -779,7 +1151,26 @@
         "frontend-fundamentals-debugging-prevention-bug-reports": "7df6757ea1b885d2b12e44904fec8fa57a34c9b221e403bb33d829865bd140cf",
         "frontend-fundamentals-debugging-prevention-shared-utilities": "920ba91d5c4a9325fbfd6b38fc848b8757714aace9d6631d4873a29b3a7a262e"
       },
-      "related": []
+      "related": [],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "debugging-fixes-and-prevention",
+          "description": "타입 단언으로 오류를 덮고 있거나 늦게 도착한 응답이 최신 화면을 덮어쓰는 문제를 수정할 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "타입·응답 완료 순서·부수 효과의 실제 원인을 재현 및 수정 검증과 연결했는가?",
+          "guidance": "런타임 계약·요청 완료 순서·부수 효과를 확인하고 재현 조건과 수정 검증을 연결해 기록한다.",
+          "verification": "behavior"
+        }
+      ]
     },
     {
       "id": "debugging-react-integration-cases",
@@ -824,7 +1215,26 @@
         "frontend-fundamentals-debugging-case-study-react-state-stale-closures": "e7c8cc6885bf2a3ae6f5a2ccb5b5589fc9d42aa493e377479bd07e784124f4fe",
         "frontend-fundamentals-debugging-case-study-radix-dialog-select-escape-key": "88a7e1c1cee277a56e110e1f6f71bc32f8c3940a76134ef851e39f83859bdbc1"
       },
-      "related": []
+      "related": [],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "debugging-react-integration-cases",
+          "description": "React 쿼리·폼·Suspense·애니메이션을 조합한 뒤 상태·응답·구독 수명이 어긋날 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "선언 타입과 응답·클로저·구독 수명을 설치 버전의 재현으로 확인했는가?",
+          "guidance": "실제 응답과 선언 타입, 클로저, 쿼리 상태, 자원 정리와 설치 버전을 분리해 최소 사례를 만든다.",
+          "verification": "behavior"
+        }
+      ]
     },
     {
       "id": "debugging-browser-and-memory-cases",
@@ -864,7 +1274,26 @@
         "frontend-fundamentals-debugging-case-study-ios-webview-swipe-back-gray-screen": "0e6faf66d42103e29f75533bba98dfb7a28c35218ef1bb25803cf53ab0d97e1c",
         "frontend-fundamentals-debugging-case-study-safari-tradingview-iframe-memory-leak": "d970eb7db5158f505cab85d552b87a2759d873e237d62f18bd4e4def72179065"
       },
-      "related": []
+      "related": [],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "debugging-browser-and-memory-cases",
+          "description": "특정 기기·웹뷰에서만 깜빡임·재초기화가 생기거나 화면 제거 후 메모리가 남을 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "기기·엔진·문서 경계·남은 자원 참조를 실제 재현과 측정으로 구분했는가?",
+          "guidance": "기기·엔진 버전, iframe 경계, 네이티브 수명과 남아 있는 자원 참조를 나누어 조사한다.",
+          "verification": "runtime"
+        }
+      ]
     },
     {
       "id": "debugging-data-and-toolchain-incidents",
@@ -905,7 +1334,26 @@
         "frontend-fundamentals-debugging-case-study-yarn-workspace-hmr": "49f9ddcc3108d7f4ac5f13f622ec6075331d8f441d157da80dcdbf127305708d",
         "frontend-fundamentals-debugging-case-study-cursor-biome-formatting": "1e7e68597c201a0b504fca5c2c22978a7f7a09bfc0277f9e4797d40cb5bda320"
       },
-      "related": []
+      "related": [],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "debugging-data-and-toolchain-incidents",
+          "description": "큰 숫자 ID가 변하거나 동시 파일 작업·파서·HMR·에디터에서만 오류가 발생할 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "정밀도·공유 자원 경쟁·실행 바이너리 및 설정 경로를 원인과 대조했는가?",
+          "guidance": "전송 타입과 정밀도, 공유 자원 경쟁, 실제 바이너리·확장·설정 경로를 대조한다.",
+          "verification": "behavior"
+        }
+      ]
     },
     {
       "id": "html-attribute-values-and-identifiers",
@@ -947,7 +1395,38 @@
         "mdn-html-reference-global-attributes-id": "17f68b54e85210bbc955875571186ebf624ebecd364e838739feeb59973bba66",
         "mdn-html-reference-global-attributes-style": "da8cd95d1596718ea2560ae6ec3724061ee569f199825a9957515d9aa2823e79"
       },
-      "related": []
+      "related": [],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "jsx-attribute",
+          "value": "id"
+        },
+        {
+          "kind": "jsx-attribute",
+          "value": "disabled"
+        },
+        {
+          "kind": "jsx-attribute",
+          "value": "data-state"
+        },
+        {
+          "kind": "semantic",
+          "value": "html-attribute-values-and-identifiers",
+          "description": "HTML 속성에 false를 넣어도 동작이 켜지거나 id·class·data-* 선택이 예상과 다를 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "불리언·열거 속성, DOM id와 선택자, data 속성의 의미를 구분했는가?",
+          "guidance": "불리언·열거 값, 문서 식별자와 선택자 이스케이프, 사용자 데이터의 역할을 구분한다.",
+          "verification": "review"
+        }
+      ]
     },
     {
       "id": "html-focus-visibility-and-popovers",
@@ -989,7 +1468,42 @@
         "mdn-html-reference-global-attributes-tabindex": "d120e9ec2cc5cf285881fd9e69b87c9497082f06d5c909d02ba7f1caf5eed55d",
         "mdn-html-reference-global-attributes-title": "6b413946b3d5b5fc345a11b5a1dd8de06b6a0f68ba54170ed2b063f55d4272ba"
       },
-      "related": []
+      "related": [],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "jsx-attribute",
+          "value": "hidden"
+        },
+        {
+          "kind": "jsx-attribute",
+          "value": "inert"
+        },
+        {
+          "kind": "jsx-attribute",
+          "value": "tabIndex"
+        },
+        {
+          "kind": "jsx-attribute",
+          "value": "popover"
+        },
+        {
+          "kind": "semantic",
+          "value": "html-focus-visibility-and-popovers",
+          "description": "숨긴 영역이 여전히 조작되거나 Tab 순서가 꼬이고 popover를 모달처럼 써도 되는지 판단할 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "표시·순차 포커스·프로그램 포커스와 모달 요구를 각각 충족하는가?",
+          "guidance": "hidden·inert·tabindex와 top layer·닫힘 정책을 분리해 표시·포커스·모달 요구를 대조한다.",
+          "verification": "behavior"
+        }
+      ]
     },
     {
       "id": "html-editing-and-localization",
@@ -1038,7 +1552,46 @@
         "mdn-html-reference-global-attributes-virtualkeyboardpolicy": "ed675c24fe6de2d302465e7793d657bed020b12b733e4ec821653287590dd4f6",
         "mdn-html-reference-global-attributes-writingsuggestions": "b5fa1d3d63f9a829d262c7f3e1df7328a5036a3895bbdda92949111a516f4534"
       },
-      "related": []
+      "related": [],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "jsx-attribute",
+          "value": "inputMode"
+        },
+        {
+          "kind": "jsx-attribute",
+          "value": "enterKeyHint"
+        },
+        {
+          "kind": "jsx-attribute",
+          "value": "contentEditable"
+        },
+        {
+          "kind": "jsx-attribute",
+          "value": "lang"
+        },
+        {
+          "kind": "jsx-attribute",
+          "value": "dir"
+        },
+        {
+          "kind": "semantic",
+          "value": "html-editing-and-localization",
+          "description": "모바일 입력 키보드·Enter 표시, 편집 영역의 줄바꿈 또는 다국어 문자 방향이 예상과 다를 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "입력 힌트와 검증·제출 동작을 구별하고 편집·언어·문자 방향을 확인했는가?",
+          "guidance": "inputmode·enterkeyhint의 힌트와 검증·제출 동작을 구분하고 lang·dir·translate·contenteditable의 역할을 확인한다.",
+          "verification": "behavior"
+        }
+      ]
     },
     {
       "id": "html-shadow-parts-and-experimental-headings",
@@ -1079,7 +1632,38 @@
         "mdn-html-reference-global-attributes-part": "33e0b3f447512ef117cc213c43c4792fa73fb733d64b94a8229f3df20d9005aa",
         "mdn-html-reference-global-attributes-slot": "8c0f1ecd555ad2cd538bf74b0c995aacf5513feebc3d57e0554032218c771e05"
       },
-      "related": []
+      "related": [],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "jsx-attribute",
+          "value": "slot"
+        },
+        {
+          "kind": "jsx-attribute",
+          "value": "part"
+        },
+        {
+          "kind": "jsx-attribute",
+          "value": "exportparts"
+        },
+        {
+          "kind": "semantic",
+          "value": "html-shadow-parts-and-experimental-headings",
+          "description": "Web Component 슬롯·part 연결이 안 되거나 실험적 anchor·제목 수준 속성을 도입하려 할 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "슬롯 배정과 part 공개 경계를 확인하고 실험 속성의 지원을 별도 확인했는가?",
+          "guidance": "콘텐츠 배정과 스타일 공개 지점, 중첩 exportparts 및 실험 기능의 지원 조건을 구분한다.",
+          "verification": "review"
+        }
+      ]
     },
     {
       "id": "html-microdata-and-csp-nonces",
@@ -1120,7 +1704,50 @@
         "mdn-html-reference-global-attributes-itemtype": "225ac0e3805d3ed924c12a297a8522ddbb6029462c567258e803482ecc267544",
         "mdn-html-reference-global-attributes-nonce": "b5bc23843c6bbbdc2ad88c73e4eadb817f614710ac301586528cfc2352b8371a"
       },
-      "related": []
+      "related": [],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "jsx-attribute",
+          "value": "nonce"
+        },
+        {
+          "kind": "jsx-attribute",
+          "value": "itemScope"
+        },
+        {
+          "kind": "jsx-attribute",
+          "value": "itemType"
+        },
+        {
+          "kind": "jsx-attribute",
+          "value": "itemProp"
+        },
+        {
+          "kind": "jsx-attribute",
+          "value": "itemRef"
+        },
+        {
+          "kind": "jsx-attribute",
+          "value": "itemID"
+        },
+        {
+          "kind": "semantic",
+          "value": "html-microdata-and-csp-nonces",
+          "description": "구조화 데이터의 id 연결이 혼동되거나 CSP nonce가 있는데도 스크립트 허용이 맞지 않을 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "현재 다루는 microdata 식별 계약 또는 응답별 CSP nonce 계약을 구분해 확인했는가?",
+          "guidance": "microdata 어휘의 식별자와 DOM id를 구분하고, 별개 주제인 nonce의 응답별 생성·헤더 일치를 확인한다.",
+          "verification": "review"
+        }
+      ]
     },
     {
       "id": "css-cascade-and-value-resolution",
@@ -1162,7 +1789,26 @@
         "mdn-css-guides-cascading-variables": "bf08a0c59964dcd947036761a397552d57d1e9899b5e402df10bb06ff54c410b",
         "mdn-css-guides-properties-and-values-api": "e210d61c73cefa3bc9aab5b6b77d09605c71ee05fa1b0a1c10c6fc44921a2fd0"
       },
-      "related": []
+      "related": [],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "css-cascade-and-value-resolution",
+          "description": "스타일이 덮어써지거나 !important 없이 CSS 우선순위 충돌을 해결해야 할 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "출처·중요도·레이어·구체성·상속 및 단축 속성까지 최종 값의 원인을 확인했는가?",
+          "guidance": "출처·중요도·레이어·구체성·상속과 단축 속성의 생략 값을 순서대로 비교해 최종 값의 원인을 찾는다.",
+          "verification": "review"
+        }
+      ]
     },
     {
       "id": "css-syntax-selectors-and-reference-map",
@@ -1220,7 +1866,26 @@
         "mdn-css-reference-values-data-types": "c686a796d7935a3c6d76830eb2ad2c288408ce4052bca60684341389164a9bd9",
         "mdn-css-reference-values-functions": "8b1b433fccc6b4dfc755d8c21700ef8bfc621d9c35490d6002693e5ff8fca7fd"
       },
-      "related": []
+      "related": [],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "css-syntax-selectors-and-reference-map",
+          "description": "CSS 선언이 무시되거나 중첩 선택자·의사 요소가 기대한 대상을 선택하지 않을 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "허용 값 문법과 실제 선택 대상·관계를 대조하고 대상 브라우저 지원을 확인했는가?",
+          "guidance": "허용 값 문법, 선택 대상과 관계, 함수형 선택자·값 함수의 차이를 확인하고 세부 지원 문서로 이동한다.",
+          "verification": "review"
+        }
+      ]
     },
     {
       "id": "css-boxes-sizing-and-layout",
@@ -1271,7 +1936,26 @@
         "mdn-css-guides-table": "73134bd0c7be0501e31be50b2d09630fc7db621f5a4029ee189d67267b63a9c8",
         "mdn-css-how-to-layout-cookbook": "fc8fe9d634f63371c3ecb2bca914c413cf4d78427544b1884b5ee8a3f501ac3c"
       },
-      "related": []
+      "related": [],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "css-boxes-sizing-and-layout",
+          "description": "요소 너비가 넘치거나 margin·gap 계산이 예상과 다르고 flex와 grid 중 배치 방식을 고를 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "박스 경계·포함 블록·마진 병합과 실제 배치 요구를 기준으로 레이아웃을 선택했는가?",
+          "guidance": "박스 경계·containing block·마진 병합 조건을 확인하고 한 방향 공간 배분과 행·열 배치 요구를 비교한다.",
+          "verification": "behavior"
+        }
+      ]
     },
     {
       "id": "css-positioning-scroll-and-viewport",
@@ -1323,7 +2007,26 @@
         "mdn-css-guides-viewport": "c144641ec5afbd8040f3147993260969a8ab17fe0790b81908f69268fbd8cfe7",
         "mdn-css-guides-webxr-dom-overlays": "0ab15223b5ffeee2f1c26816e8142066dc8eeb96cdf9b94922c87f152073dded"
       },
-      "related": []
+      "related": [],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "css-positioning-scroll-and-viewport",
+          "description": "z-index를 높여도 가려지거나 중첩 스크롤·모바일 안전 영역·컨테이너 반응형 배치가 어긋날 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "쌓임 맥락·스크롤 경계·viewport와 container 조건을 구분해 검증했는가?",
+          "guidance": "쌓임 맥락, 넘침·scroll chaining·snap·anchoring과 viewport·container 조건을 나누어 원인을 좁힌다.",
+          "verification": "behavior"
+        }
+      ]
     },
     {
       "id": "css-color-images-and-effects",
@@ -1369,7 +2072,26 @@
         "mdn-css-guides-masking": "4aa2b29a3db310cfb17cff3e1e58f55b05b3e6a23add32a2b5ee80c69e8d77e9",
         "mdn-css-guides-shapes": "0bd775e79430cc6a4c4ddeb580a3afda4565c2410c53785d348295199892673f"
       },
-      "related": []
+      "related": [],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "css-color-images-and-effects",
+          "description": "이미지 자르기·마스킹·혼합 효과를 선택하거나 고대비 환경에서 장식과 포커스 단서가 사라질 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "효과의 목적을 구별하며 사용자 색상 설정에서도 정보·포커스 단서가 유지되는가?",
+          "guidance": "clip·mask·filter·blend와 shape-outside의 목적을 구분하고 사용자 색상 설정에서 정보가 유지되는지 본다.",
+          "verification": "behavior"
+        }
+      ]
     },
     {
       "id": "css-text-fonts-and-writing-directions",
@@ -1417,7 +2139,26 @@
         "mdn-css-guides-text-decoration": "0ba113332ed8a08a1866d4ce4638e91351dc5d0f336771e0d757badd927bf5fe",
         "mdn-css-guides-writing-modes": "415ada6fdae8fc21928e82c22f9407772709f2f853dd2ab2ffbba50ed7e087dc"
       },
-      "related": []
+      "related": [],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "css-text-fonts-and-writing-directions",
+          "description": "웹폰트 로딩 후 줄바꿈이 바뀌거나 RTL·세로쓰기에서 여백·정렬이 반대로 보일 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "글꼴 로딩 실패·줄 배치·논리 방향과 필수 정보 전달 경로를 확인했는가?",
+          "guidance": "폰트 대체·인라인 배치·공백 처리와 논리 방향을 확인하고 생성 콘텐츠의 의미 전달을 별도로 점검한다.",
+          "verification": "behavior"
+        }
+      ]
     },
     {
       "id": "css-motion-and-rendering-hints",
@@ -1464,7 +2205,26 @@
         "mdn-css-guides-view-transitions": "d86c7cf26e0526edf1e27055afe3cfcc5dcef72c43a73daf793c680a57072dcb",
         "mdn-css-guides-will-change": "6b88d5162739a044fc1146c577f260e04c79f91b27ac1da0b294832d63efc3ce"
       },
-      "related": []
+      "related": [],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "css-motion-and-rendering-hints",
+          "description": "상태 전환·스크롤 연동 모션을 구현하거나 will-change를 붙여도 애니메이션이 느릴 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "모션의 요구·지원·실제 비용을 확인했으며 힌트를 성능 보장으로 오해하지 않았는가?",
+          "guidance": "transition·keyframes·transform·timeline의 역할과 비용을 구분하고 해당 속성 지원과 실제 렌더링을 확인한다.",
+          "verification": "runtime"
+        }
+      ]
     },
     {
       "id": "css-shadow-style-boundaries",
@@ -1498,7 +2258,26 @@
         "mdn-css-guides-scoping": "eeb5789d2b7bf31bf8ba153a50a9257218e0ba2445d55f6b737ed7491da20c21",
         "mdn-css-guides-shadow-parts": "fcd70c7d07050f405b3eb90ff199414ab5fa5f8195621b8a769223ba0b3436ec"
       },
-      "related": []
+      "related": [],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "css-shadow-style-boundaries",
+          "description": "외부 CSS가 Shadow DOM 내부에 적용되지 않거나 중첩 컴포넌트의 테마 지점을 노출해야 할 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "선택자가 통과할 수 있는 경계와 공개 part·exportparts 계약을 확인했는가?",
+          "guidance": "host·slotted·part·exportparts와 컴포넌트가 공개한 스타일 경계를 대조한다.",
+          "verification": "review"
+        }
+      ]
     },
     {
       "id": "javascript-language-and-host-boundaries",
@@ -1543,7 +2322,26 @@
         "mdn-javascript-reference-global-objects": "a1505ebb743492e531847fbaee399c200d2bada718b57aec8a3deae5fe1d6937",
         "mdn-javascript-reference-javascript-technologies-overview": "bdeebc9e50b96b78f74e9c81db1579028cc1728cc4e20e13228a586270c805a7"
       },
-      "related": []
+      "related": [],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "javascript-language-and-host-boundaries",
+          "description": "브라우저에서는 되던 코드가 Node·worker에서 API 없음 오류를 내거나 언어 문서와 Web API를 혼동할 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "언어 내장 기능과 호스트 API 및 모듈 로딩 환경을 구분했는가?",
+          "guidance": "ECMAScript 내장 기능과 호스트 제공 기능, 모듈 문법과 실행 환경의 로딩을 나누어 확인한다.",
+          "verification": "review"
+        }
+      ]
     },
     {
       "id": "javascript-values-equality-and-collections",
@@ -1586,7 +2384,26 @@
         "mdn-javascript-guide-numbers-and-strings": "a33ed0bf0bd081bd8838549ab5fa35ab6cef51fb3861788865d96a7b3e345f7b",
         "mdn-javascript-guide-typed-arrays": "ccdd80fc59a822cbb1487cef93917a84adb501bca3ee87d29f5a927286cfff29"
       },
-      "related": []
+      "related": [],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "javascript-values-equality-and-collections",
+          "description": "객체 비교가 예상과 다르거나 큰 ID 정밀도가 손실되고 Map·Array·TypedArray를 선택할 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "피연산자 타입·정밀도·객체 정체성과 키·인덱스·버퍼 모델을 확인했는가?",
+          "guidance": "피연산자 타입·NaN·부호 있는 0·객체 정체성과 키·인덱스·버퍼 뷰 모델을 구분한다.",
+          "verification": "behavior"
+        }
+      ]
     },
     {
       "id": "javascript-functions-objects-and-scope",
@@ -1631,7 +2448,26 @@
         "mdn-javascript-reference-classes": "cfa1f26e175e7f850eff9df9a187feec9aa0dd6840ba38470744c7a7cb7441ff",
         "mdn-javascript-reference-functions": "4c9ebf9afa11432616f73c3b2e26a4ea6db400a3c7af60e2c01cdb2597513a84"
       },
-      "related": []
+      "related": [],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "javascript-functions-objects-and-scope",
+          "description": "클로저 값·객체 변경이 예상과 다르거나 순회에서 상속 속성·symbol이 누락될 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "클로저 환경 참조·재대입·객체 변경 및 속성 소유·열거 범위를 구분했는가?",
+          "guidance": "렉시컬 환경 참조, 매개변수 재대입과 객체 변경, 자체·상속·열거 범위를 나누어 조사한다.",
+          "verification": "review"
+        }
+      ]
     },
     {
       "id": "javascript-syntax-control-and-templates",
@@ -1677,7 +2513,26 @@
         "mdn-javascript-reference-template-literals": "2315f5a59a6c28cc1fbdb75b9d34427d58496cfcf76b89d52d1c37e2cd0a8959",
         "mdn-javascript-reference-trailing-commas": "64bab2a74d98374d1b60392fd63caf0eb982145e4f1e339dceb3dc658b281455"
       },
-      "related": []
+      "related": [],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "javascript-syntax-control-and-templates",
+          "description": "줄바꿈 뒤 반환값이 달라지거나 var 스코프·tagged template·JSON 파싱이 혼동될 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "실제 문법·스코프·제어 흐름을 확인하고 팀 스타일 선호와 구분했는가?",
+          "guidance": "표현식과 문장, ASI·블록 스코프·strict mode, 일반 보간과 태그 호출의 의미를 확인한다.",
+          "verification": "review"
+        }
+      ]
     },
     {
       "id": "javascript-iteration-promises-and-resources",
@@ -1718,7 +2573,26 @@
         "mdn-javascript-guide-using-promises": "40c51c24389eb9120ba79f3885124db605b028f1ebbc00a7c37e13cb8b5d866e",
         "mdn-javascript-reference-iteration-protocols": "583354e199ab705ee7d81d1dcc1151b2151da0f0be003697c6e5401baaf6cba1"
       },
-      "related": []
+      "related": [],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "javascript-iteration-promises-and-resources",
+          "description": "Promise 후속 완료·오류가 연결되지 않거나 반복 소비와 구독·파일 정리 시점을 판단할 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "반복 소비·Promise 완료/실패 연결 및 자원의 명시적 정리가 맞는가?",
+          "guidance": "iterable·iterator의 소비 모델, then의 반환 연결과 메모리 수집·명시적 자원 정리를 구분한다.",
+          "verification": "behavior"
+        }
+      ]
     },
     {
       "id": "javascript-regexp-pattern-structure",
@@ -1759,7 +2633,26 @@
         "mdn-javascript-guide-regular-expressions-quantifiers": "76b653ffd9304b32ea1db52505551547c570350c8f4b14b42ac9702afe75944c",
         "mdn-javascript-reference-regular-expressions": "e9eb636d4839429f68eb2e55304c62b450e8153d34fe363c98f50cf04fba52ee"
       },
-      "related": []
+      "related": [],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure",
+          "description": "정규식 캡처 결과가 다르거나 g 플래그·match·matchAll·문자열 이스케이프가 혼동될 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "패턴 범위·캡처·플래그·소비 메서드와 이스케이프가 의도와 맞는가?",
+          "guidance": "문자 집합·위치 조건·그룹·반복 범위와 소비 메서드의 반환 형식을 각각 대조한다.",
+          "verification": "behavior"
+        }
+      ]
     },
     {
       "id": "javascript-dates-and-internationalization",
@@ -1795,7 +2688,26 @@
         "mdn-javascript-guide-internationalization": "ba2886106d9b82325513273630cb8248c6698bf0348b79086d542412ddbbc1dc",
         "mdn-javascript-guide-representing-dates-times": "553936492b8331dcbc3af22aeb5dc58754bcccfac3fcedb64c5b7701e8b10773"
       },
-      "related": []
+      "related": [],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "javascript-dates-and-internationalization",
+          "description": "동일한 날짜가 시간대마다 달라 보이거나 다국어 숫자·정렬·문자 분할이 필요할 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "날짜만의 의미와 시점·시간대·로캘·입력 파싱을 구분했는가?",
+          "guidance": "시점 저장과 날짜만의 도메인 의미, 입력 파싱과 로캘·시간대별 표시를 구분해 적합한 Intl 기능을 찾는다.",
+          "verification": "behavior"
+        }
+      ]
     },
     {
       "id": "web-platform-protocols-and-delivery",
@@ -1834,7 +2746,13 @@
         "mdn-web-progressive-web-apps-overview": "580af702239a5d314bb9cb321b43be908bdb6942b4c874cbf5d13e899eb35f97",
         "mdn-web-uri-overview": "1e712e6f51dbaa87a46d166f30575dcce559a2f4665255d94484571a157adbe2"
       },
-      "related": []
+      "related": [
+        "pwa-offline-state-feedback"
+      ],
+      "routing": {
+        "mode": "supporting",
+        "reason": "플랫폼 개요는 오프라인 판단의 배경이며 개별 캐시 계약을 정하지 않는다."
+      }
     },
     {
       "id": "web-performance-privacy-and-security-context",
@@ -1871,7 +2789,13 @@
         "mdn-web-privacy-overview": "e754857eb4cd6205e92bc03c164e8ab6d953b079823bc0f2bbc3e19b327644cd",
         "mdn-web-security-overview": "8762243c80b672613928ea35ef175d028942325e83863a601424b47dc1817b4b"
       },
-      "related": []
+      "related": [
+        "web-performance-interaction-diagnosis"
+      ],
+      "routing": {
+        "mode": "supporting",
+        "reason": "성능·보안 조사 범위를 정하는 개요이며 개별 수정의 검증을 대신하지 않는다."
+      }
     },
     {
       "id": "web-media-vector-math-and-wasm",
@@ -1908,7 +2832,13 @@
         "mdn-web-svg-overview": "90bf05e22ce18487aaa9208332fdcd143244a480215e39b304fc98b563134f23",
         "mdn-webassembly-overview": "0251d68207a2d045b5ff9a45a1343f16e2ca9afccbbb1263c7864e648a97cfb8"
       },
-      "related": []
+      "related": [
+        "web-api-graphics-and-xr"
+      ],
+      "routing": {
+        "mode": "supporting",
+        "reason": "형식과 계산 기술의 개요는 그래픽 경로 선택 시 보조 자료로 읽는다."
+      }
     },
     {
       "id": "web-xml-query-transform-and-automation",
@@ -1949,7 +2879,26 @@
         "mdn-web-xml-xpath": "67a91bdf4c7b79e7a7c5b330ffa0c73a85d59399516671c6067c40220b21c494",
         "mdn-web-xml-xslt": "6385611b76ddddea4c0b4b6f17bba78633928eee4d7d4c190f32daccc18963b8"
       },
-      "related": []
+      "related": [],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "web-xml-query-transform-and-automation",
+          "description": "XML 노드 선택·출력 변환 도구를 고르거나 OpenSearch·WebDriver 용어를 구분해야 할 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "노드 선택·출력 변환·검색 설명·브라우저 자동화 중 실제 필요한 역할과 지원을 확인했는가?",
+          "guidance": "XPath·XSLT·EXSLT의 역할, 검색 설명 형식과 자동화 프로토콜의 범위를 구별한다.",
+          "verification": "review"
+        }
+      ]
     },
     {
       "id": "web-api-network-streams-and-urls",
@@ -2000,7 +2949,26 @@
         "mdn-web-api-webtransport": "be808a7c8080d4a8cc1f7ba12308ff7fe6d16eb7a60a85ecb12a3b017bef69cf",
         "mdn-web-api-xmlhttprequest": "a7dfc5e7f74e1099e95036d19eb63c5e78891399520356434f6be48c7842b9fb"
       },
-      "related": []
+      "related": [],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "web-api-network-streams-and-urls",
+          "description": "fetch가 resolve됐는데 HTTP 오류이거나 실시간 데이터가 쌓여 메모리·응답성이 나빠질 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "HTTP 상태·본문 실패·취소·흐름 제어와 목적지 신뢰 검증을 별도로 확인했는가?",
+          "guidance": "HTTP 상태·본문 소비·취소·backpressure를 나누고 WebSocket·SSE 등 통신 방식의 방향과 요구를 비교한다.",
+          "verification": "behavior"
+        }
+      ]
     },
     {
       "id": "web-api-workers-and-coordination",
@@ -2041,7 +3009,26 @@
         "mdn-web-api-web-locks": "9485c40725e363381fe2888c85520b3d007af917bbc4ecbbbe307d8ef44f44cd",
         "mdn-web-api-web-workers": "eb8809948380988dbd0a85535b7c75dc0c4732b8342b357b8804ca5673cc0cf8"
       },
-      "related": []
+      "related": [],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "web-api-workers-and-coordination",
+          "description": "무거운 작업을 worker로 옮기거나 탭 간 메시지가 안 오고 공유 자원 경쟁이 생길 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "DOM 접근·메시지 전달·origin/파티션 및 작업 예약·잠금 범위를 구분했는가?",
+          "guidance": "DOM 접근, 복제·transfer·공유 메모리, origin·저장소 파티션과 예약·잠금의 범위를 확인한다.",
+          "verification": "behavior"
+        }
+      ]
     },
     {
       "id": "web-api-files-and-storage",
@@ -2085,7 +3072,26 @@
         "mdn-web-api-storage-access": "a06f5c95dfe15590b98ace8f1cd05dcc7bd3e95f6b1ba9f0e52692606b3dabe2",
         "mdn-web-api-web-storage": "075a64289e899bb95fade2366e41d431efe7bf881a63406902b1ade30c540597"
       },
-      "related": []
+      "related": [],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "web-api-files-and-storage",
+          "description": "파일 저장 기능이나 오프라인 데이터 저장소를 고르고 데이터가 사라지거나 용량 초과가 발생할 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "저장소 수명·권한·할당량·삭제·실패 조건이 실제 데이터 요구를 충족하는가?",
+          "guidance": "파일 handle과 origin 저장소, 구조화 트랜잭션·동기 키값 저장 및 권한·할당량·삭제 조건을 비교한다.",
+          "verification": "behavior"
+        }
+      ]
     },
     {
       "id": "web-api-background-and-app-integration",
@@ -2133,7 +3139,26 @@
         "mdn-web-api-web-share": "3d9a48adc89fe881547d6ba6d1930361817f805a371736ead868c09adf17bc6a",
         "mdn-web-api-window-controls-overlay": "13a0ec76dd7c61bb329b2ffee23d7dcb5525678c76aabd0e734c12f5485dd5e3"
       },
-      "related": []
+      "related": [],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "web-api-background-and-app-integration",
+          "description": "앱을 닫은 뒤 작업·알림이 안 되거나 service worker 반복 실행이 예정 시각과 다를 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "이벤트 수명·동기화 기회·권한·설치 조건과 미지원 대체 경로를 확인했는가?",
+          "guidance": "이벤트 수명, 동기화 기회와 다운로드, Push 수신·알림 표시, 설치 플랫폼별 통합 조건을 나누어 확인한다.",
+          "verification": "behavior"
+        }
+      ]
     },
     {
       "id": "web-api-dom-editing-and-components",
@@ -2180,7 +3205,26 @@
         "mdn-web-api-selection": "211e608918362153da767407d9855a89ce66583570f1dadb485ab9c24597226c",
         "mdn-web-api-web-components": "5ee11245fedde2071597d90f8989edef2870448d827a978054f94e4150eeadef"
       },
-      "related": []
+      "related": [],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "web-api-dom-editing-and-components",
+          "description": "IME 편집·선택·클립보드가 어긋나거나 custom element와 popover의 책임을 나눌 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "IME·선택·입력 경로 및 컴포넌트 캡슐화·표시 계약을 구분했는가?",
+          "guidance": "문서 트리·편집 상태·사용자 입력 경로와 선언형 표시·컴포넌트 캡슐화의 역할을 구분한다.",
+          "verification": "behavior"
+        }
+      ]
     },
     {
       "id": "web-api-input-and-user-mediated-access",
@@ -2231,7 +3275,26 @@
         "mdn-web-api-vibration": "420a742057f577ef04ebc0523f5d014da73f569863e915159f1f500c7f58cec1",
         "mdn-web-api-virtualkeyboard": "1a967f6e59a96150e49b8bd4142fe7c685bac15986f440d29ddf42f52b3bd33a"
       },
-      "related": []
+      "related": [],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "web-api-input-and-user-mediated-access",
+          "description": "터치·펜·키보드 이벤트를 통합하거나 몰입 입력·연락처·화면 색 선택 기능을 도입할 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "문자·물리 키·포인터와 사용자 선택·활성화·종료 경로를 확인했는가?",
+          "guidance": "포인터와 문자·물리 키·IME, 사용자 선택·활성화·장치 지원 및 종료 경로를 확인한다.",
+          "verification": "behavior"
+        }
+      ]
     },
     {
       "id": "web-api-css-geometry-and-observers",
@@ -2282,7 +3345,26 @@
         "mdn-web-api-view-transition": "ac1c99fd19c01a59f2dbdb395d1cb4b7e1b7298bd8bf733b3265cd0037ea413d",
         "mdn-web-api-web-animations": "65e838abd6fddf30ca38e0ccccf2a2fb22a643ac65910428ad3ce7ad7afece62"
       },
-      "related": []
+      "related": [],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "web-api-css-geometry-and-observers",
+          "description": "요소 크기·교차 상태를 관찰하거나 좌표 변환·글꼴 로딩·화면 전환 API를 선택할 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "관찰 대상과 실제 인지·좌표·모션 취소·포커스 요구를 구분했는가?",
+          "guidance": "ResizeObserver와 IntersectionObserver의 관찰 대상, CSS 값·기하 타입 및 모션 취소·포커스 요구를 구분한다.",
+          "verification": "behavior"
+        }
+      ]
     },
     {
       "id": "web-api-device-signals-and-windows",
@@ -2341,7 +3423,26 @@
         "mdn-web-api-viewport-segments": "c8fa450ae80941b20a66aeb8ead8f120b8e0d8f2258556ea37326914988333de",
         "mdn-web-api-window-management": "56d461160504e36c69e48f7e9ceb5124d957d807e5be6b111835fb66f1f8895d"
       },
-      "related": []
+      "related": [],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "web-api-device-signals-and-windows",
+          "description": "센서·위치·화면 유지가 실패하거나 탭 가시성·PiP·다중 화면 기능을 판단할 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "근사 신호·권한·장치 가용성과 사용자 동작·기능 해제 조건을 확인했는가?",
+          "guidance": "인터페이스 존재와 권한·장치 가용성, 근사 신호와 실제 상태, 기능별 사용자 동작 조건을 비교한다.",
+          "verification": "behavior"
+        }
+      ]
     },
     {
       "id": "web-api-media-pipelines-and-speech",
@@ -2395,7 +3496,26 @@
         "mdn-web-api-webcodecs": "7addb36de17bf846db718840f15c02d0b34ff1125991358ef5a114dc6c1ca478",
         "mdn-web-api-webvtt": "a88f9d4aa450d8182aed95ddb15b491fff4c27909e1c7ae559199f5785879069"
       },
-      "related": []
+      "related": [],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "web-api-media-pipelines-and-speech",
+          "description": "녹화·재생·프레임 가공·음성 기능을 선택하거나 캡처 종료 후 자원이 남을 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "캡처·코덱·재생의 역할 및 자원 정리·권한·처리 위치를 확인했는가?",
+          "guidance": "track·기록·코덱 변환·재생 청크 공급의 역할과 버퍼 수명, 권한·형식·처리 위치를 확인한다.",
+          "verification": "behavior"
+        }
+      ]
     },
     {
       "id": "web-api-graphics-and-xr",
@@ -2432,7 +3552,26 @@
         "mdn-web-api-webgpu": "3e4a8ff6f4446c5f121f1e49d601712ff20e705ff955e046d199cc9dbec04607",
         "mdn-web-api-webxr-device": "f6bb3a7fc22a79b88bc1f6c90c87763d3eb89637085c5d62e38aa59006465583"
       },
-      "related": []
+      "related": [],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "web-api-graphics-and-xr",
+          "description": "Canvas·WebGL·WebGPU·XR 중 렌더링 경로를 고르거나 그래픽 장치 상실·대체 UI를 검토할 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "장치·버전·자원 수명·상실 대응과 의미 있는 접근성 경로를 확인했는가?",
+          "guidance": "픽셀 출력과 의미 있는 조작 구조, 버전·확장·장치 한도·세션 조건을 나누어 상세 구현 자료를 찾는다.",
+          "verification": "behavior"
+        }
+      ]
     },
     {
       "id": "web-api-permissions-identity-and-injection",
@@ -2481,7 +3620,26 @@
         "mdn-web-api-web-crypto": "3bccbdc5612f3112737824b1694f6c5c4c83ccb9ad103443dbe00225c76a0a14",
         "mdn-web-api-webotp": "993c71dc2d868571cc8662de8aab0a1c7f3046c4389b04fb7bfb5bf07360306d"
       },
-      "related": []
+      "related": [],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "web-api-permissions-identity-and-injection",
+          "description": "권한 조회는 성공하지만 기능이 거부되거나 인증·결제·HTML 삽입 API의 보호 범위를 판단할 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "클라이언트 입력·권한 질의와 서버 검증·정화 정책·키 관리의 책임을 구분했는가?",
+          "guidance": "권한 질의와 요청, 신원 입력과 서버 검증, Trusted Types 정책과 실제 정화·키 관리의 책임을 구분한다.",
+          "verification": "review"
+        }
+      ]
     },
     {
       "id": "web-api-hardware-transports",
@@ -2522,7 +3680,26 @@
         "mdn-web-api-webhid": "764a5a4654ec4de728773a1f437df47c3c2cb778183b0e15fc942843a365acfa",
         "mdn-web-api-webusb": "93b5d54e4772f61a58ef5ada57614d0b233ccbe99aad6fafa712c23f6dd37df0"
       },
-      "related": []
+      "related": [],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "web-api-hardware-transports",
+          "description": "웹에서 USB·BLE·직렬·HID·MIDI·NFC 장치를 연결할 API를 선택할 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "실제 장치 프로토콜·권한·드라이버·해제·브라우저 지원에 맞춰 통신 방식을 골랐는가?",
+          "guidance": "실제 장치 프로토콜, 권한·드라이버·연결 해제와 브라우저 지원을 기준으로 후보를 좁힌다.",
+          "verification": "review"
+        }
+      ]
     },
     {
       "id": "web-api-observability-and-speculation",
@@ -2563,7 +3740,26 @@
         "mdn-web-api-reporting": "02c5b6df2aaaf573f0ed364de2deae3ada0eff3f316aa39b81bd7e0263b65ea7",
         "mdn-web-api-speculation-rules": "547104e20c8c9cd6a7fb18a8606e85bd1a04d11cae422c88373084a7e145bcd7"
       },
-      "related": []
+      "related": [],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "web-api-observability-and-speculation",
+          "description": "브라우저 계측·오류 보고 범위를 정하거나 prefetch·prerender를 추가할지 판단할 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "측정 신호의 한계와 사전 탐색의 비용·부수 효과를 확인했는가?",
+          "guidance": "타임라인·표본·근사 신호·정책 보고를 구분하고 예상 탐색의 네트워크 비용과 부수 효과를 확인한다.",
+          "verification": "runtime"
+        }
+      ]
     },
     {
       "id": "web-api-browser-ai-capabilities",
@@ -2599,7 +3795,26 @@
         "mdn-web-api-summarizer": "18e39c933e39de50d0090a9b67d963d56ae9fae84b572f4b131584e7ff7e5d2a",
         "mdn-web-api-translator-and-language-detector": "5e26dc42e07581b55b841f562ca94ea4ec0548fead307609369fd71f41bc7752"
       },
-      "related": []
+      "related": [],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "web-api-browser-ai-capabilities",
+          "description": "브라우저 내 요약·번역·Prompt 기능의 도입이나 미지원 환경의 대체 동작을 검토할 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "지원·모델 준비·언어·자원·대체 동작과 출력 검증을 확인했는가?",
+          "guidance": "모델 준비·다운로드·언어·정책·자원 조건과 결과 검증 경로를 확인한다.",
+          "verification": "review"
+        }
+      ]
     },
     {
       "id": "web-api-retired-features",
@@ -2638,7 +3853,26 @@
         "mdn-web-api-topics": "60b3b9e33821b7db60c28a070487a6271ed680ad01286078cb1f6959476fb618",
         "mdn-web-api-webvr": "f5f934ec03d31fcab52095fe8a82d2e5a88c7781914a38797fc5c3ce321582e3"
       },
-      "related": []
+      "related": [],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "web-api-retired-features",
+          "description": "기존 코드에 Topics·Shared Storage·Attribution Reporting·Fenced Frame·WebVR가 남아 있는지 점검할 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "현재 코드의 사용 위치를 식별하고 대상 브라우저의 최신 폐기 일정·대안을 다시 확인했는가?",
+          "guidance": "기록된 폐기 상태로 이관 조사 대상을 식별하고 대상 브라우저의 최신 일정과 대안을 다시 확인한다.",
+          "verification": "review"
+        }
+      ]
     },
     {
       "id": "typescript-module-environment",
@@ -2680,6 +3914,25 @@
       },
       "related": [
         "bundling-module-graph-and-transforms"
+      ],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "typescript-module-environment",
+          "description": "TypeScript 검사는 통과했는데 배포한 Node 코드·라이브러리 import가 실패하거나 모듈 옵션을 선택할 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "앱과 소비자 실행 환경에서 JS·external import·선언 파일 해석이 일치하는가?",
+          "guidance": "누가 JS를 실행·변환하는지와 소비 환경을 확인하고 앱·라이브러리, 번들 내부·external 의존 및 선언 파일 경로를 나누어 판단한다.",
+          "verification": "static"
+        }
       ]
     },
     {
@@ -2723,6 +3976,33 @@
         "code-quality-change-boundaries",
         "accessibility-widget-interactions",
         "code-quality-context-and-contracts"
+      ],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "call",
+          "value": "react#cloneElement"
+        },
+        {
+          "kind": "call",
+          "value": "react#createContext"
+        },
+        {
+          "kind": "semantic",
+          "value": "react-compound-component-boundaries",
+          "description": "관련 하위 컴포넌트의 상태를 공유하면서 호출자가 배치를 조합해야 하거나 cloneElement 기반 구현이 중첩에서 깨질 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "상태 소유자·자식 조합 계약·props 덮어쓰기와 Context 사용 경계를 확인했는가?",
+          "guidance": "공유할 상태의 소유자와 자식 조합 계약을 정하고 Context 방식과 직접 자식 props 주입 방식의 제약을 비교한다.",
+          "verification": "review"
+        }
       ]
     },
     {
@@ -2767,7 +4047,31 @@
         "css-motion-and-rendering-hints",
         "web-api-observability-and-speculation",
         "chromium-rendering-pipeline"
-      ]
+      ],
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "runtime.interaction-latency",
+          "description": "클릭·타이핑 반응이 늦거나 INP가 나쁘고 trace에 긴 작업·반복 Layout이 보일 때."
+        },
+        {
+          "kind": "semantic",
+          "value": "web-performance-interaction-diagnosis",
+          "description": "클릭·타이핑 반응이 늦거나 INP가 나쁘고 trace에 긴 작업·반복 Layout이 보일 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "reproduce-measure",
+          "question": "문제가 되는 상호작용과 비교 가능한 실행 환경·측정 방법이 정해졌는가?",
+          "guidance": "렌더 횟수나 코드 모양만으로 성능 문제를 확정하지 않는다. 실행하지 않은 측정은 미검증으로 기록한다.",
+          "verification": "runtime"
+        }
+      ],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      }
     },
     {
       "id": "pwa-offline-state-feedback",
@@ -2807,6 +4111,25 @@
       "related": [
         "web-api-background-and-app-integration",
         "web-api-files-and-storage"
+      ],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "pwa-offline-state-feedback",
+          "description": "네트워크가 끊겨도 읽기·편집을 이어가야 하거나 로컬 저장을 서버 동기화 완료로 오해하는 UI를 설계할 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "가능한 작업과 로컬 저장·동기화 대기·서버 완료를 실제 처리 상태에 맞춰 표시하는가?",
+          "guidance": "가능한 작업, 콘텐츠 신선도, 로컬 저장·동기화 대기·서버 완료 상태를 구분해 표시와 재시도 흐름을 정한다.",
+          "verification": "behavior"
+        }
       ]
     },
     {
@@ -2847,6 +4170,25 @@
       },
       "related": [
         "web-api-permissions-identity-and-injection"
+      ],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "security-server-authorization-boundary",
+          "description": "관리자 버튼·라우트 가드를 숨기는 것으로 권한을 막았는지, 다른 사용자의 객체 ID 요청이 허용되는지 검토할 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "권한 없는 사용자·타인 객체·다른 행위 요청을 신뢰 가능한 서버가 거절하는가?",
+          "guidance": "UI 표시와 서버 인가를 구분하고 사용자·행위·대상 레코드별 권한 검증이 신뢰 경계 안에서 수행되는지 확인한다.",
+          "verification": "behavior"
+        }
       ]
     },
     {
@@ -2889,6 +4231,37 @@
       "related": [
         "react-rendering-state-model",
         "bundling-module-graph-and-transforms"
+      ],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "import",
+          "value": "server-only"
+        },
+        {
+          "kind": "import",
+          "value": "client-only"
+        },
+        {
+          "kind": "import",
+          "value": "next/navigation"
+        },
+        {
+          "kind": "semantic",
+          "value": "nextjs-server-client-boundary",
+          "description": "use client를 어디에 둘지, 서버 children·context를 조합할지 또는 클라이언트 번들에 서버 코드가 섞였는지 판단할 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "import 그래프·상호작용·직렬화 props·환경 전용 모듈 경계가 의도와 맞는가?",
+          "guidance": "JSX의 시각적 중첩과 import 모듈 그래프를 구분하고 필요한 상호작용 경계·직렬화 props·환경 전용 모듈을 확인한다.",
+          "verification": "static"
+        }
       ]
     },
     {
@@ -2897,7 +4270,7 @@
       "title": "React 파생 값·이벤트 처리와 Effect의 구분",
       "summary": "파생 값을 Effect로 다시 저장하거나 이전 검색 응답이 최신 결과를 덮어쓰고 외부 저장소 구독을 직접 구현할 때. 렌더·이벤트·외부 동기화를 구분하고 상태 소유권과 cleanup을 확인한다.",
       "path": "react-derived-state-and-effects.md",
-      "contentHash": "59f3a9ad383ceacbbdc92793393e5ece146cc6de47f6621e99d2533feb274cd5",
+      "contentHash": "2834c4822fadc4e6a426462f6dff5c7ce416b0a526a7ba9050eed4cd43ac2f01",
       "keywords": [
         "불필요한 Effect",
         "파생 상태",
@@ -2937,7 +4310,108 @@
       "related": [
         "react-rendering-state-model",
         "react-identity-and-state"
-      ]
+      ],
+      "triggers": [
+        {
+          "kind": "call",
+          "value": "react#useEffect"
+        },
+        {
+          "kind": "call",
+          "value": "react#useLayoutEffect"
+        },
+        {
+          "kind": "call",
+          "value": "react#useSyncExternalStore"
+        },
+        {
+          "kind": "semantic",
+          "value": "react.derived-state",
+          "description": "props·state에서 계산 가능한 값을 Effect로 다시 저장하거나 클릭 결과를 Effect가 뒤늦게 처리할 때. 이전 검색 응답이 최신 결과를 덮어쓰거나 외부 저장소 구독을 직접 구현할 때."
+        },
+        {
+          "kind": "semantic",
+          "value": "react.event-action",
+          "description": "props·state에서 계산 가능한 값을 Effect로 다시 저장하거나 클릭 결과를 Effect가 뒤늦게 처리할 때. 이전 검색 응답이 최신 결과를 덮어쓰거나 외부 저장소 구독을 직접 구현할 때."
+        },
+        {
+          "kind": "semantic",
+          "value": "react.async-response-order",
+          "description": "props·state에서 계산 가능한 값을 Effect로 다시 저장하거나 클릭 결과를 Effect가 뒤늦게 처리할 때. 이전 검색 응답이 최신 결과를 덮어쓰거나 외부 저장소 구독을 직접 구현할 때."
+        },
+        {
+          "kind": "semantic",
+          "value": "react-derived-state-and-effects",
+          "description": "props·state에서 계산 가능한 값을 Effect로 다시 저장하거나 클릭 결과를 Effect가 뒤늦게 처리할 때. 이전 검색 응답이 최신 결과를 덮어쓰거나 외부 저장소 구독을 직접 구현할 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "effect-purpose",
+          "question": "파생 값 계산, 특정 사용자 이벤트, 외부 동기화 중 어떤 작업인가?",
+          "guidance": "props/state로 계산 가능한 값은 렌더 계산, 특정 이벤트의 작업은 이벤트 핸들러를 검토한다. 외부 동기화까지 제거하지 않는다.",
+          "verification": "review"
+        },
+        {
+          "id": "lifecycle",
+          "question": "참조하는 반응형 값, 상태 소유권, 구독·요청의 수명과 정리를 확인했는가?",
+          "guidance": "state가 deps에 있다는 이유만으로 제거하지 않는다. 최신 응답과 해제 이후 동작을 확인한다. 문제가 없는 코드는 유지한다.",
+          "verification": "behavior"
+        }
+      ],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "investigation": {
+        "version": 1,
+        "questions": [
+          {
+            "id": "purpose",
+            "kind": "code",
+            "role": "applicability",
+            "instruction": "실제 Effect/이벤트 콜백과 호출자를 읽어 파생 값 계산, 특정 사용자 이벤트, 외부 시스템 동기화 중 어떤 작업인지 구분한다. state의 setter와 읽는 소비자, 외부 요청·구독을 확인하고 이름만으로 분류하지 않는다."
+          },
+          {
+            "id": "already-correct",
+            "kind": "code",
+            "role": "exclusion",
+            "instruction": "현재 구현이 필요한 외부 동기화/구독을 수행하고 의존성·정리·응답 수명이 확인된 계약을 만족하여 변경이 불필요한지 확인한다. Effect가 있다는 이유만으로 제거하거나 모든 계산에 캐시를 추가하는 권고는 제외한다."
+          },
+          {
+            "id": "ownership-lifetime",
+            "kind": "code",
+            "role": "context",
+            "instruction": "상태를 만드는 곳부터 읽기/쓰기 소비자와 cleanup까지 추적한다. 비동기 요청이면 이전 요청 완료·실패와 새 입력·unmount 순서를 비교한다. 해당 경로가 없으면 그 부재를 조사 범위와 함께 기록한다. 응답 무시와 요청 취소, 구독 통지와 DOM commit을 구분한다."
+          },
+          {
+            "id": "preserved-behavior",
+            "kind": "intent",
+            "role": "context",
+            "instruction": "보존/초기화할 입력과 선택, 이전 응답의 처리, 오류/로딩 표시 요구를 기존 계약이나 제공된 답에서 확인한다. 코드만으로 새로운 초기화·취소 정책을 확정하지 말고 미정인 변경만 질문한다."
+          }
+        ],
+        "preserve": [
+          "필요한 외부 동기화와 구독 및 대응하는 cleanup",
+          "확인된 상태 소유권·보존/초기화·요청 결과 처리 계약",
+          "기존 오류·로딩 표시와 SSR snapshot 요구; 미확인 요구를 발명하지 않음"
+        ],
+        "alternatives": [
+          {
+            "option": "현재 구현 유지",
+            "tradeoff": "계약을 충족하면 변경 비용을 피한다. 확인되지 않은 cleanup/응답 문제는 남긴다."
+          },
+          {
+            "option": "순수 파생 계산 또는 특정 이벤트 처리로 이동",
+            "tradeoff": "작업 성격이 맞을 때만 중복 상태와 후속 업데이트를 줄인다. 외부 동기화를 렌더로 옮기지 않는다."
+          },
+          {
+            "option": "기존 데이터·구독 계층의 수명 관리 재사용",
+            "tradeoff": "이미 설치된 기능의 계약을 확인한다. 신규 라이브러리나 전면적 계층 도입을 기본값으로 삼지 않는다."
+          }
+        ],
+        "onMissing": "코드 사실은 누락된 호출자/소유자/정리 경로만 추가 조사한다. 보존·초기화 같은 변경의 의도가 미정이면 기존 동작을 유지하고 그 차이만 질문한다. 지원하지 않는 동적 연결은 미확인으로 남긴다."
+      }
     },
     {
       "id": "tanstack-query-freshness-and-retention",
@@ -2980,6 +4454,33 @@
       "related": [
         "debugging-react-integration-cases",
         "security-server-authorization-boundary"
+      ],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "call",
+          "value": "@tanstack/react-query#useQuery"
+        },
+        {
+          "kind": "call",
+          "value": "@tanstack/react-query#useInfiniteQuery"
+        },
+        {
+          "kind": "semantic",
+          "value": "tanstack-query-freshness-and-retention",
+          "description": "창을 다시 선택하면 요청이 나가거나 캐시가 있는데도 재조회되고 staleTime과 gcTime이 혼동될 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "신선도·inactive 수거·재조회 계기·polling·retry를 구분하고 서버 인가를 보존하는가?",
+          "guidance": "신선도와 inactive 수거, 마운트·포커스·재연결·polling·실패 retry를 나누어 실제 요청 원인을 확인한다.",
+          "verification": "behavior"
+        }
       ]
     },
     {
@@ -3019,6 +4520,25 @@
       "related": [
         "code-quality-change-boundaries",
         "bundling-output-and-optimization"
+      ],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "micro-frontends-adoption-tradeoffs",
+          "description": "여러 팀의 배포 일정이 서로 막히거나 큰 프런트엔드를 점진적으로 나눌지 판단할 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "실제 독립 배포 필요가 의존성 중복·버전 결합·통합 및 운영 비용보다 큰가?",
+          "guidance": "도메인·팀의 독립 배포 필요와 의존성 중복·공유 버전 결합·통합 테스트·운영 부담을 비교한다.",
+          "verification": "review"
+        }
       ]
     },
     {
@@ -3058,8 +4578,13 @@
       },
       "related": [
         "css-motion-and-rendering-hints",
-        "debugging-browser-and-memory-cases"
-      ]
+        "debugging-browser-and-memory-cases",
+        "web-performance-interaction-diagnosis"
+      ],
+      "routing": {
+        "mode": "supporting",
+        "reason": "엔진 구조는 실제 trace 해석을 돕지만 병목이나 성능을 자체 증명하지 않는다."
+      }
     },
     {
       "id": "webgl-shader-data-flow",
@@ -3099,7 +4624,278 @@
       },
       "related": [
         "web-api-graphics-and-xr"
+      ],
+      "routing": {
+        "mode": "direct",
+        "reason": "본문의 참고 상황과 판단 내용을 조건부 검토 질문으로 연결한다. 자동 수정 지시가 아니다."
+      },
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "webgl-shader-data-flow",
+          "description": "WebGL 삼각형의 위치·색이 예상과 다르거나 buffer 데이터가 셰이더 입력에 어떻게 연결되는지 조사할 때."
+        }
+      ],
+      "checks": [
+        {
+          "id": "context-contract",
+          "question": "buffer·attribute 형식/stride/offset과 clip space·varying 흐름이 의도와 연결되는가?",
+          "guidance": "buffer 바인딩·attribute 설정·clip space 변환과 varying 보간을 따라 정점 입력에서 fragment 색까지 데이터 흐름을 확인한다.",
+          "verification": "behavior"
+        }
       ]
+    },
+    {
+      "id": "request-policy-boundaries",
+      "kind": "decision",
+      "title": "요청 인증 오류 처리의 공유 경계",
+      "summary": "공통 요청 인터페이스, 인증·오류 정책과 화면별 처리, 입력 보존 및 재시도를 검토한다.",
+      "path": "request-policy-boundaries.md",
+      "contentHash": "83e6f2b3ae10b19d9631d383e98d892c6c2f56939f80f6438db58e0c8f334fc5",
+      "keywords": [
+        "fetch",
+        "axios",
+        "request",
+        "HTTP",
+        "client",
+        "authentication",
+        "error",
+        "retry",
+        "mutation",
+        "인증",
+        "요청",
+        "공통화",
+        "오류",
+        "재시도"
+      ],
+      "domains": [
+        "architecture",
+        "networking"
+      ],
+      "technologies": [],
+      "excludedTechnologies": [],
+      "conditions": [
+        "요청 정책의 공유 범위나 실패 처리를 검토한다"
+      ],
+      "exclusions": [
+        "단순한 독립 요청 또는 적합한 기존 클라이언트에는 추가 계층을 강제하지 않는다"
+      ],
+      "evidenceKind": "experience",
+      "review": "reviewed",
+      "sources": {
+        "fs-request-boundaries": "a215e30a9133df2f0593a16eb8f387a72489142a767ef7716d98ffebb45355b1"
+      },
+      "related": [],
+      "routing": {
+        "mode": "direct",
+        "reason": "요청 구문 또는 요청 경계에 대한 관찰을 검토 질문으로 연결"
+      },
+      "triggers": [
+        {
+          "kind": "call",
+          "value": "global#fetch"
+        },
+        {
+          "kind": "call",
+          "value": "axios#default"
+        },
+        {
+          "kind": "call",
+          "value": "axios#get"
+        },
+        {
+          "kind": "call",
+          "value": "axios#post"
+        },
+        {
+          "kind": "semantic",
+          "value": "network.request-policy-boundary",
+          "description": "공유 인증·오류 정책, 기존 클라이언트, 화면별 오류 처리 또는 재시도 경계를 검토한다"
+        }
+      ],
+      "checks": [
+        {
+          "id": "policy-ownership",
+          "question": "기존 요청 계층과 정책 소유자를 조사했는가?",
+          "guidance": "같이 바뀌는 인증·오류 정책과 화면별 처리를 구분하고 유지·재사용·분리 대안을 비교한다.",
+          "verification": "review"
+        },
+        {
+          "id": "failure-input-contract",
+          "question": "실패·재시도와 입력 객체 보존 계약을 결정했는가?",
+          "guidance": "부작용 요청의 자동 재시도를 추정하지 말고 선택한 입력 보존 및 오류 전달 계약을 검사한다.",
+          "verification": "behavior"
+        }
+      ],
+      "investigation": {
+        "version": 1,
+        "questions": [
+          {
+            "id": "shared-policy",
+            "kind": "code",
+            "role": "applicability",
+            "instruction": "실제 UI 호출자에서 요청 함수와 오류 소비자까지 따라가 동일한 인증 또는 오류 정책을 공유하거나 변경해야 하는 경계가 있는지 확인한다. 직접 fetch만으로 결함을 판정하지 않는다."
+          },
+          {
+            "id": "unnecessary-layer",
+            "kind": "code",
+            "role": "exclusion",
+            "instruction": "기존 클라이언트가 필요한 계약을 이미 충족하거나 단일 독립 요청뿐이어서 추가 공통 계층이 불필요한지 확인한다. 서로 다른 정책을 같은 설정으로 묶으려는 경우도 제외한다."
+          },
+          {
+            "id": "failure-ownership",
+            "kind": "intent",
+            "role": "context",
+            "instruction": "입력 객체 보존, 업무 오류 전달, 부작용 요청의 자동 재시도 허용과 서버 중복 방지 계약이 사용자 또는 기존 계약에 확정되어 있는지 확인한다. 코드 형태로 의도를 만들어내지 않는다."
+          }
+        ],
+        "preserve": [
+          "선택된 호출자 입력·헤더 소유권과 실패 시 보존 계약",
+          "인증 경계와 화면별 업무 오류 소유권",
+          "부작용 요청의 전송 횟수 및 중복 방지 계약"
+        ],
+        "alternatives": [
+          {
+            "option": "현 구조 유지",
+            "tradeoff": "새 추상화 비용은 없지만 실제 반복 정책의 변경 비용을 확인한다."
+          },
+          {
+            "option": "기존 요청 계층 재사용",
+            "tradeoff": "계약이 맞는 경우 중복을 줄이되 화면별 오류 정책을 숨기지 않는다."
+          },
+          {
+            "option": "필요한 요청 경계만 추가",
+            "tradeoff": "공유 정책을 묶지만 인터페이스와 테스트 유지 비용이 생긴다."
+          }
+        ],
+        "onMissing": "호출자·오류 소비자·기존 클라이언트가 누락되면 해당 코드만 조사한다. 정책 또는 재시도 의도가 미정이면 대안과 비용을 묻고 그 선택에 의존한 수정을 보류한다."
+      }
+    },
+    {
+      "id": "tailwind-team-authorship",
+      "kind": "decision",
+      "title": "Tailwind 팀 클래스 작성·CVA 변형·테마 선택",
+      "summary": "승인된 팀 코드 작성 규칙을 강제 검사로 연결하고 미결정 테마는 사용자에게 묻는다.",
+      "path": "tailwind-team-authorship.md",
+      "contentHash": "8a5c4eebc852fbb88ed308bf2d238535f8565d1d20885babaad55e4346e82230",
+      "keywords": [
+        "tailwind",
+        "className",
+        "cva",
+        "variants",
+        "theme",
+        "style-policy"
+      ],
+      "domains": [
+        "css",
+        "components",
+        "architecture"
+      ],
+      "technologies": [
+        "Tailwind CSS"
+      ],
+      "excludedTechnologies": [],
+      "conditions": [
+        "Tailwind 프로젝트에서 이 팀의 작성 정책을 명시적으로 채택한 범위"
+      ],
+      "exclusions": [
+        "프레임워크 전체에 강제하는 규칙",
+        "단순 boolean 토글/일반 데이터 객체"
+      ],
+      "evidenceKind": "experience",
+      "review": "reviewed",
+      "sources": {
+        "fs-tailwind-team-policy": "d3df25fdbf9b49b0b48c956e297d1ace18ee8dc073dcc4ef3fb98ebc28741007"
+      },
+      "related": [],
+      "routing": {
+        "mode": "direct",
+        "reason": "클래스 작성과 변형을 코드에서 조사하고 테마 선택을 질문한다"
+      },
+      "triggers": [
+        {
+          "kind": "jsx-attribute",
+          "value": "className"
+        },
+        {
+          "kind": "import",
+          "value": "class-variance-authority"
+        },
+        {
+          "kind": "semantic",
+          "value": "tailwind-team-style-contract",
+          "description": "팀 정책이 승인된 UI에서 정적 클래스 객체 또는 복수 prop 스타일 변형/미정 테마를 조사했다"
+        }
+      ],
+      "checks": [
+        {
+          "id": "static-classes",
+          "question": "승인 범위의 고정 클래스를 일반 객체로 숨겼는가?",
+          "guidance": "CVA 설정과 데이터 객체를 제외하고 JSX 직접 표기 규칙을 검사한다.",
+          "verification": "static"
+        },
+        {
+          "id": "variant-boundary",
+          "question": "복수 prop 변형이 승인된 CVA 정의에 연결되는가?",
+          "guidance": "대상/축을 계획에 고정하고 실제 JSX 연결 및 기본값을 검사한다.",
+          "verification": "static"
+        },
+        {
+          "id": "theme-decision",
+          "question": "테마 전략이 확정됐는가?",
+          "guidance": "기존 결정을 읽고 미정일 때만 대안/비용을 질문해 답을 계획에 연결한다.",
+          "verification": "review"
+        }
+      ],
+      "investigation": {
+        "version": 1,
+        "questions": [
+          {
+            "id": "adopted-team-policy",
+            "kind": "intent",
+            "role": "applicability",
+            "instruction": "이 프로젝트의 해당 컴포넌트 범위에 팀의 JSX 직접 클래스 표기 또는 CVA 변형 정책을 명시적으로 채택한 계약이 있는지 확인한다. Tailwind 설치 자체는 동의가 아니다."
+          },
+          {
+            "id": "style-boundary",
+            "kind": "code",
+            "role": "context",
+            "instruction": "className으로 이어지는 실제 값과 공개 prop 축을 추적한다. 변하지 않는 클래스 객체와 두 개 이상의 독립 prop 변형인지, CVA 결과가 실제 JSX에 연결되는지 구분한다."
+          },
+          {
+            "id": "policy-exception",
+            "kind": "code",
+            "role": "exclusion",
+            "instruction": "대상이 일반 데이터 객체, CVA 설정 객체, 허용된 CVA 결과 변수, 단순 boolean 토글 또는 비스타일 분기뿐인지 확인한다. 이 경우 CVA나 JSX 직접 표기를 새로 강제하지 않는다."
+          },
+          {
+            "id": "theme-intent",
+            "kind": "intent",
+            "role": "context",
+            "instruction": "기존 팔레트·의미 토큰·브랜드·dark mode 범위의 결정을 확인한다. 이미 답한 내용은 재질문하지 않고 미정인 변경만 비용과 함께 묻는다."
+          }
+        ],
+        "preserve": [
+          "기존 화면·상호작용 및 변형 기본값",
+          "승인된 팀 정책의 대상과 축",
+          "Tailwind의 보편 동작과 팀 선호의 구분"
+        ],
+        "alternatives": [
+          {
+            "option": "승인된 정책 범위만 교정",
+            "tradeoff": "작성 일관성을 높이지만 화면 동등성은 별도 검증한다."
+          },
+          {
+            "option": "현 코드 유지",
+            "tradeoff": "미채택 정책이나 예외에는 불필요한 변경을 피한다."
+          },
+          {
+            "option": "미정 테마만 질문",
+            "tradeoff": "사용자 결정이 필요하지만 임의의 브랜드 재설계를 막는다."
+          }
+        ],
+        "onMissing": "코드 연결은 먼저 조사한다. 팀 정책 채택 또는 테마 범위가 미정이면 자동 수정하지 말고 해당 의도만 확인한다."
+      }
     }
   ],
   "outcomes": [
@@ -5976,6 +7772,1945 @@
       "sourceHash": "cb25fe52f8f1d22eb29a298a4b5894e38ef70136c6ed6c8dcfb0c31470c750b9",
       "action": "represented",
       "reason": "추상화의 탐색 비용과 편익을 기존 코드 품질 참조의 조건부 판단으로 반영하고 변경 경계·React 조합 패턴과 연결했다. 검증·불변식·접근성 등 유지 조건을 보존한다. 30% 외삽의 일반화, 일괄 추상화 제거, 도구 조건이 다른 비용 비교는 채택하지 않았다. 실험 재현·제품 비용 및 정확성 검증은 미실행이며 필수 규칙은 추가하지 않는다."
+    },
+    {
+      "sourceId": "fs-request-boundaries",
+      "sourceHash": "a215e30a9133df2f0593a16eb8f387a72489142a767ef7716d98ffebb45355b1",
+      "action": "represented",
+      "reason": "사용자 합의의 조건과 반례를 포함한 요청 경계 검토; 필수 규칙으로 승격하지 않음"
+    },
+    {
+      "sourceId": "fs-tailwind-team-policy",
+      "sourceHash": "d3df25fdbf9b49b0b48c956e297d1ace18ee8dc073dcc4ef3fb98ebc28741007",
+      "action": "represented",
+      "reason": "팀 규칙의 적용/예외/테마 결정을 직접 라우팅 메타데이터로 보존"
+    }
+  ],
+  "retrievalChecks": [
+    {
+      "query": "이전 검색 응답 최신 결과 덮어쓰기",
+      "technologies": [
+        "React"
+      ],
+      "expectedIds": [
+        "react-derived-state-and-effects"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "query": "state snapshot",
+      "technologies": [
+        "Vue"
+      ],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "react-rendering-state-model",
+        "react-fiber-work-in-progress"
+      ]
+    },
+    {
+      "query": "가독성 반환 타입",
+      "technologies": [],
+      "expectedIds": [
+        "code-quality-context-and-contracts"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "query": "module not found alias",
+      "technologies": [],
+      "expectedIds": [
+        "bundling-module-graph-and-transforms"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "query": "아이콘 삭제 버튼 이름",
+      "technologies": [
+        "React"
+      ],
+      "expectedIds": [
+        "accessibility-names-and-alternatives"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "query": "Implement approved TASK.md in the project",
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [],
+      "expectEmpty": true
+    },
+    {
+      "query": "zzunmatchedknowledgeprobezz",
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [],
+      "expectEmpty": true
+    },
+    {
+      "query": "공통 요청 인터페이스 인증 오류 재시도",
+      "technologies": [
+        "React"
+      ],
+      "expectedIds": [
+        "request-policy-boundaries"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "query": "tailwind cva theme style-policy",
+      "technologies": [
+        "Tailwind CSS"
+      ],
+      "expectedIds": [
+        "tailwind-team-authorship"
+      ],
+      "forbiddenIds": []
+    }
+  ],
+  "triggerChecks": [
+    {
+      "signals": [
+        {
+          "kind": "call",
+          "value": "react#useEffect"
+        }
+      ],
+      "technologies": [
+        "React"
+      ],
+      "expectedIds": [
+        "react-derived-state-and-effects"
+      ],
+      "forbiddenIds": [
+        "web-performance-interaction-diagnosis"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "call",
+          "value": "react#useEffect"
+        }
+      ],
+      "technologies": [
+        "Vue"
+      ],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "react-derived-state-and-effects"
+      ],
+      "expectEmpty": true
+    },
+    {
+      "signals": [
+        {
+          "kind": "call",
+          "value": "other#useEffect"
+        }
+      ],
+      "technologies": [
+        "React"
+      ],
+      "expectedIds": [],
+      "forbiddenIds": [],
+      "expectEmpty": true
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "react.state-lifetime"
+        }
+      ],
+      "technologies": [
+        "React"
+      ],
+      "expectedIds": [
+        "react-identity-and-state"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "runtime.interaction-latency"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "web-performance-interaction-diagnosis"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "path",
+          "value": "src/domain/order.ts"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "code-quality-change-boundaries"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "path",
+          "value": "src/domainish/order.ts"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [],
+      "expectEmpty": true
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "accessibility-semantics"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "accessibility-semantics"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "accessibility-semantics"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "accessibility-names-and-alternatives"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "accessibility-names-and-alternatives"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "accessibility-names-and-alternatives"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "accessibility-widget-interactions"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "accessibility-widget-interactions"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "accessibility-widget-interactions"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "accessibility-modal-focus"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "accessibility-modal-focus"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "accessibility-modal-focus"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "accessibility-native-controls-and-forms"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "accessibility-native-controls-and-forms"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "accessibility-native-controls-and-forms"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "accessibility-static-validation"
+        }
+      ],
+      "technologies": [
+        "react"
+      ],
+      "expectedIds": [
+        "accessibility-static-validation"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "accessibility-static-validation"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "react-rendering-state-model"
+        }
+      ],
+      "technologies": [
+        "react"
+      ],
+      "expectedIds": [
+        "react-rendering-state-model"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "react-rendering-state-model"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "react-identity-and-state"
+        }
+      ],
+      "technologies": [
+        "react"
+      ],
+      "expectedIds": [
+        "react-identity-and-state"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "react-identity-and-state"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "code-quality-context-and-contracts"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "code-quality-context-and-contracts"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "code-quality-context-and-contracts"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "code-quality-change-boundaries"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "code-quality-change-boundaries"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "code-quality-change-boundaries"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "bundling-module-graph-and-transforms"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "bundling-module-graph-and-transforms"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "bundling-module-graph-and-transforms"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "bundling-development-and-diagnostics"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "bundling-development-and-diagnostics"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "bundling-development-and-diagnostics"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "bundling-output-and-optimization"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "bundling-output-and-optimization"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "bundling-output-and-optimization"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "debugging-evidence-and-reproduction"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "debugging-evidence-and-reproduction"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "debugging-evidence-and-reproduction"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "debugging-fixes-and-prevention"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "debugging-fixes-and-prevention"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "debugging-fixes-and-prevention"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "debugging-react-integration-cases"
+        }
+      ],
+      "technologies": [
+        "react"
+      ],
+      "expectedIds": [
+        "debugging-react-integration-cases"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "debugging-react-integration-cases"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "debugging-browser-and-memory-cases"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "debugging-browser-and-memory-cases"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "debugging-browser-and-memory-cases"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "debugging-data-and-toolchain-incidents"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "debugging-data-and-toolchain-incidents"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "debugging-data-and-toolchain-incidents"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "html-attribute-values-and-identifiers"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "html-attribute-values-and-identifiers"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "html-attribute-values-and-identifiers"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "html-focus-visibility-and-popovers"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "html-focus-visibility-and-popovers"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "html-focus-visibility-and-popovers"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "html-editing-and-localization"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "html-editing-and-localization"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "html-editing-and-localization"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "html-shadow-parts-and-experimental-headings"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "html-shadow-parts-and-experimental-headings"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "html-shadow-parts-and-experimental-headings"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "html-microdata-and-csp-nonces"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "html-microdata-and-csp-nonces"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "html-microdata-and-csp-nonces"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "css-cascade-and-value-resolution"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "css-cascade-and-value-resolution"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "css-cascade-and-value-resolution"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "css-syntax-selectors-and-reference-map"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "css-syntax-selectors-and-reference-map"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "css-syntax-selectors-and-reference-map"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "css-boxes-sizing-and-layout"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "css-boxes-sizing-and-layout"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "css-boxes-sizing-and-layout"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "css-positioning-scroll-and-viewport"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "css-positioning-scroll-and-viewport"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "css-positioning-scroll-and-viewport"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "css-color-images-and-effects"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "css-color-images-and-effects"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "css-color-images-and-effects"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "css-text-fonts-and-writing-directions"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "css-text-fonts-and-writing-directions"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "css-text-fonts-and-writing-directions"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "css-motion-and-rendering-hints"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "css-motion-and-rendering-hints"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "css-motion-and-rendering-hints"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "css-shadow-style-boundaries"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "css-shadow-style-boundaries"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "css-shadow-style-boundaries"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-language-and-host-boundaries"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "javascript-language-and-host-boundaries"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "javascript-language-and-host-boundaries"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-values-equality-and-collections"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "javascript-values-equality-and-collections"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "javascript-values-equality-and-collections"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-functions-objects-and-scope"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "javascript-functions-objects-and-scope"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "javascript-functions-objects-and-scope"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-syntax-control-and-templates"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "javascript-syntax-control-and-templates"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "javascript-syntax-control-and-templates"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-iteration-promises-and-resources"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "javascript-iteration-promises-and-resources"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "javascript-iteration-promises-and-resources"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "javascript-regexp-pattern-structure"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "css-shadow-style-boundaries"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "javascript-regexp-pattern-structure"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-dates-and-internationalization"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "javascript-dates-and-internationalization"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "javascript-dates-and-internationalization"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "web-xml-query-transform-and-automation"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "web-xml-query-transform-and-automation"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "web-xml-query-transform-and-automation"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "web-api-network-streams-and-urls"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "web-api-network-streams-and-urls"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "web-api-network-streams-and-urls"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "web-api-workers-and-coordination"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "web-api-workers-and-coordination"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "web-api-workers-and-coordination"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "web-api-files-and-storage"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "web-api-files-and-storage"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "web-api-files-and-storage"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "web-api-background-and-app-integration"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "web-api-background-and-app-integration"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "web-api-background-and-app-integration"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "web-api-dom-editing-and-components"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "web-api-dom-editing-and-components"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "web-api-dom-editing-and-components"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "web-api-input-and-user-mediated-access"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "web-api-input-and-user-mediated-access"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "web-api-input-and-user-mediated-access"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "web-api-css-geometry-and-observers"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "web-api-css-geometry-and-observers"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "web-api-css-geometry-and-observers"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "web-api-device-signals-and-windows"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "web-api-device-signals-and-windows"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "web-api-device-signals-and-windows"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "web-api-media-pipelines-and-speech"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "web-api-media-pipelines-and-speech"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "web-api-media-pipelines-and-speech"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "web-api-graphics-and-xr"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "web-api-graphics-and-xr"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "web-api-graphics-and-xr"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "web-api-permissions-identity-and-injection"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "web-api-permissions-identity-and-injection"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "web-api-permissions-identity-and-injection"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "web-api-hardware-transports"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "web-api-hardware-transports"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "web-api-hardware-transports"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "web-api-observability-and-speculation"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "web-api-observability-and-speculation"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "web-api-observability-and-speculation"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "web-api-browser-ai-capabilities"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "web-api-browser-ai-capabilities"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "web-api-browser-ai-capabilities"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "web-api-retired-features"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "web-api-retired-features"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "web-api-retired-features"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "typescript-module-environment"
+        }
+      ],
+      "technologies": [
+        "typescript"
+      ],
+      "expectedIds": [
+        "typescript-module-environment"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "typescript-module-environment"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "react-compound-component-boundaries"
+        }
+      ],
+      "technologies": [
+        "react"
+      ],
+      "expectedIds": [
+        "react-compound-component-boundaries"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "react-compound-component-boundaries"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "web-performance-interaction-diagnosis"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "web-performance-interaction-diagnosis"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "web-performance-interaction-diagnosis"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "pwa-offline-state-feedback"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "pwa-offline-state-feedback"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "pwa-offline-state-feedback"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "security-server-authorization-boundary"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "security-server-authorization-boundary"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "security-server-authorization-boundary"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "nextjs-server-client-boundary"
+        }
+      ],
+      "technologies": [
+        "nextjs"
+      ],
+      "expectedIds": [
+        "nextjs-server-client-boundary"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "nextjs-server-client-boundary"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "react-derived-state-and-effects"
+        }
+      ],
+      "technologies": [
+        "react"
+      ],
+      "expectedIds": [
+        "react-derived-state-and-effects"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "react-derived-state-and-effects"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "tanstack-query-freshness-and-retention"
+        }
+      ],
+      "technologies": [
+        "react"
+      ],
+      "expectedIds": [
+        "tanstack-query-freshness-and-retention"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "tanstack-query-freshness-and-retention"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "micro-frontends-adoption-tradeoffs"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "micro-frontends-adoption-tradeoffs"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "micro-frontends-adoption-tradeoffs"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "webgl-shader-data-flow"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [
+        "webgl-shader-data-flow"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "semantic",
+          "value": "javascript-regexp-pattern-structure"
+        }
+      ],
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "webgl-shader-data-flow"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "call",
+          "value": "global#fetch"
+        }
+      ],
+      "technologies": [
+        "React"
+      ],
+      "expectedIds": [
+        "request-policy-boundaries"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "call",
+          "value": "react#useState"
+        }
+      ],
+      "technologies": [
+        "React"
+      ],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "request-policy-boundaries"
+      ]
+    },
+    {
+      "signals": [
+        {
+          "kind": "jsx-attribute",
+          "value": "className"
+        }
+      ],
+      "technologies": [
+        "Tailwind CSS"
+      ],
+      "expectedIds": [
+        "tailwind-team-authorship"
+      ],
+      "forbiddenIds": []
+    },
+    {
+      "signals": [
+        {
+          "kind": "import",
+          "value": "node:fs"
+        }
+      ],
+      "technologies": [
+        "node"
+      ],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "tailwind-team-authorship"
+      ]
     }
   ]
 }

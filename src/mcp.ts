@@ -1,6 +1,7 @@
 #!/usr/bin/env node
+import {projectContextPayloadSchema} from './application/project-analysis-input.js';
 import { dirname, relative, resolve } from "node:path";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
@@ -11,8 +12,11 @@ import { FileSystemProjectDiscovery } from "./adapters/filesystem/project-discov
 import { changedFiles, diffStat, reviewBase } from "./application/git-state.js";
 import {
   catalogKnowledgeDocument,
+  addKnowledgeNote, knowledgeNoteSchema, prepareActiveKnowledge, selectMergedKnowledge,
+  readKnowledgeDocument, reviewKnowledgeSource, sourceReviewInputSchema,
   knowledgeStatus,
   markKnowledgeSynced,
+  validateKnowledgeSync,
   searchKnowledge,
 } from "./application/knowledge/catalog.js";
 import {
@@ -23,25 +27,37 @@ import {
   writeProjectConfig,
 } from "./application/project-store.js";
 import { runProjectChecks, summarizeChecks } from "./application/run-capabilities.js";
+import { startWork } from './application/start-work.js';
+import { completeWork } from './application/complete-work.js';
 import {
-  approveRevision, digest, executionSchema, issuesSchema, listPlans, readCheckRecord, readProjectRecord, readRevision, recordId,
+  approveRevision, digest, executionInputSchema, listPlans, readCheckRecord, readProjectRecord, readRevision, recordId,
   saveExecution, saveProjectRecord, saveRevision, workflowContext, beginAttempt, saveReview, reviewInputSchema,
 } from "./application/workflow-store.js";
-import { policySchema } from "./application/policy.js";
+import { revisionPayloadSchema } from "./application/revision-input.js";
+import { revisionDiagnostics, revisionInfluence, revisionReceipt, revisionWindow } from './application/revision-response.js';
+import { boundReadWindows } from './application/read-windows.js';
+import { readRevisionDraft } from './application/revision-draft.js';
 import { approveRuleProposal, proposalInputSchema, readRuleProposal, saveRuleProposal } from "./application/knowledge/rule-proposals.js";
 import { acknowledgeSource, checkSources, readSourceChange, registerSource, sourceRegistry } from "./application/knowledge/sources.js";
 import { readReferenceIndex, searchReferenceIndex, readIndexedReference } from "./application/knowledge/reference-index.js";
-import { projectSnapshot, projectDocumentStatus, projectDocumentHash, recordProjectRefresh, readProjectSource } from "./application/project-snapshot.js";
-import { taskContext } from "./application/task-context.js";
+import { discoverKnowledgeTriggers, triggerDiscoverySchema, inspectCodeKnowledge, saveKnowledgeReview, triggerInspectionSchema, checkJudgmentSchema } from "./application/knowledge/trigger-review.js";
+import { projectSnapshot, projectDocumentStatus, projectDocumentHash, recordProjectRefresh, readProjectSource, readProjectSources } from "./application/project-snapshot.js";
+import { taskContext, summarizeTaskContext, summarizeWorkflow } from "./application/task-context.js";
 import type { ProjectAnalysis, ProjectConfig, WorkRequest } from "./domain/types.js";
+import { readProjectEvidence } from './application/design-evidence.js';
+import {analysisId, analysisWriteSchema} from './application/flow-schema.js';
+import {saveProjectAnalysis, getProjectAnalysis} from './application/project-flows.js';
+import {renderProjectFlow, renderFlowOptions} from './application/render-project-flow.js';
+import {contributionInput, prepareKnowledgeContribution, submitKnowledgeContribution} from './application/knowledge/contribution.js';
+import {installedReleaseIdentity} from './application/release-manifest.js';
 
 const moduleDirectory = dirname(fileURLToPath(import.meta.url));
 const systemRoot = resolve(moduleDirectory, existsSync(resolve(moduleDirectory, "../skills")) ? ".." : "../..");
 const discovery = new FileSystemProjectDiscovery();
-const server = new McpServer({ name: "frontend-system", version: "0.2.0" });
+const server = new McpServer({ name: "frontend-system", version: JSON.parse(readFileSync(resolve(systemRoot, 'package.json'), 'utf8')).version });
 
 function result(value: unknown) {
-  return { content: [{ type: "text" as const, text: JSON.stringify(value, null, 2) }] };
+  return { content: [{ type: "text" as const, text: JSON.stringify(value) }] };
 }
 
 function projectPath(path?: string): string {
@@ -49,11 +65,19 @@ function projectPath(path?: string): string {
 }
 
 function repositoryPath(path?: string): string {
-  return resolve(path ?? process.env.FRONTEND_SYSTEM_REPO ?? systemRoot);
+  const root = path ?? process.env.FRONTEND_SYSTEM_REPO;
+  if (!root) throw new Error('Source maintenance requires an explicit FS checkout (repositoryRoot or FRONTEND_SYSTEM_REPO). For shared add use prepare_knowledge_contribution then submit_knowledge_contribution; never store sources in the plugin cache.');
+  return resolve(root);
 }
 
 const readOnly = { readOnlyHint: true, destructiveHint: false, openWorldHint: false };
 const localWrite = { readOnlyHint: false, destructiveHint: false, openWorldHint: false };
+
+server.registerTool('get_fs_release', {
+  title: 'Identify the installed FS build and knowledge snapshot',
+  description: 'Return installed plugin version, release manifest hash and knowledge index hash. Does not update installed plugins, project policies or approved plans.',
+  inputSchema: {}, annotations: readOnly,
+}, async () => result(await installedReleaseIdentity(systemRoot)));
 
 server.registerTool("list_project_files", {
   title: "Page through the whole project inventory",
@@ -78,30 +102,49 @@ server.registerTool("list_plans", {
 server.registerTool("get_workflow_context", {
   title: "Read revision, decisions, and resume state",
   description: "Return project records and detect source or revision changes since the checkpoint. Stored completion is historical, not proof of current verification.",
-  inputSchema: { projectPath: z.string().optional(), planId: recordId.optional() }, annotations: readOnly,
-}, async ({ projectPath: path, planId }) => result(await workflowContext(projectPath(path), planId)));
+  inputSchema: { projectPath: z.string().optional(), planId: recordId.optional(), detail: z.enum(["summary", "full"]).default("summary") }, annotations: readOnly,
+}, async ({ projectPath: path, planId, detail }) => {
+  const state = await workflowContext(projectPath(path), planId);
+  return result(detail === "full" ? state : summarizeWorkflow(state));
+});
 
 server.registerTool("get_revision", {
   title: "Read a revision window",
-  description: "Read the current target design with its content hash and effective approval. Read all relevant windows before discussing or approving it.",
-  inputSchema: { projectPath: z.string().optional(), planId: recordId.optional(), offset: z.number().int().min(0).default(0), limit: z.number().int().min(1).max(500).default(200) }, annotations: readOnly,
-}, async ({ projectPath: path, planId, offset, limit }) => {
+  description: "Read plan text, policy and issue contracts. Use detail:decisions to edit choices; influence audits recorded knowledge → judgments → decisions → rules without claiming causal benefit; full is for debugging. Maximum limit 500. Reuse a read contract while hash is unchanged; expectedHash guards revision pagination (not changing knowledge metadata).",
+  inputSchema: { projectPath: z.string().optional(), planId: recordId.optional(), offset: z.number().int().min(0).default(0), limit: z.number().int().min(1).max(500).default(200), detail: z.enum(['contract', 'decisions', 'influence', 'full']).default('contract'), expectedHash: z.string().optional() }, annotations: readOnly,
+}, async ({ projectPath: path, planId, offset, limit, detail, expectedHash }) => {
   const revision = await readRevision(projectPath(path), planId);
-  const lines = revision.content.split("\n");
-  return result({ ...revision, content: lines.slice(offset, offset + limit).join("\n"), totalLines: lines.length, nextOffset: offset + limit < lines.length ? offset + limit : null });
+  if (expectedHash && revision.hash !== expectedHash) throw new Error('Revision changed; restart pagination');
+  if (detail === 'influence') return result(revisionInfluence(revision, await readReferenceIndex(resolve(systemRoot, 'references/learned')), offset, limit));
+  return result(revisionWindow(revision, offset, limit, detail));
 });
 
 server.registerTool("save_revision", {
   title: "Save an unapproved target design",
-  description: "Save a revision draft and preserve the previous content in history. Every save invalidates approval. Pass the current hash, or null for a new project.",
-  inputSchema: { projectPath: z.string().optional(), planId: recordId.optional(), content: z.string().min(1), expectedHash: z.string().nullable(), policy: policySchema.optional(), issues: issuesSchema.optional() }, annotations: localWrite,
-}, async ({ projectPath: path, planId, content, expectedHash, policy, issues }) => result(await saveRevision(projectPath(path), content, expectedHash, policy, planId, issues)));
+  description: "Save an unapproved plan. Prefer evidence.routes:[{contextId,judgments,dismissed}] from get_work_context; no copied route input or hashes. Citations are {path,quote}; omit line for a unique exact quote, otherwise give its line. Omit policy.rules[].evidence to derive links. Structured payload fields use the full schema returned by node <plugin-root>/bundle/tool-help.mjs save_revision (payloadSchema). Read it before composing a new contract. Both draftFile and inline fields are validated against that schema. Choices, obligations and verification stay explicit. Every save invalidates approval; expectedHash is null only for a new plan.",
+  inputSchema: { projectPath: z.string().optional(), planId: recordId.optional(), // Keep large record schemas out of every tool-list injection. Both transports are
+    // parsed below with the same full schema, also exported by tool-help.
+    content: revisionPayloadSchema.shape.content,
+    policy: z.unknown().optional(), issues: z.unknown().optional(), evidence: z.unknown().optional(),
+    decisionUpdates: z.unknown().optional(), evidenceRoutes: z.unknown().optional(), expectedHash: z.string().nullable(),
+    draftFile: z.string().optional().describe('Optional .frontend-system/drafts/<name>.json containing only content/policy/issues/evidence/decisionUpdates/evidenceRoutes instead of inline payload. Same validation and freshness gates. Patch the file after errors instead of resending the full plan. Never includes projectPath, planId, expectedHash or approval.'),
+    detail: z.enum(['summary', 'full']).default('summary') }, annotations: localWrite,
+}, async ({ projectPath: path, planId, expectedHash, detail, draftFile, ...inline }) => {
+  if (draftFile && Object.values(inline).some(value => value !== undefined)) throw new Error('Choose draftFile or inline revision fields, not both');
+  const draft = draftFile ? await readRevisionDraft(projectPath(path), draftFile) : undefined;
+  const payload = revisionPayloadSchema.parse(draft ? draft.input : inline);
+  const revision = await saveRevision(projectPath(path), payload.content, expectedHash, payload.policy, planId, payload.issues, payload.evidence, payload.decisionUpdates, payload.evidenceRoutes);
+  return result({...(detail === 'full' ? {...revision, ...revisionDiagnostics(revision)} : revisionReceipt(revision)), ...(draft ? {draftSource: draft.source} : {})});
+});
 
 server.registerTool("approve_revision", {
   title: "Record explicit user approval of a revision",
   description: "Call only after the user approves this exact target design. Record their approval, never infer it from a request to analyze or draft. Does not start implementation.",
-  inputSchema: { projectPath: z.string().optional(), planId: recordId.optional(), expectedHash: z.string(), approval: z.string().min(1) }, annotations: localWrite,
-}, async ({ projectPath: path, planId, expectedHash, approval }) => result(await approveRevision(projectPath(path), expectedHash, approval, planId)));
+  inputSchema: { projectPath: z.string().optional(), planId: recordId.optional(), expectedHash: z.string(), approval: z.string().min(1), detail: z.enum(['summary', 'full']).default('summary') }, annotations: localWrite,
+}, async ({ projectPath: path, planId, expectedHash, approval, detail }) => {
+  const revision = await approveRevision(projectPath(path), expectedHash, approval, planId);
+  return result(detail === 'full' ? {...revision, ...revisionDiagnostics(revision)} : revisionReceipt(revision));
+});
 
 server.registerTool("save_project_record", {
   title: "Save project evidence or a scoped decision",
@@ -117,8 +160,8 @@ server.registerTool("get_project_record", {
 
 server.registerTool("save_execution", {
   title: "Checkpoint a refactoring execution",
-  description: "Record stages against the approved revision. Reconcile source changes before saving. Newly completed stages require current passing checks; complete execution requires a full current check. Never edit product files or reset user changes here.",
-  inputSchema: { projectPath: z.string().optional(), planId: recordId.optional(), expectedHash: z.string().nullable(), execution: executionSchema }, annotations: localWrite,
+  description: "Record stages against the approved revision. Reconcile source changes before saving. For approved issues, omit step title/files/dependsOn/requiredCheckIds to reuse the contract. Newly completed stages require current passing checks; completion requires all policy checks and reviews. A delivery record can serve both step checkIds and finalCheckId; preserve its attemptId. Never edit product files or reset user changes here.",
+  inputSchema: { projectPath: z.string().optional(), planId: recordId.optional(), expectedHash: z.string().nullable(), execution: executionInputSchema }, annotations: localWrite,
 }, async ({ projectPath: path, planId, expectedHash, execution }) => result(await saveExecution(projectPath(path), execution, expectedHash, planId)));
 
 server.registerTool("get_check_record", {
@@ -133,13 +176,23 @@ server.registerTool("get_check_record", {
   return result({ id, ...entry, output: entry.output.slice(offset, offset + limit), totalCharacters: entry.output.length, nextOffset: offset + limit < entry.output.length ? offset + limit : null });
 });
 
+server.registerTool("start_work", {
+  description: "For a new execution only: initialize every approved issue as pending, reserve the selected dependency-free issue's first attempt, and record baseline checks in one call. Requires an already approved exact revision; does not approve, edit product code or complete work. Existing executions must resume through begin_work_attempt. Partial failure returns saved identities; never initialize again to retry.",
+  inputSchema: { projectPath: z.string().optional(), planId: recordId, revisionHash: z.string().regex(/^[a-f0-9]{64}$/), stepId: recordId, kind: z.enum(['setup', 'implement', 'refactor', 'verify']) }, annotations: localWrite,
+}, async ({ projectPath: path, ...options }) => result(await startWork(projectPath(path), options)));
+
+server.registerTool("complete_work", {
+  description: "Complete one approved single-issue execution: run delivery checks, record the supplied host semantic reviews, then apply existing completion guards. Calling declares no remaining work. Supply every policy review explicitly; reviewId is its existing requirement ID, not a new record name. Only status:complete means accepted. Failure keeps saved evidence and returns recovery information. Use individual tools for multi-issue work or to reuse an already passing final check.",
+  inputSchema: { projectPath: z.string().optional(), planId: recordId, expectedHash: z.string(), attemptId: recordId, baselineCheckId: recordId.optional(), reviews: z.array(reviewInputSchema) }, annotations: localWrite,
+}, async ({ projectPath: path, ...options }) => result(await completeWork(projectPath(path), options)));
+
 server.registerTool("begin_work_attempt", {
-  description: "Reserve one of three persisted full attempts for an incomplete step. Local development tests do not need attempts. Reuse the returned ID for checks and semantic reviews; cannot reset the budget by resuming.",
-  inputSchema: { projectPath: z.string().optional(), planId: recordId.optional(), stepId: recordId, expectedHash: z.string() }, annotations: localWrite,
+  description: "After save_execution creates pending steps, reserve one of three persisted attempts. expectedHash is the execution hash returned by save_execution, not the approved revision hash. Local development tests do not need attempts. Reuse returned ID for checks/reviews; cannot reset the budget by resuming.",
+  inputSchema: { projectPath: z.string().optional(), planId: recordId.optional(), stepId: recordId, expectedHash: z.string().describe("Current execution hash from save_execution or get_workflow_context") }, annotations: localWrite,
 }, async ({ projectPath: path, planId, stepId, expectedHash }) => result(await beginAttempt(projectPath(path), stepId, expectedHash, planId)));
 
 server.registerTool("save_semantic_review", {
-  description: "Record host-model review evidence against the current source and approved policy. Findings must cite existing files. This records model judgment, not machine proof of correctness.",
+  description: "Record host-model findings for every required review rule, citing existing files. remaining means unmet approved obligations: passed requires remaining:[], and an unrun required check must fail. Record scope limitations in findings without claiming unperformed verification. This records model judgment, not machine proof.",
   inputSchema: { projectPath: z.string().optional(), planId: recordId.optional(), review: reviewInputSchema }, annotations: localWrite,
 }, async ({ projectPath: path, planId, review }) => result(await saveReview(projectPath(path), review, planId)));
 
@@ -193,11 +246,36 @@ server.registerTool("configure_project", {
   return result({ path: `${root}/.frontend-system/config.json`, config });
 });
 
-const questionSchema = z.object({
-  id: z.string(),
-  question: z.string(),
-  reason: z.string(),
+server.registerTool('save_project_analysis', {
+  description: 'Persist a cited flow or finding from a JSON draft. Read save_project_analysis payloadSchema with bundle/tool-help.mjs first. expectedHash is null for new IDs. Does not refresh project.md, approve a plan or verify runtime behavior.',
+  inputSchema: {projectPath: z.string().optional(), draftFile: z.string()}, annotations: localWrite,
+}, async ({projectPath: path, draftFile}) => {
+  const root = projectPath(path);
+  return result(await saveProjectAnalysis(root, systemRoot, analysisWriteSchema.parse((await readRevisionDraft(root, draftFile)).input)));
 });
+server.registerTool('get_project_analysis', {
+  description: 'Read flow/finding summaries with current dependency freshness. For detail full select IDs; at most three records per page and 24000 data characters. Oversized details return an artifact path for bounded local reads. Include resolved/dismissed history; no automatic project.md writes. Flow freshness is not runtime verification.',
+  inputSchema: {projectPath: z.string().optional(), kind: z.enum(['flow', 'finding']).optional(), ids: z.array(analysisId).min(1).max(10).optional(),
+    files: z.array(z.string()).max(100).optional(), detail: z.enum(['summary', 'full']).default('summary'), offset: z.number().int().min(0).default(0), limit: z.number().int().min(1).max(20).default(10)}, annotations: readOnly,
+}, async ({projectPath: path, detail, ...options}) => {
+  if (detail === 'full' && !options.ids?.length) throw new Error('Full analysis requires selected IDs');
+  const found = await getProjectAnalysis(projectPath(path), systemRoot, {...options, limit: detail === 'full' ? Math.min(options.limit, 3) : options.limit, full: detail === 'full'});
+  let remaining = 24000;
+  for (const row of found.records) if (row.data) {
+    const length = JSON.stringify(row.data).length;
+    if (length <= remaining) remaining -= length;
+    else {
+      delete row.data;
+      row.detailOmitted = {characters: length, reason: 'Read selected fields or character windows from this JSON artifact; the response budget is shared across this page.', path: `.frontend-system/analysis/${row.kind}/${row.id}.json`};
+    }
+  }
+  return result(found);
+});
+server.registerTool('render_project_flow', {
+  description: 'Export a stored, cited actual project flow to offline HTML or Mermaid. Requires current observed evidence by default; allowUnverified explicitly previews stale/proposed records. HTML shows source citations, scope and export-time freshness. Does not analyze code or verify runtime behavior.',
+  inputSchema: {projectPath: z.string().optional(), ...renderFlowOptions.shape}, annotations: localWrite,
+}, async ({projectPath: path, ...options}) => result(await renderProjectFlow(projectPath(path), systemRoot, options)));
+
 
 server.registerTool("get_project_snapshot", {
   description: "Read main facts without checkout or changing local files. Page tracked files and read selected contents with read_project_source. Manifests are facts, not proof of installed tools or passing tests. No remote fetch.",
@@ -227,50 +305,61 @@ server.registerTool("get_project_document", {
 });
 
 server.registerTool("read_project_source", {
-  description: "Read a bounded file window from the inspected main commit. Working-branch contents are not used.",
-  inputSchema: { projectPath: z.string().optional(), baseRef: z.string().default("main"), path: z.string(), expectedCommit: z.string(), offset: z.number().int().min(0).default(0), limit: z.number().int().min(1).max(12000).default(6000) }, annotations: readOnly,
-}, async ({ projectPath: root, path, expectedCommit, baseRef, offset, limit }) => result(await readProjectSource(projectPath(root), path, expectedCommit, baseRef, offset, limit)));
+  description: "Read main-commit source and full-file hashes. Prefer path:[paths] for related files (up to 100 requested). Each page reads at most 40 files and returns {files:[windows],nextPaths:[unread paths]}; pass nextPaths in another call with the same expectedCommit. Each page has at most 24000 content characters, redistributing unused space from short files. String path retains the single-window response. Default limit 6000 per file, maximum 12000; continue truncated files individually at their nextOffset. Working contents are not used.",
+  inputSchema: { projectPath: z.string().optional(), baseRef: z.string().default("main"), path: z.union([z.string(), z.array(z.string()).min(1).max(100)]), expectedCommit: z.string(), offset: z.number().int().min(0).default(0), limit: z.number().int().min(1).max(12000).default(6000) }, annotations: readOnly,
+}, async ({ projectPath: root, path, expectedCommit, baseRef, offset, limit }) => result(Array.isArray(path)
+  ? await readProjectSources(projectPath(root), path, expectedCommit, baseRef, offset, limit)
+  : await readProjectSource(projectPath(root), path, expectedCommit, baseRef, offset, limit)));
 
 server.registerTool("save_project_context", {
   title: "Save inspected project context",
-  description: "Persist the top-level model's evidence-backed project analysis and update deterministic hashes.",
+  description: "Persist evidence-backed main analysis from draftFile or inline analysis. For payloadSchema read bundle/tool-help.mjs save_project_context; draft input avoids resending the whole analysis after a field error. User-decision statements require confirmation with the supplied answer. Each code fact/interpretation needs reuse dependencies and registered semantic interpretations, or reuseReason explaining why none is justified. Returns reuse coverage. Hashes are bound by the server.",
   inputSchema: {
     projectPath: z.string().optional(),
-    baseRef: z.string().default("main"), expectedCommit: z.string().nullable(), expectedHash: z.string().nullable(),
-    analysis: z.object({
-      summary: z.string(),
-      domains: z.array(z.string()).default([]), events: z.array(z.string()).default([]),
-      state: z.array(z.string()).default([]), styles: z.array(z.string()).default([]), tests: z.array(z.string()).default([]),
-      observed: z.array(z.string()),
-      architecture: z.array(z.string()),
-      conventions: z.array(z.string()),
-      decisions: z.array(z.string()),
-      qualityGates: z.array(z.string()),
-      assumptions: z.array(z.string()),
-      questions: z.array(questionSchema),
-    }),
+    baseRef: z.string().default("main"),
+    expectedCommit: z.string().nullable().describe('The commit returned by get_project_snapshot.'),
+    expectedHash: z.string().nullable().describe('The documentHash returned by get_project_snapshot, null for a missing project.md. This guards the document being replaced; never pass sourceHash or a file hash.'),
+    analysis: z.unknown().optional().describe('Inline legacy payload; prefer draftFile for large analyses. Read payloadSchema with tool-help.'),
+    draftFile: z.string().optional().describe('Confined .frontend-system/drafts/<id>.json containing {analysis}. Expected hashes stay in tool arguments; choose exactly one input.'),
   },
   annotations: localWrite,
-}, async ({ projectPath: path, analysis, baseRef, expectedCommit, expectedHash }) => {
+}, async ({ projectPath: path, analysis: inline, draftFile, baseRef, expectedCommit, expectedHash }) => {
   const root = projectPath(path);
+  if ((inline !== undefined) === (draftFile !== undefined)) throw new Error('Supply exactly one of analysis or draftFile');
+  const {analysis} = projectContextPayloadSchema.parse(draftFile ? (await readRevisionDraft(root, draftFile)).input : {analysis:inline});
   const profile = await discovery.discover(await discovery.createRef(root));
   await writeProjectArtifacts(profile, analysis as ProjectAnalysis, { baseRef, expectedCommit, expectedHash });
-  return result({ projectDocument: `${root}/.frontend-system/project.md`, status: await projectDocumentStatus(root) });
+  const statements = analysis.evidence ? (await readProjectEvidence(root)).record.statements : [];
+  return result({ projectDocument: `${root}/.frontend-system/project.md`, status: await projectDocumentStatus(root),
+    reuse: {bound: statements.filter(item => item.reuse).map(item => item.id),
+      excluded: statements.filter(item => item.reuseReason).map(item => ({id: item.id, reason: item.reuseReason})),
+      meaning: 'Bound statements can emit saved triggers after dependency validation. Excluded statements remain review context; never imply cache hits.'} });
 });
 
 server.registerTool("get_work_context", {
   title: "Build focused frontend work context",
-  description: "Return a token-conscious file shortlist, applicable rules, learned references, project constraints, and design evidence for a request.",
+  description: "Inspect code and route knowledge in one call. Supply request and files; pin specification documents separately in requirements. Returns a process-local contextId for save_revision.evidence.routes, compact candidates and mandatory rules. Detail full returns raw analysis. No need to repeat discover/inspect tools unless scope or interpretations change. After saving project.md refresh this context before binding a plan. Interpretations and user decisions still belong to the host.",
   inputSchema: {
     projectPath: z.string().optional(), planId: recordId.optional(),
-    request: z.string(),
+    request: z.string().describe('Describe the observed behavior/change and relevant constraints. Put document paths in requirements; summarize their actual meaning here instead of searching by their filenames.'),
+    observations: z.array(z.object({ path: z.string(), observation: z.string().min(1).max(600) })).max(20).optional(),
+    detail: z.enum(["summary", "full"]).default("summary"),
+    knownContextId: z.string().regex(/^[a-f0-9]{64}$/).optional().describe('Only supply an analysis context already read in this conversation. Fresh routing still runs; identical candidates/discovery are omitted in summary. Changed evidence returns them again.'),
     mode: z.enum(["prepare", "implement", "verify", "review", "refactor"]).default("implement"),
     constraints: z.array(z.string()).default([]),
+    includeRelations: triggerInspectionSchema.shape.includeRelations,
+    files: triggerInspectionSchema.shape.files.optional(),
+    requirements: z.array(z.string().min(1)).max(40).optional(),
+    interpretations: triggerInspectionSchema.shape.interpretations.optional(),
+    snapshot: triggerInspectionSchema.shape.snapshot,
   },
   annotations: readOnly,
-}, async ({ projectPath: path, planId, request, mode, constraints }) => {
-  const workRequest: WorkRequest = { raw: request, mode, constraints };
-  return result(await taskContext(discovery, systemRoot, projectPath(path), workRequest, planId));
+}, async ({ projectPath: path, planId, request, mode, constraints, observations, detail, knownContextId, files, requirements, interpretations, snapshot, includeRelations }) => {
+  const workRequest: WorkRequest = { raw: request, mode, constraints, ...(includeRelations !== undefined ? {includeRelations} : {}), ...(observations ? { observations } : {}),
+    ...(files ? {files} : {}), ...(interpretations ? {interpretations} : {}), ...(snapshot ? {snapshot} : {}) };
+  if (requirements) workRequest.requirements = requirements;
+  const state = await taskContext(discovery, systemRoot, projectPath(path), workRequest, planId);
+  return result(detail === "full" ? state : summarizeTaskContext(state, knownContextId));
 });
 
 server.registerTool("get_change_context", {
@@ -296,7 +385,7 @@ server.registerTool("get_change_context", {
 
 server.registerTool("run_project_checks", {
   title: "Run discovered project checks",
-  description: "Run only existing, non-watch package scripts for unit, integration, e2e, Storybook, types, lint, and build. Test code should be created before calling this tool.",
+  description: "Run existing non-watch package scripts, retaining full logs and returning bounded failure excerpts. Use capabilities:[exact test script keys] for development checks instead of streaming shell logs; omit stage/required and keep planId/attemptId. Choose stage OR capabilities, never both. baseline stage selects tests/lint/types without build; explicit baseline: purpose:baseline + capabilities. After tests and review are ready, delivery runs all policy scripts; use its id for step checkIds and finalCheckId. coverage reports policy coverage; full is legacy, not readiness. Completion validates source, attempts and reviews.",
   inputSchema: { projectPath: z.string().optional(), planId: recordId.optional(), stage: z.enum(["baseline", "issue", "delivery"]).optional(), stepId: recordId.optional(), capabilities: z.array(z.string()).min(1).optional(), purpose: z.enum(["baseline", "verification"]).optional(), baselineCheckId: recordId.optional(), required: z.boolean().default(false), attemptId: recordId.optional() },
   annotations: localWrite,
 }, async ({ projectPath: path, planId, stage, stepId, capabilities, purpose, baselineCheckId, required, attemptId }) => {
@@ -307,7 +396,7 @@ server.registerTool("run_project_checks", {
 
 server.registerTool("knowledge_status", {
   title: "Check source knowledge status",
-  description: "Find uncataloged, changed, and not-yet-published source knowledge without reading it into model context.",
+  description: "List pending/active/merged/legacy source IDs, invalid metadata, syncReady and changed/publication status without loading note bodies into model context. Merged requires user-selected active metadata and current review evidence.",
   inputSchema: { repositoryRoot: z.string().optional() },
   annotations: readOnly,
 }, async ({ repositoryRoot }) => result(await knowledgeStatus(repositoryPath(repositoryRoot))));
@@ -324,6 +413,50 @@ server.registerTool("search_knowledge", {
   annotations: readOnly,
 }, async ({ repositoryRoot, query, facets, limit }) =>
   result(await searchKnowledge(repositoryPath(repositoryRoot), query, facets, limit)));
+
+server.registerTool("read_source_knowledge", {
+  title: "Read a source before review",
+  description: "Read bounded original text and its review status. Reuse sourceHash as expectedSourceHash on later pages. Read the complete source before approval; returned hashes bind the reviewed snapshot.",
+  inputSchema: { repositoryRoot: z.string().optional(), id: z.string(), offset: z.number().int().min(0).default(0),
+    limit: z.number().int().min(1).max(12000).default(6000), expectedSourceHash: z.string().optional() }, annotations: readOnly,
+}, async ({ repositoryRoot, id, offset, limit, expectedSourceHash }) => result(await readKnowledgeDocument(repositoryPath(repositoryRoot), id, offset, limit, expectedSourceHash)));
+
+server.registerTool("save_source_review", {
+  title: "Record a grounded source review before sync",
+  description: "Save host/user semantic judgments bound to source and metadata hashes. Approval requires quoted supported/qualified claims, applicability, exclusions and no unresolved questions. This validates records, not factual truth, rule approval or publication. Never fabricate user review.",
+  inputSchema: { repositoryRoot: z.string().optional(), id: z.string(), expectedSourceHash: z.string(), expectedMetadataHash: z.string(),
+    expectedReviewHash: z.string().nullable(), review: sourceReviewInputSchema }, annotations: localWrite,
+}, async ({ repositoryRoot, id, expectedSourceHash, expectedMetadataHash, expectedReviewHash, review }) => {
+  const root = repositoryPath(repositoryRoot);
+  const source = await readKnowledgeDocument(root, id);
+  if (source.state !== "active" && source.state !== "merged") throw new Error("User must select state: active in source metadata before review");
+  return result(await reviewKnowledgeSource(root, id, expectedSourceHash, expectedMetadataHash, expectedReviewHash, review));
+});
+
+server.registerTool("add_knowledge_note", {
+  title: "Register a short learning note",
+  description: "Save a plain note with pending metadata in the original FS repository. User selects state: active later. No review, activation, sync or URL fetching.",
+  inputSchema: { repositoryRoot: z.string().optional(), ...knowledgeNoteSchema.shape }, annotations: localWrite,
+}, async ({ repositoryRoot, ...note }) => result(await addKnowledgeNote(repositoryPath(repositoryRoot), note)));
+
+server.registerTool('prepare_knowledge_contribution', {
+  title: 'Prepare a pending knowledge PR draft',
+  description: 'For fs-knowledge add: prepare one pending Markdown contribution to the official FS repository from any project. Stores the exact draft outside the plugin cache; no GitHub writes yet. Returns id/hash for submission. Does not use the current project origin.',
+  inputSchema: contributionInput.shape, annotations: localWrite,
+}, async input => result(await prepareKnowledgeContribution(systemRoot, input)));
+
+server.registerTool('submit_knowledge_contribution', {
+  title: 'Submit pending knowledge to the official FS repository',
+  description: 'Publish the prepared id/hash as a knowledge PR using the contributor’s authenticated GitHub CLI. Shared fs-knowledge add includes this submission; explicit local-only saves do not. Creates a fork when needed, one branch and one pending Markdown file; no merge, activation, sync or release. Retains draft on failure and reuses the same branch/PR on retry.',
+  inputSchema: {id: z.string().uuid(), expectedHash: z.string().regex(/^[a-f0-9]{64}$/)},
+  annotations: {readOnlyHint: false, destructiveHint: false, openWorldHint: true},
+}, async ({id, expectedHash}) => result(await submitKnowledgeContribution(systemRoot, id, expectedHash)));
+
+server.registerTool("prepare_active_knowledge", {
+  title: "Collect user-selected active knowledge",
+  description: "Move notes already marked state: active in Markdown metadata into knowledge/source/active, preserving subpaths and catalog IDs. No overwrite or automatic activation. Return prepared notes and per-file errors; host structures only these notes for review, preserving claims and unknowns. Does not approve or sync.",
+  inputSchema: {repositoryRoot: z.string().optional()}, annotations: localWrite,
+}, async ({repositoryRoot}) => result(await prepareActiveKnowledge(repositoryPath(repositoryRoot))));
 
 server.registerTool("catalog_knowledge_document", {
   title: "Catalog normalized source knowledge",
@@ -347,6 +480,26 @@ server.registerTool("catalog_knowledge_document", {
     ...(remoteHash ? { remoteHash } : {}),
   })));
 
+server.registerTool("discover_knowledge_triggers", {
+  title: "Discover scoped semantic trigger descriptions",
+  description: "Page through semantic trigger descriptions using observed symptoms, technology or domain. Query results are capped at 20; use domain pages for coverage. This is not code interpretation; cite inspected code when emitting signals. Reuse returned hash across pages.",
+  inputSchema: triggerDiscoverySchema.shape, annotations: readOnly,
+}, async (input) => result(await discoverKnowledgeTriggers(systemRoot, input)));
+
+server.registerTool("inspect_code_knowledge", {
+  title: "Inspect code triggers and route knowledge checks",
+  description: "Inspect selected JS/TS files using syntax/bindings and intrinsic JSX, merge evidence-cited host interpretations, and return triggered knowledge checklists. Discover semantic descriptions with discover_knowledge_triggers. Use includeRelations for bounded caller/argument/dispatch facts; investigate conditions before adoption. Facts are not defects; unsupported paths are warnings. No lint install, model call or browser execution. Reinspect after code/config/knowledge changes.",
+  inputSchema: { projectPath: z.string().optional(), ...triggerInspectionSchema.shape }, annotations: readOnly,
+}, async ({ projectPath: path, ...input }) => result(await inspectCodeKnowledge(projectPath(path), systemRoot, input)));
+
+server.registerTool("save_knowledge_review", {
+  title: "Record judgments for triggered knowledge",
+  description: "Record every checklist judgment against a fresh inspection hash and matching source evidence. Missing/duplicate/stale judgments are rejected. needs-context/needs-decision remain pending. Reviewed does not mean verified; use existing checks, user decisions and approved semantic reviews.",
+  inputSchema: { projectPath: z.string().optional(), input: triggerInspectionSchema, inspectionHash: z.string().regex(/^[a-f0-9]{64}$/),
+    judgments: z.array(checkJudgmentSchema).max(5000), id: recordId, expectedHash: z.string().nullable() }, annotations: localWrite,
+}, async ({ projectPath: path, input, inspectionHash, judgments, id, expectedHash }) =>
+  result(await saveKnowledgeReview(projectPath(path), systemRoot, input, inspectionHash, judgments, id, expectedHash)));
+
 server.registerTool("search_learned_knowledge", {
   description: "Search compact concept/decision metadata using observed symptoms and known technologies. Conditions and exclusions still require semantic review. Does not read reference bodies.",
   inputSchema: { query: z.string(), technologies: z.array(z.string()).default([]), limit: z.number().int().min(1).max(20).default(5) },
@@ -357,20 +510,40 @@ server.registerTool("search_learned_knowledge", {
 });
 
 server.registerTool("read_learned_knowledge", {
-  description: "Read a selected indexed reference with evidence, bounded content and content-hash verification. Read conditions and counterexamples before applying it.",
-  inputSchema: { id: z.string(), offset: z.number().int().min(0).default(0), limit: z.number().int().min(1).max(12000).default(6000) },
+  description: "Read selected references with evidence and hash verification. Prefer id:[ids] for 1–10 related references; returns {references:[windows]} with at most 24000 content characters, redistributing unused space from short entries. String id retains the single response. Continue each truncated entry at nextOffset; read conditions and counterexamples before applying it.",
+  inputSchema: { id: z.union([z.string(), z.array(z.string()).min(1).max(10)]), offset: z.number().int().min(0).default(0), limit: z.number().int().min(1).max(12000).default(6000) },
   annotations: readOnly,
-}, async ({ id, offset, limit }) => result(await readIndexedReference(resolve(systemRoot, "references/learned"), id, offset, limit)));
+}, async ({ id, offset, limit }) => {
+  const root = resolve(systemRoot, "references/learned");
+  if (!Array.isArray(id)) return result(await readIndexedReference(root, id, offset, limit));
+  if (new Set(id).size !== id.length) throw new Error("Select distinct knowledge IDs");
+  return result({references: boundReadWindows(await Promise.all(id.map(key => readIndexedReference(root, key, offset, limit))), offset) });
+});
+
+server.registerTool("validate_knowledge_sync", {
+  description: "Read-only validation before sync: source/reference hashes, approved rules, outcome mappings and recorded retrieval cases. Returns warnings; semantic source support still needs host review.",
+  inputSchema: { repositoryRoot: z.string().optional(), ids: z.array(z.string()).min(1).optional() }, annotations: readOnly,
+}, async ({ repositoryRoot, ids }) => {
+  const root = repositoryPath(repositoryRoot);
+  const selected = await selectMergedKnowledge(root, ids);
+  if (!selected.length) return result({sourceIds: [], status: "No merged knowledge awaiting sync"});
+  const { documents, ...report } = await validateKnowledgeSync(root, selected, true);
+  return result({ ...report, sourceIds: documents.map(({ id }) => id) });
+});
 
 server.registerTool("mark_knowledge_synced", {
   title: "Mark knowledge references as synced",
-  description: "After learned Skill references have been updated, record the corresponding source hashes as published.",
+  description: "After learned references are updated, validate and mark merged sources published. Without IDs selects all merged sources awaiting sync. Pending, active/unreviewed and stale sources cannot publish; this never runs review or promotes sources.",
   inputSchema: {
     repositoryRoot: z.string().optional(),
-    ids: z.array(z.string()).min(1),
+    ids: z.array(z.string()).min(1).optional(),
   },
   annotations: localWrite,
-}, async ({ repositoryRoot, ids }) => result(await markKnowledgeSynced(repositoryPath(repositoryRoot), ids)));
+}, async ({ repositoryRoot, ids }) => {
+  const root = repositoryPath(repositoryRoot);
+  const selected = await selectMergedKnowledge(root, ids);
+  return result(selected.length ? await markKnowledgeSynced(root, selected, true) : []);
+});
 
 server.registerTool("save_rule_proposal", {
   description: "Save source-bound shared rule candidates. Saving clears approval; never publish candidates as mandatory rules.",

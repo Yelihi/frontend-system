@@ -1,0 +1,292 @@
+{
+  "rows": [
+    {
+      "stage": "initial",
+      "variant": "correct",
+      "expected": null,
+      "matched": true,
+      "publicLintPassed": true,
+      "grade": {
+        "satisfied": 97,
+        "total": 97
+      }
+    },
+    {
+      "stage": "initial",
+      "variant": "import-alias",
+      "expected": null,
+      "matched": true,
+      "publicLintPassed": true,
+      "grade": {
+        "satisfied": 97,
+        "total": 97
+      }
+    },
+    {
+      "stage": "initial",
+      "variant": "non-class-template",
+      "expected": null,
+      "matched": true,
+      "publicLintPassed": true,
+      "grade": {
+        "satisfied": 97,
+        "total": 97
+      }
+    },
+    {
+      "stage": "initial",
+      "variant": "cva-selection-data",
+      "expected": null,
+      "matched": true,
+      "publicLintPassed": true,
+      "grade": {
+        "satisfied": 97,
+        "total": 97
+      }
+    },
+    {
+      "stage": "initial",
+      "variant": "static-map",
+      "expected": "S-inline-ActionButton",
+      "matched": true,
+      "publicLintPassed": null,
+      "grade": {
+        "satisfied": 94,
+        "total": 97
+      }
+    },
+    {
+      "stage": "initial",
+      "variant": "wrong-default",
+      "expected": "F-style-variants-ActionButton",
+      "matched": true,
+      "publicLintPassed": null,
+      "grade": {
+        "satisfied": 95,
+        "total": 97
+      }
+    },
+    {
+      "stage": "initial",
+      "variant": "lost-native-prop",
+      "expected": "F-style-native-props",
+      "matched": true,
+      "publicLintPassed": null,
+      "grade": {
+        "satisfied": 86,
+        "total": 97
+      }
+    },
+    {
+      "stage": "initial",
+      "variant": "protected-domain",
+      "expected": "N1-approved-change-scope",
+      "matched": true,
+      "publicLintPassed": null,
+      "grade": {
+        "satisfied": 96,
+        "total": 97
+      }
+    },
+    {
+      "stage": "variants",
+      "variant": "correct",
+      "expected": null,
+      "matched": true,
+      "publicLintPassed": true,
+      "grade": {
+        "satisfied": 97,
+        "total": 97
+      }
+    },
+    {
+      "stage": "variants",
+      "variant": "import-alias",
+      "expected": null,
+      "matched": true,
+      "publicLintPassed": true,
+      "grade": {
+        "satisfied": 97,
+        "total": 97
+      }
+    },
+    {
+      "stage": "variants",
+      "variant": "non-class-template",
+      "expected": null,
+      "matched": true,
+      "publicLintPassed": true,
+      "grade": {
+        "satisfied": 97,
+        "total": 97
+      }
+    },
+    {
+      "stage": "variants",
+      "variant": "cva-selection-data",
+      "expected": null,
+      "matched": true,
+      "publicLintPassed": true,
+      "grade": {
+        "satisfied": 97,
+        "total": 97
+      }
+    },
+    {
+      "stage": "variants",
+      "variant": "static-map",
+      "expected": "S-inline-ActionButton",
+      "matched": true,
+      "publicLintPassed": null,
+      "grade": {
+        "satisfied": 94,
+        "total": 97
+      }
+    },
+    {
+      "stage": "variants",
+      "variant": "wrong-default",
+      "expected": "F-style-variants-ActionButton",
+      "matched": true,
+      "publicLintPassed": null,
+      "grade": {
+        "satisfied": 95,
+        "total": 97
+      }
+    },
+    {
+      "stage": "variants",
+      "variant": "lost-native-prop",
+      "expected": "F-style-native-props",
+      "matched": true,
+      "publicLintPassed": null,
+      "grade": {
+        "satisfied": 86,
+        "total": 97
+      }
+    },
+    {
+      "stage": "variants",
+      "variant": "protected-domain",
+      "expected": "N1-approved-change-scope",
+      "matched": true,
+      "publicLintPassed": null,
+      "grade": {
+        "satisfied": 96,
+        "total": 97
+      }
+    },
+    {
+      "stage": "variants",
+      "variant": "missing-danger",
+      "expected": "F-style-variants-ActionButton",
+      "matched": true,
+      "publicLintPassed": null,
+      "grade": {
+        "satisfied": 95,
+        "total": 97
+      }
+    },
+    {
+      "stage": "defaults",
+      "variant": "correct",
+      "expected": null,
+      "matched": true,
+      "publicLintPassed": true,
+      "grade": {
+        "satisfied": 97,
+        "total": 97
+      }
+    },
+    {
+      "stage": "defaults",
+      "variant": "import-alias",
+      "expected": null,
+      "matched": true,
+      "publicLintPassed": true,
+      "grade": {
+        "satisfied": 97,
+        "total": 97
+      }
+    },
+    {
+      "stage": "defaults",
+      "variant": "non-class-template",
+      "expected": null,
+      "matched": true,
+      "publicLintPassed": true,
+      "grade": {
+        "satisfied": 97,
+        "total": 97
+      }
+    },
+    {
+      "stage": "defaults",
+      "variant": "cva-selection-data",
+      "expected": null,
+      "matched": true,
+      "publicLintPassed": true,
+      "grade": {
+        "satisfied": 97,
+        "total": 97
+      }
+    },
+    {
+      "stage": "defaults",
+      "variant": "static-map",
+      "expected": "S-inline-ActionButton",
+      "matched": true,
+      "publicLintPassed": null,
+      "grade": {
+        "satisfied": 94,
+        "total": 97
+      }
+    },
+    {
+      "stage": "defaults",
+      "variant": "wrong-default",
+      "expected": "F-style-variants-ActionButton",
+      "matched": true,
+      "publicLintPassed": null,
+      "grade": {
+        "satisfied": 95,
+        "total": 97
+      }
+    },
+    {
+      "stage": "defaults",
+      "variant": "lost-native-prop",
+      "expected": "F-style-native-props",
+      "matched": true,
+      "publicLintPassed": null,
+      "grade": {
+        "satisfied": 86,
+        "total": 97
+      }
+    },
+    {
+      "stage": "defaults",
+      "variant": "protected-domain",
+      "expected": "N1-approved-change-scope",
+      "matched": true,
+      "publicLintPassed": null,
+      "grade": {
+        "satisfied": 96,
+        "total": 97
+      }
+    },
+    {
+      "stage": "defaults",
+      "variant": "missing-danger",
+      "expected": "F-style-variants-ActionButton",
+      "matched": true,
+      "publicLintPassed": null,
+      "grade": {
+        "satisfied": 95,
+        "total": 97
+      }
+    }
+  ],
+  "matched": 26,
+  "modelCalls": 0
+}

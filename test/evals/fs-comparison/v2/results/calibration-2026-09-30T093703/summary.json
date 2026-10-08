@@ -1,0 +1,151 @@
+{
+  "modelCalls": 0,
+  "references": [
+    {
+      "variant": "flat",
+      "automatedPassed": 102,
+      "controllerCasesPassed": 6,
+      "changeProbesPassed": 4,
+      "browserNotRun": 8,
+      "qualityScore": null
+    },
+    {
+      "variant": "layered",
+      "automatedPassed": 102,
+      "controllerCasesPassed": 6,
+      "changeProbesPassed": 4,
+      "browserNotRun": 8,
+      "qualityScore": null
+    }
+  ],
+  "mutations": [
+    {
+      "name": "shipping-before-discount",
+      "expectedAutomatedFailures": [
+        "below-discounted-threshold"
+      ],
+      "observedAutomatedFailures": [
+        "below-discounted-threshold"
+      ],
+      "referenceControllerFailures": [],
+      "browserDetection": "not-run"
+    },
+    {
+      "name": "shipping-boundary",
+      "expectedAutomatedFailures": [
+        "at-discounted-threshold"
+      ],
+      "observedAutomatedFailures": [
+        "at-discounted-threshold"
+      ],
+      "referenceControllerFailures": [],
+      "browserDetection": "not-run"
+    },
+    {
+      "name": "discount-rounding",
+      "expectedAutomatedFailures": [
+        "rounding"
+      ],
+      "observedAutomatedFailures": [
+        "rounding",
+        "at-discounted-threshold",
+        "above-discounted-threshold"
+      ],
+      "referenceControllerFailures": [],
+      "browserDetection": "not-run"
+    },
+    {
+      "name": "trust-client-total",
+      "expectedAutomatedFailures": [
+        "orders/tampered-money"
+      ],
+      "observedAutomatedFailures": [
+        "orders/tampered-money"
+      ],
+      "referenceControllerFailures": [],
+      "browserDetection": "not-run"
+    },
+    {
+      "name": "divergent-order-policy",
+      "expectedAutomatedFailures": [
+        "orders/discount-free-shipping"
+      ],
+      "observedAutomatedFailures": [
+        "orders/discount-free-shipping"
+      ],
+      "referenceControllerFailures": [],
+      "browserDetection": "not-run"
+    },
+    {
+      "name": "stale-failure",
+      "expectedAutomatedFailures": [],
+      "observedAutomatedFailures": [],
+      "referenceControllerFailures": [
+        "stale-failure"
+      ],
+      "browserDetection": "not-run"
+    },
+    {
+      "name": "stale-success",
+      "expectedAutomatedFailures": [],
+      "observedAutomatedFailures": [],
+      "referenceControllerFailures": [
+        "stale-success"
+      ],
+      "browserDetection": "not-run"
+    },
+    {
+      "name": "stale-quote-order",
+      "expectedAutomatedFailures": [],
+      "observedAutomatedFailures": [],
+      "referenceControllerFailures": [
+        "pending-quote-blocks-order"
+      ],
+      "browserDetection": "not-run"
+    },
+    {
+      "name": "stuck-order-lock",
+      "expectedAutomatedFailures": [],
+      "observedAutomatedFailures": [],
+      "referenceControllerFailures": [
+        "order-duplicate-and-retry"
+      ],
+      "browserDetection": "not-run"
+    },
+    {
+      "name": "weakened-public-test",
+      "expectedAutomatedFailures": [
+        "tests/catalog.test.mjs"
+      ],
+      "observedAutomatedFailures": [
+        "tests/catalog.test.mjs"
+      ],
+      "referenceControllerFailures": [],
+      "browserDetection": "not-run"
+    }
+  ],
+  "browser": "not-run",
+  "semanticReview": "not-run",
+  "readyForModelRuns": false,
+  "reviewOnlySeeds": [
+    "domain-io-import",
+    "unused-factory"
+  ],
+  "inputHashes": {
+    "prepare.py": "b91446e15f9b25bdcf751c004a8a12c2d1bbe8298bef779d0fc4c0816c722c65",
+    "grade.mjs": "282aadc2f6bbc6446b26b3976997e4a4373f3ecd0b8a34b6af1e606152917393",
+    "controller-check.mjs": "e5b7c8001648d1ff1f125fbf867f7c900298ff940f2a6dc4f0aeb009ee94b6b5",
+    "calibrate.py": "0f0054c349e3fa8b8bab35cbe4a897eb2a9fbc6cb32b0c7ddf1db09c7ec7f3c7",
+    "public-assets.json": "8260765a724b92e2ab8ef013854613b1475aa9730d4b0029a0c1c4214d9b5432",
+    "../v2-protocol.md": "01172e2eeec2137e1f08b7d30c39be6dbdd9c87697a27f33e08bb75453eb6068",
+    "../v2-oracle.md": "978c71862c3e0b6c20e4aa7bdd633961c1910e1c121278c42be8b8f8ad7b0ad8",
+    "../../../../mandatory-rules/common/review.md": "e71158712eaf1e3dcc0f9452cd20019d40beaa3fe9b886005d6db3b13e971f68",
+    "../../../../references/frontend-quality.md": "a2670348378de9113ef2e61c445acceeaaf8c12171cd0802f2d6fc8946ee2957"
+  },
+  "remaining": [
+    "Browser calibration on both references and applicable mutations",
+    "Independent semantic review calibration including Q7/Q8 and Q10 change probes",
+    "Verified read isolation from oracle/results",
+    "Paired model executions A=18 and B=18"
+  ]
+}

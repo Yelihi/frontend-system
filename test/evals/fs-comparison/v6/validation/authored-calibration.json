@@ -1,0 +1,290 @@
+{
+  "mode": "trusted-authored-fixtures-only",
+  "isolationVerified": false,
+  "correctAccepted": 2,
+  "mutantsRejected": 38,
+  "modelCalls": 0,
+  "oracleHash": "a80dc1906f4285b7d3b8e92c90aa3e419c8a874f1f57394cf1de2dd48b61ade2",
+  "rows": [
+    {
+      "variant": "reference",
+      "expectedDiagnostic": null,
+      "matched": true,
+      "satisfied": 69,
+      "total": 69
+    },
+    {
+      "variant": "alternative-arithmetic",
+      "expectedDiagnostic": null,
+      "matched": true,
+      "satisfied": 69,
+      "total": 69
+    },
+    {
+      "variant": "F04-session-equal-token-is-new-generation-0",
+      "expectedDiagnostic": "F04-session-equal-token-is-new-generation",
+      "matched": true,
+      "satisfied": 66,
+      "total": 69
+    },
+    {
+      "variant": "F05-http-copy-credentials-identity-1",
+      "expectedDiagnostic": "F05-http-copy-credentials-identity",
+      "matched": true,
+      "satisfied": 68,
+      "total": 69
+    },
+    {
+      "variant": "F10-resource-stale-success-2",
+      "expectedDiagnostic": "F10-resource-stale-success",
+      "matched": true,
+      "satisfied": 65,
+      "total": 69
+    },
+    {
+      "variant": "Q5-inflight-duplicate-3",
+      "expectedDiagnostic": "Q5-inflight-duplicate",
+      "matched": true,
+      "satisfied": 67,
+      "total": 69
+    },
+    {
+      "variant": "F18-promotion-gift-isolation-4",
+      "expectedDiagnostic": "F18-promotion-gift-isolation",
+      "matched": true,
+      "satisfied": 67,
+      "total": 69
+    },
+    {
+      "variant": "F19-shipping-threshold-and-remote-5",
+      "expectedDiagnostic": "F19-shipping-threshold-and-remote",
+      "matched": true,
+      "satisfied": 67,
+      "total": 69
+    },
+    {
+      "variant": "Q6-credit-scope-6",
+      "expectedDiagnostic": "Q6-credit-scope",
+      "matched": true,
+      "satisfied": 68,
+      "total": 69
+    },
+    {
+      "variant": "Q7-stock-shortage-7",
+      "expectedDiagnostic": "Q7-stock-shortage",
+      "matched": true,
+      "satisfied": 66,
+      "total": 69
+    },
+    {
+      "variant": "F24-return-window-boundaries-8",
+      "expectedDiagnostic": "F24-return-window-boundaries",
+      "matched": true,
+      "satisfied": 68,
+      "total": 69
+    },
+    {
+      "variant": "F28-debit-balance-boundary-9",
+      "expectedDiagnostic": "F28-debit-balance-boundary",
+      "matched": true,
+      "satisfied": 66,
+      "total": 69
+    },
+    {
+      "variant": "F29-orders-repository-boundary-10",
+      "expectedDiagnostic": "F29-orders-repository-boundary",
+      "matched": true,
+      "satisfied": 67,
+      "total": 69
+    },
+    {
+      "variant": "F30-inventory-repository-boundary-11",
+      "expectedDiagnostic": "F30-inventory-repository-boundary",
+      "matched": true,
+      "satisfied": 67,
+      "total": 69
+    },
+    {
+      "variant": "F31-returns-repository-boundary-12",
+      "expectedDiagnostic": "F31-returns-repository-boundary",
+      "matched": true,
+      "satisfied": 67,
+      "total": 69
+    },
+    {
+      "variant": "F32-wallet-repository-boundary-13",
+      "expectedDiagnostic": "F32-wallet-repository-boundary",
+      "matched": true,
+      "satisfied": 67,
+      "total": 69
+    },
+    {
+      "variant": "F34-order-service-pricing-and-input-14",
+      "expectedDiagnostic": "F34-order-service-pricing-and-input",
+      "matched": true,
+      "satisfied": 68,
+      "total": 69
+    },
+    {
+      "variant": "F35-inventory-service-prevalidation-and-copy-15",
+      "expectedDiagnostic": "F35-inventory-service-prevalidation-and-copy",
+      "matched": true,
+      "satisfied": 68,
+      "total": 69
+    },
+    {
+      "variant": "F36-return-service-window-before-persistence-16",
+      "expectedDiagnostic": "F36-return-service-window-before-persistence",
+      "matched": true,
+      "satisfied": 68,
+      "total": 69
+    },
+    {
+      "variant": "F37-wallet-service-private-balance-ownership-17",
+      "expectedDiagnostic": "F37-wallet-service-private-balance-ownership",
+      "matched": true,
+      "satisfied": 67,
+      "total": 69
+    },
+    {
+      "variant": "F42-checkout-order-failure-reverse-release-18",
+      "expectedDiagnostic": "F42-checkout-order-failure-reverse-release",
+      "matched": true,
+      "satisfied": 66,
+      "total": 69
+    },
+    {
+      "variant": "Q4-restock-failure-19",
+      "expectedDiagnostic": "Q4-restock-failure",
+      "matched": true,
+      "satisfied": 68,
+      "total": 69
+    },
+    {
+      "variant": "Q8-session-switch-20",
+      "expectedDiagnostic": "Q8-session-switch",
+      "matched": true,
+      "satisfied": 68,
+      "total": 69
+    },
+    {
+      "variant": "F49-ui-action-pending-duplicate-and-recovery-21",
+      "expectedDiagnostic": "F49-ui-action-pending-duplicate-and-recovery",
+      "matched": true,
+      "satisfied": 68,
+      "total": 69
+    },
+    {
+      "variant": "F50-ui-status-and-amount-22",
+      "expectedDiagnostic": "F50-ui-status-and-amount",
+      "matched": true,
+      "satisfied": 68,
+      "total": 69
+    },
+    {
+      "variant": "F50-ui-status-and-amount-23",
+      "expectedDiagnostic": "F50-ui-status-and-amount",
+      "matched": true,
+      "satisfied": 67,
+      "total": 69
+    },
+    {
+      "variant": "F51-orders-panel-events-24",
+      "expectedDiagnostic": "F51-orders-panel-events",
+      "matched": true,
+      "satisfied": 68,
+      "total": 69
+    },
+    {
+      "variant": "F52-inventory-panel-events-25",
+      "expectedDiagnostic": "F52-inventory-panel-events",
+      "matched": true,
+      "satisfied": 68,
+      "total": 69
+    },
+    {
+      "variant": "F53-returns-panel-events-26",
+      "expectedDiagnostic": "F53-returns-panel-events",
+      "matched": true,
+      "satisfied": 68,
+      "total": 69
+    },
+    {
+      "variant": "F54-wallet-panel-events-27",
+      "expectedDiagnostic": "F54-wallet-panel-events",
+      "matched": true,
+      "satisfied": 68,
+      "total": 69
+    },
+    {
+      "variant": "F55-checkout-form-identity-result-and-error-28",
+      "expectedDiagnostic": "F55-checkout-form-identity-result-and-error",
+      "matched": true,
+      "satisfied": 68,
+      "total": 69
+    },
+    {
+      "variant": "F56-return-form-pending-restock-feedback-29",
+      "expectedDiagnostic": "F56-return-form-pending-restock-feedback",
+      "matched": true,
+      "satisfied": 68,
+      "total": 69
+    },
+    {
+      "variant": "F57-session-bar-explicit-events-and-password-30",
+      "expectedDiagnostic": "F57-session-bar-explicit-events-and-password",
+      "matched": true,
+      "satisfied": 68,
+      "total": 69
+    },
+    {
+      "variant": "F58-app-wiring-and-no-render-effects-31",
+      "expectedDiagnostic": "F58-app-wiring-and-no-render-effects",
+      "matched": true,
+      "satisfied": 68,
+      "total": 69
+    },
+    {
+      "variant": "Q1-auth-callback-failure-32",
+      "expectedDiagnostic": "Q1-auth-callback-failure",
+      "matched": true,
+      "satisfied": 68,
+      "total": 69
+    },
+    {
+      "variant": "Q2-refresh-failure-items-33",
+      "expectedDiagnostic": "Q2-refresh-failure-items",
+      "matched": true,
+      "satisfied": 68,
+      "total": 69
+    },
+    {
+      "variant": "Q3-compensation-failure-34",
+      "expectedDiagnostic": "Q3-compensation-failure",
+      "matched": true,
+      "satisfied": 68,
+      "total": 69
+    },
+    {
+      "variant": "N1-approved-change-scope-35",
+      "expectedDiagnostic": "N1-approved-change-scope",
+      "matched": true,
+      "satisfied": 66,
+      "total": 69
+    },
+    {
+      "variant": "N2-approved-dependency-edges-36",
+      "expectedDiagnostic": "N2-approved-dependency-edges",
+      "matched": true,
+      "satisfied": 68,
+      "total": 69
+    },
+    {
+      "variant": "F01-public-module-exports-37",
+      "expectedDiagnostic": "F01-public-module-exports",
+      "matched": true,
+      "satisfied": 68,
+      "total": 69
+    }
+  ]
+}

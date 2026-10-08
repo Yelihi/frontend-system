@@ -182,6 +182,23 @@ test("empty and selected checks distinguish missing verification and new failure
   } finally { await rm(root, { recursive: true, force: true }); }
 });
 
+test("baseline discovers scoped lint/types scripts without build, fixes or watch commands", async () => {
+  const root = await fixture({
+    "package.json": JSON.stringify({scripts: {
+      "lint:styles": "node -e \"process.exit(1)\"", "typecheck:web": "node -e \"process.exit(0)\"",
+      "lint:fix": "node -e \"process.exit(0)\"", "lint:styles:watch": "node --watch src/a.js",
+      build: "node -e \"process.exit(1)\"", test: "node -e \"process.exit(0)\"",
+    }}),
+    "apps/web/package.json": JSON.stringify({scripts: {"lint:css": "node -e \"process.exit(0)\""}}),
+  });
+  try {
+    const baseline = await runProjectChecks(await profile(root), {stage: "baseline"});
+    assert.deepEqual(baseline.results.map(item => item.capability).sort(), ["apps/web:lint:css", "lint:styles", "test", "typecheck:web"]);
+    assert.equal(baseline.results.find(item => item.capability === "lint:styles")?.status, "failed");
+    assert.equal(baseline.results.find(item => item.capability === "typecheck:web")?.status, "passed");
+  } finally {await rm(root, {recursive: true, force: true});}
+});
+
 test("project constraints and conflicting knowledge remain distinct evidence", async () => {
   const root = await fixture({ "package.json": "{}" });
   try {
@@ -212,15 +229,32 @@ test("MCP exposes inventory, approval, bounded records and both new context mode
     assert.deepEqual(learned.candidates, []);
     const missingKnowledge = await client.callTool({ name: "read_learned_knowledge", arguments: { id: "missing-evaluation-id" } });
     assert.equal(missingKnowledge.isError, true);
+    const deniedStart = await client.callTool({name: 'start_work', arguments: {
+      projectPath: root, planId: 'unapproved', revisionHash: '0'.repeat(64), stepId: 'work', kind: 'implement',
+    }});
+    assert.equal(deniedStart.isError, true);
+    assert.match(JSON.stringify(deniedStart), /exact current approved revision/);
     const page = await call("list_project_files", { limit: 1 });
     assert.equal(page.nextOffset, 1);
     const next = await call("list_project_files", { limit: 1, offset: page.nextOffset, expectedHash: page.hash });
     assert.equal(next.nextOffset, null);
-    const revision = await call("save_revision", { content: "# Target", expectedHash: null });
-    await call("approve_revision", { expectedHash: revision.hash, approval: "User approved target" });
+    const revision = await call("save_revision", { content: "# Target", expectedHash: null, detail: "full" });
+    assert.deepEqual(revision.contractDiagnostics, []);
+    assert.match(revision.diagnosticsScope as string, /not approval/);
+    const approved = await call("approve_revision", { expectedHash: revision.hash, approval: "User approved target", detail: "full" });
+    assert.equal(approved.approved, true);
+    assert.deepEqual(approved.contractDiagnostics, []);
     const record = await call("save_project_record", { kind: "evidence", id: "architecture", content: "# Architecture\nNo unresolved static edges", expectedHash: null });
     assert.equal(relative(root, record.path as string), ".frontend-system/evidence/architecture.md");
     assert.equal((await call("get_project_record", { kind: "evidence", id: "architecture", limit: 1 })).nextOffset, 1);
+    const full = await call("get_work_context", { mode: "review", request: "Review source", detail: "full" });
+    const compact = await call("get_work_context", { mode: "review", request: "Review source" });
+    assert.ok(JSON.stringify(compact).length < JSON.stringify(full).length);
+    assert.equal((compact.workflow as { revision: { hash: string } }).revision.hash, revision.hash);
+    assert.equal((compact.document as { readWith: string }).readWith, "get_project_document");
+    const badObservation = await client.callTool({ name: "get_work_context",
+      arguments: { projectPath: root, request: "Review source", observations: [{ path: "missing.ts", observation: "pending state" }] } });
+    assert.equal(badObservation.isError, true);
     for (const mode of ["review", "refactor"]) {
       const context = await call("get_work_context", { mode, request: "Review source" });
       assert.ok(context.workflow);
@@ -231,6 +265,57 @@ test("MCP exposes inventory, approval, bounded records and both new context mode
     }
     const check = await call("run_project_checks", { purpose: "baseline" });
     assert.equal((await call("get_check_record", { id: check.id })).purpose, "baseline");
+    const choices = await call("get_revision", { detail: "decisions", expectedHash: revision.hash });
+    assert.deepEqual(choices.decisions, []);
+    assert.ok(!("content" in choices) && !("evidence" in choices));
+    const preserved = await call("save_revision", { expectedHash: revision.hash });
+    assert.equal(preserved.approved, false);
+    assert.equal((await call("get_revision")).content, "# Target");
+    const staleWrite = await client.callTool({ name: "save_revision", arguments: { projectPath: root, expectedHash: "stale" } });
+    assert.equal(staleWrite.isError, true);
+  } finally {
+    await client.close();
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+test("failed check summaries retain the early cause without losing the original log", async () => {
+  const output = "Passing checks\n".repeat(70) + "Error: Dynamic require of util is not supported\n" +
+    "data:text/javascript;base64," + "A".repeat(20000) + "\nFINAL FAILURE\n";
+  const root = await fixture({
+    "package.json": JSON.stringify({ type: "module", scripts: { test: "node failure.mjs" } }),
+    "failure.mjs": `process.stdout.write(${JSON.stringify(output)}); process.exitCode = 1;`,
+  });
+  const client = new Client({ name: "check-log-test", version: "1" });
+  try {
+    await client.connect(new StdioClientTransport({ command: process.execPath, args: [join(process.cwd(), "bundle/mcp.js")] }));
+    const call = async (name: string, args: Record<string, unknown>) => {
+      const response = await client.callTool({ name, arguments: { projectPath: root, ...args } });
+      assert.ok(!response.isError, JSON.stringify(response));
+      return JSON.parse((response.content as Array<{ text: string }>)[0]!.text);
+    };
+    const check = await call("run_project_checks", { capabilities: ["test"] });
+    const summary = check.results[0];
+    assert.equal(summary.status, "failed");
+    assert.equal(summary.passed, false);
+    assert.equal(summary.outputTruncated, true);
+    assert.ok(summary.output.length <= 2000);
+    assert.match(summary.output, /Dynamic require of util/);
+    assert.match(summary.output, /FINAL FAILURE/);
+    const saved = JSON.parse(await readFile(check.path, "utf8"));
+    assert.ok(saved.results[0].output.includes(output), "The immutable record must retain the original failure");
+    let recovered = "";
+    let offset: number | null = 0;
+    while (offset !== null) {
+      const page = await call("get_check_record", { id: check.id, capability: "test", offset, limit: 12000 });
+      assert.equal(page.status, "failed");
+      assert.equal(page.totalCharacters, summary.outputCharacters);
+      recovered += page.output;
+      offset = page.nextOffset;
+    }
+    assert.equal(recovered, saved.results[0].output);
+    const repeated = await call("get_check_record", { id: check.id });
+    assert.deepEqual(repeated.results[0], summary);
   } finally {
     await client.close();
     await rm(root, { recursive: true, force: true });

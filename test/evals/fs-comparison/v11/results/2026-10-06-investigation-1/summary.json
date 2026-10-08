@@ -1,0 +1,266 @@
+{
+  "summary": {
+    "calls": 12,
+    "complete": 12,
+    "knownTotalTokens": 2500660,
+    "knownUncachedPlusOutput": 387508,
+    "unknownUsage": 0,
+    "summedSeconds": 915.893,
+    "mcpErrors": 3,
+    "uniqueThreads": true
+  },
+  "rows": [
+    {
+      "id": "direct-ordinary",
+      "case": "direct",
+      "arm": "ordinary",
+      "totalTokens": 116490,
+      "uncachedPlusOutput": 23306,
+      "seconds": 66.725,
+      "threadId": "01a10f67-4a1c-7400-a986-030f9e20c222",
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "audit": {
+        "id": "direct-ordinary",
+        "sourceUnchanged": true,
+        "changedInputs": [],
+        "unexpectedFiles": [],
+        "runtimeUnchanged": true,
+        "environmentFailure": null,
+        "reviewCharacters": 5778
+      },
+      "complete": true
+    },
+    {
+      "id": "mixed-fs-K1",
+      "case": "mixed",
+      "arm": "fs-K1",
+      "totalTokens": 421268,
+      "uncachedPlusOutput": 41620,
+      "seconds": 88.233,
+      "threadId": "01a10f67-4a1c-7952-9ab3-9331eb476e93",
+      "mcpCalls": 8,
+      "mcpErrors": 2,
+      "audit": {
+        "id": "mixed-fs-K1",
+        "sourceUnchanged": true,
+        "changedInputs": [],
+        "unexpectedFiles": [],
+        "runtimeUnchanged": true,
+        "environmentFailure": null,
+        "reviewCharacters": 4924
+      },
+      "complete": true
+    },
+    {
+      "id": "mixed-raw-K1",
+      "case": "mixed",
+      "arm": "raw-K1",
+      "totalTokens": 110871,
+      "uncachedPlusOutput": 22167,
+      "seconds": 59.897,
+      "threadId": "01a10f68-4e9e-7e31-90c5-cccf5179d30e",
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "audit": {
+        "id": "mixed-raw-K1",
+        "sourceUnchanged": true,
+        "changedInputs": [],
+        "unexpectedFiles": [],
+        "runtimeUnchanged": true,
+        "environmentFailure": null,
+        "reviewCharacters": 5567
+      },
+      "complete": true
+    },
+    {
+      "id": "unknown-ordinary",
+      "case": "unknown",
+      "arm": "ordinary",
+      "totalTokens": 119035,
+      "uncachedPlusOutput": 15867,
+      "seconds": 76.088,
+      "threadId": "01a10f68-a27b-7ca0-a024-681550b86f8d",
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "audit": {
+        "id": "unknown-ordinary",
+        "sourceUnchanged": true,
+        "changedInputs": [],
+        "unexpectedFiles": [],
+        "runtimeUnchanged": true,
+        "environmentFailure": null,
+        "reviewCharacters": 5788
+      },
+      "complete": true
+    },
+    {
+      "id": "replay-raw-K1",
+      "case": "replay",
+      "arm": "raw-K1",
+      "totalTokens": 82936,
+      "uncachedPlusOutput": 22648,
+      "seconds": 56.969,
+      "threadId": "01a10f69-38b5-7503-8b33-ded43e88c594",
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "audit": {
+        "id": "replay-raw-K1",
+        "sourceUnchanged": true,
+        "changedInputs": [],
+        "unexpectedFiles": [],
+        "runtimeUnchanged": true,
+        "environmentFailure": null,
+        "reviewCharacters": 5632
+      },
+      "complete": true
+    },
+    {
+      "id": "unknown-raw-K1",
+      "case": "unknown",
+      "arm": "raw-K1",
+      "totalTokens": 94787,
+      "uncachedPlusOutput": 30659,
+      "seconds": 55.086,
+      "threadId": "01a10f69-cc0e-7391-ad56-4595512d3313",
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "audit": {
+        "id": "unknown-raw-K1",
+        "sourceUnchanged": true,
+        "changedInputs": [],
+        "unexpectedFiles": [],
+        "runtimeUnchanged": true,
+        "environmentFailure": null,
+        "reviewCharacters": 4727
+      },
+      "complete": true
+    },
+    {
+      "id": "direct-raw-K1",
+      "case": "direct",
+      "arm": "raw-K1",
+      "totalTokens": 105988,
+      "uncachedPlusOutput": 25476,
+      "seconds": 69.71,
+      "threadId": "01a10f6a-1778-7153-98a0-395eba02ae80",
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "audit": {
+        "id": "direct-raw-K1",
+        "sourceUnchanged": true,
+        "changedInputs": [],
+        "unexpectedFiles": [],
+        "runtimeUnchanged": true,
+        "environmentFailure": null,
+        "reviewCharacters": 5788
+      },
+      "complete": true
+    },
+    {
+      "id": "direct-fs-K1",
+      "case": "direct",
+      "arm": "fs-K1",
+      "totalTokens": 471064,
+      "uncachedPlusOutput": 44696,
+      "seconds": 113.625,
+      "threadId": "01a10f6a-a371-7511-af35-f0f8de88f402",
+      "mcpCalls": 6,
+      "mcpErrors": 0,
+      "audit": {
+        "id": "direct-fs-K1",
+        "sourceUnchanged": true,
+        "changedInputs": [],
+        "unexpectedFiles": [],
+        "runtimeUnchanged": true,
+        "environmentFailure": null,
+        "reviewCharacters": 5750
+      },
+      "complete": true
+    },
+    {
+      "id": "replay-ordinary",
+      "case": "replay",
+      "arm": "ordinary",
+      "totalTokens": 80146,
+      "uncachedPlusOutput": 13202,
+      "seconds": 42.287,
+      "threadId": "01a10f6b-281c-7112-a21e-fbea8267c16f",
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "audit": {
+        "id": "replay-ordinary",
+        "sourceUnchanged": true,
+        "changedInputs": [],
+        "unexpectedFiles": [],
+        "runtimeUnchanged": true,
+        "environmentFailure": null,
+        "reviewCharacters": 5625
+      },
+      "complete": true
+    },
+    {
+      "id": "unknown-fs-K1",
+      "case": "unknown",
+      "arm": "fs-K1",
+      "totalTokens": 397531,
+      "uncachedPlusOutput": 59867,
+      "seconds": 114.266,
+      "threadId": "01a10f6b-cd82-7313-b33a-35ee7e8278de",
+      "mcpCalls": 5,
+      "mcpErrors": 1,
+      "audit": {
+        "id": "unknown-fs-K1",
+        "sourceUnchanged": true,
+        "changedInputs": [],
+        "unexpectedFiles": [],
+        "runtimeUnchanged": true,
+        "environmentFailure": null,
+        "reviewCharacters": 6101
+      },
+      "complete": true
+    },
+    {
+      "id": "mixed-ordinary",
+      "case": "mixed",
+      "arm": "ordinary",
+      "totalTokens": 99544,
+      "uncachedPlusOutput": 24536,
+      "seconds": 69.287,
+      "threadId": "01a10f6c-5fa2-7732-8385-6a087af68d21",
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "audit": {
+        "id": "mixed-ordinary",
+        "sourceUnchanged": true,
+        "changedInputs": [],
+        "unexpectedFiles": [],
+        "runtimeUnchanged": true,
+        "environmentFailure": null,
+        "reviewCharacters": 5127
+      },
+      "complete": true
+    },
+    {
+      "id": "replay-fs-K1",
+      "case": "replay",
+      "arm": "fs-K1",
+      "totalTokens": 401000,
+      "uncachedPlusOutput": 63464,
+      "seconds": 103.72,
+      "threadId": "01a10f6d-6e8d-7813-8f38-e6d9431295c9",
+      "mcpCalls": 8,
+      "mcpErrors": 0,
+      "audit": {
+        "id": "replay-fs-K1",
+        "sourceUnchanged": true,
+        "changedInputs": [],
+        "unexpectedFiles": [],
+        "runtimeUnchanged": true,
+        "environmentFailure": null,
+        "reviewCharacters": 4954
+      },
+      "complete": true
+    }
+  ]
+}

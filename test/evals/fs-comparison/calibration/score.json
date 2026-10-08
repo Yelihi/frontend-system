@@ -1,0 +1,235 @@
+{
+  "checks": [
+    {
+      "id": "lint",
+      "passed": true,
+      "code": 0,
+      "timedOut": false,
+      "seconds": 1.239
+    },
+    {
+      "id": "typecheck",
+      "passed": true,
+      "code": 0,
+      "timedOut": false,
+      "seconds": 0.536
+    },
+    {
+      "id": "check:boundaries",
+      "passed": true,
+      "code": 0,
+      "timedOut": false,
+      "seconds": 0.326
+    },
+    {
+      "id": "test:unit",
+      "passed": true,
+      "code": 0,
+      "timedOut": false,
+      "seconds": 0.183
+    },
+    {
+      "id": "build",
+      "passed": true,
+      "code": 0,
+      "timedOut": false,
+      "seconds": 8.679
+    },
+    {
+      "id": "test:e2e",
+      "passed": true,
+      "code": 0,
+      "timedOut": false,
+      "seconds": 3.689
+    }
+  ],
+  "requirements": [
+    {
+      "category": "domain",
+      "id": "accept-1",
+      "passed": true
+    },
+    {
+      "category": "domain",
+      "id": "accept-10",
+      "passed": true
+    },
+    {
+      "category": "domain",
+      "id": "reject-zero",
+      "passed": true
+    },
+    {
+      "category": "domain",
+      "id": "reject-negative",
+      "passed": true
+    },
+    {
+      "category": "domain",
+      "id": "reject-fraction",
+      "passed": true
+    },
+    {
+      "category": "domain",
+      "id": "reject-above-max",
+      "passed": false,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n1 !== 0\n"
+    },
+    {
+      "category": "domain",
+      "id": "reject-nan",
+      "passed": true
+    },
+    {
+      "category": "domain",
+      "id": "reject-infinity",
+      "passed": true
+    },
+    {
+      "category": "domain",
+      "id": "reject-string",
+      "passed": true
+    },
+    {
+      "category": "domain",
+      "id": "reject-missing",
+      "passed": true
+    },
+    {
+      "category": "domain",
+      "id": "pending-deduplication",
+      "passed": true
+    },
+    {
+      "category": "domain",
+      "id": "failure-retry-clears-error",
+      "passed": true
+    },
+    {
+      "category": "api",
+      "id": "accept-1",
+      "passed": true
+    },
+    {
+      "category": "api",
+      "id": "accept-10",
+      "passed": true
+    },
+    {
+      "category": "api",
+      "id": "reject-zero",
+      "passed": false,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n200 !== 400\n"
+    },
+    {
+      "category": "api",
+      "id": "reject-negative",
+      "passed": false,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n200 !== 400\n"
+    },
+    {
+      "category": "api",
+      "id": "reject-fraction",
+      "passed": false,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n200 !== 400\n"
+    },
+    {
+      "category": "api",
+      "id": "reject-above-max",
+      "passed": false,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n200 !== 400\n"
+    },
+    {
+      "category": "api",
+      "id": "reject-string",
+      "passed": false,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n200 !== 400\n"
+    },
+    {
+      "category": "api",
+      "id": "reject-null",
+      "passed": false,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n200 !== 400\n"
+    },
+    {
+      "category": "api",
+      "id": "reject-missing",
+      "passed": false,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n200 !== 400\n"
+    },
+    {
+      "category": "api",
+      "id": "reject-malformed",
+      "passed": false,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n200 !== 400\n"
+    },
+    {
+      "category": "browser",
+      "id": "default-label-total-catalogue",
+      "passed": false,
+      "error": "Error: expect(locator).toHaveValue(expected) failed\n\nLocator: getByRole('spinbutton', { name: 'Quantity', exact: true })\nExpected: \"1\"\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toHaveValue\" getByRole('spinbutton', { name: 'Quantity', exact: true }) with timeout 5000ms\n  - waiting for getByRole('spinbutton', { name: 'Quantity', exact: true })\n"
+    },
+    {
+      "category": "browser",
+      "id": "quantity-total-payload",
+      "passed": false,
+      "error": "TimeoutError: locator.fill: Timeout 4000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('spinbutton', { name: 'Quantity', exact: true })\u001b[22m\n"
+    },
+    {
+      "category": "browser",
+      "id": "reject-empty-without-request",
+      "passed": false,
+      "error": "TimeoutError: locator.fill: Timeout 4000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('spinbutton', { name: 'Quantity', exact: true })\u001b[22m\n"
+    },
+    {
+      "category": "browser",
+      "id": "reject-zero-without-request",
+      "passed": false,
+      "error": "TimeoutError: locator.fill: Timeout 4000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('spinbutton', { name: 'Quantity', exact: true })\u001b[22m\n"
+    },
+    {
+      "category": "browser",
+      "id": "reject-negative-without-request",
+      "passed": false,
+      "error": "TimeoutError: locator.fill: Timeout 4000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('spinbutton', { name: 'Quantity', exact: true })\u001b[22m\n"
+    },
+    {
+      "category": "browser",
+      "id": "reject-fraction-without-request",
+      "passed": false,
+      "error": "TimeoutError: locator.fill: Timeout 4000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('spinbutton', { name: 'Quantity', exact: true })\u001b[22m\n"
+    },
+    {
+      "category": "browser",
+      "id": "reject-above-max-without-request",
+      "passed": false,
+      "error": "TimeoutError: locator.fill: Timeout 4000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('spinbutton', { name: 'Quantity', exact: true })\u001b[22m\n"
+    },
+    {
+      "category": "browser",
+      "id": "pending-controls-deduplication",
+      "passed": false,
+      "error": "TimeoutError: locator.fill: Timeout 4000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('spinbutton', { name: 'Quantity', exact: true })\u001b[22m\n"
+    },
+    {
+      "category": "browser",
+      "id": "accessible-error-retry-preserves-quantity",
+      "passed": false,
+      "error": "TimeoutError: locator.fill: Timeout 4000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('spinbutton', { name: 'Quantity', exact: true })\u001b[22m\n"
+    },
+    {
+      "category": "browser",
+      "id": "keyboard-order",
+      "passed": false,
+      "error": "TimeoutError: locator.focus: Timeout 4000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('spinbutton', { name: 'Quantity', exact: true })\u001b[22m\n"
+    },
+    {
+      "category": "browser",
+      "id": "mobile-no-horizontal-overflow",
+      "passed": false,
+      "error": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('spinbutton', { name: 'Quantity', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" getByRole('spinbutton', { name: 'Quantity', exact: true }) with timeout 5000ms\n  - waiting for getByRole('spinbutton', { name: 'Quantity', exact: true })\n"
+    }
+  ],
+  "pageErrors": [],
+  "gzipJavaScriptBytes": 282624
+}

@@ -1,0 +1,6 @@
+
+> frontend-system@0.2.0 test:package
+> node scripts/check-package.mjs
+
+{"triggerSmoke":{"files":1,"coldMs":88.15745799999999,"warmMs":6.909165999999999,"responseCharacters":4153,"note":"Synthetic one-file package smoke, not model-token or production performance evidence"}}
+Package smoke passed: five skills, no raw knowledge, standalone MCP tools.

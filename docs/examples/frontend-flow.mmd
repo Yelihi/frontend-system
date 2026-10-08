@@ -1,0 +1,26 @@
+flowchart LR
+  subgraph n0["/orders/:id/edit · 주문 편집"]
+    n0info["/orders/:id/edit · 주문 편집<br/>state: route: orderId<br/>lifecycle: 진입 → draft 초기화, 이탈 → 요청 취소/소유권 종료"]
+    n1["component · OrderForm<br/>props: orderId<br/>state: fieldErrors, pending<br/>events: change(quantity), submit, 취소<br/>lifecycle: draft 구독/해제"]
+    n2["component · PricePreview<br/>props: currency<br/>state: draft에서 파생된 금액<br/>lifecycle: draft 구독 → 금액 표시"]
+  end
+  subgraph n3["/orders · 주문 목록"]
+    n3info["/orders · 주문 목록<br/>state: filter<br/>lifecycle: 진입 → 목록 캐시 구독"]
+    n4["component · OrdersTable<br/>props: filter<br/>state: cached rows<br/>events: 편집 링크 클릭<br/>lifecycle: 목록 캐시 변경 → 표시 후보 갱신"]
+  end
+  n5["store · DraftStore<br/>state: quantity, unitPrice, dirty<br/>events: setQuantity, markSaved"]
+  n6["module · OrderPolicy<br/>state: 순수 계산 · 상태 보관 없음<br/>events: validateQuantity, calculateTotal"]
+  n7["cache · OrderQueryCache<br/>state: orders, rollback snapshot, requestOwner<br/>events: optimisticWrite, commit, rollback, invalidate"]
+  n8["service · OrderClient<br/>state: 입력 불변 · 재시도 정책 분리<br/>events: saveOrder(input, signal)"]
+  n1 -->|"1 · validateQuantity(snapshot)"| n6
+  linkStyle 0 stroke:#0369a1,stroke-width:3px
+  n1 -->|"2 · snapshot 저장 + optimisticWrite"| n7
+  linkStyle 1 stroke:#0369a1,stroke-width:3px
+  n1 -->|"4 · saveOrder(snapshot, signal)"| n8
+  linkStyle 2 stroke:#0369a1,stroke-width:3px
+  n8 -->|"5 · 서버 응답 commit [현재 요청 성공]"| n7
+  linkStyle 3 stroke:#0369a1,stroke-width:3px
+  n8 -->|"6 · 일치하는 제출본만 markSaved [응답 후 추가 편집 없음]"| n5
+  linkStyle 4 stroke:#0369a1,stroke-width:3px
+  n7 -->|"3 · 목록 구독자에게 새 rows 전달 [OrdersTable 마운트 상태]"| n4
+  linkStyle 5 stroke:#0369a1,stroke-width:3px

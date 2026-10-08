@@ -1,0 +1,101 @@
+{
+  "summary": {
+    "calls": 4,
+    "complete": 4,
+    "knownTotalTokens": 5790640,
+    "knownUncachedPlusOutput": 346032,
+    "unknownUsage": 0,
+    "mcpErrors": 8,
+    "uniqueThreads": true
+  },
+  "rows": [
+    {
+      "id": "request-fs-K1",
+      "arm": "fs-K1",
+      "case": "request",
+      "stage": "analysis",
+      "complete": true,
+      "totalTokens": 1239848,
+      "uncachedPlusOutput": 74280,
+      "seconds": 391.002,
+      "threadId": "01a11035-c651-7e00-8552-2acd39f8113d",
+      "mcpCalls": 14,
+      "mcpErrors": 2,
+      "audit": {
+        "sourceUnchanged": true,
+        "changedInputs": [],
+        "unexpectedFiles": [],
+        "runtimeUnchanged": true,
+        "environmentFailure": null,
+        "artifactCharacters": 9929,
+        "complete": true
+      }
+    },
+    {
+      "id": "request-fs-K1",
+      "arm": "fs-K1",
+      "case": "request",
+      "stage": "plan",
+      "complete": true,
+      "totalTokens": 1794484,
+      "uncachedPlusOutput": 76468,
+      "seconds": 296.104,
+      "threadId": "01a1103d-1b29-7b51-9238-5a685aa2f167",
+      "mcpCalls": 21,
+      "mcpErrors": 2,
+      "audit": {
+        "sourceUnchanged": true,
+        "changedInputs": [],
+        "unexpectedFiles": [],
+        "runtimeUnchanged": true,
+        "environmentFailure": null,
+        "artifactCharacters": 7852,
+        "complete": true
+      }
+    },
+    {
+      "id": "styles-fs-K1",
+      "arm": "fs-K1",
+      "case": "styles",
+      "stage": "analysis",
+      "complete": true,
+      "totalTokens": 819439,
+      "uncachedPlusOutput": 105967,
+      "seconds": 337.546,
+      "threadId": "01a11035-c651-7fd0-8377-98c5695e9bad",
+      "mcpCalls": 13,
+      "mcpErrors": 2,
+      "audit": {
+        "sourceUnchanged": true,
+        "changedInputs": [],
+        "unexpectedFiles": [],
+        "runtimeUnchanged": true,
+        "environmentFailure": null,
+        "artifactCharacters": 6678,
+        "complete": true
+      }
+    },
+    {
+      "id": "styles-fs-K1",
+      "arm": "fs-K1",
+      "case": "styles",
+      "stage": "plan",
+      "complete": true,
+      "totalTokens": 1936869,
+      "uncachedPlusOutput": 89317,
+      "seconds": 304.547,
+      "threadId": "01a1103d-1b29-7493-85b7-e29d21d1bc49",
+      "mcpCalls": 22,
+      "mcpErrors": 2,
+      "audit": {
+        "sourceUnchanged": true,
+        "changedInputs": [],
+        "unexpectedFiles": [],
+        "runtimeUnchanged": true,
+        "environmentFailure": null,
+        "artifactCharacters": 7443,
+        "complete": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "reviewKind": "separate-workflow-and-document-adjudication",
+  "qualitySource": "../blind-review/573b90b2f7b0/review.json",
+  "eligibleComplete": false,
+  "conditionAdherence": {
+    "passed": true,
+    "arm": "plain",
+    "evidence": "Supplied project/rules and installed Next docs only; no FS/extra models/install/externalservice/commit."
+  },
+  "documents": {
+    "passed": true,
+    "scope": "B plain has no separate project/plan requirement. Final message supplies checks and limitations."
+  },
+  "R9": {
+    "passed": true,
+    "evidence": "All five final checks pass after test-only shipping expectation correction21. Final counts4unit/2browser and hash prefix agree; untested race/retry scenarios explicitly disclosed."
+  },
+  "H10": {
+    "passed": true,
+    "externalSourceBeforeAfterMatchesFinal": true,
+    "protectedAssetsPassed": 9,
+    "lastProductEdit": "item_11",
+    "lastTestEdit": "item_21",
+    "finalChecks": [
+      "item_21"
+    ],
+    "ownSourceHashesVerified": {
+      "src/checkout.js": "db8d31b55eda9fa2932d5c0679dcbeb3b1b52d5c19011bacb0744cfa7c917dda",
+      "app/api/quote/route.js": "da72c47d0c6d6964d5b701b447c9fd90539ac56a6526f78f9f6dd1afbf99f6f8",
+      "app/api/orders/route.js": "292d10ba8fb3e0359b28e7032c20a5bb9b480925a06c2895f751646443bfab6f",
+      "app/checkout.jsx": "6804976253d27a06bae01e75026a06c465333e638c455774b742af80ee3f9391",
+      "tests/checkout.test.mjs": "c2a2bcb1cb805cdfcc150134d7e6395373b48e3fbeb0efee09e237d8864becbe",
+      "e2e/checkout.spec.mjs": "f17c2862fc5f1e95aacc1680b7f8ef5861226652775b18c28ef48636d4c3f287"
+    }
+  },
+  "attemptBudgetRespected": true,
+  "fullValidationAttempts": 1,
+  "attemptEvidence": "Initial product8-11 remains unchanged. Additional tests15/18 and expectedTotal correction21 are local test development; full check repetitions12/17/19/21 do not represent new product attempts.",
+  "eligibilityEvidence": [
+    "Historical pre-correction: IndependentQ100, but R6/H8 fail: same-task two submits initiate two actual order POSTs. Unlock/input preservation/retry and equivalent-input lifecycle pass.",
+    "Historical pre-correction: Original110/110 and source verification cannot offset mandatory duplicate-request failure.",
+    "Final: corrected 110/110; independentQ100; product R1-R8 fail; eligibleComplete=False. Details and original adjudication preserved."
+  ],
+  "evaluatorAdjudication": {
+    "status": "final",
+    "revision": "accessible-name-v2",
+    "originalPassed": 110,
+    "correctedPassed": 110,
+    "changedCases": [],
+    "sourceUnchanged": true,
+    "independentCorrectionReview": "../blind-review/573b90b2f7b0/regrade-review.json",
+    "qualityAndRulesUnchanged": true,
+    "eligibleComplete": false
+  }
+}

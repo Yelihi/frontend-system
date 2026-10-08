@@ -1,0 +1,918 @@
+{
+  "schema_version": 1,
+  "review_kind": "independent_q10_addendum",
+  "prior_review_preserved": true,
+  "scope": [
+    "c01",
+    "c02"
+  ],
+  "product_files_modified": false,
+  "browser_execution": "not_run",
+  "method": "제공 diff의 모든 삭제·문맥 줄을 현재 코드와 대조한 뒤 메모리 ESM 사본에만 적용했다. 각 변형은 새 VM 그래프에서 실제 POST(Request)를 호출했다. 디스크 제품 파일 해시는 실행 전후 동일했다.",
+  "supplied_evidence_limitations": [
+    "기존 change-probes.json에는 각 probe의 actualHandlersPassed=2와 기대 status/total만 있으며 요청 원문·실행 명령·원본 해시는 없다.",
+    "제공된 8개 .log 파일은 모두 비어 있어 그 자체를 추가 실행 증거로 계산하지 않았다.",
+    "별도의 독립 메모리 재실행으로 아래 입력과 실제 응답을 기록했다. 실제 HTTP 서버·Next 런타임·브라우저 검증을 뜻하지 않는다."
+  ],
+  "candidates": [
+    {
+      "id": "c01",
+      "source_sha256": {
+        "src/catalog.js": "523ad6b97e81c57f895fed40752f458cd8cc754f92ea65654f1d59da9b2337ff",
+        "src/checkout.js": "221771821cc7a5a443eccedc5f5692fe16cbcc452e617531cd65b0fbb4055039",
+        "src/controller.js": "cb37367a7fe3dd00f16004fffb9b43370e5d0d800dc5a10ccc729d4bea07f248",
+        "app/api/orders/route.js": "fb2e3ea44417d7e8064c13a88249b3eb965dbb5e69329475ee1bffd485760122",
+        "app/api/quote/route.js": "f3f251d26062026af31fe174d7419c3051a3ed4553304ede5334d4670f8d9045",
+        "app/checkout.jsx": "a0c9e722bc2540575e4919fc5e98c2695a83435300793bc08c3b7c3ebf461241",
+        "app/layout.jsx": "8e5bd10067458aabd9faa12758742379b73c4f73a9502fca9cfa01545b64483c",
+        "app/page.jsx": "57ce7b06995d10c8f974c4670b666c7c01ea64c3e4f9d85105ab14d9d9cf569d"
+      },
+      "source_unchanged_after_replay": true,
+      "supplied_probe_summary": [
+        {
+          "name": "shipping-policy",
+          "changedFile": "src/checkout.js",
+          "actualHandlersPassed": 2,
+          "expectedStatus": 200,
+          "expectedTotal": 53400,
+          "semanticScore": null
+        },
+        {
+          "name": "catalog-memory",
+          "changedFile": "src/catalog.js",
+          "actualHandlersPassed": 2,
+          "expectedStatus": 200,
+          "expectedTotal": 79200,
+          "semanticScore": null
+        },
+        {
+          "name": "catalog-delay",
+          "changedFile": "src/catalog.js",
+          "actualHandlersPassed": 2,
+          "expectedStatus": 200,
+          "expectedTotal": 79200,
+          "semanticScore": null
+        },
+        {
+          "name": "catalog-failure",
+          "changedFile": "src/catalog.js",
+          "actualHandlersPassed": 2,
+          "expectedStatus": 500,
+          "expectedTotal": null,
+          "semanticScore": null
+        }
+      ],
+      "reviewer_execution": [
+        {
+          "name": "baseline",
+          "diff_match": null,
+          "input": {
+            "lines": [
+              {
+                "productId": "A",
+                "quantity": 4
+              },
+              {
+                "productId": "B",
+                "quantity": 1
+              }
+            ],
+            "coupon": "SAVE10"
+          },
+          "expected": {
+            "status": 200,
+            "quote": {
+              "subtotal": 56000,
+              "discount": 5600,
+              "shipping": 0,
+              "total": 50400
+            }
+          },
+          "responses": [
+            {
+              "endpoint": "quote",
+              "status": 200,
+              "body": {
+                "subtotal": 56000,
+                "discount": 5600,
+                "shipping": 0,
+                "total": 50400
+              },
+              "elapsed_ms": 1.439665999999999,
+              "passed": true
+            },
+            {
+              "endpoint": "orders",
+              "status": 200,
+              "body": {
+                "accepted": true,
+                "quote": {
+                  "subtotal": 56000,
+                  "discount": 5600,
+                  "shipping": 0,
+                  "total": 50400
+                }
+              },
+              "elapsed_ms": 0.17125000000000057,
+              "passed": true
+            }
+          ],
+          "policy_boundaries": [
+            {
+              "price": 49999,
+              "actual": {
+                "subtotal": 49999,
+                "discount": 0,
+                "shipping": 3000,
+                "total": 52999
+              },
+              "passed": true
+            },
+            {
+              "price": 50000,
+              "actual": {
+                "subtotal": 50000,
+                "discount": 0,
+                "shipping": 0,
+                "total": 50000
+              },
+              "passed": true
+            },
+            {
+              "price": 50001,
+              "actual": {
+                "subtotal": 50001,
+                "discount": 0,
+                "shipping": 0,
+                "total": 50001
+              },
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        {
+          "name": "shipping-policy",
+          "diff_match": {
+            "changed_file": "src/checkout.js",
+            "original_sha256": "221771821cc7a5a443eccedc5f5692fe16cbcc452e617531cd65b0fbb4055039",
+            "memory_variant_sha256": "47b0fdf7e8678decae0d183e23c3536d1526d6c5bdead86e208c8494add95c7b",
+            "context_and_deletions_match": true
+          },
+          "input": {
+            "lines": [
+              {
+                "productId": "A",
+                "quantity": 4
+              },
+              {
+                "productId": "B",
+                "quantity": 1
+              }
+            ],
+            "coupon": "SAVE10"
+          },
+          "expected": {
+            "status": 200,
+            "quote": {
+              "subtotal": 56000,
+              "discount": 5600,
+              "shipping": 3000,
+              "total": 53400
+            }
+          },
+          "responses": [
+            {
+              "endpoint": "quote",
+              "status": 200,
+              "body": {
+                "subtotal": 56000,
+                "discount": 5600,
+                "shipping": 3000,
+                "total": 53400
+              },
+              "elapsed_ms": 0.25883400000000023,
+              "passed": true
+            },
+            {
+              "endpoint": "orders",
+              "status": 200,
+              "body": {
+                "accepted": true,
+                "quote": {
+                  "subtotal": 56000,
+                  "discount": 5600,
+                  "shipping": 3000,
+                  "total": 53400
+                }
+              },
+              "elapsed_ms": 0.16979200000000105,
+              "passed": true
+            }
+          ],
+          "policy_boundaries": [
+            {
+              "price": 59999,
+              "actual": {
+                "subtotal": 59999,
+                "discount": 0,
+                "shipping": 3000,
+                "total": 62999
+              },
+              "passed": true
+            },
+            {
+              "price": 60000,
+              "actual": {
+                "subtotal": 60000,
+                "discount": 0,
+                "shipping": 0,
+                "total": 60000
+              },
+              "passed": true
+            },
+            {
+              "price": 60001,
+              "actual": {
+                "subtotal": 60001,
+                "discount": 0,
+                "shipping": 0,
+                "total": 60001
+              },
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        {
+          "name": "catalog-memory",
+          "diff_match": {
+            "changed_file": "src/catalog.js",
+            "original_sha256": "523ad6b97e81c57f895fed40752f458cd8cc754f92ea65654f1d59da9b2337ff",
+            "memory_variant_sha256": "8fe17b5af06c94a44ddec6f2ce2509f71e4f04e925eb0e6be4f891526b8f290f",
+            "context_and_deletions_match": true
+          },
+          "input": {
+            "lines": [
+              {
+                "productId": "A",
+                "quantity": 4
+              },
+              {
+                "productId": "B",
+                "quantity": 1
+              }
+            ],
+            "coupon": "SAVE10"
+          },
+          "expected": {
+            "status": 200,
+            "quote": {
+              "subtotal": 88000,
+              "discount": 8800,
+              "shipping": 0,
+              "total": 79200
+            }
+          },
+          "responses": [
+            {
+              "endpoint": "quote",
+              "status": 200,
+              "body": {
+                "subtotal": 88000,
+                "discount": 8800,
+                "shipping": 0,
+                "total": 79200
+              },
+              "elapsed_ms": 0.27791600000000116,
+              "passed": true
+            },
+            {
+              "endpoint": "orders",
+              "status": 200,
+              "body": {
+                "accepted": true,
+                "quote": {
+                  "subtotal": 88000,
+                  "discount": 8800,
+                  "shipping": 0,
+                  "total": 79200
+                }
+              },
+              "elapsed_ms": 0.13654100000000113,
+              "passed": true
+            }
+          ],
+          "policy_boundaries": [],
+          "passed": true
+        },
+        {
+          "name": "catalog-delay",
+          "diff_match": {
+            "changed_file": "src/catalog.js",
+            "original_sha256": "523ad6b97e81c57f895fed40752f458cd8cc754f92ea65654f1d59da9b2337ff",
+            "memory_variant_sha256": "c497c9fec93668c8c62494f2f53e1a0fbd765c218055ae62555d7dc9527e2013",
+            "context_and_deletions_match": true
+          },
+          "input": {
+            "lines": [
+              {
+                "productId": "A",
+                "quantity": 4
+              },
+              {
+                "productId": "B",
+                "quantity": 1
+              }
+            ],
+            "coupon": "SAVE10"
+          },
+          "expected": {
+            "status": 200,
+            "quote": {
+              "subtotal": 88000,
+              "discount": 8800,
+              "shipping": 0,
+              "total": 79200
+            }
+          },
+          "responses": [
+            {
+              "endpoint": "quote",
+              "status": 200,
+              "body": {
+                "subtotal": 88000,
+                "discount": 8800,
+                "shipping": 0,
+                "total": 79200
+              },
+              "elapsed_ms": 11.317833999999998,
+              "passed": true
+            },
+            {
+              "endpoint": "orders",
+              "status": 200,
+              "body": {
+                "accepted": true,
+                "quote": {
+                  "subtotal": 88000,
+                  "discount": 8800,
+                  "shipping": 0,
+                  "total": 79200
+                }
+              },
+              "elapsed_ms": 11.219916999999995,
+              "passed": true
+            }
+          ],
+          "policy_boundaries": [],
+          "passed": true
+        },
+        {
+          "name": "catalog-failure",
+          "diff_match": {
+            "changed_file": "src/catalog.js",
+            "original_sha256": "523ad6b97e81c57f895fed40752f458cd8cc754f92ea65654f1d59da9b2337ff",
+            "memory_variant_sha256": "ead07d3d8af31f1e1b1c484ccc75527cb3ee69124a66a893e8f9a04a12e42e96",
+            "context_and_deletions_match": true
+          },
+          "input": {
+            "lines": [
+              {
+                "productId": "A",
+                "quantity": 4
+              },
+              {
+                "productId": "B",
+                "quantity": 1
+              }
+            ],
+            "coupon": "SAVE10"
+          },
+          "expected": {
+            "status": 500,
+            "error": "Catalog unavailable"
+          },
+          "responses": [
+            {
+              "endpoint": "quote",
+              "status": 500,
+              "body": {
+                "error": "Catalog unavailable"
+              },
+              "elapsed_ms": 0.17166700000000645,
+              "passed": true
+            },
+            {
+              "endpoint": "orders",
+              "status": 500,
+              "body": {
+                "error": "Catalog unavailable"
+              },
+              "elapsed_ms": 0.1282500000000013,
+              "passed": true
+            }
+          ],
+          "policy_boundaries": [],
+          "passed": true
+        }
+      ],
+      "criteria": {
+        "Q10": {
+          "items": [
+            {
+              "id": "Q10.1",
+              "score": 5,
+              "previous_score": "U",
+              "reason": "배송 기준 변경은 계산 정책의 50000→60000 한 위치에만 적용됐다. 제공 diff가 원본과 일치하며 두 실제 POST가 변경된 네 금액 필드를 반환했다. 독립 재실행은 새 배송 경계 전후도 확인했다.",
+              "evidence": [
+                "c01/probe-evidence/shipping-policy.diff:7",
+                "c01/src/checkout.js:24",
+                "c01/probe-evidence/change-probes.json:3"
+              ],
+              "execution_evidence": [
+                "baseline",
+                "shipping-policy"
+              ],
+              "limitation": "VM 메모리 사본 재실행이다. Next 서버·브라우저는 실행하지 않았다."
+            },
+            {
+              "id": "Q10.2",
+              "score": 5,
+              "previous_score": "U",
+              "reason": "메모리·지연·실패 조회 대체는 src/catalog.js만 변경했다. UI와 계산 파일을 재작성하지 않고 두 POST에서 대체 가격의 네 금액 필드 또는 500 오류를 확인했다. 바깥 조회 연결이 실제로 유지된다.",
+              "evidence": [
+                "c01/probe-evidence/catalog-memory.diff:7",
+                "c01/probe-evidence/catalog-delay.diff:7",
+                "c01/probe-evidence/catalog-failure.diff:7",
+                "c01/src/catalog.js:1",
+                "c01/app/api/quote/route.js:8"
+              ],
+              "execution_evidence": [
+                "catalog-memory",
+                "catalog-delay",
+                "catalog-failure"
+              ],
+              "limitation": "지연 함수는 10ms 타이머를 사용했다. 처리 시간 수치 자체를 설계 점수로 사용하지 않았으며 브라우저 오류 표시·레이아웃은 이 probe 범위 밖이다."
+            }
+          ],
+          "score": 10
+        }
+      },
+      "unrelated_prior_scores_changed": false,
+      "functional_eligibility": "not_established_by_this_Q10_addendum"
+    },
+    {
+      "id": "c02",
+      "source_sha256": {
+        "src/application/checkout.js": "874a02b4c9e8829c4d710892cfc5d018fef7f04e924a05f9c00317e4f70035e8",
+        "src/catalog.js": "523ad6b97e81c57f895fed40752f458cd8cc754f92ea65654f1d59da9b2337ff",
+        "src/controller.js": "cb37367a7fe3dd00f16004fffb9b43370e5d0d800dc5a10ccc729d4bea07f248",
+        "src/domain/pricing.js": "221771821cc7a5a443eccedc5f5692fe16cbcc452e617531cd65b0fbb4055039",
+        "src/http/checkout.js": "ff005f292378866c194d7f24af1f76e48c77f62adeeb4cba2b3d5d864bd099a3",
+        "app/api/orders/route.js": "68daca62458a23eb33ab59e5774ac1056389e702dc6c8928f09295c9d83e31e0",
+        "app/api/quote/route.js": "b69cad330efd86d01e8a05581b4265941cf5ef038ff984bff777f041b0061740",
+        "app/checkout.jsx": "a0c9e722bc2540575e4919fc5e98c2695a83435300793bc08c3b7c3ebf461241",
+        "app/layout.jsx": "8e5bd10067458aabd9faa12758742379b73c4f73a9502fca9cfa01545b64483c",
+        "app/page.jsx": "57ce7b06995d10c8f974c4670b666c7c01ea64c3e4f9d85105ab14d9d9cf569d"
+      },
+      "source_unchanged_after_replay": true,
+      "supplied_probe_summary": [
+        {
+          "name": "shipping-policy",
+          "changedFile": "src/domain/pricing.js",
+          "actualHandlersPassed": 2,
+          "expectedStatus": 200,
+          "expectedTotal": 53400,
+          "semanticScore": null
+        },
+        {
+          "name": "catalog-memory",
+          "changedFile": "src/catalog.js",
+          "actualHandlersPassed": 2,
+          "expectedStatus": 200,
+          "expectedTotal": 79200,
+          "semanticScore": null
+        },
+        {
+          "name": "catalog-delay",
+          "changedFile": "src/catalog.js",
+          "actualHandlersPassed": 2,
+          "expectedStatus": 200,
+          "expectedTotal": 79200,
+          "semanticScore": null
+        },
+        {
+          "name": "catalog-failure",
+          "changedFile": "src/catalog.js",
+          "actualHandlersPassed": 2,
+          "expectedStatus": 500,
+          "expectedTotal": null,
+          "semanticScore": null
+        }
+      ],
+      "reviewer_execution": [
+        {
+          "name": "baseline",
+          "diff_match": null,
+          "input": {
+            "lines": [
+              {
+                "productId": "A",
+                "quantity": 4
+              },
+              {
+                "productId": "B",
+                "quantity": 1
+              }
+            ],
+            "coupon": "SAVE10"
+          },
+          "expected": {
+            "status": 200,
+            "quote": {
+              "subtotal": 56000,
+              "discount": 5600,
+              "shipping": 0,
+              "total": 50400
+            }
+          },
+          "responses": [
+            {
+              "endpoint": "quote",
+              "status": 200,
+              "body": {
+                "subtotal": 56000,
+                "discount": 5600,
+                "shipping": 0,
+                "total": 50400
+              },
+              "elapsed_ms": 0.14920900000000614,
+              "passed": true
+            },
+            {
+              "endpoint": "orders",
+              "status": 200,
+              "body": {
+                "accepted": true,
+                "quote": {
+                  "subtotal": 56000,
+                  "discount": 5600,
+                  "shipping": 0,
+                  "total": 50400
+                }
+              },
+              "elapsed_ms": 0.054957999999999174,
+              "passed": true
+            }
+          ],
+          "policy_boundaries": [
+            {
+              "price": 49999,
+              "actual": {
+                "subtotal": 49999,
+                "discount": 0,
+                "shipping": 3000,
+                "total": 52999
+              },
+              "passed": true
+            },
+            {
+              "price": 50000,
+              "actual": {
+                "subtotal": 50000,
+                "discount": 0,
+                "shipping": 0,
+                "total": 50000
+              },
+              "passed": true
+            },
+            {
+              "price": 50001,
+              "actual": {
+                "subtotal": 50001,
+                "discount": 0,
+                "shipping": 0,
+                "total": 50001
+              },
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        {
+          "name": "shipping-policy",
+          "diff_match": {
+            "changed_file": "src/domain/pricing.js",
+            "original_sha256": "221771821cc7a5a443eccedc5f5692fe16cbcc452e617531cd65b0fbb4055039",
+            "memory_variant_sha256": "47b0fdf7e8678decae0d183e23c3536d1526d6c5bdead86e208c8494add95c7b",
+            "context_and_deletions_match": true
+          },
+          "input": {
+            "lines": [
+              {
+                "productId": "A",
+                "quantity": 4
+              },
+              {
+                "productId": "B",
+                "quantity": 1
+              }
+            ],
+            "coupon": "SAVE10"
+          },
+          "expected": {
+            "status": 200,
+            "quote": {
+              "subtotal": 56000,
+              "discount": 5600,
+              "shipping": 3000,
+              "total": 53400
+            }
+          },
+          "responses": [
+            {
+              "endpoint": "quote",
+              "status": 200,
+              "body": {
+                "subtotal": 56000,
+                "discount": 5600,
+                "shipping": 3000,
+                "total": 53400
+              },
+              "elapsed_ms": 0.13954199999999872,
+              "passed": true
+            },
+            {
+              "endpoint": "orders",
+              "status": 200,
+              "body": {
+                "accepted": true,
+                "quote": {
+                  "subtotal": 56000,
+                  "discount": 5600,
+                  "shipping": 3000,
+                  "total": 53400
+                }
+              },
+              "elapsed_ms": 0.05579200000000384,
+              "passed": true
+            }
+          ],
+          "policy_boundaries": [
+            {
+              "price": 59999,
+              "actual": {
+                "subtotal": 59999,
+                "discount": 0,
+                "shipping": 3000,
+                "total": 62999
+              },
+              "passed": true
+            },
+            {
+              "price": 60000,
+              "actual": {
+                "subtotal": 60000,
+                "discount": 0,
+                "shipping": 0,
+                "total": 60000
+              },
+              "passed": true
+            },
+            {
+              "price": 60001,
+              "actual": {
+                "subtotal": 60001,
+                "discount": 0,
+                "shipping": 0,
+                "total": 60001
+              },
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        {
+          "name": "catalog-memory",
+          "diff_match": {
+            "changed_file": "src/catalog.js",
+            "original_sha256": "523ad6b97e81c57f895fed40752f458cd8cc754f92ea65654f1d59da9b2337ff",
+            "memory_variant_sha256": "8fe17b5af06c94a44ddec6f2ce2509f71e4f04e925eb0e6be4f891526b8f290f",
+            "context_and_deletions_match": true
+          },
+          "input": {
+            "lines": [
+              {
+                "productId": "A",
+                "quantity": 4
+              },
+              {
+                "productId": "B",
+                "quantity": 1
+              }
+            ],
+            "coupon": "SAVE10"
+          },
+          "expected": {
+            "status": 200,
+            "quote": {
+              "subtotal": 88000,
+              "discount": 8800,
+              "shipping": 0,
+              "total": 79200
+            }
+          },
+          "responses": [
+            {
+              "endpoint": "quote",
+              "status": 200,
+              "body": {
+                "subtotal": 88000,
+                "discount": 8800,
+                "shipping": 0,
+                "total": 79200
+              },
+              "elapsed_ms": 0.12841600000000142,
+              "passed": true
+            },
+            {
+              "endpoint": "orders",
+              "status": 200,
+              "body": {
+                "accepted": true,
+                "quote": {
+                  "subtotal": 88000,
+                  "discount": 8800,
+                  "shipping": 0,
+                  "total": 79200
+                }
+              },
+              "elapsed_ms": 0.05087499999999778,
+              "passed": true
+            }
+          ],
+          "policy_boundaries": [],
+          "passed": true
+        },
+        {
+          "name": "catalog-delay",
+          "diff_match": {
+            "changed_file": "src/catalog.js",
+            "original_sha256": "523ad6b97e81c57f895fed40752f458cd8cc754f92ea65654f1d59da9b2337ff",
+            "memory_variant_sha256": "c497c9fec93668c8c62494f2f53e1a0fbd765c218055ae62555d7dc9527e2013",
+            "context_and_deletions_match": true
+          },
+          "input": {
+            "lines": [
+              {
+                "productId": "A",
+                "quantity": 4
+              },
+              {
+                "productId": "B",
+                "quantity": 1
+              }
+            ],
+            "coupon": "SAVE10"
+          },
+          "expected": {
+            "status": 200,
+            "quote": {
+              "subtotal": 88000,
+              "discount": 8800,
+              "shipping": 0,
+              "total": 79200
+            }
+          },
+          "responses": [
+            {
+              "endpoint": "quote",
+              "status": 200,
+              "body": {
+                "subtotal": 88000,
+                "discount": 8800,
+                "shipping": 0,
+                "total": 79200
+              },
+              "elapsed_ms": 11.188707999999998,
+              "passed": true
+            },
+            {
+              "endpoint": "orders",
+              "status": 200,
+              "body": {
+                "accepted": true,
+                "quote": {
+                  "subtotal": 88000,
+                  "discount": 8800,
+                  "shipping": 0,
+                  "total": 79200
+                }
+              },
+              "elapsed_ms": 11.229333999999994,
+              "passed": true
+            }
+          ],
+          "policy_boundaries": [],
+          "passed": true
+        },
+        {
+          "name": "catalog-failure",
+          "diff_match": {
+            "changed_file": "src/catalog.js",
+            "original_sha256": "523ad6b97e81c57f895fed40752f458cd8cc754f92ea65654f1d59da9b2337ff",
+            "memory_variant_sha256": "ead07d3d8af31f1e1b1c484ccc75527cb3ee69124a66a893e8f9a04a12e42e96",
+            "context_and_deletions_match": true
+          },
+          "input": {
+            "lines": [
+              {
+                "productId": "A",
+                "quantity": 4
+              },
+              {
+                "productId": "B",
+                "quantity": 1
+              }
+            ],
+            "coupon": "SAVE10"
+          },
+          "expected": {
+            "status": 500,
+            "error": "Catalog unavailable"
+          },
+          "responses": [
+            {
+              "endpoint": "quote",
+              "status": 500,
+              "body": {
+                "error": "Catalog unavailable"
+              },
+              "elapsed_ms": 0.10512500000000102,
+              "passed": true
+            },
+            {
+              "endpoint": "orders",
+              "status": 500,
+              "body": {
+                "error": "Catalog unavailable"
+              },
+              "elapsed_ms": 0.04695900000000108,
+              "passed": true
+            }
+          ],
+          "policy_boundaries": [],
+          "passed": true
+        }
+      ],
+      "criteria": {
+        "Q10": {
+          "items": [
+            {
+              "id": "Q10.1",
+              "score": 5,
+              "previous_score": "U",
+              "reason": "배송 기준 변경은 계산 정책의 50000→60000 한 위치에만 적용됐다. 제공 diff가 원본과 일치하며 두 실제 POST가 변경된 네 금액 필드를 반환했다. 독립 재실행은 새 배송 경계 전후도 확인했다.",
+              "evidence": [
+                "c02/probe-evidence/shipping-policy.diff:7",
+                "c02/src/domain/pricing.js:24",
+                "c02/probe-evidence/change-probes.json:3"
+              ],
+              "execution_evidence": [
+                "baseline",
+                "shipping-policy"
+              ],
+              "limitation": "VM 메모리 사본 재실행이다. Next 서버·브라우저는 실행하지 않았다."
+            },
+            {
+              "id": "Q10.2",
+              "score": 5,
+              "previous_score": "U",
+              "reason": "메모리·지연·실패 조회 대체는 src/catalog.js만 변경했다. UI와 계산 파일을 재작성하지 않고 두 POST에서 대체 가격의 네 금액 필드 또는 500 오류를 확인했다. 바깥 조회 연결이 실제로 유지된다.",
+              "evidence": [
+                "c02/probe-evidence/catalog-memory.diff:7",
+                "c02/probe-evidence/catalog-delay.diff:7",
+                "c02/probe-evidence/catalog-failure.diff:7",
+                "c02/src/catalog.js:1",
+                "c02/src/http/checkout.js:3"
+              ],
+              "execution_evidence": [
+                "catalog-memory",
+                "catalog-delay",
+                "catalog-failure"
+              ],
+              "limitation": "지연 함수는 10ms 타이머를 사용했다. 처리 시간 수치 자체를 설계 점수로 사용하지 않았으며 브라우저 오류 표시·레이아웃은 이 probe 범위 밖이다."
+            }
+          ],
+          "score": 10
+        }
+      },
+      "unrelated_prior_scores_changed": false,
+      "functional_eligibility": "not_established_by_this_Q10_addendum"
+    }
+  ],
+  "replay_command": "node --experimental-vm-modules --input-type=module (reviewer_replay_source)",
+  "reviewer_replay_source": "import assert from 'node:assert/strict';\nimport { readFile, writeFile, readdir } from 'node:fs/promises';\nimport { resolve, dirname } from 'node:path';\nimport { createHash } from 'node:crypto';\nimport { SourceTextModule, createContext } from 'node:vm';\nconst base = resolve('test/evals/fs-comparison/v2/results/semantic-calibration-inputs');\nconst report = {\n  schema_version: 1, review_kind: 'independent_q10_addendum',\n  prior_review_preserved: true,\n  scope: ['c01', 'c02'],\n  product_files_modified: false,\n  browser_execution: 'not_run',\n  method: '제공 diff의 모든 삭제·문맥 줄을 현재 코드와 대조한 뒤 메모리 ESM 사본에만 적용했다. 각 변형은 새 VM 그래프에서 실제 POST(Request)를 호출했다. 디스크 제품 파일 해시는 실행 전후 동일했다.',\n  supplied_evidence_limitations: [\n    '기존 change-probes.json에는 각 probe의 actualHandlersPassed=2와 기대 status/total만 있으며 요청 원문·실행 명령·원본 해시는 없다.',\n    '제공된 8개 .log 파일은 모두 비어 있어 그 자체를 추가 실행 증거로 계산하지 않았다.',\n    '별도의 독립 메모리 재실행으로 아래 입력과 실제 응답을 기록했다. 실제 HTTP 서버·Next 런타임·브라우저 검증을 뜻하지 않는다.'\n  ],\n  candidates: []\n};\nconst hash = text => createHash('sha256').update(text).digest('hex');\nasync function files(dir) {\n  const result = [];\n  for (const ent of await readdir(dir, {withFileTypes:true})) {\n    const path = resolve(dir,ent.name);\n    if (ent.isDirectory()) result.push(...await files(path));\n    else if (ent.name.endsWith('.js') || ent.name.endsWith('.jsx')) result.push(path);\n  }\n  return result;\n}\nfunction patch(original, diff) {\n  const rows=diff.trimEnd().split('\\n');\n  const header=/^@@ -(\\d+)(?:,(\\d+))? \\+(\\d+)(?:,(\\d+))? @@$/.exec(rows[2]);\n  assert.ok(header,'single unified hunk header');\n  const lines=original.trimEnd().split('\\n'), start=Number(header[1])-1;\n  const before=rows.slice(3).filter(x=>x[0]!=='+' && x[0]!=='\\\\').map(x=>x.slice(1));\n  const after=rows.slice(3).filter(x=>x[0]!=='-' && x[0]!=='\\\\').map(x=>x.slice(1));\n  assert.deepEqual(lines.slice(start,start+before.length),before,'diff context/deletions match original');\n  assert.equal(before.length,Number(header[2] ?? 1));\n  assert.equal(after.length,Number(header[4] ?? 1));\n  lines.splice(start,before.length,...after);\n  return lines.join('\\n')+'\\n';\n}\nfor (const id of report.scope) {\n  const root=resolve(base,id);\n  const sources={};\n  for (const dir of ['src','app']) for(const file of await files(resolve(root,dir))) sources[file]=await readFile(file,'utf8');\n  const sourceHashes=Object.fromEntries(Object.entries(sources).map(([p,t])=>[p.slice(root.length+1),hash(t)]));\n  const supplied=JSON.parse(await readFile(resolve(root,'probe-evidence/change-probes.json'),'utf8'));\n  const binding=JSON.parse(await readFile(resolve(root,'checkout.contract.json'),'utf8')).quote;\n  const results=[];\n  for(const probe of [{name:'baseline'},...supplied]) {\n    const changed={...sources};\n    let diffMatch=null;\n    if(probe.name!=='baseline') {\n      const diff=await readFile(resolve(root,'probe-evidence',probe.name+'.diff'),'utf8');\n      assert.equal((await readFile(resolve(root,'probe-evidence',probe.name+'.log'))).length,0);\n      const file=resolve(root,probe.changedFile);\n      changed[file]=patch(sources[file],diff);\n      diffMatch={changed_file:probe.changedFile,original_sha256:hash(sources[file]),memory_variant_sha256:hash(changed[file]),context_and_deletions_match:true};\n    }\n    const context=createContext({Request,Response,setTimeout});\n    const modules=new Map();\n    async function get(file) {\n      if(modules.has(file))return modules.get(file);\n      assert.ok(file in changed,'dependency must be a permitted product file');\n      const mod=new SourceTextModule(changed[file],{context,identifier:file});\n      modules.set(file,mod);\n      await mod.link((specifier,ref)=>get(resolve(dirname(ref.identifier),specifier)));\n      return mod;\n    }\n    const input={lines:[{productId:'A',quantity:4},{productId:'B',quantity:1}],coupon:'SAVE10'};\n    const expected=probe.name==='catalog-failure'?{status:500,error:'Catalog unavailable'}:\n      probe.name==='shipping-policy'?{status:200,quote:{subtotal:56000,discount:5600,shipping:3000,total:53400}}:\n      probe.name.startsWith('catalog-')?{status:200,quote:{subtotal:88000,discount:8800,shipping:0,total:79200}}:\n      {status:200,quote:{subtotal:56000,discount:5600,shipping:0,total:50400}};\n    const responses=[];\n    for(const endpoint of ['quote','orders']) {\n      const mod=await get(resolve(root,'app/api',endpoint,'route.js'));\n      await mod.evaluate();\n      const start=performance.now();\n      const response=await mod.namespace.POST(new Request('http://fixture/api/'+endpoint,{method:'POST',body:JSON.stringify(input)}));\n      const body=await response.json();\n      assert.equal(response.status,expected.status);\n      if(expected.error) assert.equal(body.error,expected.error);\n      else {\n        assert.deepEqual(endpoint==='orders'?body.quote:body,expected.quote);\n        if(endpoint==='orders')assert.equal(body.accepted,true);\n      }\n      responses.push({endpoint,status:response.status,body,elapsed_ms:performance.now()-start,passed:true});\n    }\n    const policyBoundaries=[];\n    if(probe.name==='baseline'||probe.name==='shipping-policy') {\n      const module=await get(resolve(root,binding.module));\n      if(module.status!=='evaluated')await module.evaluate();\n      const threshold=probe.name==='baseline'?50000:60000;\n      for(const price of [threshold-1,threshold,threshold+1]) {\n        const actual=module.namespace[binding.export]({lines:[{productId:'X',quantity:1}]},[{id:'X',price,stock:10}]);\n        const shipping=price>=threshold?0:3000;\n        assert.deepEqual(JSON.parse(JSON.stringify(actual)),{subtotal:price,discount:0,shipping,total:price+shipping});\n        policyBoundaries.push({price,actual,passed:true});\n      }\n    }\n    results.push({name:probe.name,diff_match:diffMatch,input,expected,responses,policy_boundaries:policyBoundaries,passed:true});\n  }\n  for(const [file,text] of Object.entries(sources))assert.equal(hash(await readFile(file,'utf8')),hash(text),'original product unchanged');\n  const pricing=binding.module;\n  report.candidates.push({\n    id,\n    source_sha256:sourceHashes,\n    source_unchanged_after_replay:true,\n    supplied_probe_summary:supplied,\n    reviewer_execution:results,\n    criteria:{\n      Q10:{\n        items:[\n          {id:'Q10.1',score:5,previous_score:'U',reason:'배송 기준 변경은 계산 정책의 50000→60000 한 위치에만 적용됐다. 제공 diff가 원본과 일치하며 두 실제 POST가 변경된 네 금액 필드를 반환했다. 독립 재실행은 새 배송 경계 전후도 확인했다.',\n           evidence:[id+'/probe-evidence/shipping-policy.diff:7',id+'/'+pricing+':24',id+'/probe-evidence/change-probes.json:3'],\n           execution_evidence:['baseline','shipping-policy'],\n           limitation:'VM 메모리 사본 재실행이다. Next 서버·브라우저는 실행하지 않았다.'},\n          {id:'Q10.2',score:5,previous_score:'U',reason:'메모리·지연·실패 조회 대체는 src/catalog.js만 변경했다. UI와 계산 파일을 재작성하지 않고 두 POST에서 대체 가격의 네 금액 필드 또는 500 오류를 확인했다. 바깥 조회 연결이 실제로 유지된다.',\n           evidence:[id+'/probe-evidence/catalog-memory.diff:7',id+'/probe-evidence/catalog-delay.diff:7',id+'/probe-evidence/catalog-failure.diff:7',id+'/src/catalog.js:1',\n             id+(id==='c02'?'/src/http/checkout.js:3':'/app/api/quote/route.js:8')],\n           execution_evidence:['catalog-memory','catalog-delay','catalog-failure'],\n           limitation:'지연 함수는 10ms 타이머를 사용했다. 처리 시간 수치 자체를 설계 점수로 사용하지 않았으며 브라우저 오류 표시·레이아웃은 이 probe 범위 밖이다.'}\n        ],\n        score:10\n      }\n    },\n    unrelated_prior_scores_changed:false,\n    functional_eligibility:'not_established_by_this_Q10_addendum'\n  });\n}\nreport.replay_command='node --experimental-vm-modules --input-type=module (reviewer_replay_source)';\nconst target=resolve(base,'../semantic-calibration-q10.json');\nreport.reviewer_replay_source=null;\nreport.reviewer_replay_correction='첫 실행의 리뷰어 diff parser가 생략된 hunk 개수(+1)를 처리하지 못해 중단됐다. 표준 단일 줄 hunk를 처리하도록 수정하고 전체 실행을 다시 수행했다. 제품 결함으로 기록하지 않는다.';\nawait writeFile(target,JSON.stringify(report,null,2)+'\\n');\nconsole.log(JSON.stringify(report.candidates.map(c=>({id:c.id,Q10:c.criteria.Q10.score,probes:c.reviewer_execution.length,source_unchanged:c.source_unchanged_after_replay}))));\n",
+  "reviewer_replay_correction": "첫 실행의 리뷰어 diff parser가 생략된 hunk 개수(+1)를 처리하지 못해 중단됐다. 표준 단일 줄 hunk를 처리하도록 수정하고 전체 실행을 다시 수행했다. 제품 결함으로 기록하지 않는다."
+}

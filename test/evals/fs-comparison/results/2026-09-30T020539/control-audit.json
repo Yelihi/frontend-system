@@ -1,0 +1,27 @@
+{
+  "checkedAt": "2026-09-30T04:02:39.298609+09:00",
+  "includedRuns": 18,
+  "excludedPairedRuns": 2,
+  "uniqueIncludedThreadIds": 18,
+  "initialSourceTrees": [
+    "cfaa19f6064874eea6ff5ea98427bc387312aae3"
+  ],
+  "initialCommits": [
+    "bf08850d6f9271ec7b5b33bebcca3ecfd549d6e4"
+  ],
+  "promptHashes": 1,
+  "identicalExternalCases": 33,
+  "rawUsageMatchesEveryResult": true,
+  "sourceFsFilesMatchOriginalSnapshot": 101,
+  "retryPrePostSnapshotChecksPassed": true,
+  "earlyRuntimeCheck": {
+    "checkedAt": "2026-09-30T02:45:40.684895",
+    "completedSessions": 6,
+    "uniqueThreadIds": 6,
+    "initialSourceTrees": 1,
+    "promptHashes": 1,
+    "unchangedFsFiles": 101
+  },
+  "runtimeIntegrityIncident": "runtime-integrity-incident.json",
+  "limitation": "Initial batch runtime was audited intermittently, not before/after every run. The observed affected pair is excluded and retained; retries check before and after every run."
+}

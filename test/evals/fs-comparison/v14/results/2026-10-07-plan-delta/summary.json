@@ -1,0 +1,1257 @@
+{
+  "classificationSha256": "77483d69e6a30863fdf5c531007087c5de86137c3bff3ea3d51edbe4b2e38c3c",
+  "scope": "Six new planning sessions from exact prior analysis snapshots. No new analysis calls; imported result files are excluded from accounting.",
+  "calls": 6,
+  "plannedCalls": 6,
+  "complete": 6,
+  "trajectories": 6,
+  "totalTokens": 8953538,
+  "uncachedPlusOutput": 463810,
+  "unknownUsage": 0,
+  "groups": [
+    {
+      "case": "request",
+      "stage": "plan",
+      "arm": "fs-K1",
+      "n": 3,
+      "complete": 3,
+      "total": {
+        "median": 1154795,
+        "min": 926836,
+        "max": 2025301
+      },
+      "uncachedPlusOutput": {
+        "median": 72811,
+        "min": 70516,
+        "max": 81749
+      },
+      "requestsMedian": 21,
+      "meanInputMedian": 54382.54054054054
+    },
+    {
+      "case": "styles",
+      "stage": "plan",
+      "arm": "fs-K1",
+      "n": 3,
+      "complete": 3,
+      "total": {
+        "median": 1599954,
+        "min": 1142569,
+        "max": 2104083
+      },
+      "uncachedPlusOutput": {
+        "median": 79954,
+        "min": 74153,
+        "max": 84627
+      },
+      "requestsMedian": 33,
+      "meanInputMedian": 51416.59090909091
+    }
+  ],
+  "rows": [
+    {
+      "id": "repeat-1/styles-fs-K1/plan",
+      "repeat": 1,
+      "case": "styles",
+      "arm": "fs-K1",
+      "stage": "plan",
+      "threadId": "01a1158d-91cb-7630-a53d-3d7d39128007",
+      "seconds": 316.203,
+      "usage": {
+        "input_tokens": 2090509,
+        "cached_input_tokens": 2019456,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 13574,
+        "reasoning_output_tokens": 1940,
+        "total_tokens": 2104083,
+        "uncached_input_tokens": 71053
+      },
+      "trajectoryAvailable": true,
+      "artifactComplete": true,
+      "contractComplete": true,
+      "mcpErrors": 4,
+      "toolStats": {
+        "get_revision": {
+          "calls": 1,
+          "resultCharacters": 478,
+          "fullDetail": 0,
+          "includeRelations": 0
+        },
+        "get_project_document": {
+          "calls": 1,
+          "resultCharacters": 2838,
+          "fullDetail": 0,
+          "includeRelations": 0
+        },
+        "get_project_analysis": {
+          "calls": 3,
+          "resultCharacters": 14729,
+          "fullDetail": 1,
+          "includeRelations": 0
+        },
+        "get_work_context": {
+          "calls": 2,
+          "resultCharacters": 46558,
+          "fullDetail": 0,
+          "includeRelations": 0
+        },
+        "read_learned_knowledge": {
+          "calls": 1,
+          "resultCharacters": 10165,
+          "fullDetail": 0,
+          "includeRelations": 0
+        },
+        "save_project_analysis": {
+          "calls": 3,
+          "resultCharacters": 696,
+          "fullDetail": 0,
+          "includeRelations": 0
+        },
+        "save_revision": {
+          "calls": 6,
+          "resultCharacters": 3467,
+          "fullDetail": 0,
+          "includeRelations": 0
+        }
+      },
+      "failedTools": [
+        {
+          "tool": "save_revision",
+          "message": "Candidate react-derived-state-and-effects: Investigation findings required before adoption, retention or exclusion"
+        },
+        {
+          "tool": "save_revision",
+          "message": "Candidate react-derived-state-and-effects: Question preserved-behavior: Owner findings require confirmation contained in a cited answer or contract"
+        },
+        {
+          "tool": "save_revision",
+          "message": "Candidate tailwind-team-authorship: Cannot apply knowledge with unknown, excluded or unmet investigation conditions. Unknown: none; supported exclusions: policy-exception; unmet applicability: none. Recheck the scoped evidence or retain a pending/excluded judgment; do not flip findings just to pass."
+        },
+        {
+          "tool": "save_revision",
+          "message": "Decision must cite routed source or a pinned requirement: README.md. Add code to get_work_context.files, or documents to requirements. Then pass the new contextId and explicit candidate judgments in save_revision.evidenceRoutes alongside decisionUpdates (or replace evidence). Refreshing context alone does not change stored routes. Include all sources/documents still cited by retained decisions. Available: package.json, src/BulkAction.tsx, src/Button.tsx, src/Pages.tsx, src/store.ts, owner-contract.md, change-request.md"
+        }
+      ],
+      "contextPayloads": [
+        {
+          "totalCharacters": 23301,
+          "topLevelCharacters": {
+            "projectDocumentStatus": 346,
+            "planPrerequisites": 130,
+            "inspection": 297,
+            "workflow": 826,
+            "plans": 2,
+            "contextId": 66,
+            "projectAnalysis": 1905,
+            "projectFacts": 2987,
+            "routing": 5587,
+            "context": 9868,
+            "next": 244,
+            "profile": 808,
+            "document": 52
+          },
+          "routingCharacters": {
+            "status": 12,
+            "hash": 66,
+            "files": 85,
+            "requirements": 41,
+            "warnings": 117,
+            "reused": 5,
+            "candidates": 3199,
+            "scopeSearch": 246,
+            "structureSearch": 176,
+            "semanticDiscovery": 1505
+          },
+          "contextCharacters": {
+            "relevantFiles": 373,
+            "projectConstraints": 95,
+            "applicableRules": 9003,
+            "knowledgeGaps": 321
+          }
+        },
+        {
+          "totalCharacters": 23257,
+          "topLevelCharacters": {
+            "projectDocumentStatus": 346,
+            "planPrerequisites": 130,
+            "inspection": 297,
+            "workflow": 826,
+            "plans": 2,
+            "contextId": 66,
+            "projectAnalysis": 1849,
+            "projectFacts": 2987,
+            "routing": 5599,
+            "context": 9868,
+            "next": 244,
+            "profile": 808,
+            "document": 52
+          },
+          "routingCharacters": {
+            "status": 12,
+            "hash": 66,
+            "files": 85,
+            "requirements": 53,
+            "warnings": 117,
+            "reused": 5,
+            "candidates": 3199,
+            "scopeSearch": 246,
+            "structureSearch": 176,
+            "semanticDiscovery": 1505
+          },
+          "contextCharacters": {
+            "relevantFiles": 373,
+            "projectConstraints": 95,
+            "applicableRules": 9003,
+            "knowledgeGaps": 321
+          }
+        }
+      ],
+      "artifactLocations": [
+        "plan.md",
+        ".frontend-system/plans/flow-refactor/plan.md"
+      ],
+      "artifactLocationError": null,
+      "flowRecords": 1,
+      "findingRecords": 2,
+      "deliveryComplete": true,
+      "requests": 35,
+      "afterErrorResponses": 9,
+      "categories": {
+        "instructions": {
+          "responses": 1,
+          "total": 15388,
+          "uncachedPlusOutput": 6300
+        },
+        "shell-other": {
+          "responses": 4,
+          "total": 230496,
+          "uncachedPlusOutput": 6496
+        },
+        "mixed": {
+          "responses": 1,
+          "total": 26595,
+          "uncachedPlusOutput": 8035
+        },
+        "flow": {
+          "responses": 5,
+          "total": 273268,
+          "uncachedPlusOutput": 14580
+        },
+        "schema": {
+          "responses": 1,
+          "total": 32673,
+          "uncachedPlusOutput": 4257
+        },
+        "knowledge": {
+          "responses": 3,
+          "total": 167393,
+          "uncachedPlusOutput": 12257
+        },
+        "artifact-writing": {
+          "responses": 11,
+          "total": 723211,
+          "uncachedPlusOutput": 26251
+        },
+        "plan": {
+          "responses": 6,
+          "total": 420591,
+          "uncachedPlusOutput": 3055
+        },
+        "source-or-artifact-read": {
+          "responses": 2,
+          "total": 140398,
+          "uncachedPlusOutput": 2798
+        },
+        "response-only": {
+          "responses": 1,
+          "total": 74070,
+          "uncachedPlusOutput": 598
+        }
+      },
+      "meanInput": 59728.828571428574,
+      "shortResponseLargeContext": {
+        "definition": "output <= 200 and input >= 40000; descriptive, not proof of waste",
+        "responses": 19,
+        "totalTokens": 1283970
+      }
+    },
+    {
+      "id": "repeat-1/request-fs-K1/plan",
+      "repeat": 1,
+      "case": "request",
+      "arm": "fs-K1",
+      "stage": "plan",
+      "threadId": "01a11592-a57a-7422-95cc-6e09c5f7bda5",
+      "seconds": 199.887,
+      "usage": {
+        "input_tokens": 1145819,
+        "cached_input_tokens": 1081984,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 8976,
+        "reasoning_output_tokens": 1429,
+        "total_tokens": 1154795,
+        "uncached_input_tokens": 63835
+      },
+      "trajectoryAvailable": true,
+      "artifactComplete": true,
+      "contractComplete": true,
+      "mcpErrors": 3,
+      "toolStats": {
+        "list_plans": {
+          "calls": 1,
+          "resultCharacters": 2,
+          "fullDetail": 0,
+          "includeRelations": 0
+        },
+        "get_project_analysis": {
+          "calls": 6,
+          "resultCharacters": 40642,
+          "fullDetail": 5,
+          "includeRelations": 0
+        },
+        "get_project_snapshot": {
+          "calls": 1,
+          "resultCharacters": 966,
+          "fullDetail": 0,
+          "includeRelations": 0
+        },
+        "get_work_context": {
+          "calls": 1,
+          "resultCharacters": 20615,
+          "fullDetail": 0,
+          "includeRelations": 0
+        },
+        "read_learned_knowledge": {
+          "calls": 1,
+          "resultCharacters": 8441,
+          "fullDetail": 0,
+          "includeRelations": 0
+        },
+        "save_project_analysis": {
+          "calls": 5,
+          "resultCharacters": 1171,
+          "fullDetail": 0,
+          "includeRelations": 0
+        },
+        "save_revision": {
+          "calls": 5,
+          "resultCharacters": 3179,
+          "fullDetail": 0,
+          "includeRelations": 0
+        }
+      },
+      "failedTools": [
+        {
+          "tool": "save_revision",
+          "message": "[\n  {\n    \"origin\": \"array\",\n    \"code\": \"too_small\",\n    \"minimum\": 1,\n    \"inclusive\": true,\n    \"path\": [\n      \"evidence\",\n      \"analysisRefs\",\n      4,\n      \"issueIds\"\n    ],\n    \"message\": \"Too small: expected array to have >=1 items\"\n  }\n]"
+        },
+        {
+          "tool": "save_revision",
+          "message": "Candidate request-policy-boundaries: Cannot apply knowledge with unknown, excluded or unmet investigation conditions. Unknown: none; supported exclusions: unnecessary-layer; unmet applicability: none. Recheck the scoped evidence or retain a pending/excluded judgment; do not flip findings just to pass."
+        },
+        {
+          "tool": "save_revision",
+          "message": "Candidate request-policy-boundaries: Direct repair needs a cited existing behavior or approved contract; it does not grant execution permission"
+        }
+      ],
+      "contextPayloads": [
+        {
+          "totalCharacters": 20615,
+          "topLevelCharacters": {
+            "projectDocumentStatus": 365,
+            "planPrerequisites": 130,
+            "inspection": 328,
+            "workflow": 826,
+            "plans": 2,
+            "contextId": 66,
+            "projectAnalysis": 2629,
+            "projectFacts": 1987,
+            "routing": 6290,
+            "context": 6979,
+            "next": 244,
+            "profile": 534,
+            "document": 52
+          },
+          "routingCharacters": {
+            "status": 12,
+            "hash": 66,
+            "files": 81,
+            "requirements": 41,
+            "warnings": 2,
+            "reused": 5,
+            "candidates": 4001,
+            "scopeSearch": 243,
+            "structureSearch": 176,
+            "semanticDiscovery": 1528
+          },
+          "contextCharacters": {
+            "relevantFiles": 488,
+            "projectConstraints": 95,
+            "applicableRules": 6075,
+            "knowledgeGaps": 245
+          }
+        }
+      ],
+      "artifactLocations": [
+        "plan.md",
+        ".frontend-system/plans/flow-refactor/plan.md"
+      ],
+      "artifactLocationError": null,
+      "flowRecords": 1,
+      "findingRecords": 4,
+      "deliveryComplete": true,
+      "requests": 21,
+      "afterErrorResponses": 4,
+      "categories": {
+        "instructions": {
+          "responses": 1,
+          "total": 15362,
+          "uncachedPlusOutput": 6274
+        },
+        "shell-other": {
+          "responses": 2,
+          "total": 86930,
+          "uncachedPlusOutput": 5138
+        },
+        "mixed": {
+          "responses": 7,
+          "total": 323846,
+          "uncachedPlusOutput": 43014
+        },
+        "schema": {
+          "responses": 2,
+          "total": 119742,
+          "uncachedPlusOutput": 3262
+        },
+        "artifact-writing": {
+          "responses": 1,
+          "total": 65727,
+          "uncachedPlusOutput": 5311
+        },
+        "plan": {
+          "responses": 5,
+          "total": 335749,
+          "uncachedPlusOutput": 7557
+        },
+        "source-or-artifact-read": {
+          "responses": 2,
+          "total": 137524,
+          "uncachedPlusOutput": 1716
+        },
+        "response-only": {
+          "responses": 1,
+          "total": 69915,
+          "uncachedPlusOutput": 539
+        }
+      },
+      "meanInput": 54562.80952380953,
+      "shortResponseLargeContext": {
+        "definition": "output <= 200 and input >= 40000; descriptive, not proof of waste",
+        "responses": 5,
+        "totalTokens": 332227
+      }
+    },
+    {
+      "id": "repeat-2/styles-fs-K1/plan",
+      "repeat": 2,
+      "case": "styles",
+      "arm": "fs-K1",
+      "stage": "plan",
+      "threadId": "01a11594-180d-7650-85aa-5cd50e860091",
+      "seconds": 226.03,
+      "usage": {
+        "input_tokens": 1589326,
+        "cached_input_tokens": 1520000,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 10628,
+        "reasoning_output_tokens": 1657,
+        "total_tokens": 1599954,
+        "uncached_input_tokens": 69326
+      },
+      "trajectoryAvailable": true,
+      "artifactComplete": true,
+      "contractComplete": true,
+      "mcpErrors": 3,
+      "toolStats": {
+        "get_revision": {
+          "calls": 1,
+          "resultCharacters": 478,
+          "fullDetail": 0,
+          "includeRelations": 0
+        },
+        "get_project_analysis": {
+          "calls": 2,
+          "resultCharacters": 15235,
+          "fullDetail": 1,
+          "includeRelations": 0
+        },
+        "get_project_snapshot": {
+          "calls": 1,
+          "resultCharacters": 974,
+          "fullDetail": 0,
+          "includeRelations": 0
+        },
+        "get_work_context": {
+          "calls": 3,
+          "resultCharacters": 81819,
+          "fullDetail": 0,
+          "includeRelations": 0
+        },
+        "read_learned_knowledge": {
+          "calls": 3,
+          "resultCharacters": 30495,
+          "fullDetail": 0,
+          "includeRelations": 0
+        },
+        "save_project_analysis": {
+          "calls": 4,
+          "resultCharacters": 761,
+          "fullDetail": 0,
+          "includeRelations": 0
+        },
+        "save_revision": {
+          "calls": 4,
+          "resultCharacters": 3074,
+          "fullDetail": 0,
+          "includeRelations": 0
+        }
+      },
+      "failedTools": [
+        {
+          "tool": "save_project_analysis",
+          "message": "Select a file from the main snapshot"
+        },
+        {
+          "tool": "save_revision",
+          "message": "Stale or invented citation: change-request.md:8. Exact quote starts at line(s): 7. Confirm the intended occurrence; locations do not validate its meaning. Omit line for a unique quote rather than guessing it."
+        },
+        {
+          "tool": "save_revision",
+          "message": "Candidate tailwind-team-authorship: Cannot apply knowledge with unknown, excluded or unmet investigation conditions. Unknown: none; supported exclusions: policy-exception; unmet applicability: none. Recheck the scoped evidence or retain a pending/excluded judgment; do not flip findings just to pass."
+        }
+      ],
+      "contextPayloads": [
+        {
+          "totalCharacters": 27284,
+          "topLevelCharacters": {
+            "projectDocumentStatus": 346,
+            "planPrerequisites": 130,
+            "inspection": 297,
+            "workflow": 826,
+            "plans": 2,
+            "contextId": 66,
+            "projectAnalysis": 2051,
+            "projectFacts": 2444,
+            "routing": 9967,
+            "context": 9868,
+            "next": 244,
+            "profile": 808,
+            "document": 52
+          },
+          "routingCharacters": {
+            "status": 12,
+            "hash": 66,
+            "files": 97,
+            "requirements": 41,
+            "warnings": 189,
+            "reused": 5,
+            "candidates": 5459,
+            "scopeSearch": 253,
+            "structureSearch": 176,
+            "semanticDiscovery": 3534
+          },
+          "contextCharacters": {
+            "relevantFiles": 373,
+            "projectConstraints": 95,
+            "applicableRules": 9003,
+            "knowledgeGaps": 321
+          }
+        },
+        {
+          "totalCharacters": 27283,
+          "topLevelCharacters": {
+            "projectDocumentStatus": 346,
+            "planPrerequisites": 130,
+            "inspection": 297,
+            "workflow": 826,
+            "plans": 2,
+            "contextId": 66,
+            "projectAnalysis": 2051,
+            "projectFacts": 2444,
+            "routing": 9966,
+            "context": 9868,
+            "next": 244,
+            "profile": 808,
+            "document": 52
+          },
+          "routingCharacters": {
+            "status": 12,
+            "hash": 66,
+            "files": 97,
+            "requirements": 41,
+            "warnings": 189,
+            "reused": 5,
+            "candidates": 5898,
+            "scopeSearch": 253,
+            "structureSearch": 176,
+            "semanticDiscovery": 3094
+          },
+          "contextCharacters": {
+            "relevantFiles": 373,
+            "projectConstraints": 95,
+            "applicableRules": 9003,
+            "knowledgeGaps": 321
+          }
+        },
+        {
+          "totalCharacters": 27252,
+          "topLevelCharacters": {
+            "projectDocumentStatus": 346,
+            "planPrerequisites": 130,
+            "inspection": 297,
+            "workflow": 826,
+            "plans": 2,
+            "contextId": 66,
+            "projectAnalysis": 2020,
+            "projectFacts": 2444,
+            "routing": 9966,
+            "context": 9868,
+            "next": 244,
+            "profile": 808,
+            "document": 52
+          },
+          "routingCharacters": {
+            "status": 12,
+            "hash": 66,
+            "files": 97,
+            "requirements": 41,
+            "warnings": 189,
+            "reused": 5,
+            "candidates": 5898,
+            "scopeSearch": 253,
+            "structureSearch": 176,
+            "semanticDiscovery": 3094
+          },
+          "contextCharacters": {
+            "relevantFiles": 373,
+            "projectConstraints": 95,
+            "applicableRules": 9003,
+            "knowledgeGaps": 321
+          }
+        }
+      ],
+      "artifactLocations": [
+        "plan.md",
+        ".frontend-system/plans/flow-refactor/plan.md"
+      ],
+      "artifactLocationError": null,
+      "flowRecords": 1,
+      "findingRecords": 2,
+      "deliveryComplete": true,
+      "requests": 33,
+      "afterErrorResponses": 5,
+      "categories": {
+        "instructions": {
+          "responses": 1,
+          "total": 15343,
+          "uncachedPlusOutput": 6255
+        },
+        "shell-other": {
+          "responses": 4,
+          "total": 154496,
+          "uncachedPlusOutput": 9984
+        },
+        "source-or-artifact-read": {
+          "responses": 3,
+          "total": 134098,
+          "uncachedPlusOutput": 12882
+        },
+        "mixed": {
+          "responses": 3,
+          "total": 86681,
+          "uncachedPlusOutput": 13849
+        },
+        "knowledge": {
+          "responses": 5,
+          "total": 242385,
+          "uncachedPlusOutput": 15057
+        },
+        "artifact-writing": {
+          "responses": 8,
+          "total": 450033,
+          "uncachedPlusOutput": 11505
+        },
+        "flow": {
+          "responses": 3,
+          "total": 157569,
+          "uncachedPlusOutput": 2177
+        },
+        "schema": {
+          "responses": 1,
+          "total": 53516,
+          "uncachedPlusOutput": 652
+        },
+        "plan": {
+          "responses": 4,
+          "total": 242512,
+          "uncachedPlusOutput": 6352
+        },
+        "response-only": {
+          "responses": 1,
+          "total": 63321,
+          "uncachedPlusOutput": 1241
+        }
+      },
+      "meanInput": 48161.393939393936,
+      "shortResponseLargeContext": {
+        "definition": "output <= 200 and input >= 40000; descriptive, not proof of waste",
+        "responses": 17,
+        "totalTokens": 938020
+      }
+    },
+    {
+      "id": "repeat-2/request-fs-K1/plan",
+      "repeat": 2,
+      "case": "request",
+      "arm": "fs-K1",
+      "stage": "plan",
+      "threadId": "01a11596-1305-79b0-ad0c-9b098d8f4cab",
+      "seconds": 242.328,
+      "usage": {
+        "input_tokens": 2012154,
+        "cached_input_tokens": 1943552,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 13147,
+        "reasoning_output_tokens": 2133,
+        "total_tokens": 2025301,
+        "uncached_input_tokens": 68602
+      },
+      "trajectoryAvailable": true,
+      "artifactComplete": true,
+      "contractComplete": true,
+      "mcpErrors": 4,
+      "toolStats": {
+        "list_plans": {
+          "calls": 1,
+          "resultCharacters": 2,
+          "fullDetail": 0,
+          "includeRelations": 0
+        },
+        "get_project_analysis": {
+          "calls": 3,
+          "resultCharacters": 18844,
+          "fullDetail": 1,
+          "includeRelations": 0
+        },
+        "get_project_snapshot": {
+          "calls": 1,
+          "resultCharacters": 926,
+          "fullDetail": 0,
+          "includeRelations": 0
+        },
+        "get_work_context": {
+          "calls": 1,
+          "resultCharacters": 18987,
+          "fullDetail": 0,
+          "includeRelations": 0
+        },
+        "read_learned_knowledge": {
+          "calls": 1,
+          "resultCharacters": 12736,
+          "fullDetail": 0,
+          "includeRelations": 0
+        },
+        "save_project_analysis": {
+          "calls": 5,
+          "resultCharacters": 1096,
+          "fullDetail": 0,
+          "includeRelations": 0
+        },
+        "save_revision": {
+          "calls": 5,
+          "resultCharacters": 3622,
+          "fullDetail": 0,
+          "includeRelations": 0
+        }
+      },
+      "failedTools": [
+        {
+          "tool": "save_project_analysis",
+          "message": "Analysis quote not found at the declared line: change-request.md. Exact quote starts at line(s): 3. Confirm the intended occurrence; locations do not validate its meaning."
+        },
+        {
+          "tool": "save_revision",
+          "message": "Candidate request-policy-boundaries: Question failure-ownership: Owner findings require confirmation contained in a cited answer or contract"
+        },
+        {
+          "tool": "save_revision",
+          "message": "Candidate request-policy-boundaries: Direct repair needs a cited existing behavior or approved contract; it does not grant execution permission"
+        },
+        {
+          "tool": "save_revision",
+          "message": "Decision must cite routed source or a pinned requirement: README.md. Add code to get_work_context.files, or documents to requirements. Then pass the new contextId and explicit candidate judgments in save_revision.evidenceRoutes alongside decisionUpdates (or replace evidence). Refreshing context alone does not change stored routes. Include all sources/documents still cited by retained decisions. Available: package.json, src/background.ts, src/client.ts, src/pages.ts, src/save.ts, src/state.ts, owner-contract.md, change-request.md"
+        }
+      ],
+      "contextPayloads": [
+        {
+          "totalCharacters": 18987,
+          "topLevelCharacters": {
+            "projectDocumentStatus": 345,
+            "planPrerequisites": 130,
+            "inspection": 308,
+            "workflow": 826,
+            "plans": 2,
+            "contextId": 66,
+            "projectAnalysis": 2107,
+            "projectFacts": 1477,
+            "routing": 5722,
+            "context": 6991,
+            "next": 244,
+            "profile": 534,
+            "document": 52
+          },
+          "routingCharacters": {
+            "status": 12,
+            "hash": 66,
+            "files": 96,
+            "requirements": 41,
+            "warnings": 76,
+            "reused": 5,
+            "candidates": 3572,
+            "scopeSearch": 251,
+            "structureSearch": 176,
+            "semanticDiscovery": 1292
+          },
+          "contextCharacters": {
+            "relevantFiles": 500,
+            "projectConstraints": 95,
+            "applicableRules": 6075,
+            "knowledgeGaps": 245
+          }
+        }
+      ],
+      "artifactLocations": [
+        "plan.md",
+        ".frontend-system/plans/flow-refactor/plan.md"
+      ],
+      "artifactLocationError": null,
+      "flowRecords": 1,
+      "findingRecords": 3,
+      "deliveryComplete": true,
+      "requests": 37,
+      "afterErrorResponses": 5,
+      "categories": {
+        "instructions": {
+          "responses": 1,
+          "total": 15335,
+          "uncachedPlusOutput": 6247
+        },
+        "shell-other": {
+          "responses": 5,
+          "total": 228341,
+          "uncachedPlusOutput": 14581
+        },
+        "mixed": {
+          "responses": 2,
+          "total": 47480,
+          "uncachedPlusOutput": 4728
+        },
+        "flow": {
+          "responses": 5,
+          "total": 277837,
+          "uncachedPlusOutput": 13773
+        },
+        "knowledge": {
+          "responses": 2,
+          "total": 88995,
+          "uncachedPlusOutput": 13091
+        },
+        "schema": {
+          "responses": 1,
+          "total": 52785,
+          "uncachedPlusOutput": 5681
+        },
+        "source-or-artifact-read": {
+          "responses": 5,
+          "total": 300579,
+          "uncachedPlusOutput": 3747
+        },
+        "artifact-writing": {
+          "responses": 10,
+          "total": 613345,
+          "uncachedPlusOutput": 14817
+        },
+        "plan": {
+          "responses": 5,
+          "total": 329389,
+          "uncachedPlusOutput": 3885
+        },
+        "response-only": {
+          "responses": 1,
+          "total": 71215,
+          "uncachedPlusOutput": 1199
+        }
+      },
+      "meanInput": 54382.54054054054,
+      "shortResponseLargeContext": {
+        "definition": "output <= 200 and input >= 40000; descriptive, not proof of waste",
+        "responses": 21,
+        "totalTokens": 1279236
+      }
+    },
+    {
+      "id": "repeat-3/styles-fs-K1/plan",
+      "repeat": 3,
+      "case": "styles",
+      "arm": "fs-K1",
+      "stage": "plan",
+      "threadId": "01a11597-8b76-7ab3-aaf7-69444e6f86cf",
+      "seconds": 258.698,
+      "usage": {
+        "input_tokens": 1131165,
+        "cached_input_tokens": 1068416,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 11404,
+        "reasoning_output_tokens": 2445,
+        "total_tokens": 1142569,
+        "uncached_input_tokens": 62749
+      },
+      "trajectoryAvailable": true,
+      "artifactComplete": true,
+      "contractComplete": true,
+      "mcpErrors": 2,
+      "toolStats": {
+        "list_plans": {
+          "calls": 1,
+          "resultCharacters": 2,
+          "fullDetail": 0,
+          "includeRelations": 0
+        },
+        "get_project_analysis": {
+          "calls": 3,
+          "resultCharacters": 14282,
+          "fullDetail": 1,
+          "includeRelations": 0
+        },
+        "get_project_snapshot": {
+          "calls": 1,
+          "resultCharacters": 974,
+          "fullDetail": 0,
+          "includeRelations": 0
+        },
+        "get_work_context": {
+          "calls": 1,
+          "resultCharacters": 20822,
+          "fullDetail": 0,
+          "includeRelations": 0
+        },
+        "read_learned_knowledge": {
+          "calls": 1,
+          "resultCharacters": 14405,
+          "fullDetail": 0,
+          "includeRelations": 0
+        },
+        "save_project_analysis": {
+          "calls": 3,
+          "resultCharacters": 686,
+          "fullDetail": 0,
+          "includeRelations": 0
+        },
+        "save_revision": {
+          "calls": 4,
+          "resultCharacters": 11378,
+          "fullDetail": 0,
+          "includeRelations": 0
+        }
+      },
+      "failedTools": [
+        {
+          "tool": "save_revision",
+          "message": "[\n  {\n    \"code\": \"invalid_union\",\n    \"errors\": [\n      [\n        {\n          \"expected\": \"object\",\n          \"code\": \"invalid_type\",\n          \"path\": [\n            \"input\"\n          ],\n          \"message\": \"Invalid input: expected object, received undefined\"\n        },\n        {\n          \"expected\": \"string\",\n          \"code\": \"invalid_type\",\n          \"path\": [\n            \"hash\"\n          ],\n          \"message\": \"Invalid input: expected string, received undefined\"\n        },\n        {\n          \"expected\": \"number\",\n          \"code\": \"invalid_type\",\n          \"path\": [\n            \"judgments\",\n            0,\n            \"investigation\",\n            \"findings\",\n            0,\n            \"citations\",\n            0,\n            \"line\"\n          ],\n          \"message\": \"Invalid input: expected number, received undefined\"\n        },\n        {\n          \"expected\": \"number\",\n          \"code\": \"invalid_type\",\n          \"path\": [\n            \"judgments\",\n            0,\n            \"investigation\",\n            \"findings\",\n            1,\n            \"citations\",\n            2,\n            \"line\"\n          ],\n          \"message\": \"Invalid input: expected number, received undefined\"\n   "
+        },
+        {
+          "tool": "save_revision",
+          "message": "Candidate tailwind-team-authorship: Cannot apply knowledge with unknown, excluded or unmet investigation conditions. Unknown: none; supported exclusions: policy-exception; unmet applicability: none. Recheck the scoped evidence or retain a pending/excluded judgment; do not flip findings just to pass."
+        }
+      ],
+      "contextPayloads": [
+        {
+          "totalCharacters": 20822,
+          "topLevelCharacters": {
+            "projectDocumentStatus": 346,
+            "planPrerequisites": 130,
+            "inspection": 297,
+            "workflow": 826,
+            "plans": 2,
+            "contextId": 66,
+            "projectAnalysis": 1935,
+            "projectFacts": 1656,
+            "routing": 4013,
+            "context": 10264,
+            "next": 244,
+            "profile": 808,
+            "document": 52
+          },
+          "routingCharacters": {
+            "status": 12,
+            "hash": 66,
+            "files": 97,
+            "requirements": 41,
+            "warnings": 189,
+            "reused": 5,
+            "candidates": 2259,
+            "scopeSearch": 253,
+            "structureSearch": 176,
+            "semanticDiscovery": 780
+          },
+          "contextCharacters": {
+            "relevantFiles": 373,
+            "projectConstraints": 95,
+            "applicableRules": 9314,
+            "knowledgeGaps": 406
+          }
+        }
+      ],
+      "artifactLocations": [
+        "plan.md",
+        ".frontend-system/plans/flow-refactor/plan.md"
+      ],
+      "artifactLocationError": null,
+      "flowRecords": 1,
+      "findingRecords": 2,
+      "deliveryComplete": true,
+      "requests": 22,
+      "afterErrorResponses": 3,
+      "categories": {
+        "instructions": {
+          "responses": 1,
+          "total": 15382,
+          "uncachedPlusOutput": 6294
+        },
+        "source-or-artifact-read": {
+          "responses": 3,
+          "total": 144955,
+          "uncachedPlusOutput": 12219
+        },
+        "mixed": {
+          "responses": 6,
+          "total": 295172,
+          "uncachedPlusOutput": 17028
+        },
+        "knowledge": {
+          "responses": 1,
+          "total": 37481,
+          "uncachedPlusOutput": 11113
+        },
+        "schema": {
+          "responses": 1,
+          "total": 52180,
+          "uncachedPlusOutput": 7252
+        },
+        "artifact-writing": {
+          "responses": 4,
+          "total": 228507,
+          "uncachedPlusOutput": 9755
+        },
+        "flow": {
+          "responses": 3,
+          "total": 169634,
+          "uncachedPlusOutput": 3618
+        },
+        "plan": {
+          "responses": 1,
+          "total": 62517,
+          "uncachedPlusOutput": 4405
+        },
+        "shell-other": {
+          "responses": 1,
+          "total": 68217,
+          "uncachedPlusOutput": 1529
+        },
+        "response-only": {
+          "responses": 1,
+          "total": 68524,
+          "uncachedPlusOutput": 940
+        }
+      },
+      "meanInput": 51416.59090909091,
+      "shortResponseLargeContext": {
+        "definition": "output <= 200 and input >= 40000; descriptive, not proof of waste",
+        "responses": 6,
+        "totalTokens": 348835
+      }
+    },
+    {
+      "id": "repeat-3/request-fs-K1/plan",
+      "repeat": 3,
+      "case": "request",
+      "arm": "fs-K1",
+      "stage": "plan",
+      "threadId": "01a11599-c604-7ce3-ab82-80ab37f98fcb",
+      "seconds": 194.224,
+      "usage": {
+        "input_tokens": 917068,
+        "cached_input_tokens": 856320,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 9768,
+        "reasoning_output_tokens": 1537,
+        "total_tokens": 926836,
+        "uncached_input_tokens": 60748
+      },
+      "trajectoryAvailable": true,
+      "artifactComplete": true,
+      "contractComplete": true,
+      "mcpErrors": 2,
+      "toolStats": {
+        "get_revision": {
+          "calls": 1,
+          "resultCharacters": 474,
+          "fullDetail": 1,
+          "includeRelations": 0
+        },
+        "get_project_analysis": {
+          "calls": 5,
+          "resultCharacters": 43329,
+          "fullDetail": 4,
+          "includeRelations": 0
+        },
+        "get_project_snapshot": {
+          "calls": 1,
+          "resultCharacters": 926,
+          "fullDetail": 0,
+          "includeRelations": 0
+        },
+        "get_work_context": {
+          "calls": 1,
+          "resultCharacters": 18995,
+          "fullDetail": 0,
+          "includeRelations": 0
+        },
+        "read_learned_knowledge": {
+          "calls": 1,
+          "resultCharacters": 3619,
+          "fullDetail": 0,
+          "includeRelations": 0
+        },
+        "save_project_analysis": {
+          "calls": 4,
+          "resultCharacters": 926,
+          "fullDetail": 0,
+          "includeRelations": 0
+        },
+        "save_revision": {
+          "calls": 3,
+          "resultCharacters": 1496,
+          "fullDetail": 0,
+          "includeRelations": 0
+        }
+      },
+      "failedTools": [
+        {
+          "tool": "save_revision",
+          "message": "Candidate request-policy-boundaries: Cannot apply knowledge with unknown, excluded or unmet investigation conditions. Unknown: none; supported exclusions: unnecessary-layer; unmet applicability: none. Recheck the scoped evidence or retain a pending/excluded judgment; do not flip findings just to pass."
+        },
+        {
+          "tool": "save_revision",
+          "message": "Candidate request-policy-boundaries: Direct repair needs a cited existing behavior or approved contract; it does not grant execution permission"
+        }
+      ],
+      "contextPayloads": [
+        {
+          "totalCharacters": 18995,
+          "topLevelCharacters": {
+            "projectDocumentStatus": 345,
+            "planPrerequisites": 130,
+            "inspection": 308,
+            "workflow": 826,
+            "plans": 2,
+            "contextId": 66,
+            "projectAnalysis": 1870,
+            "projectFacts": 931,
+            "routing": 6525,
+            "context": 6979,
+            "next": 244,
+            "profile": 534,
+            "document": 52
+          },
+          "routingCharacters": {
+            "status": 12,
+            "hash": 66,
+            "files": 81,
+            "requirements": 41,
+            "warnings": 2,
+            "reused": 5,
+            "candidates": 4001,
+            "scopeSearch": 243,
+            "structureSearch": 176,
+            "semanticDiscovery": 1763
+          },
+          "contextCharacters": {
+            "relevantFiles": 488,
+            "projectConstraints": 95,
+            "applicableRules": 6075,
+            "knowledgeGaps": 245
+          }
+        }
+      ],
+      "artifactLocations": [
+        "plan.md",
+        ".frontend-system/plans/flow-refactor/plan.md"
+      ],
+      "artifactLocationError": null,
+      "flowRecords": 1,
+      "findingRecords": 3,
+      "deliveryComplete": true,
+      "requests": 21,
+      "afterErrorResponses": 4,
+      "categories": {
+        "instructions": {
+          "responses": 1,
+          "total": 15378,
+          "uncachedPlusOutput": 15378
+        },
+        "mixed": {
+          "responses": 7,
+          "total": 257145,
+          "uncachedPlusOutput": 24313
+        },
+        "knowledge": {
+          "responses": 2,
+          "total": 77479,
+          "uncachedPlusOutput": 11815
+        },
+        "shell-other": {
+          "responses": 5,
+          "total": 242759,
+          "uncachedPlusOutput": 5575
+        },
+        "artifact-writing": {
+          "responses": 1,
+          "total": 54620,
+          "uncachedPlusOutput": 5468
+        },
+        "plan": {
+          "responses": 3,
+          "total": 165702,
+          "uncachedPlusOutput": 5446
+        },
+        "source-or-artifact-read": {
+          "responses": 1,
+          "total": 56256,
+          "uncachedPlusOutput": 832
+        },
+        "response-only": {
+          "responses": 1,
+          "total": 57497,
+          "uncachedPlusOutput": 1689
+        }
+      },
+      "meanInput": 43669.90476190476,
+      "shortResponseLargeContext": {
+        "definition": "output <= 200 and input >= 40000; descriptive, not proof of waste",
+        "responses": 9,
+        "totalTokens": 452396
+      }
+    }
+  ]
+}

@@ -40,6 +40,22 @@ is not merely a development dependency; decide its application and operational s
    Bind applicable script IDs/guards/reviews to the existing verification policy.
    Missing tools/environment or unexecuted tests stay not-run/blocked, never passed.
 
+## Opt-in style contracts
+
+Read `node <plugin-root>/bundle/style-check.js --schema` for the local input schema.
+The existing per-axis CVA default requirement is retained when defaults is omitted.
+For a contract with required caller-supplied axes and no CVA defaults, explicitly use
+`variants:[{file:"src/Button.tsx",axes:["size","tone"],defaults:"none"}]`.
+This checks absence of defaultVariants; public prop optionality, destructured parameter
+defaults and actual class combinations still need type/behavior verification. Do not
+insert null defaults or change public behavior just to pass the checker. CVA itself
+also supports [variant definitions without defaults](https://cva.style/getting-started/variants/).
+
+Policy checks store the exact package script body. `script:"test",command:"npm test"`
+would recurse if installed as that script; supply the actual runner command or keep
+verification setup pending. Direct npm self-calls block approval/use but remain readable
+for repair. This bounded check does not analyze arbitrary shell or indirect script cycles.
+
 ## CI and retained evidence
 
 Use the same project scripts locally and in CI, with compatible Node/package-manager
@@ -59,6 +75,18 @@ proof. Keep skipped, partial and retried results visible; report creation is not
 Read check summaries first, then relevant failure logs or test cases. Run deterministic
 checks before asking the model to interpret remaining ambiguity. Repeated model
 agreement does not replace execution evidence or establish a probability of correctness.
+
+During development, run existing test scripts with `run_project_checks` using
+`capabilities:[exact script keys]`, the selected planId and attemptId, without stage or
+required. Failure summaries preserve the beginning and end within 2,000 characters;
+the immutable record keeps the captured original, readable by capability and offset.
+Do not stream whole generated bundles/stack traces into model context. For commands
+without a project script, retain a log artifact and read a bounded excerpt. Reuse the
+project's test transformer before inventing a JSX bundler. File-backed transformed
+tests avoid embedding entire data-URL bundles in stack traces. SSR/mocked handlers
+remain distinct from actual browser verification. An unchanged blocked browser needs
+an environment fix, not another identical launch. Finish test development and review
+before the final delivery run; later edits still require fresh evidence.
 
 Writing CI configuration does not prove a remote run succeeded or make its checks
 required for merging. Confirm the actual CI result and applicable branch/ruleset

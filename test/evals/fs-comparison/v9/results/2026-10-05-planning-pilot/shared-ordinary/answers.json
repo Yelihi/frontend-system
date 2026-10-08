@@ -1,0 +1,37 @@
+{
+  "mappingMethod": "Coordinator semantic match against preregistered bank; no new policy text",
+  "answers": [
+    {
+      "questionId": "q1",
+      "bankKeys": [
+        "unknown"
+      ],
+      "answer": "That product choice is not available from the owner in this experiment. Keep it explicitly open and isolate any dependent work; do not invent consent.",
+      "mappingRationale": "Question asks DOM remount/dispose ordering, which the frozen bank does not specify; do not substitute session identity semantics."
+    },
+    {
+      "questionId": "q2",
+      "bankKeys": [
+        "unknown"
+      ],
+      "answer": "That product choice is not available from the owner in this experiment. Keep it explicitly open and isolate any dependent work; do not invent consent.",
+      "mappingRationale": "Already-rendered data clearing is not covered by the frozen in-flight invalidation answer."
+    },
+    {
+      "questionId": "q3",
+      "bankKeys": [
+        "ordering"
+      ],
+      "answer": "For searches and refreshes, latest invocation wins, including items, errors and pending. Disposed views receive no later updates. Canceling a read may save resources but correctness must also cover late completion.",
+      "mappingRationale": "Explicit latest-read items/errors/pending choice."
+    },
+    {
+      "questionId": "q4",
+      "bankKeys": [
+        "mutation"
+      ],
+      "answer": "There is no server idempotency contract. Do not automatically retry POST. An uncertain submit outcome must not be announced as definite failure or success; show a scoped indeterminate-outcome notice without resubmitting.",
+      "mappingRationale": "Explicit uncertain submit outcome/retry choice."
+    }
+  ]
+}

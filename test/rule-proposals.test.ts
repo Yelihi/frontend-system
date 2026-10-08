@@ -1,3 +1,4 @@
+import { approveFixtureSource } from "./source-review-fixture.js";
 import assert from "node:assert/strict";
 import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -15,6 +16,7 @@ test("shared rules need exact proposal approval; changed sources or candidates i
     const path = "knowledge/source/manual/rules.md";
     await writeFile(join(root, path), "A conditionally applicable dependency contract.");
     const { document } = await catalogKnowledgeDocument(root, { id: "source", path, title: "Rule source", summary: "Boundary", sourceType: "manual", facets: {} });
+    await approveFixtureSource(root, "source");
     const rule = { id: "boundary", version: 1, title: "Boundary", statement: "Use public entry points", layer: "architecture" as const, obligation: "required" as const, conditions: ["Feature boundaries adopted"], exclusions: ["Single feature"], evidence: [path], verification: "custom-check" as const, examples: [], validation: "proposed" as const, limitations: ["Checker not yet run"] };
     const proposal = { id: "boundaries", rules: [rule], sources: { source: document.contentHash }, rationale: "Protect feature internals", validationEvidence: "Proposed, not executed" };
     const draft = await saveRuleProposal(root, proposal, null);
@@ -22,7 +24,8 @@ test("shared rules need exact proposal approval; changed sources or candidates i
     const body = "# Boundary\nUse public entry points only where feature boundaries were adopted.\n";
     await writeFile(join(root, "references/learned/boundary.md"), body);
     const entry = { id: rule.id, kind: "rule", title: rule.title, summary: rule.statement, path: "boundary.md", contentHash: contentHash(body), keywords: ["boundary"], domains: ["architecture"], technologies: [], excludedTechnologies: [], conditions: rule.conditions, exclusions: rule.exclusions, evidenceKind: "public-contract", review: "reviewed", sources: proposal.sources, related: [], rule, ruleApproval: { proposalId: proposal.id, proposalHash: draft.hash } };
-    const index = { version: 2, entries: [entry], outcomes: [{ sourceId: "source", sourceHash: document.contentHash, action: "represented", reason: "Rule candidate" }] };
+    Object.assign(entry, { routing: {mode: "direct", reason: "Review feature dependency boundary"}, triggers: [{kind: "path", value: "src/features"}], checks: [{id: "boundary", question: "Public entry points only?", guidance: "Resolve imports", verification: "static"}] });
+    const index = { version: 3, triggerChecks: [{signals: [{kind: "path", value: "src/features/a.ts"}], technologies: [], expectedIds: [entry.id], forbiddenIds: []}, {signals: [{kind: "path", value: "src/features-other/a.ts"}], technologies: [], expectedIds: [], forbiddenIds: [entry.id]}], entries: [entry], outcomes: [{ sourceId: "source", sourceHash: document.contentHash, action: "represented", reason: "Rule candidate" }] };
     const indexPath = join(root, "references/learned/index.json");
     await writeFile(indexPath, JSON.stringify(index));
     await assert.rejects(markKnowledgeSynced(root, ["source"]), /approved proposal/);

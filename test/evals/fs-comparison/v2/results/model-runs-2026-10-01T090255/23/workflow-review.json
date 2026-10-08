@@ -1,0 +1,103 @@
+{
+  "reviewKind": "separate-workflow-and-document-adjudication",
+  "documents": {
+    "passed": true,
+    "scope": "B TASK explicitly has no separate project.md/plan.md requirement. Native plan/progress/execution/checks record scope and current verification; CLI final message missing at timeout, not treated as A document requirement.",
+    "plan": "source/.frontend-system/plans/checkout-contract/plan.md",
+    "finalEvidence": "source/.frontend-system/plans/checkout-contract/progress.md and execution.json; native completed before timeout."
+  },
+  "H10": {
+    "passed": true,
+    "lastProductEdit": "item_40",
+    "lastTestEdit": "item_38",
+    "finalChecks": [
+      "item_45",
+      "item_46",
+      "item_47",
+      "item_48",
+      "item_49",
+      "item_70"
+    ],
+    "nativeFinalCheckId": "4516196c-df95-4d5e-9153-4e7461955fb1",
+    "nativeSourceHash": "b2eb3b717285b1dd3a3a97c84c5787fad33adba84857a379f8e2d2825026b764",
+    "ownSourceHashesVerified": {
+      ".gitignore": "53429a314b0070c0d9e957ddccf84cb0f5d3b914a694acc12776828380ab2d6f",
+      "AGENTS.md": "63f2c50380ed6303237cce215ce27af1d620d094c215e28d1b1538a3c070e3bb",
+      "TASK.md": "6b70f1900ad06b66c5fa998a35d24c49ba7194ddba118cf109aa61d1f06503eb",
+      "app/api/orders/route.js": "58d114ad5d077007f402712cb86717a2c1ff2bb005da6ab1ed678f22ab82de1e",
+      "app/api/quote/route.js": "160402d0c17966daa54a657b730f0ed5118c365095115474229fbe02003f34c9",
+      "app/checkout.jsx": "792ae3976893097909f7ddb3309677698f48573694bfb6690aaf9135cdc124e9",
+      "app/globals.css": "c9f66748f007d9e7448de79fddff3db15d134c1b25bc3140d3decc5f7cc9c581",
+      "app/layout.jsx": "1c94018408be85547916bbde4b1e27d12879b69b12d52886b36427d3c0e96d65",
+      "app/page.jsx": "fc73d8c04e1e9f3a3fb5665fbf37e6b0da8e34f9be4986dac946cd66695703b9",
+      "checkout.contract.json": "1fca04104f4a8b12f88b8fdfcdbac26fda530b3618ad5583feabfde4f7e056ae",
+      "common-rules.md": "e71158712eaf1e3dcc0f9452cd20019d40beaa3fe9b886005d6db3b13e971f68",
+      "e2e/catalog.spec.mjs": "a73d2188c368c419bd2addc7e8b50778f69531c1d4fde62d06d3f59ee35234f6",
+      "e2e/checkout.spec.mjs": "8eb5a364f54c693c3b935fe270b654c7ca1a19e61feba6d048194bc9194b97ac",
+      "eslint.config.mjs": "3624563f6cccab80896a35c9461fc1ae30389554349374bf453a5667590b361c",
+      "frontend-quality.md": "a2670348378de9113ef2e61c445acceeaaf8c12171cd0802f2d6fc8946ee2957",
+      "jsconfig.json": "b5e74988174abcf48c53f7d9eed03d8690dba1471cca6edcaa44d2911bda7179",
+      "mandatory-rules/common/review.md": "e71158712eaf1e3dcc0f9452cd20019d40beaa3fe9b886005d6db3b13e971f68",
+      "mandatory-rules/nextjs/core.md": "d9614c63030aa71f160bd1bc443c4c017718d73d40c0699423607d9941459d52",
+      "mandatory-rules/react/core.md": "f820abcdd9f20281118906868f322d83495943a9bdb0a835865d5727c3d22cdb",
+      "mandatory-rules/vue/core.md": "ebcf6d6e28fd0c4e7166113f7901345b4ff819f7d5dd91d7722c376151d3ecc6",
+      "next.config.mjs": "e53d0c8d3f690e8bd0b06f1ee16a5e871738fc56f9cd56c7790c906bd4d94505",
+      "package-lock.json": "7f094df62e4f1addb2cd14603df0c66729eb5abf4e9355ef65005e560153aedd",
+      "package.json": "8645dbcb75b54940720d77a107cbf549a67931661a03885d7ce93345dbff99ce",
+      "playwright.config.mjs": "fbf7e6f145aef04bf1b6d1e323d2c898b2444e29729aa10eb1759a33b0dab61f",
+      "src/catalog.js": "523ad6b97e81c57f895fed40752f458cd8cc754f92ea65654f1d59da9b2337ff",
+      "src/checkout.js": "15bfee492c4e4163a238209386113f7b76338dcc1ae4bdf27cfeb4cb2af20a2f",
+      "src/http.js": "5c22da3f938bfac02aca4cbd14d00429e659e91bd17ea9c5629d3ca8b8c25bfe",
+      "tests/catalog.test.mjs": "2328b9e518bed3932077ef018f3b124b87089389edce4ec3ac9ed57725a182f6",
+      "tests/checkout.test.mjs": "55bea0c3562e7271509020076aa1ca1fa258a3f7969e865ecd3cdc01937b03d5",
+      "tests/http.test.mjs": "eac525090b86c26e7e109474ca371eadd39fda01c67dd6891305ea1fddeaf3ce",
+      "tsconfig.check.json": "5b031b39a40649e07621dd92ee31f1e6a92c7526ab0af89d607907243fef68c7"
+    },
+    "externalSourceBeforeAfterMatchesFinal": true,
+    "protectedAssetsPassed": 9,
+    "checks": [
+      "npm run lint",
+      "npm run typecheck",
+      "npm run test:unit",
+      "npm run test:e2e",
+      "npm run build"
+    ]
+  },
+  "R9": {
+    "passed": true,
+    "evidence": "Native79 completion names current stable source and all five actual passed scripts. No final CLI text/usage received, no unsupported definitive Q10 score. item49 exit128 is later gitconfig access; E2E passed and native70 independently records all five."
+  },
+  "conditionAdherence": {
+    "passed": true,
+    "arm": "fs",
+    "evidence": "Full frozen FS/rules and installed Next docs; native policy, current checks, semantic review76 and completion79 persisted. B does not impose a separate project document. No external models/install/service/commit observed."
+  },
+  "fullValidationAttempts": 3,
+  "attemptBudgetRespected": true,
+  "attemptEvidence": "Initial product24; restore protected public price display34 after E2E failure30 (failedwrite32); accessible error name fix40 after E2E39. Test data/expectation/keyboard fixes27/34/38 are local development. Later FS reservations modify only policy/review metadata, not products.",
+  "procedureObservations": [
+    "Initial heredoc19 failed to write intended tests;21 repaired using node file writes.",
+    "Unbound baseline10 passed; plan-bound17 was not-run because script policy metadata was wrong.",
+    "Policy revisions initially used wrong script identifiers/body; revision66 corrected mappings and check70 ran all five.",
+    "Semantic reviews71/72/75 rejected shape or policy ID;76 accepted; completion77 used wrong review filename,79 accepted returned review ID.",
+    "CLI timeout after native completion; no provider usage or final message. Missing values remain null."
+  ],
+  "eligibleComplete": false,
+  "eligibilityEvidence": [
+    "Historical pre-correction: Independent review Q90: Q5.2/Q6.2 zero and R5/R6 fail. Actual JSX ready/pending equivalent-input cycle starves quote with no retry; same-task two submits start two order POSTs.",
+    "Historical pre-correction: Original110/110 and current-source native completion pass cannot offset mandatory product failures. CLI timeout and missing provider usage preserved separately.",
+    "Final: corrected 110/110; independentQ90; product R1-R8 fail; eligibleComplete=False. Details and original adjudication preserved."
+  ],
+  "qualitySource": "../blind-review/b93e2448551e/review.json",
+  "evaluatorAdjudication": {
+    "status": "final",
+    "revision": "accessible-name-v2",
+    "originalPassed": 110,
+    "correctedPassed": 110,
+    "changedCases": [],
+    "sourceUnchanged": true,
+    "independentCorrectionReview": "../blind-review/b93e2448551e/regrade-review.json",
+    "qualityAndRulesUnchanged": true,
+    "eligibleComplete": false
+  }
+}

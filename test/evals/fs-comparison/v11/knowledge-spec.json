@@ -1,0 +1,17 @@
+{
+  "version":1,
+  "questions":[
+    {"id":"dispatch","kind":"code","role":"applicability","instruction":"Does one input discriminator select different operations? Trace the enclosing parameter binding and branch inputs, writes and return values."},
+    {"id":"callers","kind":"code","role":"context","instruction":"Have the supplied callers been traced far enough to distinguish fixed operation arguments from forwarded command values? State scope and unresolved edges."},
+    {"id":"contract","kind":"intent","role":"context","instruction":"Has the owner supplied the compatibility scope for this task? Cite the supplied contract; a code search is not an answer about outside consumers."},
+    {"id":"preserve-command","kind":"intent","role":"exclusion","instruction":"Does the supplied contract require preserving a common command representation or public dispatcher for replay, transport or other consumers? This excludes replacing that required boundary, not splitting internal helpers."},
+    {"id":"invariants","kind":"code","role":"context","instruction":"Have common validation, review-state transition, error results and sequential state ownership been located in the supplied code? Trace what each successful edit returns and what the caller uses next."}
+  ],
+  "preserve":["Preserve shared validation and error results across operations.","Preserve review-state transitions, input ownership and sequential use of the latest successful state.","Preserve required external command shape and replay semantics."],
+  "alternatives":[
+    {"option":"Expose operation-specific APIs where callers already know the operation and no shared command contract is needed.","tradeoff":"Caller migration and more API surface; a class is optional and captured state lifetime must remain correct."},
+    {"option":"Retain a shared command boundary and optionally split operation implementations or add a caller-facing facade.","tradeoff":"Dispatch mapping remains, but replay and compatibility stay explicit. Additional indirection needs a concrete benefit."},
+    {"option":"Retain the existing structure when responsibilities and contracts are already clear.","tradeoff":"Future operation additions still touch dispatch; compare against actual change pressure rather than branch count."}
+  ],
+  "onMissing":"Inspect untraced available callers first. Ask only for unresolved material intent. Unknown consumers do not justify claiming no replay or compatibility requirement. Do not equate argument-passed state, branching, or lack of a class with a SOLID violation."
+}

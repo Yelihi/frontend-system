@@ -1,0 +1,78 @@
+{
+  "reviewKind": "separate-workflow-and-document-adjudication",
+  "documents": {
+    "passed": true,
+    "project": "source/project.md:3",
+    "plan": "source/plan.md:3",
+    "rulesToChecks": "source/plan.md:11",
+    "finalEvidence": "source/plan.md:25",
+    "limits": "source/plan.md:34",
+    "observation": "Documents written after initial implementation. Content contract met; unsupported self-assessment separately recorded below."
+  },
+  "H10": {
+    "passed": false,
+    "currentSourceValidationPassed": true,
+    "lastProductEdit": "item_48",
+    "lastTestEdit": "item_55",
+    "finalChecks": "item_56",
+    "postCheckHashVerification": "item_57",
+    "ownSourceHashesVerified": {
+      "src/checkout.js": "87ff2ca86c8034d406832aea2b76011a7ee7aa199b59be01624dd4feca622790",
+      "src/catalog.js": "523ad6b97e81c57f895fed40752f458cd8cc754f92ea65654f1d59da9b2337ff",
+      "app/checkout.jsx": "459ed96d76f130ccf88a7cca8b19ee4975043b2276d4bd33f88e40ca410a20a8",
+      "app/api/quote/route.js": "761ca082874ea21759e1927dfe55887fe4c9a99c4461d96ec4dfd911d561df79",
+      "app/api/orders/route.js": "9c2947ae9e3493318ecf880c6c6196fa8d81bb9fd797d12a3298cadc4aab5332",
+      "tests/catalog.test.mjs": "2328b9e518bed3932077ef018f3b124b87089389edce4ec3ac9ed57725a182f6",
+      "tests/checkout.test.mjs": "58d081a2a575563c1cdf60417fd4020da85034cf9ced4b039a2bc6e51e0679a2",
+      "e2e/catalog.spec.mjs": "6796d4e07c3cfbb07e905b4f10628212ce541404dae4753ccf23e13f2b265a99"
+    },
+    "externalSourceBeforeAfterMatchesFinal": true,
+    "protectedAssetsPassed": 8,
+    "protectedFailure": "e2e/catalog.spec.mjs rewritten and expanded; frozen byte-preservation check fails. Original heading/description assertions remain semantically intact; not an always-pass replacement.",
+    "checks": [
+      "lint",
+      "typecheck",
+      "test:unit",
+      "build",
+      "test:e2e"
+    ]
+  },
+  "R9": {
+    "passed": false,
+    "evidence": "source/plan.md Design rubric result declares 100/100 and no U, including Q10 using only structural reasoning. No actual shipping-threshold or catalog-loader replacement experiment appears in the trace. Current product/test checks are verified, but confirmed design total exceeds executed evidence."
+  },
+  "conditionAdherence": {
+    "passed": true,
+    "arm": "plain",
+    "evidence": "Only supplied project, rules and installed Next docs, no FS MCP, learned knowledge, extra models, installs, external services or commits."
+  },
+  "fullValidationAttempts": 3,
+  "attemptBudgetRespected": true,
+  "attemptEvidence": "Full attempt1 item35 failed on an overly broad alert assertion; named-contract assertion repair item39 and attempt2 item40 passed; readability rewrite item45-48 and attempt3 item49 passed. Later full check groups item53/56 only verify newly added contract test coverage after product passed; earlier lint/E2E development is excluded by public TASK. All repeated calls remain in cost.",
+  "procedureObservations": [
+    "Five whole five-script groups were requested (35,40,49,53,56), alongside earlier local checks; full implementation/repair attempts are capped, not isolated test development.",
+    "Protected E2E file kept original assertions but changed formatting and appended tests. Report byte invariant separately from semantic test preservation.",
+    "Author self-rating is never used as independent quality score.",
+    "CLI final-text mirror recovered verbatim from JSONL; no product or usage changes.",
+    "Independent AST comparison confirms original public E2E test assertions preserved with five tests appended; byte protection failure remains separate."
+  ],
+  "eligibleComplete": false,
+  "eligibilityEvidence": [
+    "Historical pre-correction: checks/grade/score.json: protected e2e/catalog.spec.mjs failed;109/110",
+    "Historical pre-correction: Unsupported author Q10 total; independent review remains separate.",
+    "Historical pre-correction: ../blind-review/f4c4e5540096/review.json: R5/R6 fail; normalized-equivalent input change leaves quote pending without order/retry recovery. Q=90.",
+    "Final: corrected 109/110; independentQ90; product R1-R8 fail; eligibleComplete=False. Details and original adjudication preserved."
+  ],
+  "qualitySource": "../blind-review/f4c4e5540096/review.json",
+  "evaluatorAdjudication": {
+    "status": "final",
+    "revision": "accessible-name-v2",
+    "originalPassed": 109,
+    "correctedPassed": 109,
+    "changedCases": [],
+    "sourceUnchanged": true,
+    "independentCorrectionReview": "../blind-review/f4c4e5540096/regrade-review.json",
+    "qualityAndRulesUnchanged": true,
+    "eligibleComplete": false
+  }
+}

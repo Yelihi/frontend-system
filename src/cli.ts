@@ -14,6 +14,11 @@ import { projectSnapshot, projectDocumentStatus } from "./application/project-sn
 import { listPlans, workflowContext } from "./application/workflow-store.js";
 import type { WorkRequest } from "./domain/types.js";
 
+import {getProjectAnalysis, saveProjectAnalysis} from './application/project-flows.js';
+import {analysisWriteSchema} from './application/flow-schema.js';
+import {renderProjectFlow, renderFlowOptions} from './application/render-project-flow.js';
+import {readRevisionDraft} from './application/revision-draft.js';
+
 const usage = `Usage:
   fs inspect-context [project] [--overall]
   fs work-context [project] "<request>" [--plan <id>] [--mode prepare|implement|verify|review|refactor]
@@ -26,6 +31,9 @@ const usage = `Usage:
   fs source-read [repository] <id> [--offset <characters>]
   fs knowledge-status [repository]
   fs knowledge-search [repository] "<query>"
+  fs flow-list [project]
+  fs flow-save <project> .frontend-system/drafts/<name>.json
+  fs flow-render <project> <id> --expected-hash <hash> [--scenario <id>] [--language ko|en] [--format html|mermaid] [--allow-unverified]
   fs mcp
 
 These are deterministic helpers. Use the fs-* Skills in Codex or Claude Code for complete workflows.`;
@@ -53,6 +61,11 @@ async function main(): Promise<void> {
   const { positionals, values } = parseArgs({
     allowPositionals: true,
     options: {
+      "expected-hash": {type: "string"},
+      scenario: {type: "string"},
+      language: {type: "string"},
+      format: {type: "string", default: "html"},
+      "allow-unverified": {type: "boolean", default: false},
       overall: { type: "boolean", default: false },
       base: { type: "string" },
       mode: { type: "string", default: "implement" },
@@ -80,6 +93,18 @@ async function main(): Promise<void> {
   }
 
   const root = resolve(rawPath ?? process.cwd());
+  if (command === "flow-list") {
+    if (!/^\d+$/.test(values.offset)) throw new Error('Provide a nonnegative offset');
+    return print(await getProjectAnalysis(root, systemRoot, {kind:'flow', offset:Number(values.offset)}));
+  }
+  if (command === "flow-save") {
+    if (!rest[0]) throw new Error('Provide a confined JSON draft path');
+    return print(await saveProjectAnalysis(root, systemRoot, analysisWriteSchema.parse((await readRevisionDraft(root, rest[0])).input)));
+  }
+  if (command === "flow-render") return print(await renderProjectFlow(root, systemRoot, renderFlowOptions.parse({
+    id:rest[0], expectedHash:values['expected-hash'], scenarioId:values.scenario,
+    language:values.language, format:values.format, allowUnverified:values['allow-unverified'],
+  })));
   if (command === "inspect-context") return inspect(root, values.overall);
   if (command === "work-context") {
     const raw = rest.join(" ");

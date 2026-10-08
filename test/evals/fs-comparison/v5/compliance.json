@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "plan": "\nQ1/Q2의 답변은 준비 단계 후 USER_DECISIONS.md로 제공됩니다. 질문한 항목만 답변합니다.\n",
+  "questionProtocol": "준비 단계의 최종 응답은 {\"questions\":[{\"topic\":\"auth-callback-failure\",\"question\":\"실제 질문\"},{\"topic\":\"refresh-failure-items\",\"question\":\"실제 질문\"}]} JSON으로 반환한다. 제품 코드는 아직 수정하지 않는다.",
+  "answers": {
+    "auth-callback-failure": "콜백 자체가 throw하면 같은 오류 객체를 그대로 전달하세요. 정상 반환한 경우만 code=unauthorized 오류로 거절합니다.",
+    "refresh-failure-items": "마지막 정상 items를 유지하세요. 최신 요청이 실패하면 status=error와 원본 오류를 기록하고 이전 items는 비우지 마세요."
+  },
+  "requiredTopics": [
+    "auth-callback-failure",
+    "refresh-failure-items"
+  ]
+}

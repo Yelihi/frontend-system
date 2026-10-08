@@ -1,0 +1,164 @@
+{
+  "kind": "Single paired model pilot; non-blind host log audit",
+  "manifestHash": "05b2fe48fad251a9fed6a0429d32e3e9dd8a4467f74a2a2586dad422e94a3358",
+  "requestedModel": "gpt-6-sol",
+  "replicas": 1,
+  "stages": [
+    {
+      "stage": "initial",
+      "baseline": {
+        "contract": "8/8",
+        "elapsedSeconds": 109.272,
+        "timedOut": false,
+        "totalTokens": 183327,
+        "cachedInputTokens": 160384,
+        "uncachedInputAndOutput": 22943
+      },
+      "fs": {
+        "contract": "8/8",
+        "elapsedSeconds": 200.45,
+        "timedOut": false,
+        "totalTokens": 949943,
+        "cachedInputTokens": 889600,
+        "uncachedInputAndOutput": 60343
+      }
+    },
+    {
+      "stage": "policy-change",
+      "baseline": {
+        "contract": "8/8",
+        "elapsedSeconds": 65.429,
+        "timedOut": false,
+        "totalTokens": 185005,
+        "cachedInputTokens": 150528,
+        "uncachedInputAndOutput": 34477
+      },
+      "fs": {
+        "contract": "8/8",
+        "elapsedSeconds": 163.144,
+        "timedOut": false,
+        "totalTokens": 1054753,
+        "cachedInputTokens": 995200,
+        "uncachedInputAndOutput": 59553
+      }
+    },
+    {
+      "stage": "transport-change",
+      "baseline": {
+        "contract": "8/8",
+        "elapsedSeconds": 82.511,
+        "timedOut": false,
+        "totalTokens": 230735,
+        "cachedInputTokens": 208768,
+        "uncachedInputAndOutput": 21967
+      },
+      "fs": {
+        "contract": "unverified",
+        "elapsedSeconds": 300.011,
+        "timedOut": true,
+        "totalTokens": null,
+        "cachedInputTokens": null,
+        "uncachedInputAndOutput": null
+      }
+    }
+  ],
+  "matchedCompletedStages": {
+    "stageIds": [
+      "initial",
+      "policy-change"
+    ],
+    "baseline": {
+      "totalTokens": 368332,
+      "uncachedInputAndOutput": 57420
+    },
+    "fs": {
+      "totalTokens": 2004696,
+      "uncachedInputAndOutput": 119896
+    },
+    "totalTokenRatioFsOverBaseline": 5.4426332765005485,
+    "uncachedInputAndOutputRatio": 2.088052943225357
+  },
+  "completeJourneys": {
+    "baseline": 1,
+    "fs": 0
+  },
+  "entireJourneyUsage": {
+    "baseline": {
+      "input_tokens": 588339,
+      "output_tokens": 10728,
+      "total_tokens": 599067,
+      "cached_input_tokens": 519680,
+      "reasoning_output_tokens": 2579
+    },
+    "fs": null
+  },
+  "fsTimedOutStage": "transport-change",
+  "conclusion": "Under the frozen 300-second per-call budget, baseline completed all stages and FS completed two; no observed contract advantage or token saving in this pilot. No population-level claim from one pair.",
+  "audit": {
+    "fsActuallyUsed": true,
+    "successfulKnowledgeInspectionCandidates": {
+      "initial": [
+        "javascript-iteration-promises-and-resources"
+      ],
+      "policy-change": [],
+      "transport-change": []
+    },
+    "saveKnowledgeReviewCalls": 0,
+    "failedFsMcpCalls": {
+      "unknownSemanticTrigger": 1,
+      "evidenceDoesNotMatchCitedLines": 1,
+      "incorrectExecutionHash": 2
+    },
+    "completedFsMcpCallsIncludingFailures": {
+      "initial": 15,
+      "policy-change": 21,
+      "transport-change": 6
+    },
+    "fsMcpTextCharacters": {
+      "initial": 69210,
+      "policy-change": 73815,
+      "transport-change": 39419
+    },
+    "notes": [
+      "Both arms read the provided learned knowledge. This is equal-information, not an uninstructed AI comparison.",
+      "FS used planning/approval/check/semantic-review tools; complete candidate-to-judgment recording was not observed.",
+      "Final FS log ends after updating controller following expected failing transport tests; no final model turn or external grader was completed.",
+      "Repeated context and tool validation failures are observed overhead; logs do not isolate model reasoning versus service/network time.",
+      "Character counts are not token estimates. Cached tokens are included in provider input; ratios are not monetary cost ratios.",
+      "Zero external repair rounds on FS does not imply equal reliability: its last stage was never externally graded.",
+      "Snapshot source inspection is non-blind; no overall architecture/readability score assigned.",
+      "summary.status=completed means the runner finished its loop, not that both journeys passed."
+    ]
+  },
+  "contextCondition": {
+    "recordedTrack": "equal-information/fresh-context-maintenance",
+    "intendedTrack": "equal-information/continuous-session-maintenance",
+    "limitation": "The runner incorrectly restarted the conversation for every stage/repair. Keep these observations as restart-condition data, not continuous-maintenance results.",
+    "initialTotalTokenRatioFsOverBaseline": 5.181686276435004,
+    "initialStageInterpretation": "Both initial stages correctly started fresh; their cost gap is not explained by the later-stage restart error.",
+    "replacementRunnerModelComparison": "not-run"
+  },
+  "codeAudit": {
+    "method": "Non-blind host inspection of completed policy-change snapshots; no independent overall quality score.",
+    "sharedObservedStructure": [
+      "Pure policy.mjs quote calculation",
+      "Both preview and submit call quote",
+      "Injected load/send I/O",
+      "Pending guard, failure recovery and copied getState result"
+    ],
+    "additionalBaselineTestScenarios": [
+      "Duplicate submit while send is pending",
+      "Invalid loaded input prevents send"
+    ],
+    "testLimitation": "No separate tests for these scenarios in FS snapshot; absence is not an implementation defect. Test count is not a quality score.",
+    "fsDifference": "Additional plan, approval, check and semantic-review records; no demonstrated product-code advantage in inspected structure.",
+    "evidence": [
+      "gpt-6-sol-0-baseline/policy-change/0/snapshot/checkout.mjs",
+      "gpt-6-sol-0-baseline/policy-change/0/snapshot/policy.mjs",
+      "gpt-6-sol-0-baseline/policy-change/0/snapshot/checkout.test.mjs",
+      "gpt-6-sol-0-fs/policy-change/0/snapshot/checkout.mjs",
+      "gpt-6-sol-0-fs/policy-change/0/snapshot/policy.mjs",
+      "gpt-6-sol-0-fs/policy-change/0/snapshot/checkout.test.mjs"
+    ]
+  }
+}

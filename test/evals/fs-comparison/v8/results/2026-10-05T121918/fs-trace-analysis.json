@@ -1,0 +1,257 @@
+{
+  "rows": [
+    {
+      "run": "2026-10-05T112423",
+      "stage": "initial",
+      "eligible": true,
+      "tokens": 2376490,
+      "uncachedInputPlusOutput": 169642,
+      "seconds": 579.1600000000001,
+      "mcpCounts": {
+        "list_plans": 1,
+        "discover_knowledge_triggers": 1,
+        "inspect_project": 1,
+        "get_project_snapshot": 1,
+        "read_project_source": 1,
+        "get_work_context": 3,
+        "save_project_context": 1,
+        "read_learned_knowledge": 1,
+        "save_revision": 2,
+        "get_revision": 1,
+        "get_workflow_context": 4,
+        "approve_revision": 1,
+        "save_execution": 3,
+        "begin_work_attempt": 1,
+        "run_project_checks": 5,
+        "save_semantic_review": 3
+      },
+      "mcpErrors": 2,
+      "contextResponseChars": 72879,
+      "sourceRequests": [
+        [
+          "App.jsx",
+          "theme.css",
+          "ui/ActionButton.jsx",
+          "ui/PanelCard.jsx",
+          "ui/StatusBadge.jsx",
+          "ui/CheckoutForm.jsx",
+          "ui/ReturnForm.jsx",
+          "ui/InventoryPanel.jsx",
+          "ui/OrderPanel.jsx",
+          "ui/ReturnsPanel.jsx",
+          "ui/WalletPanel.jsx",
+          "ui/SessionBar.jsx",
+          "ui/Status.jsx",
+          "ui/Amount.jsx",
+          "ui/useAction.mjs",
+          "style-policy.json",
+          "package.json"
+        ]
+      ],
+      "first": {
+        "satisfied": 97,
+        "total": 97
+      },
+      "final": {
+        "satisfied": 97,
+        "total": 97
+      }
+    },
+    {
+      "run": "2026-10-05T112423",
+      "stage": "variants",
+      "eligible": false,
+      "tokens": null,
+      "uncachedInputPlusOutput": null,
+      "seconds": 147.981,
+      "mcpCounts": {
+        "list_plans": 1,
+        "get_project_snapshot": 1,
+        "read_project_source": 1,
+        "discover_knowledge_triggers": 1,
+        "get_work_context": 4,
+        "read_learned_knowledge": 1,
+        "save_revision": 1,
+        "get_revision": 1
+      },
+      "mcpErrors": 1,
+      "contextResponseChars": 140919,
+      "sourceRequests": [
+        [
+          "ui/ActionButton.jsx",
+          "ui/StatusBadge.jsx",
+          "ui/PanelCard.jsx",
+          "ui-style.test.mjs",
+          "style-policy.json",
+          "package.json",
+          "App.jsx",
+          "theme.css"
+        ]
+      ],
+      "first": null,
+      "final": null
+    },
+    {
+      "run": "2026-10-05T121918",
+      "stage": "initial",
+      "eligible": true,
+      "tokens": 2455915,
+      "uncachedInputPlusOutput": 110315,
+      "seconds": 529.216,
+      "mcpCounts": {
+        "list_plans": 1,
+        "get_project_snapshot": 1,
+        "discover_knowledge_triggers": 1,
+        "read_project_source": 1,
+        "save_project_context": 2,
+        "get_work_context": 2,
+        "read_learned_knowledge": 1,
+        "get_workflow_context": 2,
+        "save_revision": 1,
+        "approve_revision": 1,
+        "start_work": 1,
+        "run_project_checks": 4,
+        "complete_work": 1
+      },
+      "mcpErrors": 1,
+      "contextResponseChars": 47075,
+      "sourceRequests": [
+        [
+          "App.jsx",
+          "theme.css",
+          "style-policy.json",
+          "package.json",
+          "ui/ActionButton.jsx",
+          "ui/Amount.jsx",
+          "ui/CheckoutForm.jsx",
+          "ui/InventoryPanel.jsx",
+          "ui/OrderPanel.jsx",
+          "ui/PanelCard.jsx",
+          "ui/ReturnForm.jsx",
+          "ui/ReturnsPanel.jsx",
+          "ui/SessionBar.jsx",
+          "ui/Status.jsx",
+          "ui/StatusBadge.jsx",
+          "ui/WalletPanel.jsx",
+          "ui/useAction.mjs"
+        ]
+      ],
+      "first": {
+        "satisfied": 97,
+        "total": 97
+      },
+      "final": {
+        "satisfied": 97,
+        "total": 97
+      }
+    },
+    {
+      "run": "2026-10-05T121918",
+      "stage": "variants",
+      "eligible": true,
+      "tokens": 1223196,
+      "uncachedInputPlusOutput": 93084,
+      "seconds": 260.956,
+      "mcpCounts": {
+        "list_plans": 1,
+        "get_project_snapshot": 2,
+        "read_project_source": 1,
+        "discover_knowledge_triggers": 1,
+        "save_project_context": 1,
+        "get_work_context": 2,
+        "read_learned_knowledge": 1,
+        "save_revision": 2,
+        "approve_revision": 1,
+        "start_work": 1,
+        "run_project_checks": 1,
+        "complete_work": 1
+      },
+      "mcpErrors": 0,
+      "contextResponseChars": 42387,
+      "sourceRequests": [
+        [
+          "ui/ActionButton.jsx",
+          "ui/StatusBadge.jsx",
+          "ui/PanelCard.jsx",
+          "ui-style.test.mjs",
+          "style-policy.json",
+          "App.jsx",
+          "ANSWERS-initial.md",
+          "REQUEST-initial.md",
+          "package.json"
+        ]
+      ],
+      "first": {
+        "satisfied": 97,
+        "total": 97
+      },
+      "final": {
+        "satisfied": 97,
+        "total": 97
+      }
+    },
+    {
+      "run": "2026-10-05T121918",
+      "stage": "defaults",
+      "eligible": false,
+      "tokens": 3752909,
+      "uncachedInputPlusOutput": 128077,
+      "seconds": 548.983,
+      "mcpCounts": {
+        "list_plans": 1,
+        "get_project_snapshot": 2,
+        "read_project_source": 2,
+        "discover_knowledge_triggers": 1,
+        "save_project_context": 1,
+        "get_work_context": 1,
+        "read_learned_knowledge": 1,
+        "save_revision": 1,
+        "approve_revision": 1,
+        "get_workflow_context": 3,
+        "start_work": 1,
+        "run_project_checks": 3,
+        "complete_work": 2,
+        "save_execution": 1,
+        "begin_work_attempt": 1
+      },
+      "mcpErrors": 0,
+      "contextResponseChars": 23354,
+      "sourceRequests": [
+        [
+          "ui/ActionButton.jsx",
+          "ui/StatusBadge.jsx",
+          "ui/PanelCard.jsx",
+          "variant-expansion.test.mjs",
+          "ui-style.test.mjs",
+          "style-policy.json",
+          "package.json",
+          "App.jsx",
+          "REQUEST-variants.md",
+          "TEAM_POLICY.md"
+        ],
+        [
+          "ui/OrderPanel.jsx",
+          "ui/InventoryPanel.jsx",
+          "ui/ReturnsPanel.jsx",
+          "ui/WalletPanel.jsx",
+          "ui/Status.jsx",
+          "ui/CheckoutForm.jsx",
+          "ui/ReturnForm.jsx",
+          "ui/SessionBar.jsx",
+          "theme.css",
+          "ANSWERS-variants.md",
+          "CONTRACT.md"
+        ]
+      ],
+      "first": {
+        "satisfied": 95,
+        "total": 97
+      },
+      "final": {
+        "satisfied": 95,
+        "total": 97
+      }
+    }
+  ],
+  "limits": "Response character counts are not token attribution. Runtime changed between A and D; single observations, not a replicated effect."
+}

@@ -1,0 +1,46 @@
+{
+  "status": "running",
+  "manifestHash": "95a0374f5d29deb67c7a9df370ee0f329015051bfa0b70153c10583dead300de",
+  "journeys": [
+    {
+      "model": "gpt-6-sol",
+      "replica": 0,
+      "arm": "baseline",
+      "manifestHash": "95a0374f5d29deb67c7a9df370ee0f329015051bfa0b70153c10583dead300de",
+      "stages": [
+        {
+          "id": "initial",
+          "repairRounds": 0,
+          "attempts": [
+            {
+              "grade": {
+                "stage": "initial",
+                "eligible": false,
+                "status": "unverified",
+                "reason": "Model invocation did not complete",
+                "results": []
+              },
+              "invocation": {
+                "requestedModel": "gpt-6-sol",
+                "exitCode": 1,
+                "timedOut": false,
+                "elapsedSeconds": 0.024,
+                "completedTurns": 0,
+                "usage": null,
+                "errors": []
+              }
+            }
+          ]
+        }
+      ],
+      "usage": null,
+      "eligible": false,
+      "repairRounds": 0,
+      "wallSeconds": 0.037,
+      "keepViolatingSubmissions": 0,
+      "treatmentAdherence": "requires raw tool-log review; FS assignment alone does not prove use",
+      "humanReview": "unverified",
+      "context": "Fresh model session at every stage/repair; code and local records persist within the journey."
+    }
+  ]
+}

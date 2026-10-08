@@ -1,0 +1,95 @@
+[
+  {
+    "fixture": "request",
+    "projectPath": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/test/evals/fs-comparison/v12/projects/request",
+    "id": "order-workspace",
+    "sourceHashes": {
+      "package.json": "a4aeb6ed9be6ee5b888b743702de544bb43ecd1d1d037d81d802cb01b89dd8fa",
+      "README.md": "29640d4ad1b3c571e775c3a2583ce094eaa40127ea7108f60a122e63bb287e85",
+      "src/pages.ts": "7bda991b0bccd7f09a371536108065fba8c1a0af5c3a74caaac96521815a4e7b",
+      "src/state.ts": "00b81a145e1d449ec0c991db3895a4c04e6fe842fb3dbe11cbe92a5e0825db5e",
+      "src/save.ts": "f6efdfcea5539fad61d435e059a9baeafdfc1f4aeb1915bad7b1e77bbe712c07",
+      "src/client.ts": "07a886b19651b18ad0aef1703726731c20e58cc0be53605c4bd50a236a1c7f21"
+    },
+    "flowHash": "fcd168fbc15e4c455cdd7e4bd3380e1765ec78db5089b6dc6bea9689c1947a54",
+    "html": {
+      "path": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/test/evals/fs-comparison/v12/projects/request/.frontend-system/diagrams/order-workspace.html",
+      "hash": "8172e2ccf9e3f831e5626bdfbac95130691c9b9b0daf9bc66dc6311e5d572427",
+      "flowHash": "fcd168fbc15e4c455cdd7e4bd3380e1765ec78db5089b6dc6bea9689c1947a54",
+      "freshness": {
+        "status": "current",
+        "reasons": [],
+        "meaning": "Declared dependency and discovery-content freshness, not semantic correctness or complete runtime coverage"
+      },
+      "basis": "observed",
+      "generatedAt": "2026-10-07T05:58:12.634Z",
+      "meaning": "Cited static interpretation at export time, not an executed trace. Rerender to check source changes."
+    },
+    "mermaid": {
+      "path": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/test/evals/fs-comparison/v12/projects/request/.frontend-system/diagrams/order-workspace.mmd",
+      "hash": "9e28fda0117329ec4dbe68fee91a66d3074fb239dee9e0dda0e82565b6e43dc8",
+      "flowHash": "fcd168fbc15e4c455cdd7e4bd3380e1765ec78db5089b6dc6bea9689c1947a54",
+      "freshness": {
+        "status": "current",
+        "reasons": [],
+        "meaning": "Declared dependency and discovery-content freshness, not semantic correctness or complete runtime coverage"
+      },
+      "basis": "observed",
+      "generatedAt": "2026-10-07T05:58:12.637Z",
+      "meaning": "Cited static interpretation at export time, not an executed trace. Rerender to check source changes."
+    },
+    "coverage": {
+      "nodes": 9,
+      "edges": 22,
+      "scenarios": 8,
+      "citations": 27
+    },
+    "sourceUnchanged": true
+  },
+  {
+    "fixture": "styles",
+    "projectPath": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/test/evals/fs-comparison/v12/projects/styles",
+    "id": "ticket-selection",
+    "sourceHashes": {
+      "package.json": "41458411b3f34fb8e485f30a02a29a48be92a20683fa1b818257415c40789778",
+      "README.md": "3ff71f64d0cdf151b32bb0356a6c991c88fd875a7460ff16ddabf4d8dee38337",
+      "src/Pages.tsx": "3f73e089276f11ccf533195f0802396171aa1d23488a6e841540fd49f4e0694f",
+      "src/Button.tsx": "6507f3763f5efa7c74d50a50fdd4aea0a9f148e2a1fbd32417badb30e1e1e829",
+      "src/store.ts": "17371a4a4cb9f53fb6e00a857d02965035ffc3cf2cd48e607cd0f5057a4501f5"
+    },
+    "flowHash": "2c221cf394b25550407180551f21ee29ce3589dc7c8989010f204ef930060d92",
+    "html": {
+      "path": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/test/evals/fs-comparison/v12/projects/styles/.frontend-system/diagrams/ticket-selection.html",
+      "hash": "950a8ca2f51159262294242d706c0852f91b599aed96a78cf6268c8c6fd15daf",
+      "flowHash": "2c221cf394b25550407180551f21ee29ce3589dc7c8989010f204ef930060d92",
+      "freshness": {
+        "status": "current",
+        "reasons": [],
+        "meaning": "Declared dependency and discovery-content freshness, not semantic correctness or complete runtime coverage"
+      },
+      "basis": "observed",
+      "generatedAt": "2026-10-07T05:58:12.645Z",
+      "meaning": "Cited static interpretation at export time, not an executed trace. Rerender to check source changes."
+    },
+    "mermaid": {
+      "path": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/test/evals/fs-comparison/v12/projects/styles/.frontend-system/diagrams/ticket-selection.mmd",
+      "hash": "7d94744d047dedaeae8f46d7daf865247d0d4db72d18be3acde2154432f5c3a6",
+      "flowHash": "2c221cf394b25550407180551f21ee29ce3589dc7c8989010f204ef930060d92",
+      "freshness": {
+        "status": "current",
+        "reasons": [],
+        "meaning": "Declared dependency and discovery-content freshness, not semantic correctness or complete runtime coverage"
+      },
+      "basis": "observed",
+      "generatedAt": "2026-10-07T05:58:12.647Z",
+      "meaning": "Cited static interpretation at export time, not an executed trace. Rerender to check source changes."
+    },
+    "coverage": {
+      "nodes": 5,
+      "edges": 8,
+      "scenarios": 2,
+      "citations": 9
+    },
+    "sourceUnchanged": true
+  }
+]

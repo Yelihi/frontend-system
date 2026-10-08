@@ -1,0 +1,129 @@
+{
+  "mode": "trusted-authored-fixtures-only",
+  "isolationVerified": false,
+  "correctAccepted": 2,
+  "mutantsRejected": 15,
+  "modelCalls": 0,
+  "oracleHash": "783725c77fd4c6ee1811dbeae8a2a575efaee2e57ef7d7130555371affcd6139",
+  "rows": [
+    {
+      "variant": "reference",
+      "expectedDiagnostic": null,
+      "matched": true,
+      "satisfied": 14,
+      "total": 14
+    },
+    {
+      "variant": "alternative-helper",
+      "expectedDiagnostic": null,
+      "matched": true,
+      "satisfied": 14,
+      "total": 14
+    },
+    {
+      "variant": "wrong-credentials",
+      "expectedDiagnostic": "F2-http-ownership",
+      "matched": true,
+      "satisfied": 13,
+      "total": 14
+    },
+    {
+      "variant": "swallowed-auth-choice",
+      "expectedDiagnostic": "Q1-auth-callback-answer",
+      "matched": true,
+      "satisfied": 13,
+      "total": 14
+    },
+    {
+      "variant": "wrong-domain-scope",
+      "expectedDiagnostic": "F4-domain-policy",
+      "matched": true,
+      "satisfied": 12,
+      "total": 14
+    },
+    {
+      "variant": "fractional-quantity",
+      "expectedDiagnostic": "F4-domain-policy",
+      "matched": true,
+      "satisfied": 13,
+      "total": 14
+    },
+    {
+      "variant": "dropped-signal",
+      "expectedDiagnostic": "F5-repository-delegation",
+      "matched": true,
+      "satisfied": 13,
+      "total": 14
+    },
+    {
+      "variant": "stale-success",
+      "expectedDiagnostic": "F6-latest-response-wins",
+      "matched": true,
+      "satisfied": 13,
+      "total": 14
+    },
+    {
+      "variant": "stale-failure",
+      "expectedDiagnostic": "F6-latest-response-wins",
+      "matched": true,
+      "satisfied": 13,
+      "total": 14
+    },
+    {
+      "variant": "cleared-items",
+      "expectedDiagnostic": "Q2-refresh-failure-answer",
+      "matched": true,
+      "satisfied": 13,
+      "total": 14
+    },
+    {
+      "variant": "leaked-state",
+      "expectedDiagnostic": "F7-state-snapshot-ownership",
+      "matched": true,
+      "satisfied": 13,
+      "total": 14
+    },
+    {
+      "variant": "mutated-input",
+      "expectedDiagnostic": "F8-submit-validation-and-ownership",
+      "matched": true,
+      "satisfied": 13,
+      "total": 14
+    },
+    {
+      "variant": "bypass-validation",
+      "expectedDiagnostic": "F8-submit-validation-and-ownership",
+      "matched": true,
+      "satisfied": 12,
+      "total": 14
+    },
+    {
+      "variant": "direct-ui-request",
+      "expectedDiagnostic": "N2-approved-dependency-edges",
+      "matched": true,
+      "satisfied": 13,
+      "total": 14
+    },
+    {
+      "variant": "hidden-module-edge",
+      "expectedDiagnostic": "N2-approved-dependency-edges",
+      "matched": true,
+      "satisfied": 13,
+      "total": 14
+    },
+    {
+      "variant": "extra-api",
+      "expectedDiagnostic": "F1-public-contract",
+      "matched": true,
+      "satisfied": 3,
+      "total": 14
+    },
+    {
+      "variant": "protected-change",
+      "expectedDiagnostic": "N1-approved-change-scope",
+      "matched": true,
+      "satisfied": 13,
+      "total": 14
+    }
+  ]
+}

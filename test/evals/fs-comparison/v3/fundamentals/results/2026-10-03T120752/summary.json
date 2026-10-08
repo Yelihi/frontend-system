@@ -1,0 +1,7 @@
+{
+  "status": "blocked",
+  "reason": "Isolation preflight failed; see isolation/summary.json and isolation-process.json",
+  "modelCalls": 0,
+  "manifestHash": "acbb65b9e78df544a69d0ef9a36c4ac792d90e15ef7ca36cadd3bdbed5641caf",
+  "journeys": []
+}

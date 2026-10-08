@@ -1,0 +1,24 @@
+{
+  "detectedAt": "2026-09-30T03:39:55.078009+09:00",
+  "missingFiles": [
+    "mandatory-rules/common/review.md",
+    "mandatory-rules/nextjs/core.md",
+    "mandatory-rules/vue/core.md",
+    "references/frontend-quality.md",
+    "references/learned/react-derived-state-and-effects.md",
+    "references/workflow-policy.md",
+    "references/workflows/fs-knowledge-add.md",
+    "references/workflows/fs-verify.md"
+  ],
+  "changedFiles": [],
+  "directoryModifiedAt": "2026-09-30T03:35:05.308447+09:00",
+  "cause": "Unconfirmed; no deleting command or file-change event found in evaluated session logs.",
+  "affectedRun": "16-gpt-6-astra-fs-r3",
+  "action": "Restore identical content and refresh temporary snapshot timestamps before run 18. Exclude and retain the affected Astra third pair, then repeat both arms with fresh sessions.",
+  "pairedExcludedRun": "15-gpt-6-astra-plain-r3",
+  "restoredSnapshotCheck": {
+    "at": "2026-09-30T03:49:48.077586+09:00",
+    "duringRun": 18,
+    "matchingFiles": 101
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "scope": "FS planning stages only. Original cohort has independently generated initial analyses; replay holds grouped-records initial analyses fixed. Do not infer whole-journey savings.",
+  "rows": [
+    {
+      "cohort": "2026-10-07-trajectories",
+      "totalTokens": 9144186,
+      "uncachedPlusOutput": 501882,
+      "responses": 170,
+      "delivered": 6
+    },
+    {
+      "cohort": "2026-10-07-grouped-records",
+      "totalTokens": 10363304,
+      "uncachedPlusOutput": 556712,
+      "responses": 177,
+      "delivered": 6
+    },
+    {
+      "cohort": "2026-10-07-plan-delta",
+      "totalTokens": 8953538,
+      "uncachedPlusOutput": 463810,
+      "responses": 169,
+      "delivered": 6
+    }
+  ]
+}

@@ -1,0 +1,517 @@
+{
+  "status": "blocked",
+  "reason": "Model process failed before completing a turn",
+  "modelCalls": 4,
+  "manifestHash": "9b5dc03191e781132fc9f17b08f6a25d51154ad10cbfadf193217c0c022e74d0",
+  "journeys": [
+    {
+      "case": "tailwind-authorship",
+      "arm": "plain",
+      "records": [
+        {
+          "phase": "prepare",
+          "attempt": 0,
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 27.759,
+            "completedTurns": 1,
+            "threadId": "01a109a8-4f48-79a0-a977-1127e7e86804",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 65335,
+              "cached_input_tokens": 47744,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 862,
+              "reasoning_output_tokens": 140,
+              "total_tokens": 66197,
+              "uncached_input_tokens": 17591
+            },
+            "cumulativeUsage": {
+              "input_tokens": 65335,
+              "cached_input_tokens": 47744,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 862,
+              "reasoning_output_tokens": 140
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "grade": {
+            "status": "recorded-not-semantically-graded",
+            "eligible": true
+          }
+        },
+        {
+          "phase": "work",
+          "attempt": 0,
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 153.977,
+            "completedTurns": 1,
+            "threadId": "01a109a8-4f48-79a0-a977-1127e7e86804",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 465341,
+              "cached_input_tokens": 448128,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 5970,
+              "reasoning_output_tokens": 1623,
+              "total_tokens": 471311,
+              "uncached_input_tokens": 17213
+            },
+            "cumulativeUsage": {
+              "input_tokens": 530676,
+              "cached_input_tokens": 495872,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 6832,
+              "reasoning_output_tokens": 1763
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "grade": {
+            "status": "graded",
+            "results": [
+              {
+                "id": "F01-public-module-exports",
+                "status": "passed"
+              },
+              {
+                "id": "F02-public-factory-surfaces",
+                "status": "passed"
+              },
+              {
+                "id": "F03-session-snapshot-isolation",
+                "status": "passed"
+              },
+              {
+                "id": "F04-session-equal-token-is-new-generation",
+                "status": "passed"
+              },
+              {
+                "id": "F05-http-copy-credentials-identity",
+                "status": "passed"
+              },
+              {
+                "id": "F06-http-session-header-ownership",
+                "status": "passed"
+              },
+              {
+                "id": "F07-http-error-classification-no-retry",
+                "status": "passed"
+              },
+              {
+                "id": "F08-http-transport-failure-identity",
+                "status": "passed"
+              },
+              {
+                "id": "Q1-auth-callback-failure",
+                "status": "passed"
+              },
+              {
+                "id": "F09-resource-initial-loading-options",
+                "status": "passed"
+              },
+              {
+                "id": "F10-resource-stale-success",
+                "status": "passed"
+              },
+              {
+                "id": "F11-resource-stale-failure",
+                "status": "passed"
+              },
+              {
+                "id": "F12-resource-array-ownership",
+                "status": "passed"
+              },
+              {
+                "id": "F13-resource-reset-invalidates-pending",
+                "status": "passed"
+              },
+              {
+                "id": "Q2-refresh-failure-items",
+                "status": "passed"
+              },
+              {
+                "id": "F14-inflight-independent-keys-and-results",
+                "status": "passed"
+              },
+              {
+                "id": "F15-inflight-clears-success",
+                "status": "passed"
+              },
+              {
+                "id": "F16-inflight-clears-rejection-and-sync-throw",
+                "status": "passed"
+              },
+              {
+                "id": "Q5-inflight-duplicate",
+                "status": "passed"
+              },
+              {
+                "id": "F17-promotion-purchase-tier-cap",
+                "status": "passed"
+              },
+              {
+                "id": "F18-promotion-gift-isolation",
+                "status": "passed"
+              },
+              {
+                "id": "F19-shipping-threshold-and-remote",
+                "status": "passed"
+              },
+              {
+                "id": "F20-quote-composition-and-ownership",
+                "status": "passed"
+              },
+              {
+                "id": "F21-quote-rejects-invalid-lines-and-kinds",
+                "status": "passed"
+              },
+              {
+                "id": "F22-quote-gift-does-not-inherit-purchase",
+                "status": "passed"
+              },
+              {
+                "id": "Q6-credit-scope",
+                "status": "passed"
+              },
+              {
+                "id": "F23-reservation-validation-and-ownership",
+                "status": "passed"
+              },
+              {
+                "id": "Q7-stock-shortage",
+                "status": "passed"
+              },
+              {
+                "id": "F24-return-window-boundaries",
+                "status": "passed"
+              },
+              {
+                "id": "F25-refund-proration-and-gift-policy",
+                "status": "passed"
+              },
+              {
+                "id": "F26-refund-invalid-inputs",
+                "status": "passed"
+              },
+              {
+                "id": "F27-debit-currency-integer-validation",
+                "status": "passed"
+              },
+              {
+                "id": "F28-debit-balance-boundary",
+                "status": "passed"
+              },
+              {
+                "id": "F29-orders-repository-boundary",
+                "status": "passed"
+              },
+              {
+                "id": "F30-inventory-repository-boundary",
+                "status": "passed"
+              },
+              {
+                "id": "F31-returns-repository-boundary",
+                "status": "passed"
+              },
+              {
+                "id": "F32-wallet-repository-boundary",
+                "status": "passed"
+              },
+              {
+                "id": "F33-service-resource-isolation",
+                "status": "passed"
+              },
+              {
+                "id": "F34-order-service-pricing-and-input",
+                "status": "passed"
+              },
+              {
+                "id": "F35-inventory-service-prevalidation-and-copy",
+                "status": "passed"
+              },
+              {
+                "id": "F36-return-service-window-before-persistence",
+                "status": "passed"
+              },
+              {
+                "id": "F37-wallet-service-private-balance-ownership",
+                "status": "passed"
+              },
+              {
+                "id": "F38-service-delegation-error-identity",
+                "status": "passed"
+              },
+              {
+                "id": "F39-checkout-order-total-and-reference-ownership",
+                "status": "passed"
+              },
+              {
+                "id": "F40-checkout-validates-all-before-side-effects",
+                "status": "passed"
+              },
+              {
+                "id": "F41-checkout-partial-reservation-compensation",
+                "status": "passed"
+              },
+              {
+                "id": "F42-checkout-order-failure-reverse-release",
+                "status": "passed"
+              },
+              {
+                "id": "F43-checkout-charge-failure-cancel-before-release",
+                "status": "passed"
+              },
+              {
+                "id": "Q3-compensation-failure",
+                "status": "passed"
+              },
+              {
+                "id": "F44-checkout-duplicate-promise-and-retry",
+                "status": "passed"
+              },
+              {
+                "id": "F45-refund-sequence-payload-and-identity",
+                "status": "passed"
+              },
+              {
+                "id": "F46-refund-stop-after-create-or-refund-failure",
+                "status": "passed"
+              },
+              {
+                "id": "Q4-restock-failure",
+                "status": "passed"
+              },
+              {
+                "id": "F47-cross-workflow-key-namespaces",
+                "status": "passed"
+              },
+              {
+                "id": "F48-system-real-composition",
+                "status": "passed"
+              },
+              {
+                "id": "Q8-session-switch",
+                "status": "passed"
+              },
+              {
+                "id": "F49-ui-action-pending-duplicate-and-recovery",
+                "status": "passed"
+              },
+              {
+                "id": "F50-ui-status-and-amount",
+                "status": "passed"
+              },
+              {
+                "id": "F51-orders-panel-events",
+                "status": "passed"
+              },
+              {
+                "id": "F52-inventory-panel-events",
+                "status": "passed"
+              },
+              {
+                "id": "F53-returns-panel-events",
+                "status": "passed"
+              },
+              {
+                "id": "F54-wallet-panel-events",
+                "status": "passed"
+              },
+              {
+                "id": "F55-checkout-form-identity-result-and-error",
+                "status": "passed"
+              },
+              {
+                "id": "F56-return-form-pending-restock-feedback",
+                "status": "passed"
+              },
+              {
+                "id": "F57-session-bar-explicit-events-and-password",
+                "status": "passed"
+              },
+              {
+                "id": "F58-app-wiring-and-no-render-effects",
+                "status": "passed"
+              },
+              {
+                "id": "F59-ui-build-and-exports",
+                "status": "passed"
+              },
+              {
+                "id": "N2-approved-dependency-edges",
+                "status": "passed"
+              },
+              {
+                "id": "S-inline-App",
+                "status": "passed"
+              },
+              {
+                "id": "S-inline-ActionButton",
+                "status": "passed"
+              },
+              {
+                "id": "S-inline-Amount",
+                "status": "passed"
+              },
+              {
+                "id": "S-inline-CheckoutForm",
+                "status": "passed"
+              },
+              {
+                "id": "S-inline-InventoryPanel",
+                "status": "passed"
+              },
+              {
+                "id": "S-inline-OrderPanel",
+                "status": "passed"
+              },
+              {
+                "id": "S-inline-PanelCard",
+                "status": "passed"
+              },
+              {
+                "id": "S-inline-ReturnForm",
+                "status": "passed"
+              },
+              {
+                "id": "S-inline-ReturnsPanel",
+                "status": "passed"
+              },
+              {
+                "id": "S-inline-SessionBar",
+                "status": "passed"
+              },
+              {
+                "id": "S-inline-Status",
+                "status": "passed"
+              },
+              {
+                "id": "S-inline-StatusBadge",
+                "status": "passed"
+              },
+              {
+                "id": "S-inline-WalletPanel",
+                "status": "passed"
+              },
+              {
+                "id": "S-cva-ActionButton",
+                "status": "passed"
+              },
+              {
+                "id": "F-style-variants-ActionButton",
+                "status": "passed"
+              },
+              {
+                "id": "S-cva-StatusBadge",
+                "status": "passed"
+              },
+              {
+                "id": "F-style-variants-StatusBadge",
+                "status": "passed"
+              },
+              {
+                "id": "S-cva-PanelCard",
+                "status": "passed"
+              },
+              {
+                "id": "F-style-variants-PanelCard",
+                "status": "passed"
+              },
+              {
+                "id": "F-style-native-props",
+                "status": "passed"
+              },
+              {
+                "id": "S-complete-class-tokens",
+                "status": "passed"
+              },
+              {
+                "id": "Q-theme-strategy",
+                "status": "passed"
+              },
+              {
+                "id": "Q-no-unapproved-dark-mode",
+                "status": "passed"
+              },
+              {
+                "id": "F-tailwind-generated-css",
+                "status": "passed"
+              },
+              {
+                "id": "N1-approved-change-scope",
+                "status": "passed",
+                "paths": []
+              }
+            ],
+            "limits": "Finite contract tests, AST edge checks and a controlled hook/element harness. Not a browser, React scheduler, visual quality, profiling or a proof against arbitrary JavaScript evasions.",
+            "planCompliance": {
+              "version": 2,
+              "satisfied": 93,
+              "total": 93,
+              "forbiddenViolations": [],
+              "decisionViolations": [],
+              "semanticReview": "unverified"
+            },
+            "behaviorEligible": true,
+            "eligible": true
+          }
+        }
+      ],
+      "workflow": "observed",
+      "trace": [],
+      "usage": {
+        "input_tokens": 530676,
+        "output_tokens": 6832,
+        "total_tokens": 537508,
+        "cached_input_tokens": 495872
+      },
+      "planCompliance": {
+        "version": 2,
+        "satisfied": 93,
+        "total": 93,
+        "forbiddenViolations": [],
+        "decisionViolations": [],
+        "semanticReview": "unverified"
+      },
+      "questionProtocol": "observed",
+      "semanticReview": "unverified",
+      "eligible": true
+    }
+  ],
+  "comparison": [
+    {
+      "case": "tailwind-authorship",
+      "arm": "plain",
+      "questionProtocol": "observed",
+      "firstImplementationPassed": true,
+      "firstPlanCompliance": {
+        "version": 2,
+        "satisfied": 93,
+        "total": 93,
+        "forbiddenViolations": [],
+        "decisionViolations": [],
+        "semanticReview": "unverified"
+      },
+      "finalPlanCompliance": {
+        "version": 2,
+        "satisfied": 93,
+        "total": 93,
+        "forbiddenViolations": [],
+        "decisionViolations": [],
+        "semanticReview": "unverified"
+      },
+      "finalEligible": true,
+      "repairCalls": 0,
+      "modelElapsedSeconds": 181.736,
+      "totalTokens": 537508,
+      "uncachedInputTokens": 34804
+    }
+  ]
+}

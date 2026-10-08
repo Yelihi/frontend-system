@@ -1,0 +1,37 @@
+%% {"basis":"observed","freshness":{"status":"current","reasons":[],"meaning":"Declared dependency and discovery-content freshness, not semantic correctness or complete runtime coverage"},"projectPath":"/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/test/evals/fs-comparison/v12/projects/request","flowHash":"fcd168fbc15e4c455cdd7e4bd3380e1765ec78db5089b6dc6bea9689c1947a54","generatedAt":"2026-10-07T05:58:12.637Z","reasons":[]}
+flowchart LR
+  subgraph n0["mountEditor · 편집 화면 연결"]
+    n0info["mountEditor · 편집 화면 연결<br/>events: mount / cleanup"]
+    n1["component · form / quantity / error · DOM 요소<br/>props: form: HTMLFormElement, quantity: HTMLInputElement, error: HTMLElement<br/>state: headers: 편집 연결당 객체, error.textContent<br/>events: input → change, submit → submit<br/>lifecycle: 이벤트 리스너 등록 / 제거"]
+  end
+  subgraph n2["mountList · 목록 화면 연결"]
+    n2info["mountList · 목록 화면 연결<br/>lifecycle: 등록 직후 render(), cleanup: listener 제거"]
+    n3["component · container · 목록 DOM<br/>state: container.textContent"]
+  end
+  n4["store · draft · 공유 편집 상태<br/>state: value: {id, quantity}, dirty"]
+  n5["cache · orders · 메모리 목록과 리스너<br/>state: rows: Draft[], listeners: Set&lt;callback&gt;"]
+  n6["module · saveOrder(input, headers)<br/>state: previous: 저장 전 rows 참조"]
+  n7["module · request(path, input)<br/>events: 401 → session-expired, !ok → request-failed"]
+  n8["external · fetch · /orders/:id<br/>events: 응답 / 네트워크 실패"]
+  n1 -->|"setQuantity(Number(value))"| n4
+  n1 -->|"saveOrder({...draft.value}, headers)"| n6
+  n6 -->|"quantity &lt; 1 → {ok:false}"| n1
+  n6 -->|"기존 id만 낙관적으로 교체 · publish"| n5
+  n5 -->|"등록된 render → textContent"| n3
+  n6 -->|"주문 JSON과 headers 전달"| n7
+  n7 -->|"호출자가 전달한 headers.Authorization 변경"| n1
+  n7 -->|"fetch(POST) · body 존재"| n8
+  n8 -->|"정상 HTTP 응답의 JSON 파싱"| n7
+  n7 -->|"파싱 결과 await 완료"| n6
+  n6 -->|"응답 객체로 기존 id 교체 · publish"| n5
+  n6 -->|"draft.dirty = false (버전 비교 없음)"| n4
+  n6 -->|"{ok:true} · 성공 시 error.textContent 변경 없음"| n1
+  n8 -->|"401 응답 → session-expired 예외"| n7
+  n8 -->|"401 외 !ok → request-failed 예외"| n7
+  n7 -->|"요청/JSON 예외가 catch로 전달"| n6
+  n6 -->|"저장 전 previous rows 복원 · publish"| n5
+  n6 -->|"실패 message → error.textContent"| n1
+  n2 -->|"orders.listeners.add(render)"| n5
+  n5 -->|"등록 직후 render()로 rows 표시"| n3
+  n2 -->|"orders.listeners.delete(render)"| n5
+  n0 -->|"input / submit listener 제거"| n1

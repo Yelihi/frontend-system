@@ -1,0 +1,201 @@
+{
+  "runnerStatus": "completed",
+  "modelCalls": 4,
+  "rows": [
+    {
+      "case": "layered-orders",
+      "arm": "plain",
+      "completed": true,
+      "missingPhases": [],
+      "eligible": true,
+      "timedOut": false,
+      "planSatisfied": 14,
+      "planTotal": 14,
+      "totalTokens": 425027,
+      "uncachedInputTokens": 45296,
+      "seconds": 205.71,
+      "phaseUsage": [
+        {
+          "phase": "prepare",
+          "attempt": 0,
+          "usage": {
+            "input_tokens": 84152,
+            "cached_input_tokens": 53248,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 1338,
+            "reasoning_output_tokens": 369,
+            "total_tokens": 85490,
+            "uncached_input_tokens": 30904
+          }
+        },
+        {
+          "phase": "work",
+          "attempt": 0,
+          "usage": {
+            "input_tokens": 333496,
+            "cached_input_tokens": 319104,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 6041,
+            "reasoning_output_tokens": 1111,
+            "total_tokens": 339537,
+            "uncached_input_tokens": 14392
+          }
+        }
+      ],
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "mcpTools": {},
+      "projectSaveCalls": 0,
+      "savedStatements": 0,
+      "registeredReuse": 0,
+      "explicitReuseExclusions": 0,
+      "reuseObservable": false,
+      "reusedTriggers": 0,
+      "patchCalls": 0,
+      "patchSuccesses": 0,
+      "routePatchCalls": 0,
+      "fullRevisionReads": 0
+    },
+    {
+      "case": "layered-orders",
+      "arm": "fs",
+      "completed": true,
+      "missingPhases": [],
+      "eligible": true,
+      "timedOut": false,
+      "planSatisfied": 14,
+      "planTotal": 14,
+      "totalTokens": 2666706,
+      "uncachedInputTokens": 111617,
+      "seconds": 582.529,
+      "phaseUsage": [
+        {
+          "phase": "prepare",
+          "attempt": 0,
+          "usage": {
+            "input_tokens": 523964,
+            "cached_input_tokens": 452480,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 5349,
+            "reasoning_output_tokens": 588,
+            "total_tokens": 529313,
+            "uncached_input_tokens": 71484
+          }
+        },
+        {
+          "phase": "work",
+          "attempt": 0,
+          "usage": {
+            "input_tokens": 2122181,
+            "cached_input_tokens": 2082048,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 15212,
+            "reasoning_output_tokens": 2772,
+            "total_tokens": 2137393,
+            "uncached_input_tokens": 40133
+          }
+        }
+      ],
+      "mcpCalls": 25,
+      "mcpErrors": 0,
+      "mcpTools": {
+        "list_plans": 1,
+        "get_project_snapshot": 1,
+        "discover_knowledge_triggers": 1,
+        "read_project_source": 1,
+        "save_project_context": 1,
+        "get_work_context": 2,
+        "read_learned_knowledge": 1,
+        "save_revision": 2,
+        "run_project_checks": 6,
+        "get_revision": 1,
+        "get_workflow_context": 3,
+        "approve_revision": 1,
+        "save_execution": 2,
+        "begin_work_attempt": 1,
+        "save_semantic_review": 1
+      },
+      "projectSaveCalls": 1,
+      "savedStatements": 4,
+      "registeredReuse": 3,
+      "explicitReuseExclusions": 1,
+      "reuseObservable": true,
+      "reusedTriggers": 6,
+      "patchCalls": 1,
+      "patchSuccesses": 1,
+      "routePatchCalls": 1,
+      "fullRevisionReads": 0
+    }
+  ],
+  "limits": [
+    "Missing usage/grades remain null, never zero or a pass.",
+    "Reuse counters record tool behavior, not semantic correctness or causal token savings.",
+    "Runner completed does not imply completed model turns. Fixed-order single pairs do not establish general superiority."
+  ],
+  "summarySha256": "c74346850a4fe9eeb515c2bc73953e535d8b33f46b09607cc75442464529cbf9",
+  "productFiles": [
+    {
+      "case": "layered-orders",
+      "path": "App.jsx",
+      "equal": true,
+      "hashes": {
+        "plain": "69e692249ec0f36def05d8c04c403f9077dd5aafb5facbfb4d041b1515fe0cbb",
+        "fs": "69e692249ec0f36def05d8c04c403f9077dd5aafb5facbfb4d041b1515fe0cbb"
+      }
+    },
+    {
+      "case": "layered-orders",
+      "path": "shared/http.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "78af823fe02b61b990c84ff35482b60b0b6ad1d3babb2cb0197bc0fef2919c36",
+        "fs": "78af823fe02b61b990c84ff35482b60b0b6ad1d3babb2cb0197bc0fef2919c36"
+      }
+    },
+    {
+      "case": "layered-orders",
+      "path": "domain/orders.mjs",
+      "equal": false,
+      "hashes": {
+        "plain": "5e0244cdb12503e8e8e134d6156a211d2ec1ae26b91c88ca1067035c6744b626",
+        "fs": "e2a9374afa393a6800164b3d11139d4ec69f0807cee4c3a0d750cf0348f07e22"
+      }
+    },
+    {
+      "case": "layered-orders",
+      "path": "data/orders.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "54ca7c875d0bd61d5f0aa8260d2a5ff3d3d6e30d9ea4630992e8d3c5d7116e0c",
+        "fs": "54ca7c875d0bd61d5f0aa8260d2a5ff3d3d6e30d9ea4630992e8d3c5d7116e0c"
+      }
+    },
+    {
+      "case": "layered-orders",
+      "path": "application/orders.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "5d2cdfc83ac34ec095275dc6fb7301ce2e6020b72b15105429025108a35f8519",
+        "fs": "5d2cdfc83ac34ec095275dc6fb7301ce2e6020b72b15105429025108a35f8519"
+      }
+    },
+    {
+      "case": "layered-orders",
+      "path": "ui/OrderList.jsx",
+      "equal": true,
+      "hashes": {
+        "plain": "bbf299e44526bb9715c053f79111af51f211586df884acbe785f795e7a8aff6a",
+        "fs": "bbf299e44526bb9715c053f79111af51f211586df884acbe785f795e7a8aff6a"
+      }
+    },
+    {
+      "case": "layered-orders",
+      "path": "ui/Checkout.jsx",
+      "equal": true,
+      "hashes": {
+        "plain": "fc90bab287dee86646f5b6c87a22f473ace7360c7dd12cae9257566af2790558",
+        "fs": "fc90bab287dee86646f5b6c87a22f473ace7360c7dd12cae9257566af2790558"
+      }
+    }
+  ]
+}

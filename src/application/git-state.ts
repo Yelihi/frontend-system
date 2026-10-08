@@ -2,8 +2,8 @@ import { execFile } from "node:child_process";
 
 export function git(root: string, args: string[]): Promise<string> {
   return new Promise((resolve, reject) => {
-    execFile("git", ["-C", root, ...args], { maxBuffer: 10 * 1024 * 1024 }, (error, stdout, stderr) => {
-      if (error) reject(new Error(stderr.trim() || error.message));
+    execFile("git", ["-C", root, ...args], { maxBuffer: 10 * 1024 * 1024, env: { ...process.env, LC_ALL: "C" } }, (error, stdout, stderr) => {
+      if (error) reject(Object.assign(new Error(stderr.trim() || error.message), { code: error.code, stderr }));
       else resolve(stdout);
     });
   });

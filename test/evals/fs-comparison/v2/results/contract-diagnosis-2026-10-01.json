@@ -1,0 +1,52 @@
+{
+  "kind": "synthetic-contract-diagnostics",
+  "modelCalls": 0,
+  "findings": {
+    "approvalBeforeCommandValidation": {
+      "approved": true,
+      "checkStatus": "not-run",
+      "reason": "Missing or changed required script: test:unit",
+      "declaredCommand": "npm run test:unit",
+      "actualScriptBody": "node --test submit.test.cjs"
+    },
+    "coverageGap": {
+      "verification": "verified",
+      "checkStatus": "passed",
+      "inputPending": true,
+      "expectedCanSubmit": false,
+      "actualCanSubmit": true,
+      "protectedTest": true,
+      "testAssertion": "Only initial submission is tested",
+      "interpretation": "The declared checker passed and was not weakened. This proves evidence linkage, not adequate behavioral coverage. Not a security bypass."
+    },
+    "deliveryFullFlag": {
+      "stage": "delivery",
+      "full": false,
+      "allPolicyChecksPassed": true,
+      "acceptedCompletion": "complete"
+    },
+    "resolverPolicyIdentity": {
+      "mandatoryCount": 9,
+      "incompatibleIds": [
+        "mandatory:common:security-review-is-never-skipped",
+        "mandatory:common:preserve-accessibility-basics",
+        "mandatory:common:verify-with-discovered-capabilities",
+        "mandatory:common:keep-state-ownership-narrow",
+        "mandatory:common:separate-business-rules-from-ui-mechanics",
+        "mandatory:common:control-asynchronous-lifecycles",
+        "mandatory:common:add-tests-before-running-checks",
+        "mandatory:common:review-dependency-and-bundle-cost",
+        "mandatory:common:preserve-operational-visibility"
+      ],
+      "interpretation": "Resolved reading-priority IDs cannot be used directly as pinned policy IDs. A translation/selection step is required; this alone is not proof of omitted rules in model runs."
+    }
+  },
+  "sourceHashes": {
+    "src/application/policy.ts": "e51b8705773df3fad9fdeb1d853aa514d1f26a33ade43f1bd3995ee0b4a8453d",
+    "src/application/workflow-store.ts": "56bff67d7064e3c2bf967c7a013513a811248ccc31cf781f4fc22c69cb7a50ff",
+    "src/application/run-capabilities.ts": "ebe340e7b5c064c1165f6e6803922fa65966149a51564f8cf7a0e0c79345d84e",
+    "src/application/rules/rule-resolver.ts": "c532c7612b23e2acfc99d78ec661c0e98cd8015345fbc94d28ec649727ed0d09",
+    "test/policy-workflow.test.ts": "954e301493b79b7f8986300eac6c829a20427e83e0fa33bf10e72ab7f8961f9a",
+    "test/knowledge-index.test.ts": "cf482a818cddbd00c190f272c8f0c2c96031ba1f40e28f8664b698f736be543e"
+  }
+}

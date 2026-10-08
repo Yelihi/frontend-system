@@ -1,0 +1,76 @@
+{
+  "reviewKind": "separate-workflow-and-document-adjudication",
+  "documents": {
+    "passed": true,
+    "project": "source/project.md:3",
+    "plan": "source/plan.md:3",
+    "rulesToChecks": "source/plan.md:12",
+    "finalEvidence": "source/plan.md:34",
+    "limits": "source/plan.md:46",
+    "observation": "Content contract met; initial documents24/25 followed product changes, final results35/37 match logs. Public requirement does not add a separate document-save transaction."
+  },
+  "H10": {
+    "passed": true,
+    "lastProductEdit": "item_23",
+    "lastTestEdit": "item_32",
+    "finalChecks": [
+      "item_34"
+    ],
+    "postCheckHashVerification": "item_36",
+    "ownSourceHashesVerified": {
+      "app/checkout.jsx": "9c564b60ae9c5b5b07d904f6d73081ec2b8f59f57b40d3bead34152e2ef0c8c5",
+      "app/api/orders/route.js": "81eba5d54afa0df1a7848859400c95ae5958b1a3845f087efa5dcb5d1e232d4b",
+      "app/api/quote/route.js": "4b5030ad4083ef811068472211d42fd0af62f0fac8b5966cfae274c706f5dd70",
+      "e2e/checkout.spec.mjs": "cbf4fd96a2f608f3175ae09852423fd331fec03ca745bf2d881ddbec7c0b00c4",
+      "src/catalog.js": "523ad6b97e81c57f895fed40752f458cd8cc754f92ea65654f1d59da9b2337ff",
+      "src/checkout.js": "aeff241ba2ae56a3f09742039650213053d439a79d2f9decfe3f623861da63d5",
+      "tests/catalog.test.mjs": "2328b9e518bed3932077ef018f3b124b87089389edce4ec3ac9ed57725a182f6",
+      "tests/checkout.test.mjs": "f7ce343e02b68b281102033f564b41a26266bb4212f52e8b3e12ffb190e8716a",
+      "tests/routes.test.mjs": "bd6c8905838fff804f0a38bbe05815aa9a3e47cb42e8eb6fd7cd896e8f4686eb"
+    },
+    "combinedHashVerified": "01afa772f784d20e2d42c33c4dca5bb13e732c41ce9fa9bc10617ed62147a651",
+    "externalSourceBeforeAfterMatchesFinal": true,
+    "protectedAssetsPassed": 9,
+    "checks": [
+      "lint",
+      "typecheck",
+      "test:unit",
+      "build",
+      "test:e2e"
+    ]
+  },
+  "R9": {
+    "passed": true,
+    "evidence": "Final five check outcomes and counts match item34; source digest36 verified above. No independent Q10 score asserted."
+  },
+  "conditionAdherence": {
+    "passed": true,
+    "arm": "plain",
+    "evidence": "Supplied project/rules and installed Next documentation only. No FS tools/knowledge, models, external services, installs or commits."
+  },
+  "fullValidationAttempts": 2,
+  "attemptBudgetRespected": true,
+  "attemptEvidence": "Initial product8-11, then synchronous order guard23. Failed verification sequences15/19/26/30 involved expectation, request serialization, unrelated alert selector or keyboard focus in new tests; subsequent edits were test-only. Final all-five34 passed on final product/test source. These local test corrections are not additional whole product repair attempts.",
+  "procedureObservations": [
+    "Author report records passed checks accurately, but external fixed contract is separately adjudicated.",
+    "API and UI code remained unchanged after item23; final test-only edits all covered by full check34."
+  ],
+  "eligibleComplete": false,
+  "eligibilityEvidence": [
+    "Historical pre-correction: checks/grade/score.json H8 pending button accessible name differs from fixed Place order (109/110).",
+    "Historical pre-correction: ../blind-review/2c2c648718e2/review.json Q100, R6 fail on same name contract; underlying submit lock and input lifecycle are sound.",
+    "Final: corrected 109/110; independentQ100; product R1-R8 fail; eligibleComplete=False. Details and original adjudication preserved."
+  ],
+  "qualitySource": "../blind-review/2c2c648718e2/review.json",
+  "evaluatorAdjudication": {
+    "status": "final",
+    "revision": "accessible-name-v2",
+    "originalPassed": 109,
+    "correctedPassed": 109,
+    "changedCases": [],
+    "sourceUnchanged": true,
+    "independentCorrectionReview": "../blind-review/2c2c648718e2/regrade-review.json",
+    "qualityAndRulesUnchanged": true,
+    "eligibleComplete": false
+  }
+}

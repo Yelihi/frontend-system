@@ -1,0 +1,23 @@
+{
+  "modelCalls": 0,
+  "mode": "authored-only",
+  "rows": [
+    {
+      "name": "local-cva-result",
+      "publicStylePassed": true,
+      "functionalPassed": true,
+      "rejected": [
+        "S-cva-ActionButton"
+      ]
+    },
+    {
+      "name": "theme-comment",
+      "publicStylePassed": true,
+      "functionalPassed": true,
+      "rejected": [
+        "Q-no-unapproved-dark-mode"
+      ]
+    }
+  ],
+  "stage": "before correction"
+}

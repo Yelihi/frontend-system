@@ -1,0 +1,12 @@
+{
+  "version": 4,
+  "plan": "\nUnresolved product decisions are answered after preparation, in USER_DECISIONS.md.\n",
+  "questionProtocol": "Return final JSON only: {\"questions\":[{\"topic\":\"a stable kebab-case topic id\",\"question\":\"specific choice and alternatives grounded in inspected project/knowledge\"}]}. The theme question topic is theme-strategy. Ask the unresolved theme strategy; do not reopen already decided Q1-Q8 or mandatory style policy. Do not edit product files.",
+  "answers": {
+    "theme-strategy": "Keep the existing blue/white palette and introduce semantic Tailwind v4 theme tokens --color-action: var(--color-blue-600), --color-on-action: var(--color-white) using @theme inline. Use bg-action/text-on-action/border-action. Do not introduce dark mode, arbitrary brand colors, extra tokens or change the palette."
+  },
+  "requiredTopics": [
+    "theme-strategy"
+  ],
+  "intro": "기존 Q1-Q8은 확정입니다. 테마 전략만 미결정이며 다음 질문 절차를 따르세요."
+}

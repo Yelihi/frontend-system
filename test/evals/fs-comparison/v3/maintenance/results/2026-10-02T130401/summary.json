@@ -1,0 +1,7 @@
+{
+  "status": "blocked-before-comparison",
+  "reason": "baseline: permissions/Git/nested CLI preflight failed",
+  "manifestHash": "5834e5d0a549f315a2f4f9e56925b4f12db0e5a7675e6840043e413f894a57f3",
+  "journeys": [],
+  "usage": null
+}

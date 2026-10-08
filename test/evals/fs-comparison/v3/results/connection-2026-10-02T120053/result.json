@@ -1,0 +1,9 @@
+{
+  "requestedModel": "gpt-6-sol",
+  "exitCode": 1,
+  "timedOut": false,
+  "elapsedSeconds": 0.292,
+  "completedTurns": 0,
+  "usage": null,
+  "errors": []
+}

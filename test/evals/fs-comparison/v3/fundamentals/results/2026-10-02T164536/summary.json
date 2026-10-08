@@ -1,0 +1,2266 @@
+{
+  "status": "completed",
+  "modelCalls": 27,
+  "manifestHash": "d65f4739f47304fff94205c14f1db9a5717f7349bc2c0b13d4a87262db6c4239",
+  "journeys": [
+    {
+      "profile": "independent",
+      "arm": "plain",
+      "threadId": "01a0fb96-92e5-7600-8651-f20e5254d1de",
+      "records": [
+        {
+          "phase": "questions",
+          "attempt": 0,
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 100.323,
+            "completedTurns": 1,
+            "threadId": "01a0fb96-92e5-7600-8651-f20e5254d1de",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 162489,
+              "cached_input_tokens": 143488,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 2949,
+              "reasoning_output_tokens": 857,
+              "total_tokens": 165438,
+              "uncached_input_tokens": 19001
+            },
+            "cumulativeUsage": {
+              "input_tokens": 162489,
+              "cached_input_tokens": 143488,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 2949,
+              "reasoning_output_tokens": 857
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "grade": {
+            "eligible": true,
+            "status": "plan-recorded-not-semantically-graded",
+            "results": []
+          },
+          "planProductUnchanged": true,
+          "knowledgeTrace": {
+            "calls": [],
+            "adoption": "unverified; inspect conditions, decisions, code and checks; direct shell reads are not counted here"
+          }
+        },
+        {
+          "phase": "plan",
+          "attempt": 0,
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 99.011,
+            "completedTurns": 1,
+            "threadId": "01a0fb96-92e5-7600-8651-f20e5254d1de",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 98832,
+              "cached_input_tokens": 91264,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 4789,
+              "reasoning_output_tokens": 696,
+              "total_tokens": 103621,
+              "uncached_input_tokens": 7568
+            },
+            "cumulativeUsage": {
+              "input_tokens": 261321,
+              "cached_input_tokens": 234752,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 7738,
+              "reasoning_output_tokens": 1553
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "grade": {
+            "eligible": true,
+            "status": "plan-recorded-not-semantically-graded",
+            "results": []
+          },
+          "planProductUnchanged": true,
+          "knowledgeTrace": {
+            "calls": [],
+            "adoption": "unverified; inspect conditions, decisions, code and checks; direct shell reads are not counted here"
+          }
+        },
+        {
+          "phase": "work-initial",
+          "attempt": 0,
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 292.986,
+            "completedTurns": 1,
+            "threadId": "01a0fb96-92e5-7600-8651-f20e5254d1de",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 728879,
+              "cached_input_tokens": 696960,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 13706,
+              "reasoning_output_tokens": 5040,
+              "total_tokens": 742585,
+              "uncached_input_tokens": 31919
+            },
+            "cumulativeUsage": {
+              "input_tokens": 990200,
+              "cached_input_tokens": 931712,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 21444,
+              "reasoning_output_tokens": 6593
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "grade": {
+            "profile": "independent",
+            "stage": "initial",
+            "eligible": true,
+            "results": [
+              {
+                "id": "purchase/existing-save-and-input",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/analytics-contract",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/analytics-failure-does-not-fail-order",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/submit-failure-preserves-input-and-retries",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/quote-failure-prevents-submit-and-retries",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/quantity-range",
+                "status": "passed"
+              },
+              {
+                "id": "gift/existing-save-and-input",
+                "status": "passed"
+              },
+              {
+                "id": "gift/analytics-contract",
+                "status": "passed"
+              },
+              {
+                "id": "gift/analytics-failure-does-not-fail-order",
+                "status": "passed"
+              },
+              {
+                "id": "gift/submit-failure-preserves-input-and-retries",
+                "status": "passed"
+              },
+              {
+                "id": "gift/quote-failure-prevents-submit-and-retries",
+                "status": "passed"
+              },
+              {
+                "id": "gift/quantity-range",
+                "status": "passed"
+              },
+              {
+                "id": "independent-pending-and-no-duplicate",
+                "status": "passed"
+              },
+              {
+                "id": "keep-valid-money",
+                "status": "passed"
+              }
+            ],
+            "status": "graded",
+            "review": [
+              {
+                "id": "readability",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "predictability",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "cohesion",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "coupling",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "plan-work",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "knowledge-use",
+                "status": "unverified",
+                "evidence": []
+              }
+            ],
+            "scope": "Behavior checks do not establish readability, appropriate abstraction or full accessibility."
+          },
+          "planProductUnchanged": true,
+          "knowledgeTrace": {
+            "calls": [],
+            "adoption": "unverified; inspect conditions, decisions, code and checks; direct shell reads are not counted here"
+          }
+        },
+        {
+          "phase": "plan-change",
+          "attempt": 0,
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 37.828,
+            "completedTurns": 1,
+            "threadId": "01a0fb96-92e5-7600-8651-f20e5254d1de",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 188944,
+              "cached_input_tokens": 179456,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 1459,
+              "reasoning_output_tokens": 407,
+              "total_tokens": 190403,
+              "uncached_input_tokens": 9488
+            },
+            "cumulativeUsage": {
+              "input_tokens": 1179144,
+              "cached_input_tokens": 1111168,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 22903,
+              "reasoning_output_tokens": 7000
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "grade": {
+            "eligible": true,
+            "status": "plan-recorded-not-semantically-graded",
+            "results": []
+          },
+          "planProductUnchanged": true,
+          "knowledgeTrace": {
+            "calls": [],
+            "adoption": "unverified; inspect conditions, decisions, code and checks; direct shell reads are not counted here"
+          }
+        },
+        {
+          "phase": "work-change",
+          "attempt": 0,
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 70.689,
+            "completedTurns": 1,
+            "threadId": "01a0fb96-92e5-7600-8651-f20e5254d1de",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 422319,
+              "cached_input_tokens": 416640,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 2665,
+              "reasoning_output_tokens": 510,
+              "total_tokens": 424984,
+              "uncached_input_tokens": 5679
+            },
+            "cumulativeUsage": {
+              "input_tokens": 1601463,
+              "cached_input_tokens": 1527808,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 25568,
+              "reasoning_output_tokens": 7510
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "grade": {
+            "profile": "independent",
+            "stage": "change",
+            "eligible": true,
+            "results": [
+              {
+                "id": "purchase/existing-save-and-input",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/analytics-contract",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/analytics-failure-does-not-fail-order",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/submit-failure-preserves-input-and-retries",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/quote-failure-prevents-submit-and-retries",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/quantity-range",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/member-1",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/member-2",
+                "status": "passed"
+              },
+              {
+                "id": "gift/existing-save-and-input",
+                "status": "passed"
+              },
+              {
+                "id": "gift/analytics-contract",
+                "status": "passed"
+              },
+              {
+                "id": "gift/analytics-failure-does-not-fail-order",
+                "status": "passed"
+              },
+              {
+                "id": "gift/submit-failure-preserves-input-and-retries",
+                "status": "passed"
+              },
+              {
+                "id": "gift/quote-failure-prevents-submit-and-retries",
+                "status": "passed"
+              },
+              {
+                "id": "gift/quantity-range",
+                "status": "passed"
+              },
+              {
+                "id": "gift/member-1",
+                "status": "passed"
+              },
+              {
+                "id": "gift/member-2",
+                "status": "passed"
+              },
+              {
+                "id": "independent-pending-and-no-duplicate",
+                "status": "passed"
+              },
+              {
+                "id": "keep-valid-money",
+                "status": "passed"
+              }
+            ],
+            "status": "graded",
+            "review": [
+              {
+                "id": "readability",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "predictability",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "cohesion",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "coupling",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "plan-work",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "knowledge-use",
+                "status": "unverified",
+                "evidence": []
+              }
+            ],
+            "scope": "Behavior checks do not establish readability, appropriate abstraction or full accessibility."
+          },
+          "planProductUnchanged": true,
+          "knowledgeTrace": {
+            "calls": [],
+            "adoption": "unverified; inspect conditions, decisions, code and checks; direct shell reads are not counted here"
+          }
+        }
+      ],
+      "behaviorEligible": true,
+      "semanticReview": "unverified",
+      "questionReview": "unverified",
+      "usage": {
+        "input_tokens": 1601463,
+        "output_tokens": 25568,
+        "total_tokens": 1627031,
+        "cached_input_tokens": 1527808,
+        "reasoning_output_tokens": 7510
+      }
+    },
+    {
+      "profile": "independent",
+      "arm": "knowledge",
+      "threadId": "01a0fb9f-d624-7c83-9c8a-6ce066cba4e4",
+      "records": [
+        {
+          "phase": "questions",
+          "attempt": 0,
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 101.447,
+            "completedTurns": 1,
+            "threadId": "01a0fb9f-d624-7c83-9c8a-6ce066cba4e4",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 122390,
+              "cached_input_tokens": 106368,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 3870,
+              "reasoning_output_tokens": 1144,
+              "total_tokens": 126260,
+              "uncached_input_tokens": 16022
+            },
+            "cumulativeUsage": {
+              "input_tokens": 122390,
+              "cached_input_tokens": 106368,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 3870,
+              "reasoning_output_tokens": 1144
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "grade": {
+            "eligible": true,
+            "status": "plan-recorded-not-semantically-graded",
+            "results": []
+          },
+          "planProductUnchanged": true,
+          "knowledgeTrace": {
+            "calls": [],
+            "adoption": "unverified; inspect conditions, decisions, code and checks; direct shell reads are not counted here"
+          }
+        },
+        {
+          "phase": "plan",
+          "attempt": 0,
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 139.132,
+            "completedTurns": 1,
+            "threadId": "01a0fb9f-d624-7c83-9c8a-6ce066cba4e4",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 241953,
+              "cached_input_tokens": 230016,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 6213,
+              "reasoning_output_tokens": 748,
+              "total_tokens": 248166,
+              "uncached_input_tokens": 11937
+            },
+            "cumulativeUsage": {
+              "input_tokens": 364343,
+              "cached_input_tokens": 336384,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 10083,
+              "reasoning_output_tokens": 1892
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "grade": {
+            "eligible": true,
+            "status": "plan-recorded-not-semantically-graded",
+            "results": []
+          },
+          "planProductUnchanged": true,
+          "knowledgeTrace": {
+            "calls": [],
+            "adoption": "unverified; inspect conditions, decisions, code and checks; direct shell reads are not counted here"
+          }
+        },
+        {
+          "phase": "work-initial",
+          "attempt": 0,
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": -9,
+            "timedOut": true,
+            "elapsedSeconds": 300.015,
+            "completedTurns": 0,
+            "threadId": "01a0fb9f-d624-7c83-9c8a-6ce066cba4e4",
+            "sessionError": null,
+            "usage": null,
+            "cumulativeUsage": null,
+            "usageError": null,
+            "errors": []
+          },
+          "grade": {
+            "eligible": false,
+            "status": "unverified",
+            "reason": "Invocation incomplete",
+            "results": []
+          },
+          "planProductUnchanged": true,
+          "knowledgeTrace": {
+            "calls": [],
+            "adoption": "unverified; inspect conditions, decisions, code and checks; direct shell reads are not counted here"
+          }
+        }
+      ],
+      "behaviorEligible": false,
+      "semanticReview": "unverified",
+      "questionReview": "unverified",
+      "usage": null
+    },
+    {
+      "profile": "independent",
+      "arm": "fs",
+      "threadId": "01a0fba8-1988-7301-913d-2d8ec52c7adc",
+      "records": [
+        {
+          "phase": "questions",
+          "attempt": 0,
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": -9,
+            "timedOut": true,
+            "elapsedSeconds": 300.021,
+            "completedTurns": 0,
+            "threadId": "01a0fba8-1988-7301-913d-2d8ec52c7adc",
+            "sessionError": null,
+            "usage": null,
+            "cumulativeUsage": null,
+            "usageError": null,
+            "errors": []
+          },
+          "grade": {
+            "eligible": false,
+            "status": "unverified",
+            "reason": "Invocation incomplete",
+            "results": []
+          },
+          "planProductUnchanged": true,
+          "knowledgeTrace": {
+            "calls": [],
+            "adoption": "unverified; inspect conditions, decisions, code and checks; direct shell reads are not counted here"
+          }
+        }
+      ],
+      "behaviorEligible": false,
+      "semanticReview": "unverified",
+      "questionReview": "unverified",
+      "usage": null
+    },
+    {
+      "profile": "shared",
+      "arm": "fs",
+      "threadId": "01a0fbac-b041-7461-b7c1-5d1fb735c6fe",
+      "records": [
+        {
+          "phase": "questions",
+          "attempt": 0,
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 134.532,
+            "completedTurns": 1,
+            "threadId": "01a0fbac-b041-7461-b7c1-5d1fb735c6fe",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 323908,
+              "cached_input_tokens": 291200,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 4220,
+              "reasoning_output_tokens": 963,
+              "total_tokens": 328128,
+              "uncached_input_tokens": 32708
+            },
+            "cumulativeUsage": {
+              "input_tokens": 323908,
+              "cached_input_tokens": 291200,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 4220,
+              "reasoning_output_tokens": 963
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "grade": {
+            "eligible": true,
+            "status": "plan-recorded-not-semantically-graded",
+            "results": []
+          },
+          "planProductUnchanged": true,
+          "knowledgeTrace": {
+            "calls": [],
+            "adoption": "unverified; inspect conditions, decisions, code and checks; direct shell reads are not counted here"
+          }
+        },
+        {
+          "phase": "plan",
+          "attempt": 0,
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 103.438,
+            "completedTurns": 1,
+            "threadId": "01a0fbac-b041-7461-b7c1-5d1fb735c6fe",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 251591,
+              "cached_input_tokens": 241280,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 4888,
+              "reasoning_output_tokens": 608,
+              "total_tokens": 256479,
+              "uncached_input_tokens": 10311
+            },
+            "cumulativeUsage": {
+              "input_tokens": 575499,
+              "cached_input_tokens": 532480,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 9108,
+              "reasoning_output_tokens": 1571
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "grade": {
+            "eligible": true,
+            "status": "plan-recorded-not-semantically-graded",
+            "results": []
+          },
+          "planProductUnchanged": true,
+          "knowledgeTrace": {
+            "calls": [],
+            "adoption": "unverified; inspect conditions, decisions, code and checks; direct shell reads are not counted here"
+          }
+        },
+        {
+          "phase": "work-initial",
+          "attempt": 0,
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 219.648,
+            "completedTurns": 1,
+            "threadId": "01a0fbac-b041-7461-b7c1-5d1fb735c6fe",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 1130112,
+              "cached_input_tokens": 1100288,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 9804,
+              "reasoning_output_tokens": 3442,
+              "total_tokens": 1139916,
+              "uncached_input_tokens": 29824
+            },
+            "cumulativeUsage": {
+              "input_tokens": 1705611,
+              "cached_input_tokens": 1632768,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 18912,
+              "reasoning_output_tokens": 5013
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "grade": {
+            "profile": "shared",
+            "stage": "initial",
+            "eligible": false,
+            "results": [
+              {
+                "id": "purchase/existing-save-and-input",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/analytics-contract",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/analytics-failure-does-not-fail-order",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/submit-failure-preserves-input-and-retries",
+                "status": "failed",
+                "reason": "expect(locator).toContainText(expected) failed\n\nLocator: getByRole('region', { name: '일반 주문', exact: true }).getByRole('alert')\nExpected substring: \"offline\"\nReceived string:    \"주문 결과를 확인하지 못했습니다. 중복 주문 여부를 확인한 뒤 다시 시도해주세요.\"\nTimeout: 5000ms\n\nCall log:\n  - Expect \"toContainText\" getByRole('region', { name: '일반 주문', exact: true }).getByRole('alert') with timeout 5000ms\n  - waiting for getByRole('region', { name: '일반 주문', exact: true }).getByRole('alert')\n    14 × locator resolved to <p role=\"alert\">주문 결과를 확인하지 못했습니다. 중복 주문 여부를 확인한 뒤 다시 시도해주세요.</p>\n       - unexpected value \"주문 결과를 확인하지 못했습니다. 중복 주문 여부를 확인한 뒤 다시 시도해주세요.\"\n"
+              },
+              {
+                "id": "purchase/quote-failure-prevents-submit-and-retries",
+                "status": "failed",
+                "reason": "expect(locator).toContainText(expected) failed\n\nLocator: getByRole('region', { name: '일반 주문', exact: true }).getByRole('alert')\nExpected substring: \"quote offline\"\nReceived string:    \"견적을 확인하지 못했습니다. 입력을 유지했으니 다시 시도해주세요.\"\nTimeout: 5000ms\n\nCall log:\n  - Expect \"toContainText\" getByRole('region', { name: '일반 주문', exact: true }).getByRole('alert') with timeout 5000ms\n  - waiting for getByRole('region', { name: '일반 주문', exact: true }).getByRole('alert')\n    14 × locator resolved to <p role=\"alert\">견적을 확인하지 못했습니다. 입력을 유지했으니 다시 시도해주세요.</p>\n       - unexpected value \"견적을 확인하지 못했습니다. 입력을 유지했으니 다시 시도해주세요.\"\n"
+              },
+              {
+                "id": "purchase/quantity-range",
+                "status": "passed"
+              },
+              {
+                "id": "gift/existing-save-and-input",
+                "status": "passed"
+              },
+              {
+                "id": "gift/analytics-contract",
+                "status": "passed"
+              },
+              {
+                "id": "gift/analytics-failure-does-not-fail-order",
+                "status": "passed"
+              },
+              {
+                "id": "gift/submit-failure-preserves-input-and-retries",
+                "status": "failed",
+                "reason": "expect(locator).toContainText(expected) failed\n\nLocator: getByRole('region', { name: '선물 주문', exact: true }).getByRole('alert')\nExpected substring: \"offline\"\nReceived string:    \"주문 결과를 확인하지 못했습니다. 중복 주문 여부를 확인한 뒤 다시 시도해주세요.\"\nTimeout: 5000ms\n\nCall log:\n  - Expect \"toContainText\" getByRole('region', { name: '선물 주문', exact: true }).getByRole('alert') with timeout 5000ms\n  - waiting for getByRole('region', { name: '선물 주문', exact: true }).getByRole('alert')\n    14 × locator resolved to <p role=\"alert\">주문 결과를 확인하지 못했습니다. 중복 주문 여부를 확인한 뒤 다시 시도해주세요.</p>\n       - unexpected value \"주문 결과를 확인하지 못했습니다. 중복 주문 여부를 확인한 뒤 다시 시도해주세요.\"\n"
+              },
+              {
+                "id": "gift/quote-failure-prevents-submit-and-retries",
+                "status": "failed",
+                "reason": "expect(locator).toContainText(expected) failed\n\nLocator: getByRole('region', { name: '선물 주문', exact: true }).getByRole('alert')\nExpected substring: \"quote offline\"\nReceived string:    \"견적을 확인하지 못했습니다. 입력을 유지했으니 다시 시도해주세요.\"\nTimeout: 5000ms\n\nCall log:\n  - Expect \"toContainText\" getByRole('region', { name: '선물 주문', exact: true }).getByRole('alert') with timeout 5000ms\n  - waiting for getByRole('region', { name: '선물 주문', exact: true }).getByRole('alert')\n    14 × locator resolved to <p role=\"alert\">견적을 확인하지 못했습니다. 입력을 유지했으니 다시 시도해주세요.</p>\n       - unexpected value \"견적을 확인하지 못했습니다. 입력을 유지했으니 다시 시도해주세요.\"\n"
+              },
+              {
+                "id": "gift/quantity-range",
+                "status": "passed"
+              },
+              {
+                "id": "independent-pending-and-no-duplicate",
+                "status": "passed"
+              },
+              {
+                "id": "keep-valid-money",
+                "status": "passed"
+              }
+            ],
+            "status": "graded",
+            "review": [
+              {
+                "id": "readability",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "predictability",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "cohesion",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "coupling",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "plan-work",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "knowledge-use",
+                "status": "unverified",
+                "evidence": []
+              }
+            ],
+            "scope": "Behavior checks do not establish readability, appropriate abstraction or full accessibility."
+          },
+          "planProductUnchanged": true,
+          "knowledgeTrace": {
+            "calls": [],
+            "adoption": "unverified; inspect conditions, decisions, code and checks; direct shell reads are not counted here"
+          }
+        },
+        {
+          "phase": "work-initial",
+          "attempt": 1,
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 135.137,
+            "completedTurns": 1,
+            "threadId": "01a0fbac-b041-7461-b7c1-5d1fb735c6fe",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 647744,
+              "cached_input_tokens": 633728,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 5986,
+              "reasoning_output_tokens": 3061,
+              "total_tokens": 653730,
+              "uncached_input_tokens": 14016
+            },
+            "cumulativeUsage": {
+              "input_tokens": 2353355,
+              "cached_input_tokens": 2266496,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 24898,
+              "reasoning_output_tokens": 8074
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "grade": {
+            "profile": "shared",
+            "stage": "initial",
+            "eligible": true,
+            "results": [
+              {
+                "id": "purchase/existing-save-and-input",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/analytics-contract",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/analytics-failure-does-not-fail-order",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/submit-failure-preserves-input-and-retries",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/quote-failure-prevents-submit-and-retries",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/quantity-range",
+                "status": "passed"
+              },
+              {
+                "id": "gift/existing-save-and-input",
+                "status": "passed"
+              },
+              {
+                "id": "gift/analytics-contract",
+                "status": "passed"
+              },
+              {
+                "id": "gift/analytics-failure-does-not-fail-order",
+                "status": "passed"
+              },
+              {
+                "id": "gift/submit-failure-preserves-input-and-retries",
+                "status": "passed"
+              },
+              {
+                "id": "gift/quote-failure-prevents-submit-and-retries",
+                "status": "passed"
+              },
+              {
+                "id": "gift/quantity-range",
+                "status": "passed"
+              },
+              {
+                "id": "independent-pending-and-no-duplicate",
+                "status": "passed"
+              },
+              {
+                "id": "keep-valid-money",
+                "status": "passed"
+              }
+            ],
+            "status": "graded",
+            "review": [
+              {
+                "id": "readability",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "predictability",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "cohesion",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "coupling",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "plan-work",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "knowledge-use",
+                "status": "unverified",
+                "evidence": []
+              }
+            ],
+            "scope": "Behavior checks do not establish readability, appropriate abstraction or full accessibility."
+          },
+          "planProductUnchanged": true,
+          "knowledgeTrace": {
+            "calls": [],
+            "adoption": "unverified; inspect conditions, decisions, code and checks; direct shell reads are not counted here"
+          }
+        },
+        {
+          "phase": "plan-change",
+          "attempt": 0,
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 56.39,
+            "completedTurns": 1,
+            "threadId": "01a0fbac-b041-7461-b7c1-5d1fb735c6fe",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 471243,
+              "cached_input_tokens": 454400,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 2336,
+              "reasoning_output_tokens": 648,
+              "total_tokens": 473579,
+              "uncached_input_tokens": 16843
+            },
+            "cumulativeUsage": {
+              "input_tokens": 2824598,
+              "cached_input_tokens": 2720896,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 27234,
+              "reasoning_output_tokens": 8722
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "grade": {
+            "eligible": true,
+            "status": "plan-recorded-not-semantically-graded",
+            "results": []
+          },
+          "planProductUnchanged": true,
+          "knowledgeTrace": {
+            "calls": [],
+            "adoption": "unverified; inspect conditions, decisions, code and checks; direct shell reads are not counted here"
+          }
+        },
+        {
+          "phase": "work-change",
+          "attempt": 0,
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 77.124,
+            "completedTurns": 1,
+            "threadId": "01a0fbac-b041-7461-b7c1-5d1fb735c6fe",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 958946,
+              "cached_input_tokens": 948224,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 2914,
+              "reasoning_output_tokens": 963,
+              "total_tokens": 961860,
+              "uncached_input_tokens": 10722
+            },
+            "cumulativeUsage": {
+              "input_tokens": 3783544,
+              "cached_input_tokens": 3669120,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 30148,
+              "reasoning_output_tokens": 9685
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "grade": {
+            "profile": "shared",
+            "stage": "change",
+            "eligible": true,
+            "results": [
+              {
+                "id": "purchase/existing-save-and-input",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/analytics-contract",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/analytics-failure-does-not-fail-order",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/submit-failure-preserves-input-and-retries",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/quote-failure-prevents-submit-and-retries",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/quantity-range",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/member-1",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/member-2",
+                "status": "passed"
+              },
+              {
+                "id": "gift/existing-save-and-input",
+                "status": "passed"
+              },
+              {
+                "id": "gift/analytics-contract",
+                "status": "passed"
+              },
+              {
+                "id": "gift/analytics-failure-does-not-fail-order",
+                "status": "passed"
+              },
+              {
+                "id": "gift/submit-failure-preserves-input-and-retries",
+                "status": "passed"
+              },
+              {
+                "id": "gift/quote-failure-prevents-submit-and-retries",
+                "status": "passed"
+              },
+              {
+                "id": "gift/quantity-range",
+                "status": "passed"
+              },
+              {
+                "id": "gift/member-1",
+                "status": "passed"
+              },
+              {
+                "id": "gift/member-2",
+                "status": "passed"
+              },
+              {
+                "id": "independent-pending-and-no-duplicate",
+                "status": "passed"
+              },
+              {
+                "id": "keep-valid-money",
+                "status": "passed"
+              }
+            ],
+            "status": "graded",
+            "review": [
+              {
+                "id": "readability",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "predictability",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "cohesion",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "coupling",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "plan-work",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "knowledge-use",
+                "status": "unverified",
+                "evidence": []
+              }
+            ],
+            "scope": "Behavior checks do not establish readability, appropriate abstraction or full accessibility."
+          },
+          "planProductUnchanged": true,
+          "knowledgeTrace": {
+            "calls": [],
+            "adoption": "unverified; inspect conditions, decisions, code and checks; direct shell reads are not counted here"
+          }
+        }
+      ],
+      "behaviorEligible": true,
+      "semanticReview": "unverified",
+      "questionReview": "unverified",
+      "usage": {
+        "input_tokens": 3783544,
+        "output_tokens": 30148,
+        "total_tokens": 3813692,
+        "cached_input_tokens": 3669120,
+        "reasoning_output_tokens": 9685
+      }
+    },
+    {
+      "profile": "shared",
+      "arm": "knowledge",
+      "threadId": "01a0fbb8-36d4-7c80-8124-348b5064fee9",
+      "records": [
+        {
+          "phase": "questions",
+          "attempt": 0,
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 87.292,
+            "completedTurns": 1,
+            "threadId": "01a0fbb8-36d4-7c80-8124-348b5064fee9",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 120989,
+              "cached_input_tokens": 103936,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 3337,
+              "reasoning_output_tokens": 821,
+              "total_tokens": 124326,
+              "uncached_input_tokens": 17053
+            },
+            "cumulativeUsage": {
+              "input_tokens": 120989,
+              "cached_input_tokens": 103936,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 3337,
+              "reasoning_output_tokens": 821
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "grade": {
+            "eligible": true,
+            "status": "plan-recorded-not-semantically-graded",
+            "results": []
+          },
+          "planProductUnchanged": true,
+          "knowledgeTrace": {
+            "calls": [],
+            "adoption": "unverified; inspect conditions, decisions, code and checks; direct shell reads are not counted here"
+          }
+        },
+        {
+          "phase": "plan",
+          "attempt": 0,
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 99.98,
+            "completedTurns": 1,
+            "threadId": "01a0fbb8-36d4-7c80-8124-348b5064fee9",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 137573,
+              "cached_input_tokens": 109568,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 4014,
+              "reasoning_output_tokens": 621,
+              "total_tokens": 141587,
+              "uncached_input_tokens": 28005
+            },
+            "cumulativeUsage": {
+              "input_tokens": 258562,
+              "cached_input_tokens": 213504,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 7351,
+              "reasoning_output_tokens": 1442
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "grade": {
+            "eligible": true,
+            "status": "plan-recorded-not-semantically-graded",
+            "results": []
+          },
+          "planProductUnchanged": true,
+          "knowledgeTrace": {
+            "calls": [],
+            "adoption": "unverified; inspect conditions, decisions, code and checks; direct shell reads are not counted here"
+          }
+        },
+        {
+          "phase": "work-initial",
+          "attempt": 0,
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 173.111,
+            "completedTurns": 1,
+            "threadId": "01a0fbb8-36d4-7c80-8124-348b5064fee9",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 358655,
+              "cached_input_tokens": 340480,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 7565,
+              "reasoning_output_tokens": 3219,
+              "total_tokens": 366220,
+              "uncached_input_tokens": 18175
+            },
+            "cumulativeUsage": {
+              "input_tokens": 617217,
+              "cached_input_tokens": 553984,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 14916,
+              "reasoning_output_tokens": 4661
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "grade": {
+            "profile": "shared",
+            "stage": "initial",
+            "eligible": false,
+            "results": [
+              {
+                "id": "purchase/existing-save-and-input",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/analytics-contract",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/analytics-failure-does-not-fail-order",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/submit-failure-preserves-input-and-retries",
+                "status": "failed",
+                "reason": "expect(locator).toContainText(expected) failed\n\nLocator: getByRole('region', { name: '일반 주문', exact: true }).getByRole('alert')\nExpected substring: \"offline\"\nReceived string:    \"주문 결과를 확인하지 못했습니다. 주문 내역을 확인한 뒤 다시 시도해주세요.\"\nTimeout: 5000ms\n\nCall log:\n  - Expect \"toContainText\" getByRole('region', { name: '일반 주문', exact: true }).getByRole('alert') with timeout 5000ms\n  - waiting for getByRole('region', { name: '일반 주문', exact: true }).getByRole('alert')\n    14 × locator resolved to <p role=\"alert\">주문 결과를 확인하지 못했습니다. 주문 내역을 확인한 뒤 다시 시도해주세요.</p>\n       - unexpected value \"주문 결과를 확인하지 못했습니다. 주문 내역을 확인한 뒤 다시 시도해주세요.\"\n"
+              },
+              {
+                "id": "purchase/quote-failure-prevents-submit-and-retries",
+                "status": "failed",
+                "reason": "expect(locator).toContainText(expected) failed\n\nLocator: getByRole('region', { name: '일반 주문', exact: true }).getByRole('alert')\nExpected substring: \"quote offline\"\nReceived string:    \"견적을 확인하지 못했습니다. 다시 시도해주세요.\"\nTimeout: 5000ms\n\nCall log:\n  - Expect \"toContainText\" getByRole('region', { name: '일반 주문', exact: true }).getByRole('alert') with timeout 5000ms\n  - waiting for getByRole('region', { name: '일반 주문', exact: true }).getByRole('alert')\n    14 × locator resolved to <p role=\"alert\">견적을 확인하지 못했습니다. 다시 시도해주세요.</p>\n       - unexpected value \"견적을 확인하지 못했습니다. 다시 시도해주세요.\"\n"
+              },
+              {
+                "id": "purchase/quantity-range",
+                "status": "passed"
+              },
+              {
+                "id": "gift/existing-save-and-input",
+                "status": "passed"
+              },
+              {
+                "id": "gift/analytics-contract",
+                "status": "passed"
+              },
+              {
+                "id": "gift/analytics-failure-does-not-fail-order",
+                "status": "passed"
+              },
+              {
+                "id": "gift/submit-failure-preserves-input-and-retries",
+                "status": "failed",
+                "reason": "expect(locator).toContainText(expected) failed\n\nLocator: getByRole('region', { name: '선물 주문', exact: true }).getByRole('alert')\nExpected substring: \"offline\"\nReceived string:    \"주문 결과를 확인하지 못했습니다. 주문 내역을 확인한 뒤 다시 시도해주세요.\"\nTimeout: 5000ms\n\nCall log:\n  - Expect \"toContainText\" getByRole('region', { name: '선물 주문', exact: true }).getByRole('alert') with timeout 5000ms\n  - waiting for getByRole('region', { name: '선물 주문', exact: true }).getByRole('alert')\n    14 × locator resolved to <p role=\"alert\">주문 결과를 확인하지 못했습니다. 주문 내역을 확인한 뒤 다시 시도해주세요.</p>\n       - unexpected value \"주문 결과를 확인하지 못했습니다. 주문 내역을 확인한 뒤 다시 시도해주세요.\"\n"
+              },
+              {
+                "id": "gift/quote-failure-prevents-submit-and-retries",
+                "status": "failed",
+                "reason": "expect(locator).toContainText(expected) failed\n\nLocator: getByRole('region', { name: '선물 주문', exact: true }).getByRole('alert')\nExpected substring: \"quote offline\"\nReceived string:    \"견적을 확인하지 못했습니다. 다시 시도해주세요.\"\nTimeout: 5000ms\n\nCall log:\n  - Expect \"toContainText\" getByRole('region', { name: '선물 주문', exact: true }).getByRole('alert') with timeout 5000ms\n  - waiting for getByRole('region', { name: '선물 주문', exact: true }).getByRole('alert')\n    14 × locator resolved to <p role=\"alert\">견적을 확인하지 못했습니다. 다시 시도해주세요.</p>\n       - unexpected value \"견적을 확인하지 못했습니다. 다시 시도해주세요.\"\n"
+              },
+              {
+                "id": "gift/quantity-range",
+                "status": "passed"
+              },
+              {
+                "id": "independent-pending-and-no-duplicate",
+                "status": "passed"
+              },
+              {
+                "id": "keep-valid-money",
+                "status": "passed"
+              }
+            ],
+            "status": "graded",
+            "review": [
+              {
+                "id": "readability",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "predictability",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "cohesion",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "coupling",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "plan-work",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "knowledge-use",
+                "status": "unverified",
+                "evidence": []
+              }
+            ],
+            "scope": "Behavior checks do not establish readability, appropriate abstraction or full accessibility."
+          },
+          "planProductUnchanged": true,
+          "knowledgeTrace": {
+            "calls": [],
+            "adoption": "unverified; inspect conditions, decisions, code and checks; direct shell reads are not counted here"
+          }
+        },
+        {
+          "phase": "work-initial",
+          "attempt": 1,
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 135.314,
+            "completedTurns": 1,
+            "threadId": "01a0fbb8-36d4-7c80-8124-348b5064fee9",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 703120,
+              "cached_input_tokens": 686592,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 5089,
+              "reasoning_output_tokens": 2945,
+              "total_tokens": 708209,
+              "uncached_input_tokens": 16528
+            },
+            "cumulativeUsage": {
+              "input_tokens": 1320337,
+              "cached_input_tokens": 1240576,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 20005,
+              "reasoning_output_tokens": 7606
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "grade": {
+            "profile": "shared",
+            "stage": "initial",
+            "eligible": true,
+            "results": [
+              {
+                "id": "purchase/existing-save-and-input",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/analytics-contract",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/analytics-failure-does-not-fail-order",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/submit-failure-preserves-input-and-retries",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/quote-failure-prevents-submit-and-retries",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/quantity-range",
+                "status": "passed"
+              },
+              {
+                "id": "gift/existing-save-and-input",
+                "status": "passed"
+              },
+              {
+                "id": "gift/analytics-contract",
+                "status": "passed"
+              },
+              {
+                "id": "gift/analytics-failure-does-not-fail-order",
+                "status": "passed"
+              },
+              {
+                "id": "gift/submit-failure-preserves-input-and-retries",
+                "status": "passed"
+              },
+              {
+                "id": "gift/quote-failure-prevents-submit-and-retries",
+                "status": "passed"
+              },
+              {
+                "id": "gift/quantity-range",
+                "status": "passed"
+              },
+              {
+                "id": "independent-pending-and-no-duplicate",
+                "status": "passed"
+              },
+              {
+                "id": "keep-valid-money",
+                "status": "passed"
+              }
+            ],
+            "status": "graded",
+            "review": [
+              {
+                "id": "readability",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "predictability",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "cohesion",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "coupling",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "plan-work",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "knowledge-use",
+                "status": "unverified",
+                "evidence": []
+              }
+            ],
+            "scope": "Behavior checks do not establish readability, appropriate abstraction or full accessibility."
+          },
+          "planProductUnchanged": true,
+          "knowledgeTrace": {
+            "calls": [],
+            "adoption": "unverified; inspect conditions, decisions, code and checks; direct shell reads are not counted here"
+          }
+        },
+        {
+          "phase": "plan-change",
+          "attempt": 0,
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 45.701,
+            "completedTurns": 1,
+            "threadId": "01a0fbb8-36d4-7c80-8124-348b5064fee9",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 266386,
+              "cached_input_tokens": 258816,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 1702,
+              "reasoning_output_tokens": 452,
+              "total_tokens": 268088,
+              "uncached_input_tokens": 7570
+            },
+            "cumulativeUsage": {
+              "input_tokens": 1586723,
+              "cached_input_tokens": 1499392,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 21707,
+              "reasoning_output_tokens": 8058
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "grade": {
+            "eligible": true,
+            "status": "plan-recorded-not-semantically-graded",
+            "results": []
+          },
+          "planProductUnchanged": true,
+          "knowledgeTrace": {
+            "calls": [],
+            "adoption": "unverified; inspect conditions, decisions, code and checks; direct shell reads are not counted here"
+          }
+        },
+        {
+          "phase": "work-change",
+          "attempt": 0,
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 95.16,
+            "completedTurns": 1,
+            "threadId": "01a0fbb8-36d4-7c80-8124-348b5064fee9",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 515101,
+              "cached_input_tokens": 506240,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 3939,
+              "reasoning_output_tokens": 2308,
+              "total_tokens": 519040,
+              "uncached_input_tokens": 8861
+            },
+            "cumulativeUsage": {
+              "input_tokens": 2101824,
+              "cached_input_tokens": 2005632,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 25646,
+              "reasoning_output_tokens": 10366
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "grade": {
+            "profile": "shared",
+            "stage": "change",
+            "eligible": true,
+            "results": [
+              {
+                "id": "purchase/existing-save-and-input",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/analytics-contract",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/analytics-failure-does-not-fail-order",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/submit-failure-preserves-input-and-retries",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/quote-failure-prevents-submit-and-retries",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/quantity-range",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/member-1",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/member-2",
+                "status": "passed"
+              },
+              {
+                "id": "gift/existing-save-and-input",
+                "status": "passed"
+              },
+              {
+                "id": "gift/analytics-contract",
+                "status": "passed"
+              },
+              {
+                "id": "gift/analytics-failure-does-not-fail-order",
+                "status": "passed"
+              },
+              {
+                "id": "gift/submit-failure-preserves-input-and-retries",
+                "status": "passed"
+              },
+              {
+                "id": "gift/quote-failure-prevents-submit-and-retries",
+                "status": "passed"
+              },
+              {
+                "id": "gift/quantity-range",
+                "status": "passed"
+              },
+              {
+                "id": "gift/member-1",
+                "status": "passed"
+              },
+              {
+                "id": "gift/member-2",
+                "status": "passed"
+              },
+              {
+                "id": "independent-pending-and-no-duplicate",
+                "status": "passed"
+              },
+              {
+                "id": "keep-valid-money",
+                "status": "passed"
+              }
+            ],
+            "status": "graded",
+            "review": [
+              {
+                "id": "readability",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "predictability",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "cohesion",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "coupling",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "plan-work",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "knowledge-use",
+                "status": "unverified",
+                "evidence": []
+              }
+            ],
+            "scope": "Behavior checks do not establish readability, appropriate abstraction or full accessibility."
+          },
+          "planProductUnchanged": true,
+          "knowledgeTrace": {
+            "calls": [],
+            "adoption": "unverified; inspect conditions, decisions, code and checks; direct shell reads are not counted here"
+          }
+        }
+      ],
+      "behaviorEligible": true,
+      "semanticReview": "unverified",
+      "questionReview": "unverified",
+      "usage": {
+        "input_tokens": 2101824,
+        "output_tokens": 25646,
+        "total_tokens": 2127470,
+        "cached_input_tokens": 2005632,
+        "reasoning_output_tokens": 10366
+      }
+    },
+    {
+      "profile": "shared",
+      "arm": "plain",
+      "threadId": "01a0fbc2-5ebb-7050-9174-9e93b1481303",
+      "records": [
+        {
+          "phase": "questions",
+          "attempt": 0,
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 72.792,
+            "completedTurns": 1,
+            "threadId": "01a0fbc2-5ebb-7050-9174-9e93b1481303",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 81014,
+              "cached_input_tokens": 48384,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 3149,
+              "reasoning_output_tokens": 1079,
+              "total_tokens": 84163,
+              "uncached_input_tokens": 32630
+            },
+            "cumulativeUsage": {
+              "input_tokens": 81014,
+              "cached_input_tokens": 48384,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 3149,
+              "reasoning_output_tokens": 1079
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "grade": {
+            "eligible": true,
+            "status": "plan-recorded-not-semantically-graded",
+            "results": []
+          },
+          "planProductUnchanged": true,
+          "knowledgeTrace": {
+            "calls": [],
+            "adoption": "unverified; inspect conditions, decisions, code and checks; direct shell reads are not counted here"
+          }
+        },
+        {
+          "phase": "plan",
+          "attempt": 0,
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 86.334,
+            "completedTurns": 1,
+            "threadId": "01a0fbc2-5ebb-7050-9174-9e93b1481303",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 122905,
+              "cached_input_tokens": 107904,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 3691,
+              "reasoning_output_tokens": 903,
+              "total_tokens": 126596,
+              "uncached_input_tokens": 15001
+            },
+            "cumulativeUsage": {
+              "input_tokens": 203919,
+              "cached_input_tokens": 156288,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 6840,
+              "reasoning_output_tokens": 1982
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "grade": {
+            "eligible": true,
+            "status": "plan-recorded-not-semantically-graded",
+            "results": []
+          },
+          "planProductUnchanged": true,
+          "knowledgeTrace": {
+            "calls": [],
+            "adoption": "unverified; inspect conditions, decisions, code and checks; direct shell reads are not counted here"
+          }
+        },
+        {
+          "phase": "work-initial",
+          "attempt": 0,
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 203.322,
+            "completedTurns": 1,
+            "threadId": "01a0fbc2-5ebb-7050-9174-9e93b1481303",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 633661,
+              "cached_input_tokens": 602752,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 8579,
+              "reasoning_output_tokens": 4028,
+              "total_tokens": 642240,
+              "uncached_input_tokens": 30909
+            },
+            "cumulativeUsage": {
+              "input_tokens": 837580,
+              "cached_input_tokens": 759040,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 15419,
+              "reasoning_output_tokens": 6010
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "grade": {
+            "profile": "shared",
+            "stage": "initial",
+            "eligible": false,
+            "results": [
+              {
+                "id": "purchase/existing-save-and-input",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/analytics-contract",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/analytics-failure-does-not-fail-order",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/submit-failure-preserves-input-and-retries",
+                "status": "failed",
+                "reason": "expect(locator).toContainText(expected) failed\n\nLocator: getByRole('region', { name: '일반 주문', exact: true }).getByRole('alert')\nExpected substring: \"offline\"\nReceived string:    \"주문을 완료하지 못했습니다. 입력을 확인하고 다시 시도해주세요.\"\nTimeout: 5000ms\n\nCall log:\n  - Expect \"toContainText\" getByRole('region', { name: '일반 주문', exact: true }).getByRole('alert') with timeout 5000ms\n  - waiting for getByRole('region', { name: '일반 주문', exact: true }).getByRole('alert')\n    14 × locator resolved to <p role=\"alert\">주문을 완료하지 못했습니다. 입력을 확인하고 다시 시도해주세요.</p>\n       - unexpected value \"주문을 완료하지 못했습니다. 입력을 확인하고 다시 시도해주세요.\"\n"
+              },
+              {
+                "id": "purchase/quote-failure-prevents-submit-and-retries",
+                "status": "failed",
+                "reason": "expect(locator).toContainText(expected) failed\n\nLocator: getByRole('region', { name: '일반 주문', exact: true }).getByRole('alert')\nExpected substring: \"quote offline\"\nReceived string:    \"주문을 완료하지 못했습니다. 입력을 확인하고 다시 시도해주세요.\"\nTimeout: 5000ms\n\nCall log:\n  - Expect \"toContainText\" getByRole('region', { name: '일반 주문', exact: true }).getByRole('alert') with timeout 5000ms\n  - waiting for getByRole('region', { name: '일반 주문', exact: true }).getByRole('alert')\n    14 × locator resolved to <p role=\"alert\">주문을 완료하지 못했습니다. 입력을 확인하고 다시 시도해주세요.</p>\n       - unexpected value \"주문을 완료하지 못했습니다. 입력을 확인하고 다시 시도해주세요.\"\n"
+              },
+              {
+                "id": "purchase/quantity-range",
+                "status": "passed"
+              },
+              {
+                "id": "gift/existing-save-and-input",
+                "status": "passed"
+              },
+              {
+                "id": "gift/analytics-contract",
+                "status": "passed"
+              },
+              {
+                "id": "gift/analytics-failure-does-not-fail-order",
+                "status": "passed"
+              },
+              {
+                "id": "gift/submit-failure-preserves-input-and-retries",
+                "status": "failed",
+                "reason": "expect(locator).toContainText(expected) failed\n\nLocator: getByRole('region', { name: '선물 주문', exact: true }).getByRole('alert')\nExpected substring: \"offline\"\nReceived string:    \"주문을 완료하지 못했습니다. 입력을 확인하고 다시 시도해주세요.\"\nTimeout: 5000ms\n\nCall log:\n  - Expect \"toContainText\" getByRole('region', { name: '선물 주문', exact: true }).getByRole('alert') with timeout 5000ms\n  - waiting for getByRole('region', { name: '선물 주문', exact: true }).getByRole('alert')\n    14 × locator resolved to <p role=\"alert\">주문을 완료하지 못했습니다. 입력을 확인하고 다시 시도해주세요.</p>\n       - unexpected value \"주문을 완료하지 못했습니다. 입력을 확인하고 다시 시도해주세요.\"\n"
+              },
+              {
+                "id": "gift/quote-failure-prevents-submit-and-retries",
+                "status": "failed",
+                "reason": "expect(locator).toContainText(expected) failed\n\nLocator: getByRole('region', { name: '선물 주문', exact: true }).getByRole('alert')\nExpected substring: \"quote offline\"\nReceived string:    \"주문을 완료하지 못했습니다. 입력을 확인하고 다시 시도해주세요.\"\nTimeout: 5000ms\n\nCall log:\n  - Expect \"toContainText\" getByRole('region', { name: '선물 주문', exact: true }).getByRole('alert') with timeout 5000ms\n  - waiting for getByRole('region', { name: '선물 주문', exact: true }).getByRole('alert')\n    14 × locator resolved to <p role=\"alert\">주문을 완료하지 못했습니다. 입력을 확인하고 다시 시도해주세요.</p>\n       - unexpected value \"주문을 완료하지 못했습니다. 입력을 확인하고 다시 시도해주세요.\"\n"
+              },
+              {
+                "id": "gift/quantity-range",
+                "status": "passed"
+              },
+              {
+                "id": "independent-pending-and-no-duplicate",
+                "status": "passed"
+              },
+              {
+                "id": "keep-valid-money",
+                "status": "passed"
+              }
+            ],
+            "status": "graded",
+            "review": [
+              {
+                "id": "readability",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "predictability",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "cohesion",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "coupling",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "plan-work",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "knowledge-use",
+                "status": "unverified",
+                "evidence": []
+              }
+            ],
+            "scope": "Behavior checks do not establish readability, appropriate abstraction or full accessibility."
+          },
+          "planProductUnchanged": true,
+          "knowledgeTrace": {
+            "calls": [],
+            "adoption": "unverified; inspect conditions, decisions, code and checks; direct shell reads are not counted here"
+          }
+        },
+        {
+          "phase": "work-initial",
+          "attempt": 1,
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 83.498,
+            "completedTurns": 1,
+            "threadId": "01a0fbc2-5ebb-7050-9174-9e93b1481303",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 501814,
+              "cached_input_tokens": 491392,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 3252,
+              "reasoning_output_tokens": 1327,
+              "total_tokens": 505066,
+              "uncached_input_tokens": 10422
+            },
+            "cumulativeUsage": {
+              "input_tokens": 1339394,
+              "cached_input_tokens": 1250432,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 18671,
+              "reasoning_output_tokens": 7337
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "grade": {
+            "profile": "shared",
+            "stage": "initial",
+            "eligible": true,
+            "results": [
+              {
+                "id": "purchase/existing-save-and-input",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/analytics-contract",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/analytics-failure-does-not-fail-order",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/submit-failure-preserves-input-and-retries",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/quote-failure-prevents-submit-and-retries",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/quantity-range",
+                "status": "passed"
+              },
+              {
+                "id": "gift/existing-save-and-input",
+                "status": "passed"
+              },
+              {
+                "id": "gift/analytics-contract",
+                "status": "passed"
+              },
+              {
+                "id": "gift/analytics-failure-does-not-fail-order",
+                "status": "passed"
+              },
+              {
+                "id": "gift/submit-failure-preserves-input-and-retries",
+                "status": "passed"
+              },
+              {
+                "id": "gift/quote-failure-prevents-submit-and-retries",
+                "status": "passed"
+              },
+              {
+                "id": "gift/quantity-range",
+                "status": "passed"
+              },
+              {
+                "id": "independent-pending-and-no-duplicate",
+                "status": "passed"
+              },
+              {
+                "id": "keep-valid-money",
+                "status": "passed"
+              }
+            ],
+            "status": "graded",
+            "review": [
+              {
+                "id": "readability",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "predictability",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "cohesion",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "coupling",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "plan-work",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "knowledge-use",
+                "status": "unverified",
+                "evidence": []
+              }
+            ],
+            "scope": "Behavior checks do not establish readability, appropriate abstraction or full accessibility."
+          },
+          "planProductUnchanged": true,
+          "knowledgeTrace": {
+            "calls": [],
+            "adoption": "unverified; inspect conditions, decisions, code and checks; direct shell reads are not counted here"
+          }
+        },
+        {
+          "phase": "plan-change",
+          "attempt": 0,
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 45.491,
+            "completedTurns": 1,
+            "threadId": "01a0fbc2-5ebb-7050-9174-9e93b1481303",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 211457,
+              "cached_input_tokens": 203008,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 1505,
+              "reasoning_output_tokens": 340,
+              "total_tokens": 212962,
+              "uncached_input_tokens": 8449
+            },
+            "cumulativeUsage": {
+              "input_tokens": 1550851,
+              "cached_input_tokens": 1453440,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 20176,
+              "reasoning_output_tokens": 7677
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "grade": {
+            "eligible": true,
+            "status": "plan-recorded-not-semantically-graded",
+            "results": []
+          },
+          "planProductUnchanged": true,
+          "knowledgeTrace": {
+            "calls": [],
+            "adoption": "unverified; inspect conditions, decisions, code and checks; direct shell reads are not counted here"
+          }
+        },
+        {
+          "phase": "work-change",
+          "attempt": 0,
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 57.707,
+            "completedTurns": 1,
+            "threadId": "01a0fbc2-5ebb-7050-9174-9e93b1481303",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 417512,
+              "cached_input_tokens": 410368,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 2057,
+              "reasoning_output_tokens": 501,
+              "total_tokens": 419569,
+              "uncached_input_tokens": 7144
+            },
+            "cumulativeUsage": {
+              "input_tokens": 1968363,
+              "cached_input_tokens": 1863808,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 22233,
+              "reasoning_output_tokens": 8178
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "grade": {
+            "profile": "shared",
+            "stage": "change",
+            "eligible": true,
+            "results": [
+              {
+                "id": "purchase/existing-save-and-input",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/analytics-contract",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/analytics-failure-does-not-fail-order",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/submit-failure-preserves-input-and-retries",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/quote-failure-prevents-submit-and-retries",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/quantity-range",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/member-1",
+                "status": "passed"
+              },
+              {
+                "id": "purchase/member-2",
+                "status": "passed"
+              },
+              {
+                "id": "gift/existing-save-and-input",
+                "status": "passed"
+              },
+              {
+                "id": "gift/analytics-contract",
+                "status": "passed"
+              },
+              {
+                "id": "gift/analytics-failure-does-not-fail-order",
+                "status": "passed"
+              },
+              {
+                "id": "gift/submit-failure-preserves-input-and-retries",
+                "status": "passed"
+              },
+              {
+                "id": "gift/quote-failure-prevents-submit-and-retries",
+                "status": "passed"
+              },
+              {
+                "id": "gift/quantity-range",
+                "status": "passed"
+              },
+              {
+                "id": "gift/member-1",
+                "status": "passed"
+              },
+              {
+                "id": "gift/member-2",
+                "status": "passed"
+              },
+              {
+                "id": "independent-pending-and-no-duplicate",
+                "status": "passed"
+              },
+              {
+                "id": "keep-valid-money",
+                "status": "passed"
+              }
+            ],
+            "status": "graded",
+            "review": [
+              {
+                "id": "readability",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "predictability",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "cohesion",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "coupling",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "plan-work",
+                "status": "unverified",
+                "evidence": []
+              },
+              {
+                "id": "knowledge-use",
+                "status": "unverified",
+                "evidence": []
+              }
+            ],
+            "scope": "Behavior checks do not establish readability, appropriate abstraction or full accessibility."
+          },
+          "planProductUnchanged": true,
+          "knowledgeTrace": {
+            "calls": [],
+            "adoption": "unverified; inspect conditions, decisions, code and checks; direct shell reads are not counted here"
+          }
+        }
+      ],
+      "behaviorEligible": true,
+      "semanticReview": "unverified",
+      "questionReview": "unverified",
+      "usage": {
+        "input_tokens": 1968363,
+        "output_tokens": 22233,
+        "total_tokens": 1990596,
+        "cached_input_tokens": 1863808,
+        "reasoning_output_tokens": 8178
+      }
+    }
+  ]
+}

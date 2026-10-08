@@ -1,0 +1,6 @@
+{
+  "change": "Report categories use actual tool identifiers rather than names quoted in payload schema/help. Applied uniformly to every recorded response; no usage counters or model inputs changed. Mixed calls remain mixed.",
+  "measurement": "Original frozen extractor and raw CLI events remain preserved. Derived tokens.json is regenerated from exact-thread rollouts with unchanged per-response counters and extractor hash; report recomputes labels uniformly.",
+  "tests": "Exact reconciliation, duplicate/conflict/thread guards and schema-vs-save identifier tests passed.",
+  "errorSignals": "Decode visible tool-output blocks before reading error status; match exact failed MCP messages from the same execution events. Re-extracted all runs uniformly. No private reasoning, account metadata or usage counters changed. Error-following requests are not a causal waste estimate."
+}

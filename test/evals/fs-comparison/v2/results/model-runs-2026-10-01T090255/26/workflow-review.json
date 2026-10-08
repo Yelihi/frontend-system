@@ -1,0 +1,48 @@
+{
+  "reviewKind": "separate-workflow-and-document-adjudication",
+  "qualitySource": "../blind-review/a5c9f9d4aa00/review.json",
+  "eligibleComplete": false,
+  "conditionAdherence": {
+    "passed": false,
+    "arm": "fs",
+    "evidence": "Read FS and called baseline/context, but planning/implementation/verification/completion unfinished."
+  },
+  "documents": {
+    "passed": false,
+    "evidence": "No plan/completion evidence. Only initial baseline record retained."
+  },
+  "R9": {
+    "passed": true,
+    "evidence": "No false completion claim; last message announces intended implementation after initial baseline."
+  },
+  "H10": {
+    "passed": false,
+    "currentSourceValidationPassed": false,
+    "externalSourceBeforeAfterMatchesFinal": true,
+    "protectedAssetsPassed": 9,
+    "evidence": "Four core product files empty; build and original E2E fail. No current-source author final checks."
+  },
+  "attemptBudgetRespected": true,
+  "fullValidationAttempts": 1,
+  "attemptEvidence": "Initial incomplete implementation after baseline. Native patch helper denied; final source files empty. No completed repair cycle or model retry.",
+  "eligibilityEvidence": [
+    "Historical pre-correction: 9/110: all101 product cases fail; incomplete native workflow and no final verification.",
+    "Historical pre-correction: Timeout900.010, provider usage null. External HTTP readiness recovery preserves source and does not rerun model.",
+    "Historical pre-correction: Independent Q0/R1-R8fail: required domain/routes/JSX exports missing, not evaluator U.",
+    "Final: corrected 9/110; independentQ0; product R1-R8 fail; eligibleComplete=False. Details and original adjudication preserved."
+  ],
+  "procedureObservations": [
+    "Original browser wrapper rejected HTTP500 before grading. Original external logs preserved in checks-before-http-readiness-recovery; calibrated reachable-error handling then reran externalchecks only."
+  ],
+  "evaluatorAdjudication": {
+    "status": "final",
+    "revision": "accessible-name-v2",
+    "originalPassed": 9,
+    "correctedPassed": 9,
+    "changedCases": [],
+    "sourceUnchanged": true,
+    "independentCorrectionReview": "../blind-review/a5c9f9d4aa00/regrade-review.json",
+    "qualityAndRulesUnchanged": true,
+    "eligibleComplete": false
+  }
+}

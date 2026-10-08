@@ -1,0 +1,108 @@
+{
+  "html": "<html><head></head><body><label>Quantity A<input type=\"number\" value=\"1\"></label><label>Coupon<select><option value=\"\">No coupon</option><option value=\"SAVE10\">SAVE10</option><option value=\"SHIPFREE\">SHIPFREE</option></select></label><label>Total<output>15,000 KRW</output></label></body></html>",
+  "ariaSnapshot": "- text: Quantity A\n- spinbutton \"Quantity A\": \"1\"\n- text: Coupon\n- combobox \"Coupon\":\n  - option \"No coupon\" [selected]\n  - option \"SAVE10\"\n  - option \"SHIPFREE\"\n- text: Total\n- status \"Total\": 15,000 KRW",
+  "exactLabelCounts": {
+    "Total": 0,
+    "Coupon": 0
+  },
+  "exactRoleCounts": {
+    "Coupon": 1
+  },
+  "chromiumAccessibleNodes": [
+    {
+      "role": "RootWebArea",
+      "name": ""
+    },
+    {
+      "role": "generic",
+      "name": ""
+    },
+    {
+      "role": "LabelText",
+      "name": ""
+    },
+    {
+      "role": "LabelText",
+      "name": ""
+    },
+    {
+      "role": "LabelText",
+      "name": ""
+    },
+    {
+      "role": "StaticText",
+      "name": "Quantity A"
+    },
+    {
+      "role": "spinbutton",
+      "name": "Quantity A",
+      "value": 1
+    },
+    {
+      "role": "StaticText",
+      "name": "Coupon"
+    },
+    {
+      "role": "combobox",
+      "name": "Coupon",
+      "value": "No coupon"
+    },
+    {
+      "role": "StaticText",
+      "name": "Total"
+    },
+    {
+      "role": "status",
+      "name": "Total"
+    },
+    {
+      "role": "InlineTextBox",
+      "name": "Quantity A"
+    },
+    {
+      "role": "generic",
+      "name": ""
+    },
+    {
+      "role": "InlineTextBox",
+      "name": "Coupon"
+    },
+    {
+      "role": "MenuListPopup",
+      "name": ""
+    },
+    {
+      "role": "InlineTextBox",
+      "name": "Total"
+    },
+    {
+      "role": "StaticText",
+      "name": "15,000 KRW"
+    },
+    {
+      "role": "StaticText",
+      "name": "1"
+    },
+    {
+      "role": "option",
+      "name": "No coupon"
+    },
+    {
+      "role": "option",
+      "name": "SAVE10"
+    },
+    {
+      "role": "option",
+      "name": "SHIPFREE"
+    },
+    {
+      "role": "InlineTextBox",
+      "name": "15,000 KRW"
+    },
+    {
+      "role": "InlineTextBox",
+      "name": "1"
+    }
+  ],
+  "browserVersion": "153.0.8010.12"
+}

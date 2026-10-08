@@ -1,0 +1,5 @@
+@import "tailwindcss";
+@theme inline {
+  --color-action: var(--color-blue-600);
+  --color-on-action: var(--color-white);
+}

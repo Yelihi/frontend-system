@@ -1,0 +1,62 @@
+{
+  "evidence": "fs/defaults/work/0/model/events.jsonl",
+  "firstEdit": {
+    "id": "item_5",
+    "type": "file_change",
+    "changes": [
+      {
+        "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v8-replay-bqyi6gnq/project/ui-style.test.mjs",
+        "kind": "update"
+      }
+    ],
+    "status": "completed"
+  },
+  "firstRecordedDevelopmentCheck": {
+    "id": "item_7",
+    "type": "mcp_tool_call",
+    "server": "frontend-system",
+    "tool": "run_project_checks",
+    "arguments": {
+      "planId": "defaults-20261005",
+      "attemptId": "9f43e9f1-f6ee-4c92-b3f6-65063dd9e25d",
+      "capabilities": [
+        "test"
+      ]
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"id\":\"03a7acd8-39f4-4ee3-9620-779be594dde7\",\"path\":\"/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v8-replay-bqyi6gnq/project/.frontend-system/plans/defaults-20261005/checks/03a7acd8-39f4-4ee3-9620-779be594dde7.json\",\"coverage\":{\"requiredScripts\":[\"test\",\"lint:styles\",\"build\"],\"missingOrFailedScripts\":[\"lint:styles\",\"build\"],\"allRequiredPassed\":false},\"planId\":\"defaults-20261005\",\"purpose\":\"verification\",\"revisionHash\":\"3b4c23ace8c2d5ea613a955f063c3141345a4cfb67be66065876c9fc8cf90275\",\"sourceHash\":\"5a72abe82c128d7b3a16ddf680e312caca5d86c747ff120ddf2fa9dc188fe67a\",\"stable\":true,\"full\":false,\"results\":[{\"capability\":\"test\",\"command\":\"npm run test\",\"passed\":true,\"status\":\"passed\",\"workingDirectory\":\"/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v8-replay-bqyi6gnq/project\",\"output\":\"\",\"outputCharacters\":383,\"outputTruncated\":true}],\"createdAt\":\"2026-10-05T04:16:33.181Z\",\"attemptId\":\"9f43e9f1-f6ee-4c92-b3f6-65063dd9e25d\",\"comparison\":[{\"capability\":\"test\",\"previousStatus\":null,\"status\":\"passed\",\"previouslyFailing\":false,\"needsFailureReview\":false}]}"
+        }
+      ],
+      "structured_content": null
+    },
+    "error": null,
+    "status": "completed"
+  },
+  "firstProductEdit": {
+    "id": "item_8",
+    "type": "file_change",
+    "changes": [
+      {
+        "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v8-replay-bqyi6gnq/project/ui-style.test.mjs",
+        "kind": "update"
+      },
+      {
+        "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v8-replay-bqyi6gnq/project/ui/ActionButton.jsx",
+        "kind": "update"
+      },
+      {
+        "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v8-replay-bqyi6gnq/project/ui/PanelCard.jsx",
+        "kind": "update"
+      },
+      {
+        "path": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-v8-replay-bqyi6gnq/project/ui/StatusBadge.jsx",
+        "kind": "update"
+      }
+    ],
+    "status": "completed"
+  },
+  "limits": "Observed order in this run: test edit, passing development test, product edit. This is not proof that every semantic obligation is tested."
+}

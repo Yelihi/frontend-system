@@ -3,13 +3,17 @@ import { readFile } from "node:fs/promises";
 import { git } from "./git-state.js";
 import * as z from "zod/v4";
 import { atomic, directory, locked, digest } from "./workflow-store.js";
+import { boundReadWindows } from './read-windows.js';
 
 // Generated context and workflow evidence do not trigger a document refresh loop.
 const included = (path: string) => !path.split("/").includes(".frontend-system") || path === ".frontend-system/config.json";
 
 export async function projectSnapshot(root: string, baseRef = "main") {
   if (!/^[a-zA-Z0-9][a-zA-Z0-9._/-]*$/.test(baseRef) || baseRef.includes("..")) throw new Error("Invalid base branch");
-  const head = await git(root, ["rev-parse", "--verify", "HEAD"]).then((value) => value.trim(), () => null);
+  const head = await git(root, ["rev-parse", "--verify", "--quiet", "HEAD"]).then((value) => value.trim(), (error: Error & { code?: number; stderr?: string }) => {
+    if ((error.code === 1 && !error.stderr?.trim()) || /not a git repository/i.test(error.stderr ?? "")) return null;
+    throw error;
+  });
   if (!head) return { baseRef, commit: null, sourceHash: digest("[]"), files: [] as string[], manifests: {} as Record<string, unknown>, workingChanges: [] as string[], status: "unversioned" as const };
   // Never substitute the feature branch when the requested main branch is missing.
   const commit = (await git(root, ["rev-parse", "--verify", `${baseRef}^{commit}`])).trim();
@@ -33,8 +37,22 @@ export async function readProjectSource(root: string, path: string, expectedComm
   const snapshot = await projectSnapshot(root, baseRef);
   if (snapshot.commit !== expectedCommit) throw new Error("Main changed; refresh project facts");
   if (!snapshot.files.includes(path)) throw new Error("Select a file from the main snapshot");
-  const content = await git(root, ["show", `${expectedCommit}:./${path}`]);
-  return { commit: expectedCommit, path, content: content.slice(offset, offset + limit), totalCharacters: content.length, nextOffset: offset + limit < content.length ? offset + limit : null };
+  return sourceWindow(root, path, expectedCommit, offset, limit);
+}
+
+async function sourceWindow(root: string, path: string, commit: string, offset: number, limit: number) {
+  const content = await git(root, ["show", `${commit}:./${path}`]);
+  return { commit, path, hash: digest(content), content: content.slice(offset, offset + limit), totalCharacters: content.length, nextOffset: offset + limit < content.length ? offset + limit : null };
+}
+
+export async function readProjectSources(root: string, paths: string[], expectedCommit: string, baseRef = "main", offset = 0, limit = 6000) {
+  if (!paths.length || paths.length > 100 || new Set(paths).size !== paths.length) throw new Error("Select 1–100 distinct main source paths");
+  if (!Number.isInteger(offset) || offset < 0 || !Number.isInteger(limit) || limit < 1 || limit > 12000) throw new Error("Invalid source window");
+  const snapshot = await projectSnapshot(root, baseRef);
+  if (snapshot.commit !== expectedCommit) throw new Error("Main changed; refresh project facts");
+  if (paths.some(path => !snapshot.files.includes(path))) throw new Error("Select a file from the main snapshot");
+  const files = await Promise.all(paths.slice(0, 40).map(path => sourceWindow(root, path, expectedCommit, offset, limit)));
+  return { files: boundReadWindows(files, offset), nextPaths: paths.slice(40) };
 }
 
 const metadataSchema = z.object({

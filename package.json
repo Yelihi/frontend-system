@@ -1,6 +1,6 @@
 {
   "name": "frontend-system",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "type": "module",
   "bin": {
     "fs": "dist/src/cli.js",
@@ -15,12 +15,14 @@
     ".codex-plugin/",
     ".claude-plugin/",
     ".mcp.json",
-    "README.md"
+    "README.md",
+    ".agents/plugins/marketplace.json",
+    "release-manifest.json"
   ],
   "scripts": {
-    "prebuild": "node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\"",
-    "build": "tsc -p tsconfig.json && npm run bundle:mcp",
-    "bundle:mcp": "esbuild src/mcp.ts --bundle --platform=node --format=esm --target=node18 --outfile=bundle/mcp.js",
+    "prebuild": "node -e \"for (const path of ['dist', 'bundle']) require('node:fs').rmSync(path, { recursive: true, force: true })\"",
+    "build": "tsc -p tsconfig.json && npm run bundle:mcp && node scripts/export-tool-schemas.mjs && node scripts/release.mjs manifest",
+    "bundle:mcp": "esbuild src/mcp.ts src/style-check.ts --bundle --splitting --platform=node --format=esm --target=node18 --outdir=bundle --chunk-names=chunks/[name]-[hash] --banner:js=\"import { createRequire as __fsCreateRequire } from 'node:module'; import { fileURLToPath as __fsFileURLToPath } from 'node:url'; import { dirname as __fsDirname } from 'node:path'; const require = __fsCreateRequire(import.meta.url); const __filename = __fsFileURLToPath(import.meta.url); const __dirname = __fsDirname(__filename);\"",
     "fs": "node dist/src/cli.js",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint src test",
@@ -28,17 +30,20 @@
     "test:eval": "npm run build && node --test dist/test/reliability-eval.test.js",
     "check": "npm run typecheck && npm run lint && npm test",
     "test:frontend": "npm --prefix test/fixtures/frontend run acceptance && npm --prefix test/fixtures/frontend run test:e2e",
-    "test:package": "node scripts/check-package.mjs"
+    "test:package": "node scripts/check-package.mjs",
+    "release:version": "node scripts/release.mjs version",
+    "release:check": "node scripts/release.mjs check",
+    "release:ready": "node scripts/release.mjs ready"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.30.0",
-    "zod": "^4.1.5"
+    "zod": "^4.1.5",
+    "typescript": "^5.9.2"
   },
   "devDependencies": {
     "@types/node": "^24.3.1",
     "esbuild": "^0.28.2",
     "eslint": "^10.10.0",
-    "typescript": "^5.9.2",
     "typescript-eslint": "^8.69.0"
   }
 }

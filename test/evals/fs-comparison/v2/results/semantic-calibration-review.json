@@ -1,0 +1,1426 @@
+{
+  "schema_version": 1,
+  "review_kind": "independent_blinded_semantic_calibration",
+  "reviewer": "/root/calibration_review",
+  "input_root": "semantic-calibration-inputs",
+  "scope": {
+    "read": [
+      "oracle.md",
+      "protocol.md",
+      "c01/product-and-tests",
+      "c02/product-and-tests",
+      "c03/product-and-tests",
+      "c04/product-and-tests"
+    ],
+    "implementation_participation": false,
+    "condition_mapping_read": false,
+    "other_results_read": false,
+    "product_edits": false,
+    "additional_model_calls": false,
+    "browser_execution": "not_run_as_instructed",
+    "policy_and_io_change_probe": "not_provided_and_not_run",
+    "limitations": [
+      "Q1~Q9는 호출 그래프와 소스의 의미 판정이며 아래 Node 실행은 제한된 보조 증거다. 자동 검사 성공을 의미 점수로 치환하지 않았다.",
+      "Q10 두 항목은 필수 변경 실험이 없어 U로 기록하고, 정적 잠정 판단만 별도로 남긴다. 100점 만점의 확정 총점은 발표하지 않는다.",
+      "브라우저, Next HTTP 서버, 접근성 실제 조작, 360px 레이아웃, 보호 파일 원본 대비 보존 및 마지막 제품 수정 뒤 검증 순서는 확인하지 않았다.",
+      "파일 수·계층 수·클래스 사용 자체를 감점하지 않으며 허용 대안에 동일한 두 항목 기준을 적용한다."
+    ]
+  },
+  "score_legend": {
+    "0": "구체 위반",
+    "5": "해당 항목의 의미 증거 충족",
+    "U": "필수 판정 증거 부족"
+  },
+  "candidates": [
+    {
+      "id": "c01",
+      "criteria": {
+        "Q1": {
+          "items": [
+            {
+              "id": "Q1.1",
+              "criterion": "React/HTTP 없는 실행",
+              "score": 5,
+              "semantic_reason": "계산 함수는 UI·HTTP 객체 없이 인자만 검증·계산하며 실제 단위 테스트가 직접 호출한다.",
+              "evidence": [
+                "c01/src/checkout.js:5",
+                "c01/src/checkout.js:22",
+                "c01/tests/checkout.test.mjs:5"
+              ],
+              "execution_evidence": [
+                "node-tests"
+              ],
+              "limitations": "React/HTTP 없이 직접 실행했다. 전체 런타임 이식성까지 확인한 것은 아니다."
+            },
+            {
+              "id": "Q1.2",
+              "criterion": "상품·재고 데이터를 바꿔 실행 가능",
+              "score": 5,
+              "semantic_reason": "catalog 인자에서 id·price·stock을 읽는다. 테스트는 운영 A/B 대신 X와 12345원을 주입한다.",
+              "evidence": [
+                "c01/src/checkout.js:17",
+                "c01/src/checkout.js:19",
+                "c01/tests/checkout.test.mjs:6"
+              ],
+              "execution_evidence": [
+                "node-tests"
+              ],
+              "limitations": "대체 가격 실행은 확인했다. 재고 계약의 모든 변형을 이번 실행에서 검사한 것은 아니다."
+            }
+          ]
+        },
+        "Q2": {
+          "items": [
+            {
+              "id": "Q2.1",
+              "criterion": "견적·주문이 같은 계산 규칙 사용",
+              "score": 5,
+              "semantic_reason": "두 POST가 동일 calculateQuote를 호출한다.",
+              "evidence": [
+                "c01/app/api/quote/route.js:8",
+                "c01/app/api/orders/route.js:8"
+              ],
+              "execution_evidence": [
+                "node-tests"
+              ],
+              "limitations": "실제 POST 직접 호출 테스트를 실행했으며 Next 서버 E2E는 아니다."
+            },
+            {
+              "id": "Q2.2",
+              "criterion": "할인·배송 판단을 다른 경로에 재구현하지 않음",
+              "score": 5,
+              "semantic_reason": "할인율·배송 기준은 계산 함수 한 곳에 있고 UI는 quote.total만 표시한다. 수량 폼 가드는 가격 규칙 복제가 아니다.",
+              "evidence": [
+                "c01/src/checkout.js:22",
+                "c01/src/checkout.js:24",
+                "c01/app/checkout.jsx:36",
+                "c01/src/controller.js:13"
+              ],
+              "execution_evidence": [],
+              "limitations": "정적 소스·호출 그래프에 대한 판정이며 전체 기능 적격 판정을 의미하지 않는다."
+            }
+          ]
+        },
+        "Q3": {
+          "items": [
+            {
+              "id": "Q3.1",
+              "criterion": "업무 코드가 UI·프레임워크·구체 I/O에 의존하지 않음",
+              "score": 5,
+              "semantic_reason": "업무 계산에는 외부 import가 없고, 조정 계층은 전달받은 함수에만 의존한다.",
+              "evidence": [
+                "c01/src/checkout.js:5"
+              ],
+              "execution_evidence": [],
+              "limitations": "구체 프레임워크 의존이 없는 계산 및 호출 방향을 확인했다."
+            },
+            {
+              "id": "Q3.2",
+              "criterion": "I/O 연결이 바깥 경계에 있음",
+              "score": 5,
+              "semantic_reason": "실제 상품 조회 연결과 await는 route에서 수행한다. UI fetch도 UI 경계에 있다.",
+              "evidence": [
+                "c01/app/api/quote/route.js:8",
+                "c01/app/api/orders/route.js:8",
+                "c01/app/checkout.jsx:5"
+              ],
+              "execution_evidence": [],
+              "limitations": "I/O 변경 실험은 수행하지 않았다."
+            }
+          ]
+        },
+        "Q4": {
+          "items": [
+            {
+              "id": "Q4.1",
+              "criterion": "UI가 가격 정책·서버 신뢰 판단을 소유하지 않음",
+              "score": 5,
+              "semantic_reason": "UI는 입력·표시·이벤트 전달만 담당하며 서버 가격·재고의 최종 판단은 calculateQuote가 수행한다.",
+              "evidence": [
+                "c01/app/checkout.jsx:23",
+                "c01/app/checkout.jsx:36",
+                "c01/src/checkout.js:17"
+              ],
+              "execution_evidence": [],
+              "limitations": "정적 소스·호출 그래프에 대한 판정이며 전체 기능 적격 판정을 의미하지 않는다."
+            },
+            {
+              "id": "Q4.2",
+              "criterion": "전송 코드와 업무 결정의 책임이 식별 가능",
+              "score": 5,
+              "semantic_reason": "route의 JSON/응답 및 조회 처리와 calculateQuote의 검증·정책 결정이 분리된다.",
+              "evidence": [
+                "c01/app/api/orders/route.js:5",
+                "c01/app/api/orders/route.js:8",
+                "c01/src/checkout.js:22"
+              ],
+              "execution_evidence": [],
+              "limitations": "정적 소스·호출 그래프에 대한 판정이며 전체 기능 적격 판정을 의미하지 않는다."
+            }
+          ]
+        },
+        "Q5": {
+          "items": [
+            {
+              "id": "Q5.1",
+              "criterion": "불필요한 전역 장바구니·파생 합계 복제 없음",
+              "score": 5,
+              "semantic_reason": "장바구니는 컴포넌트별 controller에 있고 total을 별도 state/effect로 복제하지 않는다. React state는 controller가 발행한 동일 상태의 렌더링 스냅샷이다.",
+              "evidence": [
+                "c01/src/controller.js:7",
+                "c01/src/controller.js:10",
+                "c01/app/checkout.jsx:15",
+                "c01/app/checkout.jsx:36"
+              ],
+              "execution_evidence": [],
+              "limitations": "정적 소스·호출 그래프에 대한 판정이며 전체 기능 적격 판정을 의미하지 않는다."
+            },
+            {
+              "id": "Q5.2",
+              "criterion": "원격 견적·입력·오류의 수명과 소유자가 명확함",
+              "score": 5,
+              "semantic_reason": "수량·쿠폰 변경마다 revision을 올리고 quote를 즉시 비운다. 현재 revision만 성공·오류·대기 종료를 갱신하며 submit은 quoting/null quote를 거부한다.",
+              "evidence": [
+                "c01/src/controller.js:23",
+                "c01/src/controller.js:25",
+                "c01/src/controller.js:29",
+                "c01/src/controller.js:37",
+                "c01/src/controller.js:52"
+              ],
+              "execution_evidence": [
+                "node-tests"
+              ],
+              "limitations": "요청 입력 원문을 별도 보관하지 않지만 revision과 변경 시 무효화가 현재 폼 입력의 수명과 일치한다."
+            }
+          ]
+        },
+        "Q6": {
+          "items": [
+            {
+              "id": "Q6.1",
+              "criterion": "오래된 성공과 실패 모두 무시",
+              "score": 5,
+              "semantic_reason": "resolve·reject·finally 모두 disposed와 revision을 확인한다. 오래된 성공/실패 두 순서를 실제 controller 테스트가 검증한다.",
+              "evidence": [
+                "c01/src/controller.js:29",
+                "c01/src/controller.js:31",
+                "c01/src/controller.js:33",
+                "c01/tests/controller.test.mjs:14"
+              ],
+              "execution_evidence": [
+                "node-tests"
+              ],
+              "limitations": "브라우저 이벤트 순서는 별도로 실행하지 않았다."
+            },
+            {
+              "id": "Q6.2",
+              "criterion": "잠금 해제·입력 보존·재시도가 일관됨",
+              "score": 5,
+              "semantic_reason": "submit 전 동기 잠금, 입력 변경 차단, finally 잠금 해제, 실패 후 값 보존, 재시도 성공의 오류 제거가 구현되어 있다.",
+              "evidence": [
+                "c01/src/controller.js:37",
+                "c01/src/controller.js:40",
+                "c01/src/controller.js:43",
+                "c01/src/controller.js:48",
+                "c01/src/controller.js:53",
+                "c01/tests/controller.test.mjs:37",
+                "c01/tests/controller.test.mjs:45"
+              ],
+              "execution_evidence": [
+                "node-tests"
+              ],
+              "limitations": "UI disabled 속성은 읽었으나 실제 키보드·submit 이벤트 브라우저 검증은 미실행이다."
+            }
+          ]
+        },
+        "Q7": {
+          "items": [
+            {
+              "id": "Q7.1",
+              "criterion": "이름·자료형이 단위와 의미를 드러냄",
+              "score": 5,
+              "semantic_reason": "subtotal·discount·net·shipping·total과 quantity·stock이 의미를 드러내며 금액은 공개 계약의 정수 원이다. UI에서도 KRW로 표시한다.",
+              "evidence": [
+                "c01/src/checkout.js:11",
+                "c01/src/checkout.js:19",
+                "c01/src/checkout.js:22",
+                "c01/app/checkout.jsx:36"
+              ],
+              "execution_evidence": [],
+              "limitations": "JavaScript 런타임 검증과 명명에 근거한다. 엄격한 정적 타입 보장을 주장하지 않는다."
+            },
+            {
+              "id": "Q7.2",
+              "criterion": "검증·정상·오류 흐름을 불필요한 간접 호출 없이 추적 가능",
+              "score": 5,
+              "semantic_reason": "초기 입력 가드, 상품별 검증, 계산 반환과 try/catch/finally 경로를 직접 추적할 수 있다.",
+              "evidence": [
+                "c01/src/checkout.js:6",
+                "c01/src/checkout.js:12",
+                "c01/src/checkout.js:22",
+                "c01/src/controller.js:21"
+              ],
+              "execution_evidence": [],
+              "limitations": "정적 소스·호출 그래프에 대한 판정이며 전체 기능 적격 판정을 의미하지 않는다."
+            }
+          ]
+        },
+        "Q8": {
+          "items": [
+            {
+              "id": "Q8.1",
+              "criterion": "사용하지 않는 확장점·서비스·추상화 없음",
+              "score": 5,
+              "semantic_reason": "controller factory는 UI와 테스트에서 실제 사용되고, 요구 밖 서비스·확장 구조는 없다.",
+              "evidence": [
+                "c01/src/controller.js:6",
+                "c01/app/checkout.jsx:18"
+              ],
+              "execution_evidence": [],
+              "limitations": "읽은 제품·테스트 전체의 사용처에 근거한다."
+            },
+            {
+              "id": "Q8.2",
+              "criterion": "새 의존성·계층마다 현재 요구에서 확인되는 역할이 있음",
+              "score": 5,
+              "semantic_reason": "UI·controller·계산·상품 조회·HTTP 경계는 각각 실제 역할이 있으며 추가 계층 수를 점수화하지 않는다.",
+              "evidence": [
+                "c01/src/checkout.js:5",
+                "c01/src/catalog.js:1",
+                "c01/src/controller.js:6",
+                "c01/app/api/orders/route.js:8"
+              ],
+              "execution_evidence": [],
+              "limitations": "package/lockfile의 최초 기준본은 제공받지 않았으므로 새 npm 패키지 추가 여부를 별도로 판정하지 않았다. 여기서는 읽은 코드의 의존·계층 역할을 판정한다."
+            }
+          ]
+        },
+        "Q9": {
+          "items": [
+            {
+              "id": "Q9.1",
+              "criterion": "실제 업무 로직이 경계·오류 계약으로 검증됨",
+              "score": 5,
+              "semantic_reason": "실제 등록된 계산 함수를 직접 import하여 12345원 할인 내림·조작 total 무시·잘못된 수량의 400을 검증한다. 구현 함수를 mock하지 않는다.",
+              "evidence": [
+                "c01/tests/checkout.test.mjs:4",
+                "c01/tests/checkout.test.mjs:8",
+                "c01/tests/checkout.test.mjs:10"
+              ],
+              "execution_evidence": [
+                "node-tests"
+              ],
+              "limitations": "배송 49999/50000/50001, 쿠폰·중복·재고 오류 전체를 후보 테스트가 커버하지 않는다. 이 점수는 의미 있는 경계·오류 테스트 존재에 대한 판단이며 모든 숨은 사례 보장을 뜻하지 않는다."
+            },
+            {
+              "id": "Q9.2",
+              "criterion": "경계 통합·비동기 전이가 구현 자체 mock 없이 검증됨",
+              "score": 5,
+              "semantic_reason": "실제 두 POST를 호출하고 실제 controller에 전송 함수만 대체하여 오래된 응답·주문 차단·실패 복구를 검사한다. 테스트 대상 자체를 mock하지 않는다.",
+              "evidence": [
+                "c01/tests/checkout.test.mjs:14",
+                "c01/tests/controller.test.mjs:8",
+                "c01/tests/controller.test.mjs:14",
+                "c01/tests/controller.test.mjs:45"
+              ],
+              "execution_evidence": [
+                "node-tests"
+              ],
+              "limitations": "POST 직접 호출은 Next HTTP 서버 E2E가 아니다. e2e/checkout.spec.mjs는 주문 응답을 스텁하며 이번 리뷰에서 실행하지 않았다."
+            }
+          ]
+        },
+        "Q10": {
+          "items": [
+            {
+              "id": "Q10.1",
+              "criterion": "배송 기준 변경이 정책 소유 위치에 한정됨",
+              "score": "U",
+              "semantic_reason": "정적 잠정 판단은 5: 배송 기준 50000은 정책 함수 한 곳에 있고 양 endpoint가 이를 사용한다. 그러나 60000 정책 변경 사본·실행 증거가 없다.",
+              "evidence": [
+                "c01/src/checkout.js:24",
+                "c01/app/api/orders/route.js:8"
+              ],
+              "execution_evidence": [],
+              "limitations": "필수 정책 변경 probe 미실행. 정적 잠정 판단을 확정 5점으로 합산하지 않는다.",
+              "static_provisional_score": 5
+            },
+            {
+              "id": "Q10.2",
+              "criterion": "상품 조회 대체가 UI·순수 계산의 재작성 없이 가능",
+              "score": "U",
+              "semantic_reason": "정적 잠정 판단은 5: route가 loadCatalog를 await하고 계산에는 배열만 전달하므로 catalog 구현 교체가 UI·계산 재작성 없이 가능해 보인다.",
+              "evidence": [
+                "c01/src/catalog.js:1",
+                "c01/app/api/quote/route.js:8",
+                "c01/app/api/orders/route.js:8"
+              ],
+              "execution_evidence": [],
+              "limitations": "동일 반환 계약의 지연·실패 I/O 대체 probe 미실행. 단위 테스트의 대체 catalog 배열은 I/O 교체 실험을 대신하지 않는다.",
+              "static_provisional_score": 5
+            }
+          ]
+        }
+      },
+      "known_points_out_of_90": 90,
+      "unresolved_items": [
+        "Q10.1",
+        "Q10.2"
+      ],
+      "confirmed_total_out_of_100": null,
+      "execution_evidence": [
+        {
+          "id": "node-tests",
+          "command": "node --test tests/*.test.mjs",
+          "cwd": "semantic-calibration-inputs/c01",
+          "exit_code": 0,
+          "stdout": "✔ catalog supplies independent server data (0.567959ms)\n✔ real pricing and trust boundary (0.71325ms)\n✔ actual quote and order handlers share the contract (10.536084ms)\n[{\"id\":\"stale-success\",\"passed\":true},{\"id\":\"stale-failure\",\"passed\":true},{\"id\":\"pending-quote-blocks-order\",\"passed\":true},{\"id\":\"failed-quote-retry\",\"passed\":true},{\"id\":\"order-duplicate-and-retry\",\"passed\":true},{\"id\":\"dispose-ignores-completion\",\"passed\":true}]\n✔ tests/controller.test.mjs (22.903ms)\nℹ tests 4\nℹ suites 0\nℹ pass 4\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 44.456417\n",
+          "scope": "Node reports 4 test entries, of which controller.test.mjs contains 6 assertion scenarios. These are not the oracle's 110 external cases."
+        }
+      ],
+      "functional_eligibility": "not_established_in_this_semantic_review"
+    },
+    {
+      "id": "c02",
+      "criteria": {
+        "Q1": {
+          "items": [
+            {
+              "id": "Q1.1",
+              "criterion": "React/HTTP 없는 실행",
+              "score": 5,
+              "semantic_reason": "계산 함수는 UI·HTTP 객체 없이 인자만 검증·계산하며 실제 단위 테스트가 직접 호출한다.",
+              "evidence": [
+                "c02/src/domain/pricing.js:5",
+                "c02/src/domain/pricing.js:22",
+                "c02/tests/checkout.test.mjs:5"
+              ],
+              "execution_evidence": [
+                "node-tests"
+              ],
+              "limitations": "React/HTTP 없이 직접 실행했다. 전체 런타임 이식성까지 확인한 것은 아니다."
+            },
+            {
+              "id": "Q1.2",
+              "criterion": "상품·재고 데이터를 바꿔 실행 가능",
+              "score": 5,
+              "semantic_reason": "catalog 인자에서 id·price·stock을 읽는다. 테스트는 운영 A/B 대신 X와 12345원을 주입한다.",
+              "evidence": [
+                "c02/src/domain/pricing.js:17",
+                "c02/src/domain/pricing.js:19",
+                "c02/tests/checkout.test.mjs:6"
+              ],
+              "execution_evidence": [
+                "node-tests"
+              ],
+              "limitations": "대체 가격 실행은 확인했다. 재고 계약의 모든 변형을 이번 실행에서 검사한 것은 아니다."
+            }
+          ]
+        },
+        "Q2": {
+          "items": [
+            {
+              "id": "Q2.1",
+              "criterion": "견적·주문이 같은 계산 규칙 사용",
+              "score": 5,
+              "semantic_reason": "두 POST가 handler를 통해 동일 quoteCart·createCheckout·calculateQuote를 호출한다.",
+              "evidence": [
+                "c02/app/api/quote/route.js:2",
+                "c02/app/api/orders/route.js:2",
+                "c02/src/http/checkout.js:3",
+                "c02/src/application/checkout.js:2"
+              ],
+              "execution_evidence": [
+                "node-tests"
+              ],
+              "limitations": "실제 POST 직접 호출 테스트를 실행했으며 Next 서버 E2E는 아니다."
+            },
+            {
+              "id": "Q2.2",
+              "criterion": "할인·배송 판단을 다른 경로에 재구현하지 않음",
+              "score": 5,
+              "semantic_reason": "할인율·배송 기준은 계산 함수 한 곳에 있고 UI는 quote.total만 표시한다. 수량 폼 가드는 가격 규칙 복제가 아니다.",
+              "evidence": [
+                "c02/src/domain/pricing.js:22",
+                "c02/src/domain/pricing.js:24",
+                "c02/app/checkout.jsx:36",
+                "c02/src/controller.js:13"
+              ],
+              "execution_evidence": [],
+              "limitations": "정적 소스·호출 그래프에 대한 판정이며 전체 기능 적격 판정을 의미하지 않는다."
+            }
+          ]
+        },
+        "Q3": {
+          "items": [
+            {
+              "id": "Q3.1",
+              "criterion": "업무 코드가 UI·프레임워크·구체 I/O에 의존하지 않음",
+              "score": 5,
+              "semantic_reason": "업무 계산에는 외부 import가 없고, 조정 계층은 전달받은 함수에만 의존한다.",
+              "evidence": [
+                "c02/src/domain/pricing.js:5",
+                "c02/src/application/checkout.js:1",
+                "c02/src/application/checkout.js:2"
+              ],
+              "execution_evidence": [],
+              "limitations": "구체 프레임워크 의존이 없는 계산 및 호출 방향을 확인했다."
+            },
+            {
+              "id": "Q3.2",
+              "criterion": "I/O 연결이 바깥 경계에 있음",
+              "score": 5,
+              "semantic_reason": "구체 loadCatalog 연결은 HTTP adapter에 있고 업무 유스케이스는 인자로 받는다.",
+              "evidence": [
+                "c02/src/http/checkout.js:2",
+                "c02/src/http/checkout.js:3",
+                "c02/app/checkout.jsx:5"
+              ],
+              "execution_evidence": [],
+              "limitations": "I/O 변경 실험은 수행하지 않았다."
+            }
+          ]
+        },
+        "Q4": {
+          "items": [
+            {
+              "id": "Q4.1",
+              "criterion": "UI가 가격 정책·서버 신뢰 판단을 소유하지 않음",
+              "score": 5,
+              "semantic_reason": "UI는 입력·표시·이벤트 전달만 담당하며 서버 가격·재고의 최종 판단은 calculateQuote가 수행한다.",
+              "evidence": [
+                "c02/app/checkout.jsx:23",
+                "c02/app/checkout.jsx:36",
+                "c02/src/domain/pricing.js:17"
+              ],
+              "execution_evidence": [],
+              "limitations": "정적 소스·호출 그래프에 대한 판정이며 전체 기능 적격 판정을 의미하지 않는다."
+            },
+            {
+              "id": "Q4.2",
+              "criterion": "전송 코드와 업무 결정의 책임이 식별 가능",
+              "score": 5,
+              "semantic_reason": "HTTP adapter의 JSON/응답 처리, application의 조회 조정, pricing의 정책 결정이 식별된다.",
+              "evidence": [
+                "c02/src/http/checkout.js:4",
+                "c02/src/application/checkout.js:2",
+                "c02/src/domain/pricing.js:22"
+              ],
+              "execution_evidence": [],
+              "limitations": "정적 소스·호출 그래프에 대한 판정이며 전체 기능 적격 판정을 의미하지 않는다."
+            }
+          ]
+        },
+        "Q5": {
+          "items": [
+            {
+              "id": "Q5.1",
+              "criterion": "불필요한 전역 장바구니·파생 합계 복제 없음",
+              "score": 5,
+              "semantic_reason": "장바구니는 컴포넌트별 controller에 있고 total을 별도 state/effect로 복제하지 않는다. React state는 controller가 발행한 동일 상태의 렌더링 스냅샷이다.",
+              "evidence": [
+                "c02/src/controller.js:7",
+                "c02/src/controller.js:10",
+                "c02/app/checkout.jsx:15",
+                "c02/app/checkout.jsx:36"
+              ],
+              "execution_evidence": [],
+              "limitations": "정적 소스·호출 그래프에 대한 판정이며 전체 기능 적격 판정을 의미하지 않는다."
+            },
+            {
+              "id": "Q5.2",
+              "criterion": "원격 견적·입력·오류의 수명과 소유자가 명확함",
+              "score": 5,
+              "semantic_reason": "수량·쿠폰 변경마다 revision을 올리고 quote를 즉시 비운다. 현재 revision만 성공·오류·대기 종료를 갱신하며 submit은 quoting/null quote를 거부한다.",
+              "evidence": [
+                "c02/src/controller.js:23",
+                "c02/src/controller.js:25",
+                "c02/src/controller.js:29",
+                "c02/src/controller.js:37",
+                "c02/src/controller.js:52"
+              ],
+              "execution_evidence": [
+                "node-tests"
+              ],
+              "limitations": "요청 입력 원문을 별도 보관하지 않지만 revision과 변경 시 무효화가 현재 폼 입력의 수명과 일치한다."
+            }
+          ]
+        },
+        "Q6": {
+          "items": [
+            {
+              "id": "Q6.1",
+              "criterion": "오래된 성공과 실패 모두 무시",
+              "score": 5,
+              "semantic_reason": "resolve·reject·finally 모두 disposed와 revision을 확인한다. 오래된 성공/실패 두 순서를 실제 controller 테스트가 검증한다.",
+              "evidence": [
+                "c02/src/controller.js:29",
+                "c02/src/controller.js:31",
+                "c02/src/controller.js:33",
+                "c02/tests/controller.test.mjs:14"
+              ],
+              "execution_evidence": [
+                "node-tests"
+              ],
+              "limitations": "브라우저 이벤트 순서는 별도로 실행하지 않았다."
+            },
+            {
+              "id": "Q6.2",
+              "criterion": "잠금 해제·입력 보존·재시도가 일관됨",
+              "score": 5,
+              "semantic_reason": "submit 전 동기 잠금, 입력 변경 차단, finally 잠금 해제, 실패 후 값 보존, 재시도 성공의 오류 제거가 구현되어 있다.",
+              "evidence": [
+                "c02/src/controller.js:37",
+                "c02/src/controller.js:40",
+                "c02/src/controller.js:43",
+                "c02/src/controller.js:48",
+                "c02/src/controller.js:53",
+                "c02/tests/controller.test.mjs:37",
+                "c02/tests/controller.test.mjs:45"
+              ],
+              "execution_evidence": [
+                "node-tests"
+              ],
+              "limitations": "UI disabled 속성은 읽었으나 실제 키보드·submit 이벤트 브라우저 검증은 미실행이다."
+            }
+          ]
+        },
+        "Q7": {
+          "items": [
+            {
+              "id": "Q7.1",
+              "criterion": "이름·자료형이 단위와 의미를 드러냄",
+              "score": 5,
+              "semantic_reason": "subtotal·discount·net·shipping·total과 quantity·stock이 의미를 드러내며 금액은 공개 계약의 정수 원이다. UI에서도 KRW로 표시한다.",
+              "evidence": [
+                "c02/src/domain/pricing.js:11",
+                "c02/src/domain/pricing.js:19",
+                "c02/src/domain/pricing.js:22",
+                "c02/app/checkout.jsx:36"
+              ],
+              "execution_evidence": [],
+              "limitations": "JavaScript 런타임 검증과 명명에 근거한다. 엄격한 정적 타입 보장을 주장하지 않는다."
+            },
+            {
+              "id": "Q7.2",
+              "criterion": "검증·정상·오류 흐름을 불필요한 간접 호출 없이 추적 가능",
+              "score": 5,
+              "semantic_reason": "HTTP→application→pricing 호출이 짧고 각 단계가 실제 역할을 가진다. 압축된 코드 스타일만으로 감점할 구체적 흐름 문제는 없다.",
+              "evidence": [
+                "c02/src/http/checkout.js:4",
+                "c02/src/application/checkout.js:2",
+                "c02/src/domain/pricing.js:6",
+                "c02/src/controller.js:21"
+              ],
+              "execution_evidence": [],
+              "limitations": "정적 소스·호출 그래프에 대한 판정이며 전체 기능 적격 판정을 의미하지 않는다."
+            }
+          ]
+        },
+        "Q8": {
+          "items": [
+            {
+              "id": "Q8.1",
+              "criterion": "사용하지 않는 확장점·서비스·추상화 없음",
+              "score": 5,
+              "semantic_reason": "createCheckout은 실제 HTTP adapter가 사용하며 요청 조정과 상품 조회 주입 경계를 제공한다. factory 함수라는 형식만으로 감점하지 않는다.",
+              "evidence": [
+                "c02/src/application/checkout.js:2",
+                "c02/src/http/checkout.js:3",
+                "c02/app/checkout.jsx:18"
+              ],
+              "execution_evidence": [],
+              "limitations": "읽은 제품·테스트 전체의 사용처에 근거한다."
+            },
+            {
+              "id": "Q8.2",
+              "criterion": "새 의존성·계층마다 현재 요구에서 확인되는 역할이 있음",
+              "score": 5,
+              "semantic_reason": "UI·controller·계산·상품 조회·HTTP 경계는 각각 실제 역할이 있으며 추가 계층 수를 점수화하지 않는다.",
+              "evidence": [
+                "c02/src/http/checkout.js:3",
+                "c02/src/application/checkout.js:2",
+                "c02/src/domain/pricing.js:5",
+                "c02/app/checkout.jsx:18"
+              ],
+              "execution_evidence": [],
+              "limitations": "package/lockfile의 최초 기준본은 제공받지 않았으므로 새 npm 패키지 추가 여부를 별도로 판정하지 않았다. 여기서는 읽은 코드의 의존·계층 역할을 판정한다."
+            }
+          ]
+        },
+        "Q9": {
+          "items": [
+            {
+              "id": "Q9.1",
+              "criterion": "실제 업무 로직이 경계·오류 계약으로 검증됨",
+              "score": 5,
+              "semantic_reason": "실제 등록된 계산 함수를 직접 import하여 12345원 할인 내림·조작 total 무시·잘못된 수량의 400을 검증한다. 구현 함수를 mock하지 않는다.",
+              "evidence": [
+                "c02/tests/checkout.test.mjs:4",
+                "c02/tests/checkout.test.mjs:8",
+                "c02/tests/checkout.test.mjs:10"
+              ],
+              "execution_evidence": [
+                "node-tests"
+              ],
+              "limitations": "배송 49999/50000/50001, 쿠폰·중복·재고 오류 전체를 후보 테스트가 커버하지 않는다. 이 점수는 의미 있는 경계·오류 테스트 존재에 대한 판단이며 모든 숨은 사례 보장을 뜻하지 않는다."
+            },
+            {
+              "id": "Q9.2",
+              "criterion": "경계 통합·비동기 전이가 구현 자체 mock 없이 검증됨",
+              "score": 5,
+              "semantic_reason": "실제 두 POST를 호출하고 실제 controller에 전송 함수만 대체하여 오래된 응답·주문 차단·실패 복구를 검사한다. 테스트 대상 자체를 mock하지 않는다.",
+              "evidence": [
+                "c02/tests/checkout.test.mjs:14",
+                "c02/tests/controller.test.mjs:8",
+                "c02/tests/controller.test.mjs:14",
+                "c02/tests/controller.test.mjs:45"
+              ],
+              "execution_evidence": [
+                "node-tests"
+              ],
+              "limitations": "POST 직접 호출은 Next HTTP 서버 E2E가 아니다. e2e/checkout.spec.mjs는 주문 응답을 스텁하며 이번 리뷰에서 실행하지 않았다."
+            }
+          ]
+        },
+        "Q10": {
+          "items": [
+            {
+              "id": "Q10.1",
+              "criterion": "배송 기준 변경이 정책 소유 위치에 한정됨",
+              "score": "U",
+              "semantic_reason": "정적 잠정 판단은 5: 배송 기준 50000은 정책 함수 한 곳에 있고 양 endpoint가 이를 사용한다. 그러나 60000 정책 변경 사본·실행 증거가 없다.",
+              "evidence": [
+                "c02/src/domain/pricing.js:24",
+                "c02/src/http/checkout.js:6"
+              ],
+              "execution_evidence": [],
+              "limitations": "필수 정책 변경 probe 미실행. 정적 잠정 판단을 확정 5점으로 합산하지 않는다.",
+              "static_provisional_score": 5
+            },
+            {
+              "id": "Q10.2",
+              "criterion": "상품 조회 대체가 UI·순수 계산의 재작성 없이 가능",
+              "score": "U",
+              "semantic_reason": "정적 잠정 판단은 5: createCheckout(loadCatalog) 경계에서 조회 함수를 교체할 수 있어 UI·pricing 재작성은 불필요해 보인다.",
+              "evidence": [
+                "c02/src/application/checkout.js:2",
+                "c02/src/http/checkout.js:3"
+              ],
+              "execution_evidence": [],
+              "limitations": "동일 반환 계약의 지연·실패 I/O 대체 probe 미실행. 단위 테스트의 대체 catalog 배열은 I/O 교체 실험을 대신하지 않는다.",
+              "static_provisional_score": 5
+            }
+          ]
+        }
+      },
+      "known_points_out_of_90": 90,
+      "unresolved_items": [
+        "Q10.1",
+        "Q10.2"
+      ],
+      "confirmed_total_out_of_100": null,
+      "execution_evidence": [
+        {
+          "id": "node-tests",
+          "command": "node --test tests/*.test.mjs",
+          "cwd": "semantic-calibration-inputs/c02",
+          "exit_code": 0,
+          "stdout": "✔ catalog supplies independent server data (0.522334ms)\n✔ real pricing and trust boundary (0.691833ms)\n✔ actual quote and order handlers share the contract (10.470708ms)\n[{\"id\":\"stale-success\",\"passed\":true},{\"id\":\"stale-failure\",\"passed\":true},{\"id\":\"pending-quote-blocks-order\",\"passed\":true},{\"id\":\"failed-quote-retry\",\"passed\":true},{\"id\":\"order-duplicate-and-retry\",\"passed\":true},{\"id\":\"dispose-ignores-completion\",\"passed\":true}]\n✔ tests/controller.test.mjs (21.42825ms)\nℹ tests 4\nℹ suites 0\nℹ pass 4\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 42.764708\n",
+          "scope": "Node reports 4 test entries, of which controller.test.mjs contains 6 assertion scenarios. These are not the oracle's 110 external cases."
+        }
+      ],
+      "functional_eligibility": "not_established_in_this_semantic_review"
+    },
+    {
+      "id": "c03",
+      "criteria": {
+        "Q1": {
+          "items": [
+            {
+              "id": "Q1.1",
+              "criterion": "React/HTTP 없는 실행",
+              "score": 5,
+              "semantic_reason": "계산 본문은 React·Request·fetch를 호출하지 않고 동기 입력만 계산한다. Node에서 실제 함수 호출도 성공했다. 미사용 fs import의 의존 방향 위반은 Q3.1에 별도 기록한다.",
+              "evidence": [
+                "c03/src/checkout.js:6",
+                "c03/src/checkout.js:23",
+                "c03/tests/checkout.test.mjs:5"
+              ],
+              "execution_evidence": [
+                "node-tests"
+              ],
+              "limitations": "Node 실행 성공은 비 Node 환경에서의 모듈 로딩 가능성을 입증하지 않는다. 미사용 node:fs/promises import가 있으나 React/HTTP 없는 계산 실행 자체는 확인됐다."
+            },
+            {
+              "id": "Q1.2",
+              "criterion": "상품·재고 데이터를 바꿔 실행 가능",
+              "score": 5,
+              "semantic_reason": "catalog 인자에서 id·price·stock을 읽는다. 테스트는 운영 A/B 대신 X와 12345원을 주입한다.",
+              "evidence": [
+                "c03/src/checkout.js:18",
+                "c03/src/checkout.js:20",
+                "c03/tests/checkout.test.mjs:6"
+              ],
+              "execution_evidence": [
+                "node-tests"
+              ],
+              "limitations": "대체 가격 실행은 확인했다. 재고 계약의 모든 변형을 이번 실행에서 검사한 것은 아니다."
+            }
+          ]
+        },
+        "Q2": {
+          "items": [
+            {
+              "id": "Q2.1",
+              "criterion": "견적·주문이 같은 계산 규칙 사용",
+              "score": 5,
+              "semantic_reason": "두 POST가 동일 calculateQuote를 호출한다.",
+              "evidence": [
+                "c03/app/api/quote/route.js:8",
+                "c03/app/api/orders/route.js:8"
+              ],
+              "execution_evidence": [
+                "node-tests"
+              ],
+              "limitations": "실제 POST 직접 호출 테스트를 실행했으며 Next 서버 E2E는 아니다."
+            },
+            {
+              "id": "Q2.2",
+              "criterion": "할인·배송 판단을 다른 경로에 재구현하지 않음",
+              "score": 5,
+              "semantic_reason": "할인율·배송 기준은 계산 함수 한 곳에 있고 UI는 quote.total만 표시한다. 수량 폼 가드는 가격 규칙 복제가 아니다.",
+              "evidence": [
+                "c03/src/checkout.js:23",
+                "c03/src/checkout.js:25",
+                "c03/app/checkout.jsx:36",
+                "c03/src/controller.js:13"
+              ],
+              "execution_evidence": [],
+              "limitations": "정적 소스·호출 그래프에 대한 판정이며 전체 기능 적격 판정을 의미하지 않는다."
+            }
+          ]
+        },
+        "Q3": {
+          "items": [
+            {
+              "id": "Q3.1",
+              "criterion": "업무 코드가 UI·프레임워크·구체 I/O에 의존하지 않음",
+              "score": 0,
+              "semantic_reason": "업무 모듈이 node:fs/promises의 구체 파일 I/O API를 직접 import한다. 바인딩 사용처는 없지만 ESM 의존 그래프에 Node 전용 I/O 모듈이 들어간다.",
+              "evidence": [
+                "c03/src/checkout.js:1",
+                "c03/src/checkout.js:6"
+              ],
+              "execution_evidence": [],
+              "limitations": "readFile은 호출되지 않으므로 파일 읽기 부작용이나 계산값 오류가 있다고 판단하지 않는다. 정적 의존 위반이며 테스트 성공과 양립한다."
+            },
+            {
+              "id": "Q3.2",
+              "criterion": "I/O 연결이 바깥 경계에 있음",
+              "score": 5,
+              "semantic_reason": "실제 상품 조회 연결과 await는 route에서 수행한다. UI fetch도 UI 경계에 있다.",
+              "evidence": [
+                "c03/app/api/quote/route.js:8",
+                "c03/app/api/orders/route.js:8",
+                "c03/app/checkout.jsx:5"
+              ],
+              "execution_evidence": [],
+              "limitations": "실제 I/O 연결은 외부에 있으나 미사용 구체 I/O import 위반은 Q3.1에 보존했다."
+            }
+          ]
+        },
+        "Q4": {
+          "items": [
+            {
+              "id": "Q4.1",
+              "criterion": "UI가 가격 정책·서버 신뢰 판단을 소유하지 않음",
+              "score": 5,
+              "semantic_reason": "UI는 입력·표시·이벤트 전달만 담당하며 서버 가격·재고의 최종 판단은 calculateQuote가 수행한다.",
+              "evidence": [
+                "c03/app/checkout.jsx:23",
+                "c03/app/checkout.jsx:36",
+                "c03/src/checkout.js:18"
+              ],
+              "execution_evidence": [],
+              "limitations": "정적 소스·호출 그래프에 대한 판정이며 전체 기능 적격 판정을 의미하지 않는다."
+            },
+            {
+              "id": "Q4.2",
+              "criterion": "전송 코드와 업무 결정의 책임이 식별 가능",
+              "score": 5,
+              "semantic_reason": "route의 JSON/응답 및 조회 처리와 calculateQuote의 검증·정책 결정이 분리된다.",
+              "evidence": [
+                "c03/app/api/orders/route.js:5",
+                "c03/app/api/orders/route.js:8",
+                "c03/src/checkout.js:23"
+              ],
+              "execution_evidence": [],
+              "limitations": "정적 소스·호출 그래프에 대한 판정이며 전체 기능 적격 판정을 의미하지 않는다."
+            }
+          ]
+        },
+        "Q5": {
+          "items": [
+            {
+              "id": "Q5.1",
+              "criterion": "불필요한 전역 장바구니·파생 합계 복제 없음",
+              "score": 5,
+              "semantic_reason": "장바구니는 컴포넌트별 controller에 있고 total을 별도 state/effect로 복제하지 않는다. React state는 controller가 발행한 동일 상태의 렌더링 스냅샷이다.",
+              "evidence": [
+                "c03/src/controller.js:7",
+                "c03/src/controller.js:10",
+                "c03/app/checkout.jsx:15",
+                "c03/app/checkout.jsx:36"
+              ],
+              "execution_evidence": [],
+              "limitations": "정적 소스·호출 그래프에 대한 판정이며 전체 기능 적격 판정을 의미하지 않는다."
+            },
+            {
+              "id": "Q5.2",
+              "criterion": "원격 견적·입력·오류의 수명과 소유자가 명확함",
+              "score": 5,
+              "semantic_reason": "수량·쿠폰 변경마다 revision을 올리고 quote를 즉시 비운다. 현재 revision만 성공·오류·대기 종료를 갱신하며 submit은 quoting/null quote를 거부한다.",
+              "evidence": [
+                "c03/src/controller.js:23",
+                "c03/src/controller.js:25",
+                "c03/src/controller.js:29",
+                "c03/src/controller.js:37",
+                "c03/src/controller.js:52"
+              ],
+              "execution_evidence": [
+                "node-tests"
+              ],
+              "limitations": "요청 입력 원문을 별도 보관하지 않지만 revision과 변경 시 무효화가 현재 폼 입력의 수명과 일치한다."
+            }
+          ]
+        },
+        "Q6": {
+          "items": [
+            {
+              "id": "Q6.1",
+              "criterion": "오래된 성공과 실패 모두 무시",
+              "score": 5,
+              "semantic_reason": "resolve·reject·finally 모두 disposed와 revision을 확인한다. 오래된 성공/실패 두 순서를 실제 controller 테스트가 검증한다.",
+              "evidence": [
+                "c03/src/controller.js:29",
+                "c03/src/controller.js:31",
+                "c03/src/controller.js:33",
+                "c03/tests/controller.test.mjs:14"
+              ],
+              "execution_evidence": [
+                "node-tests"
+              ],
+              "limitations": "브라우저 이벤트 순서는 별도로 실행하지 않았다."
+            },
+            {
+              "id": "Q6.2",
+              "criterion": "잠금 해제·입력 보존·재시도가 일관됨",
+              "score": 5,
+              "semantic_reason": "submit 전 동기 잠금, 입력 변경 차단, finally 잠금 해제, 실패 후 값 보존, 재시도 성공의 오류 제거가 구현되어 있다.",
+              "evidence": [
+                "c03/src/controller.js:37",
+                "c03/src/controller.js:40",
+                "c03/src/controller.js:43",
+                "c03/src/controller.js:48",
+                "c03/src/controller.js:53",
+                "c03/tests/controller.test.mjs:37",
+                "c03/tests/controller.test.mjs:45"
+              ],
+              "execution_evidence": [
+                "node-tests"
+              ],
+              "limitations": "UI disabled 속성은 읽었으나 실제 키보드·submit 이벤트 브라우저 검증은 미실행이다."
+            }
+          ]
+        },
+        "Q7": {
+          "items": [
+            {
+              "id": "Q7.1",
+              "criterion": "이름·자료형이 단위와 의미를 드러냄",
+              "score": 5,
+              "semantic_reason": "subtotal·discount·net·shipping·total과 quantity·stock이 의미를 드러내며 금액은 공개 계약의 정수 원이다. UI에서도 KRW로 표시한다.",
+              "evidence": [
+                "c03/src/checkout.js:12",
+                "c03/src/checkout.js:20",
+                "c03/src/checkout.js:23",
+                "c03/app/checkout.jsx:36"
+              ],
+              "execution_evidence": [],
+              "limitations": "JavaScript 런타임 검증과 명명에 근거한다. 엄격한 정적 타입 보장을 주장하지 않는다."
+            },
+            {
+              "id": "Q7.2",
+              "criterion": "검증·정상·오류 흐름을 불필요한 간접 호출 없이 추적 가능",
+              "score": 5,
+              "semantic_reason": "초기 입력 가드, 상품별 검증, 계산 반환과 try/catch/finally 경로를 직접 추적할 수 있다.",
+              "evidence": [
+                "c03/src/checkout.js:7",
+                "c03/src/checkout.js:13",
+                "c03/src/checkout.js:23",
+                "c03/src/controller.js:21"
+              ],
+              "execution_evidence": [],
+              "limitations": "정적 소스·호출 그래프에 대한 판정이며 전체 기능 적격 판정을 의미하지 않는다."
+            }
+          ]
+        },
+        "Q8": {
+          "items": [
+            {
+              "id": "Q8.1",
+              "criterion": "사용하지 않는 확장점·서비스·추상화 없음",
+              "score": 5,
+              "semantic_reason": "controller factory는 UI와 테스트에서 실제 사용되고, 요구 밖 서비스·확장 구조는 없다.",
+              "evidence": [
+                "c03/src/controller.js:6",
+                "c03/app/checkout.jsx:18"
+              ],
+              "execution_evidence": [],
+              "limitations": "읽은 제품·테스트 전체의 사용처에 근거한다."
+            },
+            {
+              "id": "Q8.2",
+              "criterion": "새 의존성·계층마다 현재 요구에서 확인되는 역할이 있음",
+              "score": 0,
+              "semantic_reason": "업무 모듈의 node:fs/promises 의존성은 readFile 호출이 전혀 없어 현재 요구에서 확인되는 역할이 없다.",
+              "evidence": [
+                "c03/src/checkout.js:1"
+              ],
+              "execution_evidence": [],
+              "limitations": "package/lockfile의 최초 기준본은 제공받지 않았으므로 새 npm 패키지 추가 여부를 별도로 판정하지 않았다. 여기서는 읽은 코드의 의존·계층 역할을 판정한다."
+            }
+          ]
+        },
+        "Q9": {
+          "items": [
+            {
+              "id": "Q9.1",
+              "criterion": "실제 업무 로직이 경계·오류 계약으로 검증됨",
+              "score": 5,
+              "semantic_reason": "실제 등록된 계산 함수를 직접 import하여 12345원 할인 내림·조작 total 무시·잘못된 수량의 400을 검증한다. 구현 함수를 mock하지 않는다.",
+              "evidence": [
+                "c03/tests/checkout.test.mjs:4",
+                "c03/tests/checkout.test.mjs:8",
+                "c03/tests/checkout.test.mjs:10"
+              ],
+              "execution_evidence": [
+                "node-tests"
+              ],
+              "limitations": "배송 49999/50000/50001, 쿠폰·중복·재고 오류 전체를 후보 테스트가 커버하지 않는다. 이 점수는 의미 있는 경계·오류 테스트 존재에 대한 판단이며 모든 숨은 사례 보장을 뜻하지 않는다."
+            },
+            {
+              "id": "Q9.2",
+              "criterion": "경계 통합·비동기 전이가 구현 자체 mock 없이 검증됨",
+              "score": 5,
+              "semantic_reason": "실제 두 POST를 호출하고 실제 controller에 전송 함수만 대체하여 오래된 응답·주문 차단·실패 복구를 검사한다. 테스트 대상 자체를 mock하지 않는다.",
+              "evidence": [
+                "c03/tests/checkout.test.mjs:14",
+                "c03/tests/controller.test.mjs:8",
+                "c03/tests/controller.test.mjs:14",
+                "c03/tests/controller.test.mjs:45"
+              ],
+              "execution_evidence": [
+                "node-tests"
+              ],
+              "limitations": "POST 직접 호출은 Next HTTP 서버 E2E가 아니다. e2e/checkout.spec.mjs는 주문 응답을 스텁하며 이번 리뷰에서 실행하지 않았다."
+            }
+          ]
+        },
+        "Q10": {
+          "items": [
+            {
+              "id": "Q10.1",
+              "criterion": "배송 기준 변경이 정책 소유 위치에 한정됨",
+              "score": "U",
+              "semantic_reason": "정적 잠정 판단은 5: 배송 기준 50000은 정책 함수 한 곳에 있고 양 endpoint가 이를 사용한다. 그러나 60000 정책 변경 사본·실행 증거가 없다.",
+              "evidence": [
+                "c03/src/checkout.js:25",
+                "c03/app/api/orders/route.js:8"
+              ],
+              "execution_evidence": [],
+              "limitations": "필수 정책 변경 probe 미실행. 정적 잠정 판단을 확정 5점으로 합산하지 않는다.",
+              "static_provisional_score": 5
+            },
+            {
+              "id": "Q10.2",
+              "criterion": "상품 조회 대체가 UI·순수 계산의 재작성 없이 가능",
+              "score": "U",
+              "semantic_reason": "정적 잠정 판단은 5: route가 loadCatalog를 await하고 계산에는 배열만 전달하므로 catalog 구현 교체가 UI·계산 재작성 없이 가능해 보인다.",
+              "evidence": [
+                "c03/src/catalog.js:1",
+                "c03/app/api/quote/route.js:8",
+                "c03/app/api/orders/route.js:8"
+              ],
+              "execution_evidence": [],
+              "limitations": "동일 반환 계약의 지연·실패 I/O 대체 probe 미실행. 단위 테스트의 대체 catalog 배열은 I/O 교체 실험을 대신하지 않는다.",
+              "static_provisional_score": 5
+            }
+          ]
+        }
+      },
+      "known_points_out_of_90": 80,
+      "unresolved_items": [
+        "Q10.1",
+        "Q10.2"
+      ],
+      "confirmed_total_out_of_100": null,
+      "execution_evidence": [
+        {
+          "id": "node-tests",
+          "command": "node --test tests/*.test.mjs",
+          "cwd": "semantic-calibration-inputs/c03",
+          "exit_code": 0,
+          "stdout": "✔ catalog supplies independent server data (0.512208ms)\n✔ real pricing and trust boundary (0.70375ms)\n✔ actual quote and order handlers share the contract (11.377625ms)\n[{\"id\":\"stale-success\",\"passed\":true},{\"id\":\"stale-failure\",\"passed\":true},{\"id\":\"pending-quote-blocks-order\",\"passed\":true},{\"id\":\"failed-quote-retry\",\"passed\":true},{\"id\":\"order-duplicate-and-retry\",\"passed\":true},{\"id\":\"dispose-ignores-completion\",\"passed\":true}]\n✔ tests/controller.test.mjs (23.034083ms)\nℹ tests 4\nℹ suites 0\nℹ pass 4\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 48.01075\n",
+          "scope": "Node reports 4 test entries, of which controller.test.mjs contains 6 assertion scenarios. These are not the oracle's 110 external cases."
+        }
+      ],
+      "functional_eligibility": "not_established_in_this_semantic_review"
+    },
+    {
+      "id": "c04",
+      "criteria": {
+        "Q1": {
+          "items": [
+            {
+              "id": "Q1.1",
+              "criterion": "React/HTTP 없는 실행",
+              "score": 5,
+              "semantic_reason": "계산 함수는 UI·HTTP 객체 없이 인자만 검증·계산하며 실제 단위 테스트가 직접 호출한다.",
+              "evidence": [
+                "c04/src/checkout.js:5",
+                "c04/src/checkout.js:22",
+                "c04/tests/checkout.test.mjs:5"
+              ],
+              "execution_evidence": [
+                "node-tests"
+              ],
+              "limitations": "React/HTTP 없이 직접 실행했다. 전체 런타임 이식성까지 확인한 것은 아니다."
+            },
+            {
+              "id": "Q1.2",
+              "criterion": "상품·재고 데이터를 바꿔 실행 가능",
+              "score": 5,
+              "semantic_reason": "catalog 인자에서 id·price·stock을 읽는다. 테스트는 운영 A/B 대신 X와 12345원을 주입한다.",
+              "evidence": [
+                "c04/src/checkout.js:17",
+                "c04/src/checkout.js:19",
+                "c04/tests/checkout.test.mjs:6"
+              ],
+              "execution_evidence": [
+                "node-tests"
+              ],
+              "limitations": "대체 가격 실행은 확인했다. 재고 계약의 모든 변형을 이번 실행에서 검사한 것은 아니다."
+            }
+          ]
+        },
+        "Q2": {
+          "items": [
+            {
+              "id": "Q2.1",
+              "criterion": "견적·주문이 같은 계산 규칙 사용",
+              "score": 5,
+              "semantic_reason": "두 POST가 동일 calculateQuote를 호출한다.",
+              "evidence": [
+                "c04/app/api/quote/route.js:8",
+                "c04/app/api/orders/route.js:8"
+              ],
+              "execution_evidence": [
+                "node-tests"
+              ],
+              "limitations": "실제 POST 직접 호출 테스트를 실행했으며 Next 서버 E2E는 아니다."
+            },
+            {
+              "id": "Q2.2",
+              "criterion": "할인·배송 판단을 다른 경로에 재구현하지 않음",
+              "score": 5,
+              "semantic_reason": "할인율·배송 기준은 계산 함수 한 곳에 있고 UI는 quote.total만 표시한다. 수량 폼 가드는 가격 규칙 복제가 아니다.",
+              "evidence": [
+                "c04/src/checkout.js:22",
+                "c04/src/checkout.js:24",
+                "c04/app/checkout.jsx:36",
+                "c04/src/controller.js:13"
+              ],
+              "execution_evidence": [],
+              "limitations": "정적 소스·호출 그래프에 대한 판정이며 전체 기능 적격 판정을 의미하지 않는다."
+            }
+          ]
+        },
+        "Q3": {
+          "items": [
+            {
+              "id": "Q3.1",
+              "criterion": "업무 코드가 UI·프레임워크·구체 I/O에 의존하지 않음",
+              "score": 5,
+              "semantic_reason": "업무 계산에는 외부 import가 없고, 조정 계층은 전달받은 함수에만 의존한다.",
+              "evidence": [
+                "c04/src/checkout.js:5"
+              ],
+              "execution_evidence": [],
+              "limitations": "구체 프레임워크 의존이 없는 계산 및 호출 방향을 확인했다."
+            },
+            {
+              "id": "Q3.2",
+              "criterion": "I/O 연결이 바깥 경계에 있음",
+              "score": 5,
+              "semantic_reason": "실제 상품 조회 연결과 await는 route에서 수행한다. UI fetch도 UI 경계에 있다.",
+              "evidence": [
+                "c04/app/api/quote/route.js:8",
+                "c04/app/api/orders/route.js:8",
+                "c04/app/checkout.jsx:5"
+              ],
+              "execution_evidence": [],
+              "limitations": "I/O 변경 실험은 수행하지 않았다."
+            }
+          ]
+        },
+        "Q4": {
+          "items": [
+            {
+              "id": "Q4.1",
+              "criterion": "UI가 가격 정책·서버 신뢰 판단을 소유하지 않음",
+              "score": 5,
+              "semantic_reason": "UI는 입력·표시·이벤트 전달만 담당하며 서버 가격·재고의 최종 판단은 calculateQuote가 수행한다.",
+              "evidence": [
+                "c04/app/checkout.jsx:23",
+                "c04/app/checkout.jsx:36",
+                "c04/src/checkout.js:17"
+              ],
+              "execution_evidence": [],
+              "limitations": "정적 소스·호출 그래프에 대한 판정이며 전체 기능 적격 판정을 의미하지 않는다."
+            },
+            {
+              "id": "Q4.2",
+              "criterion": "전송 코드와 업무 결정의 책임이 식별 가능",
+              "score": 5,
+              "semantic_reason": "route의 JSON/응답 및 조회 처리와 calculateQuote의 검증·정책 결정이 분리된다.",
+              "evidence": [
+                "c04/app/api/orders/route.js:5",
+                "c04/app/api/orders/route.js:8",
+                "c04/src/checkout.js:22"
+              ],
+              "execution_evidence": [],
+              "limitations": "정적 소스·호출 그래프에 대한 판정이며 전체 기능 적격 판정을 의미하지 않는다."
+            }
+          ]
+        },
+        "Q5": {
+          "items": [
+            {
+              "id": "Q5.1",
+              "criterion": "불필요한 전역 장바구니·파생 합계 복제 없음",
+              "score": 5,
+              "semantic_reason": "장바구니는 컴포넌트별 controller에 있고 total을 별도 state/effect로 복제하지 않는다. React state는 controller가 발행한 동일 상태의 렌더링 스냅샷이다.",
+              "evidence": [
+                "c04/src/controller.js:7",
+                "c04/src/controller.js:10",
+                "c04/app/checkout.jsx:15",
+                "c04/app/checkout.jsx:36"
+              ],
+              "execution_evidence": [],
+              "limitations": "정적 소스·호출 그래프에 대한 판정이며 전체 기능 적격 판정을 의미하지 않는다."
+            },
+            {
+              "id": "Q5.2",
+              "criterion": "원격 견적·입력·오류의 수명과 소유자가 명확함",
+              "score": 5,
+              "semantic_reason": "수량·쿠폰 변경마다 revision을 올리고 quote를 즉시 비운다. 현재 revision만 성공·오류·대기 종료를 갱신하며 submit은 quoting/null quote를 거부한다.",
+              "evidence": [
+                "c04/src/controller.js:23",
+                "c04/src/controller.js:25",
+                "c04/src/controller.js:29",
+                "c04/src/controller.js:37",
+                "c04/src/controller.js:52"
+              ],
+              "execution_evidence": [
+                "node-tests"
+              ],
+              "limitations": "요청 입력 원문을 별도 보관하지 않지만 revision과 변경 시 무효화가 현재 폼 입력의 수명과 일치한다."
+            }
+          ]
+        },
+        "Q6": {
+          "items": [
+            {
+              "id": "Q6.1",
+              "criterion": "오래된 성공과 실패 모두 무시",
+              "score": 5,
+              "semantic_reason": "resolve·reject·finally 모두 disposed와 revision을 확인한다. 오래된 성공/실패 두 순서를 실제 controller 테스트가 검증한다.",
+              "evidence": [
+                "c04/src/controller.js:29",
+                "c04/src/controller.js:31",
+                "c04/src/controller.js:33",
+                "c04/tests/controller.test.mjs:14"
+              ],
+              "execution_evidence": [
+                "node-tests"
+              ],
+              "limitations": "브라우저 이벤트 순서는 별도로 실행하지 않았다."
+            },
+            {
+              "id": "Q6.2",
+              "criterion": "잠금 해제·입력 보존·재시도가 일관됨",
+              "score": 5,
+              "semantic_reason": "submit 전 동기 잠금, 입력 변경 차단, finally 잠금 해제, 실패 후 값 보존, 재시도 성공의 오류 제거가 구현되어 있다.",
+              "evidence": [
+                "c04/src/controller.js:37",
+                "c04/src/controller.js:40",
+                "c04/src/controller.js:43",
+                "c04/src/controller.js:48",
+                "c04/src/controller.js:53",
+                "c04/tests/controller.test.mjs:37",
+                "c04/tests/controller.test.mjs:45"
+              ],
+              "execution_evidence": [
+                "node-tests"
+              ],
+              "limitations": "UI disabled 속성은 읽었으나 실제 키보드·submit 이벤트 브라우저 검증은 미실행이다."
+            }
+          ]
+        },
+        "Q7": {
+          "items": [
+            {
+              "id": "Q7.1",
+              "criterion": "이름·자료형이 단위와 의미를 드러냄",
+              "score": 5,
+              "semantic_reason": "subtotal·discount·net·shipping·total과 quantity·stock이 의미를 드러내며 금액은 공개 계약의 정수 원이다. UI에서도 KRW로 표시한다.",
+              "evidence": [
+                "c04/src/checkout.js:11",
+                "c04/src/checkout.js:19",
+                "c04/src/checkout.js:22",
+                "c04/app/checkout.jsx:36"
+              ],
+              "execution_evidence": [],
+              "limitations": "JavaScript 런타임 검증과 명명에 근거한다. 엄격한 정적 타입 보장을 주장하지 않는다."
+            },
+            {
+              "id": "Q7.2",
+              "criterion": "검증·정상·오류 흐름을 불필요한 간접 호출 없이 추적 가능",
+              "score": 5,
+              "semantic_reason": "초기 입력 가드, 상품별 검증, 계산 반환과 try/catch/finally 경로를 직접 추적할 수 있다.",
+              "evidence": [
+                "c04/src/checkout.js:6",
+                "c04/src/checkout.js:12",
+                "c04/src/checkout.js:22",
+                "c04/src/controller.js:21"
+              ],
+              "execution_evidence": [],
+              "limitations": "정적 소스·호출 그래프에 대한 판정이며 전체 기능 적격 판정을 의미하지 않는다."
+            }
+          ]
+        },
+        "Q8": {
+          "items": [
+            {
+              "id": "Q8.1",
+              "criterion": "사용하지 않는 확장점·서비스·추상화 없음",
+              "score": 0,
+              "semantic_reason": "UnusedPaymentProviderFactory는 create(provider)가 그대로 반환하는 미사용 확장점이다. 제품·테스트 전체에서 선언 외 호출·import를 찾지 못했고 결제 provider도 현재 요구 범위 밖이다.",
+              "evidence": [
+                "c04/src/factory.js:1"
+              ],
+              "execution_evidence": [],
+              "limitations": "클래스 사용 자체가 아니라 현재 호출자와 역할이 없는 구조를 위반으로 판단했다."
+            },
+            {
+              "id": "Q8.2",
+              "criterion": "새 의존성·계층마다 현재 요구에서 확인되는 역할이 있음",
+              "score": 0,
+              "semantic_reason": "별도 factory 모듈이 추가 책임 없이 입력 provider를 돌려주며 현재 제품 경계에 참여하지 않는다.",
+              "evidence": [
+                "c04/src/factory.js:1"
+              ],
+              "execution_evidence": [],
+              "limitations": "package/lockfile의 최초 기준본은 제공받지 않았으므로 새 npm 패키지 추가 여부를 별도로 판정하지 않았다. 여기서는 읽은 코드의 의존·계층 역할을 판정한다."
+            }
+          ]
+        },
+        "Q9": {
+          "items": [
+            {
+              "id": "Q9.1",
+              "criterion": "실제 업무 로직이 경계·오류 계약으로 검증됨",
+              "score": 5,
+              "semantic_reason": "실제 등록된 계산 함수를 직접 import하여 12345원 할인 내림·조작 total 무시·잘못된 수량의 400을 검증한다. 구현 함수를 mock하지 않는다.",
+              "evidence": [
+                "c04/tests/checkout.test.mjs:4",
+                "c04/tests/checkout.test.mjs:8",
+                "c04/tests/checkout.test.mjs:10"
+              ],
+              "execution_evidence": [
+                "node-tests"
+              ],
+              "limitations": "배송 49999/50000/50001, 쿠폰·중복·재고 오류 전체를 후보 테스트가 커버하지 않는다. 이 점수는 의미 있는 경계·오류 테스트 존재에 대한 판단이며 모든 숨은 사례 보장을 뜻하지 않는다."
+            },
+            {
+              "id": "Q9.2",
+              "criterion": "경계 통합·비동기 전이가 구현 자체 mock 없이 검증됨",
+              "score": 5,
+              "semantic_reason": "실제 두 POST를 호출하고 실제 controller에 전송 함수만 대체하여 오래된 응답·주문 차단·실패 복구를 검사한다. 테스트 대상 자체를 mock하지 않는다.",
+              "evidence": [
+                "c04/tests/checkout.test.mjs:14",
+                "c04/tests/controller.test.mjs:8",
+                "c04/tests/controller.test.mjs:14",
+                "c04/tests/controller.test.mjs:45"
+              ],
+              "execution_evidence": [
+                "node-tests"
+              ],
+              "limitations": "POST 직접 호출은 Next HTTP 서버 E2E가 아니다. e2e/checkout.spec.mjs는 주문 응답을 스텁하며 이번 리뷰에서 실행하지 않았다."
+            }
+          ]
+        },
+        "Q10": {
+          "items": [
+            {
+              "id": "Q10.1",
+              "criterion": "배송 기준 변경이 정책 소유 위치에 한정됨",
+              "score": "U",
+              "semantic_reason": "정적 잠정 판단은 5: 배송 기준 50000은 정책 함수 한 곳에 있고 양 endpoint가 이를 사용한다. 그러나 60000 정책 변경 사본·실행 증거가 없다.",
+              "evidence": [
+                "c04/src/checkout.js:24",
+                "c04/app/api/orders/route.js:8"
+              ],
+              "execution_evidence": [],
+              "limitations": "필수 정책 변경 probe 미실행. 정적 잠정 판단을 확정 5점으로 합산하지 않는다.",
+              "static_provisional_score": 5
+            },
+            {
+              "id": "Q10.2",
+              "criterion": "상품 조회 대체가 UI·순수 계산의 재작성 없이 가능",
+              "score": "U",
+              "semantic_reason": "정적 잠정 판단은 5: route가 loadCatalog를 await하고 계산에는 배열만 전달하므로 catalog 구현 교체가 UI·계산 재작성 없이 가능해 보인다.",
+              "evidence": [
+                "c04/src/catalog.js:1",
+                "c04/app/api/quote/route.js:8",
+                "c04/app/api/orders/route.js:8"
+              ],
+              "execution_evidence": [],
+              "limitations": "동일 반환 계약의 지연·실패 I/O 대체 probe 미실행. 단위 테스트의 대체 catalog 배열은 I/O 교체 실험을 대신하지 않는다.",
+              "static_provisional_score": 5
+            }
+          ]
+        }
+      },
+      "known_points_out_of_90": 80,
+      "unresolved_items": [
+        "Q10.1",
+        "Q10.2"
+      ],
+      "confirmed_total_out_of_100": null,
+      "execution_evidence": [
+        {
+          "id": "node-tests",
+          "command": "node --test tests/*.test.mjs",
+          "cwd": "semantic-calibration-inputs/c04",
+          "exit_code": 0,
+          "stdout": "✔ catalog supplies independent server data (0.5155ms)\n✔ real pricing and trust boundary (0.719375ms)\n✔ actual quote and order handlers share the contract (11.490875ms)\n[{\"id\":\"stale-success\",\"passed\":true},{\"id\":\"stale-failure\",\"passed\":true},{\"id\":\"pending-quote-blocks-order\",\"passed\":true},{\"id\":\"failed-quote-retry\",\"passed\":true},{\"id\":\"order-duplicate-and-retry\",\"passed\":true},{\"id\":\"dispose-ignores-completion\",\"passed\":true}]\n✔ tests/controller.test.mjs (25.259417ms)\nℹ tests 4\nℹ suites 0\nℹ pass 4\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 46.242459\n",
+          "scope": "Node reports 4 test entries, of which controller.test.mjs contains 6 assertion scenarios. These are not the oracle's 110 external cases."
+        }
+      ],
+      "functional_eligibility": "not_established_in_this_semantic_review"
+    }
+  ]
+}

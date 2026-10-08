@@ -1,0 +1,176 @@
+{
+  "model": "gpt-6-sol",
+  "track": "compliance",
+  "replicas": 1,
+  "modelCalls": 4,
+  "comparison": [
+    {
+      "case": "duplicated",
+      "arm": "plain",
+      "questionProtocol": "observed",
+      "firstImplementationPassed": true,
+      "firstPlanCompliance": {
+        "version": 1,
+        "satisfied": 11,
+        "total": 11,
+        "forbiddenViolations": [],
+        "decisionViolations": [],
+        "semanticReview": "unverified"
+      },
+      "finalPlanCompliance": {
+        "version": 1,
+        "satisfied": 11,
+        "total": 11,
+        "forbiddenViolations": [],
+        "decisionViolations": [],
+        "semanticReview": "unverified"
+      },
+      "finalEligible": true,
+      "repairCalls": 0,
+      "modelElapsedSeconds": 156.52300000000002,
+      "totalTokens": 258094,
+      "uncachedInputTokens": 31872
+    },
+    {
+      "case": "duplicated",
+      "arm": "fs",
+      "questionProtocol": "observed",
+      "firstImplementationPassed": true,
+      "firstPlanCompliance": {
+        "version": 1,
+        "satisfied": 11,
+        "total": 11,
+        "forbiddenViolations": [],
+        "decisionViolations": [],
+        "semanticReview": "unverified"
+      },
+      "finalPlanCompliance": {
+        "version": 1,
+        "satisfied": 11,
+        "total": 11,
+        "forbiddenViolations": [],
+        "decisionViolations": [],
+        "semanticReview": "unverified"
+      },
+      "finalEligible": true,
+      "repairCalls": 0,
+      "modelElapsedSeconds": 446.466,
+      "totalTokens": 1433357,
+      "uncachedInputTokens": 61463
+    }
+  ],
+  "rows": [
+    {
+      "arm": "plain",
+      "case": "duplicated",
+      "workflow": "observed",
+      "usage": {
+        "input_tokens": 252544,
+        "output_tokens": 5550,
+        "total_tokens": 258094,
+        "cached_input_tokens": 220672
+      },
+      "phases": [
+        {
+          "phase": "prepare",
+          "seconds": 26.366,
+          "usage": {
+            "input_tokens": 49302,
+            "cached_input_tokens": 42752,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 792,
+            "reasoning_output_tokens": 241,
+            "total_tokens": 50094,
+            "uncached_input_tokens": 6550
+          },
+          "mcpCalls": 0,
+          "mcpFailures": [],
+          "shellCalls": 10
+        },
+        {
+          "phase": "work",
+          "seconds": 130.157,
+          "usage": {
+            "input_tokens": 203242,
+            "cached_input_tokens": 177920,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 4758,
+            "reasoning_output_tokens": 1004,
+            "total_tokens": 208000,
+            "uncached_input_tokens": 25322
+          },
+          "mcpCalls": 0,
+          "mcpFailures": [],
+          "shellCalls": 9
+        }
+      ]
+    },
+    {
+      "arm": "fs",
+      "case": "duplicated",
+      "workflow": "observed",
+      "usage": {
+        "input_tokens": 1417751,
+        "output_tokens": 15606,
+        "total_tokens": 1433357,
+        "cached_input_tokens": 1356288
+      },
+      "phases": [
+        {
+          "phase": "prepare",
+          "seconds": 228.204,
+          "usage": {
+            "input_tokens": 487189,
+            "cached_input_tokens": 444416,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 8219,
+            "reasoning_output_tokens": 1446,
+            "total_tokens": 495408,
+            "uncached_input_tokens": 42773
+          },
+          "mcpCalls": 17,
+          "mcpFailures": [
+            {
+              "tool": "save_revision",
+              "message": "MCP error -32602: Input validation error: Invalid arguments for tool save_revision: Invalid input: expected string, received undefined at evidence.decisions[1].selected"
+            },
+            {
+              "tool": "save_revision",
+              "message": "MCP error -32602: Input validation error: Invalid arguments for tool save_revision: Invalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at evidence.decisions[1].selected"
+            }
+          ],
+          "shellCalls": 8
+        },
+        {
+          "phase": "work",
+          "seconds": 218.262,
+          "usage": {
+            "input_tokens": 930562,
+            "cached_input_tokens": 911872,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 7387,
+            "reasoning_output_tokens": 1376,
+            "total_tokens": 937949,
+            "uncached_input_tokens": 18690
+          },
+          "mcpCalls": 13,
+          "mcpFailures": [],
+          "shellCalls": 7
+        }
+      ]
+    }
+  ],
+  "ratios": {
+    "totalTokens": 5.553623873472456,
+    "uncachedInputTokens": 1.9284324799196788,
+    "modelElapsedSeconds": 2.85239868901056
+  },
+  "runtimeFileHashMismatches": [],
+  "limits": [
+    "One paired duplicated case; not all three cases or statistical evidence.",
+    "Question topic was explicitly required in both arms, so this does not test discovering unknown decisions.",
+    "11 automated clauses, not all architectural correctness or unobserved intermediate edits.",
+    "Old implementation and new compliance tracks differ; before/after usage is not a controlled optimization benchmark.",
+    "No model calls, grading reruns or product code changes during analysis."
+  ]
+}

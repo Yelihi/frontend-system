@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "publicContract": "React App({client})를 유지한다. api.mjs는 createClient({transport,onUnauthorized})를 export한다. client.request(path, options)는 응답 data를 반환한다. transport(path,options)는 {status,data}를 반환한다. 외부 패키지 추가와 실제 네트워크는 금지한다. UI 문구·내부 패턴·함수 개수는 정답으로 지정하지 않는다.",
+  "implementationPlan": "인증 전송 설정은 client에서 credentials: same-origin으로 통일한다. 전달받은 options와 headers는 중첩까지 수정하지 않는다. 응답 401은 onUnauthorized를 한 번 호출하고 code=unauthorized인 오류로 거절한다. 그 밖의 HTTP 오류는 code=http-error와 원래 status/data를 전달하고 화면별 안내는 UI에 남긴다. transport 오류는 원래 오류를 전달한다. 어떤 요청도 자동으로 재시도하지 않는다. UI는 client.request를 사용하고 직접 fetch나 axios를 호출하지 않는다. api.mjs의 기존 public interface와 성공 응답 data를 보존한다. frozen 입력, 성공, 401, 업무 오류, 전송 실패를 테스트한다.",
+  "cases": [
+    {"id":"duplicated","description":"두 화면이 각각 인증 설정과 오류 처리를 갖고 있는 작은 React 주문 화면이다. 요청 정책의 공유 경계를 검토한다.","preserveClient":false,"answers":{"authentication":"같은 origin의 세션 쿠키를 사용하며 credentials는 same-origin으로 통일한다. 인증 만료는 onUnauthorized에서 처리한다.","ownership":"두 화면의 인증 정책은 함께 바뀐다. 공통 전송과 오류 분류는 client에 두고 화면별 오류 문구는 UI에 남긴다.","retry":"조회와 주문 모두 이번 범위에서는 자동 재시도하지 않는다. 주문의 서버 중복 방지 계약은 제공되지 않았다.","errors":"401은 unauthorized로 분류하고 onUnauthorized를 한 번 호출한다. 다른 HTTP 오류는 status와 data를 보존해서 UI에 전달한다."}},
+    {"id":"existing-good","description":"이미 적합한 공용 client가 있다. UI의 직접 요청을 기존 경계로 연결하고 불필요한 계층을 만들지 않는다.","preserveClient":true,"answers":{"authentication":"기존 client의 same-origin 인증 설정과 인증 만료 처리가 현재 계약이다.","ownership":"기존 api.mjs는 이번 계약을 충족한다. 파일을 그대로 유지하고 UI에서 재사용한다.","retry":"기존 client처럼 자동 재시도하지 않는다.","errors":"기존 client의 unauthorized/http-error 분류와 원래 status/data를 유지한다. 화면별 문구는 UI에 둔다."}},
+    {"id":"different-policies","description":"조회와 주문 화면의 인증은 같지만 업무 오류 안내와 향후 재시도 정책의 담당자가 다르다. 공통화의 범위를 검토한다.","preserveClient":false,"answers":{"authentication":"두 화면은 동일한 same-origin 세션 인증과 onUnauthorized 처리만 공유한다.","ownership":"업무 오류의 소비자와 향후 재시도 정책은 화면별 담당자 소유다. 공유 client에 UI 문구를 넣지 않는다.","retry":"이번 구현에서는 둘 다 자동 재시도하지 않는다. 주문 재시도를 조회 정책에 맞춰 자동 활성화하면 안 된다.","errors":"401만 공통 인증 오류로 처리한다. 그 밖의 오류 status/data는 그대로 전달하고 각 화면이 메시지를 정한다."}}
+  ],
+  "planningProtocol":"최종 응답은 {\"questions\":[{\"topic\":\"authentication|ownership|retry|errors\",\"question\":\"구체적인 질문\"}]} JSON으로 반환한다. 필요한 주제만 선택하고 코드로 이미 확인한 사실은 다시 묻지 않는다. 주제 목록은 양쪽에 동일하게 제공된다. 답변은 실제 제출한 주제에 대해서만 제공되며 질문의 적절성은 별도 리뷰한다.",
+  "limits":["개발용 3사례·1회 파일럿이며 통계적 우위를 주장하지 않는다.","계획 실험은 질문 주제 목록을 제공하는 제한된 상호작용이다. 질문의 의미와 설계 선택은 수동 리뷰가 필요하다.","행동 검사는 요청 모듈 계약을 검사한다. 렌더링·접근성·전체 호출 그래프·범용 설계 품질은 검증하지 않는다."]
+}

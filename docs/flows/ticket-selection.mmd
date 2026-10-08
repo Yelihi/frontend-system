@@ -1,0 +1,17 @@
+%% {"basis":"observed","freshness":{"status":"current","reasons":[],"meaning":"Declared dependency and discovery-content freshness, not semantic correctness or complete runtime coverage"},"projectPath":"/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/test/evals/fs-comparison/v12/projects/styles","flowHash":"2c221cf394b25550407180551f21ee29ce3589dc7c8989010f204ef930060d92","generatedAt":"2026-10-07T05:58:12.647Z","reasons":[]}
+flowchart LR
+  subgraph n0["TicketsPage"]
+    n0info["TicketsPage<br/>state: selected: useSyncExternalStore snapshot<br/>lifecycle: useSyncExternalStore(subscribe, getSnapshot, getSnapshot)"]
+    n1["component · Button<br/>props: size=&quot;small&quot;, tone=&quot;neutral&quot;, onClick: () =&gt; ticketStore.select(&#39;t1&#39;), children=&quot;Choose ticket&quot;<br/>events: button click → onClick"]
+    n2["component · Indicator<br/>props: active: selected === &#39;t1&#39;"]
+  end
+  n3["page · TicketDetailsPage<br/>state: selected: useSyncExternalStore snapshot<br/>lifecycle: useSyncExternalStore(subscribe, getSnapshot, getSnapshot)"]
+  n4["store · ticketStore<br/>state: selected: string (초기 &#39;&#39;), listeners: Set&lt;callback&gt;"]
+  n1 -->|"onClick → ticketStore.select(&#39;t1&#39;)"| n4
+  n4 -->|"selected=id → listeners.forEach"| n4
+  n4 -->|"TicketsPage snapshot 의존성"| n0
+  n4 -->|"TicketDetailsPage snapshot 의존성"| n3
+  n0 -->|"active={selected===&#39;t1&#39;}"| n2
+  n0 -->|"TicketsPage subscribe 연결"| n4
+  n3 -->|"TicketDetailsPage subscribe 연결"| n4
+  n3 -->|"반환 cleanup → listeners.delete(f)"| n4

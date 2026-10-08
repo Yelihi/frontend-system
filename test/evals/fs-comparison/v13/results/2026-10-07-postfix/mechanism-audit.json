@@ -1,0 +1,194 @@
+{
+  "meaning": "Artifact/hash/record audit; not semantic correctness, browser execution or a causal model-quality score.",
+  "rows": [
+    {
+      "arm": "fs",
+      "stage": "initial",
+      "threadId": "01a114ef-fe3b-7712-8275-8abe27f54a2f",
+      "seconds": 170.204,
+      "usage": {
+        "input_tokens": 444004,
+        "cached_input_tokens": 398976,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 8058,
+        "reasoning_output_tokens": 607,
+        "total_tokens": 452062,
+        "uncached_input_tokens": 45028
+      },
+      "artifactAudit": {
+        "sourceUnchanged": true,
+        "runtimeUnchanged": true,
+        "requiredArtifacts": {
+          "analysis.md": true
+        },
+        "html": [
+          ".frontend-system/diagrams/order-frontend-flow.html"
+        ],
+        "environmentFailure": null,
+        "complete": true
+      },
+      "errors": [],
+      "responses": {
+        "shell:other": {
+          "calls": 12,
+          "characters": 47654
+        },
+        "get_project_analysis": {
+          "calls": 2,
+          "characters": 1060
+        },
+        "shell:tool-help": {
+          "calls": 1,
+          "characters": 8062
+        },
+        "inspect_project": {
+          "calls": 1,
+          "characters": 3336
+        },
+        "get_work_context": {
+          "calls": 1,
+          "characters": 38286
+        },
+        "save_project_analysis": {
+          "calls": 1,
+          "characters": 227
+        },
+        "render_project_flow": {
+          "calls": 1,
+          "characters": 635
+        }
+      },
+      "staleReasons": [],
+      "renders": [
+        {
+          "path": ".frontend-system/diagrams/order-frontend-flow.html",
+          "expectedHash": "7bdabfd14189055c982fa5425dcf8e82339bb91222225cdc20b6c2e580278a7e",
+          "actualHash": "7bdabfd14189055c982fa5425dcf8e82339bb91222225cdc20b6c2e580278a7e",
+          "language": "en"
+        }
+      ],
+      "savedPlans": [],
+      "contractDiagnostics": null,
+      "protectedSourceMatches": true,
+      "exportIntegrity": true,
+      "deliveryComplete": true
+    },
+    {
+      "arm": "fs",
+      "stage": "change",
+      "threadId": "01a114f2-aae2-7022-86de-1cbacee0eb98",
+      "seconds": 266.139,
+      "usage": {
+        "input_tokens": 1806182,
+        "cached_input_tokens": 1712768,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 16469,
+        "reasoning_output_tokens": 2113,
+        "total_tokens": 1822651,
+        "uncached_input_tokens": 93414
+      },
+      "artifactAudit": {
+        "sourceUnchanged": true,
+        "runtimeUnchanged": true,
+        "requiredArtifacts": {
+          "analysis.md": true,
+          "plan.md": true
+        },
+        "html": [
+          ".frontend-system/diagrams/order-frontend-flow.html"
+        ],
+        "environmentFailure": null,
+        "complete": true
+      },
+      "errors": [
+        {
+          "tool": "save_project_context",
+          "message": "Ambiguous citation: src/domain/orders.js. Quote occurs more than once; supply its line or a longer unique quote. Exact quote starts at line(s): 6, 20. Confirm the intended occurrence; locations do not validate its meaning."
+        },
+        {
+          "tool": "save_revision",
+          "message": "Review every retrieved candidate exactly once. Missing: none; unknown: javascript-functions-objects-and-scope, react-fiber-work-in-progress. Duplicated judgments are invalid; explicit grouped dismissals are allowed."
+        }
+      ],
+      "responses": {
+        "shell:other": {
+          "calls": 18,
+          "characters": 105012
+        },
+        "list_plans": {
+          "calls": 1,
+          "characters": 2
+        },
+        "get_project_analysis": {
+          "calls": 2,
+          "characters": 1931
+        },
+        "shell:tool-help": {
+          "calls": 3,
+          "characters": 30242
+        },
+        "save_project_analysis": {
+          "calls": 1,
+          "characters": 227
+        },
+        "get_work_context": {
+          "calls": 2,
+          "characters": 55756
+        },
+        "render_project_flow": {
+          "calls": 1,
+          "characters": 635
+        },
+        "get_project_snapshot": {
+          "calls": 1,
+          "characters": 1459
+        },
+        "read_project_source": {
+          "calls": 1,
+          "characters": 9700
+        },
+        "save_project_context": {
+          "calls": 1,
+          "characters": 1183
+        },
+        "read_learned_knowledge": {
+          "calls": 1,
+          "characters": 15771
+        },
+        "save_revision": {
+          "calls": 1,
+          "characters": 745
+        }
+      },
+      "staleReasons": [
+        "Changed discovery source: src/features/checkout/index.js"
+      ],
+      "renders": [
+        {
+          "path": ".frontend-system/diagrams/order-frontend-flow.html",
+          "expectedHash": "53493571fd5a20f30cd8ddaa5ce957c1b75e8612d4657bf066ff6cc9bb25cd71",
+          "actualHash": "53493571fd5a20f30cd8ddaa5ce957c1b75e8612d4657bf066ff6cc9bb25cd71",
+          "language": "en"
+        }
+      ],
+      "savedPlans": [
+        {
+          "path": ".frontend-system/plans/shared-order-submission/revision.json",
+          "approved": false,
+          "evidenceBound": true,
+          "references": [
+            {
+              "id": "order-frontend-flow",
+              "hashMatches": true,
+              "identityMatches": true
+            }
+          ]
+        }
+      ],
+      "contractDiagnostics": [],
+      "protectedSourceMatches": true,
+      "exportIntegrity": true,
+      "deliveryComplete": true
+    }
+  ]
+}

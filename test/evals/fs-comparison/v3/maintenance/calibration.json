@@ -1,0 +1,1034 @@
+{
+  "kind": "hand-authored grader calibration; not model performance",
+  "modelCalls": 0,
+  "correctAccepted": 3,
+  "mutantsRejected": 21,
+  "results": [
+    {
+      "stage": "initial",
+      "variant": "correct",
+      "eligible": true,
+      "passed": 8,
+      "required": 8,
+      "results": [
+        {
+          "id": "policy-boundaries",
+          "status": "passed"
+        },
+        {
+          "id": "invalid-input",
+          "status": "passed"
+        },
+        {
+          "id": "preview-entry",
+          "status": "passed"
+        },
+        {
+          "id": "submit-entry",
+          "status": "passed"
+        },
+        {
+          "id": "replaceable-io",
+          "status": "passed"
+        },
+        {
+          "id": "pending-guard",
+          "status": "passed"
+        },
+        {
+          "id": "failure-retry",
+          "status": "passed"
+        },
+        {
+          "id": "keep-valid-code",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "stage": "initial",
+      "variant": "wrong-policy",
+      "eligible": false,
+      "passed": 5,
+      "required": 8,
+      "results": [
+        {
+          "id": "policy-boundaries",
+          "status": "failed",
+          "reason": "Expected values to be strictly equal:\n\n500 !== 501\n"
+        },
+        {
+          "id": "invalid-input",
+          "status": "passed"
+        },
+        {
+          "id": "preview-entry",
+          "status": "failed",
+          "reason": "Expected values to be strictly equal:\n\n500 !== 501\n"
+        },
+        {
+          "id": "submit-entry",
+          "status": "failed",
+          "reason": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n+   totalCents: 500\n-   totalCents: 501\n  }\n"
+        },
+        {
+          "id": "replaceable-io",
+          "status": "passed"
+        },
+        {
+          "id": "pending-guard",
+          "status": "passed"
+        },
+        {
+          "id": "failure-retry",
+          "status": "passed"
+        },
+        {
+          "id": "keep-valid-code",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "stage": "initial",
+      "variant": "no-validation",
+      "eligible": false,
+      "passed": 7,
+      "required": 8,
+      "results": [
+        {
+          "id": "policy-boundaries",
+          "status": "passed"
+        },
+        {
+          "id": "invalid-input",
+          "status": "failed",
+          "reason": "Missing expected exception."
+        },
+        {
+          "id": "preview-entry",
+          "status": "passed"
+        },
+        {
+          "id": "submit-entry",
+          "status": "passed"
+        },
+        {
+          "id": "replaceable-io",
+          "status": "passed"
+        },
+        {
+          "id": "pending-guard",
+          "status": "passed"
+        },
+        {
+          "id": "failure-retry",
+          "status": "passed"
+        },
+        {
+          "id": "keep-valid-code",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "stage": "initial",
+      "variant": "preview-drift",
+      "eligible": false,
+      "passed": 6,
+      "required": 8,
+      "results": [
+        {
+          "id": "policy-boundaries",
+          "status": "passed"
+        },
+        {
+          "id": "invalid-input",
+          "status": "passed"
+        },
+        {
+          "id": "preview-entry",
+          "status": "failed",
+          "reason": "Expected values to be strictly equal:\n\n0 !== 500\n"
+        },
+        {
+          "id": "submit-entry",
+          "status": "passed"
+        },
+        {
+          "id": "replaceable-io",
+          "status": "failed",
+          "reason": "Expected values to be strictly equal:\n\n0 !== 2300\n"
+        },
+        {
+          "id": "pending-guard",
+          "status": "passed"
+        },
+        {
+          "id": "failure-retry",
+          "status": "passed"
+        },
+        {
+          "id": "keep-valid-code",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "stage": "initial",
+      "variant": "concrete-io",
+      "eligible": false,
+      "passed": 3,
+      "required": 8,
+      "results": [
+        {
+          "id": "policy-boundaries",
+          "status": "passed"
+        },
+        {
+          "id": "invalid-input",
+          "status": "passed"
+        },
+        {
+          "id": "preview-entry",
+          "status": "failed",
+          "reason": "Unexpected global fetch"
+        },
+        {
+          "id": "submit-entry",
+          "status": "failed",
+          "reason": "Expected values to be strictly equal:\n\nnull !== 'order-1'\n"
+        },
+        {
+          "id": "replaceable-io",
+          "status": "failed",
+          "reason": "Unexpected global fetch"
+        },
+        {
+          "id": "pending-guard",
+          "status": "failed",
+          "reason": "Expected values to be strictly equal:\n\n0 !== 1\n"
+        },
+        {
+          "id": "failure-retry",
+          "status": "failed",
+          "reason": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n+   error: 'Unexpected global fetch',\n-   error: 'offline',\n    orderId: null,\n    status: 'error'\n  }\n"
+        },
+        {
+          "id": "keep-valid-code",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "stage": "initial",
+      "variant": "stuck-pending",
+      "eligible": false,
+      "passed": 7,
+      "required": 8,
+      "results": [
+        {
+          "id": "policy-boundaries",
+          "status": "passed"
+        },
+        {
+          "id": "invalid-input",
+          "status": "passed"
+        },
+        {
+          "id": "preview-entry",
+          "status": "passed"
+        },
+        {
+          "id": "submit-entry",
+          "status": "passed"
+        },
+        {
+          "id": "replaceable-io",
+          "status": "passed"
+        },
+        {
+          "id": "pending-guard",
+          "status": "passed"
+        },
+        {
+          "id": "failure-retry",
+          "status": "failed",
+          "reason": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n    error: 'offline',\n    orderId: null,\n+   status: 'pending'\n-   status: 'error'\n  }\n"
+        },
+        {
+          "id": "keep-valid-code",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "stage": "initial",
+      "variant": "stale-success",
+      "eligible": false,
+      "passed": 7,
+      "required": 8,
+      "results": [
+        {
+          "id": "policy-boundaries",
+          "status": "passed"
+        },
+        {
+          "id": "invalid-input",
+          "status": "passed"
+        },
+        {
+          "id": "preview-entry",
+          "status": "passed"
+        },
+        {
+          "id": "submit-entry",
+          "status": "passed"
+        },
+        {
+          "id": "replaceable-io",
+          "status": "passed"
+        },
+        {
+          "id": "pending-guard",
+          "status": "passed"
+        },
+        {
+          "id": "failure-retry",
+          "status": "failed",
+          "reason": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n    error: 'offline',\n+   orderId: 'old-order',\n-   orderId: null,\n    status: 'error'\n  }\n"
+        },
+        {
+          "id": "keep-valid-code",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "stage": "initial",
+      "variant": "unnecessary-edit",
+      "eligible": false,
+      "passed": 7,
+      "required": 8,
+      "results": [
+        {
+          "id": "policy-boundaries",
+          "status": "passed"
+        },
+        {
+          "id": "invalid-input",
+          "status": "passed"
+        },
+        {
+          "id": "preview-entry",
+          "status": "passed"
+        },
+        {
+          "id": "submit-entry",
+          "status": "passed"
+        },
+        {
+          "id": "replaceable-io",
+          "status": "passed"
+        },
+        {
+          "id": "pending-guard",
+          "status": "passed"
+        },
+        {
+          "id": "failure-retry",
+          "status": "passed"
+        },
+        {
+          "id": "keep-valid-code",
+          "status": "failed",
+          "reason": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'export const formatPrice = cents => (cents / 100).toFixed(2);\\n' +\n+   '// unrelated rewrite\\n'\n- 'export const formatPrice = cents => (cents / 100).toFixed(2);\\n'\n"
+        }
+      ]
+    },
+    {
+      "stage": "policy-change",
+      "variant": "correct",
+      "eligible": true,
+      "passed": 8,
+      "required": 8,
+      "results": [
+        {
+          "id": "policy-boundaries",
+          "status": "passed"
+        },
+        {
+          "id": "invalid-input",
+          "status": "passed"
+        },
+        {
+          "id": "preview-entry",
+          "status": "passed"
+        },
+        {
+          "id": "submit-entry",
+          "status": "passed"
+        },
+        {
+          "id": "replaceable-io",
+          "status": "passed"
+        },
+        {
+          "id": "pending-guard",
+          "status": "passed"
+        },
+        {
+          "id": "failure-retry",
+          "status": "passed"
+        },
+        {
+          "id": "keep-valid-code",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "stage": "policy-change",
+      "variant": "wrong-policy",
+      "eligible": false,
+      "passed": 5,
+      "required": 8,
+      "results": [
+        {
+          "id": "policy-boundaries",
+          "status": "failed",
+          "reason": "Expected values to be strictly equal:\n\n2200 !== 2201\n"
+        },
+        {
+          "id": "invalid-input",
+          "status": "passed"
+        },
+        {
+          "id": "preview-entry",
+          "status": "failed",
+          "reason": "Expected values to be strictly equal:\n\n2200 !== 2201\n"
+        },
+        {
+          "id": "submit-entry",
+          "status": "failed",
+          "reason": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n+   totalCents: 2200\n-   totalCents: 2201\n  }\n"
+        },
+        {
+          "id": "replaceable-io",
+          "status": "passed"
+        },
+        {
+          "id": "pending-guard",
+          "status": "passed"
+        },
+        {
+          "id": "failure-retry",
+          "status": "passed"
+        },
+        {
+          "id": "keep-valid-code",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "stage": "policy-change",
+      "variant": "no-validation",
+      "eligible": false,
+      "passed": 7,
+      "required": 8,
+      "results": [
+        {
+          "id": "policy-boundaries",
+          "status": "passed"
+        },
+        {
+          "id": "invalid-input",
+          "status": "failed",
+          "reason": "Missing expected exception."
+        },
+        {
+          "id": "preview-entry",
+          "status": "passed"
+        },
+        {
+          "id": "submit-entry",
+          "status": "passed"
+        },
+        {
+          "id": "replaceable-io",
+          "status": "passed"
+        },
+        {
+          "id": "pending-guard",
+          "status": "passed"
+        },
+        {
+          "id": "failure-retry",
+          "status": "passed"
+        },
+        {
+          "id": "keep-valid-code",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "stage": "policy-change",
+      "variant": "preview-drift",
+      "eligible": false,
+      "passed": 6,
+      "required": 8,
+      "results": [
+        {
+          "id": "policy-boundaries",
+          "status": "passed"
+        },
+        {
+          "id": "invalid-input",
+          "status": "passed"
+        },
+        {
+          "id": "preview-entry",
+          "status": "failed",
+          "reason": "Expected values to be strictly equal:\n\n0 !== 500\n"
+        },
+        {
+          "id": "submit-entry",
+          "status": "passed"
+        },
+        {
+          "id": "replaceable-io",
+          "status": "failed",
+          "reason": "Expected values to be strictly equal:\n\n0 !== 2200\n"
+        },
+        {
+          "id": "pending-guard",
+          "status": "passed"
+        },
+        {
+          "id": "failure-retry",
+          "status": "passed"
+        },
+        {
+          "id": "keep-valid-code",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "stage": "policy-change",
+      "variant": "concrete-io",
+      "eligible": false,
+      "passed": 3,
+      "required": 8,
+      "results": [
+        {
+          "id": "policy-boundaries",
+          "status": "passed"
+        },
+        {
+          "id": "invalid-input",
+          "status": "passed"
+        },
+        {
+          "id": "preview-entry",
+          "status": "failed",
+          "reason": "Unexpected global fetch"
+        },
+        {
+          "id": "submit-entry",
+          "status": "failed",
+          "reason": "Expected values to be strictly equal:\n\nnull !== 'order-1'\n"
+        },
+        {
+          "id": "replaceable-io",
+          "status": "failed",
+          "reason": "Unexpected global fetch"
+        },
+        {
+          "id": "pending-guard",
+          "status": "failed",
+          "reason": "Expected values to be strictly equal:\n\n0 !== 1\n"
+        },
+        {
+          "id": "failure-retry",
+          "status": "failed",
+          "reason": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n+   error: 'Unexpected global fetch',\n-   error: 'offline',\n    orderId: null,\n    status: 'error'\n  }\n"
+        },
+        {
+          "id": "keep-valid-code",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "stage": "policy-change",
+      "variant": "stuck-pending",
+      "eligible": false,
+      "passed": 7,
+      "required": 8,
+      "results": [
+        {
+          "id": "policy-boundaries",
+          "status": "passed"
+        },
+        {
+          "id": "invalid-input",
+          "status": "passed"
+        },
+        {
+          "id": "preview-entry",
+          "status": "passed"
+        },
+        {
+          "id": "submit-entry",
+          "status": "passed"
+        },
+        {
+          "id": "replaceable-io",
+          "status": "passed"
+        },
+        {
+          "id": "pending-guard",
+          "status": "passed"
+        },
+        {
+          "id": "failure-retry",
+          "status": "failed",
+          "reason": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n    error: 'offline',\n    orderId: null,\n+   status: 'pending'\n-   status: 'error'\n  }\n"
+        },
+        {
+          "id": "keep-valid-code",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "stage": "policy-change",
+      "variant": "stale-success",
+      "eligible": false,
+      "passed": 7,
+      "required": 8,
+      "results": [
+        {
+          "id": "policy-boundaries",
+          "status": "passed"
+        },
+        {
+          "id": "invalid-input",
+          "status": "passed"
+        },
+        {
+          "id": "preview-entry",
+          "status": "passed"
+        },
+        {
+          "id": "submit-entry",
+          "status": "passed"
+        },
+        {
+          "id": "replaceable-io",
+          "status": "passed"
+        },
+        {
+          "id": "pending-guard",
+          "status": "passed"
+        },
+        {
+          "id": "failure-retry",
+          "status": "failed",
+          "reason": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n    error: 'offline',\n+   orderId: 'old-order',\n-   orderId: null,\n    status: 'error'\n  }\n"
+        },
+        {
+          "id": "keep-valid-code",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "stage": "policy-change",
+      "variant": "unnecessary-edit",
+      "eligible": false,
+      "passed": 7,
+      "required": 8,
+      "results": [
+        {
+          "id": "policy-boundaries",
+          "status": "passed"
+        },
+        {
+          "id": "invalid-input",
+          "status": "passed"
+        },
+        {
+          "id": "preview-entry",
+          "status": "passed"
+        },
+        {
+          "id": "submit-entry",
+          "status": "passed"
+        },
+        {
+          "id": "replaceable-io",
+          "status": "passed"
+        },
+        {
+          "id": "pending-guard",
+          "status": "passed"
+        },
+        {
+          "id": "failure-retry",
+          "status": "passed"
+        },
+        {
+          "id": "keep-valid-code",
+          "status": "failed",
+          "reason": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'export const formatPrice = cents => (cents / 100).toFixed(2);\\n' +\n+   '// unrelated rewrite\\n'\n- 'export const formatPrice = cents => (cents / 100).toFixed(2);\\n'\n"
+        }
+      ]
+    },
+    {
+      "stage": "transport-change",
+      "variant": "correct",
+      "eligible": true,
+      "passed": 8,
+      "required": 8,
+      "results": [
+        {
+          "id": "policy-boundaries",
+          "status": "passed"
+        },
+        {
+          "id": "invalid-input",
+          "status": "passed"
+        },
+        {
+          "id": "preview-entry",
+          "status": "passed"
+        },
+        {
+          "id": "submit-entry",
+          "status": "passed"
+        },
+        {
+          "id": "replaceable-io",
+          "status": "passed"
+        },
+        {
+          "id": "pending-guard",
+          "status": "passed"
+        },
+        {
+          "id": "failure-retry",
+          "status": "passed"
+        },
+        {
+          "id": "keep-valid-code",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "stage": "transport-change",
+      "variant": "wrong-policy",
+      "eligible": false,
+      "passed": 5,
+      "required": 8,
+      "results": [
+        {
+          "id": "policy-boundaries",
+          "status": "failed",
+          "reason": "Expected values to be strictly equal:\n\n2200 !== 2201\n"
+        },
+        {
+          "id": "invalid-input",
+          "status": "passed"
+        },
+        {
+          "id": "preview-entry",
+          "status": "failed",
+          "reason": "Expected values to be strictly equal:\n\n2200 !== 2201\n"
+        },
+        {
+          "id": "submit-entry",
+          "status": "failed",
+          "reason": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n+   totalCents: 2200\n-   totalCents: 2201\n  }\n"
+        },
+        {
+          "id": "replaceable-io",
+          "status": "passed"
+        },
+        {
+          "id": "pending-guard",
+          "status": "passed"
+        },
+        {
+          "id": "failure-retry",
+          "status": "passed"
+        },
+        {
+          "id": "keep-valid-code",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "stage": "transport-change",
+      "variant": "no-validation",
+      "eligible": false,
+      "passed": 7,
+      "required": 8,
+      "results": [
+        {
+          "id": "policy-boundaries",
+          "status": "passed"
+        },
+        {
+          "id": "invalid-input",
+          "status": "failed",
+          "reason": "Missing expected exception."
+        },
+        {
+          "id": "preview-entry",
+          "status": "passed"
+        },
+        {
+          "id": "submit-entry",
+          "status": "passed"
+        },
+        {
+          "id": "replaceable-io",
+          "status": "passed"
+        },
+        {
+          "id": "pending-guard",
+          "status": "passed"
+        },
+        {
+          "id": "failure-retry",
+          "status": "passed"
+        },
+        {
+          "id": "keep-valid-code",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "stage": "transport-change",
+      "variant": "preview-drift",
+      "eligible": false,
+      "passed": 6,
+      "required": 8,
+      "results": [
+        {
+          "id": "policy-boundaries",
+          "status": "passed"
+        },
+        {
+          "id": "invalid-input",
+          "status": "passed"
+        },
+        {
+          "id": "preview-entry",
+          "status": "failed",
+          "reason": "Expected values to be strictly equal:\n\n0 !== 500\n"
+        },
+        {
+          "id": "submit-entry",
+          "status": "passed"
+        },
+        {
+          "id": "replaceable-io",
+          "status": "failed",
+          "reason": "Expected values to be strictly equal:\n\n0 !== 2200\n"
+        },
+        {
+          "id": "pending-guard",
+          "status": "passed"
+        },
+        {
+          "id": "failure-retry",
+          "status": "passed"
+        },
+        {
+          "id": "keep-valid-code",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "stage": "transport-change",
+      "variant": "concrete-io",
+      "eligible": false,
+      "passed": 3,
+      "required": 8,
+      "results": [
+        {
+          "id": "policy-boundaries",
+          "status": "passed"
+        },
+        {
+          "id": "invalid-input",
+          "status": "passed"
+        },
+        {
+          "id": "preview-entry",
+          "status": "failed",
+          "reason": "Unexpected global fetch"
+        },
+        {
+          "id": "submit-entry",
+          "status": "failed",
+          "reason": "Expected values to be strictly equal:\n\nnull !== 'order-1'\n"
+        },
+        {
+          "id": "replaceable-io",
+          "status": "failed",
+          "reason": "Unexpected global fetch"
+        },
+        {
+          "id": "pending-guard",
+          "status": "failed",
+          "reason": "Expected values to be strictly equal:\n\n0 !== 1\n"
+        },
+        {
+          "id": "failure-retry",
+          "status": "failed",
+          "reason": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n+   error: 'Unexpected global fetch',\n-   error: 'offline',\n    orderId: null,\n    status: 'error'\n  }\n"
+        },
+        {
+          "id": "keep-valid-code",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "stage": "transport-change",
+      "variant": "stuck-pending",
+      "eligible": false,
+      "passed": 7,
+      "required": 8,
+      "results": [
+        {
+          "id": "policy-boundaries",
+          "status": "passed"
+        },
+        {
+          "id": "invalid-input",
+          "status": "passed"
+        },
+        {
+          "id": "preview-entry",
+          "status": "passed"
+        },
+        {
+          "id": "submit-entry",
+          "status": "passed"
+        },
+        {
+          "id": "replaceable-io",
+          "status": "passed"
+        },
+        {
+          "id": "pending-guard",
+          "status": "passed"
+        },
+        {
+          "id": "failure-retry",
+          "status": "failed",
+          "reason": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n    error: 'offline',\n    orderId: null,\n+   status: 'pending'\n-   status: 'error'\n  }\n"
+        },
+        {
+          "id": "keep-valid-code",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "stage": "transport-change",
+      "variant": "stale-success",
+      "eligible": false,
+      "passed": 7,
+      "required": 8,
+      "results": [
+        {
+          "id": "policy-boundaries",
+          "status": "passed"
+        },
+        {
+          "id": "invalid-input",
+          "status": "passed"
+        },
+        {
+          "id": "preview-entry",
+          "status": "passed"
+        },
+        {
+          "id": "submit-entry",
+          "status": "passed"
+        },
+        {
+          "id": "replaceable-io",
+          "status": "passed"
+        },
+        {
+          "id": "pending-guard",
+          "status": "passed"
+        },
+        {
+          "id": "failure-retry",
+          "status": "failed",
+          "reason": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n    error: 'offline',\n+   orderId: 'old-order',\n-   orderId: null,\n    status: 'error'\n  }\n"
+        },
+        {
+          "id": "keep-valid-code",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "stage": "transport-change",
+      "variant": "unnecessary-edit",
+      "eligible": false,
+      "passed": 7,
+      "required": 8,
+      "results": [
+        {
+          "id": "policy-boundaries",
+          "status": "passed"
+        },
+        {
+          "id": "invalid-input",
+          "status": "passed"
+        },
+        {
+          "id": "preview-entry",
+          "status": "passed"
+        },
+        {
+          "id": "submit-entry",
+          "status": "passed"
+        },
+        {
+          "id": "replaceable-io",
+          "status": "passed"
+        },
+        {
+          "id": "pending-guard",
+          "status": "passed"
+        },
+        {
+          "id": "failure-retry",
+          "status": "passed"
+        },
+        {
+          "id": "keep-valid-code",
+          "status": "failed",
+          "reason": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'export const formatPrice = cents => (cents / 100).toFixed(2);\\n' +\n+   '// unrelated rewrite\\n'\n- 'export const formatPrice = cents => (cents / 100).toFixed(2);\\n'\n"
+        }
+      ]
+    }
+  ]
+}

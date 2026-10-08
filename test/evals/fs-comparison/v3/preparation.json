@@ -1,0 +1,128 @@
+{
+  "kind": "pre-model-regression-and-sync-audit",
+  "createdAt": "2026-10-01T14:08:01.353Z",
+  "modelRuns": 0,
+  "sourceCount": 479,
+  "referenceCount": 69,
+  "retrievalChecks": [
+    {
+      "query": "이전 검색 응답 최신 결과 덮어쓰기",
+      "technologies": [
+        "React"
+      ],
+      "expectedIds": [
+        "react-derived-state-and-effects"
+      ],
+      "forbiddenIds": [],
+      "ids": [
+        "react-derived-state-and-effects"
+      ],
+      "passed": true
+    },
+    {
+      "query": "state snapshot",
+      "technologies": [
+        "Vue"
+      ],
+      "expectedIds": [],
+      "forbiddenIds": [
+        "react-rendering-state-model",
+        "react-fiber-work-in-progress"
+      ],
+      "ids": [
+        "web-api-permissions-identity-and-injection"
+      ],
+      "passed": true
+    },
+    {
+      "query": "가독성 반환 타입",
+      "technologies": [],
+      "expectedIds": [
+        "code-quality-context-and-contracts"
+      ],
+      "forbiddenIds": [],
+      "ids": [
+        "code-quality-context-and-contracts",
+        "react-identity-and-state"
+      ],
+      "passed": true
+    },
+    {
+      "query": "module not found alias",
+      "technologies": [],
+      "expectedIds": [
+        "bundling-module-graph-and-transforms"
+      ],
+      "forbiddenIds": [],
+      "ids": [
+        "bundling-module-graph-and-transforms",
+        "typescript-module-environment"
+      ],
+      "passed": true
+    },
+    {
+      "query": "아이콘 삭제 버튼 이름",
+      "technologies": [
+        "React"
+      ],
+      "expectedIds": [
+        "accessibility-names-and-alternatives"
+      ],
+      "forbiddenIds": [],
+      "ids": [
+        "accessibility-names-and-alternatives"
+      ],
+      "passed": true
+    },
+    {
+      "query": "Implement approved TASK.md in the project",
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [],
+      "expectEmpty": true,
+      "ids": [],
+      "passed": true
+    },
+    {
+      "query": "zzunmatchedknowledgeprobezz",
+      "technologies": [],
+      "expectedIds": [],
+      "forbiddenIds": [],
+      "expectEmpty": true,
+      "ids": [],
+      "passed": true
+    }
+  ],
+  "warnings": [],
+  "semanticValidation": "Source support, omitted claims and applicability still require human/host review",
+  "limits": [
+    "Seven indexed retrieval checks are development regressions, not independent held-out judgments.",
+    "No full semantic audit of all 479 originals or model-quality claim.",
+    "Skill quick_validate.py unavailable because PyYAML is absent; unchanged frontmatter and reference paths checked separately."
+  ],
+  "hashes": {
+    "src/application/knowledge/reference-index.ts": "60f04a262d72813a9e7a15e372a602c1fe9dbf8e133603a454cb6f8dacb385dc",
+    "src/application/knowledge/catalog.ts": "c4d74d9b2e147ffd022bd8c2bcdcf27f7d7d82fce6da7ad9dfd36b9878d834b9",
+    "src/application/task-context.ts": "96b91de44f64015613f862d02a13a40da0e0f5f10cc7adfdba91086c039049f3",
+    "src/mcp.ts": "2d9a28dbe58fc2b78333ae852005f75022a34aca94858e47fedd2b946f5c7fc4",
+    "references/learned/index.json": "f9dea0fb293c551e08f8942b8fc62bec9ef59d376bb874696ff2386bb6afbfdf",
+    "skills/fs-plan/SKILL.md": "170e4ae68f05df588e519fb4ad7e1a52429f848a9b99e52305a9b2b5a0d255c1",
+    "skills/fs-work/SKILL.md": "e7ab4f2a2e436b9d526c6cd78fed0da6d022feaf5aedbaddfe1dc1bc8237ffec",
+    "skills/fs-review/SKILL.md": "adf8052b4143a318bb69248bf45289974f63a4f97a24f1e03a22a0af1e092343",
+    "skills/fs-knowledge/SKILL.md": "1d39abf3663e98f58fe50b9bdfd316ace932a2f55b66fa4cb11600a790c4ded6"
+  },
+  "verification": {
+    "typecheck": "passed",
+    "lint": "passed",
+    "repositoryTests": {
+      "passed": 49,
+      "failed": 0
+    },
+    "journeyScorerTests": {
+      "passed": 1,
+      "failed": 0
+    },
+    "standalonePackage": "passed with temporary npm cache",
+    "modelComparison": "not-run"
+  }
+}

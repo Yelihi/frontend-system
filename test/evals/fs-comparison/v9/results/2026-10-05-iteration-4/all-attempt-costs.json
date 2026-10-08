@@ -1,0 +1,1429 @@
+{
+  "scope": "CLI generation, clarification, and reviewer invocations only. Coordinator tokens/time, read-only preflight and setup failures before model launch are not included. Missing usage is unknown, not zero.",
+  "summary": {
+    "planning": {
+      "calls": 41,
+      "completeTurns": 36,
+      "running": 0,
+      "unknownUsageCalls": 5,
+      "knownTotalTokens": 18124330,
+      "knownUncachedPlusOutput": 1563050,
+      "elapsedSecondsSum": 13909.393999999997,
+      "costIsLowerBound": true
+    },
+    "clarification": {
+      "calls": 2,
+      "completeTurns": 2,
+      "running": 0,
+      "unknownUsageCalls": 0,
+      "knownTotalTokens": 678445,
+      "knownUncachedPlusOutput": 62125,
+      "elapsedSecondsSum": 666.335,
+      "costIsLowerBound": false
+    },
+    "reviewer": {
+      "calls": 5,
+      "completeTurns": 5,
+      "running": 0,
+      "unknownUsageCalls": 0,
+      "knownTotalTokens": 667568,
+      "knownUncachedPlusOutput": 200112,
+      "elapsedSecondsSum": 1116.171,
+      "costIsLowerBound": false
+    }
+  },
+  "calls": [
+    {
+      "category": "planning",
+      "id": "iteration-1/shared-old/questions",
+      "resultPath": "2026-10-05-iteration-1/shared-old/questions",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 273.877,
+      "completedTurns": 1,
+      "threadId": "01a10bf1-b432-7592-96c9-5e6d8bf3414f",
+      "sessionError": null,
+      "usage": {
+        "input_tokens": 342516,
+        "cached_input_tokens": 301184,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 7223,
+        "reasoning_output_tokens": 1586,
+        "total_tokens": 349739,
+        "uncached_input_tokens": 41332
+      },
+      "cumulativeUsage": {
+        "input_tokens": 342516,
+        "cached_input_tokens": 301184,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 7223,
+        "reasoning_output_tokens": 1586
+      },
+      "usageError": null,
+      "errors": []
+    },
+    {
+      "category": "planning",
+      "id": "iteration-1/shared-old/plan",
+      "resultPath": "2026-10-05-iteration-1/shared-old/plan",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 289.647,
+      "completedTurns": 1,
+      "threadId": "01a10bf1-b432-7592-96c9-5e6d8bf3414f",
+      "sessionError": null,
+      "usage": {
+        "input_tokens": 516290,
+        "cached_input_tokens": 492800,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 9553,
+        "reasoning_output_tokens": 2777,
+        "total_tokens": 525843,
+        "uncached_input_tokens": 23490
+      },
+      "cumulativeUsage": {
+        "input_tokens": 858806,
+        "cached_input_tokens": 793984,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 16776,
+        "reasoning_output_tokens": 4363
+      },
+      "usageError": null,
+      "errors": []
+    },
+    {
+      "category": "planning",
+      "id": "iteration-1/shared-new/questions",
+      "resultPath": "2026-10-05-iteration-1/shared-new/questions",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 242.949,
+      "completedTurns": 1,
+      "threadId": "01a10bf1-b432-74e0-8f09-27766d54a41d",
+      "sessionError": null,
+      "usage": {
+        "input_tokens": 292001,
+        "cached_input_tokens": 251392,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 6427,
+        "reasoning_output_tokens": 973,
+        "total_tokens": 298428,
+        "uncached_input_tokens": 40609
+      },
+      "cumulativeUsage": {
+        "input_tokens": 292001,
+        "cached_input_tokens": 251392,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 6427,
+        "reasoning_output_tokens": 973
+      },
+      "usageError": null,
+      "errors": []
+    },
+    {
+      "category": "planning",
+      "id": "iteration-1/shared-new/plan",
+      "resultPath": "2026-10-05-iteration-1/shared-new/plan",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 415.241,
+      "completedTurns": 1,
+      "threadId": "01a10bf1-b432-74e0-8f09-27766d54a41d",
+      "sessionError": null,
+      "usage": {
+        "input_tokens": 730418,
+        "cached_input_tokens": 702208,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 13225,
+        "reasoning_output_tokens": 3526,
+        "total_tokens": 743643,
+        "uncached_input_tokens": 28210
+      },
+      "cumulativeUsage": {
+        "input_tokens": 1022419,
+        "cached_input_tokens": 953600,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 19652,
+        "reasoning_output_tokens": 4499
+      },
+      "usageError": null,
+      "errors": []
+    },
+    {
+      "category": "planning",
+      "id": "iteration-1/shared-raw/questions",
+      "resultPath": "2026-10-05-iteration-1/shared-raw/questions",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 96.804,
+      "completedTurns": 1,
+      "threadId": "01a10bf5-68ec-70c1-b75c-bfa6db455c9d",
+      "sessionError": null,
+      "usage": {
+        "input_tokens": 66996,
+        "cached_input_tokens": 40192,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2660,
+        "reasoning_output_tokens": 658,
+        "total_tokens": 69656,
+        "uncached_input_tokens": 26804
+      },
+      "cumulativeUsage": {
+        "input_tokens": 66996,
+        "cached_input_tokens": 40192,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2660,
+        "reasoning_output_tokens": 658
+      },
+      "usageError": null,
+      "errors": []
+    },
+    {
+      "category": "planning",
+      "id": "iteration-1/shared-raw/plan",
+      "resultPath": "2026-10-05-iteration-1/shared-raw/plan",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 185.716,
+      "completedTurns": 1,
+      "threadId": "01a10bf5-68ec-70c1-b75c-bfa6db455c9d",
+      "sessionError": null,
+      "usage": {
+        "input_tokens": 83309,
+        "cached_input_tokens": 75264,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 4746,
+        "reasoning_output_tokens": 1987,
+        "total_tokens": 88055,
+        "uncached_input_tokens": 8045
+      },
+      "cumulativeUsage": {
+        "input_tokens": 150305,
+        "cached_input_tokens": 115456,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 7406,
+        "reasoning_output_tokens": 2645
+      },
+      "usageError": null,
+      "errors": []
+    },
+    {
+      "category": "planning",
+      "id": "iteration-1/independent-old/questions",
+      "resultPath": "2026-10-05-iteration-1/independent-old/questions",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 294.613,
+      "completedTurns": 1,
+      "threadId": "01a10bf5-e1ce-7482-8c85-fce2e0c78988",
+      "sessionError": null,
+      "usage": {
+        "input_tokens": 396206,
+        "cached_input_tokens": 355072,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 7571,
+        "reasoning_output_tokens": 1256,
+        "total_tokens": 403777,
+        "uncached_input_tokens": 41134
+      },
+      "cumulativeUsage": {
+        "input_tokens": 396206,
+        "cached_input_tokens": 355072,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 7571,
+        "reasoning_output_tokens": 1256
+      },
+      "usageError": null,
+      "errors": []
+    },
+    {
+      "category": "planning",
+      "id": "iteration-1/independent-old/plan",
+      "resultPath": "2026-10-05-iteration-1/independent-old/plan",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 500.277,
+      "completedTurns": 1,
+      "threadId": "01a10bf5-e1ce-7482-8c85-fce2e0c78988",
+      "sessionError": null,
+      "usage": {
+        "input_tokens": 854897,
+        "cached_input_tokens": 817024,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 12850,
+        "reasoning_output_tokens": 5136,
+        "total_tokens": 867747,
+        "uncached_input_tokens": 37873
+      },
+      "cumulativeUsage": {
+        "input_tokens": 1251103,
+        "cached_input_tokens": 1172096,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 20421,
+        "reasoning_output_tokens": 6392
+      },
+      "usageError": null,
+      "errors": []
+    },
+    {
+      "category": "planning",
+      "id": "iteration-1/independent-new/questions",
+      "resultPath": "2026-10-05-iteration-1/independent-new/questions",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 264.04,
+      "completedTurns": 1,
+      "threadId": "01a10bf6-e34f-7953-b92c-1594890b6a6d",
+      "sessionError": null,
+      "usage": {
+        "input_tokens": 315170,
+        "cached_input_tokens": 282368,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 7095,
+        "reasoning_output_tokens": 1329,
+        "total_tokens": 322265,
+        "uncached_input_tokens": 32802
+      },
+      "cumulativeUsage": {
+        "input_tokens": 315170,
+        "cached_input_tokens": 282368,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 7095,
+        "reasoning_output_tokens": 1329
+      },
+      "usageError": null,
+      "errors": []
+    },
+    {
+      "category": "planning",
+      "id": "iteration-1/independent-new/plan",
+      "resultPath": "2026-10-05-iteration-1/independent-new/plan",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 475.615,
+      "completedTurns": 1,
+      "threadId": "01a10bf6-e34f-7953-b92c-1594890b6a6d",
+      "sessionError": null,
+      "usage": {
+        "input_tokens": 918670,
+        "cached_input_tokens": 885248,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 15007,
+        "reasoning_output_tokens": 4178,
+        "total_tokens": 933677,
+        "uncached_input_tokens": 33422
+      },
+      "cumulativeUsage": {
+        "input_tokens": 1233840,
+        "cached_input_tokens": 1167616,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 22102,
+        "reasoning_output_tokens": 5507
+      },
+      "usageError": null,
+      "errors": []
+    },
+    {
+      "category": "planning",
+      "id": "iteration-1/independent-raw/questions",
+      "resultPath": "2026-10-05-iteration-1/independent-raw/questions",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 119.524,
+      "completedTurns": 1,
+      "threadId": "01a10bfa-60c0-7e41-94c4-0e9cbc0f91f5",
+      "sessionError": null,
+      "usage": {
+        "input_tokens": 52492,
+        "cached_input_tokens": 43648,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3399,
+        "reasoning_output_tokens": 974,
+        "total_tokens": 55891,
+        "uncached_input_tokens": 8844
+      },
+      "cumulativeUsage": {
+        "input_tokens": 52492,
+        "cached_input_tokens": 43648,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3399,
+        "reasoning_output_tokens": 974
+      },
+      "usageError": null,
+      "errors": []
+    },
+    {
+      "category": "planning",
+      "id": "iteration-1/independent-raw/plan",
+      "resultPath": "2026-10-05-iteration-1/independent-raw/plan",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 120.465,
+      "completedTurns": 1,
+      "threadId": "01a10bfa-60c0-7e41-94c4-0e9cbc0f91f5",
+      "sessionError": null,
+      "usage": {
+        "input_tokens": 90760,
+        "cached_input_tokens": 81152,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3473,
+        "reasoning_output_tokens": 1005,
+        "total_tokens": 94233,
+        "uncached_input_tokens": 9608
+      },
+      "cumulativeUsage": {
+        "input_tokens": 143252,
+        "cached_input_tokens": 124800,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 6872,
+        "reasoning_output_tokens": 1979
+      },
+      "usageError": null,
+      "errors": []
+    },
+    {
+      "category": "planning",
+      "id": "iteration-1/refresh-new/questions",
+      "resultPath": "2026-10-05-iteration-1/refresh-new/questions",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 213.209,
+      "completedTurns": 1,
+      "threadId": "01a10bfa-eaf7-71d1-9ff4-1c96ad95f9f8",
+      "sessionError": null,
+      "usage": {
+        "input_tokens": 248056,
+        "cached_input_tokens": 189184,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 5490,
+        "reasoning_output_tokens": 1230,
+        "total_tokens": 253546,
+        "uncached_input_tokens": 58872
+      },
+      "cumulativeUsage": {
+        "input_tokens": 248056,
+        "cached_input_tokens": 189184,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 5490,
+        "reasoning_output_tokens": 1230
+      },
+      "usageError": null,
+      "errors": []
+    },
+    {
+      "category": "planning",
+      "id": "iteration-1/refresh-new/plan",
+      "resultPath": "2026-10-05-iteration-1/refresh-new/plan",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": -9,
+      "timedOut": true,
+      "elapsedSeconds": 600.03,
+      "completedTurns": 0,
+      "threadId": "01a10bfa-eaf7-71d1-9ff4-1c96ad95f9f8",
+      "sessionError": null,
+      "usage": null,
+      "cumulativeUsage": null,
+      "usageError": null,
+      "errors": []
+    },
+    {
+      "category": "planning",
+      "id": "iteration-1/refresh-raw/questions",
+      "resultPath": "2026-10-05-iteration-1/refresh-raw/questions",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 122.484,
+      "completedTurns": 1,
+      "threadId": "01a10bfc-33ec-79f0-9b8c-87c41a915e8a",
+      "sessionError": null,
+      "usage": {
+        "input_tokens": 63189,
+        "cached_input_tokens": 54528,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3364,
+        "reasoning_output_tokens": 935,
+        "total_tokens": 66553,
+        "uncached_input_tokens": 8661
+      },
+      "cumulativeUsage": {
+        "input_tokens": 63189,
+        "cached_input_tokens": 54528,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3364,
+        "reasoning_output_tokens": 935
+      },
+      "usageError": null,
+      "errors": []
+    },
+    {
+      "category": "planning",
+      "id": "iteration-1/refresh-raw/plan",
+      "resultPath": "2026-10-05-iteration-1/refresh-raw/plan",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 124.993,
+      "completedTurns": 1,
+      "threadId": "01a10bfc-33ec-79f0-9b8c-87c41a915e8a",
+      "sessionError": null,
+      "usage": {
+        "input_tokens": 87159,
+        "cached_input_tokens": 78080,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3715,
+        "reasoning_output_tokens": 1062,
+        "total_tokens": 90874,
+        "uncached_input_tokens": 9079
+      },
+      "cumulativeUsage": {
+        "input_tokens": 150348,
+        "cached_input_tokens": 132608,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 7079,
+        "reasoning_output_tokens": 1997
+      },
+      "usageError": null,
+      "errors": []
+    },
+    {
+      "category": "planning",
+      "id": "iteration-2/shared-old/questions",
+      "resultPath": "2026-10-05-iteration-2/shared-old/questions",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 222.835,
+      "completedTurns": 1,
+      "threadId": "01a10c17-38c0-7621-9d95-3e34776641a7",
+      "sessionError": null,
+      "usage": {
+        "input_tokens": 330761,
+        "cached_input_tokens": 291712,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 5447,
+        "reasoning_output_tokens": 918,
+        "total_tokens": 336208,
+        "uncached_input_tokens": 39049
+      },
+      "cumulativeUsage": {
+        "input_tokens": 330761,
+        "cached_input_tokens": 291712,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 5447,
+        "reasoning_output_tokens": 918
+      },
+      "usageError": null,
+      "errors": []
+    },
+    {
+      "category": "planning",
+      "id": "iteration-2/shared-old/plan",
+      "resultPath": "2026-10-05-iteration-2/shared-old/plan",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 383.154,
+      "completedTurns": 1,
+      "threadId": "01a10c17-38c0-7621-9d95-3e34776641a7",
+      "sessionError": null,
+      "usage": {
+        "input_tokens": 594042,
+        "cached_input_tokens": 566528,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 9278,
+        "reasoning_output_tokens": 3425,
+        "total_tokens": 603320,
+        "uncached_input_tokens": 27514
+      },
+      "cumulativeUsage": {
+        "input_tokens": 924803,
+        "cached_input_tokens": 858240,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 14725,
+        "reasoning_output_tokens": 4343
+      },
+      "usageError": null,
+      "errors": []
+    },
+    {
+      "category": "planning",
+      "id": "iteration-2/shared-new/questions",
+      "resultPath": "2026-10-05-iteration-2/shared-new/questions",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 365.866,
+      "completedTurns": 1,
+      "threadId": "01a10c17-38a8-7763-9dfd-f66f028b113b",
+      "sessionError": null,
+      "usage": {
+        "input_tokens": 408628,
+        "cached_input_tokens": 369792,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 8932,
+        "reasoning_output_tokens": 1416,
+        "total_tokens": 417560,
+        "uncached_input_tokens": 38836
+      },
+      "cumulativeUsage": {
+        "input_tokens": 408628,
+        "cached_input_tokens": 369792,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 8932,
+        "reasoning_output_tokens": 1416
+      },
+      "usageError": null,
+      "errors": []
+    },
+    {
+      "category": "planning",
+      "id": "iteration-2/shared-new/plan",
+      "resultPath": "2026-10-05-iteration-2/shared-new/plan",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": -9,
+      "timedOut": true,
+      "elapsedSeconds": 600.032,
+      "completedTurns": 0,
+      "threadId": "01a10c17-38a8-7763-9dfd-f66f028b113b",
+      "sessionError": null,
+      "usage": null,
+      "cumulativeUsage": null,
+      "usageError": null,
+      "errors": []
+    },
+    {
+      "category": "planning",
+      "id": "iteration-2/independent-old/questions",
+      "resultPath": "2026-10-05-iteration-2/independent-old/questions",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 350.044,
+      "completedTurns": 1,
+      "threadId": "01a10c1a-9f6d-7381-90c7-328cca48343b",
+      "sessionError": null,
+      "usage": {
+        "input_tokens": 338685,
+        "cached_input_tokens": 288896,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 8634,
+        "reasoning_output_tokens": 1232,
+        "total_tokens": 347319,
+        "uncached_input_tokens": 49789
+      },
+      "cumulativeUsage": {
+        "input_tokens": 338685,
+        "cached_input_tokens": 288896,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 8634,
+        "reasoning_output_tokens": 1232
+      },
+      "usageError": null,
+      "errors": []
+    },
+    {
+      "category": "planning",
+      "id": "iteration-2/independent-old/plan",
+      "resultPath": "2026-10-05-iteration-2/independent-old/plan",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 480.477,
+      "completedTurns": 1,
+      "threadId": "01a10c1a-9f6d-7381-90c7-328cca48343b",
+      "sessionError": null,
+      "usage": {
+        "input_tokens": 811969,
+        "cached_input_tokens": 780288,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 12151,
+        "reasoning_output_tokens": 2214,
+        "total_tokens": 824120,
+        "uncached_input_tokens": 31681
+      },
+      "cumulativeUsage": {
+        "input_tokens": 1150654,
+        "cached_input_tokens": 1069184,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 20785,
+        "reasoning_output_tokens": 3446
+      },
+      "usageError": null,
+      "errors": []
+    },
+    {
+      "category": "planning",
+      "id": "iteration-2/independent-new/questions",
+      "resultPath": "2026-10-05-iteration-2/independent-new/questions",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 388.414,
+      "completedTurns": 1,
+      "threadId": "01a10c1c-ce11-7cb2-841e-307425085179",
+      "sessionError": null,
+      "usage": {
+        "input_tokens": 360999,
+        "cached_input_tokens": 324864,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 8598,
+        "reasoning_output_tokens": 1489,
+        "total_tokens": 369597,
+        "uncached_input_tokens": 36135
+      },
+      "cumulativeUsage": {
+        "input_tokens": 360999,
+        "cached_input_tokens": 324864,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 8598,
+        "reasoning_output_tokens": 1489
+      },
+      "usageError": null,
+      "errors": []
+    },
+    {
+      "category": "planning",
+      "id": "iteration-2/independent-new/plan",
+      "resultPath": "2026-10-05-iteration-2/independent-new/plan",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 468.978,
+      "completedTurns": 1,
+      "threadId": "01a10c1c-ce11-7cb2-841e-307425085179",
+      "sessionError": null,
+      "usage": {
+        "input_tokens": 1259028,
+        "cached_input_tokens": 1226496,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 10938,
+        "reasoning_output_tokens": 3670,
+        "total_tokens": 1269966,
+        "uncached_input_tokens": 32532
+      },
+      "cumulativeUsage": {
+        "input_tokens": 1620027,
+        "cached_input_tokens": 1551360,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 19536,
+        "reasoning_output_tokens": 5159
+      },
+      "usageError": null,
+      "errors": []
+    },
+    {
+      "category": "planning",
+      "id": "iteration-2/refresh-new/questions",
+      "resultPath": "2026-10-05-iteration-2/refresh-new/questions",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": 1,
+      "timedOut": false,
+      "elapsedSeconds": 56.61,
+      "completedTurns": 0,
+      "threadId": "01a10c1f-f707-7130-abfd-aede46a03d28",
+      "sessionError": null,
+      "usage": null,
+      "cumulativeUsage": null,
+      "usageError": null,
+      "errors": [
+        {
+          "type": "error",
+          "message": "Selected model is at capacity. Please try a different model."
+        },
+        {
+          "type": "turn.failed",
+          "error": {
+            "message": "Selected model is at capacity. Please try a different model."
+          }
+        }
+      ]
+    },
+    {
+      "category": "planning",
+      "id": "iteration-2/refresh-new-recovery/questions",
+      "resultPath": "2026-10-05-iteration-2/refresh-new-recovery/questions",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 281.945,
+      "completedTurns": 1,
+      "threadId": "01a10c24-1da8-7f20-a730-aa6b4850cc42",
+      "sessionError": null,
+      "usage": {
+        "input_tokens": 367451,
+        "cached_input_tokens": 319104,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 6506,
+        "reasoning_output_tokens": 1560,
+        "total_tokens": 373957,
+        "uncached_input_tokens": 48347
+      },
+      "cumulativeUsage": {
+        "input_tokens": 367451,
+        "cached_input_tokens": 319104,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 6506,
+        "reasoning_output_tokens": 1560
+      },
+      "usageError": null,
+      "errors": []
+    },
+    {
+      "category": "planning",
+      "id": "iteration-2/refresh-new-recovery/plan",
+      "resultPath": "2026-10-05-iteration-2/refresh-new-recovery/plan",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 584.449,
+      "completedTurns": 1,
+      "threadId": "01a10c24-1da8-7f20-a730-aa6b4850cc42",
+      "sessionError": null,
+      "usage": {
+        "input_tokens": 1673174,
+        "cached_input_tokens": 1627904,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 13967,
+        "reasoning_output_tokens": 6629,
+        "total_tokens": 1687141,
+        "uncached_input_tokens": 45270
+      },
+      "cumulativeUsage": {
+        "input_tokens": 2040625,
+        "cached_input_tokens": 1947008,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 20473,
+        "reasoning_output_tokens": 8189
+      },
+      "usageError": null,
+      "errors": []
+    },
+    {
+      "category": "planning",
+      "id": "iteration-3/shared-old/questions",
+      "resultPath": "2026-10-05-iteration-3/shared-old/questions",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 479.482,
+      "completedTurns": 1,
+      "threadId": "01a10c3d-200e-7771-9cc5-1ff0e217259f",
+      "sessionError": null,
+      "usage": {
+        "input_tokens": 401098,
+        "cached_input_tokens": 363136,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 10006,
+        "reasoning_output_tokens": 1763,
+        "total_tokens": 411104,
+        "uncached_input_tokens": 37962
+      },
+      "cumulativeUsage": {
+        "input_tokens": 401098,
+        "cached_input_tokens": 363136,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 10006,
+        "reasoning_output_tokens": 1763
+      },
+      "usageError": null,
+      "errors": []
+    },
+    {
+      "category": "planning",
+      "id": "iteration-3/shared-old/plan",
+      "resultPath": "2026-10-05-iteration-3/shared-old/plan",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": -9,
+      "timedOut": true,
+      "elapsedSeconds": 600.033,
+      "completedTurns": 0,
+      "threadId": "01a10c3d-200e-7771-9cc5-1ff0e217259f",
+      "sessionError": null,
+      "usage": null,
+      "cumulativeUsage": null,
+      "usageError": null,
+      "errors": []
+    },
+    {
+      "category": "planning",
+      "id": "iteration-3/shared-new/questions",
+      "resultPath": "2026-10-05-iteration-3/shared-new/questions",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 237.984,
+      "completedTurns": 1,
+      "threadId": "01a10c42-0642-7511-bf11-471dc95a8c3d",
+      "sessionError": null,
+      "usage": {
+        "input_tokens": 261031,
+        "cached_input_tokens": 221440,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 5455,
+        "reasoning_output_tokens": 1108,
+        "total_tokens": 266486,
+        "uncached_input_tokens": 39591
+      },
+      "cumulativeUsage": {
+        "input_tokens": 261031,
+        "cached_input_tokens": 221440,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 5455,
+        "reasoning_output_tokens": 1108
+      },
+      "usageError": null,
+      "errors": []
+    },
+    {
+      "category": "planning",
+      "id": "iteration-3/shared-new/plan",
+      "resultPath": "2026-10-05-iteration-3/shared-new/plan",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 481.836,
+      "completedTurns": 1,
+      "threadId": "01a10c42-0642-7511-bf11-471dc95a8c3d",
+      "sessionError": null,
+      "usage": {
+        "input_tokens": 913721,
+        "cached_input_tokens": 883584,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 11807,
+        "reasoning_output_tokens": 4887,
+        "total_tokens": 925528,
+        "uncached_input_tokens": 30137
+      },
+      "cumulativeUsage": {
+        "input_tokens": 1174752,
+        "cached_input_tokens": 1105024,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 17262,
+        "reasoning_output_tokens": 5995
+      },
+      "usageError": null,
+      "errors": []
+    },
+    {
+      "category": "planning",
+      "id": "iteration-3/independent-old/questions",
+      "resultPath": "2026-10-05-iteration-3/independent-old/questions",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 411.632,
+      "completedTurns": 1,
+      "threadId": "01a10c44-c1c8-7bd0-9fba-22ca84a8d854",
+      "sessionError": null,
+      "usage": {
+        "input_tokens": 412941,
+        "cached_input_tokens": 366848,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 8456,
+        "reasoning_output_tokens": 1486,
+        "total_tokens": 421397,
+        "uncached_input_tokens": 46093
+      },
+      "cumulativeUsage": {
+        "input_tokens": 412941,
+        "cached_input_tokens": 366848,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 8456,
+        "reasoning_output_tokens": 1486
+      },
+      "usageError": null,
+      "errors": []
+    },
+    {
+      "category": "planning",
+      "id": "iteration-3/independent-old/plan",
+      "resultPath": "2026-10-05-iteration-3/independent-old/plan",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 452.88,
+      "completedTurns": 1,
+      "threadId": "01a10c44-c1c8-7bd0-9fba-22ca84a8d854",
+      "sessionError": null,
+      "usage": {
+        "input_tokens": 517370,
+        "cached_input_tokens": 488832,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 11099,
+        "reasoning_output_tokens": 3337,
+        "total_tokens": 528469,
+        "uncached_input_tokens": 28538
+      },
+      "cumulativeUsage": {
+        "input_tokens": 930311,
+        "cached_input_tokens": 855680,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 19555,
+        "reasoning_output_tokens": 4823
+      },
+      "usageError": null,
+      "errors": []
+    },
+    {
+      "category": "planning",
+      "id": "iteration-3/independent-new/questions",
+      "resultPath": "2026-10-05-iteration-3/independent-new/questions",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 399.669,
+      "completedTurns": 1,
+      "threadId": "01a10c46-28a5-75f0-a7b6-aa7b587b7c5d",
+      "sessionError": null,
+      "usage": {
+        "input_tokens": 525687,
+        "cached_input_tokens": 445056,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 9817,
+        "reasoning_output_tokens": 2158,
+        "total_tokens": 535504,
+        "uncached_input_tokens": 80631
+      },
+      "cumulativeUsage": {
+        "input_tokens": 525687,
+        "cached_input_tokens": 445056,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 9817,
+        "reasoning_output_tokens": 2158
+      },
+      "usageError": null,
+      "errors": []
+    },
+    {
+      "category": "planning",
+      "id": "iteration-3/independent-new/plan",
+      "resultPath": "2026-10-05-iteration-3/independent-new/plan",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 380.339,
+      "completedTurns": 1,
+      "threadId": "01a10c46-28a5-75f0-a7b6-aa7b587b7c5d",
+      "sessionError": null,
+      "usage": {
+        "input_tokens": 814989,
+        "cached_input_tokens": 784512,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 9129,
+        "reasoning_output_tokens": 3548,
+        "total_tokens": 824118,
+        "uncached_input_tokens": 30477
+      },
+      "cumulativeUsage": {
+        "input_tokens": 1340676,
+        "cached_input_tokens": 1229568,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 18946,
+        "reasoning_output_tokens": 5706
+      },
+      "usageError": null,
+      "errors": []
+    },
+    {
+      "category": "planning",
+      "id": "iteration-3/refresh-new/questions",
+      "resultPath": "2026-10-05-iteration-3/refresh-new/questions",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 336.274,
+      "completedTurns": 1,
+      "threadId": "01a10c54-c4ad-7bb1-8e6a-ce08503201f6",
+      "sessionError": null,
+      "usage": {
+        "input_tokens": 361858,
+        "cached_input_tokens": 301824,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 7362,
+        "reasoning_output_tokens": 1020,
+        "total_tokens": 369220,
+        "uncached_input_tokens": 60034
+      },
+      "cumulativeUsage": {
+        "input_tokens": 361858,
+        "cached_input_tokens": 301824,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 7362,
+        "reasoning_output_tokens": 1020
+      },
+      "usageError": null,
+      "errors": []
+    },
+    {
+      "category": "planning",
+      "id": "iteration-3/refresh-new/plan",
+      "resultPath": "2026-10-05-iteration-3/refresh-new/plan",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": 1,
+      "timedOut": false,
+      "elapsedSeconds": 119.114,
+      "completedTurns": 0,
+      "threadId": "01a10c54-c4ad-7bb1-8e6a-ce08503201f6",
+      "sessionError": null,
+      "usage": null,
+      "cumulativeUsage": null,
+      "usageError": null,
+      "errors": [
+        {
+          "type": "error",
+          "message": "Selected model is at capacity. Please try a different model."
+        },
+        {
+          "type": "turn.failed",
+          "error": {
+            "message": "Selected model is at capacity. Please try a different model."
+          }
+        }
+      ]
+    },
+    {
+      "category": "planning",
+      "id": "iteration-4/shared-new/questions",
+      "resultPath": "2026-10-05-iteration-4/shared-new/questions",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 292.923,
+      "completedTurns": 1,
+      "threadId": "01a10c62-72c7-7372-b7c3-476ec8ca117b",
+      "sessionError": null,
+      "usage": {
+        "input_tokens": 361062,
+        "cached_input_tokens": 312832,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 6618,
+        "reasoning_output_tokens": 1231,
+        "total_tokens": 367680,
+        "uncached_input_tokens": 48230
+      },
+      "cumulativeUsage": {
+        "input_tokens": 361062,
+        "cached_input_tokens": 312832,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 6618,
+        "reasoning_output_tokens": 1231
+      },
+      "usageError": null,
+      "errors": []
+    },
+    {
+      "category": "planning",
+      "id": "iteration-4/shared-new/plan",
+      "resultPath": "2026-10-05-iteration-4/shared-new/plan",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 364.449,
+      "completedTurns": 1,
+      "threadId": "01a10c62-72c7-7372-b7c3-476ec8ca117b",
+      "sessionError": null,
+      "usage": {
+        "input_tokens": 633882,
+        "cached_input_tokens": 608256,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 8381,
+        "reasoning_output_tokens": 3091,
+        "total_tokens": 642263,
+        "uncached_input_tokens": 25626
+      },
+      "cumulativeUsage": {
+        "input_tokens": 994944,
+        "cached_input_tokens": 921088,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 14999,
+        "reasoning_output_tokens": 4322
+      },
+      "usageError": null,
+      "errors": []
+    },
+    {
+      "category": "planning",
+      "id": "iteration-4/refresh-new/questions",
+      "resultPath": "2026-10-05-iteration-4/refresh-new/questions",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 429.501,
+      "completedTurns": 1,
+      "threadId": "01a10c63-e940-7c51-b0ef-287380a8542b",
+      "sessionError": null,
+      "usage": {
+        "input_tokens": 481904,
+        "cached_input_tokens": 433792,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 9919,
+        "reasoning_output_tokens": 2312,
+        "total_tokens": 491823,
+        "uncached_input_tokens": 48112
+      },
+      "cumulativeUsage": {
+        "input_tokens": 481904,
+        "cached_input_tokens": 433792,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 9919,
+        "reasoning_output_tokens": 2312
+      },
+      "usageError": null,
+      "errors": []
+    },
+    {
+      "category": "planning",
+      "id": "iteration-4/refresh-new/plan",
+      "resultPath": "2026-10-05-iteration-4/refresh-new/plan",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 400.99,
+      "completedTurns": 1,
+      "threadId": "01a10c63-e940-7c51-b0ef-287380a8542b",
+      "sessionError": null,
+      "usage": {
+        "input_tokens": 937977,
+        "cached_input_tokens": 906240,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 9646,
+        "reasoning_output_tokens": 3769,
+        "total_tokens": 947623,
+        "uncached_input_tokens": 31737
+      },
+      "cumulativeUsage": {
+        "input_tokens": 1419881,
+        "cached_input_tokens": 1340032,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 19565,
+        "reasoning_output_tokens": 6081
+      },
+      "usageError": null,
+      "errors": []
+    },
+    {
+      "category": "clarification",
+      "id": "shared-fs",
+      "resultPath": "2026-10-05-iteration-4/followup/shared-fs/call",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 501.257,
+      "completedTurns": 1,
+      "threadId": "01a10c62-72c7-7372-b7c3-476ec8ca117b",
+      "sessionError": null,
+      "usage": {
+        "input_tokens": 543822,
+        "cached_input_tokens": 524160,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 12653,
+        "reasoning_output_tokens": 4171,
+        "total_tokens": 556475,
+        "uncached_input_tokens": 19662
+      },
+      "cumulativeUsage": {
+        "input_tokens": 1538766,
+        "cached_input_tokens": 1445248,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 27652,
+        "reasoning_output_tokens": 8493
+      },
+      "usageError": null,
+      "errors": []
+    },
+    {
+      "category": "clarification",
+      "id": "shared-raw",
+      "resultPath": "2026-10-05-iteration-4/followup/shared-raw/call",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 165.078,
+      "completedTurns": 1,
+      "threadId": "01a10bf5-68ec-70c1-b75c-bfa6db455c9d",
+      "sessionError": null,
+      "usage": {
+        "input_tokens": 117798,
+        "cached_input_tokens": 92160,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 4172,
+        "reasoning_output_tokens": 977,
+        "total_tokens": 121970,
+        "uncached_input_tokens": 25638
+      },
+      "cumulativeUsage": {
+        "input_tokens": 268103,
+        "cached_input_tokens": 207616,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 11578,
+        "reasoning_output_tokens": 3622
+      },
+      "usageError": null,
+      "errors": []
+    },
+    {
+      "category": "reviewer",
+      "id": "batch-1",
+      "resultPath": "2026-10-05-iteration-4/reviews/batch-1",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 189.072,
+      "completedTurns": 1,
+      "threadId": "01a10c60-66e5-7ec3-98cb-c5dfefc899a4",
+      "sessionError": null,
+      "usage": {
+        "input_tokens": 128882,
+        "cached_input_tokens": 100224,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 4778,
+        "reasoning_output_tokens": 886,
+        "total_tokens": 133660,
+        "uncached_input_tokens": 28658
+      },
+      "cumulativeUsage": {
+        "input_tokens": 128882,
+        "cached_input_tokens": 100224,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 4778,
+        "reasoning_output_tokens": 886
+      },
+      "usageError": null,
+      "errors": []
+    },
+    {
+      "category": "reviewer",
+      "id": "batch-2",
+      "resultPath": "2026-10-05-iteration-4/reviews/batch-2",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 221.138,
+      "completedTurns": 1,
+      "threadId": "01a10c70-92d2-7d10-b8e0-ff76114f1616",
+      "sessionError": null,
+      "usage": {
+        "input_tokens": 142535,
+        "cached_input_tokens": 109312,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 5401,
+        "reasoning_output_tokens": 1262,
+        "total_tokens": 147936,
+        "uncached_input_tokens": 33223
+      },
+      "cumulativeUsage": {
+        "input_tokens": 142535,
+        "cached_input_tokens": 109312,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 5401,
+        "reasoning_output_tokens": 1262
+      },
+      "usageError": null,
+      "errors": []
+    },
+    {
+      "category": "reviewer",
+      "id": "batch-3",
+      "resultPath": "2026-10-05-iteration-4/reviews/batch-3",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 248.767,
+      "completedTurns": 1,
+      "threadId": "01a10c7e-46ee-7a81-8f4c-1ee9dedb8c22",
+      "sessionError": null,
+      "usage": {
+        "input_tokens": 103557,
+        "cached_input_tokens": 73088,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 6043,
+        "reasoning_output_tokens": 1355,
+        "total_tokens": 109600,
+        "uncached_input_tokens": 30469
+      },
+      "cumulativeUsage": {
+        "input_tokens": 103557,
+        "cached_input_tokens": 73088,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 6043,
+        "reasoning_output_tokens": 1355
+      },
+      "usageError": null,
+      "errors": []
+    },
+    {
+      "category": "reviewer",
+      "id": "batch-4",
+      "resultPath": "2026-10-05-iteration-4/reviews/batch-4",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 231.11,
+      "completedTurns": 1,
+      "threadId": "01a10c83-c85b-73d2-aa66-40905ae09ee1",
+      "sessionError": null,
+      "usage": {
+        "input_tokens": 101927,
+        "cached_input_tokens": 72960,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 5427,
+        "reasoning_output_tokens": 1146,
+        "total_tokens": 107354,
+        "uncached_input_tokens": 28967
+      },
+      "cumulativeUsage": {
+        "input_tokens": 101927,
+        "cached_input_tokens": 72960,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 5427,
+        "reasoning_output_tokens": 1146
+      },
+      "usageError": null,
+      "errors": []
+    },
+    {
+      "category": "reviewer",
+      "id": "batch-5",
+      "resultPath": "2026-10-05-iteration-4/reviews/batch-5",
+      "requestedModel": "gpt-6-sol",
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 226.084,
+      "completedTurns": 1,
+      "threadId": "01a10c83-c86e-7142-afa8-d9a7e6f682d7",
+      "sessionError": null,
+      "usage": {
+        "input_tokens": 163474,
+        "cached_input_tokens": 111872,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 5544,
+        "reasoning_output_tokens": 821,
+        "total_tokens": 169018,
+        "uncached_input_tokens": 51602
+      },
+      "cumulativeUsage": {
+        "input_tokens": 163474,
+        "cached_input_tokens": 111872,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 5544,
+        "reasoning_output_tokens": 821
+      },
+      "usageError": null,
+      "errors": []
+    }
+  ]
+}

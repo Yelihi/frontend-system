@@ -1,0 +1,16 @@
+{
+  "mode": "authored fixture only, no model calls",
+  "stage": "before correction",
+  "failed": [
+    {
+      "id": "S-complete-class-tokens",
+      "status": "failed",
+      "reason": "Partial class interpolation"
+    }
+  ],
+  "functionalPassed": true,
+  "publicLint": {
+    "exitCode": 1,
+    "stdout": "\n> lint:styles\n> node ../runtime/bundle/style-check.js . style-policy.json\n\n{\"status\":\"failed\",\"diagnostics\":[{\"rule\":\"complete-class-tokens\",\"path\":\"ui/ActionButton.jsx\",\"line\":3,\"column\":301,\"message\":\"CVA constructs only part of a class token\"}],\"scope\":[\"App.jsx\",\"ui/ActionButton.jsx\",\"ui/Amount.jsx\",\"ui/CheckoutForm.jsx\",\"ui/InventoryPanel.jsx\",\"ui/OrderPanel.jsx\",\"ui/PanelCard.jsx\",\"ui/ReturnForm.jsx\",\"ui/ReturnsPanel.jsx\",\"ui/SessionBar.jsx\",\"ui/Status.jsx\",\"ui/StatusBadge.jsx\",\"ui/WalletPanel.jsx\"],\"authority\":\"Opt-in team policy. Static source checks do not prove visual equivalence or design quality.\",\"limitations\":[\"Local class bindings and same-file CVA definitions only; cross-file helpers need separate review.\",\"Theme and product decisions are not selected or changed by this checker.\"]}\n"
+  }
+}

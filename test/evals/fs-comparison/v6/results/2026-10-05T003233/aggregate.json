@@ -1,0 +1,39 @@
+{
+  "runs": [
+    "2026-10-04T222149",
+    "2026-10-04T230720",
+    "2026-10-04T232658",
+    "2026-10-04T234741",
+    "2026-10-05T001459",
+    "2026-10-05T003233"
+  ],
+  "modelCalls": 24,
+  "allRunTotalTokens": 23506826,
+  "latestPairMean": {
+    "plain": {
+      "totalTokens": 735156,
+      "uncachedInputTokens": 58154,
+      "seconds": 439.6275
+    },
+    "fs": {
+      "totalTokens": 2853774.5,
+      "uncachedInputTokens": 86843.5,
+      "seconds": 733.0935
+    }
+  },
+  "reductionFromInitialFSPercent": {
+    "totalTokens": 33.210450979758875,
+    "uncachedInputTokens": 34.34327015400434,
+    "seconds": 23.95816261542261
+  },
+  "latestMeanRatioFsToPlain": {
+    "totalTokens": 3.881862489049943,
+    "uncachedInputTokens": 1.4933366578395295,
+    "seconds": 1.667533309449477
+  },
+  "limits": [
+    "Two repeats, one model, one fixed task; not statistical/general superiority",
+    "Failed workflow row remains included in raw run totals; not counted as successful optimization",
+    "Total tokens are not billed cost"
+  ]
+}

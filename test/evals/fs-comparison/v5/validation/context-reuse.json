@@ -1,0 +1,10 @@
+{
+  "modelCalls": 0,
+  "files": 7,
+  "firstCharacters": 13860,
+  "repeatedCharacters": 9652,
+  "responseReductionPercent": 30.4,
+  "candidates": 8,
+  "changedSourceRestoresMetadata": true,
+  "limits": "Explicit reuse of already-read metadata. Current routing still computed; no CPU, total-token, billing or AI-quality improvement inferred."
+}

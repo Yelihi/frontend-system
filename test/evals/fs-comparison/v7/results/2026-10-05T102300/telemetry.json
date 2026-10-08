@@ -1,0 +1,67 @@
+{
+  "runnerStatus": "blocked",
+  "modelCalls": 4,
+  "rows": [
+    {
+      "case": "tailwind-authorship",
+      "arm": "plain",
+      "completed": true,
+      "missingPhases": [],
+      "eligible": true,
+      "timedOut": false,
+      "planSatisfied": 93,
+      "planTotal": 93,
+      "totalTokens": 537508,
+      "uncachedInputTokens": 34804,
+      "seconds": 181.736,
+      "phaseUsage": [
+        {
+          "phase": "prepare",
+          "attempt": 0,
+          "usage": {
+            "input_tokens": 65335,
+            "cached_input_tokens": 47744,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 862,
+            "reasoning_output_tokens": 140,
+            "total_tokens": 66197,
+            "uncached_input_tokens": 17591
+          }
+        },
+        {
+          "phase": "work",
+          "attempt": 0,
+          "usage": {
+            "input_tokens": 465341,
+            "cached_input_tokens": 448128,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 5970,
+            "reasoning_output_tokens": 1623,
+            "total_tokens": 471311,
+            "uncached_input_tokens": 17213
+          }
+        }
+      ],
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "mcpTools": {},
+      "projectSaveCalls": 0,
+      "savedStatements": 0,
+      "registeredReuse": 0,
+      "explicitReuseExclusions": 0,
+      "reuseObservable": false,
+      "reusedTriggers": 0,
+      "patchCalls": 0,
+      "patchSuccesses": 0,
+      "routePatchCalls": 0,
+      "fullRevisionReads": 0
+    }
+  ],
+  "limits": [
+    "Missing usage/grades remain null, never zero or a pass.",
+    "Reuse counters record tool behavior, not semantic correctness or causal token savings.",
+    "Runner completed does not imply completed model turns. Fixed-order single pairs do not establish general superiority."
+  ],
+  "summarySha256": "f9a99625c9ef1952eee6b4bd4b3a68a03c4cb4e9ff6d64c461a15de06a407d0d",
+  "productFiles": []
+}

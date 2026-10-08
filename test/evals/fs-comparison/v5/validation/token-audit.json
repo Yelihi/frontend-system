@@ -1,0 +1,283 @@
+{
+  "archived": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/test/evals/fs-comparison/v5/results/2026-10-04T161324",
+  "modelCalls": 0,
+  "difference": {
+    "cachedInput": 1597440,
+    "uncachedInput": 41980,
+    "output": 11010,
+    "total": 1650430
+  },
+  "cachedShareOfDifferencePercent": 96.78932157074217,
+  "rows": [
+    {
+      "arm": "plain",
+      "phase": "prepare",
+      "seconds": 44.794,
+      "usage": {
+        "input_tokens": 70314,
+        "cached_input_tokens": 53760,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1201,
+        "reasoning_output_tokens": 308,
+        "total_tokens": 71515,
+        "uncached_input_tokens": 16554
+      },
+      "groups": {
+        "command_execution": {
+          "calls": 12,
+          "argumentCharacters": 1121,
+          "resultCharacters": 17260,
+          "failures": 1
+        }
+      }
+    },
+    {
+      "arm": "plain",
+      "phase": "work",
+      "seconds": 145.591,
+      "usage": {
+        "input_tokens": 183628,
+        "cached_input_tokens": 161408,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 5230,
+        "reasoning_output_tokens": 649,
+        "total_tokens": 188858,
+        "uncached_input_tokens": 22220
+      },
+      "groups": {
+        "command_execution": {
+          "calls": 9,
+          "argumentCharacters": 876,
+          "resultCharacters": 10632,
+          "failures": 1
+        }
+      }
+    },
+    {
+      "arm": "fs",
+      "phase": "prepare",
+      "seconds": 202.56,
+      "usage": {
+        "input_tokens": 425629,
+        "cached_input_tokens": 378112,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 6642,
+        "reasoning_output_tokens": 818,
+        "total_tokens": 432271,
+        "uncached_input_tokens": 47517
+      },
+      "groups": {
+        "command_execution": {
+          "calls": 20,
+          "argumentCharacters": 1511,
+          "resultCharacters": 57761,
+          "failures": 2
+        },
+        "list_plans": {
+          "calls": 1,
+          "argumentCharacters": 2,
+          "resultCharacters": 67,
+          "failures": 0
+        },
+        "get_project_snapshot": {
+          "calls": 1,
+          "argumentCharacters": 13,
+          "resultCharacters": 796,
+          "failures": 0
+        },
+        "read_project_source": {
+          "calls": 11,
+          "argumentCharacters": 937,
+          "resultCharacters": 6753,
+          "failures": 0
+        },
+        "record_project_refresh": {
+          "calls": 1,
+          "argumentCharacters": 80,
+          "resultCharacters": 225,
+          "failures": 0
+        },
+        "save_project_context": {
+          "calls": 1,
+          "argumentCharacters": 4042,
+          "resultCharacters": 559,
+          "failures": 0
+        },
+        "get_work_context": {
+          "calls": 1,
+          "argumentCharacters": 587,
+          "resultCharacters": 15583,
+          "failures": 0
+        },
+        "save_revision": {
+          "calls": 2,
+          "argumentCharacters": 16393,
+          "resultCharacters": 1155,
+          "failures": 1
+        },
+        "get_revision": {
+          "calls": 1,
+          "argumentCharacters": 28,
+          "resultCharacters": 7717,
+          "failures": 0
+        }
+      }
+    },
+    {
+      "arm": "fs",
+      "phase": "work",
+      "seconds": 461.313,
+      "usage": {
+        "input_tokens": 1467733,
+        "cached_input_tokens": 1434496,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 10799,
+        "reasoning_output_tokens": 2423,
+        "total_tokens": 1478532,
+        "uncached_input_tokens": 33237
+      },
+      "groups": {
+        "list_plans": {
+          "calls": 1,
+          "argumentCharacters": 2,
+          "resultCharacters": 357,
+          "failures": 0
+        },
+        "command_execution": {
+          "calls": 10,
+          "argumentCharacters": 1012,
+          "resultCharacters": 22355,
+          "failures": 1
+        },
+        "get_work_context": {
+          "calls": 2,
+          "argumentCharacters": 758,
+          "resultCharacters": 29199,
+          "failures": 0
+        },
+        "get_revision": {
+          "calls": 2,
+          "argumentCharacters": 88,
+          "resultCharacters": 31549,
+          "failures": 0
+        },
+        "save_revision": {
+          "calls": 3,
+          "argumentCharacters": 23800,
+          "resultCharacters": 1929,
+          "failures": 1
+        },
+        "approve_revision": {
+          "calls": 2,
+          "argumentCharacters": 474,
+          "resultCharacters": 915,
+          "failures": 1
+        },
+        "save_execution": {
+          "calls": 2,
+          "argumentCharacters": 1294,
+          "resultCharacters": 604,
+          "failures": 0
+        },
+        "run_project_checks": {
+          "calls": 2,
+          "argumentCharacters": 223,
+          "resultCharacters": 2835,
+          "failures": 0
+        },
+        "begin_work_attempt": {
+          "calls": 1,
+          "argumentCharacters": 137,
+          "resultCharacters": 287,
+          "failures": 0
+        },
+        "save_semantic_review": {
+          "calls": 1,
+          "argumentCharacters": 2191,
+          "resultCharacters": 2613,
+          "failures": 0
+        }
+      }
+    }
+  ],
+  "replay": [
+    {
+      "kind": "full-to-decisions",
+      "phase": "work",
+      "beforeCharacters": 14793,
+      "afterCharacters": 5935,
+      "assumption": "Caller needs to edit choices, not debug raw inspection. Whole plan remains retrievable."
+    },
+    {
+      "kind": "omit-unchanged-save-fields",
+      "phase": "work",
+      "omitted": [
+        "policy"
+      ],
+      "beforeCharacters": 8792,
+      "afterCharacters": 7763,
+      "assumption": "Exact equality with previous successful save input; changed fields and complete evidence retained."
+    },
+    {
+      "kind": "omit-unchanged-save-fields",
+      "phase": "work",
+      "omitted": [
+        "policy"
+      ],
+      "beforeCharacters": 7481,
+      "afterCharacters": 6452,
+      "assumption": "Exact equality with previous successful save input; changed fields and complete evidence retained."
+    },
+    {
+      "kind": "full-to-decisions",
+      "phase": "work",
+      "beforeCharacters": 14673,
+      "afterCharacters": 5581,
+      "assumption": "Caller needs to edit choices, not debug raw inspection. Whole plan remains retrievable."
+    },
+    {
+      "kind": "omit-unchanged-save-fields",
+      "phase": "work",
+      "omitted": [
+        "content",
+        "policy",
+        "issues"
+      ],
+      "beforeCharacters": 7527,
+      "afterCharacters": 4379,
+      "assumption": "Exact equality with previous successful save input; changed fields and complete evidence retained."
+    }
+  ],
+  "toolInventory": {
+    "count": 43,
+    "characters": 55015,
+    "largest": [
+      {
+        "name": "save_revision",
+        "characters": 13090
+      },
+      {
+        "name": "save_project_context",
+        "characters": 3040
+      },
+      {
+        "name": "save_knowledge_review",
+        "characters": 2659
+      },
+      {
+        "name": "get_work_context",
+        "characters": 2626
+      },
+      {
+        "name": "save_rule_proposal",
+        "characters": 2511
+      },
+      {
+        "name": "save_execution",
+        "characters": 2264
+      }
+    ],
+    "limits": "Current local MCP declarations only; provider schema injection during the archived run was not captured."
+  },
+  "limits": "Observed usage is exact at turn level. Tool character counts exclude schemas/hidden context and are not token attribution. Replays are conditional payload comparisons, not actual model savings, deleted retries or CPU measurements. Original results unchanged."
+}

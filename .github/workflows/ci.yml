@@ -4,11 +4,20 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      publish_release:
+        description: Publish this tested main commit and advance the installation channel
+        type: boolean
+        default: false
+      release_version:
+        description: Exact prepared version (for example 0.3.0); required when publishing
+        type: string
+        default: ''
 permissions:
   contents: read
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 jobs:
   core:
     runs-on: ubuntu-latest
@@ -21,8 +30,11 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run check
+      - run: python3 test/evals/fs-comparison/v3/maintenance/runner_test.py
+      - run: python3 test/evals/fs-comparison/v4/runner_test.py NetworkPilotRegression.test_real_mcp_evidence_protocol NetworkPilotRegression.test_only_requested_answers_are_supplied NetworkPilotRegression.test_comparison_preserves_first_failure_and_missing_usage
       - run: npm run test:package
-      - run: git diff --exit-code -- bundle/mcp.js
+      - run: npm run release:check
+      - run: test -z "$(git status --porcelain -- bundle release-manifest.json)"
   frontend:
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -40,6 +52,19 @@ jobs:
       - run: npx --no-install playwright install --with-deps chromium
         working-directory: test/fixtures/frontend
       - run: npm run test:frontend
+      - run: npm ci
+      - run: npm run build
+      - run: python3 test/evals/fs-comparison/v4/runner_test.py
+      # Authored fixture/protocol checks only: no paid model calls in CI.
+      - run: python3 test/evals/fs-comparison/v5/runner_test.py
+      - run: python3 test/evals/fs-comparison/v5/telemetry_test.py
+      - run: python3 test/evals/fs-comparison/v6/runner_test.py
+      - run: npm ci --prefix test/evals/fs-comparison/v7/toolchain
+      - run: python3 test/evals/fs-comparison/v7/runner_test.py
+      - run: python3 test/evals/fs-comparison/v7/report_test.py
+      - run: python3 test/evals/fs-comparison/v8/runner_test.py
+      - run: python3 test/evals/fs-comparison/v8/report_test.py
+      - run: python3 test/evals/fs-comparison/v8/replay_test.py
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
@@ -49,12 +74,20 @@ jobs:
             test/fixtures/frontend/test-results/
           retention-days: 7
   delivery:
+    permissions:
+      contents: write
+    environment: release
+    concurrency:
+      group: fs-release
+      cancel-in-progress: false
     needs: [core, frontend]
-    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    if: github.ref == 'refs/heads/main' && github.event_name == 'workflow_dispatch' && inputs.publish_release && github.actor == github.repository_owner && github.triggering_actor == github.repository_owner
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 24
@@ -62,6 +95,13 @@ jobs:
       - run: npm ci
       - run: npm run build
       - run: npm run test:package -- --output-dir dist/release
+      - run: node scripts/release.mjs ready "$RELEASE_VERSION"
+        env:
+          RELEASE_VERSION: ${{ inputs.release_version }}
+      - run: node scripts/publish-release.mjs "$RELEASE_VERSION"
+        env:
+          RELEASE_VERSION: ${{ inputs.release_version }}
+          GH_TOKEN: ${{ github.token }}
       - uses: actions/upload-artifact@v4
         with:
           name: frontend-system-${{ github.sha }}

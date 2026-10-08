@@ -1,0 +1,13 @@
+{
+  "path": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/test/evals/fs-comparison/v12/projects/request/.frontend-system/diagrams/order-workspace.html",
+  "hash": "73e2955644d0042914c85477a392d66f6197976a4b2b986e1c0b7fe493655a1f",
+  "flowHash": "fcd168fbc15e4c455cdd7e4bd3380e1765ec78db5089b6dc6bea9689c1947a54",
+  "freshness": {
+    "status": "current",
+    "reasons": [],
+    "meaning": "Declared dependency and discovery-content freshness, not semantic correctness or complete runtime coverage"
+  },
+  "basis": "observed",
+  "generatedAt": "2026-10-07T05:58:45.548Z",
+  "meaning": "Cited static interpretation at export time, not an executed trace. Rerender to check source changes."
+}

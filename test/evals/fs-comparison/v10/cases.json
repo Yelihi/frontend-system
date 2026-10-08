@@ -1,0 +1,78 @@
+{
+  "design-system": {
+    "cohort": "development",
+    "primaryKnowledge": "control-contracts",
+    "answerBank": {
+      "theme": "Hosts must be able to display different accent themes simultaneously. Theme changes apply only under the provided host root; no document-global theme mutation.",
+      "style": "Keep the existing Tailwind utility strings and no new runtime dependency. Use literal utility classes at the element construction/variant boundary; a small typed local variant function is acceptable. Do not require CVA or a framework migration.",
+      "api": "Support relevant native attributes and accessible names with separate button/link variants, not an unrestricted polymorphic as API. Preserve current public callers through an adapter if necessary.",
+      "unknown": "No decision is supplied for this question. This answer does not settle other unasked product choices or change previously supplied contracts.",
+      "purchase-disabled": "Disabled purchase buttons must use native disabled state and must not submit a surrounding form or call buy.",
+      "purchase-enabled": "Enabled purchase buttons must use type=button and invoke buy without submitting the surrounding form.",
+      "link-disabled": "Disabled navigation stays focusable and discoverable as a link, but must not navigate or invoke activation handlers by pointer or keyboard. Enabled links retain normal native navigation."
+    }
+  },
+  "draft-editor": {
+    "cohort": "development",
+    "primaryKnowledge": "draft-ownership",
+    "answerBank": {
+      "conflict": "On conflict, retain the local edited text and show the remote revision as a comparison candidate. Do not silently overwrite local or remote text, automatically merge, or retry. The owner explicitly chooses after comparison.",
+      "navigation": "Switching documents is allowed immediately. Keep unsaved text in this editor instance by document ID, cancel undispatched saves for the departed document, and show the retained local text when returning. An already dispatched save may settle for its original document but cannot replace the active other document UI.",
+      "panes": "Two editor instances have independent local drafts, timers and status. They may edit the same server document; server revision conflicts handle this, not shared mutable draft state.",
+      "unknown": "No decision is supplied for this question. This answer does not settle other unasked product choices or change previously supplied contracts.",
+      "save-ordering": "Use the existing 200ms debounce for undispatched edits. At most one in-flight save per document per editor; edits made during it remain dirty and schedule a later save from the acknowledged revision. Never acknowledge newer unsent text as saved.",
+      "disposal": "After disposal no view calls or new saves, but an already dispatched server commit is not promised canceled. Undispatched local drafts need not survive disposal; do not add durable storage."
+    }
+  },
+  "pricing-console": {
+    "cohort": "development",
+    "primaryKnowledge": "pricing-policy",
+    "answerBank": {
+      "invalid": "Reject malformed decimals, nonpositive or noninteger quantities, negative prices or tax, percent promotions outside [0,1], and fixed discounts larger than the subtotal. Return a typed pricing error and block confirm; do not silently clamp or coerce.",
+      "authority": "The browser total is a preview. Confirmation sends quote ID and selected inputs only; the server computes the authoritative payable amount. Display the server accepted amount; never claim the browser estimate is the final charge.",
+      "scope": "Only USD and the existing fixed/percent promotions are in scope. A pure typed pricing module plus injected transport is enough; no exchange rates, plugin system, or new dependencies.",
+      "unknown": "No decision is supplied for this question. This answer does not settle other unasked product choices or change previously supplied contracts.",
+      "order": "Multiply exact decimal unit prices by positive integer quantities, sum exact line amounts, apply one promotion to the subtotal, then tax the discounted amount.",
+      "rounding": "This product only supports USD with two decimal places. Use exact decimal arithmetic and round only the final total to cents, ties away from zero.",
+      "immutability": "Preserve line ordering and all caller-owned objects."
+    }
+  },
+  "ssr-storefront": {
+    "cohort": "holdout",
+    "primaryKnowledge": "render-lifetime",
+    "answerBank": {
+      "server": "Each render has its own mutable cart and serialized snapshot, even while API calls interleave. Shared immutable config and stateless API adapters may remain shared. No user request may observe another cart.",
+      "hydrate": "The first hydrated output must match the server snapshot. Guest local persistence may be offered for explicit restore after hydration; never overwrite the server cart automatically.",
+      "login": "On login replace the active cart with the authoritative account cart. Retain a guest snapshot only for an explicit later import decision; no automatic merging or duplicate policy.",
+      "persistence": "Persistence is optional guest-only convenience, scoped to the mounted widget. Do not persist account carts or auth credentials and do not add cross-tab sync.",
+      "unknown": "No decision is supplied for this question. This answer does not settle other unasked product choices or change previously supplied contracts.",
+      "storage-failure": "Storage parse/access failures leave the current cart usable.",
+      "logout": "Logout creates a new empty guest cart and prevents late account results from becoming current."
+    }
+  },
+  "offline-uploader": {
+    "cohort": "holdout",
+    "primaryKnowledge": "mutation-queue",
+    "answerBank": {
+      "retry": "No automatic replay after dispatch: without server idempotency, a transport rejection is indeterminate, not proven failure. Show an explicit unknown outcome and allow a separately confirmed user retry.",
+      "cancel": "Cancel before dispatch removes the job. After dispatch cancel suppresses its local completion/failure notices but must not claim remote rollback; release local running capacity only when the send settles. Pending counts still reflect live local work.",
+      "concurrency": "Each workspace queue runs at most two sends and owns its own pending count and FIFO backlog. One workspace must not block or mutate another.",
+      "lifetime": "Close drops undispatched jobs and suppresses all later UI notifications; dispatched remote outcomes may still occur. No persistent offline queue in scope.",
+      "unknown": "No decision is supplied for this question. This answer does not settle other unasked product choices or change previously supplied contracts.",
+      "input-ownership": "Queued jobs retain immutable inputs.",
+      "credentials": "Credential refresh preserves the workspace and queued jobs; capture current credentials at dispatch, not when enqueued."
+    }
+  },
+  "plugin-shell": {
+    "cohort": "holdout",
+    "primaryKnowledge": "extension-lifecycle",
+    "answerBank": {
+      "isolation": "Each dashboard owns its own event listeners and commands. The same extension ID may exist in both dashboards without interaction. Shared immutable event type definitions are fine; no cross-dashboard broadcast.",
+      "dispatch": "At emission start snapshot registrations in order. Before each invocation skip any registration removed since that snapshot. New registrations wait until the next emit. Nested emits take their own snapshot and run synchronously.",
+      "errors": "Catch each extension callback failure, report extension ID and error to the injected diagnostics sink, and continue remaining eligible listeners. Do not swallow diagnostics or fail the whole dashboard.",
+      "reload": "Loading the same extension ID in one dashboard replaces and disposes its prior registration. Cleanup is idempotent and registration-specific: stale cleanup may not remove the replacement.",
+      "unknown": "No decision is supplied for this question. This answer does not settle other unasked product choices or change previously supplied contracts.",
+      "disposal": "Dashboard disposal prevents any later command or event delivery."
+    }
+  }
+}

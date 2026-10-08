@@ -1,0 +1,16 @@
+{
+  "checkedAt": "2026-10-06T07:53:28.811Z",
+  "viewports": [
+    [
+      1560,
+      1100
+    ],
+    [
+      390,
+      844
+    ]
+  ],
+  "scenario": "save-failure step 4 active api/cache; invalid scenario excludes api/cache",
+  "jsErrors": [],
+  "mobileOverflow": false
+}

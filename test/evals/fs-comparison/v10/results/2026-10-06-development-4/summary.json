@@ -1,0 +1,570 @@
+{
+  "summary": {
+    "calls": 6,
+    "completedTurns": 6,
+    "totalTokens": 1377984,
+    "uncachedPlusOutput": 142272,
+    "seconds": 1093.5049999999999,
+    "unknownUsage": 0,
+    "mcpErrors": 0,
+    "completedJourneys": 3
+  },
+  "rows": [
+    {
+      "id": "draft-editor-raw-K1",
+      "case": "draft-editor",
+      "arm": "raw-K1",
+      "calls": 2,
+      "completedTurns": 2,
+      "totalTokens": 198853,
+      "uncachedPlusOutput": 25157,
+      "seconds": 304.145,
+      "unknownUsage": 0,
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "knowledgeReads": [],
+      "approvals": [],
+      "commands": [
+        "/bin/zsh -lc \"pwd && rg --files -g 'README.md' -g 'learning/*.md' -g '\"'!node_modules'\"' -g '\"'!dist'\"' -g '\"'!build'\"'\"",
+        "/bin/zsh -lc \"rg --files -g '\"'!node_modules'\"' -g '\"'!dist'\"' -g '\"'!build'\"' | head -200\"",
+        "/bin/zsh -lc \"for f in learning/*.md; do printf '\\\\nFILE %s\\\\n' \\\"\"'$f\"; cat \"$f\"; done'",
+        "/bin/zsh -lc \"for f in src/*.ts; do printf '\\\\nFILE %s\\\\n' \\\"\"'$f\"; cat \"$f\"; done'",
+        "/bin/zsh -lc 'cat README.md && cat package.json && cat tsconfig.json'",
+        "/bin/zsh -lc \"cat README.md && for f in src/*.ts; do printf '\\\\nFILE %s\\\\n' \\\"\"'$f\"; cat \"$f\"; done'",
+        "/bin/zsh -lc 'cat owner-answers.json && cat questions.json'",
+        "/bin/zsh -lc \"cat learning/draft-ownership.md && rg --files -g 'AGENTS.md' -g 'plan.md' -g 'learning/*.md'\""
+      ],
+      "audits": [
+        {
+          "id": "draft-editor-raw-K1",
+          "phase": "questions",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 130.546,
+            "completedTurns": 1,
+            "threadId": "01a10cf2-4501-78d3-a016-f248d2fccccd",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 73622,
+              "cached_input_tokens": 63616,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 2598,
+              "reasoning_output_tokens": 651,
+              "total_tokens": 76220,
+              "uncached_input_tokens": 10006
+            },
+            "cumulativeUsage": {
+              "input_tokens": 73622,
+              "cached_input_tokens": 63616,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 2598,
+              "reasoning_output_tokens": 651
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "questions": {
+            "count": 4,
+            "citations": [
+              {
+                "questionId": "q1",
+                "path": "src/editor.ts",
+                "quote": "async function open(id:string) { doc=await repo.load(id); view.body(doc.body); view.status('Loaded'); }",
+                "exact": true
+              },
+              {
+                "questionId": "q1",
+                "path": "src/editor.ts",
+                "quote": "timer=setTimeout(async()=>{const result=await repo.saveDraft(doc);",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/types.ts",
+                "quote": "export type SaveResult={kind:'saved';document:Doc}|{kind:'conflict';remote:Doc};",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/editor.ts",
+                "quote": "else {doc=result.remote;view.body(doc.body);view.status('Updated');}",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/drafts.ts",
+                "quote": "const drafts=new Map<string,Doc>();",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/editor.ts",
+                "quote": "let doc:Doc={id:'',body:'',revision:0}; let timer:ReturnType<typeof setTimeout>|undefined;",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/mount.ts",
+                "quote": "const editor=createEditor(repo,{body:v=>{input.value=v;},status:v=>{status.textContent=v;}});",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/editor.ts",
+                "quote": "return {open,edit,dispose(){clearTimeout(timer);}};",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/mount.ts",
+                "quote": "return {...editor,dispose(){editor.dispose();input.remove();status.remove();}};",
+                "exact": true
+              }
+            ],
+            "allQuotesExact": true
+          }
+        },
+        {
+          "id": "draft-editor-raw-K1",
+          "phase": "plan",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 173.599,
+            "completedTurns": 1,
+            "threadId": "01a10cf2-4501-78d3-a016-f248d2fccccd",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 119119,
+              "cached_input_tokens": 110080,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 3514,
+              "reasoning_output_tokens": 861,
+              "total_tokens": 122633,
+              "uncached_input_tokens": 9039
+            },
+            "cumulativeUsage": {
+              "input_tokens": 192741,
+              "cached_input_tokens": 173696,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 6112,
+              "reasoning_output_tokens": 1512
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "planCharacters": 7757
+        }
+      ],
+      "complete": true
+    },
+    {
+      "id": "draft-editor-fs-K1",
+      "case": "draft-editor",
+      "arm": "fs-K1",
+      "calls": 2,
+      "completedTurns": 2,
+      "totalTokens": 1022028,
+      "uncachedPlusOutput": 76108,
+      "seconds": 554.8009999999999,
+      "unknownUsage": 0,
+      "mcpCalls": 12,
+      "mcpErrors": 0,
+      "knowledgeReads": [
+        {
+          "id": [
+            "draft-ownership"
+          ]
+        }
+      ],
+      "approvals": [],
+      "commands": [
+        "/bin/zsh -lc 'cat ../runtime/skills/fs-plan/SKILL.md'",
+        "/bin/zsh -lc \"pwd && rg --files -g 'README.md' -g 'AGENTS.md' -g '\"'!node_modules'\"' -g '\"'!dist'\"' && rg --files -g '\"'!node_modules'\"' -g '\"'!dist'\"' | head -200\"",
+        "/bin/zsh -lc 'cat owner-answers.json'",
+        "/bin/zsh -lc 'rg --files .frontend-system && cat questions.json'",
+        "/bin/zsh -lc 'node ../runtime/bundle/tool-help.mjs save_revision'",
+        "/bin/zsh -lc 'rg --files .frontend-system'",
+        "/bin/zsh -lc 'cat .frontend-system/drafts/portal-refactor.json'",
+        "/bin/zsh -lc 'rg --files --hidden .frontend-system'",
+        "/bin/zsh -lc 'cp .frontend-system/plans/portal-refactor/plan.md plan.md'",
+        "/bin/zsh -lc 'cmp -s .frontend-system/plans/portal-refactor/plan.md plan.md'"
+      ],
+      "audits": [
+        {
+          "id": "draft-editor-fs-K1",
+          "phase": "questions",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 204.031,
+            "completedTurns": 1,
+            "threadId": "01a10cf2-44d2-7573-b296-619759c5af1c",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 275136,
+              "cached_input_tokens": 242176,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 4919,
+              "reasoning_output_tokens": 579,
+              "total_tokens": 280055,
+              "uncached_input_tokens": 32960
+            },
+            "cumulativeUsage": {
+              "input_tokens": 275136,
+              "cached_input_tokens": 242176,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 4919,
+              "reasoning_output_tokens": 579
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "questions": {
+            "count": 4,
+            "citations": [
+              {
+                "questionId": "q1",
+                "path": "src/editor.ts",
+                "quote": "timer=setTimeout(async()=>{const result=await repo.saveDraft(doc);",
+                "exact": true
+              },
+              {
+                "questionId": "q1",
+                "path": "src/editor.ts",
+                "quote": "if(result.kind==='saved'){doc=result.document;view.status('Saved');}",
+                "exact": true
+              },
+              {
+                "questionId": "q1",
+                "path": "src/types.ts",
+                "quote": "export type Repository={load(id:string):Promise<Doc>;saveDraft(doc:Doc):Promise<SaveResult>};",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/editor.ts",
+                "quote": "async function open(id:string) { doc=await repo.load(id); view.body(doc.body); view.status('Loaded'); }",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/editor.ts",
+                "quote": "return {open,edit,dispose(){clearTimeout(timer);}};",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "README.md",
+                "quote": "The editor has one current document and a 200ms autosave timer. Repository revisions exist but the host has not defined conflict resolution, unsaved navigation, or cross-pane draft ownership.",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/types.ts",
+                "quote": "export type SaveResult={kind:'saved';document:Doc}|{kind:'conflict';remote:Doc};",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/editor.ts",
+                "quote": "else {doc=result.remote;view.body(doc.body);view.status('Updated');}",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/memory-repository.ts",
+                "quote": "async saveDraft(doc){const current=store.get(doc.id);if(current&&current.revision!==doc.revision)return {kind:'conflict',remote:{...current}};",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/drafts.ts",
+                "quote": "const drafts=new Map<string,Doc>();",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/drafts.ts",
+                "quote": "export function remember(doc:Doc) { drafts.set(doc.id,doc); }",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/editor.ts",
+                "quote": "doc.body=body; remember(doc); clearTimeout(timer);",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "README.md",
+                "quote": "Repository revisions exist but the host has not defined conflict resolution, unsaved navigation, or cross-pane draft ownership.",
+                "exact": true
+              }
+            ],
+            "allQuotesExact": true
+          }
+        },
+        {
+          "id": "draft-editor-fs-K1",
+          "phase": "plan",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 350.77,
+            "completedTurns": 1,
+            "threadId": "01a10cf2-44d2-7573-b296-619759c5af1c",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 733410,
+              "cached_input_tokens": 703744,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 8563,
+              "reasoning_output_tokens": 2509,
+              "total_tokens": 741973,
+              "uncached_input_tokens": 29666
+            },
+            "cumulativeUsage": {
+              "input_tokens": 1008546,
+              "cached_input_tokens": 945920,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 13482,
+              "reasoning_output_tokens": 3088
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "planCharacters": 14804
+        }
+      ],
+      "complete": true
+    },
+    {
+      "id": "draft-editor-ordinary",
+      "case": "draft-editor",
+      "arm": "ordinary",
+      "calls": 2,
+      "completedTurns": 2,
+      "totalTokens": 157103,
+      "uncachedPlusOutput": 41007,
+      "seconds": 234.559,
+      "unknownUsage": 0,
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "knowledgeReads": [],
+      "approvals": [],
+      "commands": [
+        "/bin/zsh -lc \"rg --files -g '\"'!node_modules'\"' -g '\"'!vendor'\"' | head -100\"",
+        "/bin/zsh -lc \"pwd && rg --files -g 'README.md' -g 'AGENTS.md' -g '\"'!node_modules'\"' -g '\"'!vendor'\"'\"",
+        "/bin/zsh -lc \"cat 'package.json'\"",
+        "/bin/zsh -lc \"cat 'src/types.ts'\"",
+        "/bin/zsh -lc \"cat 'README.md'\"",
+        "/bin/zsh -lc \"cat 'src/drafts.ts'\"",
+        "/bin/zsh -lc \"cat 'src/editor.ts'\"",
+        "/bin/zsh -lc \"cat 'src/mount.ts'\"",
+        "/bin/zsh -lc \"cat 'src/memory-repository.ts'\"",
+        "/bin/zsh -lc \"cat 'tsconfig.json'\"",
+        "/bin/zsh -lc \"cat 'src/mount.ts'\"",
+        "/bin/zsh -lc \"cat 'src/types.ts'\"",
+        "/bin/zsh -lc \"cat 'src/memory-repository.ts'\"",
+        "/bin/zsh -lc \"cat 'src/drafts.ts'\"",
+        "/bin/zsh -lc \"cat 'questions.json'\"",
+        "/bin/zsh -lc \"cat 'src/editor.ts'\"",
+        "/bin/zsh -lc \"cat 'owner-answers.json'\"",
+        "/bin/zsh -lc \"cat 'README.md'\"",
+        "/bin/zsh -lc \"rg -n '\"'^#|''^##|''^- '\"\\\\*\\\\*' plan.md\""
+      ],
+      "audits": [
+        {
+          "id": "draft-editor-ordinary",
+          "phase": "questions",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 122.158,
+            "completedTurns": 1,
+            "threadId": "01a10cf4-42f8-7053-b753-13b5e935c41c",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 58125,
+              "cached_input_tokens": 48640,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 3046,
+              "reasoning_output_tokens": 782,
+              "total_tokens": 61171,
+              "uncached_input_tokens": 9485
+            },
+            "cumulativeUsage": {
+              "input_tokens": 58125,
+              "cached_input_tokens": 48640,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 3046,
+              "reasoning_output_tokens": 782
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "questions": {
+            "count": 5,
+            "citations": [
+              {
+                "questionId": "q1",
+                "path": "README.md",
+                "quote": "The editor has one current document and a 200ms autosave timer.",
+                "exact": true
+              },
+              {
+                "questionId": "q1",
+                "path": "src/editor.ts",
+                "quote": "doc.body=body; remember(doc); clearTimeout(timer);",
+                "exact": true
+              },
+              {
+                "questionId": "q1",
+                "path": "src/editor.ts",
+                "quote": "timer=setTimeout(async()=>{const result=await repo.saveDraft(doc);",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "README.md",
+                "quote": "the host has not defined conflict resolution, unsaved navigation, or cross-pane draft ownership.",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/editor.ts",
+                "quote": "async function open(id:string) { doc=await repo.load(id); view.body(doc.body); view.status('Loaded'); }",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/editor.ts",
+                "quote": "return {open,edit,dispose(){clearTimeout(timer);}};",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/types.ts",
+                "quote": "export type SaveResult={kind:'saved';document:Doc}|{kind:'conflict';remote:Doc};",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/editor.ts",
+                "quote": "else {doc=result.remote;view.body(doc.body);view.status('Updated');}",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/memory-repository.ts",
+                "quote": "if(current&&current.revision!==doc.revision)return {kind:'conflict',remote:{...current}};",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "README.md",
+                "quote": "the host has not defined conflict resolution, unsaved navigation, or cross-pane draft ownership.",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/drafts.ts",
+                "quote": "const drafts=new Map<string,Doc>();",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/drafts.ts",
+                "quote": "export function remember(doc:Doc) { drafts.set(doc.id,doc); }",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/editor.ts",
+                "quote": "let doc:Doc={id:'',body:'',revision:0}; let timer:ReturnType<typeof setTimeout>|undefined;",
+                "exact": true
+              },
+              {
+                "questionId": "q5",
+                "path": "src/types.ts",
+                "quote": "export type Repository={load(id:string):Promise<Doc>;saveDraft(doc:Doc):Promise<SaveResult>};",
+                "exact": true
+              },
+              {
+                "questionId": "q5",
+                "path": "src/memory-repository.ts",
+                "quote": "if(!d)throw Error('missing');",
+                "exact": true
+              },
+              {
+                "questionId": "q5",
+                "path": "src/editor.ts",
+                "quote": "timer=setTimeout(async()=>{const result=await repo.saveDraft(doc);",
+                "exact": true
+              }
+            ],
+            "allQuotesExact": true
+          }
+        },
+        {
+          "id": "draft-editor-ordinary",
+          "phase": "plan",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 112.401,
+            "completedTurns": 1,
+            "threadId": "01a10cf4-42f8-7053-b753-13b5e935c41c",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 93176,
+              "cached_input_tokens": 67456,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 2756,
+              "reasoning_output_tokens": 762,
+              "total_tokens": 95932,
+              "uncached_input_tokens": 25720
+            },
+            "cumulativeUsage": {
+              "input_tokens": 151301,
+              "cached_input_tokens": 116096,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 5802,
+              "reasoning_output_tokens": 1544
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "planCharacters": 7925
+        }
+      ],
+      "complete": true
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "files": [
+    "App.jsx",
+    "ui/ActionButton.jsx",
+    "ui/Amount.jsx",
+    "ui/CheckoutForm.jsx",
+    "ui/InventoryPanel.jsx",
+    "ui/OrderPanel.jsx",
+    "ui/PanelCard.jsx",
+    "ui/ReturnForm.jsx",
+    "ui/ReturnsPanel.jsx",
+    "ui/SessionBar.jsx",
+    "ui/Status.jsx",
+    "ui/StatusBadge.jsx",
+    "ui/WalletPanel.jsx"
+  ],
+  "inlineStaticClasses": true,
+  "completeClassTokens": true,
+  "variants": [
+    {
+      "file": "ui/ActionButton.jsx",
+      "axes": [
+        "tone",
+        "size"
+      ]
+    },
+    {
+      "file": "ui/StatusBadge.jsx",
+      "axes": [
+        "status",
+        "density"
+      ]
+    },
+    {
+      "file": "ui/PanelCard.jsx",
+      "axes": [
+        "tone",
+        "density"
+      ]
+    }
+  ]
+}

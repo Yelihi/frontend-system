@@ -1,0 +1,64 @@
+{
+  "reviewKind": "separate-workflow-and-document-adjudication",
+  "documents": {
+    "passed": false,
+    "project": "source/project.md:3",
+    "plan": "source/plan.md:3",
+    "rulesToChecks": "source/plan.md:17",
+    "observation": "Structure, scope, check commands and rule mapping present, but final validation results and remaining limits were not delivered before timeout. Native execution remains in-progress with all three steps pending."
+  },
+  "H10": {
+    "passed": false,
+    "currentSourceValidationPassed": false,
+    "lastProductEdit": "item_104",
+    "lastTestEdit": "item_96",
+    "lastCompletedChecks": [
+      "item_97",
+      "item_98",
+      "item_99",
+      "item_100",
+      "item_101"
+    ],
+    "externalSourceBeforeAfterMatchesFinal": true,
+    "protectedAssetsPassed": 9,
+    "observation": "All five direct checks passed before product edits102/104 changed server catalog wiring and client price props. Only a read105 followed; no current-source verification before timeout. Later evaluator checks all pass but do not retroactively establish author verification."
+  },
+  "R9": {
+    "passed": true,
+    "observation": "No final completion report was delivered; missing current verification and delivery are failures above, not an invented false completion claim."
+  },
+  "conditionAdherence": {
+    "passed": true,
+    "arm": "fs",
+    "evidence": "Trace reads supplied TASK/rules, procedural FS references and installed Next docs, and calls allowed procedure MCP tools only. No learned/source knowledge, other models, external services, installs or commits."
+  },
+  "fullValidationAttempts": 3,
+  "unfinishedAdditionalProductRevision": true,
+  "attemptBudgetRespected": false,
+  "attemptEvidence": "Initial product35-50 with checks52-55/68; domain correction71 with full checks76-82; button-name correction94 with full checks97-101. Product revisions102/104 then began another revision after these three whole validation cycles and were not verified before timeout. Test-only expansions are not additional whole attempts.",
+  "procedureObservations": [
+    "FS policy calls59/60 rejected incompatible selections; required script definitions remained wrong in calls61-79, so native policy results were not-run. Direct npm checks were still executed.",
+    "Native execution source hashes remain the pre-implementation snapshot; no completed FS final check or final execution update.",
+    "Additional E2E91 caught the pending button-name contract; corrected94 and verified97 before later changes.",
+    "900.020 seconds, no completed provider turn and no usage. Missing usage stays null."
+  ],
+  "eligibleComplete": false,
+  "eligibilityEvidence": [
+    "Historical pre-correction: checks/grade/score.json H3 coupon-null fails domain and both POST paths (107/110).",
+    "Historical pre-correction: Final source not author-verified; final document/native procedure incomplete at timeout.",
+    "Historical pre-correction: ../blind-review/376944f466a6/review.json: Q90, R5/R6 fail; pending normalized-equivalent input changes strand quote loading. R1-R4/R7-R8 pass.",
+    "Final: corrected 107/110; independentQ90; product R1-R8 fail; eligibleComplete=False. Details and original adjudication preserved."
+  ],
+  "qualitySource": "../blind-review/376944f466a6/review.json",
+  "evaluatorAdjudication": {
+    "status": "final",
+    "revision": "accessible-name-v2",
+    "originalPassed": 107,
+    "correctedPassed": 107,
+    "changedCases": [],
+    "sourceUnchanged": true,
+    "independentCorrectionReview": "../blind-review/376944f466a6/regrade-review.json",
+    "qualityAndRulesUnchanged": true,
+    "eligibleComplete": false
+  }
+}

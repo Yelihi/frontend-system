@@ -1,0 +1,8 @@
+{
+  "status": "blocked",
+  "reason": "[Errno 2] No such file or directory: '/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/test/evals/fs-comparison/v5/results/2026-10-04T144815/compliance-calibration/summary.json'",
+  "modelCalls": 0,
+  "manifestHash": "3a6e29e05bf2c091c04621060ebb3290c8fb46b574ff4651638f9aa73a4499ed",
+  "journeys": [],
+  "comparison": []
+}

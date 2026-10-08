@@ -1,0 +1,412 @@
+{
+  "runnerStatus": "completed",
+  "modelCalls": 4,
+  "rows": [
+    {
+      "case": "operations-console",
+      "arm": "plain",
+      "completed": true,
+      "missingPhases": [],
+      "eligible": true,
+      "timedOut": false,
+      "planSatisfied": 69,
+      "planTotal": 69,
+      "totalTokens": 819651,
+      "uncachedInputTokens": 53093,
+      "seconds": 552.295,
+      "phaseUsage": [
+        {
+          "phase": "prepare",
+          "attempt": 0,
+          "usage": {
+            "input_tokens": 62871,
+            "cached_input_tokens": 35840,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 1151,
+            "reasoning_output_tokens": 245,
+            "total_tokens": 64022,
+            "uncached_input_tokens": 27031
+          }
+        },
+        {
+          "phase": "work",
+          "attempt": 0,
+          "usage": {
+            "input_tokens": 740174,
+            "cached_input_tokens": 714112,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 15455,
+            "reasoning_output_tokens": 5311,
+            "total_tokens": 755629,
+            "uncached_input_tokens": 26062
+          }
+        }
+      ],
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "mcpTools": {},
+      "projectSaveCalls": 0,
+      "savedStatements": 0,
+      "registeredReuse": 0,
+      "explicitReuseExclusions": 0,
+      "reuseObservable": false,
+      "reusedTriggers": 0,
+      "patchCalls": 0,
+      "patchSuccesses": 0,
+      "routePatchCalls": 0,
+      "fullRevisionReads": 0
+    },
+    {
+      "case": "operations-console",
+      "arm": "fs",
+      "completed": true,
+      "missingPhases": [],
+      "eligible": false,
+      "timedOut": false,
+      "planSatisfied": 69,
+      "planTotal": 69,
+      "totalTokens": 895552,
+      "uncachedInputTokens": 52055,
+      "seconds": 454.405,
+      "phaseUsage": [
+        {
+          "phase": "prepare",
+          "attempt": 0,
+          "usage": {
+            "input_tokens": 120802,
+            "cached_input_tokens": 97920,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 1464,
+            "reasoning_output_tokens": 287,
+            "total_tokens": 122266,
+            "uncached_input_tokens": 22882
+          }
+        },
+        {
+          "phase": "work",
+          "attempt": 0,
+          "usage": {
+            "input_tokens": 761205,
+            "cached_input_tokens": 732032,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 12081,
+            "reasoning_output_tokens": 3419,
+            "total_tokens": 773286,
+            "uncached_input_tokens": 29173
+          }
+        }
+      ],
+      "mcpCalls": 1,
+      "mcpErrors": 0,
+      "mcpTools": {
+        "inspect_project": 1
+      },
+      "projectSaveCalls": 0,
+      "savedStatements": 0,
+      "registeredReuse": 0,
+      "explicitReuseExclusions": 0,
+      "reuseObservable": false,
+      "reusedTriggers": 0,
+      "patchCalls": 0,
+      "patchSuccesses": 0,
+      "routePatchCalls": 0,
+      "fullRevisionReads": 0
+    }
+  ],
+  "limits": [
+    "Missing usage/grades remain null, never zero or a pass.",
+    "Reuse counters record tool behavior, not semantic correctness or causal token savings.",
+    "Runner completed does not imply completed model turns. Fixed-order single pairs do not establish general superiority."
+  ],
+  "summarySha256": "3cb0a6e3ff9a882f97a845899b422fc3cebce4a4e6a14eaf2ca999aed38ef65c",
+  "productFiles": [
+    {
+      "case": "operations-console",
+      "path": "App.jsx",
+      "equal": false,
+      "hashes": {
+        "plain": "2f62a9f088ec5a5d45949a5641e4981f06dee5b92b91e03f5ac49731c9faaa91",
+        "fs": "326b6e04dfb8efe93a0a33d0cd14b387bb8693a983d28f2a8e10bde424e05643"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "application/checkout.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "d17c2f6f9e494b111afb5ffbaec75d7f463f46b77fad3ba2eab48715fa37a4ad",
+        "fs": "d17c2f6f9e494b111afb5ffbaec75d7f463f46b77fad3ba2eab48715fa37a4ad"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "application/inventory.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "b7073ba43bbcf51d046cb1e8e28e3e384bd6f9b443171f2c2ee7bd0b5695b522",
+        "fs": "b7073ba43bbcf51d046cb1e8e28e3e384bd6f9b443171f2c2ee7bd0b5695b522"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "application/orders.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "209843ac4a42c62843bb2c3671b6a44233a7de4f5c74692b853987e17bd94495",
+        "fs": "209843ac4a42c62843bb2c3671b6a44233a7de4f5c74692b853987e17bd94495"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "application/refund.mjs",
+      "equal": false,
+      "hashes": {
+        "plain": "ca0ca7bf693881946f1e1febc710329632d32eef4dc314c0028bfd7d9eb81e39",
+        "fs": "9108b6f16f3bc962e4b12d6f12acc9f0c0cc3fac95d4f84e73c393131ee891da"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "application/returns.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "152823815c690e3848fb2016ef8a4204817f7af20f98be74eb0140ae8014c1ed",
+        "fs": "152823815c690e3848fb2016ef8a4204817f7af20f98be74eb0140ae8014c1ed"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "application/system.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "0e7ad8e7f6ee8cdce1489e8cf12c5aacc77888bf38ada07c50e250eb976d4bc1",
+        "fs": "0e7ad8e7f6ee8cdce1489e8cf12c5aacc77888bf38ada07c50e250eb976d4bc1"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "application/wallet.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "d268ecd865ea6bf3fc686b240a75330d6b2c086087e4090a1023607eea5b435c",
+        "fs": "d268ecd865ea6bf3fc686b240a75330d6b2c086087e4090a1023607eea5b435c"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "data/inventory.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "75cd94254b6c113aa24f95c755d9980859ba6c539791ee186c1a33761bd1da85",
+        "fs": "75cd94254b6c113aa24f95c755d9980859ba6c539791ee186c1a33761bd1da85"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "data/orders.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "944f687aee3e7eecb646af9dffda8a464d9cc844927302468d1f681dfa26f7f1",
+        "fs": "944f687aee3e7eecb646af9dffda8a464d9cc844927302468d1f681dfa26f7f1"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "data/returns.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "2224009dc2071d8c6b8bf9503791457dcc6e288758f8d95a8f5c8b66a160392f",
+        "fs": "2224009dc2071d8c6b8bf9503791457dcc6e288758f8d95a8f5c8b66a160392f"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "data/wallet.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "e927764cd96acd90ae86d524e55b2c584e628e8ff815169422dd03f3b0492e39",
+        "fs": "e927764cd96acd90ae86d524e55b2c584e628e8ff815169422dd03f3b0492e39"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "domain/inventory.mjs",
+      "equal": false,
+      "hashes": {
+        "plain": "1f32482fd5c5689dbd264b8046381de77874c79421a62772ca14a1434b9bbc1f",
+        "fs": "e9955e1b7a1fa227abd854934e111ef3471db3eabd000b830ba05599799cf957"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "domain/order.mjs",
+      "equal": false,
+      "hashes": {
+        "plain": "c1974c4fa2e6d38e13b63041367140c671c813e1de96b91cb45a55665f0efdfd",
+        "fs": "d236dacbfd609e0a12c7e8726aa65d791217c24af3f22b8031c19bfbe1b5565e"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "domain/promotion.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "cebdf7386a1ed4d5202bf054d51f79ed75fe33cb1df5a6a420523b97a5dffa50",
+        "fs": "cebdf7386a1ed4d5202bf054d51f79ed75fe33cb1df5a6a420523b97a5dffa50"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "domain/returns.mjs",
+      "equal": false,
+      "hashes": {
+        "plain": "79733a50edc916d00acc11cf6b5bad5bd2bea81dc1b8514879d5620851bbba2a",
+        "fs": "8846a0587be3a958571e79f2ba32e32c13de77e3e5bfb1b8320d489d57911568"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "domain/shipping.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "d4db4f54b9c48b89e5aa2935a1764e7fe2d7d9686910b238ea4c53d620bba010",
+        "fs": "d4db4f54b9c48b89e5aa2935a1764e7fe2d7d9686910b238ea4c53d620bba010"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "domain/wallet.mjs",
+      "equal": false,
+      "hashes": {
+        "plain": "f89c4eae040c5c465ec6b96d16aaa9fd5c5b9d323c80f9d39625284aba66330e",
+        "fs": "513c0f677c87210f5bc53501287bf0c57ba3bc1d5d6f68557e27c22436f38ddc"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "shared/http.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "56169a9713121eca4f8a82b0b83ce97019155a1a5df49120f54e7b6de931b27d",
+        "fs": "56169a9713121eca4f8a82b0b83ce97019155a1a5df49120f54e7b6de931b27d"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "shared/inflight.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "5b55668fb517ac6db870f10827b068c8e93e0abf6b5059568fff7f8a4f1981ba",
+        "fs": "5b55668fb517ac6db870f10827b068c8e93e0abf6b5059568fff7f8a4f1981ba"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "shared/resource.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "fb83100559626ea251aff851339d87ac49743c2febb6a6d2f788a95561e3edb8",
+        "fs": "fb83100559626ea251aff851339d87ac49743c2febb6a6d2f788a95561e3edb8"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "shared/session.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "3455f4b1b045b602f89af0afc9900e41780b1b811151dde715a9ad9549aa838c",
+        "fs": "3455f4b1b045b602f89af0afc9900e41780b1b811151dde715a9ad9549aa838c"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "ui/Amount.jsx",
+      "equal": true,
+      "hashes": {
+        "plain": "424961cf61cac706e9006b1b337ca14278200707f65a4ed3a33fc44bc0a377de",
+        "fs": "424961cf61cac706e9006b1b337ca14278200707f65a4ed3a33fc44bc0a377de"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "ui/CheckoutForm.jsx",
+      "equal": true,
+      "hashes": {
+        "plain": "f4cc75beec8ef3d675c5120643940d5aa3406c0c6115b450f5a052ba45b0f81c",
+        "fs": "f4cc75beec8ef3d675c5120643940d5aa3406c0c6115b450f5a052ba45b0f81c"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "ui/InventoryPanel.jsx",
+      "equal": false,
+      "hashes": {
+        "plain": "4102db9b10f9ff81959f0e3775fe753f1bbaec349d93bfd2dcaf4ddb4c46047d",
+        "fs": "8139471e0d3dbd3a3f3e2662bc02e12e0b1487ab193b7a39fa1d2686d58a2512"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "ui/OrderPanel.jsx",
+      "equal": false,
+      "hashes": {
+        "plain": "5200564efc1c6788043bc2abd8e4492ee479055afe91db5f894b50a80469ad18",
+        "fs": "9d4dd560b7d3c190f2c6128b13017f3ee6feda82ec9f7443a4c3a0abb697c148"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "ui/ReturnForm.jsx",
+      "equal": true,
+      "hashes": {
+        "plain": "375f0cfbfb93629be4197c63d505e96b2baeffdedcd3ad0cfc815b06137587a7",
+        "fs": "375f0cfbfb93629be4197c63d505e96b2baeffdedcd3ad0cfc815b06137587a7"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "ui/ReturnsPanel.jsx",
+      "equal": false,
+      "hashes": {
+        "plain": "9296920551e220a8962f4881b767bd60eda9c4d11b22d37e3d1e9680a91966d2",
+        "fs": "1d4e02317b72dde1aafc68651ccea0b7ac1bb1fd43a06a9e72cfd717f7877891"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "ui/SessionBar.jsx",
+      "equal": true,
+      "hashes": {
+        "plain": "8f571d5f237f0dff96e277bb400c3c8deddcc0d61dd240f97c7a6436620201f7",
+        "fs": "8f571d5f237f0dff96e277bb400c3c8deddcc0d61dd240f97c7a6436620201f7"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "ui/Status.jsx",
+      "equal": true,
+      "hashes": {
+        "plain": "f965db601f4ffd024c36f2451455215f47c01ade0e61ff123fd377d4efaa0f4f",
+        "fs": "f965db601f4ffd024c36f2451455215f47c01ade0e61ff123fd377d4efaa0f4f"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "ui/WalletPanel.jsx",
+      "equal": false,
+      "hashes": {
+        "plain": "83027fd38b2f576682eb28b55d1dbe3f89bd624e0a5d988a8f1fc9c97d508284",
+        "fs": "2810149fa560c90c47e3f7f7a66d16ce4f86cfbad55f2aa3485cf8e1d100556a"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "ui/useAction.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "623438ac2154cbf49c822246a8b45ae0a05a41a440d3cd0e2b64a982e71056a3",
+        "fs": "623438ac2154cbf49c822246a8b45ae0a05a41a440d3cd0e2b64a982e71056a3"
+      }
+    }
+  ]
+}

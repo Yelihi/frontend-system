@@ -1,0 +1,253 @@
+{
+  "source": "summary.json",
+  "sourceSha256": "ce6fa02f86b4d951e6da466588a35dd02bf6fbbed5b21fb45671a61973dc182e",
+  "status": "completed",
+  "modelCalls": 4,
+  "comparison": [
+    {
+      "case": "layered-orders",
+      "arm": "plain",
+      "questionProtocol": "observed",
+      "firstImplementationPassed": true,
+      "firstPlanCompliance": {
+        "version": 2,
+        "satisfied": 14,
+        "total": 14,
+        "forbiddenViolations": [],
+        "decisionViolations": [],
+        "semanticReview": "unverified"
+      },
+      "finalPlanCompliance": {
+        "version": 2,
+        "satisfied": 14,
+        "total": 14,
+        "forbiddenViolations": [],
+        "decisionViolations": [],
+        "semanticReview": "unverified"
+      },
+      "finalEligible": true,
+      "repairCalls": 0,
+      "modelElapsedSeconds": 190.385,
+      "totalTokens": 260373,
+      "uncachedInputTokens": 38774
+    },
+    {
+      "case": "layered-orders",
+      "arm": "fs",
+      "questionProtocol": "observed",
+      "firstImplementationPassed": true,
+      "firstPlanCompliance": {
+        "version": 2,
+        "satisfied": 14,
+        "total": 14,
+        "forbiddenViolations": [],
+        "decisionViolations": [],
+        "semanticReview": "unverified"
+      },
+      "finalPlanCompliance": {
+        "version": 2,
+        "satisfied": 14,
+        "total": 14,
+        "forbiddenViolations": [],
+        "decisionViolations": [],
+        "semanticReview": "unverified"
+      },
+      "finalEligible": true,
+      "repairCalls": 0,
+      "modelElapsedSeconds": 663.873,
+      "totalTokens": 1910803,
+      "uncachedInputTokens": 80754
+    }
+  ],
+  "ratios": {
+    "totalTokens": 7.338714075576193,
+    "uncachedInputTokens": 2.082684272966421,
+    "modelElapsedSeconds": 3.4870026525198945
+  },
+  "details": [
+    {
+      "arm": "plain",
+      "score": {
+        "version": 2,
+        "satisfied": 14,
+        "total": 14,
+        "forbiddenViolations": [],
+        "decisionViolations": [],
+        "semanticReview": "unverified"
+      },
+      "eligible": true,
+      "workflow": "observed",
+      "phases": [
+        {
+          "phase": "prepare",
+          "seconds": 44.794,
+          "usage": {
+            "input_tokens": 70314,
+            "cached_input_tokens": 53760,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 1201,
+            "reasoning_output_tokens": 308,
+            "total_tokens": 71515,
+            "uncached_input_tokens": 16554
+          },
+          "completedItemTypes": {
+            "agent_message": 4,
+            "command_execution": 12
+          }
+        },
+        {
+          "phase": "work",
+          "seconds": 145.591,
+          "usage": {
+            "input_tokens": 183628,
+            "cached_input_tokens": 161408,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 5230,
+            "reasoning_output_tokens": 649,
+            "total_tokens": 188858,
+            "uncached_input_tokens": 22220
+          },
+          "completedItemTypes": {
+            "agent_message": 4,
+            "command_execution": 9,
+            "file_change": 3
+          }
+        }
+      ],
+      "usage": {
+        "input_tokens": 253942,
+        "output_tokens": 6431,
+        "total_tokens": 260373,
+        "cached_input_tokens": 215168
+      },
+      "mcpCalls": 0,
+      "mcpFailures": 0,
+      "knownContextIdSupplied": 0
+    },
+    {
+      "arm": "fs",
+      "score": {
+        "version": 2,
+        "satisfied": 14,
+        "total": 14,
+        "forbiddenViolations": [],
+        "decisionViolations": [],
+        "semanticReview": "unverified"
+      },
+      "eligible": true,
+      "workflow": "observed",
+      "phases": [
+        {
+          "phase": "prepare",
+          "seconds": 202.56,
+          "usage": {
+            "input_tokens": 425629,
+            "cached_input_tokens": 378112,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 6642,
+            "reasoning_output_tokens": 818,
+            "total_tokens": 432271,
+            "uncached_input_tokens": 47517
+          },
+          "completedItemTypes": {
+            "agent_message": 5,
+            "command_execution": 20,
+            "mcp_tool_call": 19
+          }
+        },
+        {
+          "phase": "work",
+          "seconds": 461.313,
+          "usage": {
+            "input_tokens": 1467733,
+            "cached_input_tokens": 1434496,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 10799,
+            "reasoning_output_tokens": 2423,
+            "total_tokens": 1478532,
+            "uncached_input_tokens": 33237
+          },
+          "completedItemTypes": {
+            "agent_message": 5,
+            "mcp_tool_call": 16,
+            "command_execution": 10,
+            "file_change": 2
+          }
+        }
+      ],
+      "usage": {
+        "input_tokens": 1893362,
+        "output_tokens": 17441,
+        "total_tokens": 1910803,
+        "cached_input_tokens": 1812608
+      },
+      "mcpCalls": 35,
+      "mcpFailures": 3,
+      "knownContextIdSupplied": 0
+    }
+  ],
+  "productFiles": [
+    {
+      "path": "App.jsx",
+      "identicalBetweenArms": true,
+      "plainSha256": "69e692249ec0f36def05d8c04c403f9077dd5aafb5facbfb4d041b1515fe0cbb",
+      "fsSha256": "69e692249ec0f36def05d8c04c403f9077dd5aafb5facbfb4d041b1515fe0cbb",
+      "changedFromStarter": false,
+      "initialIdenticalBetweenArms": true
+    },
+    {
+      "path": "shared/http.mjs",
+      "identicalBetweenArms": true,
+      "plainSha256": "78af823fe02b61b990c84ff35482b60b0b6ad1d3babb2cb0197bc0fef2919c36",
+      "fsSha256": "78af823fe02b61b990c84ff35482b60b0b6ad1d3babb2cb0197bc0fef2919c36",
+      "changedFromStarter": true,
+      "initialIdenticalBetweenArms": true
+    },
+    {
+      "path": "domain/orders.mjs",
+      "identicalBetweenArms": true,
+      "plainSha256": "5e0244cdb12503e8e8e134d6156a211d2ec1ae26b91c88ca1067035c6744b626",
+      "fsSha256": "5e0244cdb12503e8e8e134d6156a211d2ec1ae26b91c88ca1067035c6744b626",
+      "changedFromStarter": true,
+      "initialIdenticalBetweenArms": true
+    },
+    {
+      "path": "data/orders.mjs",
+      "identicalBetweenArms": true,
+      "plainSha256": "54ca7c875d0bd61d5f0aa8260d2a5ff3d3d6e30d9ea4630992e8d3c5d7116e0c",
+      "fsSha256": "54ca7c875d0bd61d5f0aa8260d2a5ff3d3d6e30d9ea4630992e8d3c5d7116e0c",
+      "changedFromStarter": false,
+      "initialIdenticalBetweenArms": true
+    },
+    {
+      "path": "application/orders.mjs",
+      "identicalBetweenArms": true,
+      "plainSha256": "5d2cdfc83ac34ec095275dc6fb7301ce2e6020b72b15105429025108a35f8519",
+      "fsSha256": "5d2cdfc83ac34ec095275dc6fb7301ce2e6020b72b15105429025108a35f8519",
+      "changedFromStarter": true,
+      "initialIdenticalBetweenArms": true
+    },
+    {
+      "path": "ui/OrderList.jsx",
+      "identicalBetweenArms": true,
+      "plainSha256": "bbf299e44526bb9715c053f79111af51f211586df884acbe785f795e7a8aff6a",
+      "fsSha256": "bbf299e44526bb9715c053f79111af51f211586df884acbe785f795e7a8aff6a",
+      "changedFromStarter": true,
+      "initialIdenticalBetweenArms": true
+    },
+    {
+      "path": "ui/Checkout.jsx",
+      "identicalBetweenArms": true,
+      "plainSha256": "fc90bab287dee86646f5b6c87a22f473ace7360c7dd12cae9257566af2790558",
+      "fsSha256": "fc90bab287dee86646f5b6c87a22f473ace7360c7dd12cae9257566af2790558",
+      "changedFromStarter": false,
+      "initialIdenticalBetweenArms": true
+    }
+  ],
+  "limits": [
+    "Single pair; fixed order plain then FS.",
+    "Scores cover finite contracts, not runtime UI or general design quality.",
+    "External repair calls do not count internal tool retries.",
+    "Different task and timeout from v4; not a causal before/after performance comparison."
+  ]
+}

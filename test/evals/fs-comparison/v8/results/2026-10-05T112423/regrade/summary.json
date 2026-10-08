@@ -1,0 +1,88 @@
+{
+  "modelCalls": 0,
+  "rows": [
+    {
+      "arm": "ordinary",
+      "stage": "initial",
+      "attempt": "0",
+      "status": "graded",
+      "grade": {
+        "satisfied": 97,
+        "total": 97
+      },
+      "sameDiagnostics": true
+    },
+    {
+      "arm": "ordinary",
+      "stage": "variants",
+      "attempt": "0",
+      "status": "graded",
+      "grade": {
+        "satisfied": 97,
+        "total": 97
+      },
+      "sameDiagnostics": true
+    },
+    {
+      "arm": "ordinary",
+      "stage": "defaults",
+      "attempt": "0",
+      "status": "graded",
+      "grade": {
+        "satisfied": 97,
+        "total": 97
+      },
+      "sameDiagnostics": true
+    },
+    {
+      "arm": "informed",
+      "stage": "initial",
+      "attempt": "0",
+      "status": "graded",
+      "grade": {
+        "satisfied": 97,
+        "total": 97
+      },
+      "sameDiagnostics": true
+    },
+    {
+      "arm": "informed",
+      "stage": "variants",
+      "attempt": "0",
+      "status": "graded",
+      "grade": {
+        "satisfied": 97,
+        "total": 97
+      },
+      "sameDiagnostics": true
+    },
+    {
+      "arm": "informed",
+      "stage": "defaults",
+      "attempt": "0",
+      "status": "graded",
+      "grade": {
+        "satisfied": 97,
+        "total": 97
+      },
+      "sameDiagnostics": true
+    },
+    {
+      "arm": "fs",
+      "stage": "initial",
+      "attempt": "0",
+      "status": "graded",
+      "grade": {
+        "satisfied": 97,
+        "total": 97
+      },
+      "sameDiagnostics": true
+    }
+  ],
+  "oracleHashes": {
+    "initial": "29f70800db298bd4a9fb5752c49c74630849317479fb563ffc2cd625905b0170",
+    "variants": "d25f2fb654f243948005f421ea0e085b36070d44b50a2bbf36d072bf6a130b6c",
+    "defaults": "40ec74263763d44e82d562fcb1a07aa6a03a10ee78f57db3018948961d430782"
+  },
+  "limits": "Regrading saved artifacts does not complete aborted calls or replace original workflow/usage evidence."
+}

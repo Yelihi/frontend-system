@@ -1,0 +1,786 @@
+{
+  "meaning": "Serialized JSON characters, not tokens. Nested totals exclude keys and punctuation.",
+  "rows": [
+    {
+      "run": "repeat-1/styles-fs-K1/analysis",
+      "totalCharacters": 26347,
+      "topLevelCharacters": {
+        "projectDocumentStatus": 42,
+        "planPrerequisites": 130,
+        "inspection": 149,
+        "workflow": 815,
+        "plans": 2,
+        "contextId": 66,
+        "projectAnalysis": 220,
+        "projectFacts": 371,
+        "routing": 13299,
+        "context": 9855,
+        "next": 373,
+        "profile": 789,
+        "document": 53
+      },
+      "routingCharacters": {
+        "status": 12,
+        "hash": 66,
+        "files": 64,
+        "requirements": 33,
+        "warnings": 117,
+        "relations": 7509,
+        "reused": 5,
+        "candidates": 3176,
+        "scopeSearch": 235,
+        "structureSearch": 176,
+        "semanticDiscovery": 1758
+      },
+      "contextCharacters": {
+        "relevantFiles": 360,
+        "projectConstraints": 95,
+        "applicableRules": 9003,
+        "knowledgeGaps": 321
+      }
+    },
+    {
+      "run": "repeat-1/styles-fs-K1/plan",
+      "totalCharacters": 23594,
+      "topLevelCharacters": {
+        "projectDocumentStatus": 346,
+        "planPrerequisites": 130,
+        "inspection": 297,
+        "workflow": 826,
+        "plans": 2,
+        "contextId": 66,
+        "projectAnalysis": 2490,
+        "projectFacts": 1344,
+        "routing": 6938,
+        "context": 9868,
+        "next": 244,
+        "profile": 808,
+        "document": 52
+      },
+      "routingCharacters": {
+        "status": 12,
+        "hash": 66,
+        "files": 85,
+        "requirements": 41,
+        "warnings": 117,
+        "reused": 5,
+        "candidates": 4080,
+        "scopeSearch": 246,
+        "structureSearch": 176,
+        "semanticDiscovery": 1975
+      },
+      "contextCharacters": {
+        "relevantFiles": 373,
+        "projectConstraints": 95,
+        "applicableRules": 9003,
+        "knowledgeGaps": 321
+      }
+    },
+    {
+      "run": "repeat-1/styles-fs-K1/plan",
+      "totalCharacters": 23570,
+      "topLevelCharacters": {
+        "projectDocumentStatus": 346,
+        "planPrerequisites": 130,
+        "inspection": 297,
+        "workflow": 826,
+        "plans": 2,
+        "contextId": 66,
+        "projectAnalysis": 2419,
+        "projectFacts": 1344,
+        "routing": 6929,
+        "context": 9924,
+        "next": 244,
+        "profile": 808,
+        "document": 52
+      },
+      "routingCharacters": {
+        "status": 12,
+        "hash": 66,
+        "files": 85,
+        "requirements": 53,
+        "warnings": 117,
+        "reused": 5,
+        "candidates": 4071,
+        "scopeSearch": 246,
+        "structureSearch": 176,
+        "semanticDiscovery": 1963
+      },
+      "contextCharacters": {
+        "relevantFiles": 429,
+        "projectConstraints": 95,
+        "applicableRules": 9003,
+        "knowledgeGaps": 321
+      }
+    },
+    {
+      "run": "repeat-1/request-fs-K1/analysis",
+      "totalCharacters": 17690,
+      "topLevelCharacters": {
+        "projectDocumentStatus": 42,
+        "planPrerequisites": 130,
+        "inspection": 149,
+        "workflow": 815,
+        "plans": 2,
+        "contextId": 66,
+        "projectAnalysis": 220,
+        "projectFacts": 371,
+        "routing": 7917,
+        "context": 6855,
+        "next": 373,
+        "profile": 514,
+        "document": 53
+      },
+      "routingCharacters": {
+        "status": 12,
+        "hash": 66,
+        "files": 76,
+        "requirements": 33,
+        "warnings": 76,
+        "reused": 5,
+        "candidates": 5355,
+        "scopeSearch": 240,
+        "structureSearch": 176,
+        "semanticDiscovery": 1743
+      },
+      "contextCharacters": {
+        "relevantFiles": 364,
+        "projectConstraints": 95,
+        "applicableRules": 6075,
+        "knowledgeGaps": 245
+      }
+    },
+    {
+      "run": "repeat-1/request-fs-K1/analysis",
+      "totalCharacters": 20669,
+      "topLevelCharacters": {
+        "projectDocumentStatus": 42,
+        "planPrerequisites": 130,
+        "inspection": 149,
+        "workflow": 815,
+        "plans": 2,
+        "contextId": 66,
+        "projectAnalysis": 2444,
+        "projectFacts": 371,
+        "routing": 8967,
+        "context": 6541,
+        "next": 373,
+        "profile": 533,
+        "document": 53
+      },
+      "routingCharacters": {
+        "status": 12,
+        "hash": 66,
+        "files": 76,
+        "requirements": 33,
+        "warnings": 76,
+        "reused": 5,
+        "candidates": 5087,
+        "scopeSearch": 240,
+        "structureSearch": 176,
+        "semanticDiscovery": 3061
+      },
+      "contextCharacters": {
+        "relevantFiles": 420,
+        "projectConstraints": 95,
+        "applicableRules": 5785,
+        "knowledgeGaps": 165
+      }
+    },
+    {
+      "run": "repeat-1/request-fs-K1/plan",
+      "totalCharacters": 20163,
+      "topLevelCharacters": {
+        "projectDocumentStatus": 345,
+        "planPrerequisites": 130,
+        "inspection": 308,
+        "workflow": 826,
+        "plans": 2,
+        "contextId": 66,
+        "projectAnalysis": 2608,
+        "projectFacts": 2012,
+        "routing": 5862,
+        "context": 6991,
+        "next": 244,
+        "profile": 534,
+        "document": 52
+      },
+      "routingCharacters": {
+        "status": 12,
+        "hash": 66,
+        "files": 81,
+        "requirements": 41,
+        "warnings": 2,
+        "reused": 5,
+        "candidates": 3574,
+        "scopeSearch": 243,
+        "structureSearch": 176,
+        "semanticDiscovery": 1527
+      },
+      "contextCharacters": {
+        "relevantFiles": 500,
+        "projectConstraints": 95,
+        "applicableRules": 6075,
+        "knowledgeGaps": 245
+      }
+    },
+    {
+      "run": "repeat-1/request-fs-K1/plan",
+      "totalCharacters": 20656,
+      "topLevelCharacters": {
+        "projectDocumentStatus": 345,
+        "planPrerequisites": 130,
+        "inspection": 308,
+        "workflow": 826,
+        "plans": 2,
+        "contextId": 66,
+        "projectAnalysis": 3336,
+        "projectFacts": 2012,
+        "routing": 5627,
+        "context": 6991,
+        "next": 244,
+        "profile": 534,
+        "document": 52
+      },
+      "routingCharacters": {
+        "status": 12,
+        "hash": 66,
+        "files": 81,
+        "requirements": 41,
+        "warnings": 2,
+        "reused": 5,
+        "candidates": 3574,
+        "scopeSearch": 243,
+        "structureSearch": 176,
+        "semanticDiscovery": 1292
+      },
+      "contextCharacters": {
+        "relevantFiles": 500,
+        "projectConstraints": 95,
+        "applicableRules": 6075,
+        "knowledgeGaps": 245
+      }
+    },
+    {
+      "run": "repeat-2/styles-fs-K1/analysis",
+      "totalCharacters": 26028,
+      "topLevelCharacters": {
+        "projectDocumentStatus": 42,
+        "planPrerequisites": 130,
+        "inspection": 149,
+        "workflow": 815,
+        "plans": 2,
+        "contextId": 66,
+        "projectAnalysis": 220,
+        "projectFacts": 371,
+        "routing": 12940,
+        "context": 9895,
+        "next": 373,
+        "profile": 789,
+        "document": 53
+      },
+      "routingCharacters": {
+        "status": 12,
+        "hash": 66,
+        "files": 64,
+        "requirements": 33,
+        "warnings": 117,
+        "relations": 7509,
+        "reused": 5,
+        "candidates": 2733,
+        "scopeSearch": 235,
+        "structureSearch": 176,
+        "semanticDiscovery": 1842
+      },
+      "contextCharacters": {
+        "relevantFiles": 360,
+        "projectConstraints": 95,
+        "applicableRules": 9035,
+        "knowledgeGaps": 329
+      }
+    },
+    {
+      "run": "repeat-2/styles-fs-K1/plan",
+      "totalCharacters": 25858,
+      "topLevelCharacters": {
+        "projectDocumentStatus": 346,
+        "planPrerequisites": 130,
+        "inspection": 297,
+        "workflow": 826,
+        "plans": 2,
+        "contextId": 66,
+        "projectAnalysis": 2100,
+        "projectFacts": 2870,
+        "routing": 8016,
+        "context": 9918,
+        "next": 244,
+        "profile": 808,
+        "document": 52
+      },
+      "routingCharacters": {
+        "status": 12,
+        "hash": 66,
+        "files": 85,
+        "requirements": 41,
+        "warnings": 117,
+        "reused": 5,
+        "candidates": 4117,
+        "scopeSearch": 246,
+        "structureSearch": 176,
+        "semanticDiscovery": 3016
+      },
+      "contextCharacters": {
+        "relevantFiles": 423,
+        "projectConstraints": 95,
+        "applicableRules": 9003,
+        "knowledgeGaps": 321
+      }
+    },
+    {
+      "run": "repeat-2/styles-fs-K1/plan",
+      "totalCharacters": 18513,
+      "topLevelCharacters": {
+        "projectDocumentStatus": 346,
+        "planPrerequisites": 130,
+        "inspection": 297,
+        "workflow": 826,
+        "plans": 2,
+        "contextId": 66,
+        "projectAnalysis": 2245,
+        "projectFacts": 2870,
+        "routing": 526,
+        "context": 9918,
+        "next": 244,
+        "profile": 808,
+        "document": 52
+      },
+      "routingCharacters": {
+        "status": 12,
+        "hash": 66,
+        "files": 85,
+        "requirements": 41,
+        "warnings": 117,
+        "reused": 4,
+        "candidateCount": 1,
+        "readWith": 104
+      },
+      "contextCharacters": {
+        "relevantFiles": 423,
+        "projectConstraints": 95,
+        "applicableRules": 9003,
+        "knowledgeGaps": 321
+      }
+    },
+    {
+      "run": "repeat-2/styles-fs-K1/plan",
+      "totalCharacters": 26003,
+      "topLevelCharacters": {
+        "projectDocumentStatus": 346,
+        "planPrerequisites": 130,
+        "inspection": 297,
+        "workflow": 826,
+        "plans": 2,
+        "contextId": 66,
+        "projectAnalysis": 2245,
+        "projectFacts": 2870,
+        "routing": 8016,
+        "context": 9918,
+        "next": 244,
+        "profile": 808,
+        "document": 52
+      },
+      "routingCharacters": {
+        "status": 12,
+        "hash": 66,
+        "files": 85,
+        "requirements": 41,
+        "warnings": 117,
+        "reused": 5,
+        "candidates": 4117,
+        "scopeSearch": 246,
+        "structureSearch": 176,
+        "semanticDiscovery": 3016
+      },
+      "contextCharacters": {
+        "relevantFiles": 423,
+        "projectConstraints": 95,
+        "applicableRules": 9003,
+        "knowledgeGaps": 321
+      }
+    },
+    {
+      "run": "repeat-2/styles-fs-K1/plan",
+      "totalCharacters": 24911,
+      "topLevelCharacters": {
+        "projectDocumentStatus": 346,
+        "planPrerequisites": 130,
+        "inspection": 297,
+        "workflow": 826,
+        "plans": 2,
+        "contextId": 66,
+        "projectAnalysis": 2245,
+        "projectFacts": 2870,
+        "routing": 7330,
+        "context": 9512,
+        "next": 244,
+        "profile": 808,
+        "document": 52
+      },
+      "routingCharacters": {
+        "status": 12,
+        "hash": 66,
+        "files": 85,
+        "requirements": 53,
+        "warnings": 117,
+        "reused": 5,
+        "candidates": 3653,
+        "scopeSearch": 246,
+        "structureSearch": 176,
+        "semanticDiscovery": 2782
+      },
+      "contextCharacters": {
+        "relevantFiles": 373,
+        "projectConstraints": 95,
+        "applicableRules": 8724,
+        "knowledgeGaps": 244
+      }
+    },
+    {
+      "run": "repeat-2/request-fs-K1/analysis",
+      "totalCharacters": 34409,
+      "topLevelCharacters": {
+        "projectDocumentStatus": 42,
+        "planPrerequisites": 130,
+        "inspection": 149,
+        "workflow": 815,
+        "plans": 2,
+        "contextId": 66,
+        "projectAnalysis": 220,
+        "projectFacts": 371,
+        "routing": 24636,
+        "context": 6855,
+        "next": 373,
+        "profile": 514,
+        "document": 53
+      },
+      "routingCharacters": {
+        "status": 12,
+        "hash": 66,
+        "files": 76,
+        "requirements": 33,
+        "warnings": 76,
+        "relations": 15349,
+        "reused": 5,
+        "candidates": 4919,
+        "scopeSearch": 240,
+        "structureSearch": 176,
+        "semanticDiscovery": 3536
+      },
+      "contextCharacters": {
+        "relevantFiles": 364,
+        "projectConstraints": 95,
+        "applicableRules": 6075,
+        "knowledgeGaps": 245
+      }
+    },
+    {
+      "run": "repeat-2/request-fs-K1/plan",
+      "totalCharacters": 21206,
+      "topLevelCharacters": {
+        "projectDocumentStatus": 345,
+        "planPrerequisites": 130,
+        "inspection": 308,
+        "workflow": 826,
+        "plans": 2,
+        "contextId": 66,
+        "projectAnalysis": 1990,
+        "projectFacts": 2895,
+        "routing": 6640,
+        "context": 6991,
+        "next": 244,
+        "profile": 534,
+        "document": 52
+      },
+      "routingCharacters": {
+        "status": 12,
+        "hash": 66,
+        "files": 96,
+        "requirements": 41,
+        "warnings": 76,
+        "reused": 5,
+        "candidates": 4019,
+        "scopeSearch": 251,
+        "structureSearch": 176,
+        "semanticDiscovery": 1763
+      },
+      "contextCharacters": {
+        "relevantFiles": 500,
+        "projectConstraints": 95,
+        "applicableRules": 6075,
+        "knowledgeGaps": 245
+      }
+    },
+    {
+      "run": "repeat-3/request-fs-K1/analysis",
+      "totalCharacters": 30871,
+      "topLevelCharacters": {
+        "projectDocumentStatus": 42,
+        "planPrerequisites": 130,
+        "inspection": 149,
+        "workflow": 815,
+        "plans": 2,
+        "contextId": 66,
+        "projectAnalysis": 220,
+        "projectFacts": 371,
+        "routing": 21042,
+        "context": 6911,
+        "next": 373,
+        "profile": 514,
+        "document": 53
+      },
+      "routingCharacters": {
+        "status": 12,
+        "hash": 66,
+        "files": 76,
+        "requirements": 33,
+        "warnings": 76,
+        "relations": 15349,
+        "reused": 5,
+        "candidates": 3587,
+        "scopeSearch": 240,
+        "structureSearch": 176,
+        "semanticDiscovery": 1274
+      },
+      "contextCharacters": {
+        "relevantFiles": 420,
+        "projectConstraints": 95,
+        "applicableRules": 6075,
+        "knowledgeGaps": 245
+      }
+    },
+    {
+      "run": "repeat-3/request-fs-K1/plan",
+      "totalCharacters": 18780,
+      "topLevelCharacters": {
+        "projectDocumentStatus": 345,
+        "planPrerequisites": 130,
+        "inspection": 308,
+        "workflow": 826,
+        "plans": 2,
+        "contextId": 66,
+        "projectAnalysis": 1924,
+        "projectFacts": 1756,
+        "routing": 5419,
+        "context": 6991,
+        "next": 244,
+        "profile": 534,
+        "document": 52
+      },
+      "routingCharacters": {
+        "status": 12,
+        "hash": 66,
+        "files": 96,
+        "requirements": 41,
+        "warnings": 76,
+        "reused": 5,
+        "candidates": 3522,
+        "scopeSearch": 251,
+        "structureSearch": 176,
+        "semanticDiscovery": 1039
+      },
+      "contextCharacters": {
+        "relevantFiles": 500,
+        "projectConstraints": 95,
+        "applicableRules": 6075,
+        "knowledgeGaps": 245
+      }
+    },
+    {
+      "run": "repeat-3/request-fs-K1/plan",
+      "totalCharacters": 18797,
+      "topLevelCharacters": {
+        "projectDocumentStatus": 345,
+        "planPrerequisites": 130,
+        "inspection": 308,
+        "workflow": 826,
+        "plans": 2,
+        "contextId": 66,
+        "projectAnalysis": 1924,
+        "projectFacts": 1756,
+        "routing": 5436,
+        "context": 6991,
+        "next": 244,
+        "profile": 534,
+        "document": 52
+      },
+      "routingCharacters": {
+        "status": 12,
+        "hash": 66,
+        "files": 96,
+        "requirements": 41,
+        "warnings": 76,
+        "reused": 5,
+        "candidates": 3539,
+        "scopeSearch": 251,
+        "structureSearch": 176,
+        "semanticDiscovery": 1039
+      },
+      "contextCharacters": {
+        "relevantFiles": 500,
+        "projectConstraints": 95,
+        "applicableRules": 6075,
+        "knowledgeGaps": 245
+      }
+    },
+    {
+      "run": "repeat-3/request-fs-K1/plan",
+      "totalCharacters": 19357,
+      "topLevelCharacters": {
+        "projectDocumentStatus": 345,
+        "planPrerequisites": 130,
+        "inspection": 308,
+        "workflow": 826,
+        "plans": 2,
+        "contextId": 66,
+        "projectAnalysis": 2501,
+        "projectFacts": 1756,
+        "routing": 5419,
+        "context": 6991,
+        "next": 244,
+        "profile": 534,
+        "document": 52
+      },
+      "routingCharacters": {
+        "status": 12,
+        "hash": 66,
+        "files": 96,
+        "requirements": 41,
+        "warnings": 76,
+        "reused": 5,
+        "candidates": 3522,
+        "scopeSearch": 251,
+        "structureSearch": 176,
+        "semanticDiscovery": 1039
+      },
+      "contextCharacters": {
+        "relevantFiles": 500,
+        "projectConstraints": 95,
+        "applicableRules": 6075,
+        "knowledgeGaps": 245
+      }
+    },
+    {
+      "run": "repeat-3/styles-fs-K1/analysis",
+      "totalCharacters": 26028,
+      "topLevelCharacters": {
+        "projectDocumentStatus": 42,
+        "planPrerequisites": 130,
+        "inspection": 149,
+        "workflow": 815,
+        "plans": 2,
+        "contextId": 66,
+        "projectAnalysis": 220,
+        "projectFacts": 371,
+        "routing": 12940,
+        "context": 9895,
+        "next": 373,
+        "profile": 789,
+        "document": 53
+      },
+      "routingCharacters": {
+        "status": 12,
+        "hash": 66,
+        "files": 64,
+        "requirements": 33,
+        "warnings": 117,
+        "relations": 7509,
+        "reused": 5,
+        "candidates": 2733,
+        "scopeSearch": 235,
+        "structureSearch": 176,
+        "semanticDiscovery": 1842
+      },
+      "contextCharacters": {
+        "relevantFiles": 360,
+        "projectConstraints": 95,
+        "applicableRules": 9035,
+        "knowledgeGaps": 329
+      }
+    },
+    {
+      "run": "repeat-3/styles-fs-K1/analysis",
+      "totalCharacters": 26028,
+      "topLevelCharacters": {
+        "projectDocumentStatus": 42,
+        "planPrerequisites": 130,
+        "inspection": 149,
+        "workflow": 815,
+        "plans": 2,
+        "contextId": 66,
+        "projectAnalysis": 220,
+        "projectFacts": 371,
+        "routing": 12940,
+        "context": 9895,
+        "next": 373,
+        "profile": 789,
+        "document": 53
+      },
+      "routingCharacters": {
+        "status": 12,
+        "hash": 66,
+        "files": 64,
+        "requirements": 33,
+        "warnings": 117,
+        "relations": 7509,
+        "reused": 5,
+        "candidates": 2733,
+        "scopeSearch": 235,
+        "structureSearch": 176,
+        "semanticDiscovery": 1842
+      },
+      "contextCharacters": {
+        "relevantFiles": 360,
+        "projectConstraints": 95,
+        "applicableRules": 9035,
+        "knowledgeGaps": 329
+      }
+    },
+    {
+      "run": "repeat-3/styles-fs-K1/plan",
+      "totalCharacters": 27142,
+      "topLevelCharacters": {
+        "projectDocumentStatus": 346,
+        "planPrerequisites": 130,
+        "inspection": 297,
+        "workflow": 826,
+        "plans": 2,
+        "contextId": 66,
+        "projectAnalysis": 2012,
+        "projectFacts": 2307,
+        "routing": 10001,
+        "context": 9868,
+        "next": 244,
+        "profile": 808,
+        "document": 52
+      },
+      "routingCharacters": {
+        "status": 12,
+        "hash": 66,
+        "files": 85,
+        "requirements": 41,
+        "warnings": 117,
+        "reused": 5,
+        "candidates": 5455,
+        "scopeSearch": 246,
+        "structureSearch": 176,
+        "semanticDiscovery": 3663
+      },
+      "contextCharacters": {
+        "relevantFiles": 373,
+        "projectConstraints": 95,
+        "applicableRules": 9003,
+        "knowledgeGaps": 321
+      }
+    }
+  ]
+}

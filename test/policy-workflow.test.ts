@@ -6,7 +6,7 @@ import { join } from "node:path";
 import { promisify } from "node:util";
 import test from "node:test";
 import { FileSystemProjectDiscovery } from "../src/adapters/filesystem/project-discovery.js";
-import { policySchema, type VerificationPolicy } from "../src/application/policy.js";
+import { policySchema, policyProtectionFailures, type VerificationPolicy } from "../src/application/policy.js";
 import { runProjectChecks } from "../src/application/run-capabilities.js";
 import { approveRevision, beginAttempt, digest, readProjectRecord, readRevision, saveExecution, saveProjectRecord, saveReview, saveRevision, workflowContext } from "../src/application/workflow-store.js";
 
@@ -33,6 +33,25 @@ async function setup() {
   const saved = await saveExecution(root, execution, null);
   return { root, revision, policy, execution, saved, scripts };
 }
+
+test('direct npm self-invocation remains a repairable draft but cannot be approved', async () => {
+  const root = await mkdtemp(join(tmpdir(), 'fs-policy-recursion-'));
+  const policy: VerificationPolicy = {version: 1, rules: [], checks: [{id: 'behavior', script: 'test', command: 'npm test', ruleIds: []}], reviews: [], guards: [], exceptions: []};
+  try {
+    await writeFile(join(root, 'package.json'), JSON.stringify({scripts: {test: 'npm test'}}));
+    const draft = await saveRevision(root, '# Pending check setup', null, policy);
+    await assert.rejects(approveRevision(root, draft.hash!, 'Approve check setup'), /recursively invokes/);
+    assert.equal((await readRevision(root)).approved, false);
+    for (const command of ['npm test', 'npm run test', 'npm run-script test']) {
+      policy.checks[0]!.command = command;
+      assert.ok(policyProtectionFailures(policy).some(message => message.includes('recursively invokes')));
+    }
+    for (const command of ['node --test', 'npm run test:unit', 'npm --prefix other test', 'bun test']) {
+      policy.checks[0]!.command = command;
+      assert.deepEqual(policyProtectionFailures(policy), [], 'Do not mislabel another runner or scope as direct npm recursion');
+    }
+  } finally {await rm(root, {recursive: true, force: true});}
+});
 
 test("policy binds approval; deleted, changed and protected checks cannot pass CLI", async () => {
   const f = await setup();
@@ -63,7 +82,13 @@ test("policy completion needs attempts, complete checks and current semantic evi
     const step = { ...f.execution.steps[0]!, status: "complete" as const, remaining: [], checkIds: [checks.id], attemptId: attempt.id, reviewIds: [] as string[] };
     const done = { ...f.execution, status: "complete" as const, finalCheckId: checks.id, steps: [step] };
     await assert.rejects(saveExecution(f.root, done, f.saved.hash), /semantic/);
-    const review = await saveReview(f.root, { stepId: "order", reviewId: "order-review", attemptId: attempt.id, status: "passed", findings: [{ ruleId: "order", files: ["order.test.cjs"], evidence: "Reviewed test assertions and order requirement", conclusion: "Requirement covered" }], remaining: [], resolvedExceptions: [] });
+    const reviewInput = {stepId: 'order', reviewId: 'order-review', attemptId: attempt.id, status: 'passed' as const,
+      findings: [{ruleId: 'order', files: ['order.test.cjs'], evidence: 'Reviewed test assertions and order requirement', conclusion: 'Requirement covered'}], remaining: [], resolvedExceptions: []};
+    await assert.rejects(saveReview(f.root, {...reviewInput, reviewId: 'invented-review-record'}), /Unknown policy reviewId.*order-review/);
+    await assert.rejects(saveReview(f.root, {...reviewInput, stepId: 'invented-step'}), /existing execution step/);
+    const review = await saveReview(f.root, reviewInput);
+    assert.equal(review.reviewId, 'order-review');
+    assert.notEqual(review.id, review.reviewId, 'Stored record identity is separate from the approved review requirement');
     step.reviewIds = [review.id];
     const saved = await saveExecution(f.root, done, f.saved.hash);
     assert.match(await readFile(join(f.root, ".frontend-system/refactoring.md"), "utf8"), /\[x\] order/);

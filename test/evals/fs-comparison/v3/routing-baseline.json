@@ -1,0 +1,85 @@
+{
+  "note": "Frozen four-reference pilot routing metadata before the v3 migration. Original file SHA-256 below; this is not the v2 model-run snapshot. Only matcher fields retained.",
+  "originalIndexHash": "98f316e7aeca5a8afd0f41aa667eef3b9765960278df061f4cfc78f2c5c5b157",
+  "version": 1,
+  "totalReferences": 69,
+  "entries": [
+    {
+      "id": "react-identity-and-state",
+      "technologies": [
+        "react"
+      ],
+      "excludedTechnologies": [],
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "react.state-lifetime"
+        }
+      ]
+    },
+    {
+      "id": "code-quality-change-boundaries",
+      "technologies": [],
+      "excludedTechnologies": [],
+      "triggers": [
+        {
+          "kind": "path",
+          "value": "src/domain"
+        },
+        {
+          "kind": "path",
+          "value": "src/application"
+        },
+        {
+          "kind": "semantic",
+          "value": "architecture.dependency-boundary"
+        }
+      ]
+    },
+    {
+      "id": "web-performance-interaction-diagnosis",
+      "technologies": [],
+      "excludedTechnologies": [],
+      "triggers": [
+        {
+          "kind": "semantic",
+          "value": "runtime.interaction-latency"
+        }
+      ]
+    },
+    {
+      "id": "react-derived-state-and-effects",
+      "technologies": [
+        "react"
+      ],
+      "excludedTechnologies": [],
+      "triggers": [
+        {
+          "kind": "call",
+          "value": "react#useEffect"
+        },
+        {
+          "kind": "call",
+          "value": "react#useLayoutEffect"
+        },
+        {
+          "kind": "call",
+          "value": "react#useSyncExternalStore"
+        },
+        {
+          "kind": "semantic",
+          "value": "react.derived-state"
+        },
+        {
+          "kind": "semantic",
+          "value": "react.event-action"
+        },
+        {
+          "kind": "semantic",
+          "value": "react.async-response-order"
+        }
+      ]
+    }
+  ],
+  "outcomes": []
+}

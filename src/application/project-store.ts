@@ -4,6 +4,7 @@ import * as z from "zod/v4";
 import { atomic, digest, directory, locked, sourceSnapshot } from "./workflow-store.js";
 
 import { projectSnapshot } from "./project-snapshot.js";
+import { validateProjectEvidence } from './design-evidence.js';
 
 import type { ProjectAnalysis, ProjectConfig, ProjectProfile, ProjectState } from "../domain/types.js";
 
@@ -92,12 +93,23 @@ export async function writeProjectArtifacts(profile: ProjectProfile, analysis: P
     const legacy = await optionalRead(join(base, "init.md"));
     if (previous) await atomic(join(await directory(root, "project-history"), `${digest(previous)}.md`), previous);
     const metadata = { baseRef: snapshot.baseRef, analyzedCommit: snapshot.commit, sourceHash: snapshot.sourceHash, updatedAt: new Date().toISOString() };
+    const evidence = analysis.evidence ? await validateProjectEvidence(root, analysis.evidence, snapshot.baseRef, snapshot.commit) : null;
+    const evidenceBody = evidence ? JSON.stringify(evidence) : null;
+    const evidenceHash = evidenceBody ? digest(evidenceBody) : null;
+    if (evidenceBody) await atomic(join(await directory(root, 'evidence'), `project-${evidenceHash}.json`), evidenceBody);
     const mainProfile = { ...profile, project: { ...profile.project, git: { ...profile.project.git, ...(snapshot.commit ? { commit: snapshot.commit } : {}) } } };
     const content = [
       `<!-- frontend-system-context ${JSON.stringify(metadata)} -->`,
       renderProject(mainProfile, analysis),
-      section("Tracked files at base commit", snapshot.files.map((file) => `\`${file}\``)),
-      section("Package manifests at base commit", Object.entries(snapshot.manifests).map(([file, manifest]) => `\`${file}\`: \`${JSON.stringify(manifest)}\``)),
+      ...(evidence ? [
+        `<!-- fs-project-evidence ${evidenceHash} -->`,
+        `## Evidence and coverage\n\nCoverage: ${evidence.completeness}. Citations are checked; semantic accuracy is a host judgment.`,
+        `Detailed statements and file coverage: [evidence](evidence/project-${evidenceHash}.json). Read only the relevant statements/flows for a task.`,
+        `Statements: ${evidence.statements.length}; pending/blocked files: ${evidence.coverage.filter(item => ['pending', 'blocked'].includes(item.status)).length}.`,
+      ] : ['Analysis format: legacy; structured claim evidence has not been recorded.']),
+      `Tracked files: ${snapshot.files.length}. Page get_project_snapshot for the complete baseline inventory.`,
+      `Package manifests: ${Object.keys(snapshot.manifests).join(", ") || "none"}. Read selected manifests from the baseline snapshot.`,
+      "## Flow and improvement index\n\nSee [working flow/finding index](analysis/index.md) after the first save_project_analysis, or use get_project_analysis for cited flows, open/deferred/planned findings and retained resolution history. Working/proposed records are not main facts. Source changes mark records stale; refresh this main document only when requested.",
       snapshot.commit ? `Base: ${snapshot.baseRef} @ ${snapshot.commit}. Check current status with get_project_snapshot; local edits are not main facts.` : "No committed main baseline. This is initial context, not verified main state.",
       legacy ? "Previous inspection preserved: [init.md](init.md). Reconcile its decisions explicitly." : "",
       previous ? `Previous context preserved: [history](project-history/${digest(previous)}.md).` : "",

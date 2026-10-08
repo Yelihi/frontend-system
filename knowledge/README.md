@@ -1,75 +1,77 @@
-# 지식 원본
+# 공유 지식 기여와 FS 반영
 
-공부한 내용과 판단 근거를 검토 가능한 원본으로 보관하는 디렉터리입니다.
+프론트엔드뿐 아니라 서버·인프라·저수준·CS 학습 내용을 보관합니다. 공식 저장소로의 기여와 실제 코드
+판단에 사용할 지식의 검토·배포를 분리합니다. 기존 지식을 일괄 활성화하지 않습니다.
 
-- `source/manual/`: 직접 작성한 Markdown
-- `source/imported/`: 링크 출처와 요약, 보존이 허용된 원문 본문
-- `source/attachments/`: 보관이 허용된 첨부 원본과 정리한 Markdown
-- `catalog.json`: 분류, 요약, 해시, 배포 상태를 담은 목록
-- `sources.json`: 반복 확인할 공개 기술 문서·글의 ID → URL 목록
-- `.cache/`: 배포하지 않는 원격 본문·변경 비교 캐시
-- `proposals/`: 사용자와 검토할 규칙 후보 및 내용 해시 기반 승인
-- [source/template.md](source/template.md): 맥락·문제 코드·기대 동작·반례·검증을 작성할 한국어 템플릿
+## 저장 위치
 
-템플릿을 `source/manual/<주제>.md`로 복사해 작성하세요. `source/template.md` 자체는 등록·sync 대상에서 제외합니다. 모든 항목을 채울 필요는 없습니다. 기초 원리만 정리해도 되며, 코드 변경 기준을 억지로 도출하지 않습니다.
+- `source/contributions/`: 공유 add로 생성한 pending 기여 PR의 문서
+- `source/manual/`: 원본 checkout에 명시적으로 로컬 저장한 메모
+- `source/imported/`: 출처와 요약, 보존이 허용된 본문
+- `source/attachments/`: 첨부 원본과 설명 Markdown
+- `source/active/`: 사용자가 선택하고 active 명령으로 모은 원문. 검토·sync 후에도 유지
+- `catalog.json`: 분류·원문/검토/배포 해시와 검토 기록
+- `sources.json`: 반복 확인할 공개 문서 ID → URL
+- `.cache/`: 배포하지 않는 원격 변경 비교 자료
+- `proposals/`: 별도 승인이 필요한 공용 규칙 후보
+- [source/template.md](source/template.md): 필요 항목만 사용하는 작성 양식
 
-`fs-knowledge`로 새 자료를 분류하고 중복을 확인합니다. `fs-knowledge sync`로 실제 작업에 사용할 요약을 `references/learned/`에 반영합니다. 원본 자료는 npm 배포 대상에서 제외됩니다. GitHub 보관은 별개이므로 파일 작성이나 지식 등록만으로 커밋·푸시되지는 않습니다.
+## 명령만으로 사용하기
 
-## 분야별 sync와 로컬 문서
+1. `gh auth login`으로 GitHub 인증 후 어느 프로젝트에서든 `fs-knowledge add`와 내용을
+   전달합니다. AI는 pending Markdown을 준비하고 공식 FS 저장소로 PR을 생성합니다.
+   권한이 없으면 fork를 사용하며, 실패하면 초안을 보존해 같은 ID로 재시도합니다.
+2. 관리자가 PR을 병합한 뒤 원본 checkout에서 검토할 문서의 metadata를 직접 바꿉니다.
 
-등록 단위는 반복해서 사용할 판단 근거가 있는 개별 문서다. 사이트 홈페이지·전체 API 목록보다 문제와 범위가 분명한 글을 선별한다. 디자인 갤러리·뉴스레터는 자료 발견용으로 활용하고, 선택한 사례의 프로젝트별 적용 이유는 해당 프로젝트 문서에 남긴다. 재사용할 참고 상황·적용 조건은 `references/learned/` 본문과 검색 요약에 기록한다. URL 등록만으로 하위 링크를 자동 수집하지 않는다.
-
-`sources.json`은 반복 확인할 URL 목록입니다. 직접 공부한 내용은 `source/manual/` 아래 Markdown으로 저장하면 됩니다. 하위 폴더도 탐색하므로 파일마다 URL을 등록할 필요는 없습니다. PDF·이미지 같은 첨부는 설명과 출처를 담은 Markdown도 함께 준비합니다.
-
-파일을 저장하는 순간 자동 반영되지는 않습니다. 대화창에서 sync를 요청하면 범위 안의 새 문서·수정 문서를 찾아 catalog를 갱신하고, 주장을 검토한 뒤 `references/learned/`와 검색 인덱스에 반영합니다. 개념만 담긴 문서도 받을 수 있습니다. 원본은 유지하며 검증 부족·중복·잘못된 주장은 보류 또는 생략 사유를 기록합니다.
-
-다음은 터미널 옵션이 아니라 AI에게 전달하는 작업 범위입니다.
-
-범위를 직접 나누기 어렵다면 다음처럼 요청할 수 있습니다. AI가 키의 주제와 기존 처리 상태를 확인하여 묶음을 정하고, 각 묶음의 검토·참조 반영·검증을 순서대로 진행합니다. URL 목록의 처리 완료와 링크 아래 전체 사이트의 완독은 다르며, 실제 확인 범위는 imported 문서에 남깁니다.
-
-```text
-fs-knowledge sync — sources.json의 key를 보고 범위를 알아서 나누어 순차 처리해주세요.
+```yaml
+---
+state: active
+---
 ```
 
-```text
-fs-knowledge sync — 접근성 관련 sources만 확인하고 반영해주세요.
-```
+3. `fs-knowledge active`: active 표시 문서를 `source/active/`로 모으고 적용 상황·근거·
+   반례·조사 질문 등을 정리합니다. 기존 `manual/topic.md`는 `active/manual/topic.md`가
+   되며 ID는 유지됩니다. 원문을 덮어쓰거나 pending을 임의 선택하지 않습니다.
+4. `fs-knowledge review`: 별도 설명 없이 active 대상을 검토합니다. 보완이 필요하면 active를
+   유지하고 이유를 남깁니다. 통과한 현재 문서는 status에서 merged로 표시됩니다.
+5. `fs-knowledge sync`: merged 중 미반영 문서를 자동 선택합니다. active 검토를 대신
+   수행하지 않습니다. 반영할 대상이 없으면 변경하지 않습니다.
 
-```text
-fs-knowledge sync — knowledge/source/manual의 새 문서와 변경된 문서만 반영해주세요.
-```
+명령은 AI 대화창의 Skill 요청이며 터미널 하위 명령이 아닙니다. `active` 요청에 특정
+자료를 명시적으로 첨부하면 그 자료의 선택과 구조 정리도 맡길 수 있습니다. 대상 없는
+active 명령은 기존 metadata만 따릅니다. 작성자는 트리거 ID나 JSON을 만들 필요가 없습니다.
 
-```text
-fs-knowledge sync — 접근성 sources와 아직 반영하지 않은 로컬 문서를 함께 처리해주세요.
-```
+## 상태의 의미
 
-기존 스킬이 인덱스를 검색해 필요한 참조를 읽습니다. 문서마다 새 `SKILL.md`나 도구가 생기는 방식은 아닙니다. 새 공용 규칙은 별도 후보 검토·승인을 거치며, 이미 설치된 플러그인에는 공유 설치본을 업데이트해야 전달됩니다. 로컬 심볼릭 링크 설치는 원본 변경을 바로 봅니다.
+metadata에는 pending 또는 active만 씁니다. merged는 active 선택에 더해 현재 원문과
+metadata 해시에 유효한 승인 기록이 있는 경우 계산합니다. 문서에 merged를 적어 승인할 수
+없습니다. review의 내부 상태(on-review/approved/changes-requested/stale)와 배포 이력은
+별도로 유지합니다. 검토가 끝나도 metadata의 active와 저장 폴더는 유지됩니다.
 
-## 블로그 링크 추가
+원문·출처·분류 변경은 merged를 만료시킵니다. 다시 active 준비와 review 후 sync합니다.
+metadata가 없는 기존 문서는 legacy로 표시하고 자동 처리에서 제외합니다. 이미 배포한
+참조는 유지하며, 다음 반영부터 사용자 선택이 필요합니다. 로컬 상태 변경으로 기존
+설치본이 자동 철회되지는 않으므로 잘못된 기존 참조는 명시적으로 정정·철회해야 합니다.
 
-FS가 설치된 Codex 또는 Claude Code의 대화창에 입력합니다. 터미널 명령이 아닙니다. 아래 예시는 각각 별도의 요청입니다.
+검토는 해시·인용·기록 요건을 검사하며 사실의 진위나 AI 판단의 정답을 보장하지 않습니다.
+개념 자료는 supporting, 적용 조건을 갖춘 설계 조언은 direct, 미확인은 deferred로
+구분합니다. 다른 언어의 지식을 옮겨 적용할 때 원래의 전제와 대상 환경의 차이도 검토합니다.
+새 공용 필수 규칙은 지식 검토와 별도의 승인이 필요합니다.
 
-```text
-fs-knowledge https://example.com/article
-이 글을 지식으로 추가해주세요.
-```
+## 링크와 배포
 
-```text
-fs-knowledge https://example.com/my-article — 제가 작성한 글입니다. 본문 전체를 보존해주세요.
-```
+링크는 실제 접근한 내용의 출처·요약과 수집 범위를 보관합니다. URL만으로 전문 보존
+권한을 가정하지 않으며, 본인 글이나 허용 자료는 허용 범위에서 보존합니다. 첨부 원본은
+보존하고 설명 Markdown을 이동할 때 상대 링크를 점검합니다.
 
-검토와 인덱싱까지 함께 요청할 수도 있습니다.
+원본은 npm 배포 대상에서 제외되며 sync한 참조가 `references/learned/`에 반영됩니다.
+공유 add는 pending 원문 PR까지 생성합니다. sync는 배포가 아닙니다. 관리자용 유지보수와
+명시적 로컬 저장에는 원본 checkout 경로나 `FRONTEND_SYSTEM_REPO`를 지정하며, 공유 add에는
+해당 경로가 필요하지 않습니다. 설치본 업데이트는 관리자 릴리스 이후 수행합니다.
 
-```text
-이 링크를 지식으로 추가하고 fs-knowledge sync까지 진행해주세요.
-https://example.com/article
-```
+[active 절차](../references/workflows/fs-knowledge-active.md) ·
+[검토 절차](../references/workflows/fs-knowledge-review.md) ·
+[sync 절차](../references/workflows/fs-knowledge-sync.md) ·
+[링크 보존 기준](../references/linked-knowledge.md)
 
-첫 명령은 출처와 요약을 저장합니다. 본인 글이나 복제 허용 자료라면 원문 본문도 보존할 수 있습니다. 수집한 본문과 AI 해석을 분리하고, 일부만 읽었다면 전체 원문으로 표시하지 않습니다. sync는 이를 검토해 개념·조건부 판단으로 인덱싱하며, 기존 작업 스킬이 필요한 참조만 검색합니다. 글마다 새 스킬을 만들거나 본문 전체를 스킬에 넣지는 않습니다.
-
-추가만 했다면 나중에 대화창에서 `fs-knowledge sync`를 요청하세요. 다른 프로젝트에서 요청한다면 원본 FS 저장소 경로를 함께 알려주거나 `FRONTEND_SYSTEM_REPO`를 설정합니다.
-
-접근 제한과 보존 범위는 [링크 지식 수집 설계](../references/linked-knowledge.md)를 참고하세요.
-임의 링크와 HTML/PDF는 호스트 도구가 읽습니다. 등록한 공개 텍스트·Markdown은
-MCP가 변경을 확인하고 차이만 제공합니다. `fs-knowledge sync`에서 확인 후 필요한
-문맥을 읽으며, 새 필수 규칙 후보는 사용자와 확정합니다. [갱신 절차](../references/source-updates.md)
+[기여 PR과 관리자 수동 배포](../references/contribution-release.md)

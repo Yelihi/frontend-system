@@ -1,0 +1,62 @@
+[
+  {
+    "variant": "starter",
+    "script": "lint",
+    "exitCode": 0
+  },
+  {
+    "variant": "starter",
+    "script": "typecheck",
+    "exitCode": 0
+  },
+  {
+    "variant": "starter",
+    "script": "test:unit",
+    "exitCode": 0
+  },
+  {
+    "variant": "starter",
+    "script": "build",
+    "exitCode": 0
+  },
+  {
+    "variant": "flat",
+    "script": "lint",
+    "exitCode": 0
+  },
+  {
+    "variant": "flat",
+    "script": "typecheck",
+    "exitCode": 0
+  },
+  {
+    "variant": "flat",
+    "script": "test:unit",
+    "exitCode": 0
+  },
+  {
+    "variant": "flat",
+    "script": "build",
+    "exitCode": 0
+  },
+  {
+    "variant": "layered",
+    "script": "lint",
+    "exitCode": 0
+  },
+  {
+    "variant": "layered",
+    "script": "typecheck",
+    "exitCode": 0
+  },
+  {
+    "variant": "layered",
+    "script": "test:unit",
+    "exitCode": 0
+  },
+  {
+    "variant": "layered",
+    "script": "build",
+    "exitCode": 0
+  }
+]

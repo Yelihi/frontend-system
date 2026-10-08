@@ -1,0 +1,425 @@
+{
+  "runnerStatus": "completed",
+  "modelCalls": 4,
+  "rows": [
+    {
+      "case": "operations-console",
+      "arm": "plain",
+      "completed": true,
+      "missingPhases": [],
+      "eligible": true,
+      "timedOut": false,
+      "planSatisfied": 69,
+      "planTotal": 69,
+      "totalTokens": 800858,
+      "uncachedInputTokens": 62818,
+      "seconds": 419.355,
+      "phaseUsage": [
+        {
+          "phase": "prepare",
+          "attempt": 0,
+          "usage": {
+            "input_tokens": 62888,
+            "cached_input_tokens": 38912,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 1154,
+            "reasoning_output_tokens": 237,
+            "total_tokens": 64042,
+            "uncached_input_tokens": 23976
+          }
+        },
+        {
+          "phase": "work",
+          "attempt": 0,
+          "usage": {
+            "input_tokens": 724538,
+            "cached_input_tokens": 685696,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 12278,
+            "reasoning_output_tokens": 2412,
+            "total_tokens": 736816,
+            "uncached_input_tokens": 38842
+          }
+        }
+      ],
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "mcpTools": {},
+      "projectSaveCalls": 0,
+      "savedStatements": 0,
+      "registeredReuse": 0,
+      "explicitReuseExclusions": 0,
+      "reuseObservable": false,
+      "reusedTriggers": 0,
+      "patchCalls": 0,
+      "patchSuccesses": 0,
+      "routePatchCalls": 0,
+      "fullRevisionReads": 0
+    },
+    {
+      "case": "operations-console",
+      "arm": "fs",
+      "completed": true,
+      "missingPhases": [],
+      "eligible": true,
+      "timedOut": false,
+      "planSatisfied": 69,
+      "planTotal": 69,
+      "totalTokens": 1993180,
+      "uncachedInputTokens": 80448,
+      "seconds": 596.583,
+      "phaseUsage": [
+        {
+          "phase": "prepare",
+          "attempt": 0,
+          "usage": {
+            "input_tokens": 245535,
+            "cached_input_tokens": 206336,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 2288,
+            "reasoning_output_tokens": 638,
+            "total_tokens": 247823,
+            "uncached_input_tokens": 39199
+          }
+        },
+        {
+          "phase": "work",
+          "attempt": 0,
+          "usage": {
+            "input_tokens": 1728673,
+            "cached_input_tokens": 1687424,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 16684,
+            "reasoning_output_tokens": 3000,
+            "total_tokens": 1745357,
+            "uncached_input_tokens": 41249
+          }
+        }
+      ],
+      "mcpCalls": 23,
+      "mcpErrors": 0,
+      "mcpTools": {
+        "list_plans": 2,
+        "get_project_snapshot": 1,
+        "read_project_source": 3,
+        "get_work_context": 2,
+        "discover_knowledge_triggers": 1,
+        "save_project_context": 1,
+        "read_learned_knowledge": 1,
+        "save_revision": 2,
+        "approve_revision": 1,
+        "save_execution": 2,
+        "run_project_checks": 4,
+        "begin_work_attempt": 1,
+        "save_semantic_review": 1,
+        "get_workflow_context": 1
+      },
+      "projectSaveCalls": 1,
+      "savedStatements": 4,
+      "registeredReuse": 1,
+      "explicitReuseExclusions": 3,
+      "reuseObservable": true,
+      "reusedTriggers": 1,
+      "patchCalls": 1,
+      "patchSuccesses": 1,
+      "routePatchCalls": 0,
+      "fullRevisionReads": 0
+    }
+  ],
+  "limits": [
+    "Missing usage/grades remain null, never zero or a pass.",
+    "Reuse counters record tool behavior, not semantic correctness or causal token savings.",
+    "Runner completed does not imply completed model turns. Fixed-order single pairs do not establish general superiority."
+  ],
+  "summarySha256": "412a81797fc78da538ca62a4ff823836175c4dafd3b507b5a32bb1d6850ac9fb",
+  "productFiles": [
+    {
+      "case": "operations-console",
+      "path": "App.jsx",
+      "equal": true,
+      "hashes": {
+        "plain": "326b6e04dfb8efe93a0a33d0cd14b387bb8693a983d28f2a8e10bde424e05643",
+        "fs": "326b6e04dfb8efe93a0a33d0cd14b387bb8693a983d28f2a8e10bde424e05643"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "application/checkout.mjs",
+      "equal": false,
+      "hashes": {
+        "plain": "6be14f4767e25b50c51e055978ef04b75d173741e26157c99f1606eaf1b5043a",
+        "fs": "b948abfb69a30d9f9f06445791f6b8ce9001728ae051c0510e96714f0a724615"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "application/inventory.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "b7073ba43bbcf51d046cb1e8e28e3e384bd6f9b443171f2c2ee7bd0b5695b522",
+        "fs": "b7073ba43bbcf51d046cb1e8e28e3e384bd6f9b443171f2c2ee7bd0b5695b522"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "application/orders.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "209843ac4a42c62843bb2c3671b6a44233a7de4f5c74692b853987e17bd94495",
+        "fs": "209843ac4a42c62843bb2c3671b6a44233a7de4f5c74692b853987e17bd94495"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "application/refund.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "ca0ca7bf693881946f1e1febc710329632d32eef4dc314c0028bfd7d9eb81e39",
+        "fs": "ca0ca7bf693881946f1e1febc710329632d32eef4dc314c0028bfd7d9eb81e39"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "application/returns.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "152823815c690e3848fb2016ef8a4204817f7af20f98be74eb0140ae8014c1ed",
+        "fs": "152823815c690e3848fb2016ef8a4204817f7af20f98be74eb0140ae8014c1ed"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "application/system.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "0e7ad8e7f6ee8cdce1489e8cf12c5aacc77888bf38ada07c50e250eb976d4bc1",
+        "fs": "0e7ad8e7f6ee8cdce1489e8cf12c5aacc77888bf38ada07c50e250eb976d4bc1"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "application/wallet.mjs",
+      "equal": false,
+      "hashes": {
+        "plain": "6837459d91b2e30e768ae142e89ebd066465d7b857c6a43d47e52bf242aa2333",
+        "fs": "d268ecd865ea6bf3fc686b240a75330d6b2c086087e4090a1023607eea5b435c"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "data/inventory.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "75cd94254b6c113aa24f95c755d9980859ba6c539791ee186c1a33761bd1da85",
+        "fs": "75cd94254b6c113aa24f95c755d9980859ba6c539791ee186c1a33761bd1da85"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "data/orders.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "944f687aee3e7eecb646af9dffda8a464d9cc844927302468d1f681dfa26f7f1",
+        "fs": "944f687aee3e7eecb646af9dffda8a464d9cc844927302468d1f681dfa26f7f1"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "data/returns.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "2224009dc2071d8c6b8bf9503791457dcc6e288758f8d95a8f5c8b66a160392f",
+        "fs": "2224009dc2071d8c6b8bf9503791457dcc6e288758f8d95a8f5c8b66a160392f"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "data/wallet.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "e927764cd96acd90ae86d524e55b2c584e628e8ff815169422dd03f3b0492e39",
+        "fs": "e927764cd96acd90ae86d524e55b2c584e628e8ff815169422dd03f3b0492e39"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "domain/inventory.mjs",
+      "equal": false,
+      "hashes": {
+        "plain": "1f32482fd5c5689dbd264b8046381de77874c79421a62772ca14a1434b9bbc1f",
+        "fs": "e9955e1b7a1fa227abd854934e111ef3471db3eabd000b830ba05599799cf957"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "domain/order.mjs",
+      "equal": false,
+      "hashes": {
+        "plain": "b4ed424e964e7b10ffbb4fdb439cd99cce58878094ce0cae07f8684115958a81",
+        "fs": "d236dacbfd609e0a12c7e8726aa65d791217c24af3f22b8031c19bfbe1b5565e"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "domain/promotion.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "cebdf7386a1ed4d5202bf054d51f79ed75fe33cb1df5a6a420523b97a5dffa50",
+        "fs": "cebdf7386a1ed4d5202bf054d51f79ed75fe33cb1df5a6a420523b97a5dffa50"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "domain/returns.mjs",
+      "equal": false,
+      "hashes": {
+        "plain": "79733a50edc916d00acc11cf6b5bad5bd2bea81dc1b8514879d5620851bbba2a",
+        "fs": "8846a0587be3a958571e79f2ba32e32c13de77e3e5bfb1b8320d489d57911568"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "domain/shipping.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "d4db4f54b9c48b89e5aa2935a1764e7fe2d7d9686910b238ea4c53d620bba010",
+        "fs": "d4db4f54b9c48b89e5aa2935a1764e7fe2d7d9686910b238ea4c53d620bba010"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "domain/wallet.mjs",
+      "equal": false,
+      "hashes": {
+        "plain": "f89c4eae040c5c465ec6b96d16aaa9fd5c5b9d323c80f9d39625284aba66330e",
+        "fs": "513c0f677c87210f5bc53501287bf0c57ba3bc1d5d6f68557e27c22436f38ddc"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "shared/http.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "56169a9713121eca4f8a82b0b83ce97019155a1a5df49120f54e7b6de931b27d",
+        "fs": "56169a9713121eca4f8a82b0b83ce97019155a1a5df49120f54e7b6de931b27d"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "shared/inflight.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "5b55668fb517ac6db870f10827b068c8e93e0abf6b5059568fff7f8a4f1981ba",
+        "fs": "5b55668fb517ac6db870f10827b068c8e93e0abf6b5059568fff7f8a4f1981ba"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "shared/resource.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "fb83100559626ea251aff851339d87ac49743c2febb6a6d2f788a95561e3edb8",
+        "fs": "fb83100559626ea251aff851339d87ac49743c2febb6a6d2f788a95561e3edb8"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "shared/session.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "3455f4b1b045b602f89af0afc9900e41780b1b811151dde715a9ad9549aa838c",
+        "fs": "3455f4b1b045b602f89af0afc9900e41780b1b811151dde715a9ad9549aa838c"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "ui/Amount.jsx",
+      "equal": true,
+      "hashes": {
+        "plain": "424961cf61cac706e9006b1b337ca14278200707f65a4ed3a33fc44bc0a377de",
+        "fs": "424961cf61cac706e9006b1b337ca14278200707f65a4ed3a33fc44bc0a377de"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "ui/CheckoutForm.jsx",
+      "equal": true,
+      "hashes": {
+        "plain": "f4cc75beec8ef3d675c5120643940d5aa3406c0c6115b450f5a052ba45b0f81c",
+        "fs": "f4cc75beec8ef3d675c5120643940d5aa3406c0c6115b450f5a052ba45b0f81c"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "ui/InventoryPanel.jsx",
+      "equal": true,
+      "hashes": {
+        "plain": "8139471e0d3dbd3a3f3e2662bc02e12e0b1487ab193b7a39fa1d2686d58a2512",
+        "fs": "8139471e0d3dbd3a3f3e2662bc02e12e0b1487ab193b7a39fa1d2686d58a2512"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "ui/OrderPanel.jsx",
+      "equal": true,
+      "hashes": {
+        "plain": "9d4dd560b7d3c190f2c6128b13017f3ee6feda82ec9f7443a4c3a0abb697c148",
+        "fs": "9d4dd560b7d3c190f2c6128b13017f3ee6feda82ec9f7443a4c3a0abb697c148"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "ui/ReturnForm.jsx",
+      "equal": false,
+      "hashes": {
+        "plain": "375f0cfbfb93629be4197c63d505e96b2baeffdedcd3ad0cfc815b06137587a7",
+        "fs": "e84ed640f7da0a231ef81a42a837815fdcd556ad75543d4c974a3d0d7272e172"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "ui/ReturnsPanel.jsx",
+      "equal": true,
+      "hashes": {
+        "plain": "1d4e02317b72dde1aafc68651ccea0b7ac1bb1fd43a06a9e72cfd717f7877891",
+        "fs": "1d4e02317b72dde1aafc68651ccea0b7ac1bb1fd43a06a9e72cfd717f7877891"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "ui/SessionBar.jsx",
+      "equal": true,
+      "hashes": {
+        "plain": "8f571d5f237f0dff96e277bb400c3c8deddcc0d61dd240f97c7a6436620201f7",
+        "fs": "8f571d5f237f0dff96e277bb400c3c8deddcc0d61dd240f97c7a6436620201f7"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "ui/Status.jsx",
+      "equal": true,
+      "hashes": {
+        "plain": "f965db601f4ffd024c36f2451455215f47c01ade0e61ff123fd377d4efaa0f4f",
+        "fs": "f965db601f4ffd024c36f2451455215f47c01ade0e61ff123fd377d4efaa0f4f"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "ui/WalletPanel.jsx",
+      "equal": true,
+      "hashes": {
+        "plain": "2810149fa560c90c47e3f7f7a66d16ce4f86cfbad55f2aa3485cf8e1d100556a",
+        "fs": "2810149fa560c90c47e3f7f7a66d16ce4f86cfbad55f2aa3485cf8e1d100556a"
+      }
+    },
+    {
+      "case": "operations-console",
+      "path": "ui/useAction.mjs",
+      "equal": true,
+      "hashes": {
+        "plain": "623438ac2154cbf49c822246a8b45ae0a05a41a440d3cd0e2b64a982e71056a3",
+        "fs": "623438ac2154cbf49c822246a8b45ae0a05a41a440d3cd0e2b64a982e71056a3"
+      }
+    }
+  ]
+}

@@ -1,0 +1,378 @@
+{
+  "date": "2026-10-02T01:24:29.484Z",
+  "kind": "paired development routing regression",
+  "baselineIndexHash": "98f316e7aeca5a8afd0f41aa667eef3b9765960278df061f4cfc78f2c5c5b157",
+  "currentIndexHash": "7f30c8a272f0398fae5a942caa2ce963081e332ec58e61b2515b9f4426114a11",
+  "casesHash": "cce9dee0d089d6cbed983932fb2d7e76cb7f10265db67fa4c2e6e1c4374be174",
+  "summary": {
+    "requiredTopicCases": 12,
+    "negativeCases": 4,
+    "before": {
+      "requiredTopics": 4,
+      "negatives": 4
+    },
+    "after": {
+      "requiredTopics": 12,
+      "negatives": 4
+    }
+  },
+  "limits": [
+    "Same cases, fresh file roots, same deterministic extractor; baseline vs current metadata.",
+    "Known development cases, not held-out semantic accuracy. Fixed host signals do not test model interpretation.",
+    "No generated product, browser run or token usage measured; cannot compare with v2 model-quality scores."
+  ],
+  "rows": [
+    {
+      "id": "aliased-effect",
+      "code": "import {useEffect as sync} from \"react\"; sync(() => subscribe(), []);",
+      "expected": "react-derived-state-and-effects",
+      "technologies": [
+        "React"
+      ],
+      "evidence": {
+        "path": "view.tsx",
+        "sourceHash": "6e52c6c7d6b68a6defa140cbcc761cdc85e8a533eed6eceda03ab30365de6ca7",
+        "semanticOrigin": null
+      },
+      "before": {
+        "ids": [
+          "react-derived-state-and-effects"
+        ],
+        "passed": true
+      },
+      "after": {
+        "ids": [
+          "react-derived-state-and-effects"
+        ],
+        "passed": true
+      }
+    },
+    {
+      "id": "state-lifetime",
+      "code": "const view = <Editor key={user.id} />;",
+      "expected": "react-identity-and-state",
+      "technologies": [
+        "React"
+      ],
+      "signal": "react.state-lifetime",
+      "interpretation": "Changing user identity changes the editor state lifetime.",
+      "evidence": {
+        "path": "view.tsx",
+        "sourceHash": "78877836b3787284ec2b0704c1f52f0d80a85186d1d5fe51159fb7861904f6bd",
+        "semanticOrigin": "fixed host interpretation; model selection not measured"
+      },
+      "before": {
+        "ids": [
+          "react-identity-and-state"
+        ],
+        "passed": true
+      },
+      "after": {
+        "ids": [
+          "react-identity-and-state"
+        ],
+        "passed": true
+      }
+    },
+    {
+      "id": "dependency-boundary",
+      "path": "src/domain/order.ts",
+      "code": "import {save} from \"../adapters/db\"; export const order = save;",
+      "expected": "code-quality-change-boundaries",
+      "evidence": {
+        "path": "src/domain/order.ts",
+        "sourceHash": "86959a8e45fdaa6908dbfbc634478306ce24c4356432a2aea7ba6533db4078ed",
+        "semanticOrigin": null
+      },
+      "before": {
+        "ids": [
+          "code-quality-change-boundaries"
+        ],
+        "passed": true
+      },
+      "after": {
+        "ids": [
+          "code-quality-change-boundaries"
+        ],
+        "passed": true
+      }
+    },
+    {
+      "id": "interaction-latency",
+      "code": "element.style.width = nextWidth; const width = element.offsetWidth;",
+      "expected": "web-performance-interaction-diagnosis",
+      "signal": "runtime.interaction-latency",
+      "interpretation": "Reported slow interaction contains a style write followed by a geometry read; measurement required.",
+      "evidence": {
+        "path": "view.tsx",
+        "sourceHash": "fca00f69942308f3706b76051851ef88a0347b57f0da87c510f2304c0abc891e",
+        "semanticOrigin": "fixed host interpretation; model selection not measured"
+      },
+      "before": {
+        "ids": [
+          "web-performance-interaction-diagnosis"
+        ],
+        "passed": true
+      },
+      "after": {
+        "ids": [
+          "web-performance-interaction-diagnosis"
+        ],
+        "passed": true
+      }
+    },
+    {
+      "id": "icon-name",
+      "code": "const view = <button onClick={remove}>×</button>;",
+      "expected": "accessibility-names-and-alternatives",
+      "evidence": {
+        "path": "view.tsx",
+        "sourceHash": "e4e8e45cb7a342351eac6a40a6820d9bc0ea68c10f94313726be6bcadf4920f7",
+        "semanticOrigin": null
+      },
+      "before": {
+        "ids": [],
+        "passed": false
+      },
+      "after": {
+        "ids": [
+          "accessibility-names-and-alternatives",
+          "accessibility-native-controls-and-forms"
+        ],
+        "passed": true
+      }
+    },
+    {
+      "id": "modal-lifecycle",
+      "code": "const view = <dialog ref={modal}>Confirm</dialog>;",
+      "expected": "accessibility-modal-focus",
+      "evidence": {
+        "path": "view.tsx",
+        "sourceHash": "c3043d966c66c0d8c02199e55e72cc79e623ad41693b7c8f9c19122d718bbfeb",
+        "semanticOrigin": null
+      },
+      "before": {
+        "ids": [],
+        "passed": false
+      },
+      "after": {
+        "ids": [
+          "accessibility-modal-focus"
+        ],
+        "passed": true
+      }
+    },
+    {
+      "id": "form-submit",
+      "code": "const view = <form onSubmit={save}><input /><button>Save</button></form>;",
+      "expected": "accessibility-native-controls-and-forms",
+      "evidence": {
+        "path": "view.tsx",
+        "sourceHash": "d1efc50d2ca3d1fd1b8f99bf8e0e819d74fd894ce95870769f2805d8bd9912b0",
+        "semanticOrigin": null
+      },
+      "before": {
+        "ids": [],
+        "passed": false
+      },
+      "after": {
+        "ids": [
+          "accessibility-names-and-alternatives",
+          "accessibility-native-controls-and-forms"
+        ],
+        "passed": true
+      }
+    },
+    {
+      "id": "input-hint",
+      "code": "const view = <input inputMode=\"numeric\" />;",
+      "expected": "html-editing-and-localization",
+      "evidence": {
+        "path": "view.tsx",
+        "sourceHash": "401382763fecd342fedd7bd65a995830819aff08a4f5306a84cc4377b75cd5ba",
+        "semanticOrigin": null
+      },
+      "before": {
+        "ids": [],
+        "passed": false
+      },
+      "after": {
+        "ids": [
+          "accessibility-names-and-alternatives",
+          "html-editing-and-localization"
+        ],
+        "passed": true
+      }
+    },
+    {
+      "id": "query-freshness",
+      "code": "import {useQuery as query} from \"@tanstack/react-query\"; query({queryKey:[\"items\"], staleTime:0});",
+      "expected": "tanstack-query-freshness-and-retention",
+      "technologies": [
+        "React"
+      ],
+      "evidence": {
+        "path": "view.tsx",
+        "sourceHash": "e70ab039b6793ca53fbebdc17affee397e971571df28661b9c664353ea332657",
+        "semanticOrigin": null
+      },
+      "before": {
+        "ids": [],
+        "passed": false
+      },
+      "after": {
+        "ids": [
+          "tanstack-query-freshness-and-retention"
+        ],
+        "passed": true
+      }
+    },
+    {
+      "id": "compound-boundary",
+      "code": "import {cloneElement} from \"react\"; const child = cloneElement(children, {selected});",
+      "expected": "react-compound-component-boundaries",
+      "technologies": [
+        "React"
+      ],
+      "evidence": {
+        "path": "view.tsx",
+        "sourceHash": "f57108aa1fff587d7fac14fba1b51510d4d83eb96849a837f0a75aebc19ecabc",
+        "semanticOrigin": null
+      },
+      "before": {
+        "ids": [],
+        "passed": false
+      },
+      "after": {
+        "ids": [
+          "react-compound-component-boundaries"
+        ],
+        "passed": true
+      }
+    },
+    {
+      "id": "server-boundary",
+      "code": "import \"server-only\"; export const value = loadSecret();",
+      "expected": "nextjs-server-client-boundary",
+      "technologies": [
+        "Next.js"
+      ],
+      "evidence": {
+        "path": "view.tsx",
+        "sourceHash": "d41dff6e0858f8eaf836b3eb6a723d3afa8a2cbb1f51fed949e323173ce8224f",
+        "semanticOrigin": null
+      },
+      "before": {
+        "ids": [],
+        "passed": false
+      },
+      "after": {
+        "ids": [
+          "nextjs-server-client-boundary"
+        ],
+        "passed": true
+      }
+    },
+    {
+      "id": "cascade-context",
+      "path": "theme.css",
+      "code": "@layer theme { .button { color: red; } }\n.button { color: blue; }",
+      "expected": "css-cascade-and-value-resolution",
+      "signal": "css-cascade-and-value-resolution",
+      "interpretation": "Competing layered and unlayered declarations require cascade reasoning.",
+      "evidence": {
+        "path": "theme.css",
+        "sourceHash": "5781223ae10a691a28c486a8468c79350c748cd367436c05fe1bd7f60e1ebe83",
+        "semanticOrigin": "fixed host interpretation; model selection not measured"
+      },
+      "before": {
+        "ids": [],
+        "passed": false
+      },
+      "after": {
+        "ids": [
+          "css-cascade-and-value-resolution"
+        ],
+        "passed": true
+      }
+    },
+    {
+      "id": "shadowed-hook",
+      "code": "function run(useEffect) { useEffect(); }",
+      "forbidden": "react-derived-state-and-effects",
+      "technologies": [
+        "React"
+      ],
+      "evidence": {
+        "path": "view.tsx",
+        "sourceHash": "90e14bf091638e80329e4555cccdf6af9cfcbc29f95777f749ff7f04581bcdb8",
+        "semanticOrigin": null
+      },
+      "before": {
+        "ids": [],
+        "passed": true
+      },
+      "after": {
+        "ids": [],
+        "passed": true
+      }
+    },
+    {
+      "id": "wrapper-is-not-dom",
+      "code": "const view = <Modal aria-modal={true} />;",
+      "forbidden": "accessibility-modal-focus",
+      "evidence": {
+        "path": "view.tsx",
+        "sourceHash": "f877c7d6c4680a952d6f5c163de8a64ac5252e3fd495e2bd3552d129c2cc82cd",
+        "semanticOrigin": null
+      },
+      "before": {
+        "ids": [],
+        "passed": true
+      },
+      "after": {
+        "ids": [],
+        "passed": true
+      }
+    },
+    {
+      "id": "wrong-framework",
+      "code": "import {useEffect} from \"react\"; useEffect(() => {});",
+      "forbidden": "react-derived-state-and-effects",
+      "technologies": [
+        "Vue"
+      ],
+      "evidence": {
+        "path": "view.tsx",
+        "sourceHash": "d465d501379e9785852957a073f91889f5c650204781c601a7d2c8c36ed83f9d",
+        "semanticOrigin": null
+      },
+      "before": {
+        "ids": [],
+        "passed": true
+      },
+      "after": {
+        "ids": [],
+        "passed": true
+      }
+    },
+    {
+      "id": "unrelated-code",
+      "code": "export const sum = (a, b) => a + b;",
+      "empty": true,
+      "evidence": {
+        "path": "view.tsx",
+        "sourceHash": "8291914f0c5ebf6be90eaabed2a9d0e638d11de717a548dfa9421543468fd61f",
+        "semanticOrigin": null
+      },
+      "before": {
+        "ids": [],
+        "passed": true
+      },
+      "after": {
+        "ids": [],
+        "passed": true
+      }
+    }
+  ]
+}

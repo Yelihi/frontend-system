@@ -1,0 +1,111 @@
+{
+  "reviewKind": "separate-workflow-and-document-adjudication",
+  "documents": {
+    "passed": false,
+    "project": "source/.frontend-system/project.md",
+    "plan": "source/.frontend-system/plans/checkout/plan.md",
+    "observation": "Initial project analysis and concrete plan exist. Project still describes pre-implementation stubs; native progress/execution remain in-progress with implementation/final-validation remaining. Final results/limits handoff was not completed before timeout."
+  },
+  "H10": {
+    "passed": true,
+    "lastProductEdit": "item_52",
+    "lastTestEdit": "item_52",
+    "finalChecks": [
+      "item_65"
+    ],
+    "nativeFinalCheckId": "ffccc8a4-fbb3-4152-b65b-1d11fc877df5",
+    "nativeSourceHash": "3ff5f9677512d1b38a918971bb4e275aa0778ee74b3c253e2d327a0cc8fc867d",
+    "ownSourceHashesVerified": {
+      ".gitignore": "53429a314b0070c0d9e957ddccf84cb0f5d3b914a694acc12776828380ab2d6f",
+      "AGENTS.md": "63f2c50380ed6303237cce215ce27af1d620d094c215e28d1b1538a3c070e3bb",
+      "TASK.md": "47ac2bbaab12335573c01c84c3a14fe5c6dad43614c4832e8d08235cfd678045",
+      "app/api/orders/route.js": "a73468ba7f0a688e737745f3016cf36a99c2df67e4d77fa3d1ed0ba7e93221c3",
+      "app/api/quote/route.js": "c28f6d753afbf37dc1710c2208e5520d6182a4bb93b8e66f7cfd0bbdbb516708",
+      "app/checkout.jsx": "58aa6be52c418701a74123d792baa2c7e30c9cc24b3a23b227f7ec85764763ca",
+      "app/layout.jsx": "8e5bd10067458aabd9faa12758742379b73c4f73a9502fca9cfa01545b64483c",
+      "app/page.jsx": "57ce7b06995d10c8f974c4670b666c7c01ea64c3e4f9d85105ab14d9d9cf569d",
+      "checkout.contract.json": "1fca04104f4a8b12f88b8fdfcdbac26fda530b3618ad5583feabfde4f7e056ae",
+      "common-rules.md": "e71158712eaf1e3dcc0f9452cd20019d40beaa3fe9b886005d6db3b13e971f68",
+      "e2e/catalog.spec.mjs": "a73d2188c368c419bd2addc7e8b50778f69531c1d4fde62d06d3f59ee35234f6",
+      "e2e/checkout.spec.mjs": "ea3e8f6137e11f2017d94228301690b25919aa1944c50c95eeadb966fab37962",
+      "eslint.config.mjs": "3624563f6cccab80896a35c9461fc1ae30389554349374bf453a5667590b361c",
+      "frontend-quality.md": "a2670348378de9113ef2e61c445acceeaaf8c12171cd0802f2d6fc8946ee2957",
+      "jsconfig.json": "b5e74988174abcf48c53f7d9eed03d8690dba1471cca6edcaa44d2911bda7179",
+      "mandatory-rules/common/review.md": "e71158712eaf1e3dcc0f9452cd20019d40beaa3fe9b886005d6db3b13e971f68",
+      "mandatory-rules/nextjs/core.md": "d9614c63030aa71f160bd1bc443c4c017718d73d40c0699423607d9941459d52",
+      "mandatory-rules/react/core.md": "f820abcdd9f20281118906868f322d83495943a9bdb0a835865d5727c3d22cdb",
+      "mandatory-rules/vue/core.md": "ebcf6d6e28fd0c4e7166113f7901345b4ff819f7d5dd91d7722c376151d3ecc6",
+      "next.config.mjs": "e53d0c8d3f690e8bd0b06f1ee16a5e871738fc56f9cd56c7790c906bd4d94505",
+      "package-lock.json": "7f094df62e4f1addb2cd14603df0c66729eb5abf4e9355ef65005e560153aedd",
+      "package.json": "8645dbcb75b54940720d77a107cbf549a67931661a03885d7ce93345dbff99ce",
+      "playwright.config.mjs": "fbf7e6f145aef04bf1b6d1e323d2c898b2444e29729aa10eb1759a33b0dab61f",
+      "src/catalog.js": "523ad6b97e81c57f895fed40752f458cd8cc754f92ea65654f1d59da9b2337ff",
+      "src/checkout-client.js": "0a2d79bb9e70290672a23768fb93f9e8f31e74cca574c80cbad2eab80c9b8dd7",
+      "src/checkout-http.js": "eedf366bd8855bb1c1770d62a3480e3596248c3819af86802c7f4ab5fb3a59cc",
+      "src/checkout.js": "4fd2f9811626fcbb49c5180c1e3d38220d056d4127abdbbf8fd2115135a86abd",
+      "src/use-checkout.js": "846d5609310022d3ec76692e121d13bdeedb895771cefdbccbc9d05edbd58d49",
+      "tests/catalog.test.mjs": "2328b9e518bed3932077ef018f3b124b87089389edce4ec3ac9ed57725a182f6",
+      "tests/checkout.test.mjs": "03de9c9bbd966fb4641a607473f3cd399315bcc3293269c66d303849616a420e",
+      "tsconfig.check.json": "5b031b39a40649e07621dd92ee31f1e6a92c7526ab0af89d607907243fef68c7"
+    },
+    "externalSourceBeforeAfterMatchesFinal": true,
+    "protectedAssetsPassed": 9,
+    "checks": [
+      "npm run lint",
+      "npm run typecheck",
+      "npm run test:unit",
+      "npm run test:e2e",
+      "npm run build"
+    ]
+  },
+  "R9": {
+    "passed": true,
+    "evidence": "No false final completion claim; retained current-source five checks pass, but delivery remains incomplete."
+  },
+  "conditionAdherence": {
+    "passed": false,
+    "arm": "fs",
+    "allowedToolsAndSourcesPassed": true,
+    "evidence": "Only supplied procedure tools/references and installed Next docs used, with own browser session. Policy binding fixed and checks65 passed, but required semantic review/completion not persisted before timeout."
+  },
+  "fullValidationAttempts": 2,
+  "attemptBudgetRespected": true,
+  "attemptEvidence": "Product25 then sparse-array domain correction52; test-only keyboard and request-shape corrections precede52. Policy57 not-run due wrapper/body metadata, fixed60 then65 passed. No additional whole product repairs.",
+  "procedureObservations": [
+    "Native snapshot described as unversioned due global Git configuration read restriction.",
+    "Native image helper failed and base64 printed; do not claim actual screenshot visual inspection.",
+    "900.044 seconds, completedTurns0, usage null.",
+    "Original two Coupon locator failures pending global correction, not confirmed accessibility defects."
+  ],
+  "eligibleComplete": false,
+  "eligibilityEvidence": [
+    "Historical pre-correction: Current-source final checks pass, but required FS semantic/completion procedure and final documentation incomplete.",
+    "Historical pre-correction: ../blind-review/2d7fce92e514/review.json Q100/R1-R8pass; original108/110 Coupon naming failures await global correction. Product quality does not substitute for unfinished FS/document delivery.",
+    "Final: corrected 110/110; independentQ100; product R1-R8 pass; eligibleComplete=False. Details and original adjudication preserved."
+  ],
+  "qualitySource": "../blind-review/2d7fce92e514/review.json",
+  "evaluatorAdjudication": {
+    "status": "final",
+    "revision": "accessible-name-v2",
+    "originalPassed": 108,
+    "correctedPassed": 110,
+    "changedCases": [
+      {
+        "id": "default-and-updated-total",
+        "category": "browser",
+        "original": "failed",
+        "corrected": "passed"
+      },
+      {
+        "id": "order-lock-failure-retry",
+        "category": "browser",
+        "original": "failed",
+        "corrected": "passed"
+      }
+    ],
+    "sourceUnchanged": true,
+    "independentCorrectionReview": "../blind-review/2d7fce92e514/regrade-review.json",
+    "qualityAndRulesUnchanged": true,
+    "eligibleComplete": false
+  }
+}

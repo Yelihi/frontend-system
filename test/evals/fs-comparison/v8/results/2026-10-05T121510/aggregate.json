@@ -1,0 +1,40 @@
+{
+  "runs": [
+    {
+      "id": "2026-10-05T112423",
+      "status": "blocked",
+      "manifestHash": "88b5722a8c9277bed214f7c3fd0da543a5e889c21af44630aafc003a11d75e9b",
+      "modelCalls": 15,
+      "completedTurns": 14,
+      "capacityAborts": 1,
+      "reportedTokenLowerBound": 5837408,
+      "completedImplementations": 7
+    },
+    {
+      "id": "2026-10-05T120746",
+      "status": "blocked",
+      "manifestHash": "61570958f5f9eb995523bfb1dd0ea4e16ea984d685872a5f5eeb4f50428f94e6",
+      "modelCalls": 1,
+      "completedTurns": 0,
+      "capacityAborts": 1,
+      "reportedTokenLowerBound": 0,
+      "completedImplementations": 0
+    },
+    {
+      "id": "2026-10-05T121510",
+      "status": "blocked",
+      "manifestHash": "61570958f5f9eb995523bfb1dd0ea4e16ea984d685872a5f5eeb4f50428f94e6",
+      "modelCalls": 1,
+      "completedTurns": 0,
+      "capacityAborts": 1,
+      "reportedTokenLowerBound": 0,
+      "completedImplementations": 0
+    }
+  ],
+  "modelCalls": 17,
+  "completedTurns": 14,
+  "capacityAborts": 3,
+  "reportedTokenLowerBound": 5837408,
+  "totalTokens": null,
+  "conclusion": "Completed scores tied; FS initial cost higher. Post-change and cumulative FS comparisons unavailable due to capacity aborts; missing usage is not zero."
+}

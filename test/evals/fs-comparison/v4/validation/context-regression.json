@@ -1,0 +1,49 @@
+{
+  "modelCalls": 0,
+  "archivedRun": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/test/evals/fs-comparison/v4/results/2026-10-03T171521",
+  "rows": [
+    {
+      "case": "duplicated",
+      "previousWireCharacters": 64558,
+      "previousCompactCharacters": 43866,
+      "currentWireCharacters": 15233,
+      "structuralReductionPercent": 65.3,
+      "candidatesPreserved": 11,
+      "mandatoryRulesPreserved": 14,
+      "currentMilliseconds": [
+        295.5,
+        102.57,
+        106.81
+      ]
+    },
+    {
+      "case": "existing-good",
+      "previousWireCharacters": 68008,
+      "previousCompactCharacters": 46096,
+      "currentWireCharacters": 16787,
+      "structuralReductionPercent": 63.6,
+      "candidatesPreserved": 15,
+      "mandatoryRulesPreserved": 10,
+      "currentMilliseconds": [
+        96.79,
+        100.02,
+        109.97
+      ]
+    },
+    {
+      "case": "different-policies",
+      "previousWireCharacters": 49132,
+      "previousCompactCharacters": 32943,
+      "currentWireCharacters": 11972,
+      "structuralReductionPercent": 63.7,
+      "candidatesPreserved": 8,
+      "mandatoryRulesPreserved": 10,
+      "currentMilliseconds": [
+        79.08,
+        67.17,
+        66.22
+      ]
+    }
+  ],
+  "limits": "Local response regression only. Reconstructed temp Git roots; no inference about AI quality, tokens or speed. Three current timing samples, no controlled old timing baseline."
+}

@@ -1,0 +1,93 @@
+{
+  "reviewKind": "separate-workflow-and-document-adjudication",
+  "documents": {
+    "passed": true,
+    "scope": "B has no separate project.md/plan.md obligation; final message supplies implementation scope, current commands and execution limitations.",
+    "finalEvidence": "model/final.md"
+  },
+  "H10": {
+    "passed": true,
+    "nativeFinalCheckId": "2b3b8c3a-7ed0-4694-abcd-652b27bdea61",
+    "nativeSourceHash": "20437de42d7f95f0f9ea8bfd1587176dc496834e4c3c3524fc4e152b37b3b663",
+    "ownSourceHashesVerified": {
+      ".gitignore": "53429a314b0070c0d9e957ddccf84cb0f5d3b914a694acc12776828380ab2d6f",
+      "AGENTS.md": "63f2c50380ed6303237cce215ce27af1d620d094c215e28d1b1538a3c070e3bb",
+      "TASK.md": "6b70f1900ad06b66c5fa998a35d24c49ba7194ddba118cf109aa61d1f06503eb",
+      "app/api/orders/route.js": "18937134c8ae2418332279eb79561a36f45eb563c2e7fa2b2f476a9c0e1ad1f3",
+      "app/api/quote/route.js": "ce6c36b325209e55cd81b2fdbec6b7b2aab92bf8c2e083f6ff2b0a6ed4408627",
+      "app/checkout.jsx": "9acf8d364051051f34ac83237ac562d5874ab1d3a661fe68cefa1f7722de3790",
+      "app/globals.css": "1fbf10076b0286ef6417223b1d55261eac11c0c0b6972c6dc07f3770ce76c47e",
+      "app/layout.jsx": "1c94018408be85547916bbde4b1e27d12879b69b12d52886b36427d3c0e96d65",
+      "app/page.jsx": "57ce7b06995d10c8f974c4670b666c7c01ea64c3e4f9d85105ab14d9d9cf569d",
+      "checkout.contract.json": "1fca04104f4a8b12f88b8fdfcdbac26fda530b3618ad5583feabfde4f7e056ae",
+      "common-rules.md": "e71158712eaf1e3dcc0f9452cd20019d40beaa3fe9b886005d6db3b13e971f68",
+      "e2e/catalog.spec.mjs": "a73d2188c368c419bd2addc7e8b50778f69531c1d4fde62d06d3f59ee35234f6",
+      "e2e/checkout.spec.mjs": "6f6c9bcc0cea53d5bef663076a65b3ec187b5048ab75637ed2caafdf0d5f39b3",
+      "eslint.config.mjs": "3624563f6cccab80896a35c9461fc1ae30389554349374bf453a5667590b361c",
+      "frontend-quality.md": "a2670348378de9113ef2e61c445acceeaaf8c12171cd0802f2d6fc8946ee2957",
+      "jsconfig.json": "b5e74988174abcf48c53f7d9eed03d8690dba1471cca6edcaa44d2911bda7179",
+      "mandatory-rules/common/review.md": "e71158712eaf1e3dcc0f9452cd20019d40beaa3fe9b886005d6db3b13e971f68",
+      "mandatory-rules/nextjs/core.md": "d9614c63030aa71f160bd1bc443c4c017718d73d40c0699423607d9941459d52",
+      "mandatory-rules/react/core.md": "f820abcdd9f20281118906868f322d83495943a9bdb0a835865d5727c3d22cdb",
+      "mandatory-rules/vue/core.md": "ebcf6d6e28fd0c4e7166113f7901345b4ff819f7d5dd91d7722c376151d3ecc6",
+      "next.config.mjs": "e53d0c8d3f690e8bd0b06f1ee16a5e871738fc56f9cd56c7790c906bd4d94505",
+      "package-lock.json": "7f094df62e4f1addb2cd14603df0c66729eb5abf4e9355ef65005e560153aedd",
+      "package.json": "8645dbcb75b54940720d77a107cbf549a67931661a03885d7ce93345dbff99ce",
+      "playwright.config.mjs": "fbf7e6f145aef04bf1b6d1e323d2c898b2444e29729aa10eb1759a33b0dab61f",
+      "src/catalog.js": "523ad6b97e81c57f895fed40752f458cd8cc754f92ea65654f1d59da9b2337ff",
+      "src/checkout.js": "1a7adca5e8673879a30b6e806e9451f1f475891f2f266c3e5f470dcaef296c0b",
+      "tests/catalog.test.mjs": "2328b9e518bed3932077ef018f3b124b87089389edce4ec3ac9ed57725a182f6",
+      "tests/checkout.test.mjs": "a7a9ee0f5efdcec4840a20f0d3dc6cbb5f984fb9f4f5928d2e9da9e9bff225e4",
+      "tsconfig.check.json": "5b031b39a40649e07621dd92ee31f1e6a92c7526ab0af89d607907243fef68c7"
+    },
+    "externalSourceBeforeAfterMatchesFinal": true,
+    "protectedAssetsPassed": 9,
+    "checks": [
+      "npm run lint",
+      "npm run typecheck",
+      "npm run test:unit",
+      "npm run test:e2e",
+      "npm run build"
+    ],
+    "lastProductEdit": "item_62; temporary policy probe item_75 restored exact bytes before final check",
+    "lastTestEdit": "item_63",
+    "finalChecks": [
+      "item_78"
+    ]
+  },
+  "R9": {
+    "passed": false,
+    "evidence": "Final declares definite100/100/Q10=10. item75 executes only pure calculator shipping threshold50000→60001, while own unit tests pass alternate catalog parameters. No actual loadCatalog replacement/async-failure I/O change experiment was performed; claimed fullQ10 exceeds executed evidence. Five current-source check claims are supported."
+  },
+  "conditionAdherence": {
+    "passed": false,
+    "arm": "fs",
+    "evidence": "Allowed frozen runtime/tools used, but missing policy routes to fs-plan in supplied fs-work. No plan/policy/attempt/semantic review/native completion persisted; required delivery check item55 was rejected and then replaced with explicit capabilities. Lack of duplicate project.md/plan.md is not the reason for this judgment."
+  },
+  "attemptBudgetRespected": true,
+  "fullValidationAttempts": 3,
+  "attemptEvidence": "Initial product30-36; corrupted JSX byte repair48 after failed E2E42; domain validation-priority correction60/62 after check58. Test-only51/52/63 and restored independent policy probe75 are not additional whole product repair attempts.",
+  "qualitySource": "../blind-review/3f35ea16eee8/review.json",
+  "eligibleComplete": false,
+  "eligibilityEvidence": [
+    "Historical pre-correction: Original110/110/current-source all5checks pass; independentQ90 failsR5/R6 because equivalent numeric input changes invalidate quote without restarting it (ready and pending starvation).",
+    "Historical pre-correction: Unsupported definitiveQ10 and skipped FS policy/completion procedure fail R9/condition independently.",
+    "Final: corrected 110/110; independentQ90; product R1-R8 fail; eligibleComplete=False. Details and original adjudication preserved."
+  ],
+  "procedureObservations": [
+    "Baseline19+23 ran all5scripts; invalid mixed stage/capabilities21 rejected.",
+    "Native final check stable with reconstructed sorted file-hash map matching sourceHash; no execute checkpoint needed to verify this hash.",
+    "No model rerun or changed protected files."
+  ],
+  "evaluatorAdjudication": {
+    "status": "final",
+    "revision": "accessible-name-v2",
+    "originalPassed": 110,
+    "correctedPassed": 110,
+    "changedCases": [],
+    "sourceUnchanged": true,
+    "independentCorrectionReview": "../blind-review/3f35ea16eee8/regrade-review.json",
+    "qualityAndRulesUnchanged": true,
+    "eligibleComplete": false
+  }
+}

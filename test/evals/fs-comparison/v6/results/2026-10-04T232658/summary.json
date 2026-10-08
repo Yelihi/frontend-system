@@ -1,0 +1,921 @@
+{
+  "status": "completed",
+  "reason": null,
+  "modelCalls": 4,
+  "manifestHash": "2da8ebc455572cfdf2c4e698e7a95a737241cdac2b6aacfe90a8212a2ea730f2",
+  "journeys": [
+    {
+      "case": "operations-console",
+      "arm": "plain",
+      "records": [
+        {
+          "phase": "prepare",
+          "attempt": 0,
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 45.909,
+            "completedTurns": 1,
+            "threadId": "01a1074f-cbd0-7e52-8299-73ca8bebb6d3",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 62871,
+              "cached_input_tokens": 35840,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 1151,
+              "reasoning_output_tokens": 245,
+              "total_tokens": 64022,
+              "uncached_input_tokens": 27031
+            },
+            "cumulativeUsage": {
+              "input_tokens": 62871,
+              "cached_input_tokens": 35840,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 1151,
+              "reasoning_output_tokens": 245
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "grade": {
+            "status": "recorded-not-semantically-graded",
+            "eligible": true
+          }
+        },
+        {
+          "phase": "work",
+          "attempt": 0,
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 506.386,
+            "completedTurns": 1,
+            "threadId": "01a1074f-cbd0-7e52-8299-73ca8bebb6d3",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 740174,
+              "cached_input_tokens": 714112,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 15455,
+              "reasoning_output_tokens": 5311,
+              "total_tokens": 755629,
+              "uncached_input_tokens": 26062
+            },
+            "cumulativeUsage": {
+              "input_tokens": 803045,
+              "cached_input_tokens": 749952,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 16606,
+              "reasoning_output_tokens": 5556
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "grade": {
+            "status": "graded",
+            "results": [
+              {
+                "id": "F01-public-module-exports",
+                "status": "passed"
+              },
+              {
+                "id": "F02-public-factory-surfaces",
+                "status": "passed"
+              },
+              {
+                "id": "F03-session-snapshot-isolation",
+                "status": "passed"
+              },
+              {
+                "id": "F04-session-equal-token-is-new-generation",
+                "status": "passed"
+              },
+              {
+                "id": "F05-http-copy-credentials-identity",
+                "status": "passed"
+              },
+              {
+                "id": "F06-http-session-header-ownership",
+                "status": "passed"
+              },
+              {
+                "id": "F07-http-error-classification-no-retry",
+                "status": "passed"
+              },
+              {
+                "id": "F08-http-transport-failure-identity",
+                "status": "passed"
+              },
+              {
+                "id": "Q1-auth-callback-failure",
+                "status": "passed"
+              },
+              {
+                "id": "F09-resource-initial-loading-options",
+                "status": "passed"
+              },
+              {
+                "id": "F10-resource-stale-success",
+                "status": "passed"
+              },
+              {
+                "id": "F11-resource-stale-failure",
+                "status": "passed"
+              },
+              {
+                "id": "F12-resource-array-ownership",
+                "status": "passed"
+              },
+              {
+                "id": "F13-resource-reset-invalidates-pending",
+                "status": "passed"
+              },
+              {
+                "id": "Q2-refresh-failure-items",
+                "status": "passed"
+              },
+              {
+                "id": "F14-inflight-independent-keys-and-results",
+                "status": "passed"
+              },
+              {
+                "id": "F15-inflight-clears-success",
+                "status": "passed"
+              },
+              {
+                "id": "F16-inflight-clears-rejection-and-sync-throw",
+                "status": "passed"
+              },
+              {
+                "id": "Q5-inflight-duplicate",
+                "status": "passed"
+              },
+              {
+                "id": "F17-promotion-purchase-tier-cap",
+                "status": "passed"
+              },
+              {
+                "id": "F18-promotion-gift-isolation",
+                "status": "passed"
+              },
+              {
+                "id": "F19-shipping-threshold-and-remote",
+                "status": "passed"
+              },
+              {
+                "id": "F20-quote-composition-and-ownership",
+                "status": "passed"
+              },
+              {
+                "id": "F21-quote-rejects-invalid-lines-and-kinds",
+                "status": "passed"
+              },
+              {
+                "id": "F22-quote-gift-does-not-inherit-purchase",
+                "status": "passed"
+              },
+              {
+                "id": "Q6-credit-scope",
+                "status": "passed"
+              },
+              {
+                "id": "F23-reservation-validation-and-ownership",
+                "status": "passed"
+              },
+              {
+                "id": "Q7-stock-shortage",
+                "status": "passed"
+              },
+              {
+                "id": "F24-return-window-boundaries",
+                "status": "passed"
+              },
+              {
+                "id": "F25-refund-proration-and-gift-policy",
+                "status": "passed"
+              },
+              {
+                "id": "F26-refund-invalid-inputs",
+                "status": "passed"
+              },
+              {
+                "id": "F27-debit-currency-integer-validation",
+                "status": "passed"
+              },
+              {
+                "id": "F28-debit-balance-boundary",
+                "status": "passed"
+              },
+              {
+                "id": "F29-orders-repository-boundary",
+                "status": "passed"
+              },
+              {
+                "id": "F30-inventory-repository-boundary",
+                "status": "passed"
+              },
+              {
+                "id": "F31-returns-repository-boundary",
+                "status": "passed"
+              },
+              {
+                "id": "F32-wallet-repository-boundary",
+                "status": "passed"
+              },
+              {
+                "id": "F33-service-resource-isolation",
+                "status": "passed"
+              },
+              {
+                "id": "F34-order-service-pricing-and-input",
+                "status": "passed"
+              },
+              {
+                "id": "F35-inventory-service-prevalidation-and-copy",
+                "status": "passed"
+              },
+              {
+                "id": "F36-return-service-window-before-persistence",
+                "status": "passed"
+              },
+              {
+                "id": "F37-wallet-service-private-balance-ownership",
+                "status": "passed"
+              },
+              {
+                "id": "F38-service-delegation-error-identity",
+                "status": "passed"
+              },
+              {
+                "id": "F39-checkout-order-total-and-reference-ownership",
+                "status": "passed"
+              },
+              {
+                "id": "F40-checkout-validates-all-before-side-effects",
+                "status": "passed"
+              },
+              {
+                "id": "F41-checkout-partial-reservation-compensation",
+                "status": "passed"
+              },
+              {
+                "id": "F42-checkout-order-failure-reverse-release",
+                "status": "passed"
+              },
+              {
+                "id": "F43-checkout-charge-failure-cancel-before-release",
+                "status": "passed"
+              },
+              {
+                "id": "Q3-compensation-failure",
+                "status": "passed"
+              },
+              {
+                "id": "F44-checkout-duplicate-promise-and-retry",
+                "status": "passed"
+              },
+              {
+                "id": "F45-refund-sequence-payload-and-identity",
+                "status": "passed"
+              },
+              {
+                "id": "F46-refund-stop-after-create-or-refund-failure",
+                "status": "passed"
+              },
+              {
+                "id": "Q4-restock-failure",
+                "status": "passed"
+              },
+              {
+                "id": "F47-cross-workflow-key-namespaces",
+                "status": "passed"
+              },
+              {
+                "id": "F48-system-real-composition",
+                "status": "passed"
+              },
+              {
+                "id": "Q8-session-switch",
+                "status": "passed"
+              },
+              {
+                "id": "F49-ui-action-pending-duplicate-and-recovery",
+                "status": "passed"
+              },
+              {
+                "id": "F50-ui-status-and-amount",
+                "status": "passed"
+              },
+              {
+                "id": "F51-orders-panel-events",
+                "status": "passed"
+              },
+              {
+                "id": "F52-inventory-panel-events",
+                "status": "passed"
+              },
+              {
+                "id": "F53-returns-panel-events",
+                "status": "passed"
+              },
+              {
+                "id": "F54-wallet-panel-events",
+                "status": "passed"
+              },
+              {
+                "id": "F55-checkout-form-identity-result-and-error",
+                "status": "passed"
+              },
+              {
+                "id": "F56-return-form-pending-restock-feedback",
+                "status": "passed"
+              },
+              {
+                "id": "F57-session-bar-explicit-events-and-password",
+                "status": "passed"
+              },
+              {
+                "id": "F58-app-wiring-and-no-render-effects",
+                "status": "passed"
+              },
+              {
+                "id": "F59-ui-build-and-exports",
+                "status": "passed"
+              },
+              {
+                "id": "N2-approved-dependency-edges",
+                "status": "passed"
+              },
+              {
+                "id": "N1-approved-change-scope",
+                "status": "passed",
+                "paths": []
+              }
+            ],
+            "limits": "Finite contract tests, AST edge checks and a controlled hook/element harness. Not a browser, React scheduler, visual quality, profiling or a proof against arbitrary JavaScript evasions.",
+            "planCompliance": {
+              "version": 2,
+              "satisfied": 69,
+              "total": 69,
+              "forbiddenViolations": [],
+              "decisionViolations": [],
+              "semanticReview": "unverified"
+            },
+            "behaviorEligible": true,
+            "eligible": true
+          }
+        }
+      ],
+      "workflow": "observed",
+      "trace": [],
+      "usage": {
+        "input_tokens": 803045,
+        "output_tokens": 16606,
+        "total_tokens": 819651,
+        "cached_input_tokens": 749952
+      },
+      "planCompliance": {
+        "version": 2,
+        "satisfied": 69,
+        "total": 69,
+        "forbiddenViolations": [],
+        "decisionViolations": [],
+        "semanticReview": "unverified"
+      },
+      "questionProtocol": "observed",
+      "semanticReview": "unverified",
+      "eligible": true
+    },
+    {
+      "case": "operations-console",
+      "arm": "fs",
+      "records": [
+        {
+          "phase": "prepare",
+          "attempt": 0,
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 60.689,
+            "completedTurns": 1,
+            "threadId": "01a10758-3cec-7f30-a655-79a19e83214d",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 120802,
+              "cached_input_tokens": 97920,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 1464,
+              "reasoning_output_tokens": 287,
+              "total_tokens": 122266,
+              "uncached_input_tokens": 22882
+            },
+            "cumulativeUsage": {
+              "input_tokens": 120802,
+              "cached_input_tokens": 97920,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 1464,
+              "reasoning_output_tokens": 287
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "grade": {
+            "status": "recorded-not-semantically-graded",
+            "eligible": true
+          }
+        },
+        {
+          "phase": "work",
+          "attempt": 0,
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 393.716,
+            "completedTurns": 1,
+            "threadId": "01a10758-3cec-7f30-a655-79a19e83214d",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 761205,
+              "cached_input_tokens": 732032,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 12081,
+              "reasoning_output_tokens": 3419,
+              "total_tokens": 773286,
+              "uncached_input_tokens": 29173
+            },
+            "cumulativeUsage": {
+              "input_tokens": 882007,
+              "cached_input_tokens": 829952,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 13545,
+              "reasoning_output_tokens": 3706
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "grade": {
+            "status": "graded",
+            "results": [
+              {
+                "id": "F01-public-module-exports",
+                "status": "passed"
+              },
+              {
+                "id": "F02-public-factory-surfaces",
+                "status": "passed"
+              },
+              {
+                "id": "F03-session-snapshot-isolation",
+                "status": "passed"
+              },
+              {
+                "id": "F04-session-equal-token-is-new-generation",
+                "status": "passed"
+              },
+              {
+                "id": "F05-http-copy-credentials-identity",
+                "status": "passed"
+              },
+              {
+                "id": "F06-http-session-header-ownership",
+                "status": "passed"
+              },
+              {
+                "id": "F07-http-error-classification-no-retry",
+                "status": "passed"
+              },
+              {
+                "id": "F08-http-transport-failure-identity",
+                "status": "passed"
+              },
+              {
+                "id": "Q1-auth-callback-failure",
+                "status": "passed"
+              },
+              {
+                "id": "F09-resource-initial-loading-options",
+                "status": "passed"
+              },
+              {
+                "id": "F10-resource-stale-success",
+                "status": "passed"
+              },
+              {
+                "id": "F11-resource-stale-failure",
+                "status": "passed"
+              },
+              {
+                "id": "F12-resource-array-ownership",
+                "status": "passed"
+              },
+              {
+                "id": "F13-resource-reset-invalidates-pending",
+                "status": "passed"
+              },
+              {
+                "id": "Q2-refresh-failure-items",
+                "status": "passed"
+              },
+              {
+                "id": "F14-inflight-independent-keys-and-results",
+                "status": "passed"
+              },
+              {
+                "id": "F15-inflight-clears-success",
+                "status": "passed"
+              },
+              {
+                "id": "F16-inflight-clears-rejection-and-sync-throw",
+                "status": "passed"
+              },
+              {
+                "id": "Q5-inflight-duplicate",
+                "status": "passed"
+              },
+              {
+                "id": "F17-promotion-purchase-tier-cap",
+                "status": "passed"
+              },
+              {
+                "id": "F18-promotion-gift-isolation",
+                "status": "passed"
+              },
+              {
+                "id": "F19-shipping-threshold-and-remote",
+                "status": "passed"
+              },
+              {
+                "id": "F20-quote-composition-and-ownership",
+                "status": "passed"
+              },
+              {
+                "id": "F21-quote-rejects-invalid-lines-and-kinds",
+                "status": "passed"
+              },
+              {
+                "id": "F22-quote-gift-does-not-inherit-purchase",
+                "status": "passed"
+              },
+              {
+                "id": "Q6-credit-scope",
+                "status": "passed"
+              },
+              {
+                "id": "F23-reservation-validation-and-ownership",
+                "status": "passed"
+              },
+              {
+                "id": "Q7-stock-shortage",
+                "status": "passed"
+              },
+              {
+                "id": "F24-return-window-boundaries",
+                "status": "passed"
+              },
+              {
+                "id": "F25-refund-proration-and-gift-policy",
+                "status": "passed"
+              },
+              {
+                "id": "F26-refund-invalid-inputs",
+                "status": "passed"
+              },
+              {
+                "id": "F27-debit-currency-integer-validation",
+                "status": "passed"
+              },
+              {
+                "id": "F28-debit-balance-boundary",
+                "status": "passed"
+              },
+              {
+                "id": "F29-orders-repository-boundary",
+                "status": "passed"
+              },
+              {
+                "id": "F30-inventory-repository-boundary",
+                "status": "passed"
+              },
+              {
+                "id": "F31-returns-repository-boundary",
+                "status": "passed"
+              },
+              {
+                "id": "F32-wallet-repository-boundary",
+                "status": "passed"
+              },
+              {
+                "id": "F33-service-resource-isolation",
+                "status": "passed"
+              },
+              {
+                "id": "F34-order-service-pricing-and-input",
+                "status": "passed"
+              },
+              {
+                "id": "F35-inventory-service-prevalidation-and-copy",
+                "status": "passed"
+              },
+              {
+                "id": "F36-return-service-window-before-persistence",
+                "status": "passed"
+              },
+              {
+                "id": "F37-wallet-service-private-balance-ownership",
+                "status": "passed"
+              },
+              {
+                "id": "F38-service-delegation-error-identity",
+                "status": "passed"
+              },
+              {
+                "id": "F39-checkout-order-total-and-reference-ownership",
+                "status": "passed"
+              },
+              {
+                "id": "F40-checkout-validates-all-before-side-effects",
+                "status": "passed"
+              },
+              {
+                "id": "F41-checkout-partial-reservation-compensation",
+                "status": "passed"
+              },
+              {
+                "id": "F42-checkout-order-failure-reverse-release",
+                "status": "passed"
+              },
+              {
+                "id": "F43-checkout-charge-failure-cancel-before-release",
+                "status": "passed"
+              },
+              {
+                "id": "Q3-compensation-failure",
+                "status": "passed"
+              },
+              {
+                "id": "F44-checkout-duplicate-promise-and-retry",
+                "status": "passed"
+              },
+              {
+                "id": "F45-refund-sequence-payload-and-identity",
+                "status": "passed"
+              },
+              {
+                "id": "F46-refund-stop-after-create-or-refund-failure",
+                "status": "passed"
+              },
+              {
+                "id": "Q4-restock-failure",
+                "status": "passed"
+              },
+              {
+                "id": "F47-cross-workflow-key-namespaces",
+                "status": "passed"
+              },
+              {
+                "id": "F48-system-real-composition",
+                "status": "passed"
+              },
+              {
+                "id": "Q8-session-switch",
+                "status": "passed"
+              },
+              {
+                "id": "F49-ui-action-pending-duplicate-and-recovery",
+                "status": "passed"
+              },
+              {
+                "id": "F50-ui-status-and-amount",
+                "status": "passed"
+              },
+              {
+                "id": "F51-orders-panel-events",
+                "status": "passed"
+              },
+              {
+                "id": "F52-inventory-panel-events",
+                "status": "passed"
+              },
+              {
+                "id": "F53-returns-panel-events",
+                "status": "passed"
+              },
+              {
+                "id": "F54-wallet-panel-events",
+                "status": "passed"
+              },
+              {
+                "id": "F55-checkout-form-identity-result-and-error",
+                "status": "passed"
+              },
+              {
+                "id": "F56-return-form-pending-restock-feedback",
+                "status": "passed"
+              },
+              {
+                "id": "F57-session-bar-explicit-events-and-password",
+                "status": "passed"
+              },
+              {
+                "id": "F58-app-wiring-and-no-render-effects",
+                "status": "passed"
+              },
+              {
+                "id": "F59-ui-build-and-exports",
+                "status": "passed"
+              },
+              {
+                "id": "N2-approved-dependency-edges",
+                "status": "passed"
+              },
+              {
+                "id": "N1-approved-change-scope",
+                "status": "passed",
+                "paths": []
+              }
+            ],
+            "limits": "Finite contract tests, AST edge checks and a controlled hook/element harness. Not a browser, React scheduler, visual quality, profiling or a proof against arbitrary JavaScript evasions.",
+            "planCompliance": {
+              "version": 2,
+              "satisfied": 69,
+              "total": 69,
+              "forbiddenViolations": [],
+              "decisionViolations": [],
+              "semanticReview": "unverified"
+            },
+            "behaviorEligible": true,
+            "eligible": true
+          }
+        }
+      ],
+      "workflow": "workflow-failed",
+      "trace": [
+        {
+          "tool": "inspect_project",
+          "arguments": {
+            "overall": true
+          },
+          "response": {
+            "overall": true,
+            "profile": {
+              "project": {
+                "id": "project",
+                "name": "project",
+                "rootPath": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-network-pilot-smcoyj0i/project",
+                "git": {
+                  "repositoryRoot": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-network-pilot-smcoyj0i/project",
+                  "defaultBranch": "main",
+                  "commit": "5eeca40cde868ec833feeb4cc35ebd48a8f79c6c"
+                }
+              },
+              "inventory": {
+                "fileCount": 37,
+                "excluded": [
+                  ".git"
+                ],
+                "warnings": [
+                  "Not followed (symbolic link): node_modules"
+                ]
+              },
+              "runtime": {
+                "name": "node",
+                "evidence": [
+                  "package.json detected"
+                ]
+              },
+              "packageManager": {
+                "name": "npm",
+                "evidence": [
+                  "package.json fallback"
+                ]
+              },
+              "technologies": [],
+              "scripts": {
+                "test": "node --test",
+                "build": "node ../runtime/build.mjs"
+              },
+              "paths": {
+                "root": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-network-pilot-smcoyj0i/project",
+                "manifests": [
+                  "package.json"
+                ],
+                "sourceDirectories": [],
+                "configFiles": []
+              },
+              "architecture": {
+                "style": "single application",
+                "roots": [],
+                "evidence": []
+              },
+              "design": {
+                "systems": [],
+                "files": [],
+                "evidence": []
+              },
+              "conventions": [],
+              "capabilities": [
+                {
+                  "name": "test",
+                  "script": "test",
+                  "command": "npm run test",
+                  "packageManager": "npm",
+                  "workingDirectory": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-network-pilot-smcoyj0i/project"
+                },
+                {
+                  "name": "build",
+                  "script": "build",
+                  "command": "npm run build",
+                  "packageManager": "npm",
+                  "workingDirectory": "/private/var/folders/jb/9px7lw3156bfbrs3ygcpkm1c0000gn/T/fs-network-pilot-smcoyj0i/project"
+                }
+              ],
+              "constraints": []
+            },
+            "projectDocument": "",
+            "changedFiles": [
+              "PROVIDED_PLAN.md"
+            ]
+          },
+          "error": false
+        }
+      ],
+      "usage": {
+        "input_tokens": 882007,
+        "output_tokens": 13545,
+        "total_tokens": 895552,
+        "cached_input_tokens": 829952
+      },
+      "planCompliance": {
+        "version": 2,
+        "satisfied": 69,
+        "total": 69,
+        "forbiddenViolations": [],
+        "decisionViolations": [],
+        "semanticReview": "unverified"
+      },
+      "questionProtocol": "observed",
+      "semanticReview": "unverified",
+      "eligible": false
+    }
+  ],
+  "comparison": [
+    {
+      "case": "operations-console",
+      "arm": "plain",
+      "questionProtocol": "observed",
+      "firstImplementationPassed": true,
+      "firstPlanCompliance": {
+        "version": 2,
+        "satisfied": 69,
+        "total": 69,
+        "forbiddenViolations": [],
+        "decisionViolations": [],
+        "semanticReview": "unverified"
+      },
+      "finalPlanCompliance": {
+        "version": 2,
+        "satisfied": 69,
+        "total": 69,
+        "forbiddenViolations": [],
+        "decisionViolations": [],
+        "semanticReview": "unverified"
+      },
+      "finalEligible": true,
+      "repairCalls": 0,
+      "modelElapsedSeconds": 552.2950000000001,
+      "totalTokens": 819651,
+      "uncachedInputTokens": 53093
+    },
+    {
+      "case": "operations-console",
+      "arm": "fs",
+      "questionProtocol": "observed",
+      "firstImplementationPassed": true,
+      "firstPlanCompliance": {
+        "version": 2,
+        "satisfied": 69,
+        "total": 69,
+        "forbiddenViolations": [],
+        "decisionViolations": [],
+        "semanticReview": "unverified"
+      },
+      "finalPlanCompliance": {
+        "version": 2,
+        "satisfied": 69,
+        "total": 69,
+        "forbiddenViolations": [],
+        "decisionViolations": [],
+        "semanticReview": "unverified"
+      },
+      "finalEligible": false,
+      "repairCalls": 0,
+      "modelElapsedSeconds": 454.40500000000003,
+      "totalTokens": 895552,
+      "uncachedInputTokens": 52055
+    }
+  ]
+}

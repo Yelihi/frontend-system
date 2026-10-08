@@ -1,0 +1,243 @@
+{
+  "editable": [
+    "App.jsx",
+    "application/checkout.mjs",
+    "application/inventory.mjs",
+    "application/orders.mjs",
+    "application/refund.mjs",
+    "application/returns.mjs",
+    "application/system.mjs",
+    "application/wallet.mjs",
+    "data/inventory.mjs",
+    "data/orders.mjs",
+    "data/returns.mjs",
+    "data/wallet.mjs",
+    "domain/inventory.mjs",
+    "domain/order.mjs",
+    "domain/promotion.mjs",
+    "domain/returns.mjs",
+    "domain/shipping.mjs",
+    "domain/wallet.mjs",
+    "shared/http.mjs",
+    "shared/inflight.mjs",
+    "shared/resource.mjs",
+    "shared/session.mjs",
+    "ui/Amount.jsx",
+    "ui/CheckoutForm.jsx",
+    "ui/InventoryPanel.jsx",
+    "ui/OrderPanel.jsx",
+    "ui/ReturnForm.jsx",
+    "ui/ReturnsPanel.jsx",
+    "ui/SessionBar.jsx",
+    "ui/Status.jsx",
+    "ui/WalletPanel.jsx",
+    "ui/useAction.mjs"
+  ],
+  "exports": {
+    "App.jsx": [
+      "default"
+    ],
+    "application/checkout.mjs": [
+      "createCheckout"
+    ],
+    "application/inventory.mjs": [
+      "createInventory"
+    ],
+    "application/orders.mjs": [
+      "createOrders"
+    ],
+    "application/refund.mjs": [
+      "createRefundFlow"
+    ],
+    "application/returns.mjs": [
+      "createReturns"
+    ],
+    "application/system.mjs": [
+      "createSystem"
+    ],
+    "application/wallet.mjs": [
+      "createWallet"
+    ],
+    "data/inventory.mjs": [
+      "createInventoryRepository"
+    ],
+    "data/orders.mjs": [
+      "createOrderRepository"
+    ],
+    "data/returns.mjs": [
+      "createReturnRepository"
+    ],
+    "data/wallet.mjs": [
+      "createWalletRepository"
+    ],
+    "domain/inventory.mjs": [
+      "validateReservation"
+    ],
+    "domain/order.mjs": [
+      "quote"
+    ],
+    "domain/promotion.mjs": [
+      "discount"
+    ],
+    "domain/returns.mjs": [
+      "canReturn",
+      "refundAmount"
+    ],
+    "domain/shipping.mjs": [
+      "shipping"
+    ],
+    "domain/wallet.mjs": [
+      "validateDebit"
+    ],
+    "shared/http.mjs": [
+      "createClient"
+    ],
+    "shared/inflight.mjs": [
+      "createInflight"
+    ],
+    "shared/resource.mjs": [
+      "createResource"
+    ],
+    "shared/session.mjs": [
+      "createSession"
+    ],
+    "ui/Amount.jsx": [
+      "default"
+    ],
+    "ui/CheckoutForm.jsx": [
+      "default"
+    ],
+    "ui/InventoryPanel.jsx": [
+      "default"
+    ],
+    "ui/OrderPanel.jsx": [
+      "default"
+    ],
+    "ui/ReturnForm.jsx": [
+      "default"
+    ],
+    "ui/ReturnsPanel.jsx": [
+      "default"
+    ],
+    "ui/SessionBar.jsx": [
+      "default"
+    ],
+    "ui/Status.jsx": [
+      "default"
+    ],
+    "ui/WalletPanel.jsx": [
+      "default"
+    ],
+    "ui/useAction.mjs": [
+      "useAction"
+    ]
+  },
+  "edges": {
+    "App.jsx": [
+      "react",
+      "./ui/OrderPanel.jsx",
+      "./ui/InventoryPanel.jsx",
+      "./ui/ReturnsPanel.jsx",
+      "./ui/WalletPanel.jsx",
+      "./ui/CheckoutForm.jsx",
+      "./ui/ReturnForm.jsx",
+      "./ui/SessionBar.jsx"
+    ],
+    "application/checkout.mjs": [
+      "../domain/order.mjs",
+      "../domain/inventory.mjs",
+      "../domain/wallet.mjs"
+    ],
+    "application/inventory.mjs": [
+      "../shared/resource.mjs",
+      "../domain/inventory.mjs"
+    ],
+    "application/orders.mjs": [
+      "../shared/resource.mjs",
+      "../domain/order.mjs"
+    ],
+    "application/refund.mjs": [],
+    "application/returns.mjs": [
+      "../shared/resource.mjs",
+      "../domain/returns.mjs"
+    ],
+    "application/system.mjs": [
+      "../shared/session.mjs",
+      "../shared/http.mjs",
+      "../shared/inflight.mjs",
+      "../data/orders.mjs",
+      "../data/inventory.mjs",
+      "../data/returns.mjs",
+      "../data/wallet.mjs",
+      "./orders.mjs",
+      "./inventory.mjs",
+      "./returns.mjs",
+      "./wallet.mjs",
+      "./checkout.mjs",
+      "./refund.mjs"
+    ],
+    "application/wallet.mjs": [
+      "../shared/resource.mjs",
+      "../domain/wallet.mjs"
+    ],
+    "data/inventory.mjs": [],
+    "data/orders.mjs": [],
+    "data/returns.mjs": [],
+    "data/wallet.mjs": [],
+    "domain/inventory.mjs": [],
+    "domain/order.mjs": [
+      "./promotion.mjs",
+      "./shipping.mjs"
+    ],
+    "domain/promotion.mjs": [],
+    "domain/returns.mjs": [],
+    "domain/shipping.mjs": [],
+    "domain/wallet.mjs": [],
+    "shared/http.mjs": [],
+    "shared/inflight.mjs": [],
+    "shared/resource.mjs": [],
+    "shared/session.mjs": [],
+    "ui/Amount.jsx": [
+      "react",
+      "../shared/format.mjs"
+    ],
+    "ui/CheckoutForm.jsx": [
+      "react",
+      "./useAction.mjs"
+    ],
+    "ui/InventoryPanel.jsx": [
+      "react",
+      "./useAction.mjs",
+      "./Status.jsx"
+    ],
+    "ui/OrderPanel.jsx": [
+      "react",
+      "./useAction.mjs",
+      "./Status.jsx"
+    ],
+    "ui/ReturnForm.jsx": [
+      "react",
+      "./useAction.mjs"
+    ],
+    "ui/ReturnsPanel.jsx": [
+      "react",
+      "./useAction.mjs",
+      "./Status.jsx"
+    ],
+    "ui/SessionBar.jsx": [
+      "react"
+    ],
+    "ui/Status.jsx": [
+      "react"
+    ],
+    "ui/WalletPanel.jsx": [
+      "react",
+      "./useAction.mjs",
+      "./Status.jsx",
+      "./Amount.jsx"
+    ],
+    "ui/useAction.mjs": [
+      "react"
+    ]
+  }
+}

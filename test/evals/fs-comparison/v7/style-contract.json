@@ -1,0 +1,58 @@
+{
+  "ActionButton": {
+    "tag": "button",
+    "base": "inline-flex items-center justify-center rounded font-medium disabled:opacity-50",
+    "axes": {
+      "tone": {
+        "primary": "bg-action text-on-action",
+        "quiet": "bg-slate-100 text-slate-900"
+      },
+      "size": {
+        "sm": "px-3 py-1 text-sm",
+        "lg": "px-4 py-2 text-base"
+      }
+    },
+    "defaults": {
+      "tone": "primary",
+      "size": "sm"
+    }
+  },
+  "StatusBadge": {
+    "tag": "span",
+    "base": "inline-flex rounded font-medium",
+    "axes": {
+      "status": {
+        "idle": "bg-slate-100 text-slate-900",
+        "loading": "bg-amber-100 text-amber-900",
+        "success": "bg-green-100 text-green-900",
+        "error": "bg-red-100 text-red-900"
+      },
+      "density": {
+        "compact": "px-1 py-0.5 text-xs",
+        "comfortable": "px-2 py-1 text-sm"
+      }
+    },
+    "defaults": {
+      "status": "idle",
+      "density": "compact"
+    }
+  },
+  "PanelCard": {
+    "tag": "section",
+    "base": "rounded border",
+    "axes": {
+      "tone": {
+        "neutral": "border-slate-200 bg-white",
+        "accent": "border-action bg-white"
+      },
+      "density": {
+        "compact": "p-2",
+        "comfortable": "p-4"
+      }
+    },
+    "defaults": {
+      "tone": "neutral",
+      "density": "comfortable"
+    }
+  }
+}

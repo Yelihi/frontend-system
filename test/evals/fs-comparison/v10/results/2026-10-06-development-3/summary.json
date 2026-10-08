@@ -1,0 +1,510 @@
+{
+  "summary": {
+    "calls": 6,
+    "completedTurns": 6,
+    "totalTokens": 1462089,
+    "uncachedPlusOutput": 152265,
+    "seconds": 1098.78,
+    "unknownUsage": 0,
+    "mcpErrors": 1,
+    "completedJourneys": 3
+  },
+  "rows": [
+    {
+      "id": "draft-editor-raw-K1",
+      "case": "draft-editor",
+      "arm": "raw-K1",
+      "calls": 2,
+      "completedTurns": 2,
+      "totalTokens": 129645,
+      "uncachedPlusOutput": 30957,
+      "seconds": 245.995,
+      "unknownUsage": 0,
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "knowledgeReads": [],
+      "approvals": [],
+      "commands": [
+        "/bin/zsh -lc \"pwd && rg --files -g 'README.md' -g 'learning/*.md' -g 'AGENTS.md' -g '\"'!node_modules'\"' -g '\"'!dist'\"' -g '\"'!build'\"' && rg --files -g '\"'!node_modules'\"' -g '\"'!dist'\"' -g '\"'!build'\"' | head -200\"",
+        "/bin/zsh -lc 'cat README.md learning/*.md src/*.ts package.json tsconfig.json'",
+        "/bin/zsh -lc 'cat owner-answers.json questions.json README.md src/editor.ts src/drafts.ts src/types.ts src/mount.ts src/memory-repository.ts learning/draft-ownership.md'"
+      ],
+      "audits": [
+        {
+          "id": "draft-editor-raw-K1",
+          "phase": "questions",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 129.573,
+            "completedTurns": 1,
+            "threadId": "01a10ccd-864e-7f41-a0c8-98c98af97baf",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 58297,
+              "cached_input_tokens": 40448,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 2795,
+              "reasoning_output_tokens": 809,
+              "total_tokens": 61092,
+              "uncached_input_tokens": 17849
+            },
+            "cumulativeUsage": {
+              "input_tokens": 58297,
+              "cached_input_tokens": 40448,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 2795,
+              "reasoning_output_tokens": 809
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "questions": {
+            "count": 4,
+            "citations": [
+              {
+                "questionId": "q1",
+                "path": "README.md",
+                "quote": "The editor has one current document and a 200ms autosave timer. Repository revisions exist but the host has not defined conflict resolution, unsaved navigation, or cross-pane draft ownership.",
+                "exact": true
+              },
+              {
+                "questionId": "q1",
+                "path": "src/drafts.ts",
+                "quote": "const drafts=new Map<string,Doc>();",
+                "exact": true
+              },
+              {
+                "questionId": "q1",
+                "path": "src/editor.ts",
+                "quote": "doc.body=body; remember(doc); clearTimeout(timer);",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/editor.ts",
+                "quote": "async function open(id:string) { doc=await repo.load(id); view.body(doc.body); view.status('Loaded'); }",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/editor.ts",
+                "quote": "timer=setTimeout(async()=>{const result=await repo.saveDraft(doc);",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/types.ts",
+                "quote": "export type SaveResult={kind:'saved';document:Doc}|{kind:'conflict';remote:Doc};",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/editor.ts",
+                "quote": "else {doc=result.remote;view.body(doc.body);view.status('Updated');}",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/memory-repository.ts",
+                "quote": "if(current&&current.revision!==doc.revision)return {kind:'conflict',remote:{...current}};",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/editor.ts",
+                "quote": "return {open,edit,dispose(){clearTimeout(timer);}};",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/mount.ts",
+                "quote": "return {...editor,dispose(){editor.dispose();input.remove();status.remove();}};",
+                "exact": true
+              }
+            ],
+            "allQuotesExact": true
+          }
+        },
+        {
+          "id": "draft-editor-raw-K1",
+          "phase": "plan",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 116.422,
+            "completedTurns": 1,
+            "threadId": "01a10ccd-864e-7f41-a0c8-98c98af97baf",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 65816,
+              "cached_input_tokens": 58240,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 2737,
+              "reasoning_output_tokens": 690,
+              "total_tokens": 68553,
+              "uncached_input_tokens": 7576
+            },
+            "cumulativeUsage": {
+              "input_tokens": 124113,
+              "cached_input_tokens": 98688,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 5532,
+              "reasoning_output_tokens": 1499
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "planCharacters": 8378
+        }
+      ],
+      "complete": true
+    },
+    {
+      "id": "draft-editor-fs-K1",
+      "case": "draft-editor",
+      "arm": "fs-K1",
+      "calls": 2,
+      "completedTurns": 2,
+      "totalTokens": 1207888,
+      "uncachedPlusOutput": 99664,
+      "seconds": 635.47,
+      "unknownUsage": 0,
+      "mcpCalls": 17,
+      "mcpErrors": 1,
+      "knowledgeReads": [
+        {
+          "id": [
+            "draft-ownership"
+          ]
+        }
+      ],
+      "approvals": [],
+      "commands": [
+        "/bin/zsh -lc 'cat ../runtime/skills/fs-plan/SKILL.md'",
+        "/bin/zsh -lc 'cat README.md'",
+        "/bin/zsh -lc \"rg --files -g 'AGENTS.md' -g '\"'!node_modules'\"' -g '\"'!dist'\"' -g '\"'!build'\"' -g '\"'!coverage'\"' .\"",
+        "/bin/zsh -lc 'node ../runtime/bundle/tool-help.mjs save_project_context'",
+        "/bin/zsh -lc 'cat questions.json'",
+        "/bin/zsh -lc 'cat owner-answers.json'",
+        "/bin/zsh -lc 'node ../runtime/bundle/tool-help.mjs save_revision'",
+        "/bin/zsh -lc \"python3 -c 'import json\nfrom pathlib import Path\np = Path(\\\".frontend-system/drafts/portal-refactor.json\\\")\ndata = json.loads(p.read_text())\nc = data[\\\"content\\\"]\nc = c.replace(\\\"The user must make an explicit choice after comparison; the plan does not choose the resolution controls, exact conflict copy, or a policy for manually retrying. No automatic overwrite, merge, or retry is authorized.\\\", \\\"The user must make an explicit choice after comparison. The comparison may offer local and remote as selectable candidates; the control style and accurate conflict copy are implementation discretion. Displaying the comparison never saves, overwrites, merges, or retries. Any later change to either version must result from the explicit choice.\\\")\nc = c.replace(\\\"Keep the current public \"'`open`, `edit`, and `dispose` operations; any new explicit conflict-resolution operation must wait for its action semantics to be agreed.\", \"Keep the current public `open`, `edit`, and `dispose` operations; add only the narrow action needed for an explicit post-comparison selection. Selection must not itself dispatch a save.\")\nc = c.replace(\"q4 remains open: repository load/saveDraft rejection presentation and recovery. Do not infer an error message, automatic retry, or discard policy. The exact post-comparison action controls and conflict wording also need owner agreement before that UI is implemented; the resolved obligation is to retain both versions and await a choice.\", \"Only q4 remains open: repository load/saveDraft rejection presentation and recovery. Do not infer an error message, automatic retry, or discard policy. Conflict comparison control shape and wording are implementation discretion within the resolved obligation to retain both versions and await an explicit choice.\")\ndata[\"content\"] = c\ndata[\"issues\"][0][\"files\"].remove(\"src/memory-repository.ts\")\ndata[\"issues\"][0][\"contract\"] = data[\"issues\"][0][\"contract\"].replace(\"Isolate rejection behavior and exact resolution controls until owner choice.\", \"Isolate rejection behavior until owner choice; keep conflict presentation within the explicit comparison requirement.\")\np.write_text(json.dumps(data, indent=2) + \"'\"\\\\n\\\")'\"",
+        "/bin/zsh -lc \"python3 -c 'import json\nfrom pathlib import Path\np = Path(\\\".frontend-system/drafts/portal-refactor.json\\\")\ndata = json.loads(p.read_text())\ndata[\\\"policy\\\"][\\\"rules\\\"] = [r for r in data[\\\"policy\\\"][\\\"rules\\\"] if r[\\\"id\\\"] \"'!= \"r-failure-open\"]\ndata[\"policy\"][\"reviews\"][0][\"ruleIds\"].remove(\"r-failure-open\")\nfor d in data[\"evidence\"][\"decisions\"]:\n    if d[\"id\"] == \"d-rejection\":\n        d[\"ruleIds\"] = []\np.write_text(json.dumps(data, indent=2) + \"'\"\\\\n\\\")'\"",
+        "/bin/zsh -lc 'cp .frontend-system/plans/portal-refactor/plan.md plan.md'",
+        "/bin/zsh -lc 'cmp plan.md .frontend-system/plans/portal-refactor/plan.md'",
+        "/bin/zsh -lc 'git status --short'",
+        "/bin/zsh -lc \"rg -n 'Only q4|post-comparison|Issue contracts|d-rejection|Repository' plan.md\""
+      ],
+      "audits": [
+        {
+          "id": "draft-editor-fs-K1",
+          "phase": "questions",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 235.993,
+            "completedTurns": 1,
+            "threadId": "01a10ccd-864e-73d2-867a-23c9d2048ca4",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 336086,
+              "cached_input_tokens": 286848,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 5751,
+              "reasoning_output_tokens": 1087,
+              "total_tokens": 341837,
+              "uncached_input_tokens": 49238
+            },
+            "cumulativeUsage": {
+              "input_tokens": 336086,
+              "cached_input_tokens": 286848,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 5751,
+              "reasoning_output_tokens": 1087
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "questions": {
+            "count": 4,
+            "citations": [
+              {
+                "questionId": "q1",
+                "path": "src/editor.ts",
+                "quote": "async function open(id:string) { doc=await repo.load(id); view.body(doc.body); view.status('Loaded'); }",
+                "exact": true
+              },
+              {
+                "questionId": "q1",
+                "path": "src/editor.ts",
+                "quote": "timer=setTimeout(async()=>{const result=await repo.saveDraft(doc);",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/types.ts",
+                "quote": "export type SaveResult={kind:'saved';document:Doc}|{kind:'conflict';remote:Doc};",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/editor.ts",
+                "quote": "else {doc=result.remote;view.body(doc.body);view.status('Updated');}",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/drafts.ts",
+                "quote": "const drafts=new Map<string,Doc>();",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/drafts.ts",
+                "quote": "export function remember(doc:Doc) { drafts.set(doc.id,doc); }",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/mount.ts",
+                "quote": "const editor=createEditor(repo,{body:v=>{input.value=v;},status:v=>{status.textContent=v;}});",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/types.ts",
+                "quote": "export type Repository={load(id:string):Promise<Doc>;saveDraft(doc:Doc):Promise<SaveResult>};",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/memory-repository.ts",
+                "quote": "return {async load(id){const d=store.get(id);if(!d)throw Error('missing');return {...d};},",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/editor.ts",
+                "quote": "timer=setTimeout(async()=>{const result=await repo.saveDraft(doc);",
+                "exact": true
+              }
+            ],
+            "allQuotesExact": true
+          }
+        },
+        {
+          "id": "draft-editor-fs-K1",
+          "phase": "plan",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 399.477,
+            "completedTurns": 1,
+            "threadId": "01a10ccd-864e-73d2-867a-23c9d2048ca4",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 855748,
+              "cached_input_tokens": 821376,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 10303,
+              "reasoning_output_tokens": 4235,
+              "total_tokens": 866051,
+              "uncached_input_tokens": 34372
+            },
+            "cumulativeUsage": {
+              "input_tokens": 1191834,
+              "cached_input_tokens": 1108224,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 16054,
+              "reasoning_output_tokens": 5322
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "planCharacters": 12308
+        }
+      ],
+      "complete": true
+    },
+    {
+      "id": "draft-editor-ordinary",
+      "case": "draft-editor",
+      "arm": "ordinary",
+      "calls": 2,
+      "completedTurns": 2,
+      "totalTokens": 124556,
+      "uncachedPlusOutput": 21644,
+      "seconds": 217.315,
+      "unknownUsage": 0,
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "knowledgeReads": [],
+      "approvals": [],
+      "commands": [
+        "/bin/zsh -lc \"pwd && rg --files -g 'README.md' -g 'AGENTS.md' -g '\"'!node_modules'\"' -g '\"'!vendor'\"' && rg --files -g '\"'!node_modules'\"' -g '\"'!vendor'\"' | head -80\"",
+        "/bin/zsh -lc 'cat README.md'",
+        "/bin/zsh -lc 'cat package.json'",
+        "/bin/zsh -lc 'cat src/types.ts src/drafts.ts src/memory-repository.ts'",
+        "/bin/zsh -lc 'cat src/editor.ts src/mount.ts'",
+        "/bin/zsh -lc 'cat README.md questions.json'",
+        "/bin/zsh -lc 'cat owner-answers.json'",
+        "/bin/zsh -lc 'cat src/types.ts src/drafts.ts src/memory-repository.ts src/editor.ts src/mount.ts'",
+        "/bin/zsh -lc \"rg --files -g 'AGENTS.md' -g '\"'!node_modules'\"'\""
+      ],
+      "audits": [
+        {
+          "id": "draft-editor-ordinary",
+          "phase": "questions",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 107.221,
+            "completedTurns": 1,
+            "threadId": "01a10ccf-80e8-7343-9763-f602e9093d74",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 56159,
+              "cached_input_tokens": 47744,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 2645,
+              "reasoning_output_tokens": 569,
+              "total_tokens": 58804,
+              "uncached_input_tokens": 8415
+            },
+            "cumulativeUsage": {
+              "input_tokens": 56159,
+              "cached_input_tokens": 47744,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 2645,
+              "reasoning_output_tokens": 569
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "questions": {
+            "count": 4,
+            "citations": [
+              {
+                "questionId": "q1",
+                "path": "README.md",
+                "quote": "the host has not defined conflict resolution, unsaved navigation, or cross-pane draft ownership.",
+                "exact": true
+              },
+              {
+                "questionId": "q1",
+                "path": "src/editor.ts",
+                "quote": "async function open(id:string) { doc=await repo.load(id); view.body(doc.body); view.status('Loaded'); }",
+                "exact": true
+              },
+              {
+                "questionId": "q1",
+                "path": "src/editor.ts",
+                "quote": "return {open,edit,dispose(){clearTimeout(timer);}};",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/types.ts",
+                "quote": "export type SaveResult={kind:'saved';document:Doc}|{kind:'conflict';remote:Doc};",
+                "exact": true
+              },
+              {
+                "questionId": "q2",
+                "path": "src/editor.ts",
+                "quote": "else {doc=result.remote;view.body(doc.body);view.status('Updated');}",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "README.md",
+                "quote": "Plan a refactor of this document editor before adding a second editor pane. Autosave, navigation and conflict handling need clear ownership.",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/drafts.ts",
+                "quote": "const drafts=new Map<string,Doc>();",
+                "exact": true
+              },
+              {
+                "questionId": "q3",
+                "path": "src/editor.ts",
+                "quote": "doc.body=body; remember(doc); clearTimeout(timer);",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/types.ts",
+                "quote": "export type Repository={load(id:string):Promise<Doc>;saveDraft(doc:Doc):Promise<SaveResult>};",
+                "exact": true
+              },
+              {
+                "questionId": "q4",
+                "path": "src/editor.ts",
+                "quote": "timer=setTimeout(async()=>{const result=await repo.saveDraft(doc);",
+                "exact": true
+              }
+            ],
+            "allQuotesExact": true
+          }
+        },
+        {
+          "id": "draft-editor-ordinary",
+          "phase": "plan",
+          "invocation": {
+            "requestedModel": "gpt-6-sol",
+            "exitCode": 0,
+            "timedOut": false,
+            "elapsedSeconds": 110.094,
+            "completedTurns": 1,
+            "threadId": "01a10ccf-80e8-7343-9763-f602e9093d74",
+            "sessionError": null,
+            "usage": {
+              "input_tokens": 62941,
+              "cached_input_tokens": 55168,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 2811,
+              "reasoning_output_tokens": 800,
+              "total_tokens": 65752,
+              "uncached_input_tokens": 7773
+            },
+            "cumulativeUsage": {
+              "input_tokens": 119100,
+              "cached_input_tokens": 102912,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 5456,
+              "reasoning_output_tokens": 1369
+            },
+            "usageError": null,
+            "errors": []
+          },
+          "sourceUnchanged": true,
+          "runtimeUnchanged": true,
+          "environmentFailure": null,
+          "planCharacters": 7864
+        }
+      ],
+      "complete": true
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "version": 3,
+  "plan": "\nQ1 through Q8 are supplied only after preparation, in USER_DECISIONS.md. Do not infer answers from existing code.\n",
+  "questionProtocol": "Return final JSON only: {\"questions\":[{\"topic\":\"one of the required topic IDs\",\"question\":\"a concrete question explaining the choice\"}]}. Ask all eight topics: auth-callback-failure, refresh-failure-items, compensation-failure, restock-failure, inflight-duplicate, credit-scope, stock-shortage, session-switch. Do not edit product files during preparation.",
+  "answers": {
+    "auth-callback-failure": "Forward the exact original callback error; a normal return rejects with code=unauthorized.",
+    "refresh-failure-items": "Keep the last successful items for all four services; preserve the original error and status=error.",
+    "compensation-failure": "Continue all cleanup operations. If any cleanup fails, reject a new error with code=checkout-compensation, cause=the original primary error, and cleanupErrors in attempted cleanup order with the original objects.",
+    "restock-failure": "Keep the successful return and refund. Resolve {record,refund,restockPending:true,restockError:originalError}; never refund again.",
+    "inflight-duplicate": "Share the exact same pending Promise for a key. After success or failure clear the key and allow a new operation.",
+    "credit-scope": "Apply credit only to merchandise after discounts; never to shipping. Cap creditUsed at the merchandise amount.",
+    "stock-shortage": "Reject with code=out-of-stock before any reservation effect; do not allow overselling.",
+    "session-switch": "Clear all four resource lists and ignore pending responses from the previous session. Increment generation even if login uses the same token. HTTP rejects stale-session before response/auth processing."
+  },
+  "requiredTopics": [
+    "auth-callback-failure",
+    "refresh-failure-items",
+    "compensation-failure",
+    "restock-failure",
+    "inflight-duplicate",
+    "credit-scope",
+    "stock-shortage",
+    "session-switch"
+  ]
+}

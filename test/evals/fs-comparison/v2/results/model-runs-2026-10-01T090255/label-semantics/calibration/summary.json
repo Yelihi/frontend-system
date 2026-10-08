@@ -1,0 +1,131 @@
+{
+  "cases": [
+    {
+      "name": "flat",
+      "expectedFailures": [],
+      "failures": [],
+      "notRun": [],
+      "passed": true
+    },
+    {
+      "name": "layered",
+      "expectedFailures": [],
+      "failures": [],
+      "notRun": [],
+      "passed": true
+    },
+    {
+      "name": "wrapped-labels",
+      "expectedFailures": [],
+      "failures": [],
+      "notRun": [],
+      "passed": true
+    },
+    {
+      "name": "framework-imports",
+      "expectedFailures": [],
+      "failures": [],
+      "notRun": [],
+      "passed": true
+    },
+    {
+      "name": "wrong-total-name",
+      "expectedFailures": [
+        "default-and-updated-total"
+      ],
+      "failures": [
+        "default-and-updated-total",
+        "late-success",
+        "late-failure",
+        "keyboard-order",
+        "mobile-and-runtime"
+      ],
+      "notRun": [],
+      "passed": true
+    },
+    {
+      "name": "wrong-coupon-name",
+      "expectedFailures": [
+        "default-and-updated-total",
+        "order-lock-failure-retry"
+      ],
+      "failures": [
+        "default-and-updated-total",
+        "order-lock-failure-retry"
+      ],
+      "notRun": [],
+      "passed": true
+    },
+    {
+      "name": "stale-failure",
+      "expectedFailures": [
+        "late-failure"
+      ],
+      "failures": [
+        "late-failure"
+      ],
+      "notRun": [],
+      "passed": true
+    },
+    {
+      "name": "stale-success",
+      "expectedFailures": [
+        "late-success"
+      ],
+      "failures": [
+        "late-success"
+      ],
+      "notRun": [],
+      "passed": true
+    },
+    {
+      "name": "stale-quote-order",
+      "expectedFailures": [
+        "pending-quote-prevents-order"
+      ],
+      "failures": [
+        "pending-quote-prevents-order"
+      ],
+      "notRun": [],
+      "passed": true
+    },
+    {
+      "name": "stuck-order-lock",
+      "expectedFailures": [
+        "order-lock-failure-retry"
+      ],
+      "failures": [
+        "order-lock-failure-retry"
+      ],
+      "notRun": [],
+      "passed": true
+    },
+    {
+      "name": "http-500",
+      "expectedFailures": [
+        "default-and-updated-total",
+        "late-success",
+        "late-failure",
+        "pending-quote-prevents-order",
+        "failed-quote-retry",
+        "order-lock-failure-retry",
+        "keyboard-order",
+        "mobile-and-runtime"
+      ],
+      "failures": [
+        "default-and-updated-total",
+        "late-success",
+        "late-failure",
+        "pending-quote-prevents-order",
+        "failed-quote-retry",
+        "order-lock-failure-retry",
+        "keyboard-order",
+        "mobile-and-runtime"
+      ],
+      "notRun": [],
+      "passed": true
+    }
+  ],
+  "passed": true,
+  "modelCalls": 0
+}

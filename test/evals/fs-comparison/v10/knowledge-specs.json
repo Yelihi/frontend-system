@@ -1,0 +1,98 @@
+[
+  {
+    "id": "control-contracts",
+    "title": "Native action semantics and scoped presentation",
+    "file": "control-contracts.md",
+    "call": "createAction",
+    "domain": "components",
+    "keywords": [
+      "createAction",
+      "control",
+      "contracts"
+    ],
+    "condition": "Observed createAction callers or equivalent ownership semantics require review.",
+    "exclusion": "Do not impose this pattern on unrelated callers or override explicit owner decisions.",
+    "staticCall": "./action#createAction"
+  },
+  {
+    "id": "draft-ownership",
+    "title": "Autosave snapshots and conflict ownership",
+    "file": "draft-ownership.md",
+    "call": "saveDraft",
+    "domain": "state",
+    "keywords": [
+      "saveDraft",
+      "draft",
+      "ownership"
+    ],
+    "condition": "Observed saveDraft callers or equivalent ownership semantics require review.",
+    "exclusion": "Do not impose this pattern on unrelated callers or override explicit owner decisions.",
+    "observation": {
+      "path": "src/editor.ts",
+      "quote": "repo.saveDraft(doc)"
+    }
+  },
+  {
+    "id": "pricing-policy",
+    "title": "Pricing boundaries and explicit arithmetic policy",
+    "file": "pricing-policy.md",
+    "call": "calculateTotal",
+    "domain": "architecture",
+    "keywords": [
+      "calculateTotal",
+      "pricing",
+      "policy"
+    ],
+    "condition": "Observed calculateTotal callers or equivalent ownership semantics require review.",
+    "exclusion": "Do not impose this pattern on unrelated callers or override explicit owner decisions.",
+    "staticCall": "./pricing#calculateTotal"
+  },
+  {
+    "id": "render-lifetime",
+    "title": "Server request state and hydration ownership",
+    "file": "render-lifetime.md",
+    "call": "loadCart",
+    "domain": "state",
+    "keywords": [
+      "loadCart",
+      "render",
+      "lifetime"
+    ],
+    "condition": "Observed loadCart callers or equivalent ownership semantics require review.",
+    "exclusion": "Do not impose this pattern on unrelated callers or override explicit owner decisions.",
+    "staticCall": "./cart#loadCart"
+  },
+  {
+    "id": "mutation-queue",
+    "title": "Mutation uncertainty and queue lifecycle",
+    "file": "mutation-queue.md",
+    "call": "uploadChunk",
+    "domain": "network",
+    "keywords": [
+      "uploadChunk",
+      "mutation",
+      "queue"
+    ],
+    "condition": "Observed uploadChunk callers or equivalent ownership semantics require review.",
+    "exclusion": "Do not impose this pattern on unrelated callers or override explicit owner decisions.",
+    "observation": {
+      "path": "src/queue.ts",
+      "quote": "sender.uploadChunk(job,token())"
+    }
+  },
+  {
+    "id": "extension-lifecycle",
+    "title": "Subscription ownership and reentrant disposal",
+    "file": "extension-lifecycle.md",
+    "call": "subscribe",
+    "domain": "architecture",
+    "keywords": [
+      "subscribe",
+      "extension",
+      "lifecycle"
+    ],
+    "condition": "Observed subscribe callers or equivalent ownership semantics require review.",
+    "exclusion": "Do not impose this pattern on unrelated callers or override explicit owner decisions.",
+    "staticCall": "./bus#subscribe"
+  }
+]

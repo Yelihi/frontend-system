@@ -1,0 +1,276 @@
+{
+  "source": "summary.json and per-call model/events.jsonl",
+  "model": "gpt-6-sol",
+  "track": "implementation",
+  "manifestHash": "a090f34e0d148128ee726cba386aa1c710354b2303d5294b74201d5e0ae44957",
+  "modelCalls": 9,
+  "rows": [
+    {
+      "case": "duplicated",
+      "arm": "plain",
+      "eligible": true,
+      "phases": [
+        "prepare",
+        "work"
+      ],
+      "modelCalls": 2,
+      "modelElapsedSeconds": 187.455,
+      "timedOut": false,
+      "usage": {
+        "input_tokens": 286283,
+        "output_tokens": 6164,
+        "total_tokens": 292447,
+        "cached_input_tokens": 267904
+      },
+      "completedMcpCalls": 0,
+      "failedMcpCalls": 0,
+      "failures": [],
+      "contextResponses": [],
+      "adoptedKnowledge": []
+    },
+    {
+      "case": "duplicated",
+      "arm": "fs",
+      "eligible": false,
+      "phases": [
+        "prepare"
+      ],
+      "modelCalls": 1,
+      "modelElapsedSeconds": 300.025,
+      "timedOut": true,
+      "usage": null,
+      "completedMcpCalls": 29,
+      "failedMcpCalls": 8,
+      "failures": [
+        {
+          "tool": "read_project_source",
+          "message": "MCP error -32602: Input validation error: Invalid arguments for tool read_project_source: Too big: expected number to be <=12000 at limit"
+        },
+        {
+          "tool": "read_project_source",
+          "message": "MCP error -32602: Input validation error: Invalid arguments for tool read_project_source: Too big: expected number to be <=12000 at limit"
+        },
+        {
+          "tool": "read_project_source",
+          "message": "MCP error -32602: Input validation error: Invalid arguments for tool read_project_source: Too big: expected number to be <=12000 at limit"
+        },
+        {
+          "tool": "read_project_source",
+          "message": "MCP error -32602: Input validation error: Invalid arguments for tool read_project_source: Too big: expected number to be <=12000 at limit"
+        },
+        {
+          "tool": "read_project_source",
+          "message": "MCP error -32602: Input validation error: Invalid arguments for tool read_project_source: Too big: expected number to be <=12000 at limit"
+        },
+        {
+          "tool": "run_project_checks",
+          "message": "Choose a stage/required checks or a capability selection, not both"
+        },
+        {
+          "tool": "save_project_context",
+          "message": "Coverage must account for the whole baseline inventory"
+        },
+        {
+          "tool": "save_project_context",
+          "message": "Absence claims require an inspected scope"
+        }
+      ],
+      "contextResponses": [
+        {
+          "responseCharacters": 64558,
+          "candidateCount": 11
+        },
+        {
+          "responseCharacters": 50829,
+          "candidateCount": 8
+        }
+      ],
+      "adoptedKnowledge": []
+    },
+    {
+      "case": "existing-good",
+      "arm": "fs",
+      "eligible": false,
+      "phases": [
+        "prepare"
+      ],
+      "modelCalls": 1,
+      "modelElapsedSeconds": 300.009,
+      "timedOut": true,
+      "usage": null,
+      "completedMcpCalls": 24,
+      "failedMcpCalls": 4,
+      "failures": [
+        {
+          "tool": "save_revision",
+          "message": "MCP error -32602: Input validation error: Invalid arguments for tool save_revision: Invalid input: expected array, received undefined at policy.rules[0].evidence\nUnrecognized key: \"provenance\" at policy.rules[0]\nInvalid option: expected one of \"domain\"|\"architecture\"|\"framework\"|\"accessibility\"|\"security\"|\"testing\" at policy.rules[1].layer\nInvalid input: expected array, received undefined at policy.rules[1].evidence\nUnrecognized key: \"provenance\" at policy.rules[1]\nInvalid input: expected array, received undefined at policy.rules[2].evidence\nUnrecognized key: \"provenance\" at policy.rules[2]\nToo small: expected array to have >=1 items at policy.checks[0].guardPaths\nUnrecognized key: \"required\" at policy.checks[0]\nToo small: expected array to have >=1 items at policy.checks[1].guardPaths\nUnrecognized key: \"required\" at policy.checks[1]\nUnrecognized key: \"required\" at policy.reviews[0]\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at evidence.decisions[0].id\nInvalid input: expected object, received string at evidence.decisions[0].evidence[0]\nInvalid input: expected object, received string at evidence.decisions[0].evidence[1]\nInvalid input: expected object, received string at evidence.decisions[0].evidence[2]\nInvalid input: expected object, received string at evidence.decisions[0].evidence[3]"
+        },
+        {
+          "tool": "save_revision",
+          "message": "MCP error -32602: Input validation error: Invalid arguments for tool save_revision: Invalid input: expected string, received object at policy.rules[0].evidence[0]\nInvalid input: expected string, received object at policy.rules[0].evidence[1]\nInvalid input: expected string, received object at policy.rules[0].evidence[2]\nInvalid input: expected string, received object at policy.rules[0].evidence[3]\nInvalid input: expected string, received object at policy.rules[1].evidence[0]\nInvalid input: expected string, received object at policy.rules[1].evidence[1]\nInvalid input: expected string, received object at policy.rules[1].evidence[2]\nInvalid input: expected string, received object at policy.rules[1].evidence[3]\nInvalid input: expected string, received object at policy.rules[2].evidence[0]\nInvalid input: expected string, received object at policy.rules[2].evidence[1]\nInvalid input: expected string, received object at policy.rules[2].evidence[2]\nInvalid input: expected string, received object at policy.rules[2].evidence[3]"
+        },
+        {
+          "tool": "save_revision",
+          "message": "Decision must cite routed source"
+        },
+        {
+          "tool": "save_revision",
+          "message": "Decision must cite routed source"
+        }
+      ],
+      "contextResponses": [
+        {
+          "responseCharacters": 68008,
+          "candidateCount": 15
+        },
+        {
+          "responseCharacters": 68007,
+          "candidateCount": 15
+        },
+        {
+          "responseCharacters": 47609,
+          "candidateCount": 7
+        },
+        {
+          "responseCharacters": 47646,
+          "candidateCount": 7
+        }
+      ],
+      "adoptedKnowledge": []
+    },
+    {
+      "case": "existing-good",
+      "arm": "plain",
+      "eligible": true,
+      "phases": [
+        "prepare",
+        "work"
+      ],
+      "modelCalls": 2,
+      "modelElapsedSeconds": 123.905,
+      "timedOut": false,
+      "usage": {
+        "input_tokens": 183856,
+        "output_tokens": 4025,
+        "total_tokens": 187881,
+        "cached_input_tokens": 163456
+      },
+      "completedMcpCalls": 0,
+      "failedMcpCalls": 0,
+      "failures": [],
+      "contextResponses": [],
+      "adoptedKnowledge": []
+    },
+    {
+      "case": "different-policies",
+      "arm": "plain",
+      "eligible": true,
+      "phases": [
+        "prepare",
+        "work"
+      ],
+      "modelCalls": 2,
+      "modelElapsedSeconds": 245.482,
+      "timedOut": false,
+      "usage": {
+        "input_tokens": 387610,
+        "output_tokens": 7592,
+        "total_tokens": 395202,
+        "cached_input_tokens": 346624
+      },
+      "completedMcpCalls": 0,
+      "failedMcpCalls": 0,
+      "failures": [],
+      "contextResponses": [],
+      "adoptedKnowledge": []
+    },
+    {
+      "case": "different-policies",
+      "arm": "fs",
+      "eligible": false,
+      "phases": [
+        "prepare"
+      ],
+      "modelCalls": 1,
+      "modelElapsedSeconds": 300.029,
+      "timedOut": true,
+      "usage": null,
+      "completedMcpCalls": 32,
+      "failedMcpCalls": 11,
+      "failures": [
+        {
+          "tool": "get_work_context",
+          "message": "MCP error -32602: Input validation error: Invalid arguments for tool get_work_context: Invalid input: expected string, received undefined at request"
+        },
+        {
+          "tool": "record_project_refresh",
+          "message": "MCP error -32602: Input validation error: Invalid arguments for tool record_project_refresh: Invalid input: expected string, received undefined at expectedCommit\nInvalid option: expected one of \"pending\"|\"failed\" at status"
+        },
+        {
+          "tool": "save_project_context",
+          "message": "MCP error -32602: Input validation error: Invalid arguments for tool save_project_context: Invalid input: expected string, received undefined at expectedCommit\nInvalid input: expected string, received undefined at expectedHash\nInvalid input: expected object, received undefined at analysis"
+        },
+        {
+          "tool": "save_revision",
+          "message": "MCP error -32602: Input validation error: Invalid arguments for tool save_revision: Invalid input: expected string, received undefined at content\nInvalid input: expected string, received undefined at expectedHash"
+        },
+        {
+          "tool": "save_project_context",
+          "message": "MCP error -32602: Input validation error: Invalid arguments for tool save_project_context: Invalid input: expected string, received undefined at analysis.summary\nInvalid input: expected array, received undefined at analysis.observed\nInvalid input: expected array, received undefined at analysis.architecture\nInvalid input: expected array, received undefined at analysis.conventions\nInvalid input: expected array, received undefined at analysis.decisions\nInvalid input: expected array, received undefined at analysis.qualityGates\nInvalid input: expected array, received undefined at analysis.assumptions\nInvalid input: expected array, received undefined at analysis.questions"
+        },
+        {
+          "tool": "save_project_context",
+          "message": "MCP error -32602: Input validation error: Invalid arguments for tool save_project_context: Invalid input: expected boolean, received string at analysis.evidence.statements[0].absence\nInvalid input: expected array, received string at analysis.evidence.statements[0].scope\nInvalid input: expected array, received string at analysis.evidence.statements[0].limitations\nInvalid input: expected boolean, received string at analysis.evidence.statements[1].absence\nInvalid input: expected array, received string at analysis.evidence.statements[1].scope\nInvalid input: expected array, received string at analysis.evidence.statements[1].limitations\nInvalid input: expected boolean, received string at analysis.evidence.statements[2].absence\nInvalid input: expected array, received string at analysis.evidence.statements[2].scope\nInvalid input: expected array, received string at analysis.evidence.statements[2].limitations"
+        },
+        {
+          "tool": "save_revision",
+          "message": "MCP error -32602: Input validation error: Invalid arguments for tool save_revision: Too small: expected string to have >=1 characters at content\nInvalid input: expected 1 at policy.version\nInvalid input: expected array, received undefined at policy.rules\nInvalid input: expected array, received undefined at policy.checks\nInvalid input: expected array, received undefined at policy.reviews\nInvalid input: expected array, received undefined at policy.guards\nInvalid input: expected array, received undefined at policy.exceptions\nToo small: expected array to have >=1 items at issues\nInvalid input: expected 1 at evidence.version\nInvalid input: expected string, received undefined at evidence.projectHash\nInvalid input: expected array, received undefined at evidence.routes\nInvalid input: expected array, received undefined at evidence.decisions"
+        },
+        {
+          "tool": "save_revision",
+          "message": "MCP error -32602: Input validation error: Invalid arguments for tool save_revision: Invalid input: expected string, received undefined at policy.rules[0].id\nInvalid input: expected number, received undefined at policy.rules[0].version\nInvalid input: expected string, received undefined at policy.rules[0].title\nInvalid input: expected string, received undefined at policy.rules[0].statement\nInvalid option: expected one of \"domain\"|\"architecture\"|\"framework\"|\"accessibility\"|\"security\"|\"testing\" at policy.rules[0].layer\nInvalid option: expected one of \"required\"|\"recommended\" at policy.rules[0].obligation\nInvalid input: expected array, received undefined at policy.rules[0].conditions\nInvalid input: expected array, received undefined at policy.rules[0].exclusions\nInvalid input: expected array, received undefined at policy.rules[0].evidence\nInvalid option: expected one of \"existing-tool\"|\"custom-check\"|\"behavior-test\"|\"review\" at policy.rules[0].verification\nInvalid input: expected array, received undefined at policy.rules[0].examples\nInvalid option: expected one of \"proposed\"|\"verified\" at policy.rules[0].validation\nInvalid input: expected array, received undefined at policy.rules[0].limitations\nInvalid input: expected string, received undefined at policy.checks[0].id\nInvalid input: expected string, received undefined at policy.checks[0].script\nInvalid input: expected array, received undefined at policy.checks[0].ruleIds\nInvalid input: expected string, received undefined at policy.reviews[0].id\nInvalid input: expected array, received undefined at policy.reviews[0].ruleIds\nInvalid input: expected string, received undefined at policy.reviews[0].description\nInvalid input: expected string, received undefined at issues[0].id\nInvalid input: expected string, received undefined at issues[0].title\nInvalid input: expected string, received undefined at issues[0].contract\nInvalid input: expected array, received undefined at issues[0].files\nInvalid input: expected array, received undefined at issues[0].dependsOn\nInvalid input: expected array, received undefined at issues[0].requiredCheckIds\nInvalid input: expected array, received undefined at issues[0].acceptance\nInvalid input: expected object, received undefined at evidence.routes[0].input\nInvalid input: expected string, received undefined at evidence.routes[0].hash\nInvalid input: expected array, received undefined at evidence.routes[0].judgments\nInvalid input: expected string, received undefined at evidence.decisions[0].id\nInvalid input: expected string, received undefined at evidence.decisions[0].question\nInvalid input: expected array, received undefined at evidence.decisions[0].evidence\nInvalid input: expected array, received undefined at evidence.decisions[0].knowledgeIds\nInvalid input: expected array, received undefined at evidence.decisions[0].options\nInvalid input: expected string, received undefined at evidence.decisions[0].selected\nInvalid option: expected one of \"resolved\"|\"open\"|\"excluded\" at evidence.decisions[0].status\nInvalid option: expected one of \"user\"|\"existing\"|\"model\" at evidence.decisions[0].authority\nInvalid input: expected string, received undefined at evidence.decisions[0].rationale\nInvalid input: expected string, received undefined at evidence.decisions[0].reconsiderWhen\nInvalid input: expected array, received undefined at evidence.decisions[0].ruleIds\nInvalid input: expected array, received undefined at evidence.decisions[0].issueIds"
+        },
+        {
+          "tool": "save_revision",
+          "message": "MCP error -32602: Input validation error: Invalid arguments for tool save_revision: Too small: expected array to have >=1 items at policy.rules[0].evidence\nInvalid input: expected string, received undefined at policy.rules[0].examples[0].path\nInvalid option: expected one of \"pass\"|\"fail\"|\"excluded\" at policy.rules[0].examples[0].expectation\nInvalid string: must match pattern /^[a-f0-9]{64}$/ at evidence.routes[0].hash\nInvalid input: expected string, received undefined at evidence.routes[0].judgments[0].referenceId\nInvalid option: expected one of \"apply\"|\"keep\"|\"not-applicable\"|\"needs-context\"|\"needs-decision\" at evidence.routes[0].judgments[0].decision\nInvalid input: expected string, received undefined at evidence.routes[0].judgments[0].rationale\nInvalid string: must match pattern /^[a-z0-9][a-z0-9._-]{0,119}$/ at evidence.decisions[0].id\nToo small: expected array to have >=1 items at evidence.decisions[0].evidence\nInvalid input: expected string, received undefined at evidence.decisions[0].options[0].id\nInvalid input: expected string, received undefined at evidence.decisions[0].options[0].description\nInvalid input: expected string, received undefined at evidence.decisions[0].options[0].cost"
+        },
+        {
+          "tool": "save_revision",
+          "message": "MCP error -32602: Input validation error: Invalid arguments for tool save_revision: Invalid input: expected string, received object at policy.rules[0].evidence[0]\nInvalid input: expected string, received object at policy.rules[0].evidence[1]\nInvalid input: expected string, received object at policy.rules[1].evidence[0]\nInvalid input: expected string, received object at policy.rules[1].evidence[1]"
+        },
+        {
+          "tool": "approve_revision",
+          "message": "MCP error -32602: Input validation error: Invalid arguments for tool approve_revision: Invalid input: expected string, received undefined at approval"
+        }
+      ],
+      "contextResponses": [
+        {
+          "responseCharacters": 49132,
+          "candidateCount": 8
+        },
+        {
+          "responseCharacters": 52543,
+          "candidateCount": 9
+        }
+      ],
+      "adoptedKnowledge": [
+        "request-policy-boundaries"
+      ]
+    }
+  ],
+  "plainTotalUsage": {
+    "input_tokens": 857749,
+    "cached_input_tokens": 777984,
+    "output_tokens": 17781,
+    "total_tokens": 875530
+  },
+  "fsTotalUsage": null,
+  "conclusion": "Plain completed 3/3; FS prepare timed out 3/3 at 300 seconds. FS implementation quality and total cost are unmeasured; workflow delivery failed in this pilot. No waiting-for-user event observed.",
+  "limits": [
+    "One model, three cases, one run each; no statistical claim.",
+    "Equal-plan implementation only; no independent question/planning comparison.",
+    "Plain may read the same learned knowledge.",
+    "Schema errors and large outputs are observed friction; logs do not apportion wall time causally.",
+    "Timeout usage is missing, not zero."
+  ]
+}

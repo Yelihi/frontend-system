@@ -1,0 +1,154 @@
+{
+  "manifestHash": "d94c61bc5eb20d4423be6dc397243a9c52d442620aabdd63dba96074d7c1a69e",
+  "status": "completed",
+  "modelCalls": 4,
+  "rows": [
+    {
+      "arm": "plain",
+      "eligible": true,
+      "workflow": "observed",
+      "grades": {
+        "F": {
+          "passed": 64,
+          "total": 64
+        },
+        "S": {
+          "passed": 17,
+          "total": 17
+        },
+        "Q": {
+          "passed": 10,
+          "total": 10
+        },
+        "N": {
+          "passed": 2,
+          "total": 2
+        }
+      },
+      "firstPass": true,
+      "externalRepairs": 0,
+      "totalTokens": 628809,
+      "uncachedInput": 47817,
+      "outputTokens": 6656,
+      "seconds": 166.735,
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "failedCommands": [
+        {
+          "command": "/bin/zsh -lc \"cat USER_DECISIONS.md && git status --short && rg --files -g '*.test.*' -g '\"'!node_modules'\"'\"",
+          "exitCode": 1
+        },
+        {
+          "command": "/bin/zsh -lc 'npm run lint:styles'",
+          "exitCode": 1
+        },
+        {
+          "command": "/bin/zsh -lc 'npm test'",
+          "exitCode": 1
+        }
+      ],
+      "checks": [],
+      "knowledgeTrace": [],
+      "failedGrades": []
+    },
+    {
+      "arm": "fs",
+      "eligible": true,
+      "workflow": "observed",
+      "grades": {
+        "F": {
+          "passed": 64,
+          "total": 64
+        },
+        "S": {
+          "passed": 17,
+          "total": 17
+        },
+        "Q": {
+          "passed": 10,
+          "total": 10
+        },
+        "N": {
+          "passed": 2,
+          "total": 2
+        }
+      },
+      "firstPass": true,
+      "externalRepairs": 0,
+      "totalTokens": 2021666,
+      "uncachedInput": 94113,
+      "outputTokens": 12417,
+      "seconds": 327.012,
+      "mcpCalls": 25,
+      "mcpErrors": 1,
+      "failedCommands": [
+        {
+          "command": "/bin/zsh -lc \"rg --files -g '*.test.*' -g '\"'!node_modules'\"'\"",
+          "exitCode": 1
+        },
+        {
+          "command": "/bin/zsh -lc \"rg -o '\\\\.(bg-action|text-on-action|border-action)[\"'^}]*}'\"' dist/theme.css\"",
+          "exitCode": 1
+        }
+      ],
+      "checks": [
+        {
+          "tool": "run_project_checks",
+          "arguments": {
+            "planId": "console-style-policy",
+            "stage": "baseline"
+          }
+        },
+        {
+          "tool": "run_project_checks",
+          "arguments": {
+            "planId": "console-style-policy",
+            "attemptId": "ccb07409-5049-4dd0-81b1-7b0b2f72fd23",
+            "capabilities": [
+              "test",
+              "lint:styles"
+            ]
+          }
+        },
+        {
+          "tool": "run_project_checks",
+          "arguments": {
+            "planId": "console-style-policy",
+            "attemptId": "ccb07409-5049-4dd0-81b1-7b0b2f72fd23",
+            "stage": "delivery"
+          }
+        }
+      ],
+      "knowledgeTrace": [
+        {
+          "tool": "search_learned_knowledge",
+          "error": false,
+          "arguments": {
+            "query": "Tailwind team authorship theme strategy CSS variables dark mode brand color token custom utilities CVA"
+          }
+        },
+        {
+          "tool": "read_learned_knowledge",
+          "error": false,
+          "arguments": {
+            "id": [
+              "tailwind-team-authorship"
+            ]
+          }
+        },
+        {
+          "tool": "read_learned_knowledge",
+          "error": false,
+          "arguments": {
+            "id": [
+              "accessibility-semantics",
+              "accessibility-names-and-alternatives",
+              "accessibility-native-controls-and-forms"
+            ]
+          }
+        }
+      ],
+      "failedGrades": []
+    }
+  ]
+}

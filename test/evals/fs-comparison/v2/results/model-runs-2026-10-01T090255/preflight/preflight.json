@@ -1,0 +1,31 @@
+{
+  "checkedAt": "2026-10-01T10:44:47.395Z",
+  "node": "v24.12.0",
+  "platform": "darwin",
+  "modelCalls": 0,
+  "checks": {
+    "localHttp": {
+      "passed": true
+    },
+    "chromium": {
+      "passed": true
+    },
+    "oracleIsolation": {
+      "passed": true,
+      "status": "verified-in-real-command-mcp-browser-sessions"
+    },
+    "fullCalibration": {
+      "passed": true,
+      "status": "automated-browser-and-independent-semantic-review-verified"
+    },
+    "frozenManifest": {
+      "passed": true,
+      "status": "hashes-verified"
+    }
+  },
+  "readyForModelRuns": true,
+  "frozenManifest": {
+    "output": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/test/evals/fs-comparison/v2/results/model-runs-2026-10-01T090255",
+    "manifestSha256": "c71354a0bff7296676ed51ff5c88403785e4831ec67109a1695dddd57f94b699"
+  }
+}

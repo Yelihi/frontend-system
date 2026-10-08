@@ -1,0 +1,305 @@
+{
+  "id": "ticket-selection",
+  "title": "실제 v12 티켓 프로젝트 · React와 외부 store",
+  "basis": "observed",
+  "summary": "버튼 클릭부터 ticketStore 변경, 구독 중인 두 페이지의 snapshot 읽기와 표시 의존성을 추적합니다.",
+  "scope": {
+    "files": [
+      "package.json",
+      "README.md",
+      "src/Pages.tsx",
+      "src/Button.tsx",
+      "src/store.ts"
+    ],
+    "discoveryRoots": [
+      "src"
+    ],
+    "discoveryMode": "source"
+  },
+  "evidence": {
+    "tickets": {
+      "path": "src/Pages.tsx",
+      "quote": "export function TicketsPage(){const selected=useSyncExternalStore(ticketStore.subscribe,ticketStore.getSnapshot,ticketStore.getSnapshot);return <section><Button size=\"small\" tone=\"neutral\" onClick={()=>ticketStore.select('t1')}>Choose ticket</Button><Indicator active={selected==='t1'}/></section>;}"
+    },
+    "details": {
+      "path": "src/Pages.tsx",
+      "quote": "export function TicketDetailsPage(){const selected=useSyncExternalStore(ticketStore.subscribe,ticketStore.getSnapshot,ticketStore.getSnapshot);return <article aria-live=\"polite\">{selected||'No selection'}</article>;}"
+    },
+    "props": {
+      "path": "src/Button.tsx",
+      "quote": "type Props={size:'small'|'large';tone:'neutral'|'danger';onClick:()=>void;children:React.ReactNode};"
+    },
+    "button": {
+      "path": "src/Button.tsx",
+      "quote": "export function Button({size,tone,onClick,children}:Props){return <button type=\"button\" onClick={onClick} className={styles.base+' '+(size==='small'?'text-sm':'text-lg')+' '+(tone==='danger'?'bg-red-600 text-white':'bg-gray-100 text-black')}>{children}</button>;}"
+    },
+    "indicator": {
+      "path": "src/Button.tsx",
+      "quote": "export function Indicator({active}:{active:boolean}){return <span className={active?'opacity-100':'opacity-50'}>Selected</span>;}"
+    },
+    "state": {
+      "path": "src/store.ts",
+      "quote": "let selected=''; const listeners=new Set<()=>void>();"
+    },
+    "snapshot": {
+      "path": "src/store.ts",
+      "quote": "getSnapshot:()=>selected"
+    },
+    "subscribe": {
+      "path": "src/store.ts",
+      "quote": "subscribe:(f:()=>void)=>{listeners.add(f);return()=>{listeners.delete(f);}}"
+    },
+    "select": {
+      "path": "src/store.ts",
+      "quote": "select:(id:string)=>{selected=id;listeners.forEach(f=>f());}"
+    }
+  },
+  "nodes": [
+    {
+      "id": "tickets",
+      "kind": "page",
+      "label": "TicketsPage",
+      "evidence": [
+        "tickets"
+      ],
+      "props": [],
+      "state": [
+        "selected: useSyncExternalStore snapshot"
+      ],
+      "events": [],
+      "lifecycle": [
+        "useSyncExternalStore(subscribe, getSnapshot, getSnapshot)"
+      ]
+    },
+    {
+      "id": "button",
+      "kind": "component",
+      "label": "Button",
+      "evidence": [
+        "props",
+        "button",
+        "tickets"
+      ],
+      "props": [
+        "size=\"small\"",
+        "tone=\"neutral\"",
+        "onClick: () => ticketStore.select('t1')",
+        "children=\"Choose ticket\""
+      ],
+      "state": [],
+      "events": [
+        "button click → onClick"
+      ],
+      "lifecycle": [],
+      "parent": "tickets"
+    },
+    {
+      "id": "indicator",
+      "kind": "component",
+      "label": "Indicator",
+      "evidence": [
+        "indicator",
+        "tickets"
+      ],
+      "props": [
+        "active: selected === 't1'"
+      ],
+      "state": [],
+      "events": [],
+      "lifecycle": [],
+      "parent": "tickets"
+    },
+    {
+      "id": "details",
+      "kind": "page",
+      "label": "TicketDetailsPage",
+      "evidence": [
+        "details"
+      ],
+      "props": [],
+      "state": [
+        "selected: useSyncExternalStore snapshot"
+      ],
+      "events": [],
+      "lifecycle": [
+        "useSyncExternalStore(subscribe, getSnapshot, getSnapshot)"
+      ]
+    },
+    {
+      "id": "store",
+      "kind": "store",
+      "label": "ticketStore",
+      "evidence": [
+        "state",
+        "snapshot",
+        "subscribe",
+        "select"
+      ],
+      "props": [],
+      "state": [
+        "selected: string (초기 '')",
+        "listeners: Set<callback>"
+      ],
+      "events": [],
+      "lifecycle": []
+    }
+  ],
+  "edges": [
+    {
+      "id": "click",
+      "from": "button",
+      "to": "store",
+      "kind": "call",
+      "label": "onClick → ticketStore.select('t1')",
+      "evidence": [
+        "button",
+        "tickets",
+        "select"
+      ]
+    },
+    {
+      "id": "notify",
+      "from": "store",
+      "to": "store",
+      "kind": "write",
+      "label": "selected=id → listeners.forEach",
+      "evidence": [
+        "select"
+      ]
+    },
+    {
+      "id": "ticket-read",
+      "from": "store",
+      "to": "tickets",
+      "kind": "read",
+      "label": "TicketsPage snapshot 의존성",
+      "evidence": [
+        "tickets",
+        "snapshot",
+        "subscribe"
+      ]
+    },
+    {
+      "id": "details-read",
+      "from": "store",
+      "to": "details",
+      "kind": "read",
+      "label": "TicketDetailsPage snapshot 의존성",
+      "evidence": [
+        "details",
+        "snapshot",
+        "subscribe"
+      ]
+    },
+    {
+      "id": "active",
+      "from": "tickets",
+      "to": "indicator",
+      "kind": "props",
+      "label": "active={selected==='t1'}",
+      "evidence": [
+        "tickets",
+        "indicator"
+      ]
+    },
+    {
+      "id": "sub-tickets",
+      "from": "tickets",
+      "to": "store",
+      "kind": "subscribe",
+      "label": "TicketsPage subscribe 연결",
+      "evidence": [
+        "tickets",
+        "subscribe"
+      ]
+    },
+    {
+      "id": "sub-details",
+      "from": "details",
+      "to": "store",
+      "kind": "subscribe",
+      "label": "TicketDetailsPage subscribe 연결",
+      "evidence": [
+        "details",
+        "subscribe"
+      ]
+    },
+    {
+      "id": "cleanup",
+      "from": "details",
+      "to": "store",
+      "kind": "cleanup",
+      "label": "반환 cleanup → listeners.delete(f)",
+      "evidence": [
+        "details",
+        "subscribe"
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "choose",
+      "title": "티켓 선택 · 영향 관계",
+      "entry": "button",
+      "event": "click",
+      "steps": [
+        {
+          "edge": "click",
+          "effect": "부모가 전달한 콜백으로 select('t1')을 호출합니다."
+        },
+        {
+          "edge": "notify",
+          "effect": "selected를 바꾸고 등록된 리스너를 순회합니다."
+        },
+        {
+          "edge": "ticket-read",
+          "effect": "마운트된 TicketsPage가 읽는 snapshot이 바뀝니다."
+        },
+        {
+          "edge": "active",
+          "effect": "다음 관련 렌더의 Indicator active는 selected==='t1'에 의존합니다."
+        },
+        {
+          "edge": "details-read",
+          "effect": "마운트된 상세 페이지의 표시도 같은 snapshot에 의존합니다."
+        }
+      ],
+      "outcome": "공유 선택 값의 두 소비자를 확인합니다.",
+      "limitations": [
+        "3~5단계는 소비 의존 관계의 설명 순서이며 React 스케줄러의 실제 렌더/DOM 커밋 순서가 아닙니다.",
+        "동일 값의 재선택에서 실제 렌더 발생 여부를 측정하지 않았습니다."
+      ]
+    },
+    {
+      "id": "subscriptions",
+      "title": "구독과 상세 페이지 해제",
+      "entry": "tickets",
+      "event": "각 페이지 mount → 상세 페이지 cleanup",
+      "steps": [
+        {
+          "edge": "sub-tickets",
+          "effect": "TicketsPage hook에 store.subscribe를 전달합니다."
+        },
+        {
+          "edge": "sub-details",
+          "effect": "TicketDetailsPage도 같은 subscribe를 사용합니다."
+        },
+        {
+          "edge": "cleanup",
+          "effect": "상세 페이지의 해당 구독을 해제합니다."
+        }
+      ],
+      "outcome": "다른 구독자까지 제거하지 않습니다.",
+      "limitations": [
+        "React 프레임워크 내부 호출 시점과 마운트 순서는 정적 코드로 확정하지 않습니다."
+      ]
+    }
+  ],
+  "invariants": [],
+  "limitations": [
+    "v12/projects/styles의 실제 React 소스 분석입니다. 프레임워크 실행이나 브라우저 렌더를 측정한 결과가 아닙니다.",
+    "라우터, 앱 엔트리 및 설치된 React 버전이 이 테스트 프로젝트에 없습니다. 각 페이지의 실제 동시 마운트 여부는 미확인입니다.",
+    "이 코드에 없는 서버 캐시, HTTP 요청, loading/error 상태를 추가하지 않았습니다.",
+    "Button의 스타일 객체와 조건식은 현재 구현 그대로이며 CVA 변경 제안과 구분합니다."
+  ]
+}

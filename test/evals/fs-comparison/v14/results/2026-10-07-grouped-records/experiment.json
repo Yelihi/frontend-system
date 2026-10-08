@@ -1,0 +1,22 @@
+{
+  "baseline": "test/evals/fs-comparison/v14/results/2026-10-07-trajectories",
+  "treatment": "Group already-decided draft writes and sequential saves; reuse successful receipts; avoid routine full rereads. No validator/runtime/knowledge changes.",
+  "changedRuntimeFiles": [
+    "references/workflows/project-flow-analysis.md",
+    "skills/fs-plan/SKILL.md"
+  ],
+  "plannedCalls": 24,
+  "repeats": 3,
+  "frozenBeforeCalls": true,
+  "identicalPromptsFixturesAndChanges": true,
+  "primaryMetrics": [
+    "total input+output",
+    "uncached input+output",
+    "model responses",
+    "delivery completion"
+  ],
+  "limits": "Before/after cohorts are sequential, not randomized together. n=3 exploratory; keep all failures and compare ordinary controls. No claim of causal reduction or semantic equivalence from hashes alone.",
+  "qualityCheck": "Inspect actual final plans against supplied owner contracts, excluded knowledge conditions and changed caller constraints; structural receipts alone are insufficient.",
+  "harnessAmendment": "Preserve failed analysis audit and cost for output path mismatch; only exact-byte copies of completed generated .eval/analysis.md may be recovered using existing v12 run_cell recovery guards. Run previously skipped follow-up after scheduled calls; no prompt/runtime change. Report raw delivery failures separately.",
+  "recoveryRunnerSha256": "8ec73b369a8327d552d021706c7a72dcd357b99de012cccef1f3447ca77388a5"
+}

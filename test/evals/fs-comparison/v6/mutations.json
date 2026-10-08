@@ -1,0 +1,306 @@
+[
+  {
+    "name": "F04-session-equal-token-is-new-generation-0",
+    "file": "shared/session.mjs",
+    "before": "epoch += 1",
+    "after": "epoch += 0",
+    "diagnostic": "F04-session-equal-token-is-new-generation",
+    "starter": true
+  },
+  {
+    "name": "F05-http-copy-credentials-identity-1",
+    "file": "shared/http.mjs",
+    "before": "credentials: 'same-origin'",
+    "after": "credentials: 'include'",
+    "diagnostic": "F05-http-copy-credentials-identity",
+    "starter": true
+  },
+  {
+    "name": "F10-resource-stale-success-2",
+    "file": "shared/resource.mjs",
+    "before": "current === generation && session.isCurrent(ticket)",
+    "after": "true",
+    "diagnostic": "F10-resource-stale-success",
+    "starter": true
+  },
+  {
+    "name": "Q5-inflight-duplicate-3",
+    "file": "shared/inflight.mjs",
+    "before": "if (pending.has(key))",
+    "after": "if (false)",
+    "diagnostic": "Q5-inflight-duplicate",
+    "starter": true
+  },
+  {
+    "name": "F18-promotion-gift-isolation-4",
+    "file": "domain/promotion.mjs",
+    "before": "if (kind === 'gift') return 0",
+    "after": "if (kind === 'gift') return 200",
+    "diagnostic": "F18-promotion-gift-isolation",
+    "starter": true
+  },
+  {
+    "name": "F19-shipping-threshold-and-remote-5",
+    "file": "domain/shipping.mjs",
+    "before": "if (region === 'remote') return 700",
+    "after": "if (region === 'remote') return 0",
+    "diagnostic": "F19-shipping-threshold-and-remote",
+    "starter": true
+  },
+  {
+    "name": "Q6-credit-scope-6",
+    "file": "domain/order.mjs",
+    "before": "Math.min(credit, subtotal - reduction)",
+    "after": "Math.min(credit, subtotal - reduction + fee)",
+    "diagnostic": "Q6-credit-scope",
+    "starter": true
+  },
+  {
+    "name": "Q7-stock-shortage-7",
+    "file": "domain/inventory.mjs",
+    "before": "if (quantity > available)",
+    "after": "if (false)",
+    "diagnostic": "Q7-stock-shortage",
+    "starter": true
+  },
+  {
+    "name": "F24-return-window-boundaries-8",
+    "file": "domain/returns.mjs",
+    "before": "now - deliveredAt <= days",
+    "after": "now - deliveredAt < days",
+    "diagnostic": "F24-return-window-boundaries",
+    "starter": true
+  },
+  {
+    "name": "F28-debit-balance-boundary-9",
+    "file": "domain/wallet.mjs",
+    "before": "if (amount > balance)",
+    "after": "if (false)",
+    "diagnostic": "F28-debit-balance-boundary",
+    "starter": true
+  },
+  {
+    "name": "F29-orders-repository-boundary-10",
+    "file": "data/orders.mjs",
+    "before": "method: 'GET', signal",
+    "after": "method: 'POST', signal",
+    "diagnostic": "F29-orders-repository-boundary",
+    "starter": true
+  },
+  {
+    "name": "F30-inventory-repository-boundary-11",
+    "file": "data/inventory.mjs",
+    "before": "method: 'GET', signal",
+    "after": "method: 'POST', signal",
+    "diagnostic": "F30-inventory-repository-boundary",
+    "starter": true
+  },
+  {
+    "name": "F31-returns-repository-boundary-12",
+    "file": "data/returns.mjs",
+    "before": "method: 'GET', signal",
+    "after": "method: 'POST', signal",
+    "diagnostic": "F31-returns-repository-boundary",
+    "starter": true
+  },
+  {
+    "name": "F32-wallet-repository-boundary-13",
+    "file": "data/wallet.mjs",
+    "before": "method: 'GET', signal",
+    "after": "method: 'POST', signal",
+    "diagnostic": "F32-wallet-repository-boundary",
+    "starter": true
+  },
+  {
+    "name": "F34-order-service-pricing-and-input-14",
+    "file": "application/orders.mjs",
+    "before": "repository.create({...input, pricing})",
+    "after": "repository.create(Object.assign(input, {pricing}))",
+    "diagnostic": "F34-order-service-pricing-and-input",
+    "starter": true
+  },
+  {
+    "name": "F35-inventory-service-prevalidation-and-copy-15",
+    "file": "application/inventory.mjs",
+    "before": "validateReservation(input);",
+    "after": "/* validation missing */",
+    "diagnostic": "F35-inventory-service-prevalidation-and-copy",
+    "starter": true
+  },
+  {
+    "name": "F36-return-service-window-before-persistence-16",
+    "file": "application/returns.mjs",
+    "before": "if (!canReturn(input))",
+    "after": "if (false)",
+    "diagnostic": "F36-return-service-window-before-persistence",
+    "starter": true
+  },
+  {
+    "name": "F37-wallet-service-private-balance-ownership-17",
+    "file": "application/wallet.mjs",
+    "before": "const {balance, ...body} = input;",
+    "after": "const body = {...input};",
+    "diagnostic": "F37-wallet-service-private-balance-ownership",
+    "starter": true
+  },
+  {
+    "name": "F42-checkout-order-failure-reverse-release-18",
+    "file": "application/checkout.mjs",
+    "before": "[...reservations].reverse()",
+    "after": "reservations",
+    "diagnostic": "F42-checkout-order-failure-reverse-release",
+    "starter": true
+  },
+  {
+    "name": "Q4-restock-failure-19",
+    "file": "application/refund.mjs",
+    "before": "return {record, refund, restockPending: true, restockError};",
+    "after": "throw restockError;",
+    "diagnostic": "Q4-restock-failure",
+    "starter": true
+  },
+  {
+    "name": "Q8-session-switch-20",
+    "file": "application/system.mjs",
+    "before": "resource.reset();",
+    "after": "void resource;",
+    "diagnostic": "Q8-session-switch",
+    "starter": true
+  },
+  {
+    "name": "F49-ui-action-pending-duplicate-and-recovery-21",
+    "file": "ui/useAction.mjs",
+    "before": "if (active.current) return;",
+    "after": "if (false) return;",
+    "diagnostic": "F49-ui-action-pending-duplicate-and-recovery",
+    "starter": true
+  },
+  {
+    "name": "F50-ui-status-and-amount-22",
+    "file": "ui/Status.jsx",
+    "before": "role=\"alert\"",
+    "after": "role=\"status\"",
+    "diagnostic": "F50-ui-status-and-amount",
+    "starter": true
+  },
+  {
+    "name": "F50-ui-status-and-amount-23",
+    "file": "ui/Amount.jsx",
+    "before": "{formatAmount(value)}",
+    "after": "{value}",
+    "diagnostic": "F50-ui-status-and-amount",
+    "starter": true
+  },
+  {
+    "name": "F51-orders-panel-events-24",
+    "file": "ui/OrderPanel.jsx",
+    "before": "disabled={action.pending}",
+    "after": "disabled={false}",
+    "diagnostic": "F51-orders-panel-events",
+    "starter": true
+  },
+  {
+    "name": "F52-inventory-panel-events-25",
+    "file": "ui/InventoryPanel.jsx",
+    "before": "disabled={action.pending}",
+    "after": "disabled={false}",
+    "diagnostic": "F52-inventory-panel-events",
+    "starter": true
+  },
+  {
+    "name": "F53-returns-panel-events-26",
+    "file": "ui/ReturnsPanel.jsx",
+    "before": "disabled={action.pending}",
+    "after": "disabled={false}",
+    "diagnostic": "F53-returns-panel-events",
+    "starter": true
+  },
+  {
+    "name": "F54-wallet-panel-events-27",
+    "file": "ui/WalletPanel.jsx",
+    "before": "disabled={action.pending}",
+    "after": "disabled={false}",
+    "diagnostic": "F54-wallet-panel-events",
+    "starter": true
+  },
+  {
+    "name": "F55-checkout-form-identity-result-and-error-28",
+    "file": "ui/CheckoutForm.jsx",
+    "before": "checkout.submit(input)",
+    "after": "checkout.submit({...input})",
+    "diagnostic": "F55-checkout-form-identity-result-and-error",
+    "starter": true
+  },
+  {
+    "name": "F56-return-form-pending-restock-feedback-29",
+    "file": "ui/ReturnForm.jsx",
+    "before": "' \uc7ac\uc785\uace0 \ub300\uae30'",
+    "after": "''",
+    "diagnostic": "F56-return-form-pending-restock-feedback",
+    "starter": true
+  },
+  {
+    "name": "F57-session-bar-explicit-events-and-password-30",
+    "file": "ui/SessionBar.jsx",
+    "before": "type=\"password\"",
+    "after": "type=\"text\"",
+    "diagnostic": "F57-session-bar-explicit-events-and-password",
+    "starter": true
+  },
+  {
+    "name": "F58-app-wiring-and-no-render-effects-31",
+    "file": "App.jsx",
+    "before": "wallet={system.wallet}",
+    "after": "wallet={system.orders}",
+    "diagnostic": "F58-app-wiring-and-no-render-effects",
+    "starter": true
+  },
+  {
+    "name": "Q1-auth-callback-failure-32",
+    "file": "shared/http.mjs",
+    "before": "onUnauthorized();",
+    "after": "try { onUnauthorized(); } catch {}",
+    "diagnostic": "Q1-auth-callback-failure",
+    "starter": false
+  },
+  {
+    "name": "Q2-refresh-failure-items-33",
+    "file": "shared/resource.mjs",
+    "before": "state = {...state, status: 'error', error}",
+    "after": "state = {items: [], status: 'error', error}",
+    "diagnostic": "Q2-refresh-failure-items",
+    "starter": false
+  },
+  {
+    "name": "Q3-compensation-failure-34",
+    "file": "application/checkout.mjs",
+    "before": "code: 'checkout-compensation', cause, cleanupErrors",
+    "after": "code: 'checkout-compensation', cause: new Error('lost'), cleanupErrors",
+    "diagnostic": "Q3-compensation-failure",
+    "starter": false
+  },
+  {
+    "name": "N1-approved-change-scope-35",
+    "file": "shared/format.mjs",
+    "before": "'en-US'",
+    "after": "'de-DE'",
+    "diagnostic": "N1-approved-change-scope",
+    "starter": false
+  },
+  {
+    "name": "N2-approved-dependency-edges-36",
+    "file": "domain/wallet.mjs",
+    "before": "export function validateDebit",
+    "after": "import '../shared/format.mjs';\nexport function validateDebit",
+    "diagnostic": "N2-approved-dependency-edges",
+    "starter": false
+  },
+  {
+    "name": "F01-public-module-exports-37",
+    "file": "domain/wallet.mjs",
+    "before": "export function validateDebit",
+    "after": "export const extra = 1;\nexport function validateDebit",
+    "diagnostic": "F01-public-module-exports",
+    "starter": false
+  }
+]

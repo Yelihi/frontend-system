@@ -1,0 +1,7 @@
+{
+  "status": "blocked",
+  "reason": "Command '['/Applications/Xcode.app/Contents/Developer/usr/bin/python3', '/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/test/evals/fs-comparison/v3/maintenance/run.py', '--preflight-only', '--output', '/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/test/evals/fs-comparison/v3/fundamentals/results/2026-10-02T154753/isolation']' returned non-zero exit status 1.",
+  "modelCalls": 0,
+  "manifestHash": "cb713875503a6be17b6893e2220c72ee718610073af4da6ca7964cb7ea80e17c",
+  "journeys": []
+}

@@ -1,0 +1,136 @@
+{
+  "manifestHash": "9fcdc7c21796b2378c4b414cccc104d2a4505fd2999fa641a3183109a2ee3e0a",
+  "status": "completed",
+  "modelCalls": 4,
+  "rows": [
+    {
+      "arm": "plain",
+      "eligible": true,
+      "workflow": "observed",
+      "grades": {
+        "F": {
+          "passed": 64,
+          "total": 64
+        },
+        "S": {
+          "passed": 17,
+          "total": 17
+        },
+        "Q": {
+          "passed": 10,
+          "total": 10
+        },
+        "N": {
+          "passed": 2,
+          "total": 2
+        }
+      },
+      "firstPass": true,
+      "externalRepairs": 0,
+      "totalTokens": 439367,
+      "uncachedInput": 31258,
+      "outputTokens": 6957,
+      "seconds": 166.209,
+      "mcpCalls": 0,
+      "mcpErrors": 0,
+      "failedCommands": [
+        {
+          "command": "/bin/zsh -lc \"git status --short && rg --files -g '*.test.*' -g '*.spec.*'\"",
+          "exitCode": 1
+        },
+        {
+          "command": "/bin/zsh -lc 'npm run lint:styles'",
+          "exitCode": 1
+        },
+        {
+          "command": "/bin/zsh -lc 'git status --short && git diff --stat && git check-ignore dist dist/theme.css'",
+          "exitCode": 1
+        }
+      ],
+      "checks": [],
+      "knowledgeTrace": [],
+      "failedGrades": []
+    },
+    {
+      "arm": "fs",
+      "eligible": true,
+      "workflow": "observed",
+      "grades": {
+        "F": {
+          "passed": 64,
+          "total": 64
+        },
+        "S": {
+          "passed": 17,
+          "total": 17
+        },
+        "Q": {
+          "passed": 10,
+          "total": 10
+        },
+        "N": {
+          "passed": 2,
+          "total": 2
+        }
+      },
+      "firstPass": true,
+      "externalRepairs": 0,
+      "totalTokens": 2048086,
+      "uncachedInput": 87121,
+      "outputTokens": 14341,
+      "seconds": 355.734,
+      "mcpCalls": 24,
+      "mcpErrors": 0,
+      "failedCommands": [],
+      "checks": [
+        {
+          "tool": "run_project_checks",
+          "arguments": {
+            "planId": "operations-console-style",
+            "attemptId": "66efe2cb-f9ce-41ea-9c08-7d16d925c2a1",
+            "stage": "baseline"
+          }
+        },
+        {
+          "tool": "run_project_checks",
+          "arguments": {
+            "planId": "operations-console-style",
+            "attemptId": "66efe2cb-f9ce-41ea-9c08-7d16d925c2a1",
+            "capabilities": [
+              "test",
+              "lint:styles"
+            ]
+          }
+        },
+        {
+          "tool": "run_project_checks",
+          "arguments": {
+            "planId": "operations-console-style",
+            "attemptId": "66efe2cb-f9ce-41ea-9c08-7d16d925c2a1",
+            "capabilities": [
+              "build"
+            ]
+          }
+        },
+        {
+          "tool": "run_project_checks",
+          "arguments": {
+            "planId": "operations-console-style",
+            "attemptId": "66efe2cb-f9ce-41ea-9c08-7d16d925c2a1",
+            "stage": "delivery"
+          }
+        }
+      ],
+      "knowledgeTrace": [
+        {
+          "tool": "read_learned_knowledge",
+          "error": false,
+          "arguments": {
+            "id": "tailwind-team-authorship"
+          }
+        }
+      ],
+      "failedGrades": []
+    }
+  ]
+}
