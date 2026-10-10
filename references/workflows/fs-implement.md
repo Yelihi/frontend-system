@@ -27,9 +27,10 @@ an exact button-color request does not need a full screen-design interview.
 First fill in what the current request, prior answers, and repository already
 establish. Ask only unresolved questions that affect implementation, in the order
 below, one concise question at a time in the user's language. Wait for that answer
-before asking the next; an answer may resolve later questions too. While waiting,
-continue independent inspection, but do not implement a design dependent on the
-missing answer. Do not present the whole sequence as a questionnaire.
+before asking the next; an answer may resolve later questions too. Use the native
+selection UI and pause all task work, including inspection and reference browsing,
+until the answer, following [user decisions](user-decisions.md). Do not present the
+whole sequence as a prose questionnaire.
 
 1. **Purpose and action:** Which screen is changing, and what should its users
    accomplish most easily? Ask about the current problem when it is unclear.

@@ -6,7 +6,9 @@ description: Create or revise an implementation plan from project analysis and u
 # FS Plan
 
 For material unanswered choices, follow [ask and pause](../../references/workflows/user-decisions.md).
-Stop implementation when asking and wait for the actual answer; do not assume consent.
+Use the host's native selection UI (Codex `request_user_input` when permitted),
+not a prose questionnaire. After asking, pause this task, including reads and browser
+inspection, until the actual answer. See the shared procedure for unavailable UI.
 
 The host interprets code and discusses choices; MCP pins evidence and contracts.
 Planning alone does not authorize product edits, approval, or a nested model.

@@ -15,7 +15,9 @@ with evidence, and record unknown areas. An existing project.md is reused unless
 refresh is requested. Do not launch a nested model or edit product/test/config files.
 
 Follow [user decisions](../../references/workflows/user-decisions.md) when a material
-answer is missing. Ask and wait; never assume an answer or start implementation.
+answer is missing. Use the host's native selection UI (`request_user_input` in
+Codex when permitted); after asking, pause this task including read-only inspection
+until the actual answer. See the shared procedure for unavailable UI.
 Return the human report, AI context and automatically generated HTML links, with
 coverage and completion status. Partial saves are checkpoints; continue inspectable
 remaining areas unless blocked or paused. Do not read HTML into AI context. Planning is `fs-plan`;

@@ -6,7 +6,9 @@ description: Review frontend code, PR comments or pre-PR readiness; assess reusa
 # FS Review
 
 For material unanswered choices, follow [ask and pause](../../references/workflows/user-decisions.md).
-Stop implementation when asking and wait for the actual answer; do not assume consent.
+Use the host's native selection UI (Codex `request_user_input` when permitted),
+not a prose questionnaire. After asking, pause this task, including reads and browser
+inspection, until the actual answer. See the shared procedure for unavailable UI.
 
 Select only the requested mode:
 - `fs-review <PR URL>` / `fs-review pr <URL>`: inspect PR code and review threads using

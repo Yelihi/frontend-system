@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pluginVersion": "0.5.0",
+  "pluginVersion": "0.5.1",
   "channel": "release",
   "knowledgeIndexHash": "2dac60b85c12d272bd3c99721929b5af530a458c6e2de59c1e87e5f3e23583a0",
   "knowledge": [
@@ -990,8 +990,8 @@
   "files": {
     ".agents/plugins/marketplace.json": "e8a1f5db6213c4abe037c8abc8e57bb538f1fe627ec1254fe85d0a5db5864860",
     ".claude-plugin/marketplace.json": "a4399125cea19ed4ccdb4ba093bc582837dfc964158acc3e611f79ce4ac3fa83",
-    ".claude-plugin/plugin.json": "02a4987dce39f5f96c00e6a83f138b701b81fe7d5491f35e5ae68b98b04eac57",
-    ".codex-plugin/plugin.json": "cffafa6cf93c3fc5ec79abb1088fca59acfbbaa9f7650199d88ab12c9e554b2b",
+    ".claude-plugin/plugin.json": "419da3dce86e829bc2dabd6a69a3fdf7eff38a87855b3c95029d449b984407bd",
+    ".codex-plugin/plugin.json": "2066ae9ae8799bfb39dae14dadbce308f8abe1b7fe57691b79242f81ff0f9613",
     ".mcp.json": "911d584d67cf14e4403a5b2b5641fcc257255039a81900801acf3321ec556c0c",
     "bundle/chunks/chunk-2R6PZYWP.js": "cae4bc609d9c8abbd97debc2b23fc6ecb596c3389bc48fa075238329119732e6",
     "bundle/chunks/chunk-DWZG7PUE.js": "aa2e819dfea2593fd6d1d04d5810e0133a86553db07fbe14dd653866d0f2c6f3",
@@ -1006,7 +1006,7 @@
     "mandatory-rules/react/core.md": "f820abcdd9f20281118906868f322d83495943a9bdb0a835865d5727c3d22cdb",
     "mandatory-rules/tailwind-css/team-style-policy.md": "a1a6c394c4862e891ea8bdcf2d5f05b3d9a3b8e8d3b151e705656167278673d7",
     "mandatory-rules/vue/core.md": "ebcf6d6e28fd0c4e7166113f7901345b4ff819f7d5dd91d7722c376151d3ecc6",
-    "package.json": "679c741368c2e1d3b313ca1510fa9dddf62fa7f879e919023f24be16ffbe015c",
+    "package.json": "9a7722408527b603c44624a7d485abca3020244f8339742ce6af9ef2c9e874c6",
     "references/contribution-release.md": "88f2310ec301ee3251aedf9c6665a64a02e07894c2b26a11478d1e55a31aad10",
     "references/debugging.md": "572b45dac6b5f2586c25eb2a1f51be16092412177d2926c9d59afa057c362f75",
     "references/decision-workflow.md": "76e8fc9c0dd16f54ef5c0f6c2089f3fd50154a7588a56bcb1580d38345838067",
@@ -1094,7 +1094,7 @@
     "references/workflow-policy.md": "9f5269b295890bcb23aa6b26b7729e9fcd7f011cbd0f465e0c5f96e4951dd649",
     "references/workflows/evidence-led-design.md": "f4dc2bcdba4651b53b5d5ad96e5f241b16933271d1a8cec02ee35910cf95312f",
     "references/workflows/fs-feedback.md": "7734d62925a26a59225b6124f36e4b296c8cb184dfbccb7aa9cf369f7a36f292",
-    "references/workflows/fs-implement.md": "34e3c2817e63a653911699c0549c1c6921a8408ca09a2a538088d3ff28c3b15f",
+    "references/workflows/fs-implement.md": "4fbb8679da51bf0600efa459d95f9de1f4a528ff7af4dd1449c6da559ba7f4c9",
     "references/workflows/fs-init.md": "eb6de8ad962f910530e6cafc4cc726f2127e6a41f3ff972f54b324988b48e893",
     "references/workflows/fs-inspect.md": "4076243eabe527ca32fb2423bd824257feeaf0ebf3fc4e49c7ab27a6568480b4",
     "references/workflows/fs-knowledge-active.md": "f50c35ffe31276814640c3519432c9b1704a6ce1f242bfdd0c7aeea0dbc04aab",
@@ -1110,12 +1110,12 @@
     "references/workflows/pr-feedback.md": "282c5a50e508877ddaaf65978707350724f3333841891279b6db1d1a55c965f9",
     "references/workflows/pr-readiness.md": "fe61bbcb6f1297487442ee7e0c9cd26002896cb8a5f3da066929b799a13dd384",
     "references/workflows/project-flow-analysis.md": "89afa970a8e6b188b30cf74452c625b7c17ef56e6ee43ddfd3199ad334feed50",
-    "references/workflows/user-decisions.md": "2ea719a1d431e89f886195547db616e2465567d3db7fae757738827942bc1466",
-    "skills/fs-knowledge/SKILL.md": "9eff66e253170a43021062864f5d176adedf8e230dc57389542f5717d1a795c6",
-    "skills/fs-plan-visualize/SKILL.md": "cb14a0251908aaa865ac4f462fc6d258748464e0ff601111c84d6a3302f51257",
-    "skills/fs-plan/SKILL.md": "38252257c7f84af36d31ed7a4840c671f847ab216b4b3af96e3454084a3d125f",
-    "skills/fs-project/SKILL.md": "cff7737eec6d457a03d2901cf47d634295d31dfb3cdae1575a1db144c74bcd31",
-    "skills/fs-review/SKILL.md": "d960a1ca3fab87c45758d3e2c6e9a501d85df66ba278f10e97783d9da7fbe285",
-    "skills/fs-work/SKILL.md": "c21c3280139fc2dacd515b61dcd938dac6803eac42ac79bb43be840f1795a4a5"
+    "references/workflows/user-decisions.md": "2950bc857f87224783e4fa60095c997137605f16eab415215adff29f0a260082",
+    "skills/fs-knowledge/SKILL.md": "a5504e21681d69409e8d497be2293d08f1204c0786e769283f458b926b59402d",
+    "skills/fs-plan-visualize/SKILL.md": "8138d81ceca6912c287cb622a8f6dbb3d302bbaca30d5f31cac20f9d4ef09630",
+    "skills/fs-plan/SKILL.md": "b715b3eab53299bd6232a93fb2bca4e6d1d0e03ed98fbacc110f8def2b67f90e",
+    "skills/fs-project/SKILL.md": "3ade0b5c5ef37de48c35d53a4094e44fd29eaa0b627df51d3bca63a4e45580aa",
+    "skills/fs-review/SKILL.md": "4e53002442cc031de0caabb672559bc689fd0a53d29144d15fcd010f92e505ed",
+    "skills/fs-work/SKILL.md": "7e22080959baaa2a3db6bb7c5663bc59342e2cce6457e935717a468d0ef0289c"
   }
 }

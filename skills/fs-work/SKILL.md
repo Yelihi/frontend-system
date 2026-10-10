@@ -6,7 +6,9 @@ description: Implement, refactor, set up or resume frontend work against agreed 
 # FS Work
 
 For material unanswered choices, follow [ask and pause](../../references/workflows/user-decisions.md).
-Stop implementation when asking and wait for the actual answer; do not assume consent.
+Use the host's native selection UI (Codex `request_user_input` when permitted),
+not a prose questionnaire. After asking, pause this task, including reads and browser
+inspection, until the actual answer. See the shared procedure for unavailable UI.
 
 Implement the approved contract, preserving user decisions and evidence. The current
 host writes code; MCP manages versions, attempts, checks and completion. No nested model.
