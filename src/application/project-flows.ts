@@ -80,7 +80,7 @@ async function checkQuotes(root: string, citations: Array<{path: string; line?: 
   return Object.fromEntries([...texts].map(([path, body]) => [path, contentHash(body)]));
 }
 // Request-scoped memoization only: a later tool call always rereads current files.
-function freshnessScan(root: string, systemRoot: string) {
+function freshnessScan(root: string, systemRoot: string, snapshot?: ProjectFlow['scope']['snapshot']) {
   const stats = {inventoryReads:0, sourceReads:0, sourceBytes:0};
   let paths: Promise<string[]> | undefined;
   const hashes = new Map<string, Promise<string>>();
@@ -88,10 +88,18 @@ function freshnessScan(root: string, systemRoot: string) {
   const knowledge = new Map<string, Promise<unknown>>();
   return {
     stats,
-    inventory: () => paths ??= (stats.inventoryReads++, inventory(root)),
+    inventory: () => paths ??= (stats.inventoryReads++, snapshot ? projectSnapshot(root, snapshot.baseRef).then(value => {
+      if (value.commit !== snapshot.expectedCommit) throw new Error('Project baseline changed');
+      return value.files;
+    }) : inventory(root)),
     hash: (path: string) => {
       if (!hashes.has(path)) hashes.set(path, (async () => {
         stats.sourceReads++;
+        if (snapshot) {
+          const content = await code(root, path, snapshot);
+          stats.sourceBytes += Buffer.byteLength(content);
+          return contentHash(content);
+        }
         const result = await projectFileHash(root, path);
         stats.sourceBytes += result.bytes;
         return result.hash;
@@ -104,6 +112,24 @@ function freshnessScan(root: string, systemRoot: string) {
       return knowledge.get(id)!;
     },
   };
+}
+
+// Baseline reports validate immutable records against main, not a differing worktree.
+export async function readBaselineRecords(root: string, systemRoot: string, refs: Array<{kind:'flow'|'finding'; id:string; hash:string}>, snapshot: NonNullable<ProjectFlow['scope']['snapshot']>) {
+  const scan = freshnessScan(root, systemRoot, snapshot);
+  const records = [];
+  for (const ref of refs) {
+    const stored = await readEnvelope(root, ref.kind, ref.id, ref.hash);
+    const flow = stored.record.kind === 'flow' ? stored.record.data
+      : flowSchema.parse((await readEnvelope(root, 'flow', stored.record.data.flow.id, stored.record.data.flow.hash)).record.data);
+    if (flow.basis !== 'observed' || flow.scope.snapshot?.baseRef !== snapshot.baseRef || flow.scope.snapshot.expectedCommit !== snapshot.expectedCommit) {
+      throw new Error(`Baseline report requires observed records from the same snapshot: ${ref.id}`);
+    }
+    const freshness = await analysisFreshness(root, stored, systemRoot, scan);
+    if (freshness.status !== 'current') throw new Error(`Baseline record is stale: ${ref.id}: ${freshness.reasons.join('; ')}`);
+    records.push(stored);
+  }
+  return records;
 }
 export async function analysisFreshness(root: string, stored: Envelope, systemRoot: string, scan = freshnessScan(root, systemRoot)) {
   const reasons: string[] = [];
@@ -147,9 +173,9 @@ export async function saveProjectAnalysis(root: string, systemRoot: string, inpu
       const finding = findingSchema.parse(parsed.record.data); parsed.record.data = finding;
       const linked = await readEnvelope(root, 'flow', finding.flow.id);
       if (linked.hash !== finding.flow.hash) throw new Error('Finding must reference the current flow hash');
-      const freshness = await analysisFreshness(root, linked, systemRoot);
-      if (freshness.status !== 'current') throw new Error(`Refresh stale flow before saving finding: ${freshness.reasons.join('; ')}`);
       flow = flowSchema.parse(linked.record.data);
+      const freshness = await analysisFreshness(root, linked, systemRoot, freshnessScan(root, systemRoot, flow.scope.snapshot));
+      if (freshness.status !== 'current') throw new Error(`Refresh stale flow before saving finding: ${freshness.reasons.join('; ')}`);
       if (finding.kind === 'violation' && !finding.authority) throw new Error('Violation needs an established requirement citation');
       if (['resolved', 'dismissed'].includes(finding.status) && !finding.resolution) throw new Error('Closing a finding requires resolution evidence and reconsideration condition');
       quoteHashes = await checkQuotes(root, [...finding.evidence, ...(finding.authority ? [finding.authority] : []), ...finding.resolution?.evidence ?? []], flow.scope.files, flow.scope.snapshot);

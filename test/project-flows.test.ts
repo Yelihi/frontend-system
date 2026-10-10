@@ -183,7 +183,7 @@ test('findings can cite their main-snapshot flow without mixing working-only ans
     const saved=await saveProjectAnalysis(root,process.cwd(),{expectedHash:null,record:{kind:'finding',data:finding}});
     assert.equal(saved.status,'saved');
     await writeFile(join(root,'CONTRACT.md'),'New working answer not in main');
-    await assert.rejects(saveProjectAnalysis(root,process.cwd(),{expectedHash:saved.hash,record:{kind:'finding',data:{...finding,evidence:[{path:'CONTRACT.md',quote:'New working answer not in main'}]}}}),/stale flow/);
+    await assert.rejects(saveProjectAnalysis(root,process.cwd(),{expectedHash:saved.hash,record:{kind:'finding',data:{...finding,evidence:[{path:'CONTRACT.md',quote:'New working answer not in main'}]}}}),/quote not found/);
   } finally {await rm(root,{recursive:true,force:true});}
 });
 
@@ -281,4 +281,74 @@ test('main flow capture includes a 663 KB lockfile and notices edits beyond the 
     const working = flow(); working.id = 'working';
     assert.equal((await saveProjectAnalysis(root, process.cwd(), {expectedHash:null, record:{kind:'flow', data:working}})).status, 'saved');
   } finally { await rm(root, {recursive:true, force:true}); }
+});
+
+test('project reports generate human detail and HTML from pinned records while AI reads references', async () => {
+  const {git} = await import('../src/application/git-state.js');
+  const {projectSnapshot, projectDocumentHash, projectDocumentStatus} = await import('../src/application/project-snapshot.js');
+  const {writeProjectArtifacts, readProjectAiContext} = await import('../src/application/project-store.js');
+  const {projectAnalysisSchema} = await import('../src/application/project-analysis-input.js');
+  const {FileSystemProjectDiscovery} = await import('../src/adapters/filesystem/project-discovery.js');
+  const root = await fixture();
+  const {Client} = await import('@modelcontextprotocol/sdk/client/index.js');
+  const {StdioClientTransport} = await import('@modelcontextprotocol/sdk/client/stdio.js');
+  const client = new Client({name:'project-report',version:'1'});
+  try {
+    await git(root, ['init','-b','main']); await git(root, ['add','.']);
+    await git(root, ['-c','user.name=Fixture','-c','user.email=fixture@example.test','commit','-m','Baseline']);
+    const snapshot = await projectSnapshot(root);
+    const data = flow(); data.scope.snapshot = {baseRef:'main',expectedCommit:snapshot.commit!};
+    const saved = await saveProjectAnalysis(root,process.cwd(),{expectedHash:null,record:{kind:'flow',data}});
+    // A different worktree must not prevent documenting the unchanged main baseline.
+    await writeFile(join(root,'src/caller.ts'),'throw new Error("working branch only");');
+    const finding = await saveProjectAnalysis(root,process.cwd(),{expectedHash:null,record:{kind:'finding',data:{
+      id:'ownership', title:'Input ownership', flow:{id:saved.id,hash:saved.hash}, kind:'hypothesis',status:'open',
+      observation:'Inspect ownership before adding async transport',consequence:'A newer draft could be reset',
+      evidence:[{path:'CONTRACT.md',quote:'Preserve input on failure.'}],
+      alternatives:[{id:'keep',description:'Retain synchronous behavior',cost:'No async transport'}],
+    }}});
+    const analysis = projectAnalysisSchema.parse({summary:'Editor baseline',evidence:{version:1,
+      coverage:snapshot.files.map(path => ({path,status:'inspected',reason:'Fixture inspected'})),
+      statements:[{id:'editor',kind:'fact',statement:'The form calls save with its input.',
+        evidence:[{path:'src/caller.ts',quote:'save(input)'}],reuseReason:'No registered semantic interpretation needed for this fixture'}],
+    },report:{status:'complete',areas:[{id:'editor',title:'Editor',kind:'page',status:'reviewed',summary:'Save and ownership',
+      statementIds:['editor'],flows:[{id:saved.id,hash:saved.hash}],findings:[{id:finding.id,hash:finding.hash}],
+      knowledgeReview:'No applicable registered knowledge for this pure synchronous fixture.'}]}}) as import('../src/domain/types.js').ProjectAnalysis;
+    const discovery = new FileSystemProjectDiscovery(); const profile = await discovery.discover(await discovery.createRef(root));
+    const delivery = await writeProjectArtifacts(profile,analysis,{expectedCommit:snapshot.commit,expectedHash:null});
+    assert.equal(delivery.analysisStatus,'complete'); assert.equal(delivery.diagrams.length,1);
+    const document = await readFile(join(root,'.frontend-system/project.md'),'utf8');
+    assert.match(document,/state: input/); assert.match(document,/form → api/); assert.match(document,/Input ownership/);
+    assert.match(document,/Interactive flow/);
+    const html = await readFile(delivery.diagrams[0]!.path,'utf8');
+    assert.match(html,/data-node="form"/); assert.ok(html.includes(saved.hash));
+    const ai = await readProjectAiContext(root), index = JSON.parse(ai);
+    assert.equal(index.areas[0].flows[0].hash,saved.hash);
+    assert.equal(index.baseline.expectedCommit,snapshot.commit);
+    assert.ok(!ai.includes('<html')); assert.ok(!ai.includes('form → api'));
+    assert.ok(ai.length < document.length);
+    assert.ok('analysisStatus' in await projectDocumentStatus(root));
+    assert.match(JSON.stringify(await projectDocumentStatus(root)), /"analysisStatus":"complete"/);
+    await client.connect(new StdioClientTransport({command:process.execPath,args:[join(process.cwd(),'bundle/mcp.js')]}));
+    const response = await client.callTool({name:'get_project_document',arguments:{projectPath:root}});
+    assert.ok(!response.isError);
+    const body = JSON.parse((response.content as Array<{text:string}>)[0]!.text);
+    assert.equal(body.view,'ai'); assert.equal(body.content,ai);
+    assert.equal(body.documentHash,await projectDocumentHash(root));
+    const humanResponse = await client.callTool({name:'get_project_document',arguments:{projectPath:root,view:'human'}});
+    assert.ok(!humanResponse.isError);
+    assert.match(JSON.parse((humanResponse.content as Array<{text:string}>)[0]!.text).content,/Frontend Context/);
+    const expectedHash = await projectDocumentHash(root);
+    const incomplete = structuredClone(analysis); incomplete.evidence!.coverage[0]!.status = 'pending';
+    await assert.rejects(writeProjectArtifacts(profile,incomplete,{expectedCommit:snapshot.commit,expectedHash}),/Complete analysis|inspected coverage/);
+    const pending = structuredClone(analysis); pending.report!.areas[0]!.status = 'pending';
+    await assert.rejects(writeProjectArtifacts(profile,pending,{expectedCommit:snapshot.commit,expectedHash}),/Complete analysis/);
+    const missing = structuredClone(analysis); missing.report!.areas[0]!.flows[0]!.hash = '0'.repeat(64);
+    await assert.rejects(writeProjectArtifacts(profile,missing,{expectedCommit:snapshot.commit,expectedHash}),/ENOENT/);
+    assert.equal(await readFile(join(root,'.frontend-system/project.md'),'utf8'),document,'Failed refresh preserves previous report');
+    pending.report!.status = 'partial';
+    await writeProjectArtifacts(profile,pending,{expectedCommit:snapshot.commit,expectedHash});
+    assert.match(JSON.stringify(await projectDocumentStatus(root)), /"analysisStatus":"partial"/);
+    assert.equal(JSON.parse(await readProjectAiContext(root)).analysisStatus,'partial');
+  } finally { await client.close(); await rm(root,{recursive:true,force:true}); }
 });
