@@ -6,7 +6,9 @@ description: Analyze or refresh an existing frontend's actual page, component, e
 # FS Plan Visualize
 
 For material unanswered choices, follow [ask and pause](../../references/workflows/user-decisions.md).
-Stop implementation when asking and wait for the actual answer; do not assume consent.
+Use the host's native selection UI (Codex `request_user_input` when permitted),
+not a prose questionnaire. After asking, pause this task, including reads and browser
+inspection, until the actual answer. See the shared procedure for unavailable UI.
 
 Deliver a navigable diagram of the requested project's actual implementation. The
 host traces code; FS validates and stores evidence and renders the same record.

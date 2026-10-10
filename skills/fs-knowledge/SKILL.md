@@ -6,7 +6,9 @@ description: Contribute programming knowledge through pending GitHub PRs, or mai
 # FS Knowledge
 
 For material unanswered choices, follow [ask and pause](../../references/workflows/user-decisions.md).
-Stop implementation when asking and wait for the actual answer; do not assume consent.
+Use the host's native selection UI (Codex `request_user_input` when permitted),
+not a prose questionnaire. After asking, pause this task, including reads and browser
+inspection, until the actual answer. See the shared procedure for unavailable UI.
 
 PR discussions can become source candidates through
 [PR feedback review](../../references/workflows/pr-feedback.md). Assess the claim,
