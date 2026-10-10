@@ -19,7 +19,7 @@ export interface CodeSignal {
 }
 
 export { projectFile } from "../source-file.js";
-import { projectFile } from "../source-file.js";
+import { projectFile, assertProjectSourceSize } from "../source-file.js";
 
 export async function inspectCode(root: string, paths: string[], snapshot?: CodeSnapshot, includeRelations = false) {
   // ponytail: bounded syntax/binding only; no full type graph or recursive barrel tracing.
@@ -32,7 +32,7 @@ export async function inspectCode(root: string, paths: string[], snapshot?: Code
     for (const path of [...new Set([...paths, ...pinned.files.filter((path) => /(^|\/)(?:tsconfig|jsconfig)(?:\.[^/]+)?\.json$/.test(path))])]) {
       if (!pinned.files.includes(path) || path.split('/').some((part) => ['node_modules', '.git', '.frontend-system'].includes(part))) throw new Error("Select a source file from the pinned snapshot");
       const content = await git(root, ['show', `${pinned.commit}:./${path}`]);
-      if (Buffer.byteLength(content) > 512_000) throw new Error("File exceeds 512 KB inspection budget");
+      assertProjectSourceSize(Buffer.byteLength(content), path);
       snapshotContents.set(resolve(base, path), content);
     }
   }

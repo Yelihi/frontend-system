@@ -4,10 +4,12 @@ import {
   $ZodObject,
   $ZodType,
   $constructor,
+  PROJECT_SOURCE_MAX_BYTES,
   ZodOptional,
   _enum,
   _null,
   array,
+  assertProjectSourceSize,
   boolean,
   clone,
   custom,
@@ -39,7 +41,7 @@ import {
   unknown,
   url,
   uuid
-} from "./chunks/chunk-6CLLSHCT.js";
+} from "./chunks/chunk-DWZG7PUE.js";
 import {
   __commonJS,
   __toESM
@@ -14390,6 +14392,11 @@ async function readProjectSource(root, path, expectedCommit, baseRef = "main", o
   if (!snapshot.files.includes(path)) throw new Error("Select a file from the main snapshot");
   return sourceWindow(root, path, expectedCommit, offset, limit);
 }
+async function readProjectSourceFile(root, path, expectedCommit, baseRef = "main") {
+  const file = await readProjectSource(root, path, expectedCommit, baseRef, 0, PROJECT_SOURCE_MAX_BYTES);
+  assertProjectSourceSize(file.nextOffset === null ? Buffer.byteLength(file.content) : PROJECT_SOURCE_MAX_BYTES + 1, path);
+  return file;
+}
 async function sourceWindow(root, path, commit2, offset, limit) {
   const content = await git(root, ["show", `${commit2}:./${path}`]);
   return { commit: commit2, path, hash: digest(content), content: content.slice(offset, offset + limit), totalCharacters: content.length, nextOffset: offset + limit < content.length ? offset + limit : null };
@@ -14470,7 +14477,7 @@ async function inspectCode(root, paths, snapshot, includeRelations = false) {
     for (const path of [.../* @__PURE__ */ new Set([...paths, ...pinned.files.filter((path2) => /(^|\/)(?:tsconfig|jsconfig)(?:\.[^/]+)?\.json$/.test(path2))])]) {
       if (!pinned.files.includes(path) || path.split("/").some((part) => ["node_modules", ".git", ".frontend-system"].includes(part))) throw new Error("Select a source file from the pinned snapshot");
       const content = await git(root, ["show", `${pinned.commit}:./${path}`]);
-      if (Buffer.byteLength(content) > 512e3) throw new Error("File exceeds 512 KB inspection budget");
+      assertProjectSourceSize(Buffer.byteLength(content), path);
       snapshotContents.set(resolve4(base, path), content);
     }
   }
@@ -14705,7 +14712,7 @@ async function inspectCodeKnowledge(projectRoot, systemRoot2, input) {
   const semanticSignals = [...new Set(index.entries.flatMap((entry) => entry.triggers ?? []).filter((trigger) => trigger.kind === "semantic").map((trigger) => trigger.value))].sort();
   for (const observation of request.interpretations) {
     if (!semanticSignals.includes(observation.signal)) throw new Error(`Unknown semantic trigger: ${observation.signal}`);
-    const file = request.snapshot ? { path: observation.path, content: (await readProjectSource(projectRoot, observation.path, request.snapshot.expectedCommit, request.snapshot.baseRef, 0, 512e3)).content } : await projectFile(projectRoot, observation.path);
+    const file = request.snapshot ? { path: observation.path, content: (await readProjectSourceFile(projectRoot, observation.path, request.snapshot.expectedCommit, request.snapshot.baseRef)).content } : await projectFile(projectRoot, observation.path);
     if (analysis.hashes[file.path] !== contentHash(file.content)) throw new Error("Interpretation must cite a current inspected file");
     if (!hasEvidence(file.content, observation.line, observation.evidence)) throw new Error(`Interpretation evidence does not match cited lines: ${observation.path}:${observation.line}. ${quoteLocationHint(file.content, observation.evidence)}`);
     signals.push({
@@ -14836,8 +14843,7 @@ async function inventory(root, snapshot) {
 }
 async function source(root, path, snapshot) {
   if (!snapshot) return (await projectFile(root, path)).content;
-  const file = await readProjectSource(root, path, snapshot.expectedCommit, snapshot.baseRef, 0, 512e3);
-  if (file.nextOffset !== null) throw new Error(`Fact dependency too large: ${path}; use a bounded scope`);
+  const file = await readProjectSourceFile(root, path, snapshot.expectedCommit, snapshot.baseRef);
   return file.content;
 }
 async function bindProjectFacts(root, systemRoot2, evidence2, paths, snapshot) {
@@ -14994,8 +15000,7 @@ async function routeKnowledge(root, systemRoot2, input) {
   const structureMatches = structureQuery ? searchReferenceIndex(index, structureQuery, request.technologies, 5) : [];
   const requirements = {};
   for (const path of request.requirements ?? []) {
-    const file = request.snapshot ? await readProjectSource(root, path, request.snapshot.expectedCommit, request.snapshot.baseRef, 0, 512e3) : await projectFile(root, path);
-    if ("nextOffset" in file && file.nextOffset !== null) throw new Error(`Requirement too large: ${path}; use a bounded project document`);
+    const file = request.snapshot ? await readProjectSourceFile(root, path, request.snapshot.expectedCommit, request.snapshot.baseRef) : await projectFile(root, path);
     requirements[file.path] = contentHash(file.content);
   }
   const ids = [.../* @__PURE__ */ new Set([...inspection.candidates.map(({ id: id4 }) => id4), ...lexical.map(({ id: id4 }) => id4), ...scopeMatches.map(({ id: id4 }) => id4), ...structureMatches.map(({ id: id4 }) => id4)])];
@@ -15183,8 +15188,7 @@ async function readEnvelope(root, kind, id4, hash5) {
 }
 async function code(root, path, snapshot) {
   if (!snapshot) return (await projectFile(root, path)).content;
-  const file = await readProjectSource(root, path, snapshot.expectedCommit, snapshot.baseRef, 0, 512e3);
-  if (file.nextOffset !== null) throw new Error("Analysis source exceeds read budget");
+  const file = await readProjectSourceFile(root, path, snapshot.expectedCommit, snapshot.baseRef);
   return file.content;
 }
 function validateGraph(flow) {
@@ -15512,7 +15516,7 @@ var projectEvidenceInputSchema = projectEvidenceSchema.extend({ version: literal
   });
 });
 async function validateCitation(root, citation2, snapshot) {
-  const content = snapshot ? (await readProjectSource(root, citation2.path, snapshot.expectedCommit, snapshot.baseRef, 0, 512e3)).content : (await projectFile(root, citation2.path)).content;
+  const content = snapshot ? (await readProjectSourceFile(root, citation2.path, snapshot.expectedCommit, snapshot.baseRef)).content : (await projectFile(root, citation2.path)).content;
   const hash5 = contentHash(content);
   if (!citation2.hash && !snapshot || citation2.hash && hash5 !== citation2.hash) {
     throw new Error(`Stale or invented citation: ${citation2.path}; working citations need a current context receipt or full-file hash.`);

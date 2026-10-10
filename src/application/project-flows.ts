@@ -4,7 +4,7 @@ import * as z from 'zod/v4';
 import {FileSystemProjectDiscovery} from '../adapters/filesystem/project-discovery.js';
 import {atomic, directory, locked} from './workflow-store.js';
 import {projectFile, projectFileHash, quoteLocationHint} from './source-file.js';
-import {projectSnapshot, readProjectSource} from './project-snapshot.js';
+import {projectSnapshot, readProjectSourceFile} from './project-snapshot.js';
 import {contentHash, readReferenceIndex, readIndexedReference} from './knowledge/reference-index.js';
 import {analysisId, analysisWriteSchema, flowSchema, findingSchema, type AnalysisReference, type ProjectFlow} from './flow-schema.js';
 
@@ -35,8 +35,7 @@ async function readEnvelope(root: string, kind: 'flow' | 'finding', id: string, 
 }
 async function code(root: string, path: string, snapshot?: ProjectFlow['scope']['snapshot']) {
   if (!snapshot) return (await projectFile(root, path)).content;
-  const file = await readProjectSource(root, path, snapshot.expectedCommit, snapshot.baseRef, 0, 512_000);
-  if (file.nextOffset !== null) throw new Error('Analysis source exceeds read budget');
+  const file = await readProjectSourceFile(root, path, snapshot.expectedCommit, snapshot.baseRef);
   return file.content;
 }
 function validateGraph(flow: ProjectFlow) {

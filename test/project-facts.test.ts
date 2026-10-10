@@ -255,3 +255,25 @@ test('bundled MCP resolves a new user answer through atomic route/decision patch
     assert.equal(rejected.isError, true, 'Dependency guard must survive receipt binding and block approval');
   } finally { await client.close(); await rm(root, {recursive: true, force: true}); }
 });
+
+test('fact bindings retain the full large lockfile in working and main contexts', async () => {
+  const root = await fixture();
+  try {
+    const lock = JSON.stringify({padding:'x'.repeat(663_000), marker:'lockfile-tail'});
+    await writeFile(join(root, 'package-lock.json'), lock);
+    const input = await evidence(root);
+    const working = await validateProjectEvidence(root, input, 'main', null);
+    assert.equal(working.factBindings['request-boundary']!.hashes['package-lock.json'], contentHash(lock));
+    await git(root, ['init', '-b', 'main']);
+    await git(root, ['add', '.']);
+    await git(root, ['-c', 'user.name=Fixture', '-c', 'user.email=fixture@example.test', 'commit', '-m', 'Large lockfile']);
+    const snapshot = {baseRef:'main', expectedCommit:(await projectSnapshot(root)).commit!};
+    const pinned = await validateProjectEvidence(root, input, snapshot.baseRef, snapshot.expectedCommit);
+    assert.equal(pinned.factBindings['request-boundary']!.hashes['package-lock.json'], contentHash(lock));
+    await writeFile(join(root, 'package-lock.json'), lock.replace('lockfile-tail', 'lockfile-edit'));
+    const stale = await retrieveProjectFacts(root, system, pinned, ['view.mjs']);
+    assert.match(stale.facts[0]!.reasons.join(), /Fact dependency changed: package-lock.json/);
+    const current = await retrieveProjectFacts(root, system, pinned, ['view.mjs'], [], snapshot);
+    assert.equal(current.facts[0]!.status, 'current');
+  } finally { await rm(root, {recursive:true, force:true}); }
+});

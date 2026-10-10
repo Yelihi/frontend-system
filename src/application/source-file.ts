@@ -3,6 +3,12 @@ import {createHash} from 'node:crypto';
 import { readFile, realpath, stat } from "node:fs/promises";
 import { isAbsolute, relative, resolve } from "node:path";
 
+// Internal evidence inspection only; model-facing source windows remain bounded separately.
+export const PROJECT_SOURCE_MAX_BYTES = 8 * 1024 * 1024;
+export function assertProjectSourceSize(bytes: number, path: string): void {
+  if (bytes > PROJECT_SOURCE_MAX_BYTES) throw new Error(`File exceeds 8 MiB inspection budget: ${path}`);
+}
+
 // Diagnostic only: never choose an occurrence or change a failed evidence check.
 export function quoteLocationHint(content: string, quote: string): string {
   if (!quote) return 'No nonempty exact quote supplied.';
@@ -36,6 +42,8 @@ export async function projectFileHash(root: string, path: string) {
 
 export async function projectFile(root: string, path: string) {
   const {absolute, path:local} = await projectSourcePath(root, path);
-  if ((await stat(absolute)).size > 512_000) throw new Error("File exceeds 512 KB inspection budget");
-  return { absolute, path: local, content: await readFile(absolute, "utf8") };
+  assertProjectSourceSize((await stat(absolute)).size, local);
+  const content = await readFile(absolute, "utf8");
+  assertProjectSourceSize(Buffer.byteLength(content), local);
+  return { absolute, path: local, content };
 }
