@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pluginVersion": "0.4.0",
+  "pluginVersion": "0.4.1",
   "channel": "release",
   "knowledgeIndexHash": "2dac60b85c12d272bd3c99721929b5af530a458c6e2de59c1e87e5f3e23583a0",
   "knowledge": [
@@ -990,8 +990,8 @@
   "files": {
     ".agents/plugins/marketplace.json": "e8a1f5db6213c4abe037c8abc8e57bb538f1fe627ec1254fe85d0a5db5864860",
     ".claude-plugin/marketplace.json": "a4399125cea19ed4ccdb4ba093bc582837dfc964158acc3e611f79ce4ac3fa83",
-    ".claude-plugin/plugin.json": "8f02036db1339fd2cdad37fdf7828ef7fcf57f4b4cd6d48d52d963823d141c4f",
-    ".codex-plugin/plugin.json": "269c241925bcd2a07278ae2adbafc970117311c9a587614478e70a765f2a5f4d",
+    ".claude-plugin/plugin.json": "e6875c54dcff43ed4d699dd924201d11409228470d1018361738d3f361c728c5",
+    ".codex-plugin/plugin.json": "980b5390abdf881c2985cc4d818d3938118083c6ee1ceb3ddb4b0fb6c50607c6",
     ".mcp.json": "911d584d67cf14e4403a5b2b5641fcc257255039a81900801acf3321ec556c0c",
     "bundle/chunks/chunk-2R6PZYWP.js": "cae4bc609d9c8abbd97debc2b23fc6ecb596c3389bc48fa075238329119732e6",
     "bundle/chunks/chunk-6CLLSHCT.js": "648a90bebd86524adeb0de798e5b098134cfcd02e0ee3870ac42a7c11fb78945",
@@ -1006,7 +1006,7 @@
     "mandatory-rules/react/core.md": "f820abcdd9f20281118906868f322d83495943a9bdb0a835865d5727c3d22cdb",
     "mandatory-rules/tailwind-css/team-style-policy.md": "a1a6c394c4862e891ea8bdcf2d5f05b3d9a3b8e8d3b151e705656167278673d7",
     "mandatory-rules/vue/core.md": "ebcf6d6e28fd0c4e7166113f7901345b4ff819f7d5dd91d7722c376151d3ecc6",
-    "package.json": "21533a3dde18ec65ba431f44fd262c3fb8b3af4138deea5ad3f84f51641d8a05",
+    "package.json": "b6a6f93b9ed5eb5aedee8641986cf86e8573eac4bec4e07533e88c6fd0a583fa",
     "references/contribution-release.md": "88f2310ec301ee3251aedf9c6665a64a02e07894c2b26a11478d1e55a31aad10",
     "references/debugging.md": "572b45dac6b5f2586c25eb2a1f51be16092412177d2926c9d59afa057c362f75",
     "references/decision-workflow.md": "76e8fc9c0dd16f54ef5c0f6c2089f3fd50154a7588a56bcb1580d38345838067",

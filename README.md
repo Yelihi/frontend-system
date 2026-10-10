@@ -2,6 +2,56 @@
 
 FS는 저장한 지식을 프로젝트 코드와 연결해 **분석 → 질문과 결정 → 계획 → 구현과 검증**을 돕는 Codex·Claude Code 플러그인입니다. 코드를 해석하는 주체는 현재 대화의 AI이며, FS는 지식 검색과 근거·결정·검증 기록을 제공합니다.
 
+## 설치와 업데이트
+
+Node.js와 Git, 사용할 클라이언트의 CLI가 필요합니다. **이 절의 명령은 일반 터미널에서 실행**합니다. FS 저장소를 직접 clone하거나 프로젝트에 npm 의존성을 추가할 필요는 없습니다. 설치는 사용자 단위로 한 번만 하면 됩니다.
+
+### Codex
+
+```bash
+codex plugin marketplace add Yelihi/frontend-system --ref release
+codex plugin add frontend-system@frontend-system
+codex plugin list --marketplace frontend-system --json
+```
+
+마지막 출력에서 설치 여부와 버전이 `0.4.0` 이상인지 확인합니다. 설치 후 Codex 앱을 다시 시작하거나 새 CLI 세션을 열고, 대상 프로젝트의 대화창에 `$fs-project`를 입력합니다.
+
+새 릴리스로 업데이트할 때:
+
+```bash
+codex plugin marketplace upgrade frontend-system
+codex plugin list --marketplace frontend-system --json
+```
+
+설치본이 이전 버전으로 남아 있으면 다음 명령으로 재설치한 뒤 새 세션을 시작합니다.
+
+```bash
+codex plugin remove frontend-system@frontend-system
+codex plugin add frontend-system@frontend-system
+```
+
+명령 지원 여부는 `codex plugin --help`에서 확인할 수 있습니다. [공식 Codex CLI 안내](https://learn.chatgpt.com/docs/cli/reference#codex-plugin).
+
+### Claude Code
+
+```bash
+claude plugin marketplace add Yelihi/frontend-system
+claude plugin install frontend-system@frontend-system --scope user
+claude plugin list
+```
+
+설치 후 대상 프로젝트에서 새 Claude Code 세션을 열고 `/frontend-system:fs-project`를 입력합니다. [공식 설치 안내](https://code.claude.com/docs/en/discover-plugins).
+
+새 릴리스로 업데이트할 때:
+
+```bash
+claude plugin marketplace update frontend-system
+claude plugin update frontend-system@frontend-system --scope user
+claude plugin list
+```
+
+업데이트한 플러그인을 사용하는 새 세션을 시작하세요. 두 클라이언트 모두 이 저장소의 **`release` 브랜치에 배포된 플러그인**을 설치합니다. main의 개발 변경이나 지식 sync만으로 배포본이 바뀌지는 않습니다.
+
 ## 명령어
 
 **대상 프로젝트를 연 Codex·Claude 대화창에 입력합니다. 아래 `fs-*`는 터미널 명령이 아닙니다.** Codex에서는 `$fs-project`처럼 스킬을 선택해도 됩니다. 경로를 생략하면 현재 프로젝트를 사용합니다.
