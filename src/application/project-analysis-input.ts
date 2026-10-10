@@ -1,7 +1,9 @@
 import * as z from 'zod/v4';
 import {projectEvidenceInputSchema} from './design-evidence.js';
+import {projectReportSchema} from './project-report.js';
 
 export const projectAnalysisSchema = z.object({
+  report: projectReportSchema.optional().describe('Required for fs-project: analysis areas and immutable flow/finding receipts. Generates human documentation, compact AI context and observed HTML automatically. Legacy saves without report remain supported.'),
   evidence: projectEvidenceInputSchema.optional(), summary: z.string(),
   domains: z.array(z.string()).default([]), events: z.array(z.string()).default([]),
   state: z.array(z.string()).default([]), styles: z.array(z.string()).default([]), tests: z.array(z.string()).default([]),

@@ -18,7 +18,8 @@ Working changes are returned separately. A manifest is not an installed environm
 a file name is not a domain interpretation, and a test file is not a passing result.
 
 Before an authorized refresh, call `record_project_refresh(status: pending)` with
-the inspected commit. Read existing context through `get_project_document`, selected
+the inspected commit. Read the compact AI view through `get_project_document` (human
+report only with view:human), selected
 area evidence and actual runner/CI reports. Record domain and event IDs, callers,
 layers, state/fetching/errors, style rules and test summaries with code/evidence paths.
 Keep facts, interpretations and unresolved questions distinct. Link full test titles,

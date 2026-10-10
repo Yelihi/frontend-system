@@ -1,6 +1,6 @@
 ---
 name: fs-project
-description: Analyze an entire existing project to create .frontend-system/project.md, or explicitly refresh it with fs-project update. Record architecture, event/state flows, knowledge-backed findings and coverage without implementing changes.
+description: Analyze an entire existing project to create .frontend-system/project.md, or explicitly refresh it with fs-project update. Generate a human report, compact AI references and automatic observed-flow HTML, with architecture, event/state flows, findings and coverage; no product edits.
 ---
 
 # FS Project
@@ -16,5 +16,7 @@ refresh is requested. Do not launch a nested model or edit product/test/config f
 
 Follow [user decisions](../../references/workflows/user-decisions.md) when a material
 answer is missing. Ask and wait; never assume an answer or start implementation.
-Return the actual saved path and coverage, then stop. Planning is `fs-plan`;
-actual-code visualization is `fs-plan-visualize` and does not refresh project.md.
+Return the human report, AI context and automatically generated HTML links, with
+coverage and completion status. Partial saves are checkpoints; continue inspectable
+remaining areas unless blocked or paused. Do not read HTML into AI context. Planning is `fs-plan`;
+standalone visualization is `fs-plan-visualize` and does not refresh project.md.

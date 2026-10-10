@@ -2291,26 +2291,26 @@ var require_resolve = __commonJS({
         addAnchor.call(this, sch.$anchor);
         addAnchor.call(this, sch.$dynamicAnchor);
         baseIds[jsonPtr] = innerBaseId;
-        function addRef(ref) {
+        function addRef(ref2) {
           const _resolve = this.opts.uriResolver.resolve;
-          ref = normalizeId(innerBaseId ? _resolve(innerBaseId, ref) : ref);
-          if (schemaRefs.has(ref))
-            throw ambiguos(ref);
-          schemaRefs.add(ref);
-          let schOrRef = this.refs[ref];
+          ref2 = normalizeId(innerBaseId ? _resolve(innerBaseId, ref2) : ref2);
+          if (schemaRefs.has(ref2))
+            throw ambiguos(ref2);
+          schemaRefs.add(ref2);
+          let schOrRef = this.refs[ref2];
           if (typeof schOrRef == "string")
             schOrRef = this.refs[schOrRef];
           if (typeof schOrRef == "object") {
-            checkAmbiguosRef(sch, schOrRef.schema, ref);
-          } else if (ref !== normalizeId(fullPath)) {
-            if (ref[0] === "#") {
-              checkAmbiguosRef(sch, localRefs[ref], ref);
-              localRefs[ref] = sch;
+            checkAmbiguosRef(sch, schOrRef.schema, ref2);
+          } else if (ref2 !== normalizeId(fullPath)) {
+            if (ref2[0] === "#") {
+              checkAmbiguosRef(sch, localRefs[ref2], ref2);
+              localRefs[ref2] = sch;
             } else {
-              this.refs[ref] = fullPath;
+              this.refs[ref2] = fullPath;
             }
           }
-          return ref;
+          return ref2;
         }
         function addAnchor(anchor) {
           if (typeof anchor == "string") {
@@ -2321,12 +2321,12 @@ var require_resolve = __commonJS({
         }
       });
       return localRefs;
-      function checkAmbiguosRef(sch1, sch2, ref) {
+      function checkAmbiguosRef(sch1, sch2, ref2) {
         if (sch2 !== void 0 && !equal(sch1, sch2))
-          throw ambiguos(ref);
+          throw ambiguos(ref2);
       }
-      function ambiguos(ref) {
-        return new Error(`reference "${ref}" resolves to more than one schema`);
+      function ambiguos(ref2) {
+        return new Error(`reference "${ref2}" resolves to more than one schema`);
       }
     }
     exports.getSchemaRefs = getSchemaRefs;
@@ -2864,9 +2864,9 @@ var require_ref_error = __commonJS({
     Object.defineProperty(exports, "__esModule", { value: true });
     var resolve_1 = require_resolve();
     var MissingRefError = class extends Error {
-      constructor(resolver, baseId, ref, msg) {
-        super(msg || `can't resolve reference ${ref} from id ${baseId}`);
-        this.missingRef = (0, resolve_1.resolveUrl)(resolver, baseId, ref);
+      constructor(resolver, baseId, ref2, msg) {
+        super(msg || `can't resolve reference ${ref2} from id ${baseId}`);
+        this.missingRef = (0, resolve_1.resolveUrl)(resolver, baseId, ref2);
         this.missingSchema = (0, resolve_1.normalizeId)((0, resolve_1.getFullPath)(resolver, this.missingRef));
       }
     };
@@ -2992,22 +2992,22 @@ var require_compile = __commonJS({
       }
     }
     exports.compileSchema = compileSchema;
-    function resolveRef(root, baseId, ref) {
+    function resolveRef(root, baseId, ref2) {
       var _a;
-      ref = (0, resolve_1.resolveUrl)(this.opts.uriResolver, baseId, ref);
-      const schOrFunc = root.refs[ref];
+      ref2 = (0, resolve_1.resolveUrl)(this.opts.uriResolver, baseId, ref2);
+      const schOrFunc = root.refs[ref2];
       if (schOrFunc)
         return schOrFunc;
-      let _sch = resolve11.call(this, root, ref);
+      let _sch = resolve11.call(this, root, ref2);
       if (_sch === void 0) {
-        const schema = (_a = root.localRefs) === null || _a === void 0 ? void 0 : _a[ref];
+        const schema = (_a = root.localRefs) === null || _a === void 0 ? void 0 : _a[ref2];
         const { schemaId } = this.opts;
         if (schema)
           _sch = new SchemaEnv({ schema, schemaId, root, baseId });
       }
       if (_sch === void 0)
         return;
-      return root.refs[ref] = inlineOrCompile.call(this, _sch);
+      return root.refs[ref2] = inlineOrCompile.call(this, _sch);
     }
     exports.resolveRef = resolveRef;
     function inlineOrCompile(sch) {
@@ -3025,14 +3025,14 @@ var require_compile = __commonJS({
     function sameSchemaEnv(s1, s2) {
       return s1.schema === s2.schema && s1.root === s2.root && s1.baseId === s2.baseId;
     }
-    function resolve11(root, ref) {
+    function resolve11(root, ref2) {
       let sch;
-      while (typeof (sch = this.refs[ref]) == "string")
-        ref = sch;
-      return sch || this.schemas[ref] || resolveSchema.call(this, root, ref);
+      while (typeof (sch = this.refs[ref2]) == "string")
+        ref2 = sch;
+      return sch || this.schemas[ref2] || resolveSchema.call(this, root, ref2);
     }
-    function resolveSchema(root, ref) {
-      const p = this.opts.uriResolver.parse(ref);
+    function resolveSchema(root, ref2) {
+      const p = this.opts.uriResolver.parse(ref2);
       const refPath = (0, resolve_1._getFullPath)(this.opts.uriResolver, p);
       let baseId = (0, resolve_1.getFullPath)(this.opts.uriResolver, root.baseId, void 0);
       if (Object.keys(root.schema).length > 0 && refPath === baseId) {
@@ -3050,7 +3050,7 @@ var require_compile = __commonJS({
         return;
       if (!schOrRef.validate)
         compileSchema.call(this, schOrRef);
-      if (id4 === (0, resolve_1.normalizeId)(ref)) {
+      if (id4 === (0, resolve_1.normalizeId)(ref2)) {
         const { schema } = schOrRef;
         const { schemaId } = this.opts;
         const schId = schema[schemaId];
@@ -4446,26 +4446,26 @@ var require_core = __commonJS({
             return _compileAsync.call(this, sch);
           }
         }
-        function checkLoaded({ missingSchema: ref, missingRef }) {
-          if (this.refs[ref]) {
-            throw new Error(`AnySchema ${ref} is loaded but ${missingRef} cannot be resolved`);
+        function checkLoaded({ missingSchema: ref2, missingRef }) {
+          if (this.refs[ref2]) {
+            throw new Error(`AnySchema ${ref2} is loaded but ${missingRef} cannot be resolved`);
           }
         }
-        async function loadMissingSchema(ref) {
-          const _schema = await _loadSchema.call(this, ref);
-          if (!this.refs[ref])
+        async function loadMissingSchema(ref2) {
+          const _schema = await _loadSchema.call(this, ref2);
+          if (!this.refs[ref2])
             await loadMetaSchema.call(this, _schema.$schema);
-          if (!this.refs[ref])
-            this.addSchema(_schema, ref, meta2);
+          if (!this.refs[ref2])
+            this.addSchema(_schema, ref2, meta2);
         }
-        async function _loadSchema(ref) {
-          const p = this._loading[ref];
+        async function _loadSchema(ref2) {
+          const p = this._loading[ref2];
           if (p)
             return p;
           try {
-            return await (this._loading[ref] = loadSchema(ref));
+            return await (this._loading[ref2] = loadSchema(ref2));
           } finally {
-            delete this._loading[ref];
+            delete this._loading[ref2];
           }
         }
       }
@@ -4638,7 +4638,7 @@ var require_core = __commonJS({
       errorsText(errors = this.errors, { separator = ", ", dataVar = "data" } = {}) {
         if (!errors || errors.length === 0)
           return "No errors";
-        return errors.map((e) => `${dataVar}${e.instancePath} ${e.message}`).reduce((text6, msg) => text6 + separator + msg);
+        return errors.map((e) => `${dataVar}${e.instancePath} ${e.message}`).reduce((text7, msg) => text7 + separator + msg);
       }
       $dataMetaSchema(metaSchema, keywordsJsonPointers) {
         const rules = this.RULES.all;
@@ -6624,12 +6624,12 @@ var require_discriminator = __commonJS({
           for (let i = 0; i < oneOf.length; i++) {
             let sch = oneOf[i];
             if ((sch === null || sch === void 0 ? void 0 : sch.$ref) && !(0, util_1.schemaHasRulesButRef)(sch, it.self.RULES)) {
-              const ref = sch.$ref;
-              sch = compile_1.resolveRef.call(it.self, it.schemaEnv.root, it.baseId, ref);
+              const ref2 = sch.$ref;
+              sch = compile_1.resolveRef.call(it.self, it.schemaEnv.root, it.baseId, ref2);
               if (sch instanceof compile_1.SchemaEnv)
                 sch = sch.schema;
               if (sch === void 0)
-                throw new ref_error_1.default(it.opts.uriResolver, it.baseId, ref);
+                throw new ref_error_1.default(it.opts.uriResolver, it.baseId, ref2);
             }
             const propSch = (_a = sch === null || sch === void 0 ? void 0 : sch.properties) === null || _a === void 0 ? void 0 : _a[tagName];
             if (typeof propSch != "object") {
@@ -9307,26 +9307,26 @@ var require_resolve2 = __commonJS({
         addAnchor.call(this, sch.$anchor);
         addAnchor.call(this, sch.$dynamicAnchor);
         baseIds[jsonPtr] = innerBaseId;
-        function addRef(ref) {
+        function addRef(ref2) {
           const _resolve = this.opts.uriResolver.resolve;
-          ref = normalizeId(innerBaseId ? _resolve(innerBaseId, ref) : ref);
-          if (schemaRefs.has(ref))
-            throw ambiguos(ref);
-          schemaRefs.add(ref);
-          let schOrRef = this.refs[ref];
+          ref2 = normalizeId(innerBaseId ? _resolve(innerBaseId, ref2) : ref2);
+          if (schemaRefs.has(ref2))
+            throw ambiguos(ref2);
+          schemaRefs.add(ref2);
+          let schOrRef = this.refs[ref2];
           if (typeof schOrRef == "string")
             schOrRef = this.refs[schOrRef];
           if (typeof schOrRef == "object") {
-            checkAmbiguosRef(sch, schOrRef.schema, ref);
-          } else if (ref !== normalizeId(fullPath)) {
-            if (ref[0] === "#") {
-              checkAmbiguosRef(sch, localRefs[ref], ref);
-              localRefs[ref] = sch;
+            checkAmbiguosRef(sch, schOrRef.schema, ref2);
+          } else if (ref2 !== normalizeId(fullPath)) {
+            if (ref2[0] === "#") {
+              checkAmbiguosRef(sch, localRefs[ref2], ref2);
+              localRefs[ref2] = sch;
             } else {
-              this.refs[ref] = fullPath;
+              this.refs[ref2] = fullPath;
             }
           }
-          return ref;
+          return ref2;
         }
         function addAnchor(anchor) {
           if (typeof anchor == "string") {
@@ -9337,12 +9337,12 @@ var require_resolve2 = __commonJS({
         }
       });
       return localRefs;
-      function checkAmbiguosRef(sch1, sch2, ref) {
+      function checkAmbiguosRef(sch1, sch2, ref2) {
         if (sch2 !== void 0 && !equal(sch1, sch2))
-          throw ambiguos(ref);
+          throw ambiguos(ref2);
       }
-      function ambiguos(ref) {
-        return new Error(`reference "${ref}" resolves to more than one schema`);
+      function ambiguos(ref2) {
+        return new Error(`reference "${ref2}" resolves to more than one schema`);
       }
     }
     exports.getSchemaRefs = getSchemaRefs;
@@ -9880,9 +9880,9 @@ var require_ref_error2 = __commonJS({
     Object.defineProperty(exports, "__esModule", { value: true });
     var resolve_1 = require_resolve2();
     var MissingRefError = class extends Error {
-      constructor(resolver, baseId, ref, msg) {
-        super(msg || `can't resolve reference ${ref} from id ${baseId}`);
-        this.missingRef = (0, resolve_1.resolveUrl)(resolver, baseId, ref);
+      constructor(resolver, baseId, ref2, msg) {
+        super(msg || `can't resolve reference ${ref2} from id ${baseId}`);
+        this.missingRef = (0, resolve_1.resolveUrl)(resolver, baseId, ref2);
         this.missingSchema = (0, resolve_1.normalizeId)((0, resolve_1.getFullPath)(resolver, this.missingRef));
       }
     };
@@ -10008,22 +10008,22 @@ var require_compile2 = __commonJS({
       }
     }
     exports.compileSchema = compileSchema;
-    function resolveRef(root, baseId, ref) {
+    function resolveRef(root, baseId, ref2) {
       var _a;
-      ref = (0, resolve_1.resolveUrl)(this.opts.uriResolver, baseId, ref);
-      const schOrFunc = root.refs[ref];
+      ref2 = (0, resolve_1.resolveUrl)(this.opts.uriResolver, baseId, ref2);
+      const schOrFunc = root.refs[ref2];
       if (schOrFunc)
         return schOrFunc;
-      let _sch = resolve11.call(this, root, ref);
+      let _sch = resolve11.call(this, root, ref2);
       if (_sch === void 0) {
-        const schema = (_a = root.localRefs) === null || _a === void 0 ? void 0 : _a[ref];
+        const schema = (_a = root.localRefs) === null || _a === void 0 ? void 0 : _a[ref2];
         const { schemaId } = this.opts;
         if (schema)
           _sch = new SchemaEnv({ schema, schemaId, root, baseId });
       }
       if (_sch === void 0)
         return;
-      return root.refs[ref] = inlineOrCompile.call(this, _sch);
+      return root.refs[ref2] = inlineOrCompile.call(this, _sch);
     }
     exports.resolveRef = resolveRef;
     function inlineOrCompile(sch) {
@@ -10041,14 +10041,14 @@ var require_compile2 = __commonJS({
     function sameSchemaEnv(s1, s2) {
       return s1.schema === s2.schema && s1.root === s2.root && s1.baseId === s2.baseId;
     }
-    function resolve11(root, ref) {
+    function resolve11(root, ref2) {
       let sch;
-      while (typeof (sch = this.refs[ref]) == "string")
-        ref = sch;
-      return sch || this.schemas[ref] || resolveSchema.call(this, root, ref);
+      while (typeof (sch = this.refs[ref2]) == "string")
+        ref2 = sch;
+      return sch || this.schemas[ref2] || resolveSchema.call(this, root, ref2);
     }
-    function resolveSchema(root, ref) {
-      const p = this.opts.uriResolver.parse(ref);
+    function resolveSchema(root, ref2) {
+      const p = this.opts.uriResolver.parse(ref2);
       const refPath = (0, resolve_1._getFullPath)(this.opts.uriResolver, p);
       let baseId = (0, resolve_1.getFullPath)(this.opts.uriResolver, root.baseId, void 0);
       if (Object.keys(root.schema).length > 0 && refPath === baseId) {
@@ -10066,7 +10066,7 @@ var require_compile2 = __commonJS({
         return;
       if (!schOrRef.validate)
         compileSchema.call(this, schOrRef);
-      if (id4 === (0, resolve_1.normalizeId)(ref)) {
+      if (id4 === (0, resolve_1.normalizeId)(ref2)) {
         const { schema } = schOrRef;
         const { schemaId } = this.opts;
         const schId = schema[schemaId];
@@ -10344,26 +10344,26 @@ var require_core3 = __commonJS({
             return _compileAsync.call(this, sch);
           }
         }
-        function checkLoaded({ missingSchema: ref, missingRef }) {
-          if (this.refs[ref]) {
-            throw new Error(`AnySchema ${ref} is loaded but ${missingRef} cannot be resolved`);
+        function checkLoaded({ missingSchema: ref2, missingRef }) {
+          if (this.refs[ref2]) {
+            throw new Error(`AnySchema ${ref2} is loaded but ${missingRef} cannot be resolved`);
           }
         }
-        async function loadMissingSchema(ref) {
-          const _schema = await _loadSchema.call(this, ref);
-          if (!this.refs[ref])
+        async function loadMissingSchema(ref2) {
+          const _schema = await _loadSchema.call(this, ref2);
+          if (!this.refs[ref2])
             await loadMetaSchema.call(this, _schema.$schema);
-          if (!this.refs[ref])
-            this.addSchema(_schema, ref, meta2);
+          if (!this.refs[ref2])
+            this.addSchema(_schema, ref2, meta2);
         }
-        async function _loadSchema(ref) {
-          const p = this._loading[ref];
+        async function _loadSchema(ref2) {
+          const p = this._loading[ref2];
           if (p)
             return p;
           try {
-            return await (this._loading[ref] = loadSchema(ref));
+            return await (this._loading[ref2] = loadSchema(ref2));
           } finally {
-            delete this._loading[ref];
+            delete this._loading[ref2];
           }
         }
       }
@@ -10536,7 +10536,7 @@ var require_core3 = __commonJS({
       errorsText(errors = this.errors, { separator = ", ", dataVar = "data" } = {}) {
         if (!errors || errors.length === 0)
           return "No errors";
-        return errors.map((e) => `${dataVar}${e.instancePath} ${e.message}`).reduce((text6, msg) => text6 + separator + msg);
+        return errors.map((e) => `${dataVar}${e.instancePath} ${e.message}`).reduce((text7, msg) => text7 + separator + msg);
       }
       $dataMetaSchema(metaSchema, keywordsJsonPointers) {
         const rules = this.RULES.all;
@@ -12522,12 +12522,12 @@ var require_discriminator2 = __commonJS({
           for (let i = 0; i < oneOf.length; i++) {
             let sch = oneOf[i];
             if ((sch === null || sch === void 0 ? void 0 : sch.$ref) && !(0, util_1.schemaHasRulesButRef)(sch, it.self.RULES)) {
-              const ref = sch.$ref;
-              sch = compile_1.resolveRef.call(it.self, it.schemaEnv.root, it.baseId, ref);
+              const ref2 = sch.$ref;
+              sch = compile_1.resolveRef.call(it.self, it.schemaEnv.root, it.baseId, ref2);
               if (sch instanceof compile_1.SchemaEnv)
                 sch = sch.schema;
               if (sch === void 0)
-                throw new ref_error_1.default(it.opts.uriResolver, it.baseId, ref);
+                throw new ref_error_1.default(it.opts.uriResolver, it.baseId, ref2);
             }
             const propSch = (_a = sch === null || sch === void 0 ? void 0 : sch.properties) === null || _a === void 0 ? void 0 : _a[tagName];
             if (typeof propSch != "object") {
@@ -14414,7 +14414,8 @@ var metadataSchema = object({
   baseRef: string(),
   analyzedCommit: string().nullable(),
   sourceHash: string(),
-  updatedAt: string()
+  updatedAt: string(),
+  analysisStatus: _enum(["partial", "complete", "legacy"]).optional()
 });
 var refreshSchema = object({
   baseRef: string(),
@@ -15237,7 +15238,7 @@ async function checkQuotes(root, citations, files, snapshot) {
   }
   return Object.fromEntries([...texts].map(([path, body]) => [path, contentHash(body)]));
 }
-function freshnessScan(root, systemRoot2) {
+function freshnessScan(root, systemRoot2, snapshot) {
   const stats = { inventoryReads: 0, sourceReads: 0, sourceBytes: 0 };
   let paths;
   const hashes = /* @__PURE__ */ new Map();
@@ -15245,10 +15246,18 @@ function freshnessScan(root, systemRoot2) {
   const knowledge = /* @__PURE__ */ new Map();
   return {
     stats,
-    inventory: () => paths ??= (stats.inventoryReads++, inventory2(root)),
+    inventory: () => paths ??= (stats.inventoryReads++, snapshot ? projectSnapshot(root, snapshot.baseRef).then((value) => {
+      if (value.commit !== snapshot.expectedCommit) throw new Error("Project baseline changed");
+      return value.files;
+    }) : inventory2(root)),
     hash: (path) => {
       if (!hashes.has(path)) hashes.set(path, (async () => {
         stats.sourceReads++;
+        if (snapshot) {
+          const content = await code(root, path, snapshot);
+          stats.sourceBytes += Buffer.byteLength(content);
+          return contentHash(content);
+        }
         const result2 = await projectFileHash(root, path);
         stats.sourceBytes += result2.bytes;
         return result2.hash;
@@ -15261,6 +15270,21 @@ function freshnessScan(root, systemRoot2) {
       return knowledge.get(id4);
     }
   };
+}
+async function readBaselineRecords(root, systemRoot2, refs, snapshot) {
+  const scan = freshnessScan(root, systemRoot2, snapshot);
+  const records = [];
+  for (const ref2 of refs) {
+    const stored = await readEnvelope(root, ref2.kind, ref2.id, ref2.hash);
+    const flow = stored.record.kind === "flow" ? stored.record.data : flowSchema.parse((await readEnvelope(root, "flow", stored.record.data.flow.id, stored.record.data.flow.hash)).record.data);
+    if (flow.basis !== "observed" || flow.scope.snapshot?.baseRef !== snapshot.baseRef || flow.scope.snapshot.expectedCommit !== snapshot.expectedCommit) {
+      throw new Error(`Baseline report requires observed records from the same snapshot: ${ref2.id}`);
+    }
+    const freshness = await analysisFreshness(root, stored, systemRoot2, scan);
+    if (freshness.status !== "current") throw new Error(`Baseline record is stale: ${ref2.id}: ${freshness.reasons.join("; ")}`);
+    records.push(stored);
+  }
+  return records;
 }
 async function analysisFreshness(root, stored, systemRoot2, scan = freshnessScan(root, systemRoot2)) {
   const reasons = [];
@@ -15322,9 +15346,9 @@ async function saveProjectAnalysis(root, systemRoot2, input) {
       parsed.record.data = finding;
       const linked = await readEnvelope(root, "flow", finding.flow.id);
       if (linked.hash !== finding.flow.hash) throw new Error("Finding must reference the current flow hash");
-      const freshness = await analysisFreshness(root, linked, systemRoot2);
-      if (freshness.status !== "current") throw new Error(`Refresh stale flow before saving finding: ${freshness.reasons.join("; ")}`);
       flow = flowSchema.parse(linked.record.data);
+      const freshness = await analysisFreshness(root, linked, systemRoot2, freshnessScan(root, systemRoot2, flow.scope.snapshot));
+      if (freshness.status !== "current") throw new Error(`Refresh stale flow before saving finding: ${freshness.reasons.join("; ")}`);
       if (finding.kind === "violation" && !finding.authority) throw new Error("Violation needs an established requirement citation");
       if (["resolved", "dismissed"].includes(finding.status) && !finding.resolution) throw new Error("Closing a finding requires resolution evidence and reconsideration condition");
       quoteHashes = await checkQuotes(root, [...finding.evidence, ...finding.authority ? [finding.authority] : [], ...finding.resolution?.evidence ?? []], flow.scope.files, flow.scope.snapshot);
@@ -15439,15 +15463,15 @@ async function getProjectAnalysis(root, systemRoot2, options = {}) {
 async function validateAnalysisReferences(root, systemRoot2, refs, checkSources2) {
   const errors = [];
   const scan = freshnessScan(root, systemRoot2);
-  for (const ref of refs) {
+  for (const ref2 of refs) {
     try {
-      const stored = await readEnvelope(root, ref.kind, ref.id, ref.hash);
+      const stored = await readEnvelope(root, ref2.kind, ref2.id, ref2.hash);
       if (checkSources2) {
-        if ((await readEnvelope(root, ref.kind, ref.id)).hash !== ref.hash) errors.push(`Analysis version changed: ${ref.id}`);
-        errors.push(...(await analysisFreshness(root, stored, systemRoot2, scan)).reasons.map((r) => `${ref.id}: ${r}`));
+        if ((await readEnvelope(root, ref2.kind, ref2.id)).hash !== ref2.hash) errors.push(`Analysis version changed: ${ref2.id}`);
+        errors.push(...(await analysisFreshness(root, stored, systemRoot2, scan)).reasons.map((r) => `${ref2.id}: ${r}`));
       }
     } catch (error) {
-      errors.push(`Analysis reference unavailable: ${ref.id}: ${String(error)}`);
+      errors.push(`Analysis reference unavailable: ${ref2.id}: ${String(error)}`);
     }
   }
   return errors;
@@ -15756,8 +15780,198 @@ async function evidenceFreshness(root, evidence2, checkSources2, systemRoot2 = i
   return errors;
 }
 
+// src/application/project-report.ts
+import { join as join9 } from "node:path";
+
+// src/application/flow-view.ts
+var html = (s) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+var label = (s) => html(s).replace(/\r?\n/g, "<br/>");
+function flowToMermaid(flow, scenarioId) {
+  const ids = new Map(flow.nodes.map((n, i) => [n.id, `n${i}`]));
+  const lines = ["flowchart LR"];
+  function node(id4, indent) {
+    const n = flow.nodes.find((n2) => n2.id === id4);
+    const children = flow.nodes.filter((c) => c.parent === id4);
+    const details = [n.label, ...["props", "state", "events", "lifecycle"].flatMap((k) => n[k].length ? [`${k}: ${n[k].join(", ")}`] : [])].map(label).join("<br/>");
+    if (children.length) {
+      lines.push(`${indent}subgraph ${ids.get(id4)}["${label(n.label)}"]`);
+      if ([n.props, n.state, n.events, n.lifecycle].some((values) => values.length)) lines.push(`${indent}  ${ids.get(id4)}info["${details}"]`);
+      for (const child of children) node(child.id, `${indent}  `);
+      lines.push(`${indent}end`);
+    } else lines.push(`${indent}${ids.get(id4)}["${label(n.kind)} \xB7 ${details}"]`);
+  }
+  for (const n of flow.nodes.filter((n2) => !n2.parent)) node(n.id, "  ");
+  const scenario = flow.scenarios.find((s) => s.id === scenarioId);
+  for (const [i, edge] of flow.edges.filter((e) => !scenario || scenario.steps.some((s) => s.edge === e.id)).entries()) {
+    const steps = scenario?.steps.flatMap((s, j) => s.edge === edge.id ? [j + 1] : []) ?? [];
+    lines.push(`  ${ids.get(edge.from)} -->|"${label(`${steps.length ? `${steps.join("/")} \xB7 ` : ""}${edge.label}${edge.condition ? ` [${edge.condition}]` : ""}`)}"| ${ids.get(edge.to)}`);
+    if (steps.length) lines.push(`  linkStyle ${i} stroke:#0369a1,stroke-width:3px`);
+  }
+  return lines.join("\n") + "\n";
+}
+function flowToHtml(flow, freshness, options = {}) {
+  if (options.scenarioId && !flow.scenarios.some((s) => s.id === options.scenarioId)) throw new Error("Unknown flow scenario");
+  const language = options.language ?? "ko";
+  const t = (ko, en) => language === "en" ? en : ko;
+  const citation2 = (id4) => {
+    const c = flow.evidence[id4];
+    return c ? `<p><b>${html(c.path)}${c.line ? `:${c.line}` : ""}</b><br><code>${html(c.quote)}</code></p>` : "";
+  };
+  const statusLabel = freshness === "current" ? t("\uC0DD\uC131 \uC2DC\uC810\uC5D0 \uBD84\uC11D \uB300\uC0C1 \uD30C\uC77C \uC77C\uCE58", "Analyzed files matched at export") : freshness;
+  const data = JSON.stringify(flow).replace(/</g, "\\u003c").replace(/>/g, "\\u003e").replace(/&/g, "\\u0026");
+  function card(id4) {
+    const n = flow.nodes.find((n2) => n2.id === id4);
+    const children = flow.nodes.filter((c) => c.parent === id4);
+    return `<section class="node ${children.length ? "group" : ""}" data-node="${html(id4)}"><header><small>${html(n.kind)}</small><h2>${html(n.label)}</h2></header>${["props", "state", "events", "lifecycle"].filter((k) => n[k].length).map((k) => `<p><b>${k}</b> ${n[k].map(html).join(" \xB7 ")}</p>`).join("")}${children.length ? `<div class="children">${children.map((c) => card(c.id)).join("")}</div>` : ""}<details><summary>${t("\uADFC\uAC70", "Evidence")}</summary>${n.evidence.map(citation2).join("") || `<p>${t("\uC81C\uC548\uB41C \uAD6C\uC870", "Proposed structure")}</p>`}</details></section>`;
+  }
+  return `<!doctype html><html lang="${language}"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${html(flow.title)}</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f2f5f7;color:#182934;font:15px/1.5 system-ui,sans-serif}main{max-width:1580px;margin:auto;padding:28px}h1{font-size:28px;margin:0 0 8px}h2{font-size:17px;margin:2px 0 10px}small{color:#536675;text-transform:uppercase;letter-spacing:.07em}p{margin:5px 0}button,select{font:inherit;padding:9px;border:1px solid #879ba8;border-radius:7px;background:white;color:#182934}button{cursor:pointer}button:focus-visible,select:focus-visible{outline:3px solid #0987c5}.bar{display:flex;gap:14px;align-items:center;margin:20px 0;flex-wrap:wrap}.badge{padding:4px 10px;border-radius:20px;background:#e5eaf0}.layout{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:24px}.map{position:relative;display:grid;grid-template-columns:minmax(0,2fr) minmax(220px,1fr);gap:58px;align-content:start}.node{position:relative;z-index:1;border:1px solid #b6c5cf;border-radius:12px;padding:15px;background:white;transition:opacity .15s,border-color .15s}.node.group{background:#eaf0f5}.children{display:grid;gap:24px;margin:18px 10px 4px}.node p{font-size:13px;overflow-wrap:anywhere}.node b{color:#486174;font-size:11px;display:inline-block;min-width:54px}.node.affected{border:2px solid #31a4c4}.node.active{border-color:#c65c0b;box-shadow:0 0 0 3px #f4c896}.node.dim{opacity:.55}.external{display:grid;gap:26px;align-content:start}.pages{display:grid;gap:26px}svg{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:visible}aside{border:1px solid #cad5dd;border-radius:12px;background:white;padding:16px;align-self:start}ol{padding-left:20px}li{margin:8px 0}li button{width:100%;text-align:left;font-size:13px}li button.selected{background:#fff0dc;border-color:#c65c0b}.muted{color:#536675}code{overflow-wrap:anywhere}.limit p{overflow-wrap:anywhere}aside{min-width:0}details{font-size:12px;margin-top:12px}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#eaf0f5;padding:15px}summary{cursor:pointer}.legend{margin-top:16px;font-size:13px}.limit{margin-top:20px;max-width:1000px}@media(max-width:900px){.layout{grid-template-columns:1fr}.map{grid-template-columns:1fr;gap:30px}main{padding:15px}aside{order:-1}}@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style><main><small>FS \xB7 ${t("\uD398\uC774\uC9C0 \uAD6C\uC131\uACFC \uC774\uBCA4\uD2B8 \uC601\uD5A5", "Page structure and event effects")}</small><h1>${html(flow.title)}</h1><p>${html(flow.summary)}</p><div class="bar"><span class="badge">${flow.basis === "observed" ? t("\uCF54\uB4DC\uC5D0\uC11C \uD574\uC11D\uD55C \uD750\uB984", "Interpreted from code") : t("\uC124\uACC4 \uC608\uC2DC \xB7 \uAD6C\uD604 \uC0AC\uC2E4 \uC544\uB2D8", "Proposed design \xB7 not implementation evidence")}</span><span class="badge">${html(statusLabel)}</span><label>${t("\uC774\uBCA4\uD2B8", "Event")} <select id="scenario">${flow.scenarios.map((s) => `<option value="${html(s.id)}"${s.id === options.scenarioId ? " selected" : ""}>${html(s.title)}</option>`).join("")}</select></label><button id="previous">${t("\uC774\uC804 \uB2E8\uACC4", "Previous step")}</button><button id="next">${t("\uB2E4\uC74C \uB2E8\uACC4", "Next step")}</button></div>
+<div class="layout"><div class="map" id="map"><div class="pages">${flow.nodes.filter((n) => !n.parent && n.kind === "page").map((n) => card(n.id)).join("")}</div><div class="external">${flow.nodes.filter((n) => !n.parent && n.kind !== "page").map((n) => card(n.id)).join("")}</div><svg id="edges" aria-hidden="true"></svg></div><aside><h2 id="event"></h2><p id="outcome" class="muted"></p><ol id="steps"></ol><p id="effect" role="status" aria-live="polite"></p><details id="edge-evidence" open><summary>${t("\uC120\uD0DD\uD55C \uAD00\uACC4\uC758 \uCF54\uB4DC \uADFC\uAC70", "Code evidence for selected relation")}</summary><div id="edge-citations"></div></details><div class="legend">${t("\uCCAD\uB85D: \uC774 \uC774\uBCA4\uD2B8\uC758 \uC601\uD5A5 \uBC94\uC704", "Teal: affected by this event")}<br>${t("\uC8FC\uD669: \uC120\uD0DD\uD55C \uB2E8\uACC4\uC758 \uCD9C\uBC1C\xB7\uB3C4\uCC29 \uBE14\uB85D", "Orange: source and destination of selected step")}<br>${t("\uD654\uC0B4\uD45C: \uC120\uD0DD\uD55C \uD638\uCD9C/\uC77D\uAE30/\uC4F0\uAE30 \uAD00\uACC4", "Arrow: selected call/read/write relation")}<br>${t("\uC21C\uC11C\uB294 \uAE30\uB85D\uD55C \uC2DC\uB098\uB9AC\uC624\uC758 \uC21C\uC11C\uC785\uB2C8\uB2E4.", "Order follows the recorded scenario.")}</div></aside></div>
+<div class="limit"><b>${t("\uBD84\uC11D \uCD9C\uCC98", "Analysis provenance")}</b><p>${html(options.projectPath ?? t("\uCD9C\uCC98 \uACBD\uB85C \uBBF8\uC9C0\uC815", "Project path not provided"))}</p><p>${t("\uC0DD\uC131:", "Generated:")} ${html(options.generatedAt ?? t("\uBBF8\uAE30\uB85D", "Not recorded"))} \xB7 ${t("\uBD84\uC11D \uBC84\uC804:", "Analysis version:")} <code>${html(options.flowHash ?? t("\uBBF8\uAE30\uB85D", "Not recorded"))}</code></p><p>${t("\uC624\uD504\uB77C\uC778 \uD30C\uC77C\uC740 \uC0DD\uC131 \uB2F9\uC2DC\uC758 \uC0C1\uD0DC\uC785\uB2C8\uB2E4. \uC774\uD6C4 \uCF54\uB4DC \uBCC0\uACBD \uC5EC\uBD80\uB294 \uB2E4\uC2DC \uC0DD\uC131\uD560 \uB54C \uD655\uC778\uD569\uB2C8\uB2E4.", "This offline file captures export-time state. Rerender to check later code changes.")}</p>${flow.scope.snapshot ? `<p>${t("Git \uAE30\uC900:", "Git basis:")} ${html(flow.scope.snapshot.baseRef)} \xB7 ${html(flow.scope.snapshot.expectedCommit)}</p>` : `<p>${t("\uAE30\uC900: \uBD84\uC11D \uB2F9\uC2DC\uC758 \uC791\uC5C5 \uD3F4\uB354 \uCF54\uB4DC", "Basis: working-tree code at analysis time")}</p>`}<ul>${(options.reasons ?? []).map((r) => `<li>${html(r)}</li>`).join("")}</ul><details><summary>${t("\uBD84\uC11D\uD55C \uD30C\uC77C\uACFC \uC0C8 \uD30C\uC77C \uD0D0\uC0C9 \uBC94\uC704", "Analyzed files and discovery scope")}</summary><ul>${flow.scope.files.map((p) => `<li>${html(p)}</li>`).join("")}</ul><p>${t("\uC0C8 \uD30C\uC77C \uD0D0\uC0C9:", "Discovery:")} ${flow.scope.discoveryRoots.map(html).join(", ")}</p></details><details><summary>${t("\uAE30\uB85D\uB41C \uB3D9\uC791\uACFC \uADDC\uCE59", "Recorded behavior and rules")}</summary>${flow.invariants.map((i) => `<p><b>${html(i.authority)}</b> ${html(i.statement)}</p>${i.evidence.map(citation2).join("")}`).join("") || `<p>${t("\uBCC4\uB3C4 \uAE30\uB85D \uC5C6\uC74C", "No additional records")}</p>`}</details><b>${t("\uBD84\uC11D \uBC94\uC704\uC640 \uBBF8\uD655\uC778", "Scope and unknowns")}</b><ul>${flow.limitations.map((s) => `<li>${html(s)}</li>`).join("")}</ul><p>${t("\uC774 \uADF8\uB9BC\uC740 \uC2E4\uD589 \uCD94\uC801\uC774\uB098 DOM \uCEE4\uBC0B\uC744 \uCE21\uC815\uD55C \uACB0\uACFC\uAC00 \uC544\uB2D9\uB2C8\uB2E4. \uC870\uAC74\xB7\uC2E4\uD328\xB7\uBCD1\uB82C \uACBD\uB85C\uB294 \uC2DC\uB098\uB9AC\uC624\uC640 \uAE30\uB85D\uB41C \uD55C\uACC4\uB85C \uD655\uC778\uD558\uC138\uC694.", "This diagram is not an executed trace or a DOM commit measurement. Check scenarios and limitations for conditional, failure and parallel paths.")}</p></div><details><summary>${t("\uAC19\uC740 \uB370\uC774\uD130\uC758 Mermaid \uC911\uCCA9 \uBE14\uB85D", "Mermaid nested blocks from the same data")}</summary><pre>${html(flowToMermaid(flow))}</pre></details></main>
+<script type="application/json" id="flow-data">${data}</script><script>
+const flow=JSON.parse(document.getElementById('flow-data').textContent);let scenario=flow.scenarios.find(s=>s.id===document.getElementById('scenario').value),step=0;
+const ns='http://www.w3.org/2000/svg';const el=(name,attrs)=>{const e=document.createElementNS(ns,name);Object.entries(attrs).forEach(([k,v])=>e.setAttribute(k,v));return e};
+function draw(){const svg=document.getElementById('edges'),map=document.getElementById('map'),r=map.getBoundingClientRect();svg.replaceChildren();svg.setAttribute('width',r.width);svg.setAttribute('height',r.height);const defs=el('defs',{}),marker=el('marker',{id:'arrow',markerWidth:10,markerHeight:10,refX:8,refY:3,orient:'auto',markerUnits:'strokeWidth'});marker.append(el('path',{d:'M0,0 L0,6 L9,3 z',fill:'#bf5707'}));defs.append(marker);svg.append(defs);const edge=flow.edges.find(e=>e.id===scenario.steps[step].edge);const get=id=>[...map.querySelectorAll('[data-node]')].find(n=>n.dataset.node===id);const a=get(edge.from).getBoundingClientRect(),b=get(edge.to).getBoundingClientRect();const right=b.left>=a.right-5,left=b.right<=a.left+5;let x1=(left?a.left:a.right)-r.left,y1=a.top+a.height/2-r.top,x2=(right?b.left:b.right)-r.left,y2=b.top+b.height/2-r.top;const mid=right||left?(x1+x2)/2:Math.max(a.right,b.right)-r.left+16;let d=edge.from===edge.to?'M '+x1+' '+y1+' c -40,-40 -40,40 0,12':'M '+x1+' '+y1+' C '+mid+' '+y1+', '+mid+' '+y2+', '+x2+' '+y2;svg.append(el('path',{d,fill:'none',stroke:'#bf5707','stroke-width':2.5,'marker-end':'url(#arrow)'}));}
+function showCitations(edge){const target=document.getElementById('edge-citations');target.replaceChildren();const relation=document.createElement('p');relation.textContent=edge.kind+' \xB7 '+edge.from+' \u2192 '+edge.to+(edge.condition?${JSON.stringify(t(" \xB7 \uC870\uAC74: ", " \xB7 Condition: "))}+edge.condition:'');target.append(relation);for(const id of edge.evidence){const c=flow.evidence[id];if(!c)continue;const p=document.createElement('p'),b=document.createElement('b'),pre=document.createElement('pre');b.textContent=c.path+(c.line?':'+c.line:'');pre.textContent=c.quote;p.append(b,pre);target.append(p);}if(!edge.evidence.length){const p=document.createElement('p');p.textContent=${JSON.stringify(t("\uAD6C\uD604 \uADFC\uAC70 \uC5C6\uC74C \xB7 \uC124\uACC4 \uC81C\uC548", "No implementation evidence \xB7 proposed design"))};target.append(p);}}
+function render(){const active=flow.edges.find(e=>e.id===scenario.steps[step].edge),affected=new Set([scenario.entry]);scenario.steps.forEach(s=>{const e=flow.edges.find(e=>e.id===s.edge);affected.add(e.from);affected.add(e.to)});for(const id of [...affected]){let n=flow.nodes.find(n=>n.id===id);while(n&&n.parent){affected.add(n.parent);n=flow.nodes.find(x=>x.id===n.parent)}}document.querySelectorAll('[data-node]').forEach(n=>{n.classList.toggle('affected',affected.has(n.dataset.node));n.classList.toggle('dim',!affected.has(n.dataset.node));n.classList.toggle('active',[active.from,active.to].includes(n.dataset.node))});document.getElementById('event').textContent=scenario.event;document.getElementById('outcome').textContent=scenario.outcome+(scenario.limitations.length?${JSON.stringify(t(" \xB7 \uD55C\uACC4: ", " \xB7 Limitations: "))}+scenario.limitations.join('; '):'');const list=document.getElementById('steps');list.replaceChildren();scenario.steps.forEach((s,i)=>{const e=flow.edges.find(e=>e.id===s.edge),li=document.createElement('li'),button=document.createElement('button');button.textContent=e.label;button.className=i===step?'selected':'';button.onclick=()=>{step=i;render()};li.append(button);list.append(li)});showCitations(active);document.getElementById('effect').textContent=(step+1)+'. '+scenario.steps[step].effect+(scenario.steps[step].condition?${JSON.stringify(t(" \xB7 \uC870\uAC74: ", " \xB7 Condition: "))}+scenario.steps[step].condition:'');requestAnimationFrame(draw);}
+document.getElementById('scenario').onchange=e=>{scenario=flow.scenarios.find(s=>s.id===e.target.value);step=0;render()};document.getElementById('next').onclick=()=>{step=(step+1)%scenario.steps.length;render()};document.getElementById('previous').onclick=()=>{step=(step+scenario.steps.length-1)%scenario.steps.length;render()};new ResizeObserver(draw).observe(document.getElementById('map'));document.querySelectorAll('details').forEach(e=>e.addEventListener('toggle',draw));render();
+</script></html>`;
+}
+
+// src/application/project-report.ts
+var text6 = string().trim().min(1).max(4e3);
+var ref = object({ id: analysisId, hash: sha256 });
+var projectReportSchema = object({
+  status: _enum(["partial", "complete"]),
+  areas: array(object({
+    id: analysisId,
+    title: text6,
+    kind: _enum(["environment", "architecture", "page", "shared", "delivery"]),
+    status: _enum(["reviewed", "pending", "blocked", "excluded"]),
+    summary: text6,
+    statementIds: array(analysisId),
+    flows: array(ref),
+    findings: array(ref),
+    flowReason: string().max(4e3).default("").describe("Why no event flow applies, e.g. a static page or configuration area. Never use this to hide unfinished tracing."),
+    knowledgeReview: text6.describe("Observed trigger, consulted knowledge IDs, applicability and rationale; or why no available knowledge applies. Not a claim of automatic verification.")
+  })).min(1)
+});
+async function prepareProjectReport(root, report, evidence2, evidenceHash, snapshot) {
+  const parsed = projectReportSchema.parse(report);
+  if (new Set(parsed.areas.map((a) => a.id)).size !== parsed.areas.length) throw new Error("Duplicate project report area");
+  if (parsed.status === "complete" && (evidence2.completeness === "partial" || parsed.areas.some((a) => ["pending", "blocked"].includes(a.status)))) {
+    throw new Error("Complete analysis requires reviewed coverage and no pending/blocked areas");
+  }
+  const statements = new Map(evidence2.statements.map((s) => [s.id, s]));
+  const refs = /* @__PURE__ */ new Map();
+  for (const area of parsed.areas) {
+    if (area.statementIds.some((id4) => !statements.has(id4))) throw new Error(`Unknown statement in area: ${area.id}`);
+    if (area.status === "reviewed" && !area.statementIds.length) throw new Error(`Reviewed area needs evidence statements: ${area.id}`);
+    if (area.status === "reviewed" && !area.flows.length && !area.flowReason.trim()) throw new Error(`Reviewed area needs flows or an explicit non-applicability reason: ${area.id}`);
+    for (const kind of ["flow", "finding"]) for (const item of kind === "flow" ? area.flows : area.findings) {
+      const key = `${kind}/${item.id}`;
+      if (refs.has(key) && refs.get(key).hash !== item.hash) throw new Error(`Conflicting report reference: ${key}`);
+      refs.set(key, { kind, ...item });
+    }
+  }
+  const records = await readBaselineRecords(root, installedSystemRoot(), [...refs.values()], snapshot);
+  if (parsed.status === "complete") {
+    const assigned = new Set(parsed.areas.flatMap((a) => a.statementIds));
+    if (evidence2.statements.some((s) => !assigned.has(s.id))) throw new Error("Complete analysis must index every evidence statement in an area");
+  }
+  for (const stored of records) if (stored.record.kind === "finding") {
+    const linked = refs.get(`flow/${stored.record.data.flow.id}`);
+    if (linked?.hash !== stored.record.data.flow.hash) throw new Error("Report findings must link to an included flow version");
+  }
+  const artifacts = [];
+  const details = [];
+  const evidencePath = `evidence/project-${evidenceHash}.json`;
+  for (const area of parsed.areas) {
+    details.push(`### ${area.title}
+
+Status: ${area.status}
+
+${area.summary}`);
+    for (const id4 of area.statementIds) {
+      const s = statements.get(id4);
+      details.push(`- **${id4}** (${s.kind}): ${s.statement}
+  Evidence: ${s.evidence.map((c) => `\`${c.path}:${c.line}\``).join(", ")}${s.limitations.length ? `
+  Limits: ${s.limitations.join("; ")}` : ""}`);
+    }
+    for (const ref2 of area.flows) {
+      const stored = records.find((r) => r.hash === ref2.hash);
+      if (stored.record.kind !== "flow") throw new Error("Expected report flow");
+      const flow = stored.record.data;
+      const path = `diagrams/project-${ref2.hash}.html`;
+      if (!artifacts.some((a) => a.path === path)) artifacts.push({ path, content: flowToHtml(flow, "current", {
+        projectPath: root,
+        flowHash: ref2.hash,
+        language: "ko",
+        generatedAt: (/* @__PURE__ */ new Date()).toISOString(),
+        reasons: []
+      }) });
+      details.push(`
+#### ${flow.title}
+
+${flow.summary}
+
+[Interactive flow](${path}) \xB7 [Structured record](analysis/history/${ref2.hash}.json)`);
+      for (const node of flow.nodes) details.push(`- **${node.label}** (${node.kind}${node.parent ? `, parent: ${node.parent}` : ""}): ${["props", "state", "events", "lifecycle"].filter((k) => node[k].length).map((k) => `${k}: ${node[k].join(", ")}`).join("; ") || "See cited relationships."}`);
+      for (const scenario of flow.scenarios) {
+        details.push(`
+**${scenario.title}** \u2014 ${scenario.event}`);
+        scenario.steps.forEach((step, i) => {
+          const edge = flow.edges.find((e) => e.id === step.edge);
+          details.push(`${i + 1}. ${edge.from} \u2192 ${edge.to}: ${edge.label}; ${step.effect}${step.condition || edge.condition ? ` (when: ${step.condition || edge.condition})` : ""}`);
+        });
+        details.push(`Outcome: ${scenario.outcome}
+
+Limits: ${scenario.limitations.join("; ") || "See flow limitations."}`);
+      }
+      details.push(`
+Flow limitations: ${flow.limitations.join("; ")}`);
+    }
+    if (!area.flows.length) details.push(`
+Flow: ${area.flowReason || "Not yet recorded."}`);
+    details.push(`
+Knowledge review: ${area.knowledgeReview}`);
+    for (const ref2 of area.findings) {
+      const stored = records.find((r) => r.hash === ref2.hash);
+      if (stored.record.kind !== "finding") throw new Error("Expected report finding");
+      const f = stored.record.data;
+      details.push(`
+**${f.title}** (${f.kind}/${f.status}): ${f.observation}
+
+Consequence: ${f.consequence}
+
+${f.alternatives.map((a) => `- ${a.description} \u2014 ${a.cost}`).join("\n")}
+
+${f.question ?? ""}
+
+[Finding](analysis/history/${ref2.hash}.json)`);
+    }
+  }
+  const context = {
+    version: 1,
+    baseline: snapshot,
+    analysisStatus: parsed.status,
+    coverage: Object.fromEntries(["inspected", "excluded", "pending", "blocked"].map((status) => [status, evidence2.coverage.filter((c) => c.status === status).length])),
+    evidence: evidencePath,
+    areas: parsed.areas.map(({ flows, findings, ...area }) => ({
+      ...area,
+      flows: flows.map((r) => ({ ...r, path: `analysis/history/${r.hash}.json` })),
+      findings: findings.map((r) => ({ ...r, path: `analysis/history/${r.hash}.json` }))
+    })),
+    read: "Select area and statement IDs; read only relevant evidence and immutable flow/finding records. HTML is for humans. Freshness is separate from completeness."
+  };
+  return { context, details: details.join("\n\n"), artifacts: artifacts.map((a) => ({ ...a, absolutePath: join9(root, ".frontend-system", a.path) })) };
+}
+
 // src/application/project-analysis-input.ts
 var projectAnalysisSchema = object({
+  report: projectReportSchema.optional().describe("Required for fs-project: analysis areas and immutable flow/finding receipts. Generates human documentation, compact AI context and observed HTML automatically. Legacy saves without report remain supported."),
   evidence: projectEvidenceInputSchema.optional(),
   summary: string(),
   domains: array(string()).default([]),
@@ -24746,13 +24960,13 @@ var McpServer = class {
     });
     this._completionHandlerInitialized = true;
   }
-  async handlePromptCompletion(request, ref) {
-    const prompt = this._registeredPrompts[ref.name];
+  async handlePromptCompletion(request, ref2) {
+    const prompt = this._registeredPrompts[ref2.name];
     if (!prompt) {
-      throw new McpError(ErrorCode.InvalidParams, `Prompt ${ref.name} not found`);
+      throw new McpError(ErrorCode.InvalidParams, `Prompt ${ref2.name} not found`);
     }
     if (!prompt.enabled) {
-      throw new McpError(ErrorCode.InvalidParams, `Prompt ${ref.name} disabled`);
+      throw new McpError(ErrorCode.InvalidParams, `Prompt ${ref2.name} disabled`);
     }
     if (!prompt.argsSchema) {
       return EMPTY_COMPLETION_RESULT;
@@ -24769,10 +24983,10 @@ var McpServer = class {
     const suggestions = await completer(request.params.argument.value, request.params.context);
     return createCompletionResult(suggestions);
   }
-  async handleResourceCompletion(request, ref) {
-    const template = Object.values(this._registeredResourceTemplates).find((t) => t.resourceTemplate.uriTemplate.toString() === ref.uri);
+  async handleResourceCompletion(request, ref2) {
+    const template = Object.values(this._registeredResourceTemplates).find((t) => t.resourceTemplate.uriTemplate.toString() === ref2.uri);
     if (!template) {
-      if (this._registeredResources[ref.uri]) {
+      if (this._registeredResources[ref2.uri]) {
         return EMPTY_COMPLETION_RESULT;
       }
       throw new McpError(ErrorCode.InvalidParams, `Resource template ${request.params.ref.uri} not found`);
@@ -25394,17 +25608,17 @@ var StdioServerTransport = class {
 import { createHash as createHash4, randomUUID as randomUUID3 } from "node:crypto";
 import { copyFile, mkdir as mkdir3, readFile as readFile9, readdir as readdir5, realpath as realpath8, rm as rm3, writeFile as writeFile3 } from "node:fs/promises";
 import { constants } from "node:fs";
-import { dirname as dirname4, isAbsolute as isAbsolute3, join as join11, relative as relative9, resolve as resolve7 } from "node:path";
+import { dirname as dirname4, isAbsolute as isAbsolute3, join as join12, relative as relative9, resolve as resolve7 } from "node:path";
 
 // src/application/knowledge/knowledge-resolver.ts
 import { readFile as readFile7, readdir as readdir4 } from "node:fs/promises";
-import { basename as basename3, join as join9, relative as relative8 } from "node:path";
+import { basename as basename3, join as join10, relative as relative8 } from "node:path";
 async function markdownFiles(root) {
   const found = [];
   const visit = async (directory2) => {
     try {
       for (const entry of await readdir4(directory2, { withFileTypes: true })) {
-        const path = join9(directory2, entry.name);
+        const path = join10(directory2, entry.name);
         if (entry.isDirectory()) await visit(path);
         else if (entry.isFile() && entry.name.endsWith(".md") && entry.name.toLowerCase() !== "readme.md") found.push(path);
       }
@@ -25432,7 +25646,7 @@ var KnowledgeResolver = class {
     const index = await readReferenceIndex(this.root);
     if (index) {
       for (const entry of searchReferenceIndex(index, [request.raw, ...request.constraints ?? [], ...(request.observations ?? []).map((item) => item.observation)].join(" "), profile.technologies.map((item) => item.name))) {
-        applicable.push({ ...entry, path: join9(this.root, entry.path) });
+        applicable.push({ ...entry, path: join10(this.root, entry.path) });
       }
     }
     for (const path of index ? [] : await markdownFiles(this.root)) {
@@ -25473,7 +25687,7 @@ ${content}`.toLowerCase();
 
 // src/application/knowledge/rule-proposals.ts
 import { mkdir as mkdir2, readFile as readFile8, realpath as realpath7, rename as rename2, rm as rm2, writeFile as writeFile2 } from "node:fs/promises";
-import { join as join10, resolve as resolve6 } from "node:path";
+import { join as join11, resolve as resolve6 } from "node:path";
 import { randomUUID as randomUUID2 } from "node:crypto";
 var proposalInputSchema = strictObject({
   id: ruleId,
@@ -25503,10 +25717,10 @@ async function readRuleProposal(root, id4) {
   return record2;
 }
 async function save(root, record2, expectedHash) {
-  const folder = join10(resolve6(root), "knowledge/proposals");
+  const folder = join11(resolve6(root), "knowledge/proposals");
   await mkdir2(folder, { recursive: true });
-  if (await realpath7(folder) !== join10(await realpath7(root), "knowledge/proposals")) throw new Error("Proposal path must not traverse symlinks");
-  const path = join10(folder, `${record2.proposal.id}.json`);
+  if (await realpath7(folder) !== join11(await realpath7(root), "knowledge/proposals")) throw new Error("Proposal path must not traverse symlinks");
+  const path = join11(folder, `${record2.proposal.id}.json`);
   const lock = `${path}.lock`;
   await mkdir2(lock);
   const temp = `${path}.${randomUUID2()}.tmp`;
@@ -25586,14 +25800,14 @@ function digest2(content) {
   return createHash4("sha256").update(content).digest("hex");
 }
 async function sourceFiles(root) {
-  const sourceRoot = join11(root, "knowledge", "source");
+  const sourceRoot = join12(root, "knowledge", "source");
   const found = [];
   const visit = async (directory2) => {
     try {
       for (const entry of await readdir5(directory2, { withFileTypes: true })) {
-        const path = join11(directory2, entry.name);
+        const path = join12(directory2, entry.name);
         if (entry.isDirectory()) await visit(path);
-        else if (entry.isFile() && entry.name.endsWith(".md") && path !== join11(sourceRoot, "template.md")) found.push(relative9(root, path));
+        else if (entry.isFile() && entry.name.endsWith(".md") && path !== join12(sourceRoot, "template.md")) found.push(relative9(root, path));
       }
     } catch (error) {
       if (error.code !== "ENOENT") throw error;
@@ -25604,34 +25818,34 @@ async function sourceFiles(root) {
 }
 async function loadKnowledgeCatalog(root) {
   try {
-    return JSON.parse(await readFile9(join11(root, "knowledge", "catalog.json"), "utf8"));
+    return JSON.parse(await readFile9(join12(root, "knowledge", "catalog.json"), "utf8"));
   } catch (error) {
     if (error.code === "ENOENT") return emptyCatalog();
     throw error;
   }
 }
 async function saveKnowledgeCatalog(root, catalog) {
-  await mkdir3(join11(root, "knowledge"), { recursive: true });
-  await writeFile3(join11(root, "knowledge", "catalog.json"), `${JSON.stringify(catalog, null, 2)}
+  await mkdir3(join12(root, "knowledge"), { recursive: true });
+  await writeFile3(join12(root, "knowledge", "catalog.json"), `${JSON.stringify(catalog, null, 2)}
 `);
 }
 function sourcePath(root, path) {
   const sourceRoot = resolve7(root, "knowledge", "source");
   const absolute = resolve7(root, path);
-  if (absolute === join11(sourceRoot, "template.md")) throw new Error("Knowledge template is not source material; copy it into source/manual first.");
+  if (absolute === join12(sourceRoot, "template.md")) throw new Error("Knowledge template is not source material; copy it into source/manual first.");
   if (isAbsolute3(path) || absolute !== sourceRoot && !absolute.startsWith(`${sourceRoot}/`)) {
     throw new Error("Knowledge path must be relative and inside knowledge/source.");
   }
   return absolute;
 }
 function readSource(root, path) {
-  const sourceRoot = join11(root, "knowledge/source");
+  const sourceRoot = join12(root, "knowledge/source");
   return confinedRead(sourceRoot, relative9(sourceRoot, sourcePath(root, path)));
 }
 async function knowledgeDirectory(root, path) {
   let directory2 = await realpath8(root);
   for (const part of path.split("/")) {
-    directory2 = join11(directory2, part);
+    directory2 = join12(directory2, part);
     await mkdir3(directory2, { recursive: true });
     if (await realpath8(directory2) !== directory2) throw new Error("Knowledge directory must not traverse symlinks");
   }
@@ -25756,13 +25970,13 @@ async function addKnowledgeNote(root, input) {
   const id4 = `note-${randomUUID3()}`;
   await knowledgeDirectory(root, "knowledge/source/manual");
   const path = `knowledge/source/manual/${id4}.md`;
-  await writeFile3(join11(root, path), body, { flag: "wx" });
+  await writeFile3(join12(root, path), body, { flag: "wx" });
   try {
     const result2 = await catalogKnowledgeDocument(root, { id: id4, path, title: note.title, summary: note.content.slice(0, 200), sourceType: "manual", facets: {} });
-    if (result2.duplicateOf) await rm3(join11(root, path));
+    if (result2.duplicateOf) await rm3(join12(root, path));
     return { ...result2, status: "pending; user selects state: active before preparation and review" };
   } catch (error) {
-    await rm3(join11(root, path));
+    await rm3(join12(root, path));
     throw error;
   }
 }
@@ -25789,7 +26003,7 @@ async function prepareActiveKnowledge(root) {
       const target = path.startsWith("knowledge/source/active/") ? path : `knowledge/source/active/${relative9("knowledge/source", path)}`;
       if (target !== path) {
         await knowledgeDirectory(root, dirname4(target));
-        await copyFile(join11(root, path), join11(root, target), constants.COPYFILE_EXCL);
+        await copyFile(join12(root, path), join12(root, target), constants.COPYFILE_EXCL);
       }
       let saved;
       try {
@@ -25797,12 +26011,12 @@ async function prepareActiveKnowledge(root) {
         saved = await catalogKnowledgeDocument(root, { ...input, path: target });
         if (saved.duplicateOf) throw new Error(`Duplicate source ${saved.duplicateOf}; original retained, resolve explicitly`);
       } catch (error) {
-        if (target !== path && await readSource(root, target) === body) await rm3(join11(root, target));
+        if (target !== path && await readSource(root, target) === body) await rm3(join12(root, target));
         throw error;
       }
       if (target !== path) {
         if (await readSource(root, path) !== body) throw new Error(`Original changed after catalog update; retained both paths (${target})`);
-        await rm3(join11(root, path));
+        await rm3(join12(root, path));
       }
       prepared.push({ id: saved.document.id, path: target, previousPath: path, moved: target !== path });
     } catch (error) {
@@ -25840,7 +26054,7 @@ async function knowledgeStatus(root) {
       stateErrors.push({ path, message: error instanceof Error ? error.message : String(error) });
     }
   }
-  const index = await readReferenceIndex(join11(root, "references", "learned"));
+  const index = await readReferenceIndex(join12(root, "references", "learned"));
   const affectedReferences = (index?.entries ?? []).filter((entry) => Object.entries(entry.sources).some(([id4, hash5]) => {
     const document = catalog.documents[id4];
     return !document || actual.get(document.path) !== hash5;
@@ -25848,7 +26062,7 @@ async function knowledgeStatus(root) {
   const affected = new Set(affectedReferences);
   for (const entry of index?.entries ?? []) {
     try {
-      if (digest2(await confinedRead(join11(root, "references/learned"), entry.path)) !== entry.contentHash) affected.add(entry.id);
+      if (digest2(await confinedRead(join12(root, "references/learned"), entry.path)) !== entry.contentHash) affected.add(entry.id);
     } catch {
       affected.add(entry.id);
     }
@@ -25856,7 +26070,7 @@ async function knowledgeStatus(root) {
   const ruleProposals = [];
   let proposalFiles = [];
   try {
-    proposalFiles = await readdir5(join11(root, "knowledge/proposals"));
+    proposalFiles = await readdir5(join12(root, "knowledge/proposals"));
   } catch (error) {
     if (error.code !== "ENOENT") throw error;
   }
@@ -25932,7 +26146,7 @@ async function searchKnowledge(root, query, facets = {}, limit = 5) {
 async function validateKnowledgeSync(root, ids, requireInvestigations = false) {
   const catalog = await loadKnowledgeCatalog(root);
   const updated = [];
-  const learnedRoot = join11(root, "references", "learned");
+  const learnedRoot = join12(root, "references", "learned");
   const index = await readReferenceIndex(learnedRoot);
   if (!index) throw new Error("Publish references/learned/index.json before marking sources synced.");
   const triggerFailures = triggerPublicationFailures(index);
@@ -26012,7 +26226,7 @@ async function validateKnowledgeSync(root, ids, requireInvestigations = false) {
 async function markKnowledgeSynced(root, ids, requireInvestigations = false) {
   const validated = await validateKnowledgeSync(root, ids, requireInvestigations);
   const catalog = await loadKnowledgeCatalog(root);
-  const index = await readReferenceIndex(join11(root, "references/learned"));
+  const index = await readReferenceIndex(join12(root, "references/learned"));
   for (const document of validated.documents) {
     if (catalog.documents[document.id]?.contentHash !== document.contentHash) throw new Error(`Source catalog changed: ${document.id}`);
     if (digest2(await readSource(root, document.path)) !== document.contentHash) throw new Error(`Source changed during publication: ${document.id}`);
@@ -26029,7 +26243,7 @@ async function markKnowledgeSynced(root, ids, requireInvestigations = false) {
 
 // src/application/project-store.ts
 import { mkdir as mkdir4, readFile as readFile10, rm as rm4, writeFile as writeFile4 } from "node:fs/promises";
-import { join as join12 } from "node:path";
+import { join as join13 } from "node:path";
 var directoryName = ".frontend-system";
 var configSchema = strictObject({
   version: literal(1),
@@ -26052,21 +26266,29 @@ async function optionalRead(path) {
   }
 }
 async function readProjectDocument(root) {
-  return await optionalRead(join12(root, directoryName, "project.md")) || optionalRead(join12(root, directoryName, "init.md"));
+  return await optionalRead(join13(root, directoryName, "project.md")) || optionalRead(join13(root, directoryName, "init.md"));
+}
+async function readProjectAiContext(root) {
+  const document = await readProjectDocument(root);
+  const match = /<!-- fs-project-context ([a-f0-9]{64}) -->/.exec(document);
+  if (!match) return document;
+  const content = await readFile10(join13(root, directoryName, "evidence", `context-${match[1]}.json`), "utf8");
+  if (digest(content) !== match[1]) throw new Error("Project AI context changed; refresh the analysis");
+  return content;
 }
 async function readProjectConfig(root) {
-  const content = await optionalRead(join12(root, directoryName, "config.json"));
+  const content = await optionalRead(join13(root, directoryName, "config.json"));
   return content ? configSchema.parse(JSON.parse(content)) : void 0;
 }
 async function writeProjectConfig(root, config2) {
   const validated = configSchema.parse(config2);
-  const directory2 = join12(root, directoryName);
+  const directory2 = join13(root, directoryName);
   await mkdir4(directory2, { recursive: true });
-  await writeFile4(join12(directory2, "config.json"), `${JSON.stringify(validated, null, 2)}
+  await writeFile4(join13(directory2, "config.json"), `${JSON.stringify(validated, null, 2)}
 `);
 }
 async function readProjectState(root) {
-  const content = await optionalRead(join12(root, directoryName, "state.json"));
+  const content = await optionalRead(join13(root, directoryName, "state.json"));
   return content ? JSON.parse(content) : void 0;
 }
 function section(title, entries) {
@@ -26098,26 +26320,53 @@ ${analysis.summary}`,
 }
 async function writeProjectArtifacts(profile, analysis, options = {}) {
   const root = profile.project.rootPath;
-  await locked(root, async () => {
+  return locked(root, async () => {
     const snapshot = await projectSnapshot(root, options.baseRef);
     if (snapshot.commit && options.expectedCommit !== snapshot.commit) throw new Error("Save context against the inspected main commit; main may have changed");
     if (!snapshot.commit && options.expectedCommit) throw new Error("The inspected main commit is unavailable");
     const base = await directory(root);
-    const path = join12(base, "project.md");
+    const path = join13(base, "project.md");
     const previous = await optionalRead(path);
     if (options.expectedHash !== void 0 && (previous ? digest(previous) : null) !== options.expectedHash) throw new Error("Project document changed; reread before saving");
     if (snapshot.commit && options.expectedHash === void 0) throw new Error("Provide the current project document hash (null for a new document)");
-    const legacy = await optionalRead(join12(base, "init.md"));
-    if (previous) await atomic(join12(await directory(root, "project-history"), `${digest(previous)}.md`), previous);
-    const metadata = { baseRef: snapshot.baseRef, analyzedCommit: snapshot.commit, sourceHash: snapshot.sourceHash, updatedAt: (/* @__PURE__ */ new Date()).toISOString() };
+    const legacy = await optionalRead(join13(base, "init.md"));
+    if (previous) await atomic(join13(await directory(root, "project-history"), `${digest(previous)}.md`), previous);
+    const metadata = { baseRef: snapshot.baseRef, analyzedCommit: snapshot.commit, sourceHash: snapshot.sourceHash, updatedAt: (/* @__PURE__ */ new Date()).toISOString(), analysisStatus: analysis.report?.status ?? "legacy" };
     const evidence2 = analysis.evidence ? await validateProjectEvidence(root, analysis.evidence, snapshot.baseRef, snapshot.commit) : null;
     const evidenceBody = evidence2 ? JSON.stringify(evidence2) : null;
     const evidenceHash = evidenceBody ? digest(evidenceBody) : null;
-    if (evidenceBody) await atomic(join12(await directory(root, "evidence"), `project-${evidenceHash}.json`), evidenceBody);
+    if (analysis.report && (!evidence2 || !evidenceHash || !snapshot.commit)) throw new Error("Project report requires structured evidence and a committed baseline");
+    const report = analysis.report && evidence2 && evidenceHash && snapshot.commit ? await prepareProjectReport(root, analysis.report, evidence2, evidenceHash, { baseRef: snapshot.baseRef, expectedCommit: snapshot.commit }) : null;
+    const contextBody = report ? JSON.stringify({
+      ...report.context,
+      summary: analysis.summary,
+      conventions: analysis.conventions,
+      decisions: analysis.decisions,
+      qualityGates: analysis.qualityGates,
+      assumptions: analysis.assumptions,
+      questions: analysis.questions
+    }) : null;
+    const contextHash = contextBody ? digest(contextBody) : null;
+    if (report && contextBody && contextHash) {
+      await atomic(join13(await directory(root, "evidence"), `context-${contextHash}.json`), contextBody);
+      for (const artifact of report.artifacts) await atomic(join13(await directory(root, "diagrams"), artifact.path.slice("diagrams/".length)), artifact.content);
+    }
+    if (evidenceBody) await atomic(join13(await directory(root, "evidence"), `project-${evidenceHash}.json`), evidenceBody);
     const mainProfile = { ...profile, project: { ...profile.project, git: { ...profile.project.git, ...snapshot.commit ? { commit: snapshot.commit } : {} } } };
     const content = [
       `<!-- frontend-system-context ${JSON.stringify(metadata)} -->`,
       renderProject(mainProfile, analysis),
+      ...report ? [
+        `<!-- fs-project-context ${contextHash} -->`,
+        `## Analysis delivery
+
+Status: **${report.context.analysisStatus}**. This is static analysis, not runtime verification.
+
+[AI context](evidence/context-${contextHash}.json) \xB7 Read selected records by ID; diagrams are human projections.`,
+        `## Detailed project analysis
+
+${report.details}`
+      ] : [],
       ...evidence2 ? [
         `<!-- fs-project-evidence ${evidenceHash} -->`,
         `## Evidence and coverage
@@ -26128,7 +26377,7 @@ Coverage: ${evidence2.completeness}. Citations are checked; semantic accuracy is
       ] : ["Analysis format: legacy; structured claim evidence has not been recorded."],
       `Tracked files: ${snapshot.files.length}. Page get_project_snapshot for the complete baseline inventory.`,
       `Package manifests: ${Object.keys(snapshot.manifests).join(", ") || "none"}. Read selected manifests from the baseline snapshot.`,
-      "## Flow and improvement index\n\nSee [working flow/finding index](analysis/index.md) after the first save_project_analysis, or use get_project_analysis for cited flows, open/deferred/planned findings and retained resolution history. Working/proposed records are not main facts. Source changes mark records stale; refresh this main document only when requested.",
+      ...await optionalRead(join13(base, "analysis/index.md")) ? ["## Flow and improvement index\n\n[Flow/finding index](analysis/index.md). Query get_project_analysis for working-tree freshness; the baseline report pins its own observed versions."] : ["Flow/finding index has not been saved. No reusable flow is implied."],
       snapshot.commit ? `Base: ${snapshot.baseRef} @ ${snapshot.commit}. Check current status with get_project_snapshot; local edits are not main facts.` : "No committed main baseline. This is initial context, not verified main state.",
       legacy ? "Previous inspection preserved: [init.md](init.md). Reconcile its decisions explicitly." : "",
       previous ? `Previous context preserved: [history](project-history/${digest(previous)}.md).` : "",
@@ -26136,23 +26385,28 @@ Coverage: ${evidence2.completeness}. Citations are checked; semantic accuracy is
     ].join("\n\n");
     if ((await projectSnapshot(root, options.baseRef)).commit !== snapshot.commit) throw new Error("Main changed during context generation; retry with new facts");
     await atomic(path, content);
-    await rm4(join12(base, "project-refresh.json"), { force: true });
-    const ignored = await optionalRead(join12(base, ".gitignore"));
+    await rm4(join13(base, "project-refresh.json"), { force: true });
+    const ignored = await optionalRead(join13(base, ".gitignore"));
     const missing = ["state.json", "reports/", ".workflow-lock/"].filter((line) => !ignored.split(/\r?\n/).includes(line));
-    if (missing.length) await atomic(join12(base, ".gitignore"), `${ignored}${ignored && !ignored.endsWith("\n") ? "\n" : ""}${missing.join("\n")}
+    if (missing.length) await atomic(join13(base, ".gitignore"), `${ignored}${ignored && !ignored.endsWith("\n") ? "\n" : ""}${missing.join("\n")}
 `);
-    await atomic(join12(base, "state.json"), JSON.stringify({
+    await atomic(join13(base, "state.json"), JSON.stringify({
       ...snapshot.commit ? { analyzedCommit: snapshot.commit } : {},
       fileHashes: snapshot.workingChanges.length ? {} : await sourceSnapshot(root),
       updatedAt: metadata.updatedAt
     }, null, 2));
+    return {
+      analysisStatus: analysis.report?.status ?? "legacy",
+      aiContext: contextHash ? join13(base, "evidence", `context-${contextHash}.json`) : null,
+      diagrams: report?.artifacts.map((a) => ({ path: a.absolutePath, hash: digest(a.content) })) ?? []
+    };
   });
 }
 
 // src/application/run-capabilities.ts
 import { execFile as execFile3 } from "node:child_process";
 import { randomUUID as randomUUID4 } from "node:crypto";
-import { dirname as dirname5, join as join13, relative as relative10 } from "node:path";
+import { dirname as dirname5, join as join14, relative as relative10 } from "node:path";
 function checkOrder(name) {
   if (/^(lint|typecheck)(:|$)/.test(name)) return 0;
   if (/^(check)(:|$)/.test(name)) return 1;
@@ -26249,7 +26503,7 @@ async function runProjectChecks(profile, options = {}) {
     const manifest = [...profile.paths.manifests].sort((a, b) => b.length - a.length).find((path) => dirname5(path) !== "." && script.startsWith(`${dirname5(path)}:`));
     const folder = manifest ? dirname5(manifest) : "";
     const name = folder ? script.slice(folder.length + 1) : script;
-    const workingDirectory = join13(root, folder);
+    const workingDirectory = join14(root, folder);
     if (!profile.scripts[script] || eligible.capabilities.some((item) => item.workingDirectory === workingDirectory && item.script === name)) continue;
     const manager = profile.capabilities.find((item) => item.workingDirectory === workingDirectory)?.packageManager ?? profile.packageManager?.name ?? "npm";
     eligible.capabilities.push({ name, script: name, command: `${manager} run ${name}`, packageManager: manager, workingDirectory });
@@ -26579,9 +26833,9 @@ import { createHash as createHash5, randomUUID as randomUUID5 } from "node:crypt
 import { mkdir as mkdir5, mkdtemp, readFile as readFile12, realpath as realpath10, rename as rename3, rm as rm5, writeFile as writeFile5 } from "node:fs/promises";
 import { isIP } from "node:net";
 import { tmpdir } from "node:os";
-import { join as join14 } from "node:path";
+import { join as join15 } from "node:path";
 import { promisify as promisify2 } from "node:util";
-var hash3 = (text6) => createHash5("sha256").update(text6).digest("hex");
+var hash3 = (text7) => createHash5("sha256").update(text7).digest("hex");
 var run3 = promisify2(execFile4);
 var sourcesSchema = record(ruleId, url());
 var snapshotSchema = object({
@@ -26604,21 +26858,21 @@ async function optional4(path) {
   }
 }
 async function sourceRegistry(root) {
-  const raw = await optional4(join14(root, "knowledge/sources.json"));
+  const raw = await optional4(join15(root, "knowledge/sources.json"));
   return { sources: raw ? sourcesSchema.parse(JSON.parse(raw)) : {}, hash: raw ? hash3(raw) : null };
 }
 async function registerSource(root, id4, url2, expectedHash) {
   ruleId.parse(id4);
   validateUrl(url2);
-  const folder = join14(root, "knowledge");
+  const folder = join15(root, "knowledge");
   await mkdir5(folder, { recursive: true });
-  if (await realpath10(folder) !== join14(await realpath10(root), "knowledge")) throw new Error("Knowledge directory must not be a symlink");
-  const lock = join14(folder, ".sources-lock");
+  if (await realpath10(folder) !== join15(await realpath10(root), "knowledge")) throw new Error("Knowledge directory must not be a symlink");
+  const lock = join15(folder, ".sources-lock");
   await mkdir5(lock);
   try {
     const current = await sourceRegistry(root);
     if (current.hash !== expectedHash) throw new Error("Source registry changed; reread it");
-    await replace(join14(folder, "sources.json"), `${JSON.stringify({ ...current.sources, [id4]: url2 }, null, 2)}
+    await replace(join15(folder, "sources.json"), `${JSON.stringify({ ...current.sources, [id4]: url2 }, null, 2)}
 `);
     return sourceRegistry(root);
   } finally {
@@ -26635,9 +26889,9 @@ async function replace(path, data) {
   }
 }
 async function cacheFolder(root) {
-  const folder = join14(root, "knowledge/.cache/sources");
+  const folder = join15(root, "knowledge/.cache/sources");
   await mkdir5(folder, { recursive: true });
-  if (await realpath10(folder) !== join14(await realpath10(root), "knowledge/.cache/sources")) throw new Error("Source cache must not traverse symlinks");
+  if (await realpath10(folder) !== join15(await realpath10(root), "knowledge/.cache/sources")) throw new Error("Source cache must not traverse symlinks");
   return folder;
 }
 function privateAddress(address) {
@@ -26675,10 +26929,10 @@ async function documentDiff(before, after) {
 
 ${after}`;
   if (before === after) return "";
-  const temp = await mkdtemp(join14(tmpdir(), "fs-source-diff-"));
+  const temp = await mkdtemp(join15(tmpdir(), "fs-source-diff-"));
   try {
-    await writeFile5(join14(temp, "previous.md"), before);
-    await writeFile5(join14(temp, "current.md"), after);
+    await writeFile5(join15(temp, "previous.md"), before);
+    await writeFile5(join15(temp, "current.md"), after);
     try {
       return (await run3("git", ["diff", "--no-index", "--no-ext-diff", "--no-color", "--unified=4", "previous.md", "current.md"], { cwd: temp, maxBuffer: 6 * 1024 * 1024 })).stdout;
     } catch (error) {
@@ -26699,7 +26953,7 @@ async function checkSources(root, ids, transport = fetch, resolveHost = (hostnam
   for (const id4 of selected) {
     ruleId.parse(id4);
     const sourceUrl = registry.sources[id4];
-    const path = join14(folder, `${id4}.json`);
+    const path = join15(folder, `${id4}.json`);
     const lock = `${path}.lock`;
     let acquired = false;
     try {
@@ -26765,7 +27019,7 @@ async function checkSources(root, ids, transport = fetch, resolveHost = (hostnam
 }
 async function readSourceChange(root, id4, offset = 0, limit = 12e3, full = false, expectedHash) {
   ruleId.parse(id4);
-  const record2 = snapshotSchema.parse(JSON.parse(await readFile12(join14(await cacheFolder(root), `${id4}.json`), "utf8")));
+  const record2 = snapshotSchema.parse(JSON.parse(await readFile12(join15(await cacheFolder(root), `${id4}.json`), "utf8")));
   if ((await sourceRegistry(root)).sources[id4] !== record2.url || expectedHash && record2.hash !== expectedHash) throw new Error("Source changed; restart review");
   const content = full ? record2.body : record2.diff;
   const start = Math.max(0, offset);
@@ -26774,7 +27028,7 @@ async function readSourceChange(root, id4, offset = 0, limit = 12e3, full = fals
 }
 async function acknowledgeSource(root, id4, expectedHash, sourceId) {
   ruleId.parse(id4);
-  const path = join14(await cacheFolder(root), `${id4}.json`);
+  const path = join15(await cacheFolder(root), `${id4}.json`);
   const lock = `${path}.lock`;
   await mkdir5(lock);
   try {
@@ -26792,7 +27046,7 @@ async function acknowledgeSource(root, id4, expectedHash, sourceId) {
 }
 
 // src/application/task-context.ts
-import { join as join16, relative as relative14 } from "node:path";
+import { join as join17, relative as relative14 } from "node:path";
 
 // src/application/context/build-work-context.ts
 import { relative as relative12 } from "node:path";
@@ -26839,7 +27093,7 @@ async function buildWorkContext(discovery2, profile, request, knowledge, rules) 
 
 // src/application/rules/rule-resolver.ts
 import { readFile as readFile13, readdir as readdir6 } from "node:fs/promises";
-import { join as join15, relative as relative13 } from "node:path";
+import { join as join16, relative as relative13 } from "node:path";
 function slug(value) {
   return value.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, "-").replace(/^-|-$/g, "");
 }
@@ -26849,10 +27103,10 @@ function technologyDomain(value) {
 async function ruleFiles(root, domains) {
   const files = [];
   for (const domain of domains) {
-    const directory2 = join15(root, domain);
+    const directory2 = join16(root, domain);
     try {
       for (const entry of await readdir6(directory2, { withFileTypes: true })) {
-        if (entry.isFile() && entry.name.endsWith(".md")) files.push(join15(directory2, entry.name));
+        if (entry.isFile() && entry.name.endsWith(".md")) files.push(join16(directory2, entry.name));
       }
     } catch (error) {
       if (error.code !== "ENOENT") throw error;
@@ -26957,8 +27211,8 @@ async function taskContext(discovery2, systemRoot2, projectPath2, request, planI
     const files2 = new Set((await discovery2.listFiles(projectPath2)).map((path) => relative14(projectPath2, path)));
     if (request.observations.some((item) => !files2.has(item.path))) throw new Error("Observations must cite existing project files");
   }
-  const knowledge = await new KnowledgeResolver(join16(systemRoot2, "references", "learned")).resolve(profile, request);
-  const rules = await new RuleResolver(join16(systemRoot2, "mandatory-rules")).resolve(
+  const knowledge = await new KnowledgeResolver(join17(systemRoot2, "references", "learned")).resolve(profile, request);
+  const rules = await new RuleResolver(join17(systemRoot2, "mandatory-rules")).resolve(
     profile,
     request,
     knowledge.applicable,
@@ -27145,66 +27399,7 @@ function summarizeTaskContext(state, knownContextId) {
 }
 
 // src/application/render-project-flow.ts
-import { join as join17, resolve as resolve9 } from "node:path";
-
-// src/application/flow-view.ts
-var html = (s) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
-var label = (s) => html(s).replace(/\r?\n/g, "<br/>");
-function flowToMermaid(flow, scenarioId) {
-  const ids = new Map(flow.nodes.map((n, i) => [n.id, `n${i}`]));
-  const lines = ["flowchart LR"];
-  function node(id4, indent) {
-    const n = flow.nodes.find((n2) => n2.id === id4);
-    const children = flow.nodes.filter((c) => c.parent === id4);
-    const details = [n.label, ...["props", "state", "events", "lifecycle"].flatMap((k) => n[k].length ? [`${k}: ${n[k].join(", ")}`] : [])].map(label).join("<br/>");
-    if (children.length) {
-      lines.push(`${indent}subgraph ${ids.get(id4)}["${label(n.label)}"]`);
-      if ([n.props, n.state, n.events, n.lifecycle].some((values) => values.length)) lines.push(`${indent}  ${ids.get(id4)}info["${details}"]`);
-      for (const child of children) node(child.id, `${indent}  `);
-      lines.push(`${indent}end`);
-    } else lines.push(`${indent}${ids.get(id4)}["${label(n.kind)} \xB7 ${details}"]`);
-  }
-  for (const n of flow.nodes.filter((n2) => !n2.parent)) node(n.id, "  ");
-  const scenario = flow.scenarios.find((s) => s.id === scenarioId);
-  for (const [i, edge] of flow.edges.filter((e) => !scenario || scenario.steps.some((s) => s.edge === e.id)).entries()) {
-    const steps = scenario?.steps.flatMap((s, j) => s.edge === edge.id ? [j + 1] : []) ?? [];
-    lines.push(`  ${ids.get(edge.from)} -->|"${label(`${steps.length ? `${steps.join("/")} \xB7 ` : ""}${edge.label}${edge.condition ? ` [${edge.condition}]` : ""}`)}"| ${ids.get(edge.to)}`);
-    if (steps.length) lines.push(`  linkStyle ${i} stroke:#0369a1,stroke-width:3px`);
-  }
-  return lines.join("\n") + "\n";
-}
-function flowToHtml(flow, freshness, options = {}) {
-  if (options.scenarioId && !flow.scenarios.some((s) => s.id === options.scenarioId)) throw new Error("Unknown flow scenario");
-  const language = options.language ?? "ko";
-  const t = (ko, en) => language === "en" ? en : ko;
-  const citation2 = (id4) => {
-    const c = flow.evidence[id4];
-    return c ? `<p><b>${html(c.path)}${c.line ? `:${c.line}` : ""}</b><br><code>${html(c.quote)}</code></p>` : "";
-  };
-  const statusLabel = freshness === "current" ? t("\uC0DD\uC131 \uC2DC\uC810\uC5D0 \uBD84\uC11D \uB300\uC0C1 \uD30C\uC77C \uC77C\uCE58", "Analyzed files matched at export") : freshness;
-  const data = JSON.stringify(flow).replace(/</g, "\\u003c").replace(/>/g, "\\u003e").replace(/&/g, "\\u0026");
-  function card(id4) {
-    const n = flow.nodes.find((n2) => n2.id === id4);
-    const children = flow.nodes.filter((c) => c.parent === id4);
-    return `<section class="node ${children.length ? "group" : ""}" data-node="${html(id4)}"><header><small>${html(n.kind)}</small><h2>${html(n.label)}</h2></header>${["props", "state", "events", "lifecycle"].filter((k) => n[k].length).map((k) => `<p><b>${k}</b> ${n[k].map(html).join(" \xB7 ")}</p>`).join("")}${children.length ? `<div class="children">${children.map((c) => card(c.id)).join("")}</div>` : ""}<details><summary>${t("\uADFC\uAC70", "Evidence")}</summary>${n.evidence.map(citation2).join("") || `<p>${t("\uC81C\uC548\uB41C \uAD6C\uC870", "Proposed structure")}</p>`}</details></section>`;
-  }
-  return `<!doctype html><html lang="${language}"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${html(flow.title)}</title>
-<style>
-*{box-sizing:border-box}body{margin:0;background:#f2f5f7;color:#182934;font:15px/1.5 system-ui,sans-serif}main{max-width:1580px;margin:auto;padding:28px}h1{font-size:28px;margin:0 0 8px}h2{font-size:17px;margin:2px 0 10px}small{color:#536675;text-transform:uppercase;letter-spacing:.07em}p{margin:5px 0}button,select{font:inherit;padding:9px;border:1px solid #879ba8;border-radius:7px;background:white;color:#182934}button{cursor:pointer}button:focus-visible,select:focus-visible{outline:3px solid #0987c5}.bar{display:flex;gap:14px;align-items:center;margin:20px 0;flex-wrap:wrap}.badge{padding:4px 10px;border-radius:20px;background:#e5eaf0}.layout{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:24px}.map{position:relative;display:grid;grid-template-columns:minmax(0,2fr) minmax(220px,1fr);gap:58px;align-content:start}.node{position:relative;z-index:1;border:1px solid #b6c5cf;border-radius:12px;padding:15px;background:white;transition:opacity .15s,border-color .15s}.node.group{background:#eaf0f5}.children{display:grid;gap:24px;margin:18px 10px 4px}.node p{font-size:13px;overflow-wrap:anywhere}.node b{color:#486174;font-size:11px;display:inline-block;min-width:54px}.node.affected{border:2px solid #31a4c4}.node.active{border-color:#c65c0b;box-shadow:0 0 0 3px #f4c896}.node.dim{opacity:.55}.external{display:grid;gap:26px;align-content:start}.pages{display:grid;gap:26px}svg{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:visible}aside{border:1px solid #cad5dd;border-radius:12px;background:white;padding:16px;align-self:start}ol{padding-left:20px}li{margin:8px 0}li button{width:100%;text-align:left;font-size:13px}li button.selected{background:#fff0dc;border-color:#c65c0b}.muted{color:#536675}code{overflow-wrap:anywhere}.limit p{overflow-wrap:anywhere}aside{min-width:0}details{font-size:12px;margin-top:12px}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#eaf0f5;padding:15px}summary{cursor:pointer}.legend{margin-top:16px;font-size:13px}.limit{margin-top:20px;max-width:1000px}@media(max-width:900px){.layout{grid-template-columns:1fr}.map{grid-template-columns:1fr;gap:30px}main{padding:15px}aside{order:-1}}@media(prefers-reduced-motion:reduce){*{transition:none!important}}
-</style><main><small>FS \xB7 ${t("\uD398\uC774\uC9C0 \uAD6C\uC131\uACFC \uC774\uBCA4\uD2B8 \uC601\uD5A5", "Page structure and event effects")}</small><h1>${html(flow.title)}</h1><p>${html(flow.summary)}</p><div class="bar"><span class="badge">${flow.basis === "observed" ? t("\uCF54\uB4DC\uC5D0\uC11C \uD574\uC11D\uD55C \uD750\uB984", "Interpreted from code") : t("\uC124\uACC4 \uC608\uC2DC \xB7 \uAD6C\uD604 \uC0AC\uC2E4 \uC544\uB2D8", "Proposed design \xB7 not implementation evidence")}</span><span class="badge">${html(statusLabel)}</span><label>${t("\uC774\uBCA4\uD2B8", "Event")} <select id="scenario">${flow.scenarios.map((s) => `<option value="${html(s.id)}"${s.id === options.scenarioId ? " selected" : ""}>${html(s.title)}</option>`).join("")}</select></label><button id="previous">${t("\uC774\uC804 \uB2E8\uACC4", "Previous step")}</button><button id="next">${t("\uB2E4\uC74C \uB2E8\uACC4", "Next step")}</button></div>
-<div class="layout"><div class="map" id="map"><div class="pages">${flow.nodes.filter((n) => !n.parent && n.kind === "page").map((n) => card(n.id)).join("")}</div><div class="external">${flow.nodes.filter((n) => !n.parent && n.kind !== "page").map((n) => card(n.id)).join("")}</div><svg id="edges" aria-hidden="true"></svg></div><aside><h2 id="event"></h2><p id="outcome" class="muted"></p><ol id="steps"></ol><p id="effect" role="status" aria-live="polite"></p><details id="edge-evidence" open><summary>${t("\uC120\uD0DD\uD55C \uAD00\uACC4\uC758 \uCF54\uB4DC \uADFC\uAC70", "Code evidence for selected relation")}</summary><div id="edge-citations"></div></details><div class="legend">${t("\uCCAD\uB85D: \uC774 \uC774\uBCA4\uD2B8\uC758 \uC601\uD5A5 \uBC94\uC704", "Teal: affected by this event")}<br>${t("\uC8FC\uD669: \uC120\uD0DD\uD55C \uB2E8\uACC4\uC758 \uCD9C\uBC1C\xB7\uB3C4\uCC29 \uBE14\uB85D", "Orange: source and destination of selected step")}<br>${t("\uD654\uC0B4\uD45C: \uC120\uD0DD\uD55C \uD638\uCD9C/\uC77D\uAE30/\uC4F0\uAE30 \uAD00\uACC4", "Arrow: selected call/read/write relation")}<br>${t("\uC21C\uC11C\uB294 \uAE30\uB85D\uD55C \uC2DC\uB098\uB9AC\uC624\uC758 \uC21C\uC11C\uC785\uB2C8\uB2E4.", "Order follows the recorded scenario.")}</div></aside></div>
-<div class="limit"><b>${t("\uBD84\uC11D \uCD9C\uCC98", "Analysis provenance")}</b><p>${html(options.projectPath ?? t("\uCD9C\uCC98 \uACBD\uB85C \uBBF8\uC9C0\uC815", "Project path not provided"))}</p><p>${t("\uC0DD\uC131:", "Generated:")} ${html(options.generatedAt ?? t("\uBBF8\uAE30\uB85D", "Not recorded"))} \xB7 ${t("\uBD84\uC11D \uBC84\uC804:", "Analysis version:")} <code>${html(options.flowHash ?? t("\uBBF8\uAE30\uB85D", "Not recorded"))}</code></p><p>${t("\uC624\uD504\uB77C\uC778 \uD30C\uC77C\uC740 \uC0DD\uC131 \uB2F9\uC2DC\uC758 \uC0C1\uD0DC\uC785\uB2C8\uB2E4. \uC774\uD6C4 \uCF54\uB4DC \uBCC0\uACBD \uC5EC\uBD80\uB294 \uB2E4\uC2DC \uC0DD\uC131\uD560 \uB54C \uD655\uC778\uD569\uB2C8\uB2E4.", "This offline file captures export-time state. Rerender to check later code changes.")}</p>${flow.scope.snapshot ? `<p>${t("Git \uAE30\uC900:", "Git basis:")} ${html(flow.scope.snapshot.baseRef)} \xB7 ${html(flow.scope.snapshot.expectedCommit)}</p>` : `<p>${t("\uAE30\uC900: \uBD84\uC11D \uB2F9\uC2DC\uC758 \uC791\uC5C5 \uD3F4\uB354 \uCF54\uB4DC", "Basis: working-tree code at analysis time")}</p>`}<ul>${(options.reasons ?? []).map((r) => `<li>${html(r)}</li>`).join("")}</ul><details><summary>${t("\uBD84\uC11D\uD55C \uD30C\uC77C\uACFC \uC0C8 \uD30C\uC77C \uD0D0\uC0C9 \uBC94\uC704", "Analyzed files and discovery scope")}</summary><ul>${flow.scope.files.map((p) => `<li>${html(p)}</li>`).join("")}</ul><p>${t("\uC0C8 \uD30C\uC77C \uD0D0\uC0C9:", "Discovery:")} ${flow.scope.discoveryRoots.map(html).join(", ")}</p></details><details><summary>${t("\uAE30\uB85D\uB41C \uB3D9\uC791\uACFC \uADDC\uCE59", "Recorded behavior and rules")}</summary>${flow.invariants.map((i) => `<p><b>${html(i.authority)}</b> ${html(i.statement)}</p>${i.evidence.map(citation2).join("")}`).join("") || `<p>${t("\uBCC4\uB3C4 \uAE30\uB85D \uC5C6\uC74C", "No additional records")}</p>`}</details><b>${t("\uBD84\uC11D \uBC94\uC704\uC640 \uBBF8\uD655\uC778", "Scope and unknowns")}</b><ul>${flow.limitations.map((s) => `<li>${html(s)}</li>`).join("")}</ul><p>${t("\uC774 \uADF8\uB9BC\uC740 \uC2E4\uD589 \uCD94\uC801\uC774\uB098 DOM \uCEE4\uBC0B\uC744 \uCE21\uC815\uD55C \uACB0\uACFC\uAC00 \uC544\uB2D9\uB2C8\uB2E4. \uC870\uAC74\xB7\uC2E4\uD328\xB7\uBCD1\uB82C \uACBD\uB85C\uB294 \uC2DC\uB098\uB9AC\uC624\uC640 \uAE30\uB85D\uB41C \uD55C\uACC4\uB85C \uD655\uC778\uD558\uC138\uC694.", "This diagram is not an executed trace or a DOM commit measurement. Check scenarios and limitations for conditional, failure and parallel paths.")}</p></div><details><summary>${t("\uAC19\uC740 \uB370\uC774\uD130\uC758 Mermaid \uC911\uCCA9 \uBE14\uB85D", "Mermaid nested blocks from the same data")}</summary><pre>${html(flowToMermaid(flow))}</pre></details></main>
-<script type="application/json" id="flow-data">${data}</script><script>
-const flow=JSON.parse(document.getElementById('flow-data').textContent);let scenario=flow.scenarios.find(s=>s.id===document.getElementById('scenario').value),step=0;
-const ns='http://www.w3.org/2000/svg';const el=(name,attrs)=>{const e=document.createElementNS(ns,name);Object.entries(attrs).forEach(([k,v])=>e.setAttribute(k,v));return e};
-function draw(){const svg=document.getElementById('edges'),map=document.getElementById('map'),r=map.getBoundingClientRect();svg.replaceChildren();svg.setAttribute('width',r.width);svg.setAttribute('height',r.height);const defs=el('defs',{}),marker=el('marker',{id:'arrow',markerWidth:10,markerHeight:10,refX:8,refY:3,orient:'auto',markerUnits:'strokeWidth'});marker.append(el('path',{d:'M0,0 L0,6 L9,3 z',fill:'#bf5707'}));defs.append(marker);svg.append(defs);const edge=flow.edges.find(e=>e.id===scenario.steps[step].edge);const get=id=>[...map.querySelectorAll('[data-node]')].find(n=>n.dataset.node===id);const a=get(edge.from).getBoundingClientRect(),b=get(edge.to).getBoundingClientRect();const right=b.left>=a.right-5,left=b.right<=a.left+5;let x1=(left?a.left:a.right)-r.left,y1=a.top+a.height/2-r.top,x2=(right?b.left:b.right)-r.left,y2=b.top+b.height/2-r.top;const mid=right||left?(x1+x2)/2:Math.max(a.right,b.right)-r.left+16;let d=edge.from===edge.to?'M '+x1+' '+y1+' c -40,-40 -40,40 0,12':'M '+x1+' '+y1+' C '+mid+' '+y1+', '+mid+' '+y2+', '+x2+' '+y2;svg.append(el('path',{d,fill:'none',stroke:'#bf5707','stroke-width':2.5,'marker-end':'url(#arrow)'}));}
-function showCitations(edge){const target=document.getElementById('edge-citations');target.replaceChildren();const relation=document.createElement('p');relation.textContent=edge.kind+' \xB7 '+edge.from+' \u2192 '+edge.to+(edge.condition?${JSON.stringify(t(" \xB7 \uC870\uAC74: ", " \xB7 Condition: "))}+edge.condition:'');target.append(relation);for(const id of edge.evidence){const c=flow.evidence[id];if(!c)continue;const p=document.createElement('p'),b=document.createElement('b'),pre=document.createElement('pre');b.textContent=c.path+(c.line?':'+c.line:'');pre.textContent=c.quote;p.append(b,pre);target.append(p);}if(!edge.evidence.length){const p=document.createElement('p');p.textContent=${JSON.stringify(t("\uAD6C\uD604 \uADFC\uAC70 \uC5C6\uC74C \xB7 \uC124\uACC4 \uC81C\uC548", "No implementation evidence \xB7 proposed design"))};target.append(p);}}
-function render(){const active=flow.edges.find(e=>e.id===scenario.steps[step].edge),affected=new Set([scenario.entry]);scenario.steps.forEach(s=>{const e=flow.edges.find(e=>e.id===s.edge);affected.add(e.from);affected.add(e.to)});for(const id of [...affected]){let n=flow.nodes.find(n=>n.id===id);while(n&&n.parent){affected.add(n.parent);n=flow.nodes.find(x=>x.id===n.parent)}}document.querySelectorAll('[data-node]').forEach(n=>{n.classList.toggle('affected',affected.has(n.dataset.node));n.classList.toggle('dim',!affected.has(n.dataset.node));n.classList.toggle('active',[active.from,active.to].includes(n.dataset.node))});document.getElementById('event').textContent=scenario.event;document.getElementById('outcome').textContent=scenario.outcome+(scenario.limitations.length?${JSON.stringify(t(" \xB7 \uD55C\uACC4: ", " \xB7 Limitations: "))}+scenario.limitations.join('; '):'');const list=document.getElementById('steps');list.replaceChildren();scenario.steps.forEach((s,i)=>{const e=flow.edges.find(e=>e.id===s.edge),li=document.createElement('li'),button=document.createElement('button');button.textContent=e.label;button.className=i===step?'selected':'';button.onclick=()=>{step=i;render()};li.append(button);list.append(li)});showCitations(active);document.getElementById('effect').textContent=(step+1)+'. '+scenario.steps[step].effect+(scenario.steps[step].condition?${JSON.stringify(t(" \xB7 \uC870\uAC74: ", " \xB7 Condition: "))}+scenario.steps[step].condition:'');requestAnimationFrame(draw);}
-document.getElementById('scenario').onchange=e=>{scenario=flow.scenarios.find(s=>s.id===e.target.value);step=0;render()};document.getElementById('next').onclick=()=>{step=(step+1)%scenario.steps.length;render()};document.getElementById('previous').onclick=()=>{step=(step+scenario.steps.length-1)%scenario.steps.length;render()};new ResizeObserver(draw).observe(document.getElementById('map'));document.querySelectorAll('details').forEach(e=>e.addEventListener('toggle',draw));render();
-</script></html>`;
-}
-
-// src/application/render-project-flow.ts
+import { join as join18, resolve as resolve9 } from "node:path";
 var renderFlowOptions = object({
   id: analysisId,
   expectedHash: string().regex(/^[a-f0-9]{64}$/),
@@ -27232,7 +27427,7 @@ async function renderProjectFlow(root, systemRoot2, input) {
     };
     const content = options.format === "html" ? flowToHtml(flow, freshness.status, { ...provenance, scenarioId: options.scenarioId, language: options.language }) : `%% ${JSON.stringify({ basis: flow.basis, freshness, ...provenance })}
 ${flowToMermaid(flow, options.scenarioId)}`;
-    const output = join17(await directory(root, "diagrams"), `${options.id}.${options.format === "html" ? "html" : "mmd"}`);
+    const output = join18(await directory(root, "diagrams"), `${options.id}.${options.format === "html" ? "html" : "mmd"}`);
     await atomic(output, content);
     return {
       path: output,
@@ -27251,7 +27446,7 @@ import { execFile as execFile5 } from "node:child_process";
 import { randomUUID as randomUUID6 } from "node:crypto";
 import { mkdir as mkdir6, readFile as readFile14, rename as rename4, rm as rm6, writeFile as writeFile6 } from "node:fs/promises";
 import { homedir } from "node:os";
-import { join as join18 } from "node:path";
+import { join as join19 } from "node:path";
 import { promisify as promisify3 } from "node:util";
 var exec = promisify3(execFile5);
 var repository = string().regex(/^[\w.-]+\/[\w.-]+$/);
@@ -27274,9 +27469,9 @@ var recordSchema = object({
   commit: sha.optional(),
   url: string().url().optional()
 });
-var home = () => join18(homedir(), ".frontend-system", "contributions");
+var home = () => join19(homedir(), ".frontend-system", "contributions");
 async function contributionRepository(systemRoot2) {
-  const plugin = JSON.parse(await readFile14(join18(systemRoot2, ".codex-plugin/plugin.json"), "utf8"));
+  const plugin = JSON.parse(await readFile14(join19(systemRoot2, ".codex-plugin/plugin.json"), "utf8"));
   const match = String(plugin.repository).match(/^https:\/\/github\.com\/([\w.-]+\/[\w.-]+?)(?:\.git)?\/?$/);
   return repository.parse(match?.[1]);
 }
@@ -27295,16 +27490,16 @@ async function prepareKnowledgeContribution(systemRoot2, input, storage = home()
     content: pendingNote(`${note.content}
 `)
   };
-  const directory2 = join18(storage, id4);
+  const directory2 = join19(storage, id4);
   await mkdir6(directory2, { recursive: true, mode: 448 });
   const hash5 = draftHash(record2);
-  await writeFile6(join18(directory2, "draft.json"), JSON.stringify({ ...record2, hash: hash5 }, null, 2), { flag: "wx", mode: 384 });
+  await writeFile6(join19(directory2, "draft.json"), JSON.stringify({ ...record2, hash: hash5 }, null, 2), { flag: "wx", mode: 384 });
   return {
     id: id4,
     hash: hash5,
     repository: record2.repository,
     path: record2.path,
-    localDraft: join18(directory2, "draft.json"),
+    localDraft: join19(directory2, "draft.json"),
     state: "pending",
     status: "prepared; not submitted",
     next: "submit_knowledge_contribution"
@@ -27314,7 +27509,7 @@ function githubClient(directory2) {
   return async (method, path, body) => {
     const args = ["api", "--hostname", "github.com", "--method", method, path];
     if (body !== void 0) {
-      const input = join18(directory2, "request.json");
+      const input = join19(directory2, "request.json");
       await writeFile6(input, JSON.stringify(body), { mode: 384 });
       args.push("--input", input);
     }
@@ -27345,9 +27540,9 @@ async function optional5(request, path) {
 }
 async function submitKnowledgeContribution(systemRoot2, id4, expectedHash, storage = home(), request) {
   uuid2.parse(id4);
-  const directory2 = join18(storage, id4);
-  const file = join18(directory2, "draft.json");
-  await mkdir6(join18(directory2, "submit.lock"));
+  const directory2 = join19(storage, id4);
+  const file = join19(directory2, "draft.json");
+  await mkdir6(join19(directory2, "submit.lock"));
   try {
     const record2 = recordSchema.parse(JSON.parse(await readFile14(file, "utf8")));
     if (record2.id !== id4 || record2.hash !== expectedHash || draftHash(record2) !== expectedHash || record2.repository !== await contributionRepository(systemRoot2) || record2.path !== `knowledge/source/contributions/${id4}.md` || sourceSelection(record2.content) !== "pending")
@@ -27391,8 +27586,8 @@ async function submitKnowledgeContribution(systemRoot2, id4, expectedHash, stora
       if (pulls[0]) return await finish(pulls[0]);
       const existing = await optional5(api, `${target}/git/ref/heads/${branch}`);
       if (existing) {
-        const ref = object({ object: object({ sha }) }).parse(existing);
-        if (!record2.commit || ref.object.sha !== record2.commit) throw new Error("Contribution branch changed; refusing to overwrite it");
+        const ref2 = object({ object: object({ sha }) }).parse(existing);
+        if (!record2.commit || ref2.object.sha !== record2.commit) throw new Error("Contribution branch changed; refusing to overwrite it");
       } else {
         if (!record2.commit) {
           const base = object({ object: object({ sha }) }).parse(await api("GET", `repos/${record2.repository}/git/ref/heads/main`));
@@ -27434,17 +27629,17 @@ Draft: ${record2.hash}`
       };
     }
   } finally {
-    await rm6(join18(directory2, "submit.lock"), { recursive: true, force: true });
+    await rm6(join19(directory2, "submit.lock"), { recursive: true, force: true });
   }
 }
 
 // src/application/release-manifest.ts
 import { createHash as createHash6 } from "node:crypto";
 import { readFile as readFile15, readdir as readdir7, writeFile as writeFile7 } from "node:fs/promises";
-import { join as join19 } from "node:path";
+import { join as join20 } from "node:path";
 var hash4 = (value) => createHash6("sha256").update(value).digest("hex");
 async function installedReleaseIdentity(root) {
-  const body = await readFile15(join19(root, "release-manifest.json"), "utf8");
+  const body = await readFile15(join20(root, "release-manifest.json"), "utf8");
   const manifest = JSON.parse(body);
   return {
     pluginVersion: manifest.pluginVersion,
@@ -27624,7 +27819,7 @@ server.registerTool("inspect_project", {
     overall,
     profile,
     config: await readProjectConfig(root),
-    projectDocument: await readProjectDocument(root),
+    projectDocument: await readProjectAiContext(root),
     state: await readProjectState(root),
     changedFiles: await changedFiles(root).catch(() => [])
   });
@@ -27719,14 +27914,14 @@ server.registerTool("record_project_refresh", {
   annotations: localWrite
 }, async ({ projectPath: path, baseRef, expectedCommit, status, reason }) => result(await recordProjectRefresh(projectPath(path), baseRef, expectedCommit, status, reason)));
 server.registerTool("get_project_document", {
-  description: "Read a bounded project.md window, falling back to preserved init.md. Use the returned content hash to keep pagination consistent.",
-  inputSchema: { projectPath: string().optional(), offset: number().int().min(0).default(0), limit: number().int().min(1).max(12e3).default(6e3), expectedHash: string().optional() },
+  description: "Read bounded AI context by default: area/status and exact evidence/flow references, without human prose or HTML. view:human reads project.md. Legacy documents fall back to project.md/init.md. hash is for pagination; use documentHash for save_project_context.",
+  inputSchema: { projectPath: string().optional(), view: _enum(["ai", "human"]).default("ai"), offset: number().int().min(0).default(0), limit: number().int().min(1).max(12e3).default(6e3), expectedHash: string().optional() },
   annotations: readOnly
-}, async ({ projectPath: path, offset, limit, expectedHash }) => {
-  const content = await readProjectDocument(projectPath(path));
+}, async ({ projectPath: path, view, offset, limit, expectedHash }) => {
+  const content = await (view === "human" ? readProjectDocument : readProjectAiContext)(projectPath(path));
   const hash5 = content ? digest(content) : null;
   if (expectedHash && hash5 !== expectedHash) throw new Error("Document changed; restart pagination");
-  return result({ hash: hash5, content: content.slice(offset, offset + limit), totalCharacters: content.length, nextOffset: offset + limit < content.length ? offset + limit : null });
+  return result({ hash: hash5, documentHash: await projectDocumentHash(projectPath(path)), view, content: content.slice(offset, offset + limit), totalCharacters: content.length, nextOffset: offset + limit < content.length ? offset + limit : null });
 });
 server.registerTool("read_project_source", {
   description: "Read main-commit source and full-file hashes. Prefer path:[paths] for related files (up to 100 requested). Each page reads at most 40 files and returns {files:[windows],nextPaths:[unread paths]}; pass nextPaths in another call with the same expectedCommit. Each page has at most 24000 content characters, redistributing unused space from short files. String path retains the single-window response. Default limit 6000 per file, maximum 12000; continue truncated files individually at their nextOffset. Working contents are not used.",
@@ -27735,7 +27930,7 @@ server.registerTool("read_project_source", {
 }, async ({ projectPath: root, path, expectedCommit, baseRef, offset, limit }) => result(Array.isArray(path) ? await readProjectSources(projectPath(root), path, expectedCommit, baseRef, offset, limit) : await readProjectSource(projectPath(root), path, expectedCommit, baseRef, offset, limit)));
 server.registerTool("save_project_context", {
   title: "Save inspected project context",
-  description: "Persist evidence-backed main analysis from draftFile or inline analysis. For payloadSchema read bundle/tool-help.mjs save_project_context; draft input avoids resending the whole analysis after a field error. User-decision statements require confirmation with the supplied answer. Each code fact/interpretation needs reuse dependencies and registered semantic interpretations, or reuseReason explaining why none is justified. Returns reuse coverage. Hashes are bound by the server.",
+  description: "Persist evidence-backed main analysis from draftFile or inline analysis. fs-project supplies analysis.report to generate human project.md, compact AI references and observed HTML automatically; reportless saves are legacy. Returns delivery paths and analysis status. For payloadSchema read bundle/tool-help.mjs save_project_context; draft input avoids resending the whole analysis after a field error. User-decision statements require confirmation with the supplied answer. Each code fact/interpretation needs reuse dependencies and registered semantic interpretations, or reuseReason explaining why none is justified. Returns reuse coverage. Hashes are bound by the server.",
   inputSchema: {
     projectPath: string().optional(),
     baseRef: string().default("main"),
@@ -27750,11 +27945,12 @@ server.registerTool("save_project_context", {
   if (inline !== void 0 === (draftFile !== void 0)) throw new Error("Supply exactly one of analysis or draftFile");
   const { analysis } = projectContextPayloadSchema.parse(draftFile ? (await readRevisionDraft(root, draftFile)).input : { analysis: inline });
   const profile = await discovery.discover(await discovery.createRef(root));
-  await writeProjectArtifacts(profile, analysis, { baseRef, expectedCommit, expectedHash });
+  const delivery = await writeProjectArtifacts(profile, analysis, { baseRef, expectedCommit, expectedHash });
   const statements = analysis.evidence ? (await readProjectEvidence(root)).record.statements : [];
   return result({
     projectDocument: `${root}/.frontend-system/project.md`,
     status: await projectDocumentStatus(root),
+    delivery,
     reuse: {
       bound: statements.filter((item) => item.reuse).map((item) => item.id),
       excluded: statements.filter((item) => item.reuseReason).map((item) => ({ id: item.id, reason: item.reuseReason })),
@@ -27813,7 +28009,7 @@ server.registerTool("get_change_context", {
     changedFiles: await changedFiles(root, selectedBase),
     diffStat: await diffStat(root, selectedBase),
     profile,
-    projectDocument: await readProjectDocument(root)
+    projectDocument: await readProjectAiContext(root)
   });
 });
 server.registerTool("check_pr_readiness", {

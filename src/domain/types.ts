@@ -135,6 +135,7 @@ export interface InspectionQuestion {
 }
 
 export interface ProjectAnalysis {
+  report?: import('../application/project-report.js').ProjectReport;
   evidence?: import('../application/design-evidence.js').ProjectEvidence;
   domains?: string[];
   events?: string[];
