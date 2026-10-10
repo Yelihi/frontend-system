@@ -4,6 +4,7 @@ import { join, relative, resolve } from "node:path";
 import * as z from "zod/v4";
 
 import { FileSystemProjectDiscovery } from "../adapters/filesystem/project-discovery.js";
+import { prScope, prScopeSchema, samePrScope } from './pr-scope.js';
 import { localPath, policySchema, policyFailures, policyProtectionFailures, requiredScripts, policyInputSchema, type PolicyInput, type VerificationPolicy } from "./policy.js";
 import { bindDesignEvidence, boundEvidenceSchema, designContractFailures, evidenceFreshness, updateDesignDecisions, type DecisionUpdates, type DesignEvidence, type BoundEvidence } from './design-evidence.js';
 
@@ -394,7 +395,7 @@ export async function saveExecution(root: string, input: ExecutionInput, expecte
         const failures = policyFailures(policy, profile.scripts, fileHashes);
         if (failures.length) throw new Error(failures.join("; "));
         const reviews = await Promise.all(execution.steps.flatMap((step) => (step.reviewIds ?? []).map((id) => readReview(root, id, planId))));
-        verifyReviews(reviews, policy, execution.revisionHash, sourceHash);
+        await verifyReviews(root, reviews, policy, execution.revisionHash, sourceHash, planId);
       }
     }
     const path = join(await planDirectory(root, "", planId), "execution.json");
@@ -468,6 +469,7 @@ export async function beginAttempt(root: string, stepId: string, expectedHash: s
 }
 
 export const reviewInputSchema = z.strictObject({
+  prScope: prScopeSchema.optional().describe('For PR preflight: exact scope returned by check_pr_readiness, after committing intended changes. Ordinary work reviews may omit it.'),
   stepId: recordId, reviewId: z.string().min(1).describe('Exact existing policy.reviews[].id (also workflow.revision.policy.reviewIds). Select the approved review requirement, not a new record name. The server generates the saved record id; attemptId identifies the attempt.'), attemptId: recordId,
   status: z.enum(["passed", "failed"]),
   findings: z.array(z.strictObject({ ruleId: z.string().min(1), files: z.array(z.string()).min(1), evidence: z.string().min(1), conclusion: z.string().min(1) })).min(1),
@@ -491,21 +493,39 @@ export async function saveReview(root: string, input: z.infer<typeof reviewInput
     const attempt = await readAttempt(root, data.attemptId, planId);
     if (attempt.revisionHash !== state.revision.hash || attempt.stepId !== data.stepId) throw new Error("Review attempt does not match");
     const snapshot = await sourceSnapshot(root);
-    if (data.findings.some((finding) => !policy!.rules.some(({ id }) => id === finding.ruleId) || finding.files.some((file) => !snapshot[file]))) throw new Error("Review findings require existing files and policy rules");
+    const changes = data.prScope ? await prScope(root, data.prScope.base) : null;
+    if (changes && (changes.dirtyFiles.length || !samePrScope(data.prScope, changes.scope))) throw new Error('PR scope changed or has uncommitted files; reread before reviewing');
+    if (data.findings.some((finding) => !policy!.rules.some(({ id }) => id === finding.ruleId) || finding.files.some((file) => !snapshot[file] && !changes?.files.includes(file)))) throw new Error("Review findings require existing files (or PR deletions) and policy rules");
     const missingRules = requirement.ruleIds.filter((id) => !data.findings.some((finding) => finding.ruleId === id));
     if (missingRules.length) throw new Error(`Review must address all required rules. Review ${data.reviewId} is missing: ${missingRules.join(', ')}. Supply findings for these approved rule IDs; do not remove obligations to pass.`);
     if (data.resolvedExceptions.some((id) => !policy!.exceptions.some((item) => item.id === id))) throw new Error("Unknown exception resolution");
     if (data.status === "passed" && data.remaining.length) throw new Error("Passing review cannot have remaining work");
     const review = reviewSchema.parse({ ...data, id: randomUUID(), revisionHash: state.revision.hash, sourceHash: digest(JSON.stringify(snapshot)), createdAt: new Date().toISOString(), authority: "host-model-review" });
     await writeFile(join(await planDirectory(root, "reviews", planId), `${review.id}.json`), JSON.stringify(review), { flag: "wx" });
+    if (data.status === 'failed' && state.execution?.status === 'complete') {
+      const path = join(await planDirectory(root, '', planId), 'execution.json');
+      const saved = executionRecordSchema.parse(JSON.parse(await readFile(path, 'utf8')));
+      await atomic(path, JSON.stringify({...saved, requiresRevalidation: true}, null, 2));
+    }
     return review;
   });
 }
 
-function verifyReviews(reviews: Review[], policy: VerificationPolicy, revisionHash: string, sourceHash: string) {
+export async function verifyReviews(root: string, reviews: Review[], policy: VerificationPolicy, revisionHash: string, sourceHash: string, planId?: string) {
   const passing = reviews.filter((item) => item.status === "passed" && !item.remaining.length && item.revisionHash === revisionHash && item.sourceHash === sourceHash);
   if (policy.reviews.some((item) => !passing.some((review) => review.reviewId === item.id))) throw new Error("Missing current semantic review evidence");
   if (policy.exceptions.some((item) => !passing.some((review) => review.resolvedExceptions.includes(item.id)))) throw new Error("Unresolved migration exceptions");
+  if (!policy.reviews.length) return;
+  const path = join(root, '.frontend-system', scope(planId), 'reviews');
+  for (const name of await readdir(path)) {
+    if (!name.endsWith('.json')) continue;
+    const review = await readReview(root, name.slice(0, -5), planId);
+    if (review.status === 'failed' && review.revisionHash === revisionHash && review.sourceHash === sourceHash
+      && policy.reviews.some(item => item.id === review.reviewId)
+      && !passing.some(item => item.reviewId === review.reviewId && item.createdAt > review.createdAt)) {
+      throw new Error(`Unresolved later failed review: ${review.reviewId}`);
+    }
+  }
 }
 
 async function verifyStep(root: string, step: Execution["steps"][number], policy: VerificationPolicy, revisionHash: string, sourceHash: string, planId?: string) {
@@ -521,5 +541,5 @@ async function verifyStep(root: string, step: Execution["steps"][number], policy
   }
   const reviews = await Promise.all((step.reviewIds ?? []).map((id) => readReview(root, id, planId)));
   if (reviews.some((review) => review.stepId !== step.id || review.attemptId !== attempt.id)) throw new Error("Step reviews must belong to its attempt");
-  verifyReviews(reviews, { ...policy, exceptions: policy.exceptions.filter((item) => item.resolveByStep === step.id) }, revisionHash, sourceHash);
+  await verifyReviews(root, reviews, { ...policy, exceptions: policy.exceptions.filter((item) => item.resolveByStep === step.id) }, revisionHash, sourceHash, planId);
 }

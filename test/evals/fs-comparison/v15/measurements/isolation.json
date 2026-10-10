@@ -1,0 +1,26 @@
+[
+  {
+    "arm": "ordinary",
+    "exitCode": 0,
+    "stdout": "{\"own\":\"read\",\"rubric\":\"denied\",\"sibling\":\"denied\",\"personal\":\"denied\"}\n",
+    "stderr": ""
+  },
+  {
+    "arm": "raw",
+    "exitCode": 0,
+    "stdout": "{\"own\":\"read\",\"rubric\":\"denied\",\"sibling\":\"denied\",\"personal\":\"denied\"}\n",
+    "stderr": ""
+  },
+  {
+    "arm": "fs-search",
+    "exitCode": 0,
+    "stdout": "{\"own\":\"read\",\"rubric\":\"denied\",\"sibling\":\"denied\",\"personal\":\"denied\"}\n",
+    "stderr": ""
+  },
+  {
+    "arm": "oracle",
+    "exitCode": 0,
+    "stdout": "{\"own\":\"read\",\"rubric\":\"denied\",\"sibling\":\"denied\",\"personal\":\"denied\"}\n",
+    "stderr": ""
+  }
+]

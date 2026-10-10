@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "deliver",
+  "type": "architecture",
+  "input": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/docs/diagrams/fs-overview.architecture.json",
+  "output": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/docs/diagrams/fs-overview.html",
+  "specification": {
+    "sha256": "f8a272e36b2a048dbd400d80c680fe8aee9254f9b66280954f589108e6b8ce75",
+    "bytes": 3461
+  },
+  "artifact": {
+    "sha256": "4fa3ef85c6381da6e7a7fad8ebac524b6555af26deeeee875ec2cf9f104551d4",
+    "bytes": 805632
+  },
+  "validation": {
+    "checksPassed": 9,
+    "checkCount": 9,
+    "compositionProfile": "showcase",
+    "compositionStatus": "pass",
+    "errors": 0,
+    "warnings": 0
+  }
+}

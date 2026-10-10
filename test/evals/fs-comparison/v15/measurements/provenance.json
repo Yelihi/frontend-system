@@ -1,0 +1,18 @@
+{
+  "baselineCommit": "0aae927ccef8f4d084180e8e264d6a674a694ce0",
+  "baselineSourceSha256": "38b481f2c8e354722d602542a676e0cf6219980f3d64e9204f05238c0e355243",
+  "currentSourceSha256": "d66a6714c48294c51302a06e626cea0bd0729c13fa9c34b915e23900c1279da0",
+  "corpusUnchanged": true,
+  "checks": {
+    "nodeTests": {
+      "passed": 135,
+      "failed": 0
+    },
+    "typecheck": "passed as part of build",
+    "lint": "passed",
+    "releaseManifestCheck": "passed",
+    "evaluatorSelfCheck": "passed"
+  },
+  "firstPatchRegression": "An incidental branch word in investigation text retrieved unrelated style knowledge. Context weight 0.8 -> 0.5; generic-anchor regression added. First-patch retrieval result preserved; no model calls on first patch.",
+  "modelRun": "2026-10-08-context-round1"
+}

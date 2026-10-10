@@ -14,6 +14,27 @@ function entry(id: string, keywords: string[], technologies: string[] = []): Ref
   return { id, kind: "concept", title: id, summary: "근거와 적용 조건을 본문에서 확인", path: `${id}.md`, contentHash: contentHash("body"), keywords, domains: ["state"], technologies, excludedTechnologies: [], conditions: ["Check version and domain"], exclusions: [], evidenceKind: "public-contract", review: "reviewed", sources: { source: contentHash("source") }, related: [] };
 }
 
+test("contextual retrieval preserves exclusions as evidence, not decisions", () => {
+  const contextual = { ...entry("conditional", []), conditions: ["consented scope"],
+    exclusions: ["cross-device lock"], checks: [{id:"ownership", question:"Preserve caller headers?",
+      guidance:"Check failure ownership", verification:"review" as const}] };
+  const index: ReferenceIndex = {version:1, entries:[contextual, entry("unrelated", ["painting"])], outcomes:[]};
+  for (const [query, field] of [["consented", "conditions"], ["cross-device", "exclusions"], ["caller headers", "checks"]]) {
+    const found = searchReferenceIndex(index, query!)[0]!;
+    assert.equal(found.id, "conditional");
+    assert.ok(found.matchedFields[field!]?.length);
+    assert.equal(found.applicability, "candidate-needs-context-review");
+    assert.deepEqual(found.exclusions, contextual.exclusions);
+  }
+  assert.deepEqual(searchReferenceIndex(index, "zzunknownzz"), []);
+  const excluded: ReferenceIndex = {...index, entries:[{...contextual, excludedTechnologies:["Vue"]}]};
+  assert.deepEqual(searchReferenceIndex(excluded, "cross-device", ["Vue"]), []);
+  const anchored: ReferenceIndex = {...index, entries:[entry("dispatch", ["branch"]),
+    {...contextual, exclusions:["unrelated styling branch"]}]};
+  assert.deepEqual(searchReferenceIndex(anchored, "branch").map(hit => hit.id), ["dispatch"],
+    "An incidental context-only word must not crowd out a direct keyword match");
+});
+
 test("published knowledge: symptom retrieval, technology boundaries and evidence hashes", async (t) => {
   const root = process.cwd();
   const learned = join(root, "references/learned");

@@ -1,0 +1,157 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "FS 지식의 준비와 배포",
+    "quality_profile": "showcase",
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "frontend": {
+          "label": "호스트 / 사용자"
+        },
+        "backend": {
+          "label": "검토 / 도구"
+        },
+        "database": {
+          "label": "지식 / 기록"
+        },
+        "security": {
+          "label": "사람의 선택"
+        },
+        "external": {
+          "label": "지식 기여"
+        }
+      }
+    }
+  },
+  "lanes": [
+    {
+      "id": "people",
+      "label": "사람: 작성 · 선택 · 배포 · 갱신"
+    },
+    {
+      "id": "host",
+      "label": "AI 검토 + FS 도구"
+    }
+  ],
+  "mainPath": [
+    "contribute",
+    "activate",
+    "review",
+    "sync",
+    "release",
+    "install"
+  ],
+  "nodes": [
+    {
+      "id": "contribute",
+      "lane": "people",
+      "col": 0,
+      "type": "external",
+      "label": "원문 기여 PR",
+      "sublabel": "add · pending"
+    },
+    {
+      "id": "activate",
+      "lane": "people",
+      "col": 1,
+      "type": "security",
+      "label": "검토할 지식 선택",
+      "sublabel": "state: active · active",
+      "width": 150
+    },
+    {
+      "id": "review",
+      "lane": "host",
+      "col": 2,
+      "type": "backend",
+      "label": "근거와 조건 검토",
+      "sublabel": "review · merged",
+      "width": 150
+    },
+    {
+      "id": "sync",
+      "lane": "host",
+      "col": 3,
+      "type": "database",
+      "label": "참조와 색인 생성",
+      "sublabel": "sync · 검증 후 반영",
+      "width": 150
+    },
+    {
+      "id": "release",
+      "lane": "people",
+      "col": 4,
+      "type": "security",
+      "label": "배포 버전 결정",
+      "sublabel": "수동 release"
+    },
+    {
+      "id": "install",
+      "lane": "people",
+      "col": 5,
+      "type": "frontend",
+      "label": "설치본 갱신",
+      "sublabel": "Codex / Claude"
+    }
+  ],
+  "edges": [
+    {
+      "from": "contribute",
+      "to": "activate",
+      "label": "PR 병합 후",
+      "role": "main"
+    },
+    {
+      "from": "activate",
+      "to": "review",
+      "label": "active 준비",
+      "role": "main"
+    },
+    {
+      "from": "review",
+      "to": "sync",
+      "label": "검토 통과",
+      "role": "main"
+    },
+    {
+      "from": "sync",
+      "to": "release",
+      "label": "관리자 선택",
+      "role": "main"
+    },
+    {
+      "from": "release",
+      "to": "install",
+      "label": "배포 후 갱신",
+      "role": "main"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "사람이 정하는 것",
+      "items": [
+        "무엇을 검토할지 metadata로 선택",
+        "필수 규칙 승인과 배포 시점 결정"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "merged의 정확한 뜻",
+      "items": [
+        "active 원문 + 현재 유효한 승인 기록",
+        "PR 병합과 별개 · 변경 시 재검토"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "프로젝트에 도달하는 조건",
+      "items": [
+        "sync만으로 설치본이 바뀌지 않음",
+        "배포·업데이트 후 현재 작업에서 검색"
+      ]
+    }
+  ]
+}

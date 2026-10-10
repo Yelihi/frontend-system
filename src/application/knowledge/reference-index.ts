@@ -151,17 +151,28 @@ export function searchReferenceIndex(index: ReferenceIndex, query: string, techn
     if (entry.routing?.mode === "deferred") return false;
     if (entry.excludedTechnologies.some((value) => tech.includes(technologyKey(value)))) return false;
     return !tech.length || !entry.technologies.length || entry.technologies.some((value) => tech.includes(technologyKey(value)));
-  }).map((entry) => ({ entry, title: terms(entry.title), keywords: terms(entry.keywords.join(" ")), summary: terms(entry.summary) }));
+  }).map((entry) => ({ entry, fields: {
+    title: terms(entry.title), keywords: terms(entry.keywords.join(" ")), summary: terms(entry.summary),
+    conditions: terms(entry.conditions.join(" ")), exclusions: terms(entry.exclusions.join(" ")),
+    checks: terms((entry.checks ?? []).map(check => `${check.question} ${check.guidance}`).join(" ")),
+    investigation: terms(entry.investigation ? [
+      ...entry.investigation.questions.map(question => question.instruction),
+      ...entry.investigation.preserve, entry.investigation.onMissing,
+    ].join(" ") : ""),
+  } }));
   const frequency = new Map(tokens.map((token) => [token,
-    candidates.filter(({ title, keywords, summary }) => matches(token, [...title, ...keywords, ...summary])).length]));
-  const ranked = candidates.map(({ entry, title, keywords, summary }) => {
-    const matchedTerms = tokens.filter((token) => matches(token, [...title, ...keywords, ...summary]));
+    candidates.filter(({ fields }) => matches(token, Object.values(fields).flat())).length]));
+  const ranked = candidates.map(({ entry, fields }) => {
+    // An exclusion hit retrieves its context; it never excludes or authorizes a decision.
+    const matchedFields = Object.fromEntries(Object.entries(fields).map(([field, words]) =>
+      [field, tokens.filter(token => matches(token, words))] as const).filter(([, hits]) => hits.length));
+    const matchedTerms = tokens.filter((token) => matches(token, Object.values(fields).flat()));
     const score = matchedTerms.reduce((sum, token) => sum +
-      (matches(token, title) ? 3 : matches(token, keywords) ? 2 : 1) *
+      (matches(token, fields.title) ? 3 : matches(token, fields.keywords) ? 2 : matches(token, fields.summary) ? 1 : 0.5) *
       (1 + Math.log((candidates.length + 1) / ((frequency.get(token) ?? 0) + 1))), 0);
     const { sources: _sources, ...metadata } = entry;
     void _sources;
-    return { ...metadata, score, matchedTerms, applicability: "candidate-needs-context-review" as const };
+    return { ...metadata, score, matchedTerms, matchedFields, applicability: "candidate-needs-context-review" as const };
   }).filter((entry) => entry.score > 0)
     .sort((a, b) => b.score - a.score || a.id.localeCompare(b.id));
   // ponytail: relative lexical cutoff removes weak tail hits; not a semantic confidence score.

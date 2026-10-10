@@ -1,0 +1,173 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "FS 지식과 실제 코드의 연결",
+    "quality_profile": "showcase",
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "frontend": {
+          "label": "호스트 / 사용자"
+        },
+        "backend": {
+          "label": "검토 / 도구"
+        },
+        "database": {
+          "label": "지식 / 기록"
+        },
+        "security": {
+          "label": "사람의 선택"
+        },
+        "external": {
+          "label": "지식 기여"
+        }
+      }
+    }
+  },
+  "lanes": [
+    {
+      "id": "host",
+      "label": "현재 대화의 AI: 해석과 판단"
+    },
+    {
+      "id": "tools",
+      "label": "도구 검사 · 개발자 결정 · 기록"
+    }
+  ],
+  "mainPath": [
+    "interpret",
+    "facts",
+    "route",
+    "read",
+    "judge",
+    "decide",
+    "plan"
+  ],
+  "nodes": [
+    {
+      "id": "interpret",
+      "lane": "host",
+      "col": 0,
+      "type": "frontend",
+      "label": "코드 맥락 해석",
+      "sublabel": "호출자 · 상태 · 의도"
+    },
+    {
+      "id": "facts",
+      "lane": "tools",
+      "col": 1,
+      "type": "backend",
+      "label": "코드 사실 추출",
+      "sublabel": "AST · 인용 · 해시"
+    },
+    {
+      "id": "route",
+      "lane": "tools",
+      "col": 2,
+      "type": "database",
+      "label": "관련 지식 후보",
+      "sublabel": "trigger + 문맥 검색"
+    },
+    {
+      "id": "read",
+      "lane": "host",
+      "col": 3,
+      "type": "frontend",
+      "label": "필요한 본문 읽기",
+      "sublabel": "조건 · 반례 · 조사 질문",
+      "width": 150
+    },
+    {
+      "id": "judge",
+      "lane": "host",
+      "col": 4,
+      "type": "frontend",
+      "label": "근거를 대조해 판단",
+      "sublabel": "적용 · 유지 · 제외 · 미정",
+      "width": 150
+    },
+    {
+      "id": "decide",
+      "lane": "tools",
+      "col": 4,
+      "type": "security",
+      "label": "설계 선택 확정",
+      "sublabel": "기존 결정 재사용 / 질문",
+      "width": 150
+    },
+    {
+      "id": "plan",
+      "lane": "tools",
+      "col": 5,
+      "type": "database",
+      "label": "계획과 검증에 연결",
+      "sublabel": "plan.md · 승인 후 구현",
+      "width": 150
+    }
+  ],
+  "edges": [
+    {
+      "from": "interpret",
+      "to": "facts",
+      "label": "확인할 코드 범위",
+      "role": "main"
+    },
+    {
+      "from": "facts",
+      "to": "route",
+      "label": "관측된 신호",
+      "role": "main"
+    },
+    {
+      "from": "route",
+      "to": "read",
+      "label": "후보 ID와 조건",
+      "role": "main"
+    },
+    {
+      "from": "read",
+      "to": "judge",
+      "label": "현재 코드와 비교",
+      "role": "main"
+    },
+    {
+      "from": "judge",
+      "to": "decide",
+      "label": "선택지와 비용",
+      "role": "main"
+    },
+    {
+      "from": "decide",
+      "to": "plan",
+      "label": "확정된 범위",
+      "role": "main"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "의미를 읽는 주체",
+      "items": [
+        "Codex / Claude의 현재 호스트 모델",
+        "확인하지 못한 관계와 의도는 미정"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "자동 검증의 경계",
+      "items": [
+        "인용 위치·변경 여부·누락을 검사",
+        "검색 일치가 결함이나 정답은 아님"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "반복 읽기를 줄이는 조건",
+      "items": [
+        "저장된 근거의 의존 파일이 유효할 때 재사용",
+        "코드·지식이 바뀌면 영향 범위를 재검토"
+      ]
+    }
+  ]
+}

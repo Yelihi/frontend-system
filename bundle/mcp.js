@@ -13108,7 +13108,7 @@ function policyFailures(policy, scripts, files) {
 }
 
 // src/application/knowledge/code-triggers.ts
-import { realpath as realpath3 } from "node:fs/promises";
+import { realpath as realpath4 } from "node:fs/promises";
 import { dirname as dirname2, isAbsolute as isAbsolute2, relative as relative4, resolve as resolve4 } from "node:path";
 
 // src/application/knowledge/code-relations.ts
@@ -13398,17 +13398,30 @@ function searchReferenceIndex(index, query, technologies = [], limit = 5) {
     if (entry.routing?.mode === "deferred") return false;
     if (entry.excludedTechnologies.some((value) => tech.includes(technologyKey(value)))) return false;
     return !tech.length || !entry.technologies.length || entry.technologies.some((value) => tech.includes(technologyKey(value)));
-  }).map((entry) => ({ entry, title: terms(entry.title), keywords: terms(entry.keywords.join(" ")), summary: terms(entry.summary) }));
+  }).map((entry) => ({ entry, fields: {
+    title: terms(entry.title),
+    keywords: terms(entry.keywords.join(" ")),
+    summary: terms(entry.summary),
+    conditions: terms(entry.conditions.join(" ")),
+    exclusions: terms(entry.exclusions.join(" ")),
+    checks: terms((entry.checks ?? []).map((check) => `${check.question} ${check.guidance}`).join(" ")),
+    investigation: terms(entry.investigation ? [
+      ...entry.investigation.questions.map((question) => question.instruction),
+      ...entry.investigation.preserve,
+      entry.investigation.onMissing
+    ].join(" ") : "")
+  } }));
   const frequency = new Map(tokens.map((token) => [
     token,
-    candidates.filter(({ title, keywords, summary }) => matches(token, [...title, ...keywords, ...summary])).length
+    candidates.filter(({ fields }) => matches(token, Object.values(fields).flat())).length
   ]));
-  const ranked = candidates.map(({ entry, title, keywords, summary }) => {
-    const matchedTerms = tokens.filter((token) => matches(token, [...title, ...keywords, ...summary]));
-    const score = matchedTerms.reduce((sum, token) => sum + (matches(token, title) ? 3 : matches(token, keywords) ? 2 : 1) * (1 + Math.log((candidates.length + 1) / ((frequency.get(token) ?? 0) + 1))), 0);
+  const ranked = candidates.map(({ entry, fields }) => {
+    const matchedFields = Object.fromEntries(Object.entries(fields).map(([field, words]) => [field, tokens.filter((token) => matches(token, words))]).filter(([, hits]) => hits.length));
+    const matchedTerms = tokens.filter((token) => matches(token, Object.values(fields).flat()));
+    const score = matchedTerms.reduce((sum, token) => sum + (matches(token, fields.title) ? 3 : matches(token, fields.keywords) ? 2 : matches(token, fields.summary) ? 1 : 0.5) * (1 + Math.log((candidates.length + 1) / ((frequency.get(token) ?? 0) + 1))), 0);
     const { sources: _sources, ...metadata } = entry;
     void _sources;
-    return { ...metadata, score, matchedTerms, applicability: "candidate-needs-context-review" };
+    return { ...metadata, score, matchedTerms, matchedFields, applicability: "candidate-needs-context-review" };
   }).filter((entry) => entry.score > 0).sort((a, b) => b.score - a.score || a.id.localeCompare(b.id));
   return ranked.filter((entry) => entry.score >= (ranked[0]?.score ?? 0) * 0.4).slice(0, Math.max(1, Math.min(20, limit)));
 }
@@ -13474,8 +13487,8 @@ async function diffStat(root, base) {
 }
 
 // src/application/workflow-store.ts
-import { createHash as createHash2, randomUUID } from "node:crypto";
-import { mkdir, readFile as readFile3, readdir as readdir2, realpath as realpath2, rename, rm, writeFile } from "node:fs/promises";
+import { createHash as createHash3, randomUUID } from "node:crypto";
+import { mkdir, readFile as readFile3, readdir as readdir2, realpath as realpath3, rename, rm, writeFile } from "node:fs/promises";
 import { join as join2, relative as relative3, resolve as resolve3 } from "node:path";
 
 // src/adapters/filesystem/project-discovery.ts
@@ -13612,7 +13625,7 @@ var FileSystemProjectDiscovery = class {
     const repositoryRoot = await git2(root, ["rev-parse", "--show-toplevel"]) ?? root;
     const remoteHead = await git2(root, ["symbolic-ref", "--short", "refs/remotes/origin/HEAD"]);
     const currentBranch = await git2(root, ["branch", "--show-current"]);
-    const commit = await git2(root, ["rev-parse", "HEAD"]);
+    const commit2 = await git2(root, ["rev-parse", "HEAD"]);
     return {
       id: basename(root).toLowerCase().replace(/[^a-z0-9]+/g, "-"),
       name: basename(root),
@@ -13620,7 +13633,7 @@ var FileSystemProjectDiscovery = class {
       git: {
         repositoryRoot,
         defaultBranch: remoteHead?.replace(/^origin\//, "") || currentBranch || "main",
-        ...commit ? { commit } : {}
+        ...commit2 ? { commit: commit2 } : {}
       }
     };
   }
@@ -13711,9 +13724,42 @@ var FileSystemProjectDiscovery = class {
   }
 };
 
+// src/application/pr-scope.ts
+import { createHash as createHash2 } from "node:crypto";
+import { realpath as realpath2 } from "node:fs/promises";
+var commit = string().regex(/^[a-f0-9]{40,64}$/);
+var prScopeSchema = strictObject({
+  base: string().min(1).refine((value) => !value.startsWith("-") && !value.includes("\0")),
+  baseCommit: commit,
+  mergeBase: commit,
+  headCommit: commit,
+  diffHash: string().regex(/^[a-f0-9]{64}$/)
+});
+async function prScope(root, base) {
+  prScopeSchema.shape.base.parse(base);
+  const top = (await git(root, ["rev-parse", "--show-toplevel"])).trim();
+  if (await realpath2(top) !== await realpath2(root)) throw new Error("PR review requires the repository root, not a package subdirectory");
+  const baseCommit = (await git(root, ["rev-parse", "--verify", `${base}^{commit}`])).trim();
+  const headCommit = (await git(root, ["rev-parse", "--verify", "HEAD^{commit}"])).trim();
+  const mergeBase = (await git(root, ["merge-base", baseCommit, headCommit])).trim();
+  const diff = await git(root, ["diff", "--binary", "--no-ext-diff", "--no-textconv", mergeBase, headCommit, "--"]);
+  const files = (await git(root, ["diff", "--name-only", "--no-renames", "-z", mergeBase, headCommit, "--"])).split("\0").filter((path) => path && path !== ".frontend-system" && !path.startsWith(".frontend-system/")).sort();
+  const scope2 = prScopeSchema.parse({
+    base,
+    baseCommit,
+    mergeBase,
+    headCommit,
+    diffHash: createHash2("sha256").update(diff).digest("hex")
+  });
+  return { scope: scope2, files, dirtyFiles: await changedFiles(root) };
+}
+function samePrScope(left, right) {
+  return !!left && Object.keys(prScopeSchema.shape).every((key) => left[key] === right[key]);
+}
+
 // src/application/workflow-store.ts
 var recordId = string().regex(/^[a-z0-9][a-z0-9-]{0,79}$/);
-var digest = (value) => createHash2("sha256").update(value).digest("hex");
+var digest = (value) => createHash3("sha256").update(value).digest("hex");
 var hash2 = string().regex(/^[a-f0-9]{64}$/);
 var checksSchema = array(object({
   capability: string(),
@@ -13808,12 +13854,12 @@ async function directory(root, child = "") {
   const base = join2(resolve3(root), ".frontend-system");
   const path = join2(base, child);
   await mkdir(base, { recursive: true });
-  const actualRoot = await realpath2(root);
-  if (await realpath2(base) !== join2(actualRoot, ".frontend-system")) {
+  const actualRoot = await realpath3(root);
+  if (await realpath3(base) !== join2(actualRoot, ".frontend-system")) {
     throw new Error("Project records must not traverse symbolic links");
   }
   await mkdir(path, { recursive: true });
-  if (await realpath2(path) !== join2(actualRoot, ".frontend-system", child)) throw new Error("Project records must not traverse symbolic links");
+  if (await realpath3(path) !== join2(actualRoot, ".frontend-system", child)) throw new Error("Project records must not traverse symbolic links");
   return path;
 }
 async function atomic(path, content) {
@@ -13837,7 +13883,7 @@ async function locked(root, action) {
 async function sourceSnapshot(root) {
   const snapshot = {};
   for (const path of await new FileSystemProjectDiscovery().listFiles(root)) {
-    snapshot[relative3(root, path)] = createHash2("sha256").update(await readFile3(path)).digest("hex");
+    snapshot[relative3(root, path)] = createHash3("sha256").update(await readFile3(path)).digest("hex");
   }
   return snapshot;
 }
@@ -14143,7 +14189,7 @@ async function saveExecution(root, input, expectedHash, planId) {
         const failures = policyFailures(policy, profile.scripts, fileHashes);
         if (failures.length) throw new Error(failures.join("; "));
         const reviews = await Promise.all(execution.steps.flatMap((step) => (step.reviewIds ?? []).map((id4) => readReview(root, id4, planId))));
-        verifyReviews(reviews, policy, execution.revisionHash, sourceHash);
+        await verifyReviews(root, reviews, policy, execution.revisionHash, sourceHash, planId);
       }
     }
     const path = join2(await planDirectory(root, "", planId), "execution.json");
@@ -14222,6 +14268,7 @@ async function beginAttempt(root, stepId, expectedHash, planId) {
   });
 }
 var reviewInputSchema = strictObject({
+  prScope: prScopeSchema.optional().describe("For PR preflight: exact scope returned by check_pr_readiness, after committing intended changes. Ordinary work reviews may omit it."),
   stepId: recordId,
   reviewId: string().min(1).describe("Exact existing policy.reviews[].id (also workflow.revision.policy.reviewIds). Select the approved review requirement, not a new record name. The server generates the saved record id; attemptId identifies the attempt."),
   attemptId: recordId,
@@ -14247,20 +14294,36 @@ async function saveReview(root, input, planId) {
     const attempt = await readAttempt(root, data.attemptId, planId);
     if (attempt.revisionHash !== state.revision.hash || attempt.stepId !== data.stepId) throw new Error("Review attempt does not match");
     const snapshot = await sourceSnapshot(root);
-    if (data.findings.some((finding) => !policy.rules.some(({ id: id4 }) => id4 === finding.ruleId) || finding.files.some((file) => !snapshot[file]))) throw new Error("Review findings require existing files and policy rules");
+    const changes = data.prScope ? await prScope(root, data.prScope.base) : null;
+    if (changes && (changes.dirtyFiles.length || !samePrScope(data.prScope, changes.scope))) throw new Error("PR scope changed or has uncommitted files; reread before reviewing");
+    if (data.findings.some((finding) => !policy.rules.some(({ id: id4 }) => id4 === finding.ruleId) || finding.files.some((file) => !snapshot[file] && !changes?.files.includes(file)))) throw new Error("Review findings require existing files (or PR deletions) and policy rules");
     const missingRules = requirement.ruleIds.filter((id4) => !data.findings.some((finding) => finding.ruleId === id4));
     if (missingRules.length) throw new Error(`Review must address all required rules. Review ${data.reviewId} is missing: ${missingRules.join(", ")}. Supply findings for these approved rule IDs; do not remove obligations to pass.`);
     if (data.resolvedExceptions.some((id4) => !policy.exceptions.some((item) => item.id === id4))) throw new Error("Unknown exception resolution");
     if (data.status === "passed" && data.remaining.length) throw new Error("Passing review cannot have remaining work");
     const review = reviewSchema.parse({ ...data, id: randomUUID(), revisionHash: state.revision.hash, sourceHash: digest(JSON.stringify(snapshot)), createdAt: (/* @__PURE__ */ new Date()).toISOString(), authority: "host-model-review" });
     await writeFile(join2(await planDirectory(root, "reviews", planId), `${review.id}.json`), JSON.stringify(review), { flag: "wx" });
+    if (data.status === "failed" && state.execution?.status === "complete") {
+      const path = join2(await planDirectory(root, "", planId), "execution.json");
+      const saved = executionRecordSchema.parse(JSON.parse(await readFile3(path, "utf8")));
+      await atomic(path, JSON.stringify({ ...saved, requiresRevalidation: true }, null, 2));
+    }
     return review;
   });
 }
-function verifyReviews(reviews, policy, revisionHash, sourceHash) {
+async function verifyReviews(root, reviews, policy, revisionHash, sourceHash, planId) {
   const passing = reviews.filter((item) => item.status === "passed" && !item.remaining.length && item.revisionHash === revisionHash && item.sourceHash === sourceHash);
   if (policy.reviews.some((item) => !passing.some((review) => review.reviewId === item.id))) throw new Error("Missing current semantic review evidence");
   if (policy.exceptions.some((item) => !passing.some((review) => review.resolvedExceptions.includes(item.id)))) throw new Error("Unresolved migration exceptions");
+  if (!policy.reviews.length) return;
+  const path = join2(root, ".frontend-system", scope(planId), "reviews");
+  for (const name of await readdir2(path)) {
+    if (!name.endsWith(".json")) continue;
+    const review = await readReview(root, name.slice(0, -5), planId);
+    if (review.status === "failed" && review.revisionHash === revisionHash && review.sourceHash === sourceHash && policy.reviews.some((item) => item.id === review.reviewId) && !passing.some((item) => item.reviewId === review.reviewId && item.createdAt > review.createdAt)) {
+      throw new Error(`Unresolved later failed review: ${review.reviewId}`);
+    }
+  }
 }
 async function verifyStep(root, step, policy, revisionHash, sourceHash, planId) {
   if (!step.attemptId) throw new Error("Policy steps require a recorded attempt");
@@ -14275,7 +14338,7 @@ async function verifyStep(root, step, policy, revisionHash, sourceHash, planId) 
   }
   const reviews = await Promise.all((step.reviewIds ?? []).map((id4) => readReview(root, id4, planId)));
   if (reviews.some((review) => review.stepId !== step.id || review.attemptId !== attempt.id)) throw new Error("Step reviews must belong to its attempt");
-  verifyReviews(reviews, { ...policy, exceptions: policy.exceptions.filter((item) => item.resolveByStep === step.id) }, revisionHash, sourceHash);
+  await verifyReviews(root, reviews, { ...policy, exceptions: policy.exceptions.filter((item) => item.resolveByStep === step.id) }, revisionHash, sourceHash, planId);
 }
 
 // src/application/read-windows.ts
@@ -14303,23 +14366,23 @@ async function projectSnapshot(root, baseRef = "main") {
     throw error;
   });
   if (!head) return { baseRef, commit: null, sourceHash: digest("[]"), files: [], manifests: {}, workingChanges: [], status: "unversioned" };
-  const commit = (await git(root, ["rev-parse", "--verify", `${baseRef}^{commit}`])).trim();
-  const tree = (await git(root, ["ls-tree", "-r", "-z", commit, "--", "."])).split("\0").filter(Boolean);
+  const commit2 = (await git(root, ["rev-parse", "--verify", `${baseRef}^{commit}`])).trim();
+  const tree = (await git(root, ["ls-tree", "-r", "-z", commit2, "--", "."])).split("\0").filter(Boolean);
   const entries = tree.map((line) => ({ path: line.slice(line.indexOf("	") + 1), object: line.slice(0, line.indexOf("	")) })).filter(({ path }) => included(path)).sort((a, b) => a.path.localeCompare(b.path));
   const files = entries.map(({ path }) => path);
   const manifests = {};
   for (const path of files.filter((path2) => /(^|\/)package\.json$/.test(path2))) {
     try {
-      manifests[path] = JSON.parse(await git(root, ["show", `${commit}:./${path}`]));
+      manifests[path] = JSON.parse(await git(root, ["show", `${commit2}:./${path}`]));
     } catch {
       manifests[path] = { error: "Manifest could not be parsed at the base commit" };
     }
   }
   const workingChanges = [...new Set([
-    ...(await git(root, ["diff", "--name-only", "--relative", "-z", commit, "--", "."])).split("\0"),
+    ...(await git(root, ["diff", "--name-only", "--relative", "-z", commit2, "--", "."])).split("\0"),
     ...(await git(root, ["ls-files", "--others", "--exclude-standard", "-z", "--", "."])).split("\0")
   ].filter((path) => path && included(path)))].sort();
-  return { baseRef, commit, sourceHash: digest(JSON.stringify(entries)), files, manifests, workingChanges, status: "versioned" };
+  return { baseRef, commit: commit2, sourceHash: digest(JSON.stringify(entries)), files, manifests, workingChanges, status: "versioned" };
 }
 async function readProjectSource(root, path, expectedCommit, baseRef = "main", offset = 0, limit = 12e3) {
   const snapshot = await projectSnapshot(root, baseRef);
@@ -14327,9 +14390,9 @@ async function readProjectSource(root, path, expectedCommit, baseRef = "main", o
   if (!snapshot.files.includes(path)) throw new Error("Select a file from the main snapshot");
   return sourceWindow(root, path, expectedCommit, offset, limit);
 }
-async function sourceWindow(root, path, commit, offset, limit) {
-  const content = await git(root, ["show", `${commit}:./${path}`]);
-  return { commit, path, hash: digest(content), content: content.slice(offset, offset + limit), totalCharacters: content.length, nextOffset: offset + limit < content.length ? offset + limit : null };
+async function sourceWindow(root, path, commit2, offset, limit) {
+  const content = await git(root, ["show", `${commit2}:./${path}`]);
+  return { commit: commit2, path, hash: digest(content), content: content.slice(offset, offset + limit), totalCharacters: content.length, nextOffset: offset + limit < content.length ? offset + limit : null };
 }
 async function readProjectSources(root, paths, expectedCommit, baseRef = "main", offset = 0, limit = 6e3) {
   if (!paths.length || paths.length > 100 || new Set(paths).size !== paths.length) throw new Error("Select 1\u2013100 distinct main source paths");
@@ -14399,7 +14462,7 @@ async function projectDocumentStatus(root) {
 // src/application/knowledge/code-triggers.ts
 async function inspectCode(root, paths, snapshot, includeRelations = false) {
   const compiler = (await import("./chunks/typescript-77ZD5HFR.js")).default;
-  const base = await realpath3(root);
+  const base = await realpath4(root);
   const pinned = snapshot ? await projectSnapshot(root, snapshot.baseRef) : void 0;
   if (pinned && pinned.commit !== snapshot.expectedCommit) throw new Error("Main changed; refresh code snapshot");
   const snapshotContents = /* @__PURE__ */ new Map();
@@ -14984,10 +15047,10 @@ async function routeKnowledge(root, systemRoot2, input) {
 import { relative as relative7 } from "node:path";
 
 // src/application/analysis-receipts.ts
-import { realpath as realpath4 } from "node:fs/promises";
+import { realpath as realpath5 } from "node:fs/promises";
 var receipts = /* @__PURE__ */ new Map();
 async function rememberAnalysis(root, projectHash, route) {
-  const canonicalRoot = await realpath4(root);
+  const canonicalRoot = await realpath5(root);
   const id4 = contentHash(JSON.stringify([canonicalRoot, projectHash, route.hash]));
   receipts.delete(id4);
   receipts.set(id4, structuredClone({ root: canonicalRoot, projectHash, route }));
@@ -14996,7 +15059,7 @@ async function rememberAnalysis(root, projectHash, route) {
 }
 async function recalledAnalysis(root, id4) {
   const receipt = receipts.get(id4);
-  if (!receipt || receipt.root !== await realpath4(root)) throw new Error(`Unknown analysis context ${id4}; call get_work_context again in this project. Saved plans remain available.`);
+  if (!receipt || receipt.root !== await realpath5(root)) throw new Error(`Unknown analysis context ${id4}; call get_work_context again in this project. Saved plans remain available.`);
   return structuredClone(receipt);
 }
 
@@ -15086,7 +15149,7 @@ var analysisWriteSchema = object({
 });
 
 // src/application/project-flows.ts
-import { readFile as readFile5, readdir as readdir3, realpath as realpath5 } from "node:fs/promises";
+import { readFile as readFile5, readdir as readdir3, realpath as realpath6 } from "node:fs/promises";
 import { join as join7, relative as relative6, resolve as resolve5 } from "node:path";
 var envelope = object({
   version: union([literal(1), literal(2)]),
@@ -15111,8 +15174,8 @@ async function readEnvelope(root, kind, id4, hash5) {
   analysisId.parse(id4);
   if (hash5 && !/^[a-f0-9]{64}$/.test(hash5)) throw new Error("Invalid analysis hash");
   const path = join7(resolve5(root), ".frontend-system/analysis", ...hash5 ? ["history", `${hash5}.json`] : [kind, `${id4}.json`]);
-  const actual = await realpath5(path);
-  if (actual !== join7(await realpath5(root), ".frontend-system/analysis", ...hash5 ? ["history", `${hash5}.json`] : [kind, `${id4}.json`])) throw new Error("Analysis records cannot traverse symlinks");
+  const actual = await realpath6(path);
+  if (actual !== join7(await realpath6(root), ".frontend-system/analysis", ...hash5 ? ["history", `${hash5}.json`] : [kind, `${id4}.json`])) throw new Error("Analysis records cannot traverse symlinks");
   const raw = await readFile5(actual, "utf8");
   const record2 = envelope.parse(JSON.parse(raw));
   if (record2.record.kind !== kind || record2.record.data.id !== id4 || hash5 && contentHash(raw) !== hash5) throw new Error("Analysis identity/hash mismatch");
@@ -15466,11 +15529,11 @@ async function validateCitation(root, citation2, snapshot) {
   }
   return { ...citation2, line, hash: hash5 };
 }
-async function validateProjectEvidence(root, evidence2, baseRef, commit) {
+async function validateProjectEvidence(root, evidence2, baseRef, commit2) {
   const parsed = projectEvidenceSchema.parse(evidence2);
   const snapshot = await projectSnapshot(root, baseRef);
-  if (snapshot.commit !== commit) throw new Error("Project baseline changed");
-  const inventory3 = commit ? snapshot.files.filter((path) => !path.startsWith(".frontend-system/")) : (await new FileSystemProjectDiscovery().listFiles(root)).map((path) => relative7(root, path)).filter((path) => !path.startsWith(".frontend-system/"));
+  if (snapshot.commit !== commit2) throw new Error("Project baseline changed");
+  const inventory3 = commit2 ? snapshot.files.filter((path) => !path.startsWith(".frontend-system/")) : (await new FileSystemProjectDiscovery().listFiles(root)).map((path) => relative7(root, path)).filter((path) => !path.startsWith(".frontend-system/"));
   const covered = new Map(parsed.coverage.map((item) => [item.path, item]));
   if (covered.size !== parsed.coverage.length || inventory3.some((path) => !covered.has(path)) || parsed.coverage.some(({ path }) => !inventory3.includes(path))) throw new Error(`Coverage must account for the whole baseline inventory. Missing: ${inventory3.filter((path) => !covered.has(path)).join(", ") || "none"}; outside baseline: ${parsed.coverage.filter(({ path }) => !inventory3.includes(path)).map(({ path }) => path).join(", ") || "none"}. Working requirements are not main facts. Duplicate paths are invalid.`);
   if (new Set(parsed.statements.map(({ id: id4 }) => id4)).size !== parsed.statements.length) throw new Error("Duplicate statement IDs");
@@ -15481,16 +15544,16 @@ async function validateProjectEvidence(root, evidence2, baseRef, commit) {
     if (item.absence && !item.limitations.length) throw new Error("Absence claims must state unresolved edges and scope limitations");
     for (const citation2 of item.evidence) {
       if (covered.get(citation2.path)?.status !== "inspected") throw new Error("Citation must belong to inspected coverage");
-      Object.assign(citation2, await validateCitation(root, citation2, commit ? { baseRef, expectedCommit: commit } : void 0));
+      Object.assign(citation2, await validateCitation(root, citation2, commit2 ? { baseRef, expectedCommit: commit2 } : void 0));
     }
   }
-  const factBindings = await bindProjectFacts(root, installedSystemRoot(), parsed, inventory3, commit ? { baseRef, expectedCommit: commit } : void 0);
+  const factBindings = await bindProjectFacts(root, installedSystemRoot(), parsed, inventory3, commit2 ? { baseRef, expectedCommit: commit2 } : void 0);
   return {
     ...parsed,
     factBindings,
     baseRef,
-    commit,
-    baselineHash: commit ? snapshot.sourceHash : contentHash(JSON.stringify(await workingInventory(root))),
+    commit: commit2,
+    baselineHash: commit2 ? snapshot.sourceHash : contentHash(JSON.stringify(await workingInventory(root))),
     completeness: parsed.coverage.some(({ status }) => status === "pending" || status === "blocked") ? "partial" : "accounted",
     authority: "Code citations checked; interpretation and coverage judgments belong to the host"
   };
@@ -25324,8 +25387,8 @@ var StdioServerTransport = class {
 };
 
 // src/application/knowledge/catalog.ts
-import { createHash as createHash3, randomUUID as randomUUID3 } from "node:crypto";
-import { copyFile, mkdir as mkdir3, readFile as readFile9, readdir as readdir5, realpath as realpath7, rm as rm3, writeFile as writeFile3 } from "node:fs/promises";
+import { createHash as createHash4, randomUUID as randomUUID3 } from "node:crypto";
+import { copyFile, mkdir as mkdir3, readFile as readFile9, readdir as readdir5, realpath as realpath8, rm as rm3, writeFile as writeFile3 } from "node:fs/promises";
 import { constants } from "node:fs";
 import { dirname as dirname4, isAbsolute as isAbsolute3, join as join11, relative as relative9, resolve as resolve7 } from "node:path";
 
@@ -25405,7 +25468,7 @@ ${content}`.toLowerCase();
 };
 
 // src/application/knowledge/rule-proposals.ts
-import { mkdir as mkdir2, readFile as readFile8, realpath as realpath6, rename as rename2, rm as rm2, writeFile as writeFile2 } from "node:fs/promises";
+import { mkdir as mkdir2, readFile as readFile8, realpath as realpath7, rename as rename2, rm as rm2, writeFile as writeFile2 } from "node:fs/promises";
 import { join as join10, resolve as resolve6 } from "node:path";
 import { randomUUID as randomUUID2 } from "node:crypto";
 var proposalInputSchema = strictObject({
@@ -25438,7 +25501,7 @@ async function readRuleProposal(root, id4) {
 async function save(root, record2, expectedHash) {
   const folder = join10(resolve6(root), "knowledge/proposals");
   await mkdir2(folder, { recursive: true });
-  if (await realpath6(folder) !== join10(await realpath6(root), "knowledge/proposals")) throw new Error("Proposal path must not traverse symlinks");
+  if (await realpath7(folder) !== join10(await realpath7(root), "knowledge/proposals")) throw new Error("Proposal path must not traverse symlinks");
   const path = join10(folder, `${record2.proposal.id}.json`);
   const lock = `${path}.lock`;
   await mkdir2(lock);
@@ -25516,7 +25579,7 @@ var sourceReviewInputSchema = object({
 }).refine((review) => review.status !== "approved" || review.claims.length > 0 && review.conditions.length > 0 && review.exclusions.length > 0 && !review.unresolved.length && review.claims.every((claim) => claim.verdict === "supported" || claim.verdict === "qualified"), "Approval needs supported/qualified claims, conditions, exclusions and no unresolved questions");
 var emptyCatalog = () => ({ version: 1, facets: {}, documents: {} });
 function digest2(content) {
-  return createHash3("sha256").update(content).digest("hex");
+  return createHash4("sha256").update(content).digest("hex");
 }
 async function sourceFiles(root) {
   const sourceRoot = join11(root, "knowledge", "source");
@@ -25562,11 +25625,11 @@ function readSource(root, path) {
   return confinedRead(sourceRoot, relative9(sourceRoot, sourcePath(root, path)));
 }
 async function knowledgeDirectory(root, path) {
-  let directory2 = await realpath7(root);
+  let directory2 = await realpath8(root);
   for (const part of path.split("/")) {
     directory2 = join11(directory2, part);
     await mkdir3(directory2, { recursive: true });
-    if (await realpath7(directory2) !== directory2) throw new Error("Knowledge directory must not traverse symlinks");
+    if (await realpath8(directory2) !== directory2) throw new Error("Knowledge directory must not traverse symlinks");
   }
 }
 function sourceMetadataHash(document) {
@@ -26327,6 +26390,65 @@ async function completeWork(root, options) {
   }
 }
 
+// src/application/pr-readiness.ts
+async function checkPrReadiness(root, planId, base) {
+  const changes = await prScope(root, base);
+  const state = await workflowContext(root, planId);
+  const failures = [];
+  if (changes.dirtyFiles.length) failures.push("Commit the intended changes before the final PR review; working tree/index is dirty");
+  if (!changes.files.length) failures.push("No product changes against the PR merge base");
+  if (state.verification.status !== "verified") failures.push(`Execution is ${state.verification.status}; finish current approved work first`);
+  failures.push(...state.verification.failures);
+  const policy = state.revision.policy;
+  const sourceHash = state.verification.sourceHash;
+  if (!policy) failures.push("An approved verification policy is required");
+  if (policy) {
+    const discovery2 = new FileSystemProjectDiscovery();
+    const profile = await discovery2.discover(await discovery2.createRef(root));
+    failures.push(...policyFailures(policy, profile.scripts, await sourceSnapshot(root)));
+    for (const id4 of ["pr-safety", "pr-scope"]) {
+      const requirement = policy.reviews.find((review) => review.id === id4);
+      if (!requirement?.ruleIds.length) failures.push(`Plan must define ${id4} with explicit applicable rules`);
+    }
+  }
+  const checkId = state.verification.finalCheckId;
+  if (!checkId) failures.push("Missing final check record");
+  else {
+    const check = await readCheckRecord(root, checkId, planId);
+    if (check.purpose !== "verification" || !check.stable || check.sourceHash !== sourceHash || check.revisionHash !== state.revision.hash || !check.results.length || check.results.some((result2) => result2.status !== "passed" || !result2.passed) || policy && requiredScripts(policy).some((script) => !check.results.some((result2) => result2.capability === script && result2.status === "passed"))) {
+      failures.push("Final checks are incomplete, failed or stale");
+    }
+  }
+  const reviews = await Promise.all(state.verification.reviewIds.map((id4) => readReview(root, id4, planId)));
+  if (policy && sourceHash && state.revision.hash) {
+    try {
+      await verifyReviews(root, reviews, policy, state.revision.hash, sourceHash, planId);
+    } catch (error) {
+      failures.push(error instanceof Error ? error.message : String(error));
+    }
+  }
+  for (const id4 of ["pr-safety", "pr-scope"]) {
+    const current = reviews.filter((review) => review.reviewId === id4 && review.status === "passed" && !review.remaining.length && review.revisionHash === state.revision.hash && review.sourceHash === sourceHash && samePrScope(review.prScope, changes.scope));
+    if (!current.length) failures.push(`Missing passing ${id4} review for this exact PR base/head`);
+    if (id4 === "pr-scope") {
+      const covered = new Set(current.flatMap((review) => review.findings.flatMap((finding) => finding.files)));
+      const missing = changes.files.filter((path) => !covered.has(path));
+      if (missing.length) failures.push(`PR scope review omitted changed files: ${missing.join(", ")}`);
+    }
+  }
+  const finalChanges = await prScope(root, base);
+  if (!samePrScope(changes.scope, finalChanges.scope) || finalChanges.dirtyFiles.length) failures.push("PR source changed during readiness check");
+  return {
+    status: failures.length ? "blocked" : "ready",
+    failures: [...new Set(failures)],
+    ...changes,
+    planId: planId ?? null,
+    revisionHash: state.revision.hash,
+    finalCheckId: checkId,
+    authority: "Local evidence gate, including host judgments; not proof of no bugs/security issues, a GitHub status check, or permission to create/merge a PR"
+  };
+}
+
 // src/application/revision-input.ts
 var revisionPayloadSchema = strictObject({
   content: string().min(1).optional().describe("Required for a new plan; omit unchanged content on updates."),
@@ -26427,14 +26549,14 @@ function revisionWindow(revision, offset, limit, detail) {
 }
 
 // src/application/revision-draft.ts
-import { readFile as readFile11, realpath as realpath8, stat } from "node:fs/promises";
+import { readFile as readFile11, realpath as realpath9, stat } from "node:fs/promises";
 import { relative as relative11, resolve as resolve8 } from "node:path";
 async function readRevisionDraft(root, path) {
   if (!/^\.frontend-system\/drafts\/[a-z0-9][a-z0-9._-]*\.json$/.test(path)) {
     throw new Error("Draft file must be .frontend-system/drafts/<name>.json");
   }
-  const base = await realpath8(root);
-  const file = await realpath8(resolve8(base, path));
+  const base = await realpath9(root);
+  const file = await realpath9(resolve8(base, path));
   const local = relative11(base, file).replaceAll("\\", "/");
   if (!/^\.frontend-system\/drafts\/[a-z0-9][a-z0-9._-]*\.json$/.test(local)) {
     throw new Error("Draft file resolves outside the project draft directory");
@@ -26449,13 +26571,13 @@ async function readRevisionDraft(root, path) {
 // src/application/knowledge/sources.ts
 import { execFile as execFile4 } from "node:child_process";
 import { lookup } from "node:dns/promises";
-import { createHash as createHash4, randomUUID as randomUUID5 } from "node:crypto";
-import { mkdir as mkdir5, mkdtemp, readFile as readFile12, realpath as realpath9, rename as rename3, rm as rm5, writeFile as writeFile5 } from "node:fs/promises";
+import { createHash as createHash5, randomUUID as randomUUID5 } from "node:crypto";
+import { mkdir as mkdir5, mkdtemp, readFile as readFile12, realpath as realpath10, rename as rename3, rm as rm5, writeFile as writeFile5 } from "node:fs/promises";
 import { isIP } from "node:net";
 import { tmpdir } from "node:os";
 import { join as join14 } from "node:path";
 import { promisify as promisify2 } from "node:util";
-var hash3 = (text6) => createHash4("sha256").update(text6).digest("hex");
+var hash3 = (text6) => createHash5("sha256").update(text6).digest("hex");
 var run3 = promisify2(execFile4);
 var sourcesSchema = record(ruleId, url());
 var snapshotSchema = object({
@@ -26486,7 +26608,7 @@ async function registerSource(root, id4, url2, expectedHash) {
   validateUrl(url2);
   const folder = join14(root, "knowledge");
   await mkdir5(folder, { recursive: true });
-  if (await realpath9(folder) !== join14(await realpath9(root), "knowledge")) throw new Error("Knowledge directory must not be a symlink");
+  if (await realpath10(folder) !== join14(await realpath10(root), "knowledge")) throw new Error("Knowledge directory must not be a symlink");
   const lock = join14(folder, ".sources-lock");
   await mkdir5(lock);
   try {
@@ -26511,7 +26633,7 @@ async function replace(path, data) {
 async function cacheFolder(root) {
   const folder = join14(root, "knowledge/.cache/sources");
   await mkdir5(folder, { recursive: true });
-  if (await realpath9(folder) !== join14(await realpath9(root), "knowledge/.cache/sources")) throw new Error("Source cache must not traverse symlinks");
+  if (await realpath10(folder) !== join14(await realpath10(root), "knowledge/.cache/sources")) throw new Error("Source cache must not traverse symlinks");
   return folder;
 }
 function privateAddress(address) {
@@ -27270,9 +27392,9 @@ async function submitKnowledgeContribution(systemRoot2, id4, expectedHash, stora
       } else {
         if (!record2.commit) {
           const base = object({ object: object({ sha }) }).parse(await api("GET", `repos/${record2.repository}/git/ref/heads/main`));
-          const commit = object({ tree: object({ sha }) }).parse(await api("GET", `repos/${record2.repository}/git/commits/${base.object.sha}`));
+          const commit2 = object({ tree: object({ sha }) }).parse(await api("GET", `repos/${record2.repository}/git/commits/${base.object.sha}`));
           const tree = object({ sha }).parse(await api("POST", `${target}/git/trees`, {
-            base_tree: commit.tree.sha,
+            base_tree: commit2.tree.sha,
             tree: [{ path: record2.path, mode: "100644", type: "blob", content: record2.content }]
           }));
           const created = object({ sha }).parse(await api("POST", `${target}/git/commits`, {
@@ -27313,10 +27435,10 @@ Draft: ${record2.hash}`
 }
 
 // src/application/release-manifest.ts
-import { createHash as createHash5 } from "node:crypto";
+import { createHash as createHash6 } from "node:crypto";
 import { readFile as readFile15, readdir as readdir7, writeFile as writeFile7 } from "node:fs/promises";
 import { join as join19 } from "node:path";
-var hash4 = (value) => createHash5("sha256").update(value).digest("hex");
+var hash4 = (value) => createHash6("sha256").update(value).digest("hex");
 async function installedReleaseIdentity(root) {
   const body = await readFile15(join19(root, "release-manifest.json"), "utf8");
   const manifest = JSON.parse(body);
@@ -27690,6 +27812,11 @@ server.registerTool("get_change_context", {
     projectDocument: await readProjectDocument(root)
   });
 });
+server.registerTool("check_pr_readiness", {
+  description: "Read-only local PR gate. Returns exact merge-base/base/head scope and missing evidence. Requires completed approved work, current checks and pr-safety/pr-scope semantic reviews bound to that scope. Does not run a model or create/merge a PR. Commit intended product changes before final review. A blocked first call provides the scope for save_semantic_review.",
+  inputSchema: { projectPath: string().optional(), planId: recordId.optional(), base: string().min(1) },
+  annotations: readOnly
+}, async ({ projectPath: path, planId, base }) => result(await checkPrReadiness(projectPath(path), planId, base)));
 server.registerTool("run_project_checks", {
   title: "Run discovered project checks",
   description: "Run existing non-watch package scripts, retaining full logs and returning bounded failure excerpts. Use capabilities:[exact test script keys] for development checks instead of streaming shell logs; omit stage/required and keep planId/attemptId. Choose stage OR capabilities, never both. baseline stage selects tests/lint/types without build; explicit baseline: purpose:baseline + capabilities. After tests and review are ready, delivery runs all policy scripts; use its id for step checkIds and finalCheckId. coverage reports policy coverage; full is legacy, not readiness. Completion validates source, attempts and reviews.",

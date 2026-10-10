@@ -18,11 +18,13 @@ import {getProjectAnalysis, saveProjectAnalysis} from './application/project-flo
 import {analysisWriteSchema} from './application/flow-schema.js';
 import {renderProjectFlow, renderFlowOptions} from './application/render-project-flow.js';
 import {readRevisionDraft} from './application/revision-draft.js';
+import {checkPrReadiness} from './application/pr-readiness.js';
 
 const usage = `Usage:
   fs inspect-context [project] [--overall]
   fs work-context [project] "<request>" [--plan <id>] [--mode prepare|implement|verify|review|refactor]
   fs change-context [project] [--base <ref>]
+  fs pr-check [project] --base <target-ref> [--plan <id>]
   fs checks [project] [--plan <id>] [--stage baseline|issue|delivery] [--issue <id>] [--required | --capability <script-id>] [--purpose baseline|verification] [--baseline <check-id>] [--attempt <id>]
   fs project-snapshot [project] [--base main]
   fs plans [project]
@@ -117,6 +119,13 @@ async function main(): Promise<void> {
   if (command === "change-context") {
     const base = await reviewBase(root, values.base);
     print({ base, changedFiles: await changedFiles(root, base), diffStat: await diffStat(root, base) });
+    return;
+  }
+  if (command === 'pr-check') {
+    if (!values.base) throw new Error('pr-check requires an explicit --base target branch/ref');
+    const readiness = await checkPrReadiness(root, values.plan, values.base);
+    print(readiness);
+    if (readiness.status !== 'ready') process.exitCode = 1;
     return;
   }
   if (command === "project-snapshot") return print({ ...await projectSnapshot(root, values.base), documentStatus: await projectDocumentStatus(root) });

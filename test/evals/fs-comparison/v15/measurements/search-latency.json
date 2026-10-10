@@ -1,0 +1,8 @@
+{
+  "entries": 71,
+  "calls": 320,
+  "node": "v24.12.0",
+  "scope": "In-memory lexical search only, excludes index IO/model time; concurrent model runs",
+  "medianMs": 6.845542000000023,
+  "p95Ms": 9.530541999999969
+}

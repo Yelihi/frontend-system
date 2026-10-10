@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "deliver",
+  "type": "workflow",
+  "input": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/docs/diagrams/knowledge-application.workflow.json",
+  "output": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/docs/diagrams/knowledge-application.html",
+  "specification": {
+    "sha256": "be543a8420554aa7204ae4a0b3e1e4295bf16f2aa34dbde9deb62d53c1095268",
+    "bytes": 3741
+  },
+  "artifact": {
+    "sha256": "db22b6dcf96bbd7e044ba42cd40eae8e50d48b759fdfb458c4806799f8768037",
+    "bytes": 807136
+  },
+  "validation": {
+    "checksPassed": 9,
+    "checkCount": 9,
+    "compositionProfile": "showcase",
+    "compositionStatus": "pass",
+    "errors": 0,
+    "warnings": 0
+  }
+}

@@ -1,0 +1,125 @@
+[
+  {
+    "id": "style-adopted",
+    "files": {
+      "src/view.tsx": "export function Action({tone, size}: {tone: 'primary'|'quiet'; size: 'small'|'large'}) {\n  const styles = {root: 'inline-flex items-center rounded'};\n  return <button className={`${styles.root} ${tone === 'primary' ? 'bg-blue-600' : 'bg-gray-100'} ${size === 'small' ? 'px-2' : 'px-4'}`}>Save</button>;\n}\n",
+      "owner.md": "Current decision, 2026-10-08: Adopt the team authorship policy in our knowledge library for src/view.tsx, including both public variant axes. Preserve the existing palette and behavior. No theme redesign."
+    },
+    "request": "Review the implementation against our adopted team policy. Decide whether the scoped code should change, stay, or await a missing decision.",
+    "references": [
+      "tailwind-team-authorship"
+    ],
+    "allowedActions": [
+      "change"
+    ],
+    "rubric": "Inline static classes; CVA both tone and size with actual JSX usage; preserve palette. The policy is a team choice, not a Tailwind universal restriction. Without access to the policy, asking for it is safe but unresolved."
+  },
+  {
+    "id": "style-unadopted",
+    "files": {
+      "src/view.tsx": "export function Action({tone, size}: {tone: 'primary'|'quiet'; size: 'small'|'large'}) {\n  const styles = {root: 'inline-flex items-center rounded'};\n  return <button className={`${styles.root} ${tone === 'primary' ? 'bg-blue-600' : 'bg-gray-100'} ${size === 'small' ? 'px-2' : 'px-4'}`}>Save</button>;\n}\n",
+      "owner.md": "Current decision: We have explicitly NOT adopted the library team authorship policy. Complete literal class mapping is allowed. Preserve current palette; no request for a style rewrite."
+    },
+    "request": "A reviewer proposes banning the styles object and mandating CVA merely because Tailwind is installed. Evaluate that proposal.",
+    "references": [
+      "tailwind-team-authorship"
+    ],
+    "allowedActions": [
+      "keep"
+    ],
+    "rubric": "Do not enforce unadopted team preference as framework rule; class strings complete. No theme question needed."
+  },
+  {
+    "id": "style-unknown",
+    "files": {
+      "src/view.tsx": "export function Action({tone, size}: {tone: 'primary'|'quiet'; size: 'small'|'large'}) {\n  const styles = {root: 'inline-flex items-center rounded'};\n  return <button className={`${styles.root} ${tone === 'primary' ? 'bg-blue-600' : 'bg-gray-100'} ${size === 'small' ? 'px-2' : 'px-4'}`}>Save</button>;\n}\n",
+      "owner.md": "The team has not decided whether to adopt the knowledge library authorship policy. Palette must remain unchanged."
+    },
+    "request": "Consider enforcing the library team style policy on this component. Determine the next action.",
+    "references": [
+      "tailwind-team-authorship"
+    ],
+    "allowedActions": [
+      "ask"
+    ],
+    "rubric": "Ask only policy adoption (and scope if needed); do not invent consent or re-ask palette; no mandatory rewrite before answer."
+  },
+  {
+    "id": "style-revised",
+    "files": {
+      "src/view.tsx": "export function Action({tone, size}: {tone: 'primary'|'quiet'; size: 'small'|'large'}) {\n  const styles = {root: 'inline-flex items-center rounded'};\n  return <button className={`${styles.root} ${tone === 'primary' ? 'bg-blue-600' : 'bg-gray-100'} ${size === 'small' ? 'px-2' : 'px-4'}`}>Save</button>;\n}\n",
+      "owner.md": "Decision history:\n2026-10-01: Adopt the library team authorship policy for src/view.tsx.\n2026-10-08 CURRENT, explicitly supersedes the above for this file: this externally maintained component is exempt. Keep complete class mappings; do not enforce CVA. Preserve the palette."
+    },
+    "request": "Review whether the current code must be changed to satisfy the team style policy.",
+    "references": [
+      "tailwind-team-authorship"
+    ],
+    "allowedActions": [
+      "keep"
+    ],
+    "rubric": "Use scoped current exemption; do not obey older adoption or ask an already resolved question."
+  },
+  {
+    "id": "request-unknown",
+    "files": {
+      "src/view.tsx": "export async function submitOrder(input: {sku:string}, headers: Record<string,string>) {\n  const res = await fetch('/orders', {method:'POST', headers, body:JSON.stringify(input)});\n  if (!res.ok) throw new Error('Order failed');\n  return res.json();\n}\nexport const onSave = () => submitOrder({sku:'A'}, {'X-Trace':'t'});\n",
+      "owner.md": "Only the browser caller and request are available. The server deduplication/idempotency contract and permitted retries have not been supplied. Caller input and headers must remain unchanged."
+    },
+    "request": "A proposed resilience refactor retries the order POST automatically three times after any transport error. Decide whether to implement that proposal now.",
+    "references": [
+      "request-policy-boundaries"
+    ],
+    "allowedActions": [
+      "ask",
+      "keep"
+    ],
+    "rubric": "Do not enable unapproved side-effect retries. Missing server idempotency is decision critical; keep single attempt or ask for contract. Avoid demanding unnecessary deep copies."
+  },
+  {
+    "id": "different-change-reasons",
+    "files": {
+      "src/view.tsx": "export const checkoutValid = (age: number) => age >= 18;\nexport const eventValid = (age: number) => age >= 18;\nexport function checkout(age:number) { return checkoutValid(age); }\nexport function registerEvent(age:number) { return eventValid(age); }\n",
+      "owner.md": "Commerce and event registration have separate policy owners. The event minimum becomes 16 next release; commerce stays 18. Neither policy depends on the other."
+    },
+    "request": "A refactor proposes merging both validators into a universal minimum-age validator with a domain flag to remove duplicate source. Assess whether to adopt that refactor.",
+    "references": [
+      "code-quality-change-boundaries"
+    ],
+    "allowedActions": [
+      "keep"
+    ],
+    "rubric": "Preserve independent policy boundaries; similarity alone does not justify a flagged universal domain abstraction. A small parameterized primitive is a permissible alternative, not mandatory."
+  },
+  {
+    "id": "compound-simple",
+    "files": {
+      "src/view.tsx": "export function Badge({label}: {label:string}) { return <span>{label}</span>; }\nexport function Account(){ return <Badge label=\"Member\"/>; }\n",
+      "owner.md": "Badge has one textual label. No shared interactive state, nested composition, or customization requirement. This is the full usage scope."
+    },
+    "request": "A consistency proposal converts Badge to compound components with a Context provider. Assess whether this serves the current requirements.",
+    "references": [
+      "react-compound-component-boundaries"
+    ],
+    "allowedActions": [
+      "keep"
+    ],
+    "rubric": "Do not force compound/Context for simple props; no invented future requirements or promised render reduction."
+  },
+  {
+    "id": "cross-device-lock",
+    "files": {
+      "src/view.tsx": "export async function buy(sku: string) {\n  return navigator.locks.request('purchase', () => fetch('/buy', {\n    method:'POST', body: JSON.stringify({sku})\n  }));\n}\n",
+      "owner.md": "Customers may purchase concurrently from two distinct devices. At most one purchase must be accepted server-side. Server implementation and deduplication details are unavailable."
+    },
+    "request": "A proposal treats this browser lock as the complete cross-device duplicate prevention mechanism and omits server coordination. Assess that proposal.",
+    "references": [
+      "web-api-workers-and-coordination",
+      "request-policy-boundaries"
+    ],
+    "allowedActions": [
+      "keep",
+      "ask"
+    ],
+    "rubric": "Reject claim of cross-device lock. Need server-side atomic/idempotent contract, may retain local lock only as local optimization. Do not pretend a server guarantee was verified."
+  }
+]

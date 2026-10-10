@@ -29,6 +29,7 @@ import {
 import { runProjectChecks, summarizeChecks } from "./application/run-capabilities.js";
 import { startWork } from './application/start-work.js';
 import { completeWork } from './application/complete-work.js';
+import { checkPrReadiness } from './application/pr-readiness.js';
 import {
   approveRevision, digest, executionInputSchema, listPlans, readCheckRecord, readProjectRecord, readRevision, recordId,
   saveExecution, saveProjectRecord, saveRevision, workflowContext, beginAttempt, saveReview, reviewInputSchema,
@@ -382,6 +383,11 @@ server.registerTool("get_change_context", {
     projectDocument: await readProjectDocument(root),
   });
 });
+
+server.registerTool('check_pr_readiness', {
+  description: 'Read-only local PR gate. Returns exact merge-base/base/head scope and missing evidence. Requires completed approved work, current checks and pr-safety/pr-scope semantic reviews bound to that scope. Does not run a model or create/merge a PR. Commit intended product changes before final review. A blocked first call provides the scope for save_semantic_review.',
+  inputSchema: {projectPath: z.string().optional(), planId: recordId.optional(), base: z.string().min(1)}, annotations: readOnly,
+}, async ({projectPath: path, planId, base}) => result(await checkPrReadiness(projectPath(path), planId, base)));
 
 server.registerTool("run_project_checks", {
   title: "Run discovered project checks",

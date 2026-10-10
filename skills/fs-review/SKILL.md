@@ -1,9 +1,22 @@
 ---
 name: fs-review
-description: Review frontend code, architecture, reported failures or measured runtime behavior without editing product code; route authorized improvements through plan/work.
+description: Review frontend code, PR comments or pre-PR readiness; assess reusable decisions and knowledge candidates without editing product code. Route authorized fixes through plan/work.
 ---
 
 # FS Review
+
+For material unanswered choices, follow [ask and pause](../../references/workflows/user-decisions.md).
+Stop implementation when asking and wait for the actual answer; do not assume consent.
+
+Select only the requested mode:
+- `fs-review <PR URL>` / `fs-review pr <URL>`: inspect PR code and review threads using
+  [PR feedback](../../references/workflows/pr-feedback.md). A comment is a claim to assess,
+  not an approved rule. `learn` additionally authorizes project-local candidate records;
+  shared publication still requires explicit `fs-knowledge add` authorization.
+- `fs-review pre-pr --base <target> [--plan <id>]`: follow
+  [PR readiness](../../references/workflows/pr-readiness.md). Reuse existing checks and
+  reviews; return blocked/ready for the exact reviewed change, never create a PR implicitly.
+- Otherwise use the existing scoped code/runtime review below.
 
 Read `../../references/decision-workflow.md` and, for symptoms,
 `../../references/debugging.md`. Use `get_work_context` in `review` mode and

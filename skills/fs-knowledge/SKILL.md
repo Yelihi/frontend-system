@@ -5,6 +5,15 @@ description: Contribute programming knowledge through pending GitHub PRs, or mai
 
 # FS Knowledge
 
+For material unanswered choices, follow [ask and pause](../../references/workflows/user-decisions.md).
+Stop implementation when asking and wait for the actual answer; do not assume consent.
+
+PR discussions can become source candidates through
+[PR feedback review](../../references/workflows/pr-feedback.md). Assess the claim,
+original code, owner intent and counterexample before proposing add. A merged PR,
+repeated comment or developer preference is not technical proof. Keep project-only
+decisions local; shared candidates still follow pending → active → review → sync.
+
 `fs-knowledge add` is a shared contribution request: prepare and submit a pending
 Markdown PR to the official FS repository. It includes remote submission, not merge,
 activation or release. Explicit local-only requests stay local. Do not infer public

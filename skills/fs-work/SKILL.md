@@ -5,6 +5,9 @@ description: Implement, refactor, set up or resume frontend work against agreed 
 
 # FS Work
 
+For material unanswered choices, follow [ask and pause](../../references/workflows/user-decisions.md).
+Stop implementation when asking and wait for the actual answer; do not assume consent.
+
 Implement the approved contract, preserving user decisions and evidence. The current
 host writes code; MCP manages versions, attempts, checks and completion. No nested model.
 
@@ -83,8 +86,9 @@ read only the needed schemas, not the full schema file.
 5. Correct failures within three recorded attempts per step (initial plus two repairs).
    Individual development checks are not full attempts. Pass attemptId to recorded checks
    and reviews. Never reset counters, weaken guards, or claim unrun tests passed. On an
-   environment limit or new unresolved decision, record blocked/remaining work and continue
-   independent authorized work. For repeated defects prefer a scoped executable check
+   environment limit, record blocked/remaining work and continue independent authorized
+   work. On a new unresolved user decision, record the blocker, ask and pause implementation
+   until the answer arrives. For repeated defects prefer a scoped executable check
    over another generic reminder.
 6. For one jointly delivered issue, once code review findings are ready and no work remains,
    use complete_work with the current execution hash, attemptId, baselineCheckId and every
@@ -114,6 +118,9 @@ not justify a rewrite. Reuse established decisions for authorized fixes; ask onl
 unresolved material choices. Legacy checklists do not certify contextual applicability.
 
 Read only the procedure needed for the actual change:
+- [PR readiness](../../references/workflows/pr-readiness.md): before an authorized PR
+  creation, reuse final reviews/checks and require `check_pr_readiness` to return ready.
+  Completion alone is not PR permission; ordinary work without PR submission adds no gate.
 - [fs-init](../../references/workflows/fs-init.md): new setup/provider configuration.
 - [fs-implement](../../references/workflows/fs-implement.md): feature/UI design questions
   not already settled by the approved contract. Preserve design systems and accessibility.

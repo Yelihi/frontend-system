@@ -1,0 +1,1179 @@
+{
+  "scope": "PR feedback procedure + production knowledge search replay; not full plugin or live human study",
+  "groups": {
+    "raw": {
+      "calls": 8,
+      "complete": 8,
+      "totalTokens": 779532,
+      "uncachedPlusOutput": 167180,
+      "unknownUsage": 0
+    },
+    "fs": {
+      "calls": 8,
+      "complete": 8,
+      "totalTokens": 846688,
+      "uncachedPlusOutput": 204128,
+      "unknownUsage": 0
+    }
+  },
+  "uniqueThreads": true,
+  "rows": [
+    {
+      "id": "request-exception-raw-1",
+      "case": "request-exception",
+      "arm": "raw",
+      "repeat": 1,
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 26.822,
+        "completedTurns": 1,
+        "threadId": "01a11c20-df89-77c0-b2e4-ca875a987023",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 71879,
+          "cached_input_tokens": 49152,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1078,
+          "reasoning_output_tokens": 355,
+          "total_tokens": 72957,
+          "uncached_input_tokens": 22727
+        },
+        "cumulativeUsage": {
+          "input_tokens": 71879,
+          "cached_input_tokens": 49152,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1078,
+          "reasoning_output_tokens": 355
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "change",
+          "disposition": "project-only",
+          "reason": "The approval for order retries does not approve donation retries. A donation timeout may follow a successful recording, and this endpoint has no deduplication support. Disable automatic retries for this call while retaining the existing failure UI. The exact option value needs the client contract; the visible code does not establish what `retries:1` means at runtime.",
+          "reusedDecisionIds": [
+            "D-retry"
+          ],
+          "exceptionReason": "The confirmed order decision permits retries only with a server deduplication guarantee for the same idempotency key; /donations explicitly lacks that guarantee.",
+          "questions": [],
+          "sharedCandidate": {
+            "conditions": "For a request that may commit a side effect before its outcome becomes known, retry automatically only when the server contract prevents duplicate operations and the retry preserves the operation identity.",
+            "exceptions": "An endpoint without that guarantee, including /donations, must not automatically retry a possibly committed request."
+          },
+          "evidence": [
+            {
+              "path": "task.md",
+              "quote": "Unlike /orders, /donations explicitly has no deduplication support. On a timeout the donation may already have been recorded. Confirmed requirement: one user action must not automatically cause a second donation; retain the existing failure UI."
+            },
+            {
+              "path": "src/request.ts",
+              "quote": "return client.post('/donations', body, {retries:1});"
+            },
+            {
+              "path": "decisions/retry.md",
+              "quote": "Orders may retry a POST only when the server contract guarantees deduplication for the same idempotency key."
+            },
+            {
+              "path": "learning/request-policy-boundaries.md",
+              "quote": "부작용 요청의 재시도는 서버의 중복 방지 계약을 확인한다. 일괄 자동 재시도는 기본 선택이 아니다."
+            }
+          ],
+          "limits": "Only the donation wrapper is visible. No client implementation, runtime behavior, or verification was inspected; the proposed option change must be checked against that client's retry contract."
+        },
+        "exactCitations": true,
+        "questionCount": 0,
+        "semanticStatus": "requires-review",
+        "inputsUnchanged": true,
+        "complete": true
+      }
+    },
+    {
+      "id": "state-repeat-fs-1",
+      "case": "state-repeat",
+      "arm": "fs",
+      "repeat": 1,
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 26.369,
+        "completedTurns": 1,
+        "threadId": "01a11c20-df89-7a71-ab7b-7845806543b1",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 95460,
+          "cached_input_tokens": 56448,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1045,
+          "reasoning_output_tokens": 209,
+          "total_tokens": 96505,
+          "uncached_input_tokens": 39012
+        },
+        "cumulativeUsage": {
+          "input_tokens": 95460,
+          "cached_input_tokens": 56448,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1045,
+          "reasoning_output_tokens": 209
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "keep",
+          "disposition": "rejected",
+          "reason": "The proposed move conflicts with the current requirement that progress span all questions in a session and with confirmed decision D-state. RecallSession owns progress; Question is keyed by question.id, so replacing the question can reset Question’s own state. State should follow its required lifetime, not a blanket rule to place it closest to use. D-state is a study-flow decision, not a universal component layout rule.",
+          "reusedDecisionIds": [
+            "D-state"
+          ],
+          "exceptionReason": null,
+          "questions": [],
+          "sharedCandidate": null,
+          "evidence": [
+            {
+              "path": "task.md",
+              "quote": "Current requirement is unchanged: progress spans all questions in a session."
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "const [progress, setProgress] = useState(0);"
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "return <Question key={question.id} question={question} onCorrect={() => setProgress(p => p + 1)} progress={progress}/>;"
+            },
+            {
+              "path": "decisions/state.md",
+              "quote": "Progress belongs to RecallSession and survives Question replacement. A keyed Question may reset its own answer input, but must not own session progress. Applies to the study flow only."
+            },
+            {
+              "path": "learning/react-identity-and-state.md",
+              "quote": "부모 위치·컴포넌트 타입·key와 원하는 상태 수명을 비교해 보존 또는 초기화의 원인을 찾는다."
+            }
+          ],
+          "limits": "Read-only review of the supplied task, source, decision, and relevant knowledge. No runtime verification was run. The supplied files contain no PR URL, revision history, or comment metadata to inspect."
+        },
+        "exactCitations": true,
+        "questionCount": 0,
+        "semanticStatus": "requires-review",
+        "inputsUnchanged": true,
+        "complete": true
+      }
+    },
+    {
+      "id": "state-exception-fs-1",
+      "case": "state-exception",
+      "arm": "fs",
+      "repeat": 1,
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 28.813,
+        "completedTurns": 1,
+        "threadId": "01a11c21-463d-7983-a1e1-745760debc27",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 97158,
+          "cached_input_tokens": 79616,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1210,
+          "reasoning_output_tokens": 377,
+          "total_tokens": 98368,
+          "uncached_input_tokens": 17542
+        },
+        "cumulativeUsage": {
+          "input_tokens": 97158,
+          "cached_input_tokens": 79616,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1210,
+          "reasoning_output_tokens": 377
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "keep",
+          "disposition": "rejected",
+          "reason": "The review comment extends D-state beyond its confirmed scope. This preview has no session progress, and its requirement is to discard the draft when the question changes. The draft lives in Question; a changed question ID changes its key and resets that state. Moving the draft into Preview would not follow from D-state.",
+          "reusedDecisionIds": [
+            "D-state"
+          ],
+          "exceptionReason": "D-state applies to the study flow’s session progress and explicitly directs unrelated one-shot screens to use their own state lifetime.",
+          "questions": [],
+          "sharedCandidate": null,
+          "evidence": [
+            {
+              "path": "task.md",
+              "quote": "This is a one-shot preview. Its confirmed requirement is to discard the answer draft on question change; there is no session progress."
+            },
+            {
+              "path": "src/answer.tsx",
+              "quote": "const [draft, setDraft] = useState('');"
+            },
+            {
+              "path": "src/answer.tsx",
+              "quote": "function Preview({question}) { return <Question key={question.id} question={question}/>; }"
+            },
+            {
+              "path": "decisions/state.md",
+              "quote": "Progress belongs to RecallSession and survives Question replacement. A keyed Question may reset its own answer input, but must not own session progress. Applies to the study flow only. For unrelated one-shot screens, inspect their lifetime rather than copying this structure."
+            },
+            {
+              "path": "learning/react-identity-and-state.md",
+              "quote": "React의 상태는 트리에서 컴포넌트가 차지하는 정체성에 연결된다. 같은 부모 아래에서 타입과 key/위치가 이 판단에 관여한다."
+            }
+          ],
+          "limits": "Read-only review; no runtime verification. The reset depends on question.id changing when the question changes; a same-ID replacement would retain the draft."
+        },
+        "exactCitations": true,
+        "questionCount": 0,
+        "semanticStatus": "requires-review",
+        "inputsUnchanged": true,
+        "complete": true
+      }
+    },
+    {
+      "id": "state-repeat-raw-1",
+      "case": "state-repeat",
+      "arm": "raw",
+      "repeat": 1,
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 27.744,
+        "completedTurns": 1,
+        "threadId": "01a11c21-47f1-7101-b134-4d7617a0cd66",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 91382,
+          "cached_input_tokens": 67840,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 973,
+          "reasoning_output_tokens": 277,
+          "total_tokens": 92355,
+          "uncached_input_tokens": 23542
+        },
+        "cumulativeUsage": {
+          "input_tokens": 91382,
+          "cached_input_tokens": 67840,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 973,
+          "reasoning_output_tokens": 277
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "keep",
+          "disposition": "project-only",
+          "reason": "Progress must span question replacements. RecallSession owns it, while the keyed Question can reset its own state when its id changes. Moving progress into Question would conflict with the current requirement and confirmed project decision. The review comment’s proximity preference does not establish the required state lifetime.",
+          "reusedDecisionIds": [
+            "D-state"
+          ],
+          "exceptionReason": null,
+          "questions": [],
+          "sharedCandidate": {
+            "conditions": "In React, place state in a component whose identity persists for the required lifetime; compare parent position, type, and key when assessing preservation.",
+            "exceptions": "A keyed child can own state intended to reset when its key changes. Decide ownership from each screen’s requirements."
+          },
+          "evidence": [
+            {
+              "path": "task.md",
+              "quote": "Current requirement is unchanged: progress spans all questions in a session."
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "const [progress, setProgress] = useState(0);"
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "return <Question key={question.id} question={question} onCorrect={() => setProgress(p => p + 1)} progress={progress}/>;"
+            },
+            {
+              "path": "decisions/state.md",
+              "quote": "Progress belongs to RecallSession and survives Question replacement. A keyed Question may reset its own answer input, but must not own session progress. Applies to the study flow only."
+            },
+            {
+              "path": "learning/react-identity-and-state.md",
+              "quote": "React의 상태는 트리에서 컴포넌트가 차지하는 정체성에 연결된다. 같은 부모 아래에서 타입과 key/위치가 이 판단에 관여한다."
+            }
+          ],
+          "limits": "This is a source review; no runtime behavior was verified. The published React reference explains the state identity model but does not verify this product’s behavior."
+        },
+        "exactCitations": true,
+        "questionCount": 0,
+        "semanticStatus": "requires-review",
+        "inputsUnchanged": true,
+        "complete": true
+      }
+    },
+    {
+      "id": "vue-unresolved-raw-1",
+      "case": "vue-unresolved",
+      "arm": "raw",
+      "repeat": 1,
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 27.252,
+        "completedTurns": 1,
+        "threadId": "01a11c21-b483-7a12-b32b-a397d9240a67",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 104564,
+          "cached_input_tokens": 84224,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1193,
+          "reasoning_output_tokens": 338,
+          "total_tokens": 105757,
+          "uncached_input_tokens": 20340
+        },
+        "cumulativeUsage": {
+          "input_tokens": 104564,
+          "cached_input_tokens": 84224,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1193,
+          "reasoning_output_tokens": 338
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "ask",
+          "disposition": "needs-context",
+          "reason": "The review comment assumes a draft lifetime the requirements have not set. The component initializes its draft locally, but the inspected code does not establish whether route navigation destroys this component. The checkout decision is explicitly scoped to checkout and cannot decide composer ownership. Choose the state owner after the required draft lifetime is known.",
+          "reusedDecisionIds": [
+            "D-form"
+          ],
+          "exceptionReason": null,
+          "questions": [
+            "Should an unfinished composer draft still be available when the user leaves its route and later returns?"
+          ],
+          "sharedCandidate": null,
+          "evidence": [
+            {
+              "path": "task.md",
+              "quote": "New composer requirements do not say whether its draft must survive route navigation."
+            },
+            {
+              "path": "src/Composer.vue",
+              "quote": "const draft = ref('');"
+            },
+            {
+              "path": "src/Composer.vue",
+              "quote": "<template><textarea v-model=\"draft\" /></template>"
+            },
+            {
+              "path": "decisions/forms.md",
+              "quote": "No approved draft lifetime exists for the new composer. Earlier checkout drafts were local for payment privacy; this was explicitly checkout-only."
+            },
+            {
+              "path": "learning/code-quality-context-and-contracts.md",
+              "quote": "실제 상태 공유·조합 계약이나 의존성 수명 관리가 필요하면 적절한 경계를 선택한다."
+            }
+          ],
+          "limits": "No router, parent, or component retention code is present in the inspected src. No runtime verification was run; the cited learning text is guidance, not verification of this app."
+        },
+        "exactCitations": true,
+        "questionCount": 1,
+        "semanticStatus": "requires-review",
+        "inputsUnchanged": true,
+        "complete": true
+      }
+    },
+    {
+      "id": "preference-not-universal-raw-1",
+      "case": "preference-not-universal",
+      "arm": "raw",
+      "repeat": 1,
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 36.953,
+        "completedTurns": 1,
+        "threadId": "01a11c21-b6c4-7d73-8037-640f3ec8e5be",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 107439,
+          "cached_input_tokens": 74624,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1600,
+          "reasoning_output_tokens": 403,
+          "total_tokens": 109039,
+          "uncached_input_tokens": 32815
+        },
+        "cumulativeUsage": {
+          "input_tokens": 107439,
+          "cached_input_tokens": 74624,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1600,
+          "reasoning_output_tokens": 403
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "change",
+          "disposition": "project-only",
+          "reason": "Use the confirmed D-variants decision to move this reusable Button’s size and tone styles into the installed cva helper, and connect its result to className. Preserve the current fallback behavior for omitted or unrecognized prop values when defining the variants. Reject the review comment’s universal claim: these ternaries select complete class strings, and neither the code nor the published guidance establishes that ternary styles are generally a correctness bug.",
+          "reusedDecisionIds": [
+            "D-variants",
+            "tailwind-team-authorship",
+            "code-quality-context-and-contracts"
+          ],
+          "exceptionReason": null,
+          "questions": [],
+          "sharedCandidate": null,
+          "evidence": [
+            {
+              "path": "task.md",
+              "quote": "This Button is a reusable design-system component with multiple variants."
+            },
+            {
+              "path": "src/Button.tsx",
+              "quote": "return <button className={(size === 'large' ? 'px-6' : 'px-3') + ' ' + (tone === 'danger' ? 'bg-red-600' : 'bg-blue-600')}/>;"
+            },
+            {
+              "path": "decisions/styles.md",
+              "quote": "Owner confirmed: reusable design-system components with multiple style variants use the installed cva helper to match existing team conventions. A single transient class toggle may remain inline. This is a project consistency choice, not evidence that ternaries universally break Tailwind."
+            },
+            {
+              "path": "learning/tailwind-team-authorship.md",
+              "quote": "적용 조건: Tailwind를 사용하고 사용자가 이 팀의 작성 규칙을 채택한 변경 범위. 패키지 존재나 className만으로 전역 강제하지 않는다."
+            },
+            {
+              "path": "learning/code-quality-context-and-contracts.md",
+              "quote": "단순한 삼항식이나 일회성 표현은 유지할 수 있다."
+            }
+          ],
+          "limits": "This is a review recommendation; no code was edited and no build, runtime, or CSS output verification was run. The records support a scoped team preference, not a verified universal Tailwind claim."
+        },
+        "exactCitations": true,
+        "questionCount": 0,
+        "semanticStatus": "requires-review",
+        "inputsUnchanged": true,
+        "complete": true
+      }
+    },
+    {
+      "id": "request-repeat-fs-1",
+      "case": "request-repeat",
+      "arm": "fs",
+      "repeat": 1,
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 26.355,
+        "completedTurns": 1,
+        "threadId": "01a11c22-1eff-7ff1-8297-4ee3aa667f52",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 74069,
+          "cached_input_tokens": 57472,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1054,
+          "reasoning_output_tokens": 334,
+          "total_tokens": 75123,
+          "uncached_input_tokens": 16597
+        },
+        "cumulativeUsage": {
+          "input_tokens": 74069,
+          "cached_input_tokens": 57472,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1054,
+          "reasoning_output_tokens": 334
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "keep",
+          "disposition": "project-only",
+          "reason": "The confirmed project decision already answers the review comment: an orders POST may retry when the server deduplicates requests using the same idempotency key. The supplied contract provides that guarantee for 24 hours, and the code requests one retry with the same key. No further owner question is needed.",
+          "reusedDecisionIds": [
+            "D-retry"
+          ],
+          "exceptionReason": "The server guarantee expires after 24 hours; a retry outside that window would need separate handling.",
+          "questions": [],
+          "sharedCandidate": null,
+          "evidence": [
+            {
+              "path": "decisions/retry.md",
+              "quote": "Orders may retry a POST only when the server contract guarantees deduplication for the same idempotency key. Reuse the same key for retries; changing the key creates a different operation."
+            },
+            {
+              "path": "task.md",
+              "quote": "The server deduplicates /orders requests with the same idempotency key for 24 hours. client.post retries at most once with unchanged headers."
+            },
+            {
+              "path": "src/request.ts",
+              "quote": "return client.post('/orders', order, {idempotencyKey:key, retries:1});"
+            },
+            {
+              "path": "learning/request-policy-boundaries.md",
+              "quote": "이미 받은 답과 코드로 확인 가능한 사실을 다시 묻지 않는다."
+            }
+          ],
+          "limits": "This is a read-only review. The supplied client contract was not independently verified, and the evidence does not establish when the retry occurs relative to the 24-hour window."
+        },
+        "exactCitations": true,
+        "questionCount": 0,
+        "semanticStatus": "requires-review",
+        "inputsUnchanged": true,
+        "complete": true
+      }
+    },
+    {
+      "id": "error-reusable-fs-1",
+      "case": "error-reusable",
+      "arm": "fs",
+      "repeat": 1,
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 39.289,
+        "completedTurns": 1,
+        "threadId": "01a11c22-4736-7710-a9fc-a7bfbd6785ca",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 147656,
+          "cached_input_tokens": 123648,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1279,
+          "reasoning_output_tokens": 182,
+          "total_tokens": 148935,
+          "uncached_input_tokens": 24008
+        },
+        "cumulativeUsage": {
+          "input_tokens": 147656,
+          "cached_input_tokens": 123648,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1279,
+          "reasoning_output_tokens": 182
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "change",
+          "disposition": "reusable",
+          "reason": "In this code, a rejected save is caught and logged, then execution reaches the success notification. The confirmed D-save requirement says success follows service confirmation and failure shows a failure message while retaining editing state. Separate those outcomes here. The reusable claim is conditional: success must reflect the operation’s actual success contract; logging alone does not establish it.",
+          "reusedDecisionIds": [
+            "D-save"
+          ],
+          "exceptionReason": "A caught error need not suppress success if it comes from an ancillary step after the save was confirmed, or if the operation’s documented success contract is different. Neither exception is shown here.",
+          "questions": [],
+          "sharedCandidate": "When an awaited operation rejects before its success condition is met, a catch that only logs the error must not fall through to a success notification. Check the operation’s success contract and failure consumer; handle failure separately or rethrow, and notify success only after confirmation. Exclude ancillary errors occurring after confirmed success and contracts that explicitly define a different success point.",
+          "evidence": [
+            {
+              "path": "src/save.ts",
+              "quote": "try { await api.save(); } catch (error) { console.error(error); }\n notify.success('Saved');"
+            },
+            {
+              "path": "decisions/errors.md",
+              "quote": "Confirmed requirement: show success only after the save service confirms success. On a save failure, retain editing state and show a failure message."
+            },
+            {
+              "path": "learning/request-policy-boundaries.md",
+              "quote": "같은 인증·오류 분류는 공유할 수 있지만 화면별 메시지와 업무 거절까지 공통화할 필요는 없다."
+            }
+          ],
+          "limits": "A local Node counterexample produced [\"logged\",\"success\"] after a rejected promise. That checks the control flow, not the real save service or UI. No project files were changed; no end-to-end verification was run."
+        },
+        "exactCitations": true,
+        "questionCount": 0,
+        "semanticStatus": "requires-review",
+        "inputsUnchanged": true,
+        "complete": true
+      }
+    },
+    {
+      "id": "freeze-reject-fs-1",
+      "case": "freeze-reject",
+      "arm": "fs",
+      "repeat": 1,
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 30.941,
+        "completedTurns": 1,
+        "threadId": "01a11c22-860d-7012-a390-6a29a3eb9dae",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 97856,
+          "cached_input_tokens": 80384,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1561,
+          "reasoning_output_tokens": 370,
+          "total_tokens": 99417,
+          "uncached_input_tokens": 17472
+        },
+        "cumulativeUsage": {
+          "input_tokens": 97856,
+          "cached_input_tokens": 80384,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1561,
+          "reasoning_output_tokens": 370
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "change",
+          "disposition": "rejected",
+          "reason": "Reject the comment’s technical claim and its proposed mandatory rule. Object.freeze freezes only the input object; it does not freeze input.profile. A local counterexample showed rename changes the caller’s profile.name from \"old\" to \"new\". The code therefore violates D-input. Change rename to create a new outer object and a new profile before assigning the name; freezing the caller’s object is also an observable change to it.",
+          "reusedDecisionIds": [
+            "D-input"
+          ],
+          "exceptionReason": "The confirmed requirement applies to this function; it does not require freezing objects generally.",
+          "questions": [],
+          "sharedCandidate": null,
+          "evidence": [
+            {
+              "path": "task.md",
+              "quote": "Object.freeze makes all nested values immutable, so rename cannot affect the caller. Sync that as a mandatory rule."
+            },
+            {
+              "path": "src/editor.ts",
+              "quote": "const frozen = Object.freeze(input);\n frozen.profile.name = name;\n return frozen;"
+            },
+            {
+              "path": "decisions/ownership.md",
+              "quote": "# D-input\nConfirmed requirement: this function must not mutate any part of the caller-owned input object. No requirement to freeze all objects globally."
+            },
+            {
+              "path": "learning/javascript-functions-objects-and-scope.md",
+              "quote": "함수 매개변수에 새 값을 대입하는 것과 전달된 객체의 내용을 바꾸는 것을 구분한다."
+            }
+          ],
+          "limits": "Ran a local Node counterexample without writing files: result===input and result.profile===input.profile were true; callerName was \"new\", rootFrozen true, profileFrozen false. The inspected library record distinguishes parameter assignment from object mutation but does not itself establish Object.freeze behavior. No PR discussion or revision metadata was supplied. No files were changed."
+        },
+        "exactCitations": true,
+        "questionCount": 0,
+        "semanticStatus": "requires-review",
+        "inputsUnchanged": true,
+        "complete": true
+      }
+    },
+    {
+      "id": "request-repeat-raw-1",
+      "case": "request-repeat",
+      "arm": "raw",
+      "repeat": 1,
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 33.545,
+        "completedTurns": 1,
+        "threadId": "01a11c22-e0eb-7e30-b17e-359f2ac514e6",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 66870,
+          "cached_input_tokens": 55680,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1546,
+          "reasoning_output_tokens": 893,
+          "total_tokens": 68416,
+          "uncached_input_tokens": 11190
+        },
+        "cumulativeUsage": {
+          "input_tokens": 66870,
+          "cached_input_tokens": 55680,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1546,
+          "reasoning_output_tokens": 893
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "keep",
+          "disposition": "project-only",
+          "reason": "No owner question about whether orders may retry is needed. The confirmed project decision permits a POST retry when the server deduplicates requests with the same idempotency key. The stated server contract provides that guarantee for 24 hours, and this call supplies one key and requests at most one retry. The review comment does not identify an unresolved policy choice.",
+          "reusedDecisionIds": [
+            "D-retry"
+          ],
+          "exceptionReason": null,
+          "questions": [],
+          "sharedCandidate": null,
+          "evidence": [
+            {
+              "path": "task.md",
+              "quote": "The server deduplicates /orders requests with the same idempotency key for 24 hours. client.post retries at most once with unchanged headers."
+            },
+            {
+              "path": "decisions/retry.md",
+              "quote": "# D-retry — confirmed project decision\nOrders may retry a POST only when the server contract guarantees deduplication for the same idempotency key. Reuse the same key for retries; changing the key creates a different operation."
+            },
+            {
+              "path": "src/request.ts",
+              "quote": "return client.post('/orders', order, {idempotencyKey:key, retries:1});"
+            },
+            {
+              "path": "learning/request-policy-boundaries.md",
+              "quote": "부작용 요청의 재시도는 서버의 중복 방지 계약을 확인한다. 일괄 자동 재시도는 기본 선택이 아니다."
+            }
+          ],
+          "limits": "The client implementation and retry timing were not inspected. The cited contract establishes deduplication only within 24 hours; these quotes do not verify that an actual retry occurs within that window or that the client honors these options."
+        },
+        "exactCitations": true,
+        "questionCount": 0,
+        "semanticStatus": "requires-review",
+        "inputsUnchanged": true,
+        "complete": true
+      }
+    },
+    {
+      "id": "freeze-reject-raw-1",
+      "case": "freeze-reject",
+      "arm": "raw",
+      "repeat": 1,
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 44.502,
+        "completedTurns": 1,
+        "threadId": "01a11c22-ff0a-7a03-ab1a-9a6704a8c54f",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 110673,
+          "cached_input_tokens": 95744,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1561,
+          "reasoning_output_tokens": 501,
+          "total_tokens": 112234,
+          "uncached_input_tokens": 14929
+        },
+        "cumulativeUsage": {
+          "input_tokens": 110673,
+          "cached_input_tokens": 95744,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1561,
+          "reasoning_output_tokens": 501
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "change",
+          "disposition": "reusable",
+          "reason": "Reject the review comment’s technical claim and mandatory rule. Object.freeze is shallow. In a local counterexample using this function, rename changed the caller’s profile.name from \"before\" to \"after\"; the root was frozen, but profile was not. The current code violates D-input. Change it to produce the renamed result without writing through the caller’s object. D-input is a requirement for this function, not a global freeze policy.",
+          "reusedDecisionIds": [
+            "D-input"
+          ],
+          "exceptionReason": null,
+          "questions": [],
+          "sharedCandidate": "For JavaScript objects, Object.freeze does not freeze nested objects. When a contract forbids mutation of caller-owned input, avoid writes through nested aliases and construct the needed result independently. A different contract may explicitly permit caller-visible mutation.",
+          "evidence": [
+            {
+              "path": "task.md",
+              "quote": "Object.freeze makes all nested values immutable, so rename cannot affect the caller. Sync that as a mandatory rule."
+            },
+            {
+              "path": "src/editor.ts",
+              "quote": "const frozen = Object.freeze(input);\n frozen.profile.name = name;"
+            },
+            {
+              "path": "decisions/ownership.md",
+              "quote": "# D-input\nConfirmed requirement: this function must not mutate any part of the caller-owned input object. No requirement to freeze all objects globally."
+            },
+            {
+              "path": "learning/javascript-functions-objects-and-scope.md",
+              "quote": "함수 매개변수에 새 값을 대입하는 것과 전달된 객체의 내용을 바꾸는 것을 구분한다."
+            }
+          ],
+          "limits": "The local counterexample checked one ordinary nested object. No files were changed, and no broader verification was run."
+        },
+        "exactCitations": true,
+        "questionCount": 0,
+        "semanticStatus": "requires-review",
+        "inputsUnchanged": true,
+        "complete": true
+      }
+    },
+    {
+      "id": "state-exception-raw-1",
+      "case": "state-exception",
+      "arm": "raw",
+      "repeat": 1,
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 28.637,
+        "completedTurns": 1,
+        "threadId": "01a11c23-6415-7563-a582-920a36ecd943",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 87328,
+          "cached_input_tokens": 73088,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1001,
+          "reasoning_output_tokens": 340,
+          "total_tokens": 88329,
+          "uncached_input_tokens": 14240
+        },
+        "cumulativeUsage": {
+          "input_tokens": 87328,
+          "cached_input_tokens": 73088,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1001,
+          "reasoning_output_tokens": 340
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "keep",
+          "disposition": "rejected",
+          "reason": "The review comment overextends D-state. This one-shot preview requires the answer draft to be discarded when the question changes, and has no session progress to preserve. The Question owns only that draft; changing its key with question.id gives the new question a fresh input state. Moving all Question state into Preview would not serve the stated requirement.",
+          "reusedDecisionIds": [],
+          "exceptionReason": "D-state applies to the study flow. Its recorded exception directs unrelated one-shot screens to use their own state lifetime.",
+          "questions": [],
+          "sharedCandidate": null,
+          "evidence": [
+            {
+              "path": "task.md",
+              "quote": "Its confirmed requirement is to discard the answer draft on question change; there is no session progress."
+            },
+            {
+              "path": "src/answer.tsx",
+              "quote": "const [draft, setDraft] = useState('');"
+            },
+            {
+              "path": "src/answer.tsx",
+              "quote": "function Preview({question}) { return <Question key={question.id} question={question}/>; }"
+            },
+            {
+              "path": "decisions/state.md",
+              "quote": "Progress belongs to RecallSession and survives Question replacement. A keyed Question may reset its own answer input, but must not own session progress. Applies to the study flow only. For unrelated one-shot screens, inspect their lifetime rather than copying this structure."
+            },
+            {
+              "path": "learning/react-identity-and-state.md",
+              "quote": "React의 상태는 트리에서 컴포넌트가 차지하는 정체성에 연결된다. 같은 부모 아래에서 타입과 key/위치가 이 판단에 관여한다."
+            }
+          ],
+          "limits": "Static review only; no runtime behavior was verified. The reset depends on a question change producing a different question.id."
+        },
+        "exactCitations": true,
+        "questionCount": 0,
+        "semanticStatus": "requires-review",
+        "inputsUnchanged": true,
+        "complete": true
+      }
+    },
+    {
+      "id": "vue-unresolved-fs-1",
+      "case": "vue-unresolved",
+      "arm": "fs",
+      "repeat": 1,
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 25.664,
+        "completedTurns": 1,
+        "threadId": "01a11c23-acfa-77f2-bf53-26b7418e47bc",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 102936,
+          "cached_input_tokens": 81152,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1045,
+          "reasoning_output_tokens": 242,
+          "total_tokens": 103981,
+          "uncached_input_tokens": 21784
+        },
+        "cumulativeUsage": {
+          "input_tokens": 102936,
+          "cached_input_tokens": 81152,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1045,
+          "reasoning_output_tokens": 242
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "ask",
+          "disposition": "needs-context",
+          "reason": "The composer owns its draft locally, but the supplied requirements do not define how long the draft should live. Moving it to a global store would impose a persistence choice that no applicable owner decision confirms. The earlier checkout preference was explicitly limited to checkout.",
+          "reusedDecisionIds": [],
+          "exceptionReason": null,
+          "questions": [
+            "Should an unfinished composer draft still be available when the user navigates away and returns? If so, for how long?"
+          ],
+          "sharedCandidate": null,
+          "evidence": [
+            {
+              "path": "task.md",
+              "quote": "New composer requirements do not say whether its draft must survive route navigation."
+            },
+            {
+              "path": "src/Composer.vue",
+              "quote": "const draft = ref('');"
+            },
+            {
+              "path": "src/Composer.vue",
+              "quote": "<template><textarea v-model=\"draft\" /></template>"
+            },
+            {
+              "path": "decisions/forms.md",
+              "quote": "No approved draft lifetime exists for the new composer. Earlier checkout drafts were local for payment privacy; this was explicitly checkout-only."
+            },
+            {
+              "path": "learning/code-quality-context-and-contracts.md",
+              "quote": "실제 상태 공유·조합 계약이나 의존성 수명 관리가 필요하면 적절한 경계를 선택한다."
+            }
+          ],
+          "limits": "The supplied files contain no router behavior, product lifetime requirement, or PR metadata. No runtime verification was performed."
+        },
+        "exactCitations": true,
+        "questionCount": 1,
+        "semanticStatus": "requires-review",
+        "inputsUnchanged": true,
+        "complete": true
+      }
+    },
+    {
+      "id": "preference-not-universal-fs-1",
+      "case": "preference-not-universal",
+      "arm": "fs",
+      "repeat": 1,
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 23.045,
+        "completedTurns": 1,
+        "threadId": "01a11c23-d41b-7350-bc20-3c98a13f488a",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 118029,
+          "cached_input_tokens": 100608,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1083,
+          "reasoning_output_tokens": 147,
+          "total_tokens": 119112,
+          "uncached_input_tokens": 17421
+        },
+        "cumulativeUsage": {
+          "input_tokens": 118029,
+          "cached_input_tokens": 100608,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1083,
+          "reasoning_output_tokens": 147
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "change",
+          "disposition": "project-only",
+          "reason": "Button has two independent style axes, size and tone. The confirmed project decision calls for cva in reusable design-system components with multiple variants, so this Button should use cva. That decision is a team convention, not proof that ternary styles are correctness bugs everywhere.",
+          "reusedDecisionIds": [
+            "D-variants"
+          ],
+          "exceptionReason": "Reject the universal claim. The confirmed decision permits a single transient class toggle inline, and the library guidance does not require cva for simple boolean toggles.",
+          "questions": [],
+          "sharedCandidate": null,
+          "evidence": [
+            {
+              "path": "task.md",
+              "quote": "This Button is a reusable design-system component with multiple variants."
+            },
+            {
+              "path": "src/Button.tsx",
+              "quote": "return <button className={(size === 'large' ? 'px-6' : 'px-3') + ' ' + (tone === 'danger' ? 'bg-red-600' : 'bg-blue-600')}/>;"
+            },
+            {
+              "path": "decisions/styles.md",
+              "quote": "Owner confirmed: reusable design-system components with multiple style variants use the installed cva helper to match existing team conventions. A single transient class toggle may remain inline. This is a project consistency choice, not evidence that ternaries universally break Tailwind."
+            },
+            {
+              "path": "learning/tailwind-team-authorship.md",
+              "quote": "단순 boolean 토글/조건부 텍스트에 CVA를 강제하지 않는다."
+            }
+          ],
+          "limits": "Read-only review. No code was changed, and no build or runtime verification was run. The supplied task contains the review comment but no PR revision or thread metadata."
+        },
+        "exactCitations": true,
+        "questionCount": 0,
+        "semanticStatus": "requires-review",
+        "inputsUnchanged": true,
+        "complete": true
+      }
+    },
+    {
+      "id": "request-exception-fs-1",
+      "case": "request-exception",
+      "arm": "fs",
+      "repeat": 1,
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 26.605,
+        "completedTurns": 1,
+        "threadId": "01a11c24-1145-7412-8c0c-3adc09f7b180",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 104243,
+          "cached_input_tokens": 63232,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1004,
+          "reasoning_output_tokens": 185,
+          "total_tokens": 105247,
+          "uncached_input_tokens": 41011
+        },
+        "cumulativeUsage": {
+          "input_tokens": 104243,
+          "cached_input_tokens": 63232,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1004,
+          "reasoning_output_tokens": 185
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "change",
+          "disposition": "rejected",
+          "reason": "Reject the comment’s transfer of the order retry approval to donations. The current donation call specifies one retry. After a timeout, its first attempt may already have been recorded, and the confirmed donation requirement forbids an automatic second donation. Remove the donation retry while retaining the existing failure UI. The order decision is scoped to a different server contract.",
+          "reusedDecisionIds": [
+            "D-retry"
+          ],
+          "exceptionReason": "Order POST retries are permitted only with server-guaranteed deduplication and the same idempotency key; donations explicitly lack that support.",
+          "questions": [],
+          "sharedCandidate": null,
+          "evidence": [
+            {
+              "path": "task.md",
+              "quote": "Unlike /orders, /donations explicitly has no deduplication support. On a timeout the donation may already have been recorded. Confirmed requirement: one user action must not automatically cause a second donation; retain the existing failure UI."
+            },
+            {
+              "path": "task.md",
+              "quote": "Review comment: \"We approved order retries, so donation retries are also fine.\""
+            },
+            {
+              "path": "src/request.ts",
+              "quote": "return client.post('/donations', body, {retries:1});"
+            },
+            {
+              "path": "decisions/retry.md",
+              "quote": "Orders may retry a POST only when the server contract guarantees deduplication for the same idempotency key. Reuse the same key for retries; changing the key creates a different operation. Without this guarantee, do not automatically retry a possibly committed request."
+            },
+            {
+              "path": "learning/request-policy-boundaries.md",
+              "quote": "부작용 요청의 재시도는 서버의 중복 방지 계약을 확인한다. 일괄 자동 재시도는 기본 선택이 아니다."
+            }
+          ],
+          "limits": "Read-only review. The supplied code does not define the client or show its retry defaults, callers, or failure UI; actual transmission count and the effect of removing this option were not run or verified. No PR metadata was supplied."
+        },
+        "exactCitations": true,
+        "questionCount": 0,
+        "semanticStatus": "requires-review",
+        "inputsUnchanged": true,
+        "complete": true
+      }
+    },
+    {
+      "id": "error-reusable-raw-1",
+      "case": "error-reusable",
+      "arm": "raw",
+      "repeat": 1,
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 24.781,
+        "completedTurns": 1,
+        "threadId": "01a11c24-2e28-75e0-8370-1990d9f2ee16",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 129384,
+          "cached_input_tokens": 112000,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1061,
+          "reasoning_output_tokens": 215,
+          "total_tokens": 130445,
+          "uncached_input_tokens": 17384
+        },
+        "cumulativeUsage": {
+          "input_tokens": 129384,
+          "cached_input_tokens": 112000,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1061,
+          "reasoning_output_tokens": 215
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "change",
+          "disposition": "reusable",
+          "reason": "The catch logs a rejected save and then execution reaches notify.success('Saved'). That conflicts with the confirmed requirement to show success only after the service confirms success. Handle a save failure by retaining editing state and showing a failure message; send success only on confirmed success. The review comment is valid here, but its absolute wording is too broad: an error in a recoverable step need not prevent success if the required save ultimately succeeds.",
+          "reusedDecisionIds": [
+            "D-save"
+          ],
+          "exceptionReason": null,
+          "questions": [],
+          "sharedCandidate": "When success feedback represents completion of a required operation, emit it only after that operation confirms success. If it fails, preserve the user's work and provide failure feedback. An error may be logged while the overall operation continues when recovery succeeds or the failed step is explicitly optional; check the service's success contract before applying this rule.",
+          "evidence": [
+            {
+              "path": "src/save.ts",
+              "quote": "try { await api.save(); } catch (error) { console.error(error); }\n notify.success('Saved');"
+            },
+            {
+              "path": "decisions/errors.md",
+              "quote": "Confirmed requirement: show success only after the save service confirms success. On a save failure, retain editing state and show a failure message."
+            },
+            {
+              "path": "learning/javascript-iteration-promises-and-resources.md",
+              "quote": "Promise 연결에서 then()의 새 결과를 반환·관찰해 후속 완료와 실패가 이어지는지 확인한다."
+            },
+            {
+              "path": "learning/code-quality-context-and-contracts.md",
+              "quote": "이름과 반환값은 호출자가 예상하는 계약이다."
+            }
+          ],
+          "limits": "This is a source review only; no code was changed or run. The behavior of api.save and the editor's state mechanism were not provided, so the precise failure handling must follow their contracts."
+        },
+        "exactCitations": true,
+        "questionCount": 0,
+        "semanticStatus": "requires-review",
+        "inputsUnchanged": true,
+        "complete": true
+      }
+    }
+  ],
+  "semanticStatus": "requires-review; enums and exact citations are not a quality score"
+}

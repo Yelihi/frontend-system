@@ -1,0 +1,27 @@
+{
+  "diagram_type": "architecture",
+  "output": "fs-overview.html",
+  "specification_sha256": "f8a272e36b2a048dbd400d80c680fe8aee9254f9b66280954f589108e6b8ce75",
+  "artifact_sha256": "4fa3ef85c6381da6e7a7fad8ebac524b6555af26deeeee875ec2cf9f104551d4",
+  "validation": "9/9 showcase, 0 errors, 0 warnings",
+  "browser_evidence": "passed",
+  "visual_review": "passed",
+  "correction_rounds": 0,
+  "reviewer": "Codex image-capable review",
+  "reviewed_at": "2026-10-10",
+  "screenshots": [
+    "fs-overview.visual-check.1440x900.light.png",
+    "fs-overview.visual-check.1440x900.dark.png",
+    "fs-overview.visual-check.2048x1320.light.png",
+    "fs-overview.visual-check.2048x1320.dark.png"
+  ],
+  "observations": [
+    "한글 제목·노드·연결 라벨·카드가 겹치거나 잘리지 않음",
+    "양 테마의 대비와 큰 화면의 세로 균형 확인"
+  ],
+  "not_checked": [
+    "mobile",
+    "all exports",
+    "focus/search interactions"
+  ]
+}

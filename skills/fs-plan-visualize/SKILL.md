@@ -5,6 +5,9 @@ description: Analyze or refresh an existing frontend's actual page, component, e
 
 # FS Plan Visualize
 
+For material unanswered choices, follow [ask and pause](../../references/workflows/user-decisions.md).
+Stop implementation when asking and wait for the actual answer; do not assume consent.
+
 Deliver a navigable diagram of the requested project's actual implementation. The
 host traces code; FS validates and stores evidence and renders the same record.
 This request authorizes analysis records and diagram output, not product edits,

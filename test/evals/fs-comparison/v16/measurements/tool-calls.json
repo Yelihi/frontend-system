@@ -1,0 +1,98 @@
+[
+  {
+    "id": "request-exception-raw-1",
+    "arm": "raw",
+    "commandCalls": 5,
+    "searchCalls": 0
+  },
+  {
+    "id": "state-repeat-fs-1",
+    "arm": "fs",
+    "commandCalls": 12,
+    "searchCalls": 1
+  },
+  {
+    "id": "state-exception-fs-1",
+    "arm": "fs",
+    "commandCalls": 14,
+    "searchCalls": 1
+  },
+  {
+    "id": "state-repeat-raw-1",
+    "arm": "raw",
+    "commandCalls": 4,
+    "searchCalls": 0
+  },
+  {
+    "id": "vue-unresolved-raw-1",
+    "arm": "raw",
+    "commandCalls": 9,
+    "searchCalls": 0
+  },
+  {
+    "id": "preference-not-universal-raw-1",
+    "arm": "raw",
+    "commandCalls": 10,
+    "searchCalls": 0
+  },
+  {
+    "id": "request-repeat-fs-1",
+    "arm": "fs",
+    "commandCalls": 10,
+    "searchCalls": 1
+  },
+  {
+    "id": "error-reusable-fs-1",
+    "arm": "fs",
+    "commandCalls": 19,
+    "searchCalls": 4
+  },
+  {
+    "id": "freeze-reject-fs-1",
+    "arm": "fs",
+    "commandCalls": 15,
+    "searchCalls": 2
+  },
+  {
+    "id": "request-repeat-raw-1",
+    "arm": "raw",
+    "commandCalls": 4,
+    "searchCalls": 0
+  },
+  {
+    "id": "freeze-reject-raw-1",
+    "arm": "raw",
+    "commandCalls": 10,
+    "searchCalls": 0
+  },
+  {
+    "id": "state-exception-raw-1",
+    "arm": "raw",
+    "commandCalls": 4,
+    "searchCalls": 0
+  },
+  {
+    "id": "vue-unresolved-fs-1",
+    "arm": "fs",
+    "commandCalls": 15,
+    "searchCalls": 2
+  },
+  {
+    "id": "preference-not-universal-fs-1",
+    "arm": "fs",
+    "commandCalls": 16,
+    "searchCalls": 1
+  },
+  {
+    "id": "request-exception-fs-1",
+    "arm": "fs",
+    "commandCalls": 12,
+    "searchCalls": 1
+  },
+  {
+    "id": "error-reusable-raw-1",
+    "arm": "raw",
+    "commandCalls": 6,
+    "searchCalls": 0
+  }
+]

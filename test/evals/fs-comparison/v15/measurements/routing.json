@@ -1,0 +1,509 @@
+{
+  "scope": "Actual production routing on authored code + natural task, without model-supplied semantic interpretations; candidate presence is not applicability",
+  "rows": [
+    {
+      "case": "style-adopted",
+      "expected": [
+        "tailwind-team-authorship"
+      ],
+      "candidates": [
+        {
+          "id": "accessibility-names-and-alternatives",
+          "reasons": [
+            "code-trigger"
+          ]
+        },
+        {
+          "id": "accessibility-native-controls-and-forms",
+          "reasons": [
+            "code-trigger"
+          ]
+        },
+        {
+          "id": "tailwind-team-authorship",
+          "reasons": [
+            "code-trigger",
+            "request-search"
+          ]
+        },
+        {
+          "id": "css-motion-and-rendering-hints",
+          "reasons": [
+            "request-search",
+            "scope-search"
+          ]
+        },
+        {
+          "id": "debugging-browser-and-memory-cases",
+          "reasons": [
+            "scope-search"
+          ]
+        },
+        {
+          "id": "web-api-css-geometry-and-observers",
+          "reasons": [
+            "scope-search"
+          ]
+        }
+      ],
+      "signals": [
+        {
+          "kind": "path",
+          "value": "src/view.tsx"
+        },
+        {
+          "kind": "jsx-element",
+          "value": "button"
+        },
+        {
+          "kind": "jsx-attribute",
+          "value": "className"
+        }
+      ],
+      "found": true,
+      "elapsedMs": 154.27895900000001
+    },
+    {
+      "case": "style-unadopted",
+      "expected": [
+        "tailwind-team-authorship"
+      ],
+      "candidates": [
+        {
+          "id": "accessibility-names-and-alternatives",
+          "reasons": [
+            "code-trigger"
+          ]
+        },
+        {
+          "id": "accessibility-native-controls-and-forms",
+          "reasons": [
+            "code-trigger"
+          ]
+        },
+        {
+          "id": "tailwind-team-authorship",
+          "reasons": [
+            "code-trigger",
+            "request-search"
+          ]
+        },
+        {
+          "id": "css-motion-and-rendering-hints",
+          "reasons": [
+            "scope-search"
+          ]
+        },
+        {
+          "id": "debugging-browser-and-memory-cases",
+          "reasons": [
+            "scope-search"
+          ]
+        },
+        {
+          "id": "web-api-css-geometry-and-observers",
+          "reasons": [
+            "scope-search"
+          ]
+        }
+      ],
+      "signals": [
+        {
+          "kind": "path",
+          "value": "src/view.tsx"
+        },
+        {
+          "kind": "jsx-element",
+          "value": "button"
+        },
+        {
+          "kind": "jsx-attribute",
+          "value": "className"
+        }
+      ],
+      "found": true,
+      "elapsedMs": 5.729624999999999
+    },
+    {
+      "case": "style-unknown",
+      "expected": [
+        "tailwind-team-authorship"
+      ],
+      "candidates": [
+        {
+          "id": "accessibility-names-and-alternatives",
+          "reasons": [
+            "code-trigger"
+          ]
+        },
+        {
+          "id": "accessibility-native-controls-and-forms",
+          "reasons": [
+            "code-trigger"
+          ]
+        },
+        {
+          "id": "tailwind-team-authorship",
+          "reasons": [
+            "code-trigger",
+            "request-search"
+          ]
+        },
+        {
+          "id": "nextjs-server-client-boundary",
+          "reasons": [
+            "request-search"
+          ]
+        },
+        {
+          "id": "chromium-rendering-pipeline",
+          "reasons": [
+            "request-search"
+          ]
+        },
+        {
+          "id": "accessibility-static-validation",
+          "reasons": [
+            "request-search"
+          ]
+        },
+        {
+          "id": "html-attribute-values-and-identifiers",
+          "reasons": [
+            "request-search"
+          ]
+        },
+        {
+          "id": "css-motion-and-rendering-hints",
+          "reasons": [
+            "scope-search"
+          ]
+        },
+        {
+          "id": "debugging-browser-and-memory-cases",
+          "reasons": [
+            "scope-search"
+          ]
+        },
+        {
+          "id": "web-api-css-geometry-and-observers",
+          "reasons": [
+            "scope-search"
+          ]
+        }
+      ],
+      "signals": [
+        {
+          "kind": "path",
+          "value": "src/view.tsx"
+        },
+        {
+          "kind": "jsx-element",
+          "value": "button"
+        },
+        {
+          "kind": "jsx-attribute",
+          "value": "className"
+        }
+      ],
+      "found": true,
+      "elapsedMs": 5.239000000000033
+    },
+    {
+      "case": "style-revised",
+      "expected": [
+        "tailwind-team-authorship"
+      ],
+      "candidates": [
+        {
+          "id": "accessibility-names-and-alternatives",
+          "reasons": [
+            "code-trigger"
+          ]
+        },
+        {
+          "id": "accessibility-native-controls-and-forms",
+          "reasons": [
+            "code-trigger"
+          ]
+        },
+        {
+          "id": "tailwind-team-authorship",
+          "reasons": [
+            "code-trigger",
+            "request-search"
+          ]
+        },
+        {
+          "id": "chromium-rendering-pipeline",
+          "reasons": [
+            "request-search"
+          ]
+        },
+        {
+          "id": "html-attribute-values-and-identifiers",
+          "reasons": [
+            "request-search"
+          ]
+        },
+        {
+          "id": "css-motion-and-rendering-hints",
+          "reasons": [
+            "scope-search"
+          ]
+        },
+        {
+          "id": "debugging-browser-and-memory-cases",
+          "reasons": [
+            "scope-search"
+          ]
+        },
+        {
+          "id": "web-api-css-geometry-and-observers",
+          "reasons": [
+            "scope-search"
+          ]
+        }
+      ],
+      "signals": [
+        {
+          "kind": "path",
+          "value": "src/view.tsx"
+        },
+        {
+          "kind": "jsx-element",
+          "value": "button"
+        },
+        {
+          "kind": "jsx-attribute",
+          "value": "className"
+        }
+      ],
+      "found": true,
+      "elapsedMs": 4.593416999999988
+    },
+    {
+      "case": "request-unknown",
+      "expected": [
+        "request-policy-boundaries"
+      ],
+      "candidates": [
+        {
+          "id": "request-policy-boundaries",
+          "reasons": [
+            "code-trigger",
+            "request-search"
+          ]
+        },
+        {
+          "id": "debugging-browser-and-memory-cases",
+          "reasons": [
+            "request-search",
+            "scope-search"
+          ]
+        },
+        {
+          "id": "web-api-network-streams-and-urls",
+          "reasons": [
+            "request-search"
+          ]
+        },
+        {
+          "id": "web-api-workers-and-coordination",
+          "reasons": [
+            "request-search"
+          ]
+        },
+        {
+          "id": "css-motion-and-rendering-hints",
+          "reasons": [
+            "scope-search"
+          ]
+        },
+        {
+          "id": "web-api-css-geometry-and-observers",
+          "reasons": [
+            "scope-search"
+          ]
+        }
+      ],
+      "signals": [
+        {
+          "kind": "path",
+          "value": "src/view.tsx"
+        },
+        {
+          "kind": "call",
+          "value": "global#fetch"
+        }
+      ],
+      "found": true,
+      "elapsedMs": 6.643792000000019
+    },
+    {
+      "case": "different-change-reasons",
+      "expected": [
+        "code-quality-change-boundaries"
+      ],
+      "candidates": [
+        {
+          "id": "bundling-development-and-diagnostics",
+          "reasons": [
+            "request-search"
+          ]
+        },
+        {
+          "id": "web-api-media-pipelines-and-speech",
+          "reasons": [
+            "request-search"
+          ]
+        },
+        {
+          "id": "web-api-network-streams-and-urls",
+          "reasons": [
+            "request-search"
+          ]
+        },
+        {
+          "id": "css-motion-and-rendering-hints",
+          "reasons": [
+            "scope-search"
+          ]
+        },
+        {
+          "id": "debugging-browser-and-memory-cases",
+          "reasons": [
+            "scope-search"
+          ]
+        },
+        {
+          "id": "web-api-css-geometry-and-observers",
+          "reasons": [
+            "scope-search"
+          ]
+        }
+      ],
+      "signals": [
+        {
+          "kind": "path",
+          "value": "src/view.tsx"
+        }
+      ],
+      "found": false,
+      "elapsedMs": 4.713250000000016
+    },
+    {
+      "case": "compound-simple",
+      "expected": [
+        "react-compound-component-boundaries"
+      ],
+      "candidates": [
+        {
+          "id": "react-compound-component-boundaries",
+          "reasons": [
+            "request-search"
+          ]
+        },
+        {
+          "id": "web-api-dom-editing-and-components",
+          "reasons": [
+            "request-search"
+          ]
+        },
+        {
+          "id": "css-motion-and-rendering-hints",
+          "reasons": [
+            "scope-search"
+          ]
+        },
+        {
+          "id": "debugging-browser-and-memory-cases",
+          "reasons": [
+            "scope-search"
+          ]
+        },
+        {
+          "id": "web-api-css-geometry-and-observers",
+          "reasons": [
+            "scope-search"
+          ]
+        }
+      ],
+      "signals": [
+        {
+          "kind": "path",
+          "value": "src/view.tsx"
+        },
+        {
+          "kind": "jsx-element",
+          "value": "span"
+        }
+      ],
+      "found": true,
+      "elapsedMs": 4.4085830000000215
+    },
+    {
+      "case": "cross-device-lock",
+      "expected": [
+        "web-api-workers-and-coordination",
+        "request-policy-boundaries"
+      ],
+      "candidates": [
+        {
+          "id": "request-policy-boundaries",
+          "reasons": [
+            "code-trigger"
+          ]
+        },
+        {
+          "id": "web-api-device-signals-and-windows",
+          "reasons": [
+            "request-search"
+          ]
+        },
+        {
+          "id": "accessibility-static-validation",
+          "reasons": [
+            "request-search"
+          ]
+        },
+        {
+          "id": "web-api-input-and-user-mediated-access",
+          "reasons": [
+            "request-search"
+          ]
+        },
+        {
+          "id": "css-motion-and-rendering-hints",
+          "reasons": [
+            "scope-search"
+          ]
+        },
+        {
+          "id": "debugging-browser-and-memory-cases",
+          "reasons": [
+            "scope-search"
+          ]
+        },
+        {
+          "id": "web-api-css-geometry-and-observers",
+          "reasons": [
+            "scope-search"
+          ]
+        }
+      ],
+      "signals": [
+        {
+          "kind": "path",
+          "value": "src/view.tsx"
+        },
+        {
+          "kind": "call",
+          "value": "global#fetch"
+        }
+      ],
+      "found": false,
+      "elapsedMs": 5.644625000000019
+    }
+  ]
+}

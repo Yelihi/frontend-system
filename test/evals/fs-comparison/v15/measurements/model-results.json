@@ -1,0 +1,3160 @@
+{
+  "run": "2026-10-08-context-round1",
+  "model": "gpt-6-sol",
+  "reasoning": "medium",
+  "scope": "Search component only; not full FS plugin",
+  "groups": {
+    "ordinary": {
+      "calls": 8,
+      "complete": 8,
+      "actionMatches": 6,
+      "safeMissingPolicy": 1,
+      "knownTotalTokens": 305070,
+      "knownUncachedPlusOutput": 83246,
+      "unknownUsage": 0,
+      "toolCalls": 28
+    },
+    "raw": {
+      "calls": 8,
+      "complete": 8,
+      "actionMatches": 7,
+      "safeMissingPolicy": 0,
+      "knownTotalTokens": 603389,
+      "knownUncachedPlusOutput": 134013,
+      "unknownUsage": 0,
+      "toolCalls": 73
+    },
+    "fs-search": {
+      "calls": 8,
+      "complete": 8,
+      "actionMatches": 7,
+      "safeMissingPolicy": 0,
+      "knownTotalTokens": 615777,
+      "knownUncachedPlusOutput": 158049,
+      "unknownUsage": 0,
+      "toolCalls": 54
+    },
+    "oracle": {
+      "calls": 8,
+      "complete": 8,
+      "actionMatches": 7,
+      "safeMissingPolicy": 0,
+      "knownTotalTokens": 422398,
+      "knownUncachedPlusOutput": 99966,
+      "unknownUsage": 0,
+      "toolCalls": 43
+    }
+  },
+  "uniqueThreads": true,
+  "observations": [
+    "All 32 outputs and their quoted source passages were inspected by the same coding assistant; this is not independent or human-blind assessment.",
+    "No substantive decision advantage observed between raw and fs-search in this authored pilot. Ordinary correctly asks for the unavailable adopted team policy.",
+    "The four cross-device-lock action enum mismatches are a rubric ambiguity: all reject the unsafe proposal and call for server coordination. Preserve original actionMatches; do not treat it as semantic failure.",
+    "The FS different-change-reasons search misses code-quality-change-boundaries; the model recovers via ordinary file search. Do not credit that answer to successful FS retrieval.",
+    "Stop after the fixed first round: decision ceiling and action-label ambiguity require a revised real-project evaluation rather than tuning this set until a win."
+  ],
+  "searchTraces": [
+    {
+      "case": "style-adopted",
+      "command": "/bin/zsh -lc \"node search.mjs 'team authorship policy public variant axes tone size inline ternary static class Tailwind'\"",
+      "candidateIds": [
+        "tailwind-team-authorship"
+      ],
+      "outputCharacters": 7344
+    },
+    {
+      "case": "style-unadopted",
+      "command": "/bin/zsh -lc 'node search.mjs \"Tailwind CVA styles object class mapping policy\"'",
+      "candidateIds": [
+        "tailwind-team-authorship"
+      ],
+      "outputCharacters": 7384
+    },
+    {
+      "case": "cross-device-lock",
+      "command": "/bin/zsh -lc 'node search.mjs \"Web Locks API same origin same browser cross device separate devices lock scope\"'",
+      "candidateIds": [
+        "web-api-workers-and-coordination",
+        "web-api-device-signals-and-windows",
+        "web-api-network-streams-and-urls",
+        "web-api-retired-features",
+        "web-api-input-and-user-mediated-access"
+      ],
+      "outputCharacters": 30123
+    },
+    {
+      "case": "different-change-reasons",
+      "command": "/bin/zsh -lc 'node search.mjs \"duplicate code separate policies independent change reasons shared abstraction\"'",
+      "candidateIds": [
+        "code-quality-context-and-contracts",
+        "css-motion-and-rendering-hints",
+        "web-api-retired-features"
+      ],
+      "outputCharacters": 20518
+    },
+    {
+      "case": "request-unknown",
+      "command": "/bin/zsh -lc 'node search.mjs \"retry POST transport error idempotency duplicate order\"'",
+      "candidateIds": [
+        "request-policy-boundaries",
+        "web-api-network-streams-and-urls",
+        "web-api-workers-and-coordination"
+      ],
+      "outputCharacters": 17466
+    },
+    {
+      "case": "compound-simple",
+      "command": "/bin/zsh -lc \"node search.mjs 'compound components context shared state nested composition'\"",
+      "candidateIds": [
+        "react-compound-component-boundaries",
+        "code-quality-change-boundaries",
+        "web-api-dom-editing-and-components",
+        "accessibility-native-controls-and-forms",
+        "web-api-retired-features"
+      ],
+      "outputCharacters": 27073
+    },
+    {
+      "case": "compound-simple",
+      "command": "/bin/zsh -lc \"node search.mjs 'simple component API unnecessary abstraction consistency'\"",
+      "candidateIds": [
+        "code-quality-context-and-contracts",
+        "accessibility-static-validation",
+        "web-api-network-streams-and-urls",
+        "web-api-retired-features",
+        "web-api-browser-ai-capabilities"
+      ],
+      "outputCharacters": 29507
+    },
+    {
+      "case": "style-unknown",
+      "command": "/bin/zsh -lc 'node search.mjs \"team style policy authorship utility classes component extracted styles palette unchanged\"'",
+      "candidateIds": [
+        "tailwind-team-authorship",
+        "chromium-rendering-pipeline",
+        "accessibility-static-validation",
+        "html-attribute-values-and-identifiers"
+      ],
+      "outputCharacters": 20707
+    }
+  ],
+  "rows": [
+    {
+      "id": "style-revised-ordinary",
+      "case": "style-revised",
+      "arm": "ordinary",
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 16.23,
+        "completedTurns": 1,
+        "threadId": "01a11b03-0c6b-74b3-9a45-4a4a2dc2e603",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 29929,
+          "cached_input_tokens": 22912,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 415,
+          "reasoning_output_tokens": 76,
+          "total_tokens": 30344,
+          "uncached_input_tokens": 7017
+        },
+        "cumulativeUsage": {
+          "input_tokens": 29929,
+          "cached_input_tokens": 22912,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 415,
+          "reasoning_output_tokens": 76
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "keep",
+          "reason": "The current owner decision exempts this file from the earlier team authorship policy, directs complete class mappings to be kept, and says not to enforce CVA. The component’s existing classes preserve the stated palette. The scoped review therefore gives no reason to change it.",
+          "alternative": "Refactoring to CVA would add work and conflict with the current owner direction for this file.",
+          "question": null,
+          "evidence": [
+            {
+              "path": "owner.md",
+              "quote": "2026-10-08 CURRENT, explicitly supersedes the above for this file: this externally maintained component is exempt. Keep complete class mappings; do not enforce CVA. Preserve the palette."
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "return <button className={`${styles.root} ${tone === 'primary' ? 'bg-blue-600' : 'bg-gray-100'} ${size === 'small' ? 'px-2' : 'px-4'}`}>Save</button>;"
+            }
+          ],
+          "knowledge": [],
+          "limits": "No additional knowledge library or private policy was supplied. This is a source review only; application behavior was not verified."
+        },
+        "actionMatches": true,
+        "safeMissingPolicy": false,
+        "citationChecks": [
+          {
+            "kind": "evidence",
+            "path": "owner.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "src/view.tsx",
+            "exact": true
+          }
+        ],
+        "exactCitations": true,
+        "semanticStatus": "requires-human-review",
+        "inputsUnchanged": true,
+        "environmentFailure": null,
+        "complete": true,
+        "toolCalls": 3,
+        "searchCalls": 0
+      }
+    },
+    {
+      "id": "style-adopted-fs-search",
+      "case": "style-adopted",
+      "arm": "fs-search",
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 30.621,
+        "completedTurns": 1,
+        "threadId": "01a11b03-0c6b-7652-84ec-dd797e45c563",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 65824,
+          "cached_input_tokens": 49152,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 888,
+          "reasoning_output_tokens": 228,
+          "total_tokens": 66712,
+          "uncached_input_tokens": 16672
+        },
+        "cumulativeUsage": {
+          "input_tokens": 65824,
+          "cached_input_tokens": 49152,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 888,
+          "reasoning_output_tokens": 228
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "change",
+          "reason": "The owner explicitly adopted the team authorship policy for this component and both public variant axes. In the inspected code, fixed root classes pass through a styles object, while tone and size select classes through JSX conditionals. The adopted policy calls for fixed classes in JSX and CVA variants/defaultVariants for these axes. A scoped change should preserve the current classes, palette, and button behavior. This is a team preference, not a universal Tailwind requirement.",
+          "alternative": "Keep the existing code: it is compact and already selects complete class tokens, but it would leave the adopted authorship policy unmet. A theme redesign would add cost outside the owner's scope.",
+          "question": null,
+          "evidence": [
+            {
+              "path": "owner.md",
+              "quote": "Adopt the team authorship policy in our knowledge library for src/view.tsx, including both public variant axes. Preserve the existing palette and behavior. No theme redesign."
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "const styles = {root: 'inline-flex items-center rounded'};"
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "${tone === 'primary' ? 'bg-blue-600' : 'bg-gray-100'} ${size === 'small' ? 'px-2' : 'px-4'}"
+            }
+          ],
+          "knowledge": [
+            {
+              "path": "learning/tailwind-team-authorship.md",
+              "quote": "고정 클래스는 해당 JSX className에 직접 작성한다."
+            },
+            {
+              "path": "learning/tailwind-team-authorship.md",
+              "quote": "여러 공개 prop이 스타일을 변형하는 재사용 컴포넌트는 승인된 대상/축을 열거하고 CVA의 variants/defaultVariants를 사용한다."
+            }
+          ],
+          "limits": "This is a review decision only. No source was edited and no runtime or visual verification was run."
+        },
+        "actionMatches": true,
+        "safeMissingPolicy": false,
+        "citationChecks": [
+          {
+            "kind": "evidence",
+            "path": "owner.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "src/view.tsx",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "src/view.tsx",
+            "exact": true
+          },
+          {
+            "kind": "knowledge",
+            "path": "learning/tailwind-team-authorship.md",
+            "exact": true
+          },
+          {
+            "kind": "knowledge",
+            "path": "learning/tailwind-team-authorship.md",
+            "exact": true
+          }
+        ],
+        "exactCitations": true,
+        "semanticStatus": "requires-human-review",
+        "inputsUnchanged": true,
+        "environmentFailure": null,
+        "complete": true,
+        "toolCalls": 6,
+        "searchCalls": 1
+      }
+    },
+    {
+      "id": "style-unadopted-fs-search",
+      "case": "style-unadopted",
+      "arm": "fs-search",
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 19.93,
+        "completedTurns": 1,
+        "threadId": "01a11b03-4b89-7c52-9c04-e53d8eae56fb",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 67955,
+          "cached_input_tokens": 50432,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 729,
+          "reasoning_output_tokens": 105,
+          "total_tokens": 68684,
+          "uncached_input_tokens": 17523
+        },
+        "cumulativeUsage": {
+          "input_tokens": 67955,
+          "cached_input_tokens": 50432,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 729,
+          "reasoning_output_tokens": 105
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "keep",
+          "reason": "The owner explicitly declined the team authorship policy and allowed complete literal class mapping. The view uses a styles object for fixed classes and selects complete class strings for tone and size. Tailwind being installed does not justify mandating CVA or banning that object. Keeping the code also avoids a rewrite the owner did not request.",
+          "alternative": "Adopt a scoped class authoring policy later if the owner wants one; that would require an explicit decision and migration work.",
+          "question": null,
+          "evidence": [
+            {
+              "path": "task.md",
+              "quote": "A reviewer proposes banning the styles object and mandating CVA merely because Tailwind is installed."
+            },
+            {
+              "path": "owner.md",
+              "quote": "We have explicitly NOT adopted the library team authorship policy. Complete literal class mapping is allowed. Preserve current palette; no request for a style rewrite."
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "const styles = {root: 'inline-flex items-center rounded'};"
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "${tone === 'primary' ? 'bg-blue-600' : 'bg-gray-100'} ${size === 'small' ? 'px-2' : 'px-4'}"
+            }
+          ],
+          "knowledge": [
+            {
+              "path": "learning/tailwind-team-authorship.md",
+              "quote": "객체 매핑 자체는 Tailwind에서 허용되며 위의 제한은 팀 선호다."
+            },
+            {
+              "path": "learning/tailwind-team-authorship.md",
+              "quote": "팀 정책을 채택하지 않은 프로젝트, 단순 boolean 토글, 일반 데이터 객체에는 객체 금지나 CVA를 강제하지 않는다."
+            }
+          ],
+          "limits": "This is a review of the proposed style rule and inspected code only; no application behavior or rendering was verified."
+        },
+        "actionMatches": true,
+        "safeMissingPolicy": false,
+        "citationChecks": [
+          {
+            "kind": "evidence",
+            "path": "task.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "owner.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "src/view.tsx",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "src/view.tsx",
+            "exact": true
+          },
+          {
+            "kind": "knowledge",
+            "path": "learning/tailwind-team-authorship.md",
+            "exact": true
+          },
+          {
+            "kind": "knowledge",
+            "path": "learning/tailwind-team-authorship.md",
+            "exact": true
+          }
+        ],
+        "exactCitations": true,
+        "semanticStatus": "requires-human-review",
+        "inputsUnchanged": true,
+        "environmentFailure": null,
+        "complete": true,
+        "toolCalls": 6,
+        "searchCalls": 1
+      }
+    },
+    {
+      "id": "cross-device-lock-fs-search",
+      "case": "cross-device-lock",
+      "arm": "fs-search",
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 31.763,
+        "completedTurns": 1,
+        "threadId": "01a11b03-83ba-71f2-b897-fdd664fd0114",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 72778,
+          "cached_input_tokens": 58752,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 860,
+          "reasoning_output_tokens": 229,
+          "total_tokens": 73638,
+          "uncached_input_tokens": 14026
+        },
+        "cumulativeUsage": {
+          "input_tokens": 72778,
+          "cached_input_tokens": 58752,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 860,
+          "reasoning_output_tokens": 229
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "change",
+          "reason": "The proposal cannot meet the owner’s requirement. The code locks a browser request while it sends POST /buy; that lock does not coordinate two devices or establish that only one purchase is accepted server-side. Reject the proposal to omit server coordination.",
+          "alternative": "Keep the browser lock if local request serialization is useful, but enforce the one-accepted-purchase rule atomically on the server. The purchase identity and server mechanism must be defined before implementation.",
+          "question": null,
+          "evidence": [
+            {
+              "path": "task.md",
+              "quote": "A proposal treats this browser lock as the complete cross-device duplicate prevention mechanism and omits server coordination."
+            },
+            {
+              "path": "owner.md",
+              "quote": "Customers may purchase concurrently from two distinct devices. At most one purchase must be accepted server-side. Server implementation and deduplication details are unavailable."
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "return navigator.locks.request('purchase', () => fetch('/buy', {"
+            }
+          ],
+          "knowledge": [
+            {
+              "path": "learning/web-api-workers-and-coordination.md",
+              "quote": "Web Locks는 해당 브라우저 저장 문맥의 공유 자원 조정이며 서버·여러 기기 전체를 잠그는 분산 잠금으로 해석하지 않는다."
+            }
+          ],
+          "limits": "This assesses the scoped proposal from inspected files. Server behavior and the intended definition of a duplicate are unknown; no implementation or runtime verification was performed."
+        },
+        "actionMatches": false,
+        "safeMissingPolicy": false,
+        "citationChecks": [
+          {
+            "kind": "evidence",
+            "path": "task.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "owner.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "src/view.tsx",
+            "exact": true
+          },
+          {
+            "kind": "knowledge",
+            "path": "learning/web-api-workers-and-coordination.md",
+            "exact": true
+          }
+        ],
+        "exactCitations": true,
+        "semanticStatus": "requires-human-review",
+        "inputsUnchanged": true,
+        "environmentFailure": null,
+        "complete": true,
+        "toolCalls": 7,
+        "searchCalls": 1
+      }
+    },
+    {
+      "id": "cross-device-lock-ordinary",
+      "case": "cross-device-lock",
+      "arm": "ordinary",
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 18.492,
+        "completedTurns": 1,
+        "threadId": "01a11b03-995f-79c0-ab69-40cd98374051",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 29870,
+          "cached_input_tokens": 22912,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 588,
+          "reasoning_output_tokens": 234,
+          "total_tokens": 30458,
+          "uncached_input_tokens": 6958
+        },
+        "cumulativeUsage": {
+          "input_tokens": 29870,
+          "cached_input_tokens": 22912,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 588,
+          "reasoning_output_tokens": 234
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "change",
+          "reason": "The proposal conflicts with the owner’s requirement. The code uses a browser lock around a POST to /buy; that lock cannot coordinate purchases made from two distinct devices. Preventing both purchases from being accepted requires a server-side decision.",
+          "alternative": "Keep the browser lock to limit duplicate requests from the same browser, but add server-side coordination before treating duplicate prevention as complete. This adds server work; the available files do not show which mechanism fits the purchase system.",
+          "question": null,
+          "evidence": [
+            {
+              "path": "task.md",
+              "quote": "A proposal treats this browser lock as the complete cross-device duplicate prevention mechanism and omits server coordination."
+            },
+            {
+              "path": "owner.md",
+              "quote": "Customers may purchase concurrently from two distinct devices. At most one purchase must be accepted server-side. Server implementation and deduplication details are unavailable."
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "return navigator.locks.request('purchase', () => fetch('/buy', {"
+            }
+          ],
+          "knowledge": [],
+          "limits": "The server implementation was not supplied, so its current behavior and a suitable deduplication design cannot be verified. No code was run or changed."
+        },
+        "actionMatches": false,
+        "safeMissingPolicy": false,
+        "citationChecks": [
+          {
+            "kind": "evidence",
+            "path": "task.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "owner.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "src/view.tsx",
+            "exact": true
+          }
+        ],
+        "exactCitations": true,
+        "semanticStatus": "requires-human-review",
+        "inputsUnchanged": true,
+        "environmentFailure": null,
+        "complete": true,
+        "toolCalls": 3,
+        "searchCalls": 0
+      }
+    },
+    {
+      "id": "compound-simple-ordinary",
+      "case": "compound-simple",
+      "arm": "ordinary",
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 15.842,
+        "completedTurns": 1,
+        "threadId": "01a11b03-e1b5-7360-8483-ced56abb790f",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 44652,
+          "cached_input_tokens": 23040,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 476,
+          "reasoning_output_tokens": 78,
+          "total_tokens": 45128,
+          "uncached_input_tokens": 21612
+        },
+        "cumulativeUsage": {
+          "input_tokens": 44652,
+          "cached_input_tokens": 23040,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 476,
+          "reasoning_output_tokens": 78
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "keep",
+          "reason": "The owner defines Badge as a single textual label with no shared state, nested composition, or customization requirement. The current component serves that scope. A Context provider would add structure without meeting a current need; that cost judgment is an inference from the stated scope and code, not a policy rule.",
+          "alternative": "Keep the label prop. Revisit compound components if a concrete composition or shared-state requirement appears.",
+          "question": null,
+          "evidence": [
+            {
+              "path": "task.md",
+              "quote": "A consistency proposal converts Badge to compound components with a Context provider."
+            },
+            {
+              "path": "owner.md",
+              "quote": "Badge has one textual label. No shared interactive state, nested composition, or customization requirement. This is the full usage scope."
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "export function Badge({label}: {label:string}) { return <span>{label}</span>; }"
+            }
+          ],
+          "knowledge": [],
+          "limits": "No additional knowledge library or private policy was supplied. This is a review of the stated scope and inspected code; no code was edited or run."
+        },
+        "actionMatches": true,
+        "safeMissingPolicy": false,
+        "citationChecks": [
+          {
+            "kind": "evidence",
+            "path": "task.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "owner.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "src/view.tsx",
+            "exact": true
+          }
+        ],
+        "exactCitations": true,
+        "semanticStatus": "requires-human-review",
+        "inputsUnchanged": true,
+        "environmentFailure": null,
+        "complete": true,
+        "toolCalls": 4,
+        "searchCalls": 0
+      }
+    },
+    {
+      "id": "different-change-reasons-fs-search",
+      "case": "different-change-reasons",
+      "arm": "fs-search",
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 24.334,
+        "completedTurns": 1,
+        "threadId": "01a11b03-fff5-7062-bfc5-34ad688c715d",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 90923,
+          "cached_input_tokens": 68096,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 960,
+          "reasoning_output_tokens": 215,
+          "total_tokens": 91883,
+          "uncached_input_tokens": 22827
+        },
+        "cumulativeUsage": {
+          "input_tokens": 90923,
+          "cached_input_tokens": 68096,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 960,
+          "reasoning_output_tokens": 215
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "keep",
+          "reason": "Do not adopt the proposed universal validator. The validators currently have the same threshold, but their policy owners and planned changes differ. A domain flag would add a branch and make each policy change pass through shared code for little benefit.",
+          "alternative": "Keep the two validators. Change eventValid to 16 when the next release takes effect, while checkoutValid stays at 18.",
+          "question": null,
+          "evidence": [
+            {
+              "path": "task.md",
+              "quote": "A refactor proposes merging both validators into a universal minimum-age validator with a domain flag to remove duplicate source."
+            },
+            {
+              "path": "owner.md",
+              "quote": "Commerce and event registration have separate policy owners. The event minimum becomes 16 next release; commerce stays 18. Neither policy depends on the other."
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "export const checkoutValid = (age: number) => age >= 18;\nexport const eventValid = (age: number) => age >= 18;"
+            }
+          ],
+          "knowledge": [
+            {
+              "path": "learning/code-quality-change-boundaries.md",
+              "quote": "동일한 업무 의미와 변경 이유를 공유하면 공통화의 이익이 있지만 비슷한 모양만 묶으면 옵션과 분기가 늘 수 있다. 가상의 미래 차이만으로 복제하거나 중복이라는 이유만으로 합치는 결론은 모두 피한다."
+            }
+          ],
+          "limits": "This reviews the proposed refactor only. The owner’s next release decision does not establish that the 16 threshold should be applied now. No code was changed or run."
+        },
+        "actionMatches": true,
+        "safeMissingPolicy": false,
+        "citationChecks": [
+          {
+            "kind": "evidence",
+            "path": "task.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "owner.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "src/view.tsx",
+            "exact": true
+          },
+          {
+            "kind": "knowledge",
+            "path": "learning/code-quality-change-boundaries.md",
+            "exact": true
+          }
+        ],
+        "exactCitations": true,
+        "semanticStatus": "requires-human-review",
+        "inputsUnchanged": true,
+        "environmentFailure": null,
+        "complete": true,
+        "toolCalls": 4,
+        "searchCalls": 1
+      }
+    },
+    {
+      "id": "request-unknown-ordinary",
+      "case": "request-unknown",
+      "arm": "ordinary",
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 16.393,
+        "completedTurns": 1,
+        "threadId": "01a11b04-1f9f-7152-a313-eb45b4717702",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 29934,
+          "cached_input_tokens": 22912,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 726,
+          "reasoning_output_tokens": 342,
+          "total_tokens": 30660,
+          "uncached_input_tokens": 7022
+        },
+        "cumulativeUsage": {
+          "input_tokens": 29934,
+          "cached_input_tokens": 22912,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 726,
+          "reasoning_output_tokens": 342
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "keep",
+          "reason": "The current caller makes one order POST. A transport error can occur after the server receives the request, so automatic retries could create duplicate orders. That is a risk inferred from the proposed behavior, not a known outcome for this server. The owner has not supplied the server’s deduplication contract or permitted retries, and requires caller input and headers to remain unchanged. Those facts do not support implementing three automatic retries now.",
+          "alternative": "Keep the current single attempt. Reconsider retries when the server contract establishes how repeated order requests are handled and which retries are permitted.",
+          "question": null,
+          "evidence": [
+            {
+              "path": "task.md",
+              "quote": "A proposed resilience refactor retries the order POST automatically three times after any transport error."
+            },
+            {
+              "path": "owner.md",
+              "quote": "The server deduplication/idempotency contract and permitted retries have not been supplied. Caller input and headers must remain unchanged."
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "const res = await fetch('/orders', {method:'POST', headers, body:JSON.stringify(input)});"
+            }
+          ],
+          "knowledge": [],
+          "limits": "The server contract was unavailable. No source was changed, and no application code or verification was run."
+        },
+        "actionMatches": true,
+        "safeMissingPolicy": false,
+        "citationChecks": [
+          {
+            "kind": "evidence",
+            "path": "task.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "owner.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "src/view.tsx",
+            "exact": true
+          }
+        ],
+        "exactCitations": true,
+        "semanticStatus": "requires-human-review",
+        "inputsUnchanged": true,
+        "environmentFailure": null,
+        "complete": true,
+        "toolCalls": 3,
+        "searchCalls": 0
+      }
+    },
+    {
+      "id": "cross-device-lock-raw",
+      "case": "cross-device-lock",
+      "arm": "raw",
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 27.453,
+        "completedTurns": 1,
+        "threadId": "01a11b04-5f24-7671-8af7-7544d02a05be",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 92938,
+          "cached_input_tokens": 69760,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1057,
+          "reasoning_output_tokens": 140,
+          "total_tokens": 93995,
+          "uncached_input_tokens": 23178
+        },
+        "cumulativeUsage": {
+          "input_tokens": 92938,
+          "cached_input_tokens": 69760,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1057,
+          "reasoning_output_tokens": 140
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "change",
+          "reason": "Reject the proposal to treat the browser lock as complete cross-device duplicate prevention. The owner requires at most one server-side acceptance when purchases occur on two devices. The shown code wraps a POST in a browser lock; it cannot establish that server-side guarantee.",
+          "alternative": "Keep the existing lock if local request serialization is useful, but require server-side coordination that atomically accepts at most one purchase for the applicable purchase identity. Its design cannot be assessed from the available files.",
+          "question": null,
+          "evidence": [
+            {
+              "path": "task.md",
+              "quote": "A proposal treats this browser lock as the complete cross-device duplicate prevention mechanism and omits server coordination."
+            },
+            {
+              "path": "owner.md",
+              "quote": "Customers may purchase concurrently from two distinct devices. At most one purchase must be accepted server-side. Server implementation and deduplication details are unavailable."
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "return navigator.locks.request('purchase', () => fetch('/buy', {"
+            }
+          ],
+          "knowledge": [
+            {
+              "path": "learning/web-api-workers-and-coordination.md",
+              "quote": "Web Locks는 해당 브라우저 저장 문맥의 공유 자원 조정이며 서버·여러 기기 전체를 잠그는 분산 잠금으로 해석하지 않는다."
+            }
+          ],
+          "limits": "This is a scoped review of the inspected files. Server behavior and the purchase identity are unknown; no application code was run."
+        },
+        "actionMatches": false,
+        "safeMissingPolicy": false,
+        "citationChecks": [
+          {
+            "kind": "evidence",
+            "path": "task.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "owner.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "src/view.tsx",
+            "exact": true
+          },
+          {
+            "kind": "knowledge",
+            "path": "learning/web-api-workers-and-coordination.md",
+            "exact": true
+          }
+        ],
+        "exactCitations": true,
+        "semanticStatus": "requires-human-review",
+        "inputsUnchanged": true,
+        "environmentFailure": null,
+        "complete": true,
+        "toolCalls": 10,
+        "searchCalls": 0
+      }
+    },
+    {
+      "id": "request-unknown-fs-search",
+      "case": "request-unknown",
+      "arm": "fs-search",
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 24.898,
+        "completedTurns": 1,
+        "threadId": "01a11b04-5f9a-7c63-b252-39ef52104c3c",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 72674,
+          "cached_input_tokens": 59008,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 915,
+          "reasoning_output_tokens": 271,
+          "total_tokens": 73589,
+          "uncached_input_tokens": 13666
+        },
+        "cumulativeUsage": {
+          "input_tokens": 72674,
+          "cached_input_tokens": 59008,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 915,
+          "reasoning_output_tokens": 271
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "keep",
+          "reason": "Do not implement the proposed automatic retries now. The code makes one order POST, and the owner has not supplied a server deduplication contract or permission to retry. A transport error alone does not establish whether the server accepted the order, so retrying could create a duplicate. This is a risk inferred from the missing contract, not an observed server behavior.",
+          "alternative": "Keep the current request. If retries become a requirement, first establish the server’s idempotency and permitted retry contract, then add narrowly defined retries. That requires server coordination and verification of actual send counts.",
+          "question": null,
+          "evidence": [
+            {
+              "path": "task.md",
+              "quote": "A proposed resilience refactor retries the order POST automatically three times after any transport error."
+            },
+            {
+              "path": "owner.md",
+              "quote": "The server deduplication/idempotency contract and permitted retries have not been supplied. Caller input and headers must remain unchanged."
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "const res = await fetch('/orders', {method:'POST', headers, body:JSON.stringify(input)});"
+            }
+          ],
+          "knowledge": [
+            {
+              "path": "learning/request-policy-boundaries.md",
+              "quote": "부작용 요청의 재시도는 서버의 중복 방지 계약을 확인한다. 일괄 자동 재시도는 기본 선택이 아니다."
+            }
+          ],
+          "limits": "Only the supplied browser caller and request were reviewed. Server behavior and runtime outcomes were not verified."
+        },
+        "actionMatches": true,
+        "safeMissingPolicy": false,
+        "citationChecks": [
+          {
+            "kind": "evidence",
+            "path": "task.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "owner.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "src/view.tsx",
+            "exact": true
+          },
+          {
+            "kind": "knowledge",
+            "path": "learning/request-policy-boundaries.md",
+            "exact": true
+          }
+        ],
+        "exactCitations": true,
+        "semanticStatus": "requires-human-review",
+        "inputsUnchanged": true,
+        "environmentFailure": null,
+        "complete": true,
+        "toolCalls": 7,
+        "searchCalls": 1
+      }
+    },
+    {
+      "id": "compound-simple-fs-search",
+      "case": "compound-simple",
+      "arm": "fs-search",
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 20.713,
+        "completedTurns": 1,
+        "threadId": "01a11b04-c118-7f00-930a-613479ec114c",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 81850,
+          "cached_input_tokens": 63360,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 698,
+          "reasoning_output_tokens": 82,
+          "total_tokens": 82548,
+          "uncached_input_tokens": 18490
+        },
+        "cumulativeUsage": {
+          "input_tokens": 81850,
+          "cached_input_tokens": 63360,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 698,
+          "reasoning_output_tokens": 82
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "keep",
+          "reason": "The owner defines the full scope as one textual label with no shared state or nested composition. The current Badge accepts that label directly and renders it. For this scope, a compound API and Context provider would add a composition contract without serving a stated requirement.",
+          "alternative": "Keep the label prop. Reconsider compound components if a concrete need for shared state or caller-controlled composition arises.",
+          "question": null,
+          "evidence": [
+            {
+              "path": "task.md",
+              "quote": "A consistency proposal converts Badge to compound components with a Context provider. Assess whether this serves the current requirements."
+            },
+            {
+              "path": "owner.md",
+              "quote": "Badge has one textual label. No shared interactive state, nested composition, or customization requirement. This is the full usage scope."
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "export function Badge({label}: {label:string}) { return <span>{label}</span>; }"
+            }
+          ],
+          "knowledge": [
+            {
+              "path": "learning/react-compound-component-boundaries.md",
+              "quote": "단순 props만으로 충분한 컴포넌트에 패턴을 강제하거나 원문의 클릭 div를 접근성 구현으로 복사하지 않는다."
+            },
+            {
+              "path": "learning/code-quality-context-and-contracts.md",
+              "quote": "유지·가까이 배치·인라인·새 경계 도입 중 실제 변경 목적에 맞는 선택을 한다. 이는 조건부 판단 자료이며 필수 규칙이나 자동 수정 지시가 아니다."
+            }
+          ],
+          "limits": "This is a scoped review of the supplied code and owner decision. No source was edited or application behavior verified."
+        },
+        "actionMatches": true,
+        "safeMissingPolicy": false,
+        "citationChecks": [
+          {
+            "kind": "evidence",
+            "path": "task.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "owner.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "src/view.tsx",
+            "exact": true
+          },
+          {
+            "kind": "knowledge",
+            "path": "learning/react-compound-component-boundaries.md",
+            "exact": true
+          },
+          {
+            "kind": "knowledge",
+            "path": "learning/code-quality-context-and-contracts.md",
+            "exact": true
+          }
+        ],
+        "exactCitations": true,
+        "semanticStatus": "requires-human-review",
+        "inputsUnchanged": true,
+        "environmentFailure": null,
+        "complete": true,
+        "toolCalls": 7,
+        "searchCalls": 2
+      }
+    },
+    {
+      "id": "cross-device-lock-oracle",
+      "case": "cross-device-lock",
+      "arm": "oracle",
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 23.23,
+        "completedTurns": 1,
+        "threadId": "01a11b04-ca7a-7513-83bc-231024847adb",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 62420,
+          "cached_input_tokens": 53888,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 772,
+          "reasoning_output_tokens": 177,
+          "total_tokens": 63192,
+          "uncached_input_tokens": 8532
+        },
+        "cumulativeUsage": {
+          "input_tokens": 62420,
+          "cached_input_tokens": 53888,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 772,
+          "reasoning_output_tokens": 177
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "change",
+          "reason": "The proposal cannot meet the owner's requirement as stated. The code uses a browser lock around a POST request; that lock does not coordinate purchases from two distinct devices. This establishes a gap in the proposed mechanism, not that duplicate purchases currently occur.",
+          "alternative": "Keep the browser lock if it helps coordinate requests within a browser, but require a server-side mechanism that accepts at most one purchase for the relevant purchase identity. The server design cannot be selected from the available information.",
+          "question": null,
+          "evidence": [
+            {
+              "path": "owner.md",
+              "quote": "Customers may purchase concurrently from two distinct devices. At most one purchase must be accepted server-side. Server implementation and deduplication details are unavailable."
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "return navigator.locks.request('purchase', () => fetch('/buy', {"
+            }
+          ],
+          "knowledge": [
+            {
+              "path": "learning/web-api-workers-and-coordination.md",
+              "quote": "Web Locks는 해당 브라우저 저장 문맥의 공유 자원 조정이며 서버·여러 기기 전체를 잠그는 분산 잠금으로 해석하지 않는다."
+            }
+          ],
+          "limits": "The server implementation was unavailable, so this review does not determine whether it already prevents duplicates. No code was run or changed."
+        },
+        "actionMatches": false,
+        "safeMissingPolicy": false,
+        "citationChecks": [
+          {
+            "kind": "evidence",
+            "path": "owner.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "src/view.tsx",
+            "exact": true
+          },
+          {
+            "kind": "knowledge",
+            "path": "learning/web-api-workers-and-coordination.md",
+            "exact": true
+          }
+        ],
+        "exactCitations": true,
+        "semanticStatus": "requires-human-review",
+        "inputsUnchanged": true,
+        "environmentFailure": null,
+        "complete": true,
+        "toolCalls": 7,
+        "searchCalls": 0
+      }
+    },
+    {
+      "id": "different-change-reasons-ordinary",
+      "case": "different-change-reasons",
+      "arm": "ordinary",
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 16.27,
+        "completedTurns": 1,
+        "threadId": "01a11b05-1220-70e3-8c63-a7c3e3d9b607",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 29945,
+          "cached_input_tokens": 22912,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 641,
+          "reasoning_output_tokens": 283,
+          "total_tokens": 30586,
+          "uncached_input_tokens": 7033
+        },
+        "cumulativeUsage": {
+          "input_tokens": 29945,
+          "cached_input_tokens": 22912,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 641,
+          "reasoning_output_tokens": 283
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "keep",
+          "reason": "The two validators currently use the same threshold, but their policy owners and planned thresholds differ. A universal validator with a domain flag would add branching and a shared change point without a clear benefit from removing these two short expressions. The owner’s next-release decision does not call for changing today’s event threshold.",
+          "alternative": "Keep the separate validators and update eventValid to 16 for the next release.",
+          "question": null,
+          "evidence": [
+            {
+              "path": "owner.md",
+              "quote": "Commerce and event registration have separate policy owners. The event minimum becomes 16 next release; commerce stays 18. Neither policy depends on the other."
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "export const checkoutValid = (age: number) => age >= 18;\nexport const eventValid = (age: number) => age >= 18;"
+            }
+          ],
+          "knowledge": [],
+          "limits": "No additional knowledge library was supplied. This is a review of the proposed refactor; no code was changed or run."
+        },
+        "actionMatches": true,
+        "safeMissingPolicy": false,
+        "citationChecks": [
+          {
+            "kind": "evidence",
+            "path": "owner.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "src/view.tsx",
+            "exact": true
+          }
+        ],
+        "exactCitations": true,
+        "semanticStatus": "requires-human-review",
+        "inputsUnchanged": true,
+        "environmentFailure": null,
+        "complete": true,
+        "toolCalls": 3,
+        "searchCalls": 0
+      }
+    },
+    {
+      "id": "style-unadopted-ordinary",
+      "case": "style-unadopted",
+      "arm": "ordinary",
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 14.108,
+        "completedTurns": 1,
+        "threadId": "01a11b05-254b-71a3-9730-9345f5884a7c",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 29985,
+          "cached_input_tokens": 22912,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 461,
+          "reasoning_output_tokens": 96,
+          "total_tokens": 30446,
+          "uncached_input_tokens": 7073
+        },
+        "cumulativeUsage": {
+          "input_tokens": 29985,
+          "cached_input_tokens": 22912,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 461,
+          "reasoning_output_tokens": 96
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "keep",
+          "reason": "The proposed ban and CVA mandate conflict with the owner’s current decision. This component uses a small literal class mapping and direct tone and size choices. Tailwind’s presence alone does not establish that this scoped code needs a different variant system.",
+          "alternative": "If the component gains enough variants that its class choices become hard to maintain, reassess whether CVA would help. There is no current request to pay the cost of that rewrite.",
+          "question": null,
+          "evidence": [
+            {
+              "path": "task.md",
+              "quote": "A reviewer proposes banning the styles object and mandating CVA merely because Tailwind is installed."
+            },
+            {
+              "path": "owner.md",
+              "quote": "Complete literal class mapping is allowed. Preserve current palette; no request for a style rewrite."
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "const styles = {root: 'inline-flex items-center rounded'};"
+            }
+          ],
+          "knowledge": [],
+          "limits": "No additional knowledge library or private policy was supplied. This is a review of the inspected files only; no application code or verification was run."
+        },
+        "actionMatches": true,
+        "safeMissingPolicy": false,
+        "citationChecks": [
+          {
+            "kind": "evidence",
+            "path": "task.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "owner.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "src/view.tsx",
+            "exact": true
+          }
+        ],
+        "exactCitations": true,
+        "semanticStatus": "requires-human-review",
+        "inputsUnchanged": true,
+        "environmentFailure": null,
+        "complete": true,
+        "toolCalls": 3,
+        "searchCalls": 0
+      }
+    },
+    {
+      "id": "style-adopted-oracle",
+      "case": "style-adopted",
+      "arm": "oracle",
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 26.315,
+        "completedTurns": 1,
+        "threadId": "01a11b05-51bc-7500-b799-6e92740831a2",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 62555,
+          "cached_input_tokens": 54016,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1003,
+          "reasoning_output_tokens": 372,
+          "total_tokens": 63558,
+          "uncached_input_tokens": 8539
+        },
+        "cumulativeUsage": {
+          "input_tokens": 62555,
+          "cached_input_tokens": 54016,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1003,
+          "reasoning_output_tokens": 372
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "change",
+          "reason": "The owner adopted the team policy for src/view.tsx and both public variant axes. The component puts a fixed class string in a styles object and selects tone and size classes with JSX conditionals. Under the adopted policy, put fixed classes directly in className and define tone and size as CVA variants/defaultVariants, then use the returned classes in JSX. Keep the current blue and gray palette, spacing, and button behavior.",
+          "alternative": "Keeping the current code avoids CVA setup and is a small, readable implementation, but it conflicts with the owner’s adopted authorship decision.",
+          "question": null,
+          "evidence": [
+            {
+              "path": "owner.md",
+              "quote": "Adopt the team authorship policy in our knowledge library for src/view.tsx, including both public variant axes. Preserve the existing palette and behavior. No theme redesign."
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "const styles = {root: 'inline-flex items-center rounded'};"
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "${tone === 'primary' ? 'bg-blue-600' : 'bg-gray-100'} ${size === 'small' ? 'px-2' : 'px-4'}"
+            }
+          ],
+          "knowledge": [
+            {
+              "path": "learning/tailwind-team-authorship.md",
+              "quote": "고정 클래스는 해당 JSX className에 직접 작성한다."
+            },
+            {
+              "path": "learning/tailwind-team-authorship.md",
+              "quote": "여러 공개 prop이 스타일을 변형하는 재사용 컴포넌트는 승인된 대상/축을 열거하고 CVA의 variants/defaultVariants를 사용한다."
+            }
+          ],
+          "limits": "This is a scoped review. I did not edit source, run checks, or verify whether CVA is available in the project."
+        },
+        "actionMatches": true,
+        "safeMissingPolicy": false,
+        "citationChecks": [
+          {
+            "kind": "evidence",
+            "path": "owner.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "src/view.tsx",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "src/view.tsx",
+            "exact": true
+          },
+          {
+            "kind": "knowledge",
+            "path": "learning/tailwind-team-authorship.md",
+            "exact": true
+          },
+          {
+            "kind": "knowledge",
+            "path": "learning/tailwind-team-authorship.md",
+            "exact": true
+          }
+        ],
+        "exactCitations": true,
+        "semanticStatus": "requires-human-review",
+        "inputsUnchanged": true,
+        "environmentFailure": null,
+        "complete": true,
+        "toolCalls": 6,
+        "searchCalls": 0
+      }
+    },
+    {
+      "id": "style-revised-oracle",
+      "case": "style-revised",
+      "arm": "oracle",
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 21.517,
+        "completedTurns": 1,
+        "threadId": "01a11b05-5c79-7693-b47d-c0850261de66",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 61361,
+          "cached_input_tokens": 46336,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 725,
+          "reasoning_output_tokens": 215,
+          "total_tokens": 62086,
+          "uncached_input_tokens": 15025
+        },
+        "cumulativeUsage": {
+          "input_tokens": 61361,
+          "cached_input_tokens": 46336,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 725,
+          "reasoning_output_tokens": 215
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "keep",
+          "reason": "The current owner decision explicitly exempts src/view.tsx from the team authorship policy, requires complete class mappings, and preserves the palette. The component selects complete classes for both props and keeps its existing colors. There is no scoped requirement that calls for a change.",
+          "alternative": "Inlining the root classes and converting tone and size to CVA would add churn and possible dependency work while conflicting with the current exemption. Reconsider that refactor only if the owner changes the decision.",
+          "question": null,
+          "evidence": [
+            {
+              "path": "owner.md",
+              "quote": "2026-10-08 CURRENT, explicitly supersedes the above for this file: this externally maintained component is exempt. Keep complete class mappings; do not enforce CVA. Preserve the palette."
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "const styles = {root: 'inline-flex items-center rounded'};"
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "tone === 'primary' ? 'bg-blue-600' : 'bg-gray-100'"
+            }
+          ],
+          "knowledge": [
+            {
+              "path": "learning/tailwind-team-authorship.md",
+              "quote": "적용 조건: Tailwind를 사용하고 사용자가 이 팀의 작성 규칙을 채택한 변경 범위."
+            },
+            {
+              "path": "learning/tailwind-team-authorship.md",
+              "quote": "객체 매핑 자체는 Tailwind에서 허용되며 위의 제한은 팀 선호다."
+            }
+          ],
+          "limits": "Reviewed only the requested scope and the relevant published reference. No code was changed or run."
+        },
+        "actionMatches": true,
+        "safeMissingPolicy": false,
+        "citationChecks": [
+          {
+            "kind": "evidence",
+            "path": "owner.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "src/view.tsx",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "src/view.tsx",
+            "exact": true
+          },
+          {
+            "kind": "knowledge",
+            "path": "learning/tailwind-team-authorship.md",
+            "exact": true
+          },
+          {
+            "kind": "knowledge",
+            "path": "learning/tailwind-team-authorship.md",
+            "exact": true
+          }
+        ],
+        "exactCitations": true,
+        "semanticStatus": "requires-human-review",
+        "inputsUnchanged": true,
+        "environmentFailure": null,
+        "complete": true,
+        "toolCalls": 5,
+        "searchCalls": 0
+      }
+    },
+    {
+      "id": "request-unknown-raw",
+      "case": "request-unknown",
+      "arm": "raw",
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 27.013,
+        "completedTurns": 1,
+        "threadId": "01a11b05-b09a-7911-bd12-2b01cd2953a5",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 64822,
+          "cached_input_tokens": 55040,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1004,
+          "reasoning_output_tokens": 262,
+          "total_tokens": 65826,
+          "uncached_input_tokens": 9782
+        },
+        "cumulativeUsage": {
+          "input_tokens": 64822,
+          "cached_input_tokens": 55040,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1004,
+          "reasoning_output_tokens": 262
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "keep",
+          "reason": "The proposed three automatic retries could create duplicate orders: a transport error does not establish whether the server accepted the POST. That is an inference about the failure case, not a verified server behavior. The current caller sends one request, and the owner has not supplied a deduplication contract or permitted retry conditions. Keep the scoped code as it is for now.",
+          "alternative": "If retries become a requirement, first establish the server’s idempotency and permitted retry contract. Then limit retries to those conditions while preserving caller input and headers.",
+          "question": null,
+          "evidence": [
+            {
+              "path": "task.md",
+              "quote": "A proposed resilience refactor retries the order POST automatically three times after any transport error. Decide whether to implement that proposal now."
+            },
+            {
+              "path": "owner.md",
+              "quote": "The server deduplication/idempotency contract and permitted retries have not been supplied. Caller input and headers must remain unchanged."
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "const res = await fetch('/orders', {method:'POST', headers, body:JSON.stringify(input)});"
+            }
+          ],
+          "knowledge": [
+            {
+              "path": "learning/request-policy-boundaries.md",
+              "quote": "부작용 요청의 재시도는 서버의 중복 방지 계약을 확인한다. 일괄 자동 재시도는 기본 선택이 아니다."
+            }
+          ],
+          "limits": "Reviewed only the proposed scoped change and inspected files. No application code or verification was run."
+        },
+        "actionMatches": true,
+        "safeMissingPolicy": false,
+        "citationChecks": [
+          {
+            "kind": "evidence",
+            "path": "task.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "owner.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "src/view.tsx",
+            "exact": true
+          },
+          {
+            "kind": "knowledge",
+            "path": "learning/request-policy-boundaries.md",
+            "exact": true
+          }
+        ],
+        "exactCitations": true,
+        "semanticStatus": "requires-human-review",
+        "inputsUnchanged": true,
+        "environmentFailure": null,
+        "complete": true,
+        "toolCalls": 8,
+        "searchCalls": 0
+      }
+    },
+    {
+      "id": "style-unknown-oracle",
+      "case": "style-unknown",
+      "arm": "oracle",
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 21.425,
+        "completedTurns": 1,
+        "threadId": "01a11b05-b88a-7c40-a32d-7fcf7f4d39c3",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 46106,
+          "cached_input_tokens": 38016,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 776,
+          "reasoning_output_tokens": 148,
+          "total_tokens": 46882,
+          "uncached_input_tokens": 8090
+        },
+        "cumulativeUsage": {
+          "input_tokens": 46106,
+          "cached_input_tokens": 38016,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 776,
+          "reasoning_output_tokens": 148
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "ask",
+          "reason": "The owner has not decided whether to adopt the library’s authorship policy, so enforcing it on this component needs a decision. The component currently stores a fixed class string in a styles object and selects classes for two public props. Those are facts from the code; whether to replace that pattern with inline classes and CVA depends on adopting the conditional team policy. The palette decision is already settled.",
+          "alternative": "Keep the existing code for now. Adopting the policy would require a component rewrite and, for its tone and size variants, CVA and a scoped check; that cost is only justified if the team wants the policy here.",
+          "question": "Should the library’s class authorship policy apply to src/view.tsx?",
+          "evidence": [
+            {
+              "path": "task.md",
+              "quote": "Consider enforcing the library team style policy on this component. Determine the next action."
+            },
+            {
+              "path": "owner.md",
+              "quote": "The team has not decided whether to adopt the knowledge library authorship policy. Palette must remain unchanged."
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "const styles = {root: 'inline-flex items-center rounded'};"
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "${tone === 'primary' ? 'bg-blue-600' : 'bg-gray-100'} ${size === 'small' ? 'px-2' : 'px-4'}"
+            }
+          ],
+          "knowledge": [
+            {
+              "path": "learning/tailwind-team-authorship.md",
+              "quote": "적용 조건: Tailwind를 사용하고 사용자가 이 팀의 작성 규칙을 채택한 변경 범위. 패키지 존재나 className만으로 전역 강제하지 않는다."
+            },
+            {
+              "path": "learning/tailwind-team-authorship.md",
+              "quote": "여러 공개 prop이 스타일을 변형하는 재사용 컴포넌트는 승인된 대상/축을 열거하고 CVA의 variants/defaultVariants를 사용한다."
+            }
+          ],
+          "limits": "No source was changed or code run. The reference is conditional guidance, not evidence that this project has adopted it."
+        },
+        "actionMatches": true,
+        "safeMissingPolicy": false,
+        "citationChecks": [
+          {
+            "kind": "evidence",
+            "path": "task.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "owner.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "src/view.tsx",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "src/view.tsx",
+            "exact": true
+          },
+          {
+            "kind": "knowledge",
+            "path": "learning/tailwind-team-authorship.md",
+            "exact": true
+          },
+          {
+            "kind": "knowledge",
+            "path": "learning/tailwind-team-authorship.md",
+            "exact": true
+          }
+        ],
+        "exactCitations": true,
+        "semanticStatus": "requires-human-review",
+        "inputsUnchanged": true,
+        "environmentFailure": null,
+        "complete": true,
+        "toolCalls": 5,
+        "searchCalls": 0
+      }
+    },
+    {
+      "id": "style-unadopted-oracle",
+      "case": "style-unadopted",
+      "arm": "oracle",
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 15.84,
+        "completedTurns": 1,
+        "threadId": "01a11b06-0c70-75a3-8d47-4441d4cb3e36",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 46191,
+          "cached_input_tokens": 29696,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 695,
+          "reasoning_output_tokens": 94,
+          "total_tokens": 46886,
+          "uncached_input_tokens": 16495
+        },
+        "cumulativeUsage": {
+          "input_tokens": 46191,
+          "cached_input_tokens": 29696,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 695,
+          "reasoning_output_tokens": 94
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "keep",
+          "reason": "The owner has explicitly declined the team authorship policy, allows complete literal class mapping, and has not requested a style rewrite. The component uses a small styles object and selects complete class strings for its tone and size props. Tailwind’s presence alone does not justify banning the object or mandating CVA.",
+          "alternative": "If the owner later adopts that policy for this component, inline the fixed classes and consider CVA for the two prop axes. That would add migration and maintenance work without an identified benefit for this scoped change.",
+          "question": null,
+          "evidence": [
+            {
+              "path": "task.md",
+              "quote": "A reviewer proposes banning the styles object and mandating CVA merely because Tailwind is installed."
+            },
+            {
+              "path": "owner.md",
+              "quote": "Current decision: We have explicitly NOT adopted the library team authorship policy. Complete literal class mapping is allowed. Preserve current palette; no request for a style rewrite."
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "const styles = {root: 'inline-flex items-center rounded'};"
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "${tone === 'primary' ? 'bg-blue-600' : 'bg-gray-100'} ${size === 'small' ? 'px-2' : 'px-4'}"
+            }
+          ],
+          "knowledge": [
+            {
+              "path": "learning/tailwind-team-authorship.md",
+              "quote": "적용 조건: Tailwind를 사용하고 사용자가 이 팀의 작성 규칙을 채택한 변경 범위. 패키지 존재나 className만으로 전역 강제하지 않는다."
+            },
+            {
+              "path": "learning/tailwind-team-authorship.md",
+              "quote": "팀 정책을 채택하지 않은 프로젝트, 단순 boolean 토글, 일반 데이터 객체에는 객체 금지나 CVA를 강제하지 않는다."
+            }
+          ],
+          "limits": "This is a review of the supplied scope. No source was edited and no application or verification code was run."
+        },
+        "actionMatches": true,
+        "safeMissingPolicy": false,
+        "citationChecks": [
+          {
+            "kind": "evidence",
+            "path": "task.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "owner.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "src/view.tsx",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "src/view.tsx",
+            "exact": true
+          },
+          {
+            "kind": "knowledge",
+            "path": "learning/tailwind-team-authorship.md",
+            "exact": true
+          },
+          {
+            "kind": "knowledge",
+            "path": "learning/tailwind-team-authorship.md",
+            "exact": true
+          }
+        ],
+        "exactCitations": true,
+        "semanticStatus": "requires-human-review",
+        "inputsUnchanged": true,
+        "environmentFailure": null,
+        "complete": true,
+        "toolCalls": 5,
+        "searchCalls": 0
+      }
+    },
+    {
+      "id": "style-adopted-ordinary",
+      "case": "style-adopted",
+      "arm": "ordinary",
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 22.057,
+        "completedTurns": 1,
+        "threadId": "01a11b06-1a40-73f1-babe-ad5fa0e9e8b4",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 60758,
+          "cached_input_tokens": 46336,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 684,
+          "reasoning_output_tokens": 145,
+          "total_tokens": 61442,
+          "uncached_input_tokens": 14422
+        },
+        "cumulativeUsage": {
+          "input_tokens": 60758,
+          "cached_input_tokens": 46336,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 684,
+          "reasoning_output_tokens": 145
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "ask",
+          "reason": "The owner adopted a team authorship policy for this file and both public variant axes. The current code handles tone and size inline, but whether that structure complies depends on the policy’s requirements. The policy was not supplied, so a change decision would be an inference.",
+          "alternative": "Keep the existing code while the policy is obtained. Reworking the variant structure without its requirements risks unnecessary changes; the owner also requires the palette and behavior to be preserved.",
+          "question": "Please provide the adopted team authorship policy, or the relevant excerpt for public variant axes.",
+          "evidence": [
+            {
+              "path": "owner.md",
+              "quote": "Adopt the team authorship policy in our knowledge library for src/view.tsx, including both public variant axes. Preserve the existing palette and behavior. No theme redesign."
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "export function Action({tone, size}: {tone: 'primary'|'quiet'; size: 'small'|'large'}) {"
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "return <button className={`${styles.root} ${tone === 'primary' ? 'bg-blue-600' : 'bg-gray-100'} ${size === 'small' ? 'px-2' : 'px-4'}`}>Save</button>;"
+            }
+          ],
+          "knowledge": [],
+          "limits": "No knowledge library was available in the supplied project. Source was not edited, and application behavior was not run or verified."
+        },
+        "actionMatches": false,
+        "safeMissingPolicy": true,
+        "citationChecks": [
+          {
+            "kind": "evidence",
+            "path": "owner.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "src/view.tsx",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "src/view.tsx",
+            "exact": true
+          }
+        ],
+        "exactCitations": true,
+        "semanticStatus": "requires-human-review",
+        "inputsUnchanged": true,
+        "environmentFailure": null,
+        "complete": true,
+        "toolCalls": 5,
+        "searchCalls": 0
+      }
+    },
+    {
+      "id": "style-unknown-ordinary",
+      "case": "style-unknown",
+      "arm": "ordinary",
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 18.032,
+        "completedTurns": 1,
+        "threadId": "01a11b06-4a50-7d33-bb9c-759cdce49b5a",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 45220,
+          "cached_input_tokens": 37888,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 786,
+          "reasoning_output_tokens": 346,
+          "total_tokens": 46006,
+          "uncached_input_tokens": 7332
+        },
+        "cumulativeUsage": {
+          "input_tokens": 45220,
+          "cached_input_tokens": 37888,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 786,
+          "reasoning_output_tokens": 346
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "ask",
+          "reason": "Enforcing the library authorship policy depends on a team decision that remains open. The component has palette classes, and the owner has decided the palette must remain unchanged. Without the policy text or an adoption decision, there is no supported scoped edit to make.",
+          "alternative": "Keep the component as it is while the team decides. This avoids a speculative style change and its review cost.",
+          "question": "Should the team adopt the library authorship policy for this component? If so, please provide the policy text and the specific change proposed.",
+          "evidence": [
+            {
+              "path": "task.md",
+              "quote": "Consider enforcing the library team style policy on this component. Determine the next action."
+            },
+            {
+              "path": "owner.md",
+              "quote": "The team has not decided whether to adopt the knowledge library authorship policy. Palette must remain unchanged."
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "tone === 'primary' ? 'bg-blue-600' : 'bg-gray-100'"
+            }
+          ],
+          "knowledge": [],
+          "limits": "No knowledge library was supplied or found in the inspected project, so its policy cannot be assessed. This is a source review only; no code was changed or run."
+        },
+        "actionMatches": true,
+        "safeMissingPolicy": false,
+        "citationChecks": [
+          {
+            "kind": "evidence",
+            "path": "task.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "owner.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "src/view.tsx",
+            "exact": true
+          }
+        ],
+        "exactCitations": true,
+        "semanticStatus": "requires-human-review",
+        "inputsUnchanged": true,
+        "environmentFailure": null,
+        "complete": true,
+        "toolCalls": 4,
+        "searchCalls": 0
+      }
+    },
+    {
+      "id": "different-change-reasons-raw",
+      "case": "different-change-reasons",
+      "arm": "raw",
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 36.601,
+        "completedTurns": 1,
+        "threadId": "01a11b06-7085-7da3-bb61-6265df4a61e5",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 102025,
+          "cached_input_tokens": 73984,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1141,
+          "reasoning_output_tokens": 198,
+          "total_tokens": 103166,
+          "uncached_input_tokens": 28041
+        },
+        "cumulativeUsage": {
+          "input_tokens": 102025,
+          "cached_input_tokens": 73984,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1141,
+          "reasoning_output_tokens": 198
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "keep",
+          "reason": "The proposed merge would couple policies with separate owners and different upcoming thresholds. The current functions are identical today, but that duplication is small and preserves each policy’s independent change boundary. Keeping them is a judgment based on the owner decision, not a claim that shared validators are always wrong.",
+          "alternative": "Keep the two validators. When the next release’s event policy takes effect, change eventValid to 16 while checkoutValid remains 18. Reconsider a shared helper only if a substantive rule is shown to change together across both domains.",
+          "question": null,
+          "evidence": [
+            {
+              "path": "task.md",
+              "quote": "A refactor proposes merging both validators into a universal minimum-age validator with a domain flag to remove duplicate source."
+            },
+            {
+              "path": "owner.md",
+              "quote": "Commerce and event registration have separate policy owners. The event minimum becomes 16 next release; commerce stays 18. Neither policy depends on the other."
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "export const checkoutValid = (age: number) => age >= 18;\nexport const eventValid = (age: number) => age >= 18;"
+            }
+          ],
+          "knowledge": [
+            {
+              "path": "learning/code-quality-change-boundaries.md",
+              "quote": "동일한 업무 의미와 변경 이유를 공유하면 공통화의 이익이 있지만 비슷한 모양만 묶으면 옵션과 분기가 늘 수 있다. 가상의 미래 차이만으로 복제하거나 중복이라는 이유만으로 합치는 결론은 모두 피한다."
+            },
+            {
+              "path": "learning/code-quality-context-and-contracts.md",
+              "quote": "모양만 비슷하고 변경 이유가 다르면 분리도 비교한다. 중복 횟수만으로 합치거나 복제하지 않는다."
+            }
+          ],
+          "limits": "This reviews only the proposed merge and inspected files. No code was changed or run; the next release date and rollout mechanism were not established."
+        },
+        "actionMatches": true,
+        "safeMissingPolicy": false,
+        "citationChecks": [
+          {
+            "kind": "evidence",
+            "path": "task.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "owner.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "src/view.tsx",
+            "exact": true
+          },
+          {
+            "kind": "knowledge",
+            "path": "learning/code-quality-change-boundaries.md",
+            "exact": true
+          },
+          {
+            "kind": "knowledge",
+            "path": "learning/code-quality-context-and-contracts.md",
+            "exact": true
+          }
+        ],
+        "exactCitations": true,
+        "semanticStatus": "requires-human-review",
+        "inputsUnchanged": true,
+        "environmentFailure": null,
+        "complete": true,
+        "toolCalls": 11,
+        "searchCalls": 0
+      }
+    },
+    {
+      "id": "style-unknown-fs-search",
+      "case": "style-unknown",
+      "arm": "fs-search",
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 27.326,
+        "completedTurns": 1,
+        "threadId": "01a11b06-90b8-7be0-a92a-f86638f23eae",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 90584,
+          "cached_input_tokens": 53504,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 980,
+          "reasoning_output_tokens": 213,
+          "total_tokens": 91564,
+          "uncached_input_tokens": 37080
+        },
+        "cumulativeUsage": {
+          "input_tokens": 90584,
+          "cached_input_tokens": 53504,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 980,
+          "reasoning_output_tokens": 213
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "ask",
+          "reason": "The component stores fixed classes in a styles object and selects complete class strings through the tone and size props. Those patterns would merit review under the library policy if the team adopts it for this component. The owner has not made that decision, so enforcement is premature. The palette decision is settled and needs no question.",
+          "alternative": "Keep the current code if the policy is not adopted. That avoids a CVA dependency and style-check setup for this component.",
+          "question": "Should the library team authorship policy apply to Action, including direct JSX placement of fixed classes and CVA variants for tone and size?",
+          "evidence": [
+            {
+              "path": "task.md",
+              "quote": "Consider enforcing the library team style policy on this component. Determine the next action."
+            },
+            {
+              "path": "owner.md",
+              "quote": "The team has not decided whether to adopt the knowledge library authorship policy. Palette must remain unchanged."
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "const styles = {root: 'inline-flex items-center rounded'};"
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "${tone === 'primary' ? 'bg-blue-600' : 'bg-gray-100'} ${size === 'small' ? 'px-2' : 'px-4'}"
+            }
+          ],
+          "knowledge": [
+            {
+              "path": "learning/tailwind-team-authorship.md",
+              "quote": "적용 조건: Tailwind를 사용하고 사용자가 이 팀의 작성 규칙을 채택한 변경 범위. 패키지 존재나 className만으로 전역 강제하지 않는다."
+            },
+            {
+              "path": "learning/tailwind-team-authorship.md",
+              "quote": "팀 정책을 채택하지 않은 프로젝트, 단순 boolean 토글, 일반 데이터 객체에는 객체 금지나 CVA를 강제하지 않는다."
+            }
+          ],
+          "limits": "This is a static review of the scoped files. No source was edited or application code run."
+        },
+        "actionMatches": true,
+        "safeMissingPolicy": false,
+        "citationChecks": [
+          {
+            "kind": "evidence",
+            "path": "task.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "owner.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "src/view.tsx",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "src/view.tsx",
+            "exact": true
+          },
+          {
+            "kind": "knowledge",
+            "path": "learning/tailwind-team-authorship.md",
+            "exact": true
+          },
+          {
+            "kind": "knowledge",
+            "path": "learning/tailwind-team-authorship.md",
+            "exact": true
+          }
+        ],
+        "exactCitations": true,
+        "semanticStatus": "requires-human-review",
+        "inputsUnchanged": true,
+        "environmentFailure": null,
+        "complete": true,
+        "toolCalls": 8,
+        "searchCalls": 1
+      }
+    },
+    {
+      "id": "style-unknown-raw",
+      "case": "style-unknown",
+      "arm": "raw",
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 21.706,
+        "completedTurns": 1,
+        "threadId": "01a11b06-fbb3-7d61-b5e5-dff48b62dfb7",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 67289,
+          "cached_input_tokens": 55552,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1034,
+          "reasoning_output_tokens": 198,
+          "total_tokens": 68323,
+          "uncached_input_tokens": 11737
+        },
+        "cumulativeUsage": {
+          "input_tokens": 67289,
+          "cached_input_tokens": 55552,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1034,
+          "reasoning_output_tokens": 198
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "ask",
+          "reason": "The owner has not decided whether to adopt the library policy, so enforcing it on this component depends on a material decision. The code has a fixed root class string and styling choices for both tone and size. Applying the policy would mean changing that structure and adding a policy check. The palette decision is already settled.",
+          "alternative": "Keep the component as written, with no new dependency or policy check. If the owner adopts the policy for this component, inline the fixed classes and consider CVA variants for tone and size while preserving the current colors.",
+          "question": "Should the library’s authorship policy be adopted for src/view.tsx?",
+          "evidence": [
+            {
+              "path": "owner.md",
+              "quote": "The team has not decided whether to adopt the knowledge library authorship policy. Palette must remain unchanged."
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "const styles = {root: 'inline-flex items-center rounded'};"
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "${tone === 'primary' ? 'bg-blue-600' : 'bg-gray-100'} ${size === 'small' ? 'px-2' : 'px-4'}"
+            }
+          ],
+          "knowledge": [
+            {
+              "path": "learning/tailwind-team-authorship.md",
+              "quote": "적용 조건: Tailwind를 사용하고 사용자가 이 팀의 작성 규칙을 채택한 변경 범위. 패키지 존재나 className만으로 전역 강제하지 않는다."
+            },
+            {
+              "path": "learning/tailwind-team-authorship.md",
+              "quote": "프로젝트가 이 규칙을 승인했을 때만 프로젝트 상대 파일 목록으로 style-policy.json을 작성한다."
+            }
+          ],
+          "limits": "The utility classes suggest Tailwind use, but the three inspected project files do not establish project setup or policy adoption. No code or checks were run."
+        },
+        "actionMatches": true,
+        "safeMissingPolicy": false,
+        "citationChecks": [
+          {
+            "kind": "evidence",
+            "path": "owner.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "src/view.tsx",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "src/view.tsx",
+            "exact": true
+          },
+          {
+            "kind": "knowledge",
+            "path": "learning/tailwind-team-authorship.md",
+            "exact": true
+          },
+          {
+            "kind": "knowledge",
+            "path": "learning/tailwind-team-authorship.md",
+            "exact": true
+          }
+        ],
+        "exactCitations": true,
+        "semanticStatus": "requires-human-review",
+        "inputsUnchanged": true,
+        "environmentFailure": null,
+        "complete": true,
+        "toolCalls": 10,
+        "searchCalls": 0
+      }
+    },
+    {
+      "id": "different-change-reasons-oracle",
+      "case": "different-change-reasons",
+      "arm": "oracle",
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 17.904,
+        "completedTurns": 1,
+        "threadId": "01a11b06-ff77-72a2-a82f-cdf46d7a4875",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 46156,
+          "cached_input_tokens": 31232,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 718,
+          "reasoning_output_tokens": 218,
+          "total_tokens": 46874,
+          "uncached_input_tokens": 14924
+        },
+        "cumulativeUsage": {
+          "input_tokens": 46156,
+          "cached_input_tokens": 31232,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 718,
+          "reasoning_output_tokens": 218
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "keep",
+          "reason": "The two validators currently have identical thresholds, but their policies have separate owners and change independently. The event minimum becomes 16 next release while commerce stays 18. A universal validator with a domain flag would couple those decisions to remove one duplicated comparison. Keeping the separate validators is the simpler choice for this scoped refactor.",
+          "alternative": "Keep both validators. Change eventValid to 16 when the next-release policy takes effect.",
+          "question": null,
+          "evidence": [
+            {
+              "path": "task.md",
+              "quote": "A refactor proposes merging both validators into a universal minimum-age validator with a domain flag to remove duplicate source."
+            },
+            {
+              "path": "owner.md",
+              "quote": "Commerce and event registration have separate policy owners. The event minimum becomes 16 next release; commerce stays 18. Neither policy depends on the other."
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "export const checkoutValid = (age: number) => age >= 18;\nexport const eventValid = (age: number) => age >= 18;"
+            }
+          ],
+          "knowledge": [
+            {
+              "path": "learning/code-quality-change-boundaries.md",
+              "quote": "동일한 업무 의미와 변경 이유를 공유하면 공통화의 이익이 있지만 비슷한 모양만 묶으면 옵션과 분기가 늘 수 있다."
+            }
+          ],
+          "limits": "This reviews the proposed refactor only. No source was changed or application code run; the timing of the event threshold change was not independently verified."
+        },
+        "actionMatches": true,
+        "safeMissingPolicy": false,
+        "citationChecks": [
+          {
+            "kind": "evidence",
+            "path": "task.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "owner.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "src/view.tsx",
+            "exact": true
+          },
+          {
+            "kind": "knowledge",
+            "path": "learning/code-quality-change-boundaries.md",
+            "exact": true
+          }
+        ],
+        "exactCitations": true,
+        "semanticStatus": "requires-human-review",
+        "inputsUnchanged": true,
+        "environmentFailure": null,
+        "complete": true,
+        "toolCalls": 5,
+        "searchCalls": 0
+      }
+    },
+    {
+      "id": "compound-simple-raw",
+      "case": "compound-simple",
+      "arm": "raw",
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 22.256,
+        "completedTurns": 1,
+        "threadId": "01a11b07-4593-7730-9a96-c5416d31b8b6",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 67173,
+          "cached_input_tokens": 53888,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 773,
+          "reasoning_output_tokens": 100,
+          "total_tokens": 67946,
+          "uncached_input_tokens": 13285
+        },
+        "cumulativeUsage": {
+          "input_tokens": 67173,
+          "cached_input_tokens": 53888,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 773,
+          "reasoning_output_tokens": 100
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "keep",
+          "reason": "The owner defines Badge’s full scope as one textual label, with no shared state or nested composition. The current component meets that scope through a label prop. A compound API and Context provider would add a component contract and implementation cost without serving a current requirement; that cost is an inference from the proposed design, not a measured result.",
+          "alternative": "Keep the existing Badge. Revisit composition if the owner adds separately arranged parts or shared state.",
+          "question": null,
+          "evidence": [
+            {
+              "path": "task.md",
+              "quote": "A consistency proposal converts Badge to compound components with a Context provider. Assess whether this serves the current requirements."
+            },
+            {
+              "path": "owner.md",
+              "quote": "Badge has one textual label. No shared interactive state, nested composition, or customization requirement. This is the full usage scope."
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "export function Badge({label}: {label:string}) { return <span>{label}</span>; }"
+            }
+          ],
+          "knowledge": [
+            {
+              "path": "learning/react-compound-component-boundaries.md",
+              "quote": "단순 props만으로 충분한 컴포넌트에 패턴을 강제하거나 원문의 클릭 div를 접근성 구현으로 복사하지 않는다."
+            },
+            {
+              "path": "learning/code-quality-change-boundaries.md",
+              "quote": "명시적인 props가 역할을 잘 표현하면 유지할 수 있고 context가 자동 최선은 아니다."
+            }
+          ],
+          "limits": "This is a scoped review of the inspected files. No code was changed or run; future requirements could change the decision."
+        },
+        "actionMatches": true,
+        "safeMissingPolicy": false,
+        "citationChecks": [
+          {
+            "kind": "evidence",
+            "path": "task.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "owner.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "src/view.tsx",
+            "exact": true
+          },
+          {
+            "kind": "knowledge",
+            "path": "learning/react-compound-component-boundaries.md",
+            "exact": true
+          },
+          {
+            "kind": "knowledge",
+            "path": "learning/code-quality-change-boundaries.md",
+            "exact": true
+          }
+        ],
+        "exactCitations": true,
+        "semanticStatus": "requires-human-review",
+        "inputsUnchanged": true,
+        "environmentFailure": null,
+        "complete": true,
+        "toolCalls": 8,
+        "searchCalls": 0
+      }
+    },
+    {
+      "id": "request-unknown-oracle",
+      "case": "request-unknown",
+      "arm": "oracle",
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 18.079,
+        "completedTurns": 1,
+        "threadId": "01a11b07-5090-74f1-92ed-452fdb251d0b",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 45816,
+          "cached_input_tokens": 38016,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 776,
+          "reasoning_output_tokens": 274,
+          "total_tokens": 46592,
+          "uncached_input_tokens": 7800
+        },
+        "cumulativeUsage": {
+          "input_tokens": 45816,
+          "cached_input_tokens": 38016,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 776,
+          "reasoning_output_tokens": 274
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "keep",
+          "reason": "The proposed three automatic retries are not justified now. The code makes one order POST, and the owner has not supplied the server’s deduplication contract or permitted retry policy. A transport error can leave the outcome of a POST uncertain, so retrying could create another order. That risk is an inference, not an observed server behavior. Keeping the current code avoids that risk and the cost of adding a retry policy without a contract.",
+          "alternative": "If the server contract later permits retries, define which failures qualify and how duplicate orders are prevented, then implement and verify that policy while preserving caller input and headers.",
+          "question": null,
+          "evidence": [
+            {
+              "path": "task.md",
+              "quote": "A proposed resilience refactor retries the order POST automatically three times after any transport error. Decide whether to implement that proposal now."
+            },
+            {
+              "path": "owner.md",
+              "quote": "The server deduplication/idempotency contract and permitted retries have not been supplied. Caller input and headers must remain unchanged."
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "const res = await fetch('/orders', {method:'POST', headers, body:JSON.stringify(input)});"
+            }
+          ],
+          "knowledge": [
+            {
+              "path": "learning/request-policy-boundaries.md",
+              "quote": "부작용 요청의 재시도는 서버의 중복 방지 계약을 확인한다. 일괄 자동 재시도는 기본 선택이 아니다."
+            }
+          ],
+          "limits": "This is a scoped code review. Server behavior and runtime outcomes were not verified."
+        },
+        "actionMatches": true,
+        "safeMissingPolicy": false,
+        "citationChecks": [
+          {
+            "kind": "evidence",
+            "path": "task.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "owner.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "src/view.tsx",
+            "exact": true
+          },
+          {
+            "kind": "knowledge",
+            "path": "learning/request-policy-boundaries.md",
+            "exact": true
+          }
+        ],
+        "exactCitations": true,
+        "semanticStatus": "requires-human-review",
+        "inputsUnchanged": true,
+        "environmentFailure": null,
+        "complete": true,
+        "toolCalls": 5,
+        "searchCalls": 0
+      }
+    },
+    {
+      "id": "compound-simple-oracle",
+      "case": "compound-simple",
+      "arm": "oracle",
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 16.736,
+        "completedTurns": 1,
+        "threadId": "01a11b07-974b-7371-86b7-befd6dd8175b",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 45717,
+          "cached_input_tokens": 31232,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 611,
+          "reasoning_output_tokens": 82,
+          "total_tokens": 46328,
+          "uncached_input_tokens": 14485
+        },
+        "cumulativeUsage": {
+          "input_tokens": 45717,
+          "cached_input_tokens": 31232,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 611,
+          "reasoning_output_tokens": 82
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "keep",
+          "reason": "The owner defines Badge’s full scope as one textual label, with no shared state or composition requirement. The current component meets that stated scope. I infer that a Context provider and compound API would add code and usage complexity without serving a current requirement.",
+          "alternative": "Keep the label prop. Reconsider compound components if callers later need to arrange related parts or share state; that change would require an API migration.",
+          "question": null,
+          "evidence": [
+            {
+              "path": "task.md",
+              "quote": "A consistency proposal converts Badge to compound components with a Context provider. Assess whether this serves the current requirements."
+            },
+            {
+              "path": "owner.md",
+              "quote": "Badge has one textual label. No shared interactive state, nested composition, or customization requirement. This is the full usage scope."
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "export function Badge({label}: {label:string}) { return <span>{label}</span>; }"
+            }
+          ],
+          "knowledge": [
+            {
+              "path": "learning/react-compound-component-boundaries.md",
+              "quote": "관련 하위 컴포넌트의 상태를 공유하면서 호출자가 배치를 조합해야 하거나 cloneElement 기반 구현이 중첩에서 깨질 때."
+            },
+            {
+              "path": "learning/react-compound-component-boundaries.md",
+              "quote": "단순 props만으로 충분한 컴포넌트에 패턴을 강제하거나 원문의 클릭 div를 접근성 구현으로 복사하지 않는다."
+            }
+          ],
+          "limits": "This is a review of the inspected files and stated usage scope. I did not run the application or verify behavior beyond the source shown."
+        },
+        "actionMatches": true,
+        "safeMissingPolicy": false,
+        "citationChecks": [
+          {
+            "kind": "evidence",
+            "path": "task.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "owner.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "src/view.tsx",
+            "exact": true
+          },
+          {
+            "kind": "knowledge",
+            "path": "learning/react-compound-component-boundaries.md",
+            "exact": true
+          },
+          {
+            "kind": "knowledge",
+            "path": "learning/react-compound-component-boundaries.md",
+            "exact": true
+          }
+        ],
+        "exactCitations": true,
+        "semanticStatus": "requires-human-review",
+        "inputsUnchanged": true,
+        "environmentFailure": null,
+        "complete": true,
+        "toolCalls": 5,
+        "searchCalls": 0
+      }
+    },
+    {
+      "id": "style-adopted-raw",
+      "case": "style-adopted",
+      "arm": "raw",
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 25.885,
+        "completedTurns": 1,
+        "threadId": "01a11b07-9c9b-7d82-8eb1-ed19a8f24ba5",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 66645,
+          "cached_input_tokens": 49152,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 978,
+          "reasoning_output_tokens": 156,
+          "total_tokens": 67623,
+          "uncached_input_tokens": 17493
+        },
+        "cumulativeUsage": {
+          "input_tokens": 66645,
+          "cached_input_tokens": 49152,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 978,
+          "reasoning_output_tokens": 156
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "change",
+          "reason": "The owner has adopted the team authorship policy for src/view.tsx and specified both public variant axes. The current component stores fixed classes in a styles object and chooses tone and size classes with inline conditionals. Under the adopted policy, the fixed classes should appear directly in JSX, while CVA variants should cover tone and size and supply the classes used by the button. Keep the current colors, spacing, and behavior.",
+          "alternative": "Keeping the code avoids a CVA dependency and policy-check setup, but leaves this approved scope out of compliance. A theme redesign would add cost outside the owner’s decision.",
+          "question": null,
+          "evidence": [
+            {
+              "path": "owner.md",
+              "quote": "Adopt the team authorship policy in our knowledge library for src/view.tsx, including both public variant axes. Preserve the existing palette and behavior. No theme redesign."
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "const styles = {root: 'inline-flex items-center rounded'};"
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "${tone === 'primary' ? 'bg-blue-600' : 'bg-gray-100'} ${size === 'small' ? 'px-2' : 'px-4'}"
+            }
+          ],
+          "knowledge": [
+            {
+              "path": "learning/tailwind-team-authorship.md",
+              "quote": "고정 클래스는 해당 JSX className에 직접 작성한다."
+            },
+            {
+              "path": "learning/tailwind-team-authorship.md",
+              "quote": "여러 공개 prop이 스타일을 변형하는 재사용 컴포넌트는 승인된 대상/축을 열거하고 CVA의 variants/defaultVariants를 사용한다."
+            }
+          ],
+          "limits": "This is a static review of the scoped change. No source was edited and no dependency, policy check, build, or runtime verification was performed."
+        },
+        "actionMatches": true,
+        "safeMissingPolicy": false,
+        "citationChecks": [
+          {
+            "kind": "evidence",
+            "path": "owner.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "src/view.tsx",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "src/view.tsx",
+            "exact": true
+          },
+          {
+            "kind": "knowledge",
+            "path": "learning/tailwind-team-authorship.md",
+            "exact": true
+          },
+          {
+            "kind": "knowledge",
+            "path": "learning/tailwind-team-authorship.md",
+            "exact": true
+          }
+        ],
+        "exactCitations": true,
+        "semanticStatus": "requires-human-review",
+        "inputsUnchanged": true,
+        "environmentFailure": null,
+        "complete": true,
+        "toolCalls": 10,
+        "searchCalls": 0
+      }
+    },
+    {
+      "id": "style-unadopted-raw",
+      "case": "style-unadopted",
+      "arm": "raw",
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 22.473,
+        "completedTurns": 1,
+        "threadId": "01a11b07-d8c0-7d21-b10a-e3d230e9c3b6",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 66373,
+          "cached_input_tokens": 55936,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 842,
+          "reasoning_output_tokens": 146,
+          "total_tokens": 67215,
+          "uncached_input_tokens": 10437
+        },
+        "cumulativeUsage": {
+          "input_tokens": 66373,
+          "cached_input_tokens": 55936,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 842,
+          "reasoning_output_tokens": 146
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "keep",
+          "reason": "The proposed ban and CVA mandate conflict with the current owner decision. The component uses a small styles object and selects complete class strings for its two prop variants. Tailwind’s presence alone does not establish a rule requiring a rewrite.",
+          "alternative": "CVA could organize variants if the owner later adopts that policy or the component grows more complex. Here it would add a dependency and refactor cost without a stated need.",
+          "question": null,
+          "evidence": [
+            {
+              "path": "owner.md",
+              "quote": "We have explicitly NOT adopted the library team authorship policy. Complete literal class mapping is allowed. Preserve current palette; no request for a style rewrite."
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "const styles = {root: 'inline-flex items-center rounded'};"
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "${tone === 'primary' ? 'bg-blue-600' : 'bg-gray-100'} ${size === 'small' ? 'px-2' : 'px-4'}"
+            }
+          ],
+          "knowledge": [
+            {
+              "path": "learning/tailwind-team-authorship.md",
+              "quote": "적용 조건: Tailwind를 사용하고 사용자가 이 팀의 작성 규칙을 채택한 변경 범위. 패키지 존재나 className만으로 전역 강제하지 않는다."
+            },
+            {
+              "path": "learning/tailwind-team-authorship.md",
+              "quote": "객체 매핑 자체는 Tailwind에서 허용되며 위의 제한은 팀 선호다."
+            }
+          ],
+          "limits": "This is a review of the scoped proposal and inspected files. No application code or verification was run."
+        },
+        "actionMatches": true,
+        "safeMissingPolicy": false,
+        "citationChecks": [
+          {
+            "kind": "evidence",
+            "path": "owner.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "src/view.tsx",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "src/view.tsx",
+            "exact": true
+          },
+          {
+            "kind": "knowledge",
+            "path": "learning/tailwind-team-authorship.md",
+            "exact": true
+          },
+          {
+            "kind": "knowledge",
+            "path": "learning/tailwind-team-authorship.md",
+            "exact": true
+          }
+        ],
+        "exactCitations": true,
+        "semanticStatus": "requires-human-review",
+        "inputsUnchanged": true,
+        "environmentFailure": null,
+        "complete": true,
+        "toolCalls": 7,
+        "searchCalls": 0
+      }
+    },
+    {
+      "id": "style-revised-raw",
+      "case": "style-revised",
+      "arm": "raw",
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 22.807,
+        "completedTurns": 1,
+        "threadId": "01a11b08-01e5-7971-8154-5a3bfba139bb",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 68356,
+          "cached_input_tokens": 56064,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 939,
+          "reasoning_output_tokens": 110,
+          "total_tokens": 69295,
+          "uncached_input_tokens": 12292
+        },
+        "cumulativeUsage": {
+          "input_tokens": 68356,
+          "cached_input_tokens": 56064,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 939,
+          "reasoning_output_tokens": 110
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "keep",
+          "reason": "The current owner decision explicitly exempts src/view.tsx from the team authorship policy, directs keeping complete class mappings, and preserves the palette. The code uses a static styles object and selects complete class strings for tone and size. Those patterns would matter within an adopted policy scope, but the current decision removes this file from that scope.",
+          "alternative": "Inlining the static classes and introducing CVA would add code and maintenance cost without satisfying a current requirement for this file. Changing colors would conflict with the palette decision.",
+          "question": null,
+          "evidence": [
+            {
+              "path": "task.md",
+              "quote": "Review whether the current code must be changed to satisfy the team style policy."
+            },
+            {
+              "path": "owner.md",
+              "quote": "2026-10-08 CURRENT, explicitly supersedes the above for this file: this externally maintained component is exempt. Keep complete class mappings; do not enforce CVA. Preserve the palette."
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "const styles = {root: 'inline-flex items-center rounded'};"
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "${tone === 'primary' ? 'bg-blue-600' : 'bg-gray-100'} ${size === 'small' ? 'px-2' : 'px-4'}"
+            }
+          ],
+          "knowledge": [
+            {
+              "path": "learning/tailwind-team-authorship.md",
+              "quote": "적용 조건: Tailwind를 사용하고 사용자가 이 팀의 작성 규칙을 채택한 변경 범위. 패키지 존재나 className만으로 전역 강제하지 않는다."
+            },
+            {
+              "path": "learning/tailwind-team-authorship.md",
+              "quote": "Tailwind 클래스 토큰 일부를 보간하지 않는다. 완전한 클래스 문자열을 선택한다. 객체 매핑 자체는 Tailwind에서 허용되며 위의 제한은 팀 선호다."
+            }
+          ],
+          "limits": "This is a scoped review of the inspected files. No application behavior or build was verified."
+        },
+        "actionMatches": true,
+        "safeMissingPolicy": false,
+        "citationChecks": [
+          {
+            "kind": "evidence",
+            "path": "task.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "owner.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "src/view.tsx",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "src/view.tsx",
+            "exact": true
+          },
+          {
+            "kind": "knowledge",
+            "path": "learning/tailwind-team-authorship.md",
+            "exact": true
+          },
+          {
+            "kind": "knowledge",
+            "path": "learning/tailwind-team-authorship.md",
+            "exact": true
+          }
+        ],
+        "exactCitations": true,
+        "semanticStatus": "requires-human-review",
+        "inputsUnchanged": true,
+        "environmentFailure": null,
+        "complete": true,
+        "toolCalls": 9,
+        "searchCalls": 0
+      }
+    },
+    {
+      "id": "style-revised-fs-search",
+      "case": "style-revised",
+      "arm": "fs-search",
+      "result": {
+        "requestedModel": "gpt-6-sol",
+        "exitCode": 0,
+        "timedOut": false,
+        "elapsedSeconds": 22.715,
+        "completedTurns": 1,
+        "threadId": "01a11b08-30a4-7a60-bfc7-2adf857e89fc",
+        "sessionError": null,
+        "usage": {
+          "input_tokens": 66357,
+          "cached_input_tokens": 55424,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 802,
+          "reasoning_output_tokens": 122,
+          "total_tokens": 67159,
+          "uncached_input_tokens": 10933
+        },
+        "cumulativeUsage": {
+          "input_tokens": 66357,
+          "cached_input_tokens": 55424,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 802,
+          "reasoning_output_tokens": 122
+        },
+        "usageError": null,
+        "errors": []
+      },
+      "audit": {
+        "answer": {
+          "action": "keep",
+          "reason": "The current owner decision explicitly exempts this externally maintained component from the team style policy. The code selects complete class strings for both props and preserves the existing palette. There is no policy requirement to change this file.",
+          "alternative": "Moving the classes into JSX and adding CVA would require changing an externally maintained component without satisfying a current requirement. Keep the existing code.",
+          "question": null,
+          "evidence": [
+            {
+              "path": "task.md",
+              "quote": "Review whether the current code must be changed to satisfy the team style policy."
+            },
+            {
+              "path": "owner.md",
+              "quote": "2026-10-08 CURRENT, explicitly supersedes the above for this file: this externally maintained component is exempt. Keep complete class mappings; do not enforce CVA. Preserve the palette."
+            },
+            {
+              "path": "src/view.tsx",
+              "quote": "${tone === 'primary' ? 'bg-blue-600' : 'bg-gray-100'} ${size === 'small' ? 'px-2' : 'px-4'}"
+            }
+          ],
+          "knowledge": [
+            {
+              "path": "learning/tailwind-team-authorship.md",
+              "quote": "적용 조건: Tailwind를 사용하고 사용자가 이 팀의 작성 규칙을 채택한 변경 범위. 패키지 존재나 className만으로 전역 강제하지 않는다."
+            }
+          ],
+          "limits": "This is a scoped review of the inspected files. No application code or tests were run."
+        },
+        "actionMatches": true,
+        "safeMissingPolicy": false,
+        "citationChecks": [
+          {
+            "kind": "evidence",
+            "path": "task.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "owner.md",
+            "exact": true
+          },
+          {
+            "kind": "evidence",
+            "path": "src/view.tsx",
+            "exact": true
+          },
+          {
+            "kind": "knowledge",
+            "path": "learning/tailwind-team-authorship.md",
+            "exact": true
+          }
+        ],
+        "exactCitations": true,
+        "semanticStatus": "requires-human-review",
+        "inputsUnchanged": true,
+        "environmentFailure": null,
+        "complete": true,
+        "toolCalls": 9,
+        "searchCalls": 0
+      }
+    }
+  ]
+}

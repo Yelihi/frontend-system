@@ -1,0 +1,35 @@
+{
+  "groups": {
+    "raw": {
+      "repeatedQuestions": 0,
+      "repeatEligible": 3,
+      "repeatUnverified": 0,
+      "reuseCorrect": 3,
+      "reuseEligible": 3,
+      "reuseUnverified": 0,
+      "exceptionCorrect": 2,
+      "exceptionEligible": 2,
+      "exceptionUnverified": 0,
+      "guardrailCorrect": 4,
+      "guardrailEligible": 4,
+      "guardrailUnverified": 0
+    },
+    "fs": {
+      "repeatedQuestions": 0,
+      "repeatEligible": 3,
+      "repeatUnverified": 0,
+      "reuseCorrect": 3,
+      "reuseEligible": 3,
+      "reuseUnverified": 0,
+      "exceptionCorrect": 2,
+      "exceptionEligible": 2,
+      "exceptionUnverified": 0,
+      "guardrailCorrect": 4,
+      "guardrailEligible": 4,
+      "guardrailUnverified": 0
+    }
+  },
+  "reviewer": "Implementing Codex host, direct inspection of all 16 answers and counterexample command logs",
+  "limitations": "Not blind or independent; synthetic cases and rubric authored by the same assistant. One repetition per case/arm. Repeated-question counts proxy explanation burden, not measured human time. No real PR ingestion/sync or full MCP workflow in this comparison.",
+  "authority": "Semantically adjudicated synthetic replay, not independent real-user effectiveness"
+}

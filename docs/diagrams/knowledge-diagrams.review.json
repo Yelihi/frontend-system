@@ -1,0 +1,53 @@
+{
+  "reviewed_at": "2026-10-08",
+  "reviewer": "Codex screenshot inspection",
+  "scope": "Final endpoint viewport screenshots, both themes: node/edge labels, overlap, clipping, cards and whole layout. Not an export or interaction test.",
+  "diagrams": [
+    {
+      "diagram_type": "workflow",
+      "output": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/docs/diagrams/knowledge-publication.html",
+      "spec_sha256": "5ed664bbfdb4547733b17a86f3231897c4c000eb05e2b649af295661c6dff7db",
+      "artifact_sha256": "d65f77d13ec562ec87f8b5feb657060fb57aa954e47fc9499d0be54e3bb363eb",
+      "validation": {
+        "checksPassed": 9,
+        "checkCount": 9,
+        "compositionProfile": "showcase",
+        "compositionStatus": "pass",
+        "errors": 0,
+        "warnings": 0
+      },
+      "browser_evidence": "pass",
+      "visual_review": "pass",
+      "correction_rounds": 1,
+      "reviewed_screenshots": [
+        "knowledge-publication.visual-check.1440x900.light.png",
+        "knowledge-publication.visual-check.1440x900.dark.png",
+        "knowledge-publication.visual-check.2048x1320.light.png",
+        "knowledge-publication.visual-check.2048x1320.dark.png"
+      ]
+    },
+    {
+      "diagram_type": "workflow",
+      "output": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/docs/diagrams/knowledge-application.html",
+      "spec_sha256": "be543a8420554aa7204ae4a0b3e1e4295bf16f2aa34dbde9deb62d53c1095268",
+      "artifact_sha256": "db22b6dcf96bbd7e044ba42cd40eae8e50d48b759fdfb458c4806799f8768037",
+      "validation": {
+        "checksPassed": 9,
+        "checkCount": 9,
+        "compositionProfile": "showcase",
+        "compositionStatus": "pass",
+        "errors": 0,
+        "warnings": 0
+      },
+      "browser_evidence": "pass",
+      "visual_review": "pass",
+      "correction_rounds": 1,
+      "reviewed_screenshots": [
+        "knowledge-application.visual-check.1440x900.light.png",
+        "knowledge-application.visual-check.1440x900.dark.png",
+        "knowledge-application.visual-check.2048x1320.light.png",
+        "knowledge-application.visual-check.2048x1320.dark.png"
+      ]
+    }
+  ]
+}

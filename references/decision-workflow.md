@@ -58,7 +58,8 @@ impact → viable alternatives (including no change) → recommendation and cost
 verification. Show only alternatives that could actually work. Scale explanation
 to the decision; do not manufacture a lengthy report for a small correction.
 
-Ask one unresolved material question at a time. Discover technical facts yourself;
+Follow [ask and pause](workflows/user-decisions.md): stop implementation while a user
+choice is unanswered. Ask one unresolved material question at a time. Discover technical facts yourself;
 ask about business priorities, unclear domain rules and accepted costs. Review-only
 requests produce findings/proposals without code edits. A request to fix authorizes
 in-scope implementation and verification, not a new dependency migration or broader
@@ -86,6 +87,11 @@ records. This reporting guidance does not add checks, approvals or completion ga
 and does not authorize writes during review-only work.
 
 ## Project memory
+
+For PR comments use [PR feedback](workflows/pr-feedback.md). Before asking a design
+question, inspect matching decision summaries and reuse a current answer whose scope
+and conditions still hold. Cite it. A conflicting/new condition triggers investigation,
+not automatic reuse or automatic preference for whichever comment was newest.
 
 Use `save_project_record` with kind `decisions` for an actual choice, using the hash
 from `get_project_record` when updating (null when new). Record situation, evidence,

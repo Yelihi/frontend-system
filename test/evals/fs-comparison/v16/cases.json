@@ -1,0 +1,106 @@
+[
+  {
+    "id": "state-repeat",
+    "eligibleRepeat": true,
+    "reuse": "D-state",
+    "exception": false,
+    "disposition": "project-only",
+    "action": "keep",
+    "files": {
+      "decisions/state.md": "# D-state — confirmed project decision\nOwner: developer, confirmed in an earlier PR. Progress belongs to RecallSession and survives Question replacement. A keyed Question may reset its own answer input, but must not own session progress. Applies to the study flow only. For unrelated one-shot screens, inspect their lifetime rather than copying this structure. Reconsider when the product explicitly ends progress at question replacement.\n",
+      "src/view.tsx": "function RecallSession({question}) {\n const [progress, setProgress] = useState(0);\n return <Question key={question.id} question={question} onCorrect={() => setProgress(p => p + 1)} progress={progress}/>;\n}\n",
+      "task.md": "Review comment: \"Move progress into Question because the state should be closest to use.\" Current requirement is unchanged: progress spans all questions in a session. Assess the comment before proposing knowledge. Do not edit."
+    }
+  },
+  {
+    "id": "request-repeat",
+    "eligibleRepeat": true,
+    "reuse": "D-retry",
+    "exception": false,
+    "disposition": "project-only",
+    "action": "keep",
+    "files": {
+      "decisions/retry.md": "# D-retry — confirmed project decision\nOrders may retry a POST only when the server contract guarantees deduplication for the same idempotency key. Reuse the same key for retries; changing the key creates a different operation. Without this guarantee, do not automatically retry a possibly committed request. Retain user-visible failure and let the owner settle recovery UX when it is unspecified.\n",
+      "src/request.ts": "export async function submit(order, key, client) {\n return client.post('/orders', order, {idempotencyKey:key, retries:1});\n}\n",
+      "task.md": "The server deduplicates /orders requests with the same idempotency key for 24 hours. client.post retries at most once with unchanged headers. Review comment: \"Should we ask whether retrying orders is allowed?\" The approved policy and server contract are available; decide if another owner question is needed."
+    }
+  },
+  {
+    "id": "state-exception",
+    "eligibleRepeat": false,
+    "reuse": null,
+    "exception": true,
+    "disposition": "rejected",
+    "action": "keep",
+    "files": {
+      "decisions/state.md": "# D-state — confirmed project decision\nOwner: developer, confirmed in an earlier PR. Progress belongs to RecallSession and survives Question replacement. A keyed Question may reset its own answer input, but must not own session progress. Applies to the study flow only. For unrelated one-shot screens, inspect their lifetime rather than copying this structure. Reconsider when the product explicitly ends progress at question replacement.\n",
+      "src/answer.tsx": "function Question({question}) {\n const [draft, setDraft] = useState('');\n return <input value={draft} onChange={e => setDraft(e.target.value)}/>;\n}\nfunction Preview({question}) { return <Question key={question.id} question={question}/>; }\n",
+      "task.md": "This is a one-shot preview. Its confirmed requirement is to discard the answer draft on question change; there is no session progress. Review comment: \"D-state means all Question state must move into the page and survive question replacement.\" Assess the claim and current code."
+    }
+  },
+  {
+    "id": "request-exception",
+    "eligibleRepeat": false,
+    "reuse": null,
+    "exception": true,
+    "disposition": "rejected",
+    "action": "change",
+    "files": {
+      "decisions/retry.md": "# D-retry — confirmed project decision\nOrders may retry a POST only when the server contract guarantees deduplication for the same idempotency key. Reuse the same key for retries; changing the key creates a different operation. Without this guarantee, do not automatically retry a possibly committed request. Retain user-visible failure and let the owner settle recovery UX when it is unspecified.\n",
+      "src/request.ts": "export async function donate(body, client) {\n return client.post('/donations', body, {retries:1});\n}\n",
+      "task.md": "Unlike /orders, /donations explicitly has no deduplication support. On a timeout the donation may already have been recorded. Confirmed requirement: one user action must not automatically cause a second donation; retain the existing failure UI. Review comment: \"We approved order retries, so donation retries are also fine.\" Assess this comment and current code."
+    }
+  },
+  {
+    "id": "freeze-reject",
+    "eligibleRepeat": false,
+    "reuse": null,
+    "exception": false,
+    "disposition": "rejected",
+    "action": "change",
+    "files": {
+      "decisions/ownership.md": "# D-input\nConfirmed requirement: this function must not mutate any part of the caller-owned input object. No requirement to freeze all objects globally.\n",
+      "src/editor.ts": "export function rename(input, name) {\n const frozen = Object.freeze(input);\n frozen.profile.name = name;\n return frozen;\n}\n",
+      "task.md": "Review comment: \"Object.freeze makes all nested values immutable, so rename cannot affect the caller. Sync that as a mandatory rule.\" Assess both the technical claim and current code using a concrete counterexample. Do not change files."
+    }
+  },
+  {
+    "id": "vue-unresolved",
+    "eligibleRepeat": false,
+    "reuse": null,
+    "exception": false,
+    "disposition": "needs-context",
+    "action": "ask",
+    "files": {
+      "decisions/forms.md": "# D-form\nNo approved draft lifetime exists for the new composer. Earlier checkout drafts were local for payment privacy; this was explicitly checkout-only.\n",
+      "src/Composer.vue": "<script setup>\nimport { ref } from 'vue';\nconst draft = ref('');\n</script>\n<template><textarea v-model=\"draft\" /></template>\n",
+      "task.md": "New composer requirements do not say whether its draft must survive route navigation. Review comment: \"Move draft into a global store so navigation never loses it.\" There is no further product document. Assess the advice; ask only what changes the ownership decision."
+    }
+  },
+  {
+    "id": "error-reusable",
+    "eligibleRepeat": false,
+    "reuse": null,
+    "exception": false,
+    "disposition": "reusable",
+    "action": "change",
+    "files": {
+      "decisions/errors.md": "# D-save\nConfirmed requirement: show success only after the save service confirms success. On a save failure, retain editing state and show a failure message.\n",
+      "src/save.ts": "export async function saveAndNotify(api, notify) {\n try { await api.save(); } catch (error) { console.error(error); }\n notify.success('Saved');\n}\n",
+      "task.md": "Review comment: \"Logging an error must not let this operation continue to its success notification. Separate failure and success paths.\" Assess the claim, legitimate exceptions and whether a conditional shared knowledge candidate is justified."
+    }
+  },
+  {
+    "id": "preference-not-universal",
+    "eligibleRepeat": true,
+    "reuse": "D-variants",
+    "exception": false,
+    "disposition": "project-only",
+    "action": "change",
+    "files": {
+      "decisions/styles.md": "# D-variants\nOwner confirmed: reusable design-system components with multiple style variants use the installed cva helper to match existing team conventions. A single transient class toggle may remain inline. This is a project consistency choice, not evidence that ternaries universally break Tailwind.\n",
+      "src/Button.tsx": "export function Button({size, tone}) {\n return <button className={(size === 'large' ? 'px-6' : 'px-3') + ' ' + (tone === 'danger' ? 'bg-red-600' : 'bg-blue-600')}/>;\n}\n",
+      "task.md": "This Button is a reusable design-system component with multiple variants. Review comment: \"Use cva here; then declare all ternary styles everywhere a correctness bug.\" Assess the valid project change and proposed universal claim separately."
+    }
+  }
+]

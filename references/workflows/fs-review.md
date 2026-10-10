@@ -1,5 +1,8 @@
 # Frontend System Review
 
+For PR comments use [PR feedback](pr-feedback.md); for pre-submission checks use
+[PR readiness](pr-readiness.md). These extend fs-review, not additional skills.
+
 Read `../../references/decision-workflow.md`. For reported bugs, intermittent failures or root-cause investigation, also follow `../../references/debugging.md`: reproduce, distinguish hypotheses from evidence, fix within scope, verify and record project-local findings. Reuse review mode; do not require a new debug command.
 
 1. Resolve the requested file/folder/behavior and call `get_work_context` with mode

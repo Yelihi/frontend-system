@@ -1,0 +1,249 @@
+{
+  "corpusHash": "197eca89676fdb74d97f8a86573734ddd95b9b80622ec24a59b4afc3b9073e02",
+  "casesHash": "cf3d90fc1a921089ea2babd0e9f607d2d32c12ac388c00356e89fe71a4f3557a",
+  "groups": {
+    "dev": {
+      "expected": 6,
+      "found": 3,
+      "safetyFailures": 0,
+      "candidates": 23
+    },
+    "holdout": {
+      "expected": 6,
+      "found": 2,
+      "safetyFailures": 0,
+      "candidates": 30
+    }
+  },
+  "rows": [
+    {
+      "id": "input-ownership",
+      "split": "dev",
+      "query": "실패해도 입력 객체 보존 계약을 지켜야 한다",
+      "expected": "request-policy-boundaries",
+      "ids": [
+        "react-identity-and-state",
+        "javascript-functions-objects-and-scope",
+        "html-editing-and-localization",
+        "web-api-input-and-user-mediated-access",
+        "webgl-shader-data-flow"
+      ],
+      "found": false,
+      "safe": true
+    },
+    {
+      "id": "style-exception",
+      "split": "dev",
+      "query": "단순 boolean 토글과 일반 데이터 객체에도 작성 정책을 적용해야 하는가",
+      "expected": "tailwind-team-authorship",
+      "ids": [
+        "web-api-browser-ai-capabilities",
+        "tailwind-team-authorship",
+        "javascript-functions-objects-and-scope",
+        "debugging-data-and-toolchain-incidents",
+        "javascript-language-and-host-boundaries"
+      ],
+      "found": true,
+      "safe": true
+    },
+    {
+      "id": "independent-deployment",
+      "split": "dev",
+      "query": "여러 팀이 독립 배포할 필요와 운영 부담을 비교",
+      "expected": "micro-frontends-adoption-tradeoffs",
+      "ids": [
+        "micro-frontends-adoption-tradeoffs"
+      ],
+      "found": true,
+      "safe": true
+    },
+    {
+      "id": "render-claim",
+      "split": "dev",
+      "query": "폴더 이동만으로 렌더 감소를 보장하는가",
+      "expected": "code-quality-change-boundaries",
+      "ids": [
+        "css-motion-and-rendering-hints",
+        "debugging-browser-and-memory-cases",
+        "react-rendering-state-model",
+        "chromium-rendering-pipeline",
+        "react-derived-state-and-effects"
+      ],
+      "found": false,
+      "safe": true
+    },
+    {
+      "id": "distributed-lock",
+      "split": "dev",
+      "query": "여러 기기의 분산 잠금으로 사용할 수 있는가",
+      "expected": "web-api-workers-and-coordination",
+      "ids": [
+        "web-api-workers-and-coordination",
+        "debugging-browser-and-memory-cases"
+      ],
+      "found": true,
+      "safe": true
+    },
+    {
+      "id": "context-provider",
+      "split": "dev",
+      "query": "App Router provider consumer Client Component 조건",
+      "expected": "react-compound-component-boundaries",
+      "technologies": [
+        "React"
+      ],
+      "ids": [
+        "web-api-device-signals-and-windows",
+        "accessibility-static-validation",
+        "request-policy-boundaries",
+        "html-shadow-parts-and-experimental-headings"
+      ],
+      "found": false,
+      "safe": true
+    },
+    {
+      "id": "unknown",
+      "split": "dev",
+      "query": "zzunknownknowledgeprobezz",
+      "empty": true,
+      "ids": [],
+      "found": null,
+      "safe": true
+    },
+    {
+      "id": "vue-boundary",
+      "split": "dev",
+      "query": "alternate memoizedState",
+      "technologies": [
+        "Vue"
+      ],
+      "forbidden": [
+        "react-fiber-work-in-progress"
+      ],
+      "ids": [
+        "web-api-permissions-identity-and-injection"
+      ],
+      "found": null,
+      "safe": true
+    },
+    {
+      "id": "policy-scope",
+      "split": "holdout",
+      "query": "해당 컴포넌트 범위에서 팀의 작성 정책을 명시적으로 채택했는지",
+      "expected": "tailwind-team-authorship",
+      "ids": [
+        "tailwind-team-authorship",
+        "web-performance-privacy-and-security-context",
+        "web-api-dom-editing-and-components",
+        "nextjs-server-client-boundary",
+        "react-compound-component-boundaries"
+      ],
+      "found": true,
+      "safe": true
+    },
+    {
+      "id": "side-effect-retry",
+      "split": "holdout",
+      "query": "부작용 요청의 서버 중복 방지 계약이 미정",
+      "expected": "request-policy-boundaries",
+      "ids": [
+        "debugging-fixes-and-prevention",
+        "bundling-development-and-diagnostics",
+        "nextjs-server-client-boundary",
+        "security-server-authorization-boundary",
+        "request-policy-boundaries"
+      ],
+      "found": true,
+      "safe": true
+    },
+    {
+      "id": "static-permission",
+      "split": "holdout",
+      "query": "권한 데이터가 영구 불변이라고 가정해도 되는가",
+      "expected": "tanstack-query-freshness-and-retention",
+      "technologies": [
+        "React"
+      ],
+      "ids": [
+        "debugging-data-and-toolchain-incidents",
+        "web-api-permissions-identity-and-injection",
+        "web-api-files-and-storage",
+        "security-server-authorization-boundary",
+        "accessibility-native-controls-and-forms"
+      ],
+      "found": false,
+      "safe": true
+    },
+    {
+      "id": "simple-components",
+      "split": "holdout",
+      "query": "단순 props만으로 충분한 컴포넌트에 패턴을 강제할 필요가 있는가",
+      "expected": "react-compound-component-boundaries",
+      "technologies": [
+        "React"
+      ],
+      "ids": [
+        "javascript-regexp-pattern-structure",
+        "web-api-dom-editing-and-components",
+        "code-quality-context-and-contracts",
+        "css-color-images-and-effects",
+        "web-performance-interaction-diagnosis"
+      ],
+      "found": false,
+      "safe": true
+    },
+    {
+      "id": "proxy-invariants",
+      "split": "holdout",
+      "query": "대상의 불변 조건을 무시한다고 가정해도 되는가",
+      "expected": "javascript-functions-objects-and-scope",
+      "ids": [
+        "accessibility-native-controls-and-forms",
+        "accessibility-names-and-alternatives",
+        "security-server-authorization-boundary",
+        "web-api-css-geometry-and-observers",
+        "web-api-retired-features"
+      ],
+      "found": false,
+      "safe": true
+    },
+    {
+      "id": "file-count",
+      "split": "holdout",
+      "query": "파일 수가 많다는 이유만으로 도입해야 하나",
+      "expected": "micro-frontends-adoption-tradeoffs",
+      "ids": [
+        "web-api-files-and-storage",
+        "code-quality-change-boundaries",
+        "code-quality-context-and-contracts",
+        "typescript-module-environment",
+        "debugging-evidence-and-reproduction"
+      ],
+      "found": false,
+      "safe": true
+    },
+    {
+      "id": "unrelated",
+      "split": "holdout",
+      "query": "zzsatellitetelemetryzz",
+      "empty": true,
+      "ids": [],
+      "found": null,
+      "safe": true
+    },
+    {
+      "id": "vue-cache",
+      "split": "holdout",
+      "query": "staleTime gcTime",
+      "technologies": [
+        "Vue"
+      ],
+      "forbidden": [
+        "tanstack-query-freshness-and-retention"
+      ],
+      "ids": [],
+      "found": null,
+      "safe": true
+    }
+  ]
+}

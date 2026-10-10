@@ -1,0 +1,150 @@
+{
+  "reviewer": "Implementing Codex host, direct inspection of all 16 answers and counterexample command logs",
+  "limitations": "Not blind or independent; synthetic cases and rubric authored by the same assistant. One repetition per case/arm. Repeated-question counts proxy explanation burden, not measured human time. No real PR ingestion/sync or full MCP workflow in this comparison.",
+  "judgments": [
+    {
+      "id": "request-exception-raw-1",
+      "answerHash": "b946ffc78a392d682de2537db16ca6a9677e12172cc258e7bc7498b7b97cf837",
+      "repeatedQuestions": null,
+      "reuseCorrect": null,
+      "exceptionCorrect": true,
+      "guardrailCorrect": null,
+      "rationale": "Both reject transfer of the order retry approval to an endpoint without deduplication, preserve the failure UI and note the missing concrete client implementation. Different disposition labels do not negate the correct exception reasoning."
+    },
+    {
+      "id": "state-repeat-fs-1",
+      "answerHash": "4577d6b31f80d9673c99699bce4e1bff13e30fb2ee65474d692023ffef580c5d",
+      "repeatedQuestions": 0,
+      "reuseCorrect": true,
+      "exceptionCorrect": null,
+      "guardrailCorrect": null,
+      "rationale": "Both answers preserve session-owned progress across keyed Question replacement, citing the confirmed lifetime. FS rejects the comment while raw labels the retained decision project-only; disposition enum difference is not a semantic failure."
+    },
+    {
+      "id": "state-exception-fs-1",
+      "answerHash": "b0231c95f7efc8e3a61a7a4320cf0b14413e48171903d7fb7a3c595cd4af1914",
+      "repeatedQuestions": null,
+      "reuseCorrect": null,
+      "exceptionCorrect": true,
+      "guardrailCorrect": null,
+      "rationale": "Both answers keep the intentionally resetting local draft and distinguish one-shot input lifetime from study-session progress."
+    },
+    {
+      "id": "state-repeat-raw-1",
+      "answerHash": "f9a766b89a627dc0bb46773a07c33e762f66f8d8818119a479496f38276ac688",
+      "repeatedQuestions": 0,
+      "reuseCorrect": true,
+      "exceptionCorrect": null,
+      "guardrailCorrect": null,
+      "rationale": "Both answers preserve session-owned progress across keyed Question replacement, citing the confirmed lifetime. FS rejects the comment while raw labels the retained decision project-only; disposition enum difference is not a semantic failure."
+    },
+    {
+      "id": "vue-unresolved-raw-1",
+      "answerHash": "46580d0de9c05dab5657e709fad225f2aae27b88309ca6acdb211741a6745ee5",
+      "repeatedQuestions": null,
+      "reuseCorrect": null,
+      "exceptionCorrect": null,
+      "guardrailCorrect": true,
+      "rationale": "Both ask the missing navigation/draft-lifetime question and do not impose a global store or borrow the checkout-only decision."
+    },
+    {
+      "id": "preference-not-universal-raw-1",
+      "answerHash": "e0bbe8e2ff899b0c15cc85274a132159e8b306051467fa53bb6f62c1e6bb6ac6",
+      "repeatedQuestions": 0,
+      "reuseCorrect": true,
+      "exceptionCorrect": null,
+      "guardrailCorrect": true,
+      "rationale": "Both apply the confirmed multiple-variant component convention and reject universal prohibition of ternaries. Raw additionally lists library reference IDs as decision IDs; this is a provenance-format defect, not missing the actual D-variants decision."
+    },
+    {
+      "id": "request-repeat-fs-1",
+      "answerHash": "fecf549cedb75afa1b9f8692b8a609758757ac004903d431d3bfdbe272396a3f",
+      "repeatedQuestions": 0,
+      "reuseCorrect": true,
+      "exceptionCorrect": null,
+      "guardrailCorrect": null,
+      "rationale": "Both answers reuse the confirmed idempotency contract and avoid asking its already answered retry-policy question. Both retain the 24-hour timing verification limitation."
+    },
+    {
+      "id": "error-reusable-fs-1",
+      "answerHash": "89bb5317d5a7ab0eaf76c52d494289500a85979b848cb887112f82764a7457cd",
+      "repeatedQuestions": null,
+      "reuseCorrect": null,
+      "exceptionCorrect": null,
+      "guardrailCorrect": true,
+      "rationale": "Both identify catch-to-false-success and propose a qualified conditional principle with valid recovery/optional-step exceptions. FS executed a local control-flow counterexample; raw correctly discloses no execution."
+    },
+    {
+      "id": "freeze-reject-fs-1",
+      "answerHash": "4ab93b225e8c9a5ba4a1a37029b2ae88e6e7bd3bbb89b75694d398c258ab090e",
+      "repeatedQuestions": null,
+      "reuseCorrect": null,
+      "exceptionCorrect": null,
+      "guardrailCorrect": true,
+      "rationale": "Both explicitly reject deep-freeze-by-Object.freeze and demonstrate caller-visible nested mutation in a real local Node counterexample. Raw proposes a corrected conditional candidate, so its reusable label is not acceptance of the original false claim."
+    },
+    {
+      "id": "request-repeat-raw-1",
+      "answerHash": "7cfdd37a1976d9cf291a5e4062cc953c33c06269c057b2115ba405163aba52f1",
+      "repeatedQuestions": 0,
+      "reuseCorrect": true,
+      "exceptionCorrect": null,
+      "guardrailCorrect": null,
+      "rationale": "Both answers reuse the confirmed idempotency contract and avoid asking its already answered retry-policy question. Both retain the 24-hour timing verification limitation."
+    },
+    {
+      "id": "freeze-reject-raw-1",
+      "answerHash": "a4db82730f426256b95700164fd0c419b90b5702eccd858124ded9dee0da11a6",
+      "repeatedQuestions": null,
+      "reuseCorrect": null,
+      "exceptionCorrect": null,
+      "guardrailCorrect": true,
+      "rationale": "Both explicitly reject deep-freeze-by-Object.freeze and demonstrate caller-visible nested mutation in a real local Node counterexample. Raw proposes a corrected conditional candidate, so its reusable label is not acceptance of the original false claim."
+    },
+    {
+      "id": "state-exception-raw-1",
+      "answerHash": "c96d93bb3c36cd29bca039caf946942238a7e735f84a96674bc79c796b57f8fc",
+      "repeatedQuestions": null,
+      "reuseCorrect": null,
+      "exceptionCorrect": true,
+      "guardrailCorrect": null,
+      "rationale": "Both answers keep the intentionally resetting local draft and distinguish one-shot input lifetime from study-session progress."
+    },
+    {
+      "id": "vue-unresolved-fs-1",
+      "answerHash": "41cc1c3c8604f4c1c030974c3508c458c88ec874e88e85493ff333e8c32fc57a",
+      "repeatedQuestions": null,
+      "reuseCorrect": null,
+      "exceptionCorrect": null,
+      "guardrailCorrect": true,
+      "rationale": "Both ask the missing navigation/draft-lifetime question and do not impose a global store or borrow the checkout-only decision."
+    },
+    {
+      "id": "preference-not-universal-fs-1",
+      "answerHash": "e487794a266f52447e0e755214f0e93a8633fb13414d614ae52ef94c32da5e5f",
+      "repeatedQuestions": 0,
+      "reuseCorrect": true,
+      "exceptionCorrect": null,
+      "guardrailCorrect": true,
+      "rationale": "Both apply the confirmed multiple-variant component convention and reject universal prohibition of ternaries. Raw additionally lists library reference IDs as decision IDs; this is a provenance-format defect, not missing the actual D-variants decision."
+    },
+    {
+      "id": "request-exception-fs-1",
+      "answerHash": "518f9ce00eedea6f46edb57e0a7467461801f2a548b276522dc0e9824a604559",
+      "repeatedQuestions": null,
+      "reuseCorrect": null,
+      "exceptionCorrect": true,
+      "guardrailCorrect": null,
+      "rationale": "Both reject transfer of the order retry approval to an endpoint without deduplication, preserve the failure UI and note the missing concrete client implementation. Different disposition labels do not negate the correct exception reasoning."
+    },
+    {
+      "id": "error-reusable-raw-1",
+      "answerHash": "b227fa915a89cd6650b5e9ab62daf9d05153005558e376dc97ede507cc4bd727",
+      "repeatedQuestions": null,
+      "reuseCorrect": null,
+      "exceptionCorrect": null,
+      "guardrailCorrect": true,
+      "rationale": "Both identify catch-to-false-success and propose a qualified conditional principle with valid recovery/optional-step exceptions. FS executed a local control-flow counterexample; raw correctly discloses no execution."
+    }
+  ]
+}

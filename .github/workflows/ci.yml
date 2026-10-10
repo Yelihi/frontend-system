@@ -31,6 +31,8 @@ jobs:
       - run: npm ci
       - run: npm run check
       - run: python3 test/evals/fs-comparison/v3/maintenance/runner_test.py
+      - run: python3 test/evals/fs-comparison/v16/test_runner.py
+      - run: python3 test/evals/fs-comparison/v16/test_score.py
       - run: python3 test/evals/fs-comparison/v4/runner_test.py NetworkPilotRegression.test_real_mcp_evidence_protocol NetworkPilotRegression.test_only_requested_answers_are_supplied NetworkPilotRegression.test_comparison_preserves_first_failure_and_missing_usage
       - run: npm run test:package
       - run: npm run release:check

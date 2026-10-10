@@ -16,7 +16,7 @@ try {
   const { stdout } = await exec('npm', ['pack', '--json', '--ignore-scripts', '--pack-destination', temp]);
   const [pack] = JSON.parse(stdout);
   assert.deepEqual(pack.files.map(file => file.path).filter(path => /^skills\/[^/]+\/SKILL.md$/.test(path)).sort(),
-    ['fs-knowledge', 'fs-plan', 'fs-plan-visualize', 'fs-review', 'fs-work'].map(name => `skills/${name}/SKILL.md`).sort());
+    ['fs-knowledge', 'fs-plan', 'fs-plan-visualize', 'fs-project', 'fs-review', 'fs-work'].map(name => `skills/${name}/SKILL.md`).sort());
   assert.ok(!pack.files.some(file => file.path.startsWith('knowledge/')));
   await exec('tar', ['-xzf', join(temp, pack.filename), '-C', temp]);
   const releaseManifest = JSON.parse(await readFile(join(temp, 'package/release-manifest.json'), 'utf8'));
@@ -24,12 +24,14 @@ try {
     const actual = createHash('sha256').update(await readFile(join(temp, 'package', path))).digest('hex');
     assert.equal(actual, expectedHash, `Packaged release file differs: ${path}`);
   }
-  // Visualization guidance must work from the installed package, not repository docs.
-  const visualizationSkill = join(temp, 'package/skills/fs-plan-visualize/SKILL.md');
-  const visualizationBody = await readFile(visualizationSkill, 'utf8');
-  for (const [, target] of visualizationBody.matchAll(/\]\((\.\.\/[^)]+)\)/g)) {
-    assert.ok((await readFile(resolve(visualizationSkill, '..', target), 'utf8')).length,
-      `Missing packaged visualization reference: ${target}`);
+  // Every skill must resolve its guidance from the installed package, not checkout docs.
+  for (const entry of pack.files.filter(file => /^skills\/[^/]+\/SKILL.md$/.test(file.path))) {
+    const skill = join(temp, 'package', entry.path);
+    const body = await readFile(skill, 'utf8');
+    for (const [, target] of body.matchAll(/\]\((\.\.\/[^)#]+)(?:#[^)]*)?\)/g)) {
+      assert.ok((await readFile(resolve(skill, '..', target), 'utf8')).length,
+        `Missing packaged skill reference: ${entry.path} -> ${target}`);
+    }
   }
   // The opt-in style CLI must also run from the packed artifact without checkout dependencies.
   const styleCli = join(temp, 'package/bundle/style-check.js');
@@ -59,9 +61,9 @@ try {
   const exported = JSON.parse(await readFile(join(temp, 'package/bundle/tool-schemas.json'), 'utf8'));
   assert.deepEqual(exported.tools, definitions, 'Packaged help must match the actual bundled MCP input schemas');
   const helper = join(temp, 'package/bundle/tool-help.mjs');
-  const {stdout: helpOutput} = await exec(process.execPath, [helper, 'save_execution', 'save_semantic_review'], {cwd: temp});
+  const {stdout: helpOutput} = await exec(process.execPath, [helper, 'save_execution', 'save_semantic_review', 'check_pr_readiness'], {cwd: temp});
   const help = JSON.parse(helpOutput);
-  assert.deepEqual(help.map(({name}) => name), ['save_execution', 'save_semantic_review']);
+  assert.deepEqual(help.map(({name}) => name), ['save_execution', 'save_semantic_review', 'check_pr_readiness']);
   for (const entry of help) assert.deepEqual(entry.inputSchema, definitions.find(({name}) => name === entry.name).inputSchema);
   const {stdout: revisionHelp} = await exec(process.execPath, [helper, 'save_revision'], {cwd: temp});
   const payloadSchema = JSON.parse(revisionHelp)[0].payloadSchema;
@@ -148,5 +150,5 @@ try {
     await copyFile(join(temp, pack.filename), join(destination, pack.filename));
     console.log(`Verified package saved: ${join(destination, pack.filename)}`);
   }
-  console.log('Package smoke passed: five skills, no raw knowledge, standalone MCP tools.');
+  console.log('Package smoke passed: six skills, no raw knowledge, standalone MCP tools.');
 } finally { await client.close(); await rm(temp, { recursive: true, force: true }); }

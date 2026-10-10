@@ -1,12 +1,20 @@
 ---
 name: fs-plan
-description: Analyze an existing frontend or discuss a new product's domain and architecture; produce or revise an implementation plan without editing product code.
+description: Create or revise an implementation plan from project analysis and user decisions, or discuss a new product's requirements. Use fs-project for standalone whole-project analysis; planning does not edit product code.
 ---
 
 # FS Plan
 
+For material unanswered choices, follow [ask and pause](../../references/workflows/user-decisions.md).
+Stop implementation when asking and wait for the actual answer; do not assume consent.
+
 The host interprets code and discusses choices; MCP pins evidence and contracts.
 Planning alone does not authorize product edits, approval, or a nested model.
+
+For a task explicitly ending in PR submission, include the scoped safety and domain
+review obligations from [PR readiness](../../references/workflows/pr-readiness.md)
+in the proposed policy. Reuse project decisions under their original conditions;
+new knowledge does not override a current scoped owner decision without discussion.
 
 Deliver the requested plan delta. Earlier narrative analysis reports describe their
 inspected snapshot; unless the user requests their refresh, retain them and state
@@ -17,39 +25,12 @@ reusing stale evidence or silently refreshing the main project.md baseline.
 
 ## Inspect once, preserve usable evidence
 
-Before composing a revision, check whether the required main baseline exists.
-A request to create a saved FS plan includes first-time baseline initialization;
-visualization alone does not. Creating the first baseline is distinct from refreshing
-an existing project.md, which remains an explicit user operation. An explicit no-write
-or no-baseline constraint takes precedence: report the prerequisite and deliver only
-the requested unbound draft, without attempting save_revision or claiming enforcement.
+Use [project analysis](../../references/workflows/fs-project.md) when the first
+baseline is missing. `fs-project` is the explicit whole-project entry point;
+`fs-project update` refreshes it on user request. Reuse an existing baseline and
+inspect affected working changes instead of silently refreshing main.
 
-Reuse the selected planId. For missing main context, get_project_snapshot then batch
-read_project_source(path:[related paths]). Account for every baseline file; follow
-callers, state owners and failure paths. Continue nextPaths and truncated nextOffset
-with the same expectedCommit. Do not print the same main code through shell first.
-Saved projectFacts can replace re-reading only while their dependencies are current;
-inspect changed scope, omissions, dynamic edges and uncertain interpretations.
-
-Before saving main facts, discover_knowledge_triggers for observed technology/domain
-unless the definitions are already known. Query shortlists are not exhaustive: follow
-up an observed relationship missing from the first result. Never invent signal IDs or domain filters; omit domains until discovery supplies valid IDs.
-For each recorded code statement supply reuse with all inspected dependencies and registered,
-exactly cited semantic interpretations, or reuseReason when binding is not justified.
-Reuse needs at least one registered interpretation; otherwise use reuseReason.
-Account for every file without turning every line into a separate statement. Group
-related facts with their actual dependencies. An observed defect is not endorsed behavior. Use unique exact
-{path,quote} citations; repeated quotes and semantic interpretations require inspected
-line numbers. Do not guess lines. A rejected location does not justify dropping a fact.
-
-Save_project_context uses expectedCommit=snapshot.commit and
-expectedHash=snapshot.documentHash (null for a new document), never sourceHash.
-Use a concise summary and evidence; avoid repeating statements in descriptive arrays.
-When typed flows already hold event details, keep main context to a cited baseline
-overview and its working-analysis index link; do not duplicate every flow step/finding.
-Inspect bound/excluded IDs in the receipt: empty bound is not reusable trigger evidence.
-
-After main analysis, get_work_context with explicit code files and separate
+Reuse the selected planId. After main analysis, get_work_context with explicit code files and separate
 requirements:[document paths]. Describe the observed change in request, not merely a
 plan filename. **Omit snapshot for working plan routes**, even when working code equals
 main; new answer documents are working requirements, not main inventory.

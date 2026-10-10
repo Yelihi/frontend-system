@@ -496,6 +496,13 @@ test('compact receipts pin separate requirements, preserve decision gates, and d
     ]) assert.equal(designEvidenceSchema.safeParse({...pending,decisions:[invalid]}).success,false);
     assert.equal(designEvidenceSchema.parse({...pending,decisions:[{...decision,status:'excluded'}]}).decisions[0]!.selected,null);
     await assert.rejects(approveRevision(root,draft.hash!,'Cannot invent a choice','pending'),/Unresolved decision/);
+    const execution={revisionHash:draft.hash!,status:'in-progress' as const,
+      steps:[{id:issue.id,status:'pending' as const,checkIds:[],remaining:[]}],note:'Awaiting an actual user answer'};
+    await assert.rejects(saveExecution(root,execution,null,'pending'),/current approved revision/);
+    const answered=await saveRevision(root,'Confirmed answer',draft.hash!,compactPolicy,'pending',[issue],evidence);
+    await approveRevision(root,answered.hash!,'Supplied fixture authorization for the answered scope','pending');
+    await saveExecution(root,{...execution,revisionHash:answered.hash!,note:'Actual fixture answer recorded'},null,'pending');
+    assert.equal((await workflowContext(root,'pending')).execution?.revisionHash,answered.hash);
     await assert.rejects(recalledAnalysis(other,context.contextId),/Unknown analysis context/);
     await assert.rejects(bindDesignEvidence(root,{...evidence,routes:[{contextId:'0'.repeat(64),judgments:[]}]}),/Unknown analysis context/);
     await assert.rejects(bindDesignEvidence(root,{...evidence,decisions:evidence.decisions.map((item)=>({...item,evidence:[{path:'contract.mjs',line:1,quote:check.split('\n')[0]!}]}))}),/contract.mjs.*requirements/);

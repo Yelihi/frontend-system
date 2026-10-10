@@ -36,6 +36,18 @@ main evidence before plan storage; after saving project.md obtain a fresh contex
 
 Read candidate conditions/exclusions and selected bodies. Batch selected bodies with `read_learned_knowledge(id:[ids])` (1–10 entries, at most 24,000 content characters); finish truncated entries at nextOffset before adoption. Inspect what code can answer first. Ask only unresolved product choices that affect scope, contracts or policy. Include keeping current code and reusing existing tools among plausible options. Reuse prior answers. An automatic recommendation is not a user answer.
 
+Search `matchedFields` explains vocabulary overlap, including applicability and exclusion text;
+it is not a confidence score or proof that a condition holds. For each consequential
+recommendation, connect the specific knowledge claim to an observed code/contract fact,
+then check the strongest relevant exception. An exact quotation validates its location,
+not whether it supports the conclusion. Separate source claims from your interpretation;
+keep unsupported intent unknown and ask only the missing decision. A current explicit
+owner decision supersedes an older conflicting decision within its scope; reference age
+alone does not establish authority. Preserve the superseded reason as history, not an
+active instruction. If sources conflict or installation versions are unconfirmed, name
+that limitation before recommending a change. Record this in the existing rationale and
+citations; do not add another report or repeat the full knowledge body.
+
 `get_work_context.projectFacts` retrieves saved statements whose citations/scope/dependencies intersect the selected files. Fresh bound interpretations feed routing automatically. `current` means the declared dependencies and configuration still match; it does not prove domain interpretation. `needs-review` explains changed/missing dependencies, knowledge updates, conflicting interpretations or missing legacy bindings. Reinspect that scope and supply fresh working interpretations; do not refresh main using branch edits. Explicit interpretations take precedence at the same path/line/signal. At most 20 matching statements and 40 combined interpretations are used; omitted counts/limit reasons require narrower batches. Changed or removed semantic trigger definitions invalidate the corresponding interpretations. Unrelated knowledge updates keep fact reuse available; routing still queries the current index and returns current candidates for review. Approved plans retain their existing linked-knowledge freshness checks. Facts persist across server restarts; contextId receipts still require renewal.
 
 When rechecking an already-read context, pass `knownContextId` to get_work_context. The server still computes current routing and compares the project-bound receipt. Only matching candidate/discovery metadata is omitted (`reused:true`); policy, warnings and project status are always current. Changed source, configuration, requirements, query, knowledge or project document returns full metadata. This reduces repeated response text, not analysis CPU cost. Omit the parameter after context loss or when handing off to a new conversation.
