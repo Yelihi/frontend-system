@@ -58,7 +58,7 @@ claude plugin list
 
 | 명령어 | 하는 일 |
 | --- | --- |
-| `fs-project` | 프로젝트 전체를 분석해 `.frontend-system/project.md` 생성. 이미 있으면 위치와 최신 상태 안내 |
+| `fs-project` | 프로젝트 전체 분석, 사용자 설명서·AI 참조·흐름 HTML 자동 생성. 이미 있으면 위치와 최신 상태 안내 |
 | `fs-project update` | 기준 브랜치의 변경을 확인해 분석 갱신. 기존 결정과 이력 보존 |
 | `fs-plan <요청>` | 분석과 지식을 참고하고 필요한 선택을 질문한 뒤 `plan.md` 작성. 구현하지 않음 |
 | `fs-work <계획 이름>` | 합의된 계획을 구현하고 필수 검사 실행. 미해결 선택이 생기면 멈추고 질문 |
@@ -92,7 +92,18 @@ fs-project
 
 FS는 환경·의존성·배포 설정 → 폴더와 의존 방향 → 페이지별 이벤트·상태·오류 흐름 → 관련 지식과 개선 후보 순으로 분석합니다. 모든 기준 파일의 확인 여부를 기록하며, 확인하지 못한 영역은 미확인으로 남깁니다.
 
-결과는 `.frontend-system/project.md`입니다. 전체 설명과 상세 근거·흐름·개선 후보의 링크를 제공합니다. 분석만으로 제품 코드를 수정하지 않습니다.
+결과는 사용자와 AI가 읽는 형태로 나뉩니다. 같은 분석 기록에서 생성하므로 시각화를 위해 다시 분석하지 않습니다.
+
+| 대상 | 결과 | 내용 |
+|---|---|---|
+| 사용자 | `.frontend-system/project.md` | 환경·구조·페이지별 상태와 이벤트 흐름, 근거, 개선 후보, 미확인 범위 |
+| 사용자 | 문서에 연결된 `diagrams/project-<hash>.html` | 페이지·컴포넌트·store/cache 구성과 이벤트별 영향 경로. `fs-project`가 자동 생성 |
+| AI | `evidence/context-<hash>.json` | 영역별 상태와 정확한 근거·흐름 참조. `get_project_document`의 기본 반환 내용 |
+| 공통 원본 | evidence 및 `analysis/history/<hash>.json` | 사실·코드 인용·props/state/event·연결·시나리오·개선점. AI는 필요한 ID만 선택해서 읽음 |
+
+`partial`은 중간 저장이며 분석 완료가 아닙니다. 읽을 수 있는 남은 범위는 이어서 분석합니다. 실제 장애가 있으면 차단된 범위와 이유를 남깁니다. `current`는 기준 커밋의 일치 여부이고 분석 완료 여부와 다릅니다. 시각화는 정적 코드 해석이며 실제 실행을 관측한 결과는 아닙니다. 분석만으로 제품 코드를 수정하지 않습니다.
+
+기존 문서는 `fs-project update`로 이 형식으로 갱신합니다. 독립적인 흐름 시각화는 기존 `fs-plan-visualize`를 계속 사용할 수 있습니다.
 
 ### 2. 변경 계획과 질문
 
@@ -212,7 +223,9 @@ sequenceDiagram
     T->>K: 관련 조건·근거·예외 조회
     T-->>AI: 후보 지식
     AI->>T: 해석·근거·흐름·개선점 저장
-    T->>P: project.md와 상세 기록
+    T->>P: AI용 근거·흐름 JSON과 참조 색인 저장
+    T->>P: 같은 기록에서 사용자용 project.md·HTML 자동 생성
+    T-->>U: 설명서·시각화 링크와 분석 완료/부분 상태
     U->>AI: fs-plan 변경 요청
     AI->>T: 기존 분석 재사용·변경 범위 확인
     loop 실제로 미해결인 중요한 선택만
@@ -254,7 +267,8 @@ AI가 관련 코드를 해석하고, 도구가 관찰 가능한 특징과 지식
 | `references/learned/` · `references/learned/index.json` | sync한 지식 본문과 검색 색인 |
 | `mandatory-rules/` · `references/workflows/` | 기본 규칙과 명령별 절차 |
 | `src/mcp.ts` · `src/application/` | 파일·근거·검색·계획·실행 검증 도구 |
-| 대상 프로젝트의 `.frontend-system/project.md` | 기준 브랜치 설명과 상세 분석의 색인 |
+| 대상 프로젝트의 `.frontend-system/project.md` | 사용자용 기준 브랜치 상세 설명·분석 상태·시각화 링크 |
+| 대상 프로젝트의 `evidence/context-<hash>.json` | AI용 영역 색인·판단 기록·정확한 분석 참조 (`.frontend-system` 내부) |
 | 대상 프로젝트의 `.frontend-system/plans/<이름>/` | 변경 계획·결정·진행·검증 기록 |
 
 HTML은 내려받아 브라우저에서 열 수 있습니다. 설명은 한국어이며 Archify의 고정 메뉴는 영어입니다. 위 구조도는 FS 자체의 구조이고, 소비 프로젝트의 실제 흐름은 `fs-plan-visualize`로 생성합니다.

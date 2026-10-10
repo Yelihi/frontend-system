@@ -5,6 +5,7 @@ import { atomic, digest, directory, locked, sourceSnapshot } from "./workflow-st
 
 import { projectSnapshot } from "./project-snapshot.js";
 import { validateProjectEvidence } from './design-evidence.js';
+import {prepareProjectReport} from './project-report.js';
 
 import type { ProjectAnalysis, ProjectConfig, ProjectProfile, ProjectState } from "../domain/types.js";
 
@@ -33,6 +34,15 @@ async function optionalRead(path: string): Promise<string> {
 
 export async function readProjectDocument(root: string): Promise<string> {
   return await optionalRead(join(root, directoryName, "project.md")) || optionalRead(join(root, directoryName, "init.md"));
+}
+
+export async function readProjectAiContext(root: string): Promise<string> {
+  const document = await readProjectDocument(root);
+  const match = /<!-- fs-project-context ([a-f0-9]{64}) -->/.exec(document);
+  if (!match) return document;
+  const content = await readFile(join(root, directoryName, 'evidence', `context-${match[1]}.json`), 'utf8');
+  if (digest(content) !== match[1]) throw new Error('Project AI context changed; refresh the analysis');
+  return content;
 }
 
 export async function readProjectConfig(root: string): Promise<ProjectConfig | undefined> {
@@ -79,9 +89,9 @@ function renderProject(profile: ProjectProfile, analysis: ProjectAnalysis): stri
 
 export async function writeProjectArtifacts(profile: ProjectProfile, analysis: ProjectAnalysis, options: {
   baseRef?: string | undefined; expectedCommit?: string | null | undefined; expectedHash?: string | null | undefined;
-} = {}): Promise<void> {
+} = {}) {
   const root = profile.project.rootPath;
-  await locked(root, async () => {
+  return locked(root, async () => {
     const snapshot = await projectSnapshot(root, options.baseRef);
     if (snapshot.commit && options.expectedCommit !== snapshot.commit) throw new Error("Save context against the inspected main commit; main may have changed");
     if (!snapshot.commit && options.expectedCommit) throw new Error("The inspected main commit is unavailable");
@@ -92,15 +102,32 @@ export async function writeProjectArtifacts(profile: ProjectProfile, analysis: P
     if (snapshot.commit && options.expectedHash === undefined) throw new Error("Provide the current project document hash (null for a new document)");
     const legacy = await optionalRead(join(base, "init.md"));
     if (previous) await atomic(join(await directory(root, "project-history"), `${digest(previous)}.md`), previous);
-    const metadata = { baseRef: snapshot.baseRef, analyzedCommit: snapshot.commit, sourceHash: snapshot.sourceHash, updatedAt: new Date().toISOString() };
+    const metadata = { baseRef: snapshot.baseRef, analyzedCommit: snapshot.commit, sourceHash: snapshot.sourceHash, updatedAt: new Date().toISOString(), analysisStatus:analysis.report?.status ?? 'legacy' };
     const evidence = analysis.evidence ? await validateProjectEvidence(root, analysis.evidence, snapshot.baseRef, snapshot.commit) : null;
     const evidenceBody = evidence ? JSON.stringify(evidence) : null;
     const evidenceHash = evidenceBody ? digest(evidenceBody) : null;
+    if (analysis.report && (!evidence || !evidenceHash || !snapshot.commit)) throw new Error('Project report requires structured evidence and a committed baseline');
+    const report = analysis.report && evidence && evidenceHash && snapshot.commit
+      ? await prepareProjectReport(root, analysis.report, evidence, evidenceHash, {baseRef:snapshot.baseRef, expectedCommit:snapshot.commit}) : null;
+    const contextBody = report ? JSON.stringify({...report.context, summary:analysis.summary,
+      conventions:analysis.conventions, decisions:analysis.decisions, qualityGates:analysis.qualityGates,
+      assumptions:analysis.assumptions, questions:analysis.questions}) : null;
+    const contextHash = contextBody ? digest(contextBody) : null;
+    // Write projections before switching the document pointer; failures preserve the old baseline.
+    if (report && contextBody && contextHash) {
+      await atomic(join(await directory(root, 'evidence'), `context-${contextHash}.json`), contextBody);
+      for (const artifact of report.artifacts) await atomic(join(await directory(root, 'diagrams'), artifact.path.slice('diagrams/'.length)), artifact.content);
+    }
     if (evidenceBody) await atomic(join(await directory(root, 'evidence'), `project-${evidenceHash}.json`), evidenceBody);
     const mainProfile = { ...profile, project: { ...profile.project, git: { ...profile.project.git, ...(snapshot.commit ? { commit: snapshot.commit } : {}) } } };
     const content = [
       `<!-- frontend-system-context ${JSON.stringify(metadata)} -->`,
       renderProject(mainProfile, analysis),
+      ...(report ? [
+        `<!-- fs-project-context ${contextHash} -->`,
+        `## Analysis delivery\n\nStatus: **${report.context.analysisStatus}**. This is static analysis, not runtime verification.\n\n[AI context](evidence/context-${contextHash}.json) · Read selected records by ID; diagrams are human projections.`,
+        `## Detailed project analysis\n\n${report.details}`,
+      ] : []),
       ...(evidence ? [
         `<!-- fs-project-evidence ${evidenceHash} -->`,
         `## Evidence and coverage\n\nCoverage: ${evidence.completeness}. Citations are checked; semantic accuracy is a host judgment.`,
@@ -109,7 +136,7 @@ export async function writeProjectArtifacts(profile: ProjectProfile, analysis: P
       ] : ['Analysis format: legacy; structured claim evidence has not been recorded.']),
       `Tracked files: ${snapshot.files.length}. Page get_project_snapshot for the complete baseline inventory.`,
       `Package manifests: ${Object.keys(snapshot.manifests).join(", ") || "none"}. Read selected manifests from the baseline snapshot.`,
-      "## Flow and improvement index\n\nSee [working flow/finding index](analysis/index.md) after the first save_project_analysis, or use get_project_analysis for cited flows, open/deferred/planned findings and retained resolution history. Working/proposed records are not main facts. Source changes mark records stale; refresh this main document only when requested.",
+      ...(await optionalRead(join(base, 'analysis/index.md')) ? ["## Flow and improvement index\n\n[Flow/finding index](analysis/index.md). Query get_project_analysis for working-tree freshness; the baseline report pins its own observed versions."] : ["Flow/finding index has not been saved. No reusable flow is implied."]),
       snapshot.commit ? `Base: ${snapshot.baseRef} @ ${snapshot.commit}. Check current status with get_project_snapshot; local edits are not main facts.` : "No committed main baseline. This is initial context, not verified main state.",
       legacy ? "Previous inspection preserved: [init.md](init.md). Reconcile its decisions explicitly." : "",
       previous ? `Previous context preserved: [history](project-history/${digest(previous)}.md).` : "",
@@ -126,6 +153,9 @@ export async function writeProjectArtifacts(profile: ProjectProfile, analysis: P
       ...(snapshot.commit ? { analyzedCommit: snapshot.commit } : {}),
       fileHashes: snapshot.workingChanges.length ? {} : await sourceSnapshot(root), updatedAt: metadata.updatedAt,
     } satisfies ProjectState, null, 2));
+    return {analysisStatus:analysis.report?.status ?? 'legacy',
+      aiContext:contextHash ? join(base, 'evidence', `context-${contextHash}.json`) : null,
+      diagrams:report?.artifacts.map(a => ({path:a.absolutePath, hash:digest(a.content)})) ?? []};
   });
 }
 

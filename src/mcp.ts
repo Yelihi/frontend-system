@@ -22,6 +22,7 @@ import {
 import {
   readProjectConfig,
   readProjectDocument,
+  readProjectAiContext,
   readProjectState,
   writeProjectArtifacts,
   writeProjectConfig,
@@ -212,7 +213,7 @@ server.registerTool("inspect_project", {
     overall,
     profile,
     config: await readProjectConfig(root),
-    projectDocument: await readProjectDocument(root),
+    projectDocument: await readProjectAiContext(root),
     state: await readProjectState(root),
     changedFiles: await changedFiles(root).catch(() => []),
   });
@@ -296,13 +297,13 @@ server.registerTool("record_project_refresh", {
 }, async ({ projectPath: path, baseRef, expectedCommit, status, reason }) => result(await recordProjectRefresh(projectPath(path), baseRef, expectedCommit, status, reason)));
 
 server.registerTool("get_project_document", {
-  description: "Read a bounded project.md window, falling back to preserved init.md. Use the returned content hash to keep pagination consistent.",
-  inputSchema: { projectPath: z.string().optional(), offset: z.number().int().min(0).default(0), limit: z.number().int().min(1).max(12000).default(6000), expectedHash: z.string().optional() }, annotations: readOnly,
-}, async ({ projectPath: path, offset, limit, expectedHash }) => {
-  const content = await readProjectDocument(projectPath(path));
+  description: "Read bounded AI context by default: area/status and exact evidence/flow references, without human prose or HTML. view:human reads project.md. Legacy documents fall back to project.md/init.md. hash is for pagination; use documentHash for save_project_context.",
+  inputSchema: { projectPath: z.string().optional(), view:z.enum(['ai','human']).default('ai'), offset: z.number().int().min(0).default(0), limit: z.number().int().min(1).max(12000).default(6000), expectedHash: z.string().optional() }, annotations: readOnly,
+}, async ({ projectPath: path, view, offset, limit, expectedHash }) => {
+  const content = await (view === 'human' ? readProjectDocument : readProjectAiContext)(projectPath(path));
   const hash = content ? digest(content) : null;
   if (expectedHash && hash !== expectedHash) throw new Error("Document changed; restart pagination");
-  return result({ hash, content: content.slice(offset, offset + limit), totalCharacters: content.length, nextOffset: offset + limit < content.length ? offset + limit : null });
+  return result({ hash, documentHash:await projectDocumentHash(projectPath(path)), view, content: content.slice(offset, offset + limit), totalCharacters: content.length, nextOffset: offset + limit < content.length ? offset + limit : null });
 });
 
 server.registerTool("read_project_source", {
@@ -314,7 +315,7 @@ server.registerTool("read_project_source", {
 
 server.registerTool("save_project_context", {
   title: "Save inspected project context",
-  description: "Persist evidence-backed main analysis from draftFile or inline analysis. For payloadSchema read bundle/tool-help.mjs save_project_context; draft input avoids resending the whole analysis after a field error. User-decision statements require confirmation with the supplied answer. Each code fact/interpretation needs reuse dependencies and registered semantic interpretations, or reuseReason explaining why none is justified. Returns reuse coverage. Hashes are bound by the server.",
+  description: "Persist evidence-backed main analysis from draftFile or inline analysis. fs-project supplies analysis.report to generate human project.md, compact AI references and observed HTML automatically; reportless saves are legacy. Returns delivery paths and analysis status. For payloadSchema read bundle/tool-help.mjs save_project_context; draft input avoids resending the whole analysis after a field error. User-decision statements require confirmation with the supplied answer. Each code fact/interpretation needs reuse dependencies and registered semantic interpretations, or reuseReason explaining why none is justified. Returns reuse coverage. Hashes are bound by the server.",
   inputSchema: {
     projectPath: z.string().optional(),
     baseRef: z.string().default("main"),
@@ -329,9 +330,9 @@ server.registerTool("save_project_context", {
   if ((inline !== undefined) === (draftFile !== undefined)) throw new Error('Supply exactly one of analysis or draftFile');
   const {analysis} = projectContextPayloadSchema.parse(draftFile ? (await readRevisionDraft(root, draftFile)).input : {analysis:inline});
   const profile = await discovery.discover(await discovery.createRef(root));
-  await writeProjectArtifacts(profile, analysis as ProjectAnalysis, { baseRef, expectedCommit, expectedHash });
+  const delivery = await writeProjectArtifacts(profile, analysis as ProjectAnalysis, { baseRef, expectedCommit, expectedHash });
   const statements = analysis.evidence ? (await readProjectEvidence(root)).record.statements : [];
-  return result({ projectDocument: `${root}/.frontend-system/project.md`, status: await projectDocumentStatus(root),
+  return result({ projectDocument: `${root}/.frontend-system/project.md`, status: await projectDocumentStatus(root), delivery,
     reuse: {bound: statements.filter(item => item.reuse).map(item => item.id),
       excluded: statements.filter(item => item.reuseReason).map(item => ({id: item.id, reason: item.reuseReason})),
       meaning: 'Bound statements can emit saved triggers after dependency validation. Excluded statements remain review context; never imply cache hits.'} });
@@ -380,7 +381,7 @@ server.registerTool("get_change_context", {
     changedFiles: await changedFiles(root, selectedBase),
     diffStat: await diffStat(root, selectedBase),
     profile,
-    projectDocument: await readProjectDocument(root),
+    projectDocument: await readProjectAiContext(root),
   });
 });
 

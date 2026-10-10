@@ -64,6 +64,7 @@ export async function readProjectSources(root: string, paths: string[], expected
 
 const metadataSchema = z.object({
   baseRef: z.string(), analyzedCommit: z.string().nullable(), sourceHash: z.string(), updatedAt: z.string(),
+  analysisStatus: z.enum(['partial','complete','legacy']).optional(),
 });
 const refreshSchema = z.object({
   baseRef: z.string(), commit: z.string().nullable(), status: z.enum(["pending", "failed"]), reason: z.string(), updatedAt: z.string(),

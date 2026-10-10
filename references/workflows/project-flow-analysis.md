@@ -122,8 +122,9 @@ still needs implementation checks; an old analysis is not proof of the new code.
 
 ## Manual baseline and visualization
 
-`project.md` stays the concise main baseline; detailed evidence, file inventory and
-flow records are read on demand. Working/proposed analysis is separate. Updating the
+`project.md` is the human baseline report with automatic observed-flow diagrams.
+AI reads the compact context index and selected evidence/flow records on demand.
+Both views reference the same analysis; never run a second scan just for visualization. Working/proposed analysis is separate. Updating the
 baseline is an explicit user operation after satisfaction with implementation. Keep
 first-time baseline initialization as part of a requested saved FS plan unless the
 user restricts that write; a visualization-only request does not initialize it. Check

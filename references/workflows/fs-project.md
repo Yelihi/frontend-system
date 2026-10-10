@@ -26,8 +26,55 @@ Use the target project, not the installed plugin/source repository.
   Read first-party areas in bounded batches; reuse current facts on update and revisit
   affected dependencies. Do not claim a complete scan from a shortlist or file names.
 - Preserve unknown intent as unknown. Follow [user decisions](user-decisions.md) if
-  an answer is needed. A partial analysis can be saved with pending/blocked coverage;
-  it must not be reported as finished or used to invent a user's decision.
+  an answer is needed. A partial analysis is a checkpoint, not the requested finished result. Continue
+  remaining inspectable areas after saving; stop only for a real blocker, user pause
+  or explicitly reduced scope. Preserve the next areas and reason if interrupted.
+  Unverified runtime behavior can remain a limitation of a completed static analysis.
+
+## Analysis contract and two audiences
+
+Build `analysis.report.areas` from the full inventory before tracing: environment,
+architecture, every page/route or bounded scenario group, shared services/state,
+and delivery/tests. Give each area a stable ID and reviewed/pending/blocked/excluded
+status. Exclusions need concrete reasons in the summary; configuration/static pages
+can use flowReason when an event flow genuinely does not apply. Do not mark an area
+reviewed merely because its files were listed or its entry point was read.
+
+For each page, trace composition/props, local/store/cache ownership, event arguments,
+validation, calls and effects through their consumers, then view updates. Include
+failure, loading, cancellation, races and cleanup where implemented. Record domain
+invariants, uncertain dynamic edges and evidence. Save bounded **observed** flow
+records with scope.snapshot pinned to this baseline; save actionable findings after
+their flow receipt. Reuse shared records across areas instead of copying source.
+
+Connect area.statementIds to evidence statements and area.flows/findings to exact
+saved {id,hash} receipts. knowledgeReview records observed triggers, consulted IDs,
+applicability/exclusions and the resulting finding or reason to retain existing code.
+Unknown intent stays a question; do not manufacture a violation or require a finding
+quota. Record a reviewed area without flows only with a concrete flowReason.
+
+`save_project_context` with `analysis.report` automatically produces both views:
+- Human: `.frontend-system/project.md` explains areas, state ownership, ordered
+  scenarios, findings and limits, and links interactive HTML for every included flow.
+- AI: a compact immutable `evidence/context-<hash>.json` area/reference index, linked
+  from project.md. Exact statements remain in evidence JSON; nodes, state, props,
+  edges, scenarios and citations remain in immutable flow/finding JSON. Do not author
+  another copy of the graph or make the model consume HTML.
+
+The HTML uses the same renderer as fs-plan-visualize, automatically during context
+save; no separate user command or second code analysis is needed. It validates the
+same baseline commit even when the worktree differs. Do not substitute working or
+proposed flows. Return the saved HTML links. Check a meaningful event/error path
+against code; check interactive controls when browser tools are available and report
+unrun UI checks. A static diagram is not proof of runtime timing.
+
+Set report.status=complete only when all included first-party scope is inspected,
+areas are reviewed or justifiably excluded, required traces and knowledge judgments
+are recorded, and no pending/blocked coverage remains. The server checks references,
+coverage and projection generation, **not semantic completeness**; the host must
+review the result. A failed flow save is a blocker, not permission to replace detailed
+analysis with a terse summary. Save a partial checkpoint with blocked area and exact
+failure if possible; retain drafts. Do not retry a failing save indefinitely.
 
 ## Bind facts and save
 
@@ -63,18 +110,20 @@ User-decision statements require confirmation quoting the actual answer.
 
 Save_project_context uses expectedCommit=snapshot.commit and
 expectedHash=snapshot.documentHash (null for a new document), never sourceHash.
-Use a concise summary and evidence; avoid repeating statements in descriptive arrays.
-When typed flows already hold event details, keep main context to a cited baseline
-overview and its working-analysis index link; do not duplicate every flow step/finding.
+Keep authored summary/overview arrays concise and understandable without looking up
+opaque IDs. Supply detailed evidence and report references once; the tool expands
+human-readable details and HTML deterministically. Never manually duplicate them.
 Inspect bound/excluded IDs in the receipt: empty bound is not reusable trigger evidence.
 
-When invoked as `fs-project`, stop after saving the analysis; do not continue into
+When invoked as `fs-project`, stop after completing the analysis and projections (or
+reporting an actual blocker); do not continue into
 a new plan, approval, implementation or PR creation. When invoked to initialize
 a missing baseline within `fs-plan`, return to that planning procedure. On error,
 record the failed refresh and retain the previous document.
 
 Return the clickable `.frontend-system/project.md` path, base branch/commit, coverage
-and unresolved areas. The document is a concise index of observed architecture,
-flows, rules and findings; detailed records stay linked. Do not duplicate the same
+and unresolved areas, analysis status, AI context and diagram links. Fresh/current
+commit is not complete coverage. On later tasks use get_project_document (default AI
+view), then selected evidence/flow IDs; view:human is for reading the user report. Do not duplicate the same
 report at repository-root `project.md`. No implementation test is claimed merely
 because its source was inspected. Suggest `fs-plan <change>` as the next command.
