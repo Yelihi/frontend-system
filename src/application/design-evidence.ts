@@ -6,7 +6,7 @@ import { localPath, sha256 } from './policy.js';
 import { projectFile } from './knowledge/code-triggers.js';
 import { contentHash, readIndexedReference } from './knowledge/reference-index.js';
 import { routeKnowledge, routingInputSchema, installedSystemRoot } from './knowledge/routing.js';
-import { projectSnapshot, readProjectSource } from './project-snapshot.js';
+import { projectSnapshot, readProjectSourceFile } from './project-snapshot.js';
 import { FileSystemProjectDiscovery } from '../adapters/filesystem/project-discovery.js';
 import { relative } from 'node:path';
 import { recalledAnalysis } from './analysis-receipts.js';
@@ -45,7 +45,7 @@ export const projectEvidenceInputSchema = projectEvidenceSchema.extend({version:
 });
 
 export async function validateCitation(root: string, citation: z.infer<typeof citationInputSchema>, snapshot?: {baseRef: string; expectedCommit: string}) {
-  const content = snapshot ? (await readProjectSource(root, citation.path, snapshot.expectedCommit, snapshot.baseRef, 0, 512_000)).content
+  const content = snapshot ? (await readProjectSourceFile(root, citation.path, snapshot.expectedCommit, snapshot.baseRef)).content
     : (await projectFile(root, citation.path)).content;
   const hash = contentHash(content);
   if ((!citation.hash && !snapshot) || (citation.hash && hash !== citation.hash)) {

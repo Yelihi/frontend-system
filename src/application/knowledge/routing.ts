@@ -6,7 +6,7 @@ import { contentHash, readReferenceIndex, searchReferenceIndex, readIndexedRefer
 import { triggerInspectionSchema } from './trigger-schema.js';
 import { inspectCodeKnowledge, discoverKnowledgeTriggers } from './trigger-review.js';
 import { projectFile } from './code-triggers.js';
-import { readProjectSource } from '../project-snapshot.js';
+import { readProjectSourceFile } from '../project-snapshot.js';
 import { factGuardSchema, createFactGuardChecker } from '../project-facts.js';
 
 export const routingInputSchema = triggerInspectionSchema.extend({ query: z.string().trim().min(1).max(2000), requirements: z.array(z.string().min(1)).max(40).optional(), factGuards: z.array(factGuardSchema).max(20).optional() });
@@ -54,9 +54,8 @@ export async function routeKnowledge(root: string, systemRoot: string, input: Ro
   const requirements: Record<string, string> = {};
   for (const path of request.requirements ?? []) {
     const file = request.snapshot
-      ? await readProjectSource(root, path, request.snapshot.expectedCommit, request.snapshot.baseRef, 0, 512_000)
+      ? await readProjectSourceFile(root, path, request.snapshot.expectedCommit, request.snapshot.baseRef)
       : await projectFile(root, path);
-    if ('nextOffset' in file && file.nextOffset !== null) throw new Error(`Requirement too large: ${path}; use a bounded project document`);
     requirements[file.path] = contentHash(file.content);
   }
   const ids = [...new Set([...inspection.candidates.map(({ id }) => id), ...lexical.map(({ id }) => id), ...scopeMatches.map(({id}) => id), ...structureMatches.map(({id}) => id)])];

@@ -2,7 +2,7 @@ import { validateInvestigation, investigationCitations } from "./investigation.j
 import { join } from "node:path";
 import * as z from "zod/v4";
 import { saveProjectRecord } from "../workflow-store.js";
-import { readProjectSource } from "../project-snapshot.js";
+import { readProjectSourceFile } from "../project-snapshot.js";
 import { quoteLocationHint } from '../source-file.js';
 import { inspectCode, projectFile, type CodeSignal } from "./code-triggers.js";
 import { confinedRead, contentHash, matchKnowledgeTriggers, readReferenceIndex, searchReferenceIndex, technologyKey } from "./reference-index.js";
@@ -55,7 +55,7 @@ export async function inspectCodeKnowledge(projectRoot: string, systemRoot: stri
   for (const observation of request.interpretations) {
     if (!semanticSignals.includes(observation.signal)) throw new Error(`Unknown semantic trigger: ${observation.signal}`);
     const file = request.snapshot
-      ? { path: observation.path, content: (await readProjectSource(projectRoot, observation.path, request.snapshot.expectedCommit, request.snapshot.baseRef, 0, 512_000)).content }
+      ? { path: observation.path, content: (await readProjectSourceFile(projectRoot, observation.path, request.snapshot.expectedCommit, request.snapshot.baseRef)).content }
       : await projectFile(projectRoot, observation.path);
     if (analysis.hashes[file.path] !== contentHash(file.content)) throw new Error("Interpretation must cite a current inspected file");
     if (!hasEvidence(file.content, observation.line, observation.evidence)) throw new Error(`Interpretation evidence does not match cited lines: ${observation.path}:${observation.line}. ${quoteLocationHint(file.content, observation.evidence)}`);

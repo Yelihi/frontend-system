@@ -5,7 +5,7 @@ import { localPath, sha256 } from './policy.js';
 import { interpretationSchema } from './knowledge/trigger-schema.js';
 import { contentHash, readReferenceIndex, type ReferenceIndex } from './knowledge/reference-index.js';
 import { projectFile } from './knowledge/code-triggers.js';
-import { projectSnapshot, readProjectSource } from './project-snapshot.js';
+import { projectSnapshot, readProjectSourceFile } from './project-snapshot.js';
 import type { ProjectEvidence, validateProjectEvidence } from './design-evidence.js';
 import { quoteLocationHint } from './source-file.js';
 
@@ -39,8 +39,7 @@ async function inventory(root: string, snapshot?: Snapshot) {
 }
 async function source(root: string, path: string, snapshot?: Snapshot) {
   if (!snapshot) return (await projectFile(root, path)).content;
-  const file = await readProjectSource(root, path, snapshot.expectedCommit, snapshot.baseRef, 0, 512_000);
-  if (file.nextOffset !== null) throw new Error(`Fact dependency too large: ${path}; use a bounded scope`);
+  const file = await readProjectSourceFile(root, path, snapshot.expectedCommit, snapshot.baseRef);
   return file.content;
 }
 

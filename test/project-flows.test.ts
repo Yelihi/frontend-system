@@ -257,3 +257,28 @@ test('flow citations must start on the declared line, not merely occur nearby',a
     assert.equal((await saveProjectAnalysis(root,process.cwd(),{expectedHash:null,record:{kind:'flow',data}})).status,'saved');
   } finally {await rm(root,{recursive:true,force:true});}
 });
+
+test('main flow capture includes a 663 KB lockfile and notices edits beyond the old limit', async () => {
+  const {git} = await import('../src/application/git-state.js');
+  const {projectSnapshot} = await import('../src/application/project-snapshot.js');
+  const {contentHash} = await import('../src/application/knowledge/reference-index.js');
+  const root = await fixture();
+  try {
+    const lock = JSON.stringify({padding:'x'.repeat(663_000), marker:'lockfile-tail'});
+    await writeFile(join(root, 'package-lock.json'), lock);
+    await git(root, ['init', '-b', 'main']);
+    await git(root, ['add', '.']);
+    await git(root, ['-c', 'user.name=Fixture', '-c', 'user.email=fixture@example.test', 'commit', '-m', 'Large lockfile']);
+    const data = flow();
+    data.scope.snapshot = {baseRef:'main', expectedCommit:(await projectSnapshot(root)).commit!};
+    const saved = await saveProjectAnalysis(root, process.cwd(), {expectedHash:null, record:{kind:'flow', data}});
+    const record = JSON.parse(await readFile(join(root, '.frontend-system/analysis/flow/save.json'), 'utf8'));
+    assert.equal(record.hashes['package-lock.json'], contentHash(lock));
+    const ref = {kind:'flow' as const, id:saved.id, hash:saved.hash, issueIds:['edit']};
+    assert.deepEqual(await validateAnalysisReferences(root, process.cwd(), [ref], true), []);
+    await writeFile(join(root, 'package-lock.json'), lock.replace('lockfile-tail', 'lockfile-edit'));
+    assert.match((await validateAnalysisReferences(root, process.cwd(), [ref], true)).join(), /Changed dependency: package-lock.json/);
+    const working = flow(); working.id = 'working';
+    assert.equal((await saveProjectAnalysis(root, process.cwd(), {expectedHash:null, record:{kind:'flow', data:working}})).status, 'saved');
+  } finally { await rm(root, {recursive:true, force:true}); }
+});

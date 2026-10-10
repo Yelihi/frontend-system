@@ -6450,6 +6450,10 @@ import { createReadStream } from "node:fs";
 import { createHash } from "node:crypto";
 import { readFile, realpath, stat } from "node:fs/promises";
 import { isAbsolute, relative, resolve } from "node:path";
+var PROJECT_SOURCE_MAX_BYTES = 8 * 1024 * 1024;
+function assertProjectSourceSize(bytes, path) {
+  if (bytes > PROJECT_SOURCE_MAX_BYTES) throw new Error(`File exceeds 8 MiB inspection budget: ${path}`);
+}
 function quoteLocationHint(content, quote) {
   if (!quote) return "No nonempty exact quote supplied.";
   const lines = [];
@@ -6480,8 +6484,10 @@ async function projectFileHash(root, path) {
 }
 async function projectFile(root, path) {
   const { absolute, path: local } = await projectSourcePath(root, path);
-  if ((await stat(absolute)).size > 512e3) throw new Error("File exceeds 512 KB inspection budget");
-  return { absolute, path: local, content: await readFile(absolute, "utf8") };
+  assertProjectSourceSize((await stat(absolute)).size, local);
+  const content = await readFile(absolute, "utf8");
+  assertProjectSourceSize(Buffer.byteLength(content), local);
+  return { absolute, path: local, content };
 }
 
 export {
@@ -6520,6 +6526,8 @@ export {
   custom,
   preprocess,
   iso_exports,
+  PROJECT_SOURCE_MAX_BYTES,
+  assertProjectSourceSize,
   quoteLocationHint,
   projectFileHash,
   projectFile

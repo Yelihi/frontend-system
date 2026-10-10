@@ -4,6 +4,7 @@ import { git } from "./git-state.js";
 import * as z from "zod/v4";
 import { atomic, directory, locked, digest } from "./workflow-store.js";
 import { boundReadWindows } from './read-windows.js';
+import { PROJECT_SOURCE_MAX_BYTES, assertProjectSourceSize } from './source-file.js';
 
 // Generated context and workflow evidence do not trigger a document refresh loop.
 const included = (path: string) => !path.split("/").includes(".frontend-system") || path === ".frontend-system/config.json";
@@ -38,6 +39,12 @@ export async function readProjectSource(root: string, path: string, expectedComm
   if (snapshot.commit !== expectedCommit) throw new Error("Main changed; refresh project facts");
   if (!snapshot.files.includes(path)) throw new Error("Select a file from the main snapshot");
   return sourceWindow(root, path, expectedCommit, offset, limit);
+}
+
+export async function readProjectSourceFile(root: string, path: string, expectedCommit: string, baseRef = "main") {
+  const file = await readProjectSource(root, path, expectedCommit, baseRef, 0, PROJECT_SOURCE_MAX_BYTES);
+  assertProjectSourceSize(file.nextOffset === null ? Buffer.byteLength(file.content) : PROJECT_SOURCE_MAX_BYTES + 1, path);
+  return file;
 }
 
 async function sourceWindow(root: string, path: string, commit: string, offset: number, limit: number) {
