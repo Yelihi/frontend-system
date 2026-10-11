@@ -29,6 +29,7 @@ import {
   parseAsync,
   preprocess,
   projectFile,
+  projectFileBytes,
   projectFileHash,
   quoteLocationHint,
   record,
@@ -41,7 +42,7 @@ import {
   unknown,
   url,
   uuid
-} from "./chunks/chunk-DWZG7PUE.js";
+} from "./chunks/chunk-VTTPSOHI.js";
 import {
   __commonJS,
   __toESM
@@ -14259,6 +14260,8 @@ async function beginAttempt(root, stepId, expectedHash, planId) {
     if (!step || step.status === "complete") throw new Error("Select an incomplete step");
     validateSteps(state.execution);
     if ((step.dependsOn ?? []).some((id4) => state.execution.steps.find((entry) => entry.id === id4)?.status !== "complete")) throw new Error("Prerequisites are incomplete");
+    const next = state.execution.steps.find((item) => item.status !== "complete" && (item.dependsOn ?? []).every((id4) => state.execution.steps.find((entry) => entry.id === id4)?.status === "complete"));
+    if (next?.id !== stepId) throw new Error(`Complete the next eligible issue in plan order first: ${next?.id ?? "none"}`);
     const folder = await planDirectory(root, "attempts", planId);
     const attempts = await Promise.all((await readdir2(folder)).filter((name) => name.endsWith(".json")).map((name) => readAttempt(root, name.slice(0, -5), planId)));
     await requireDesignEvidence(root, state.revision, !attempts.some((item) => item.revisionHash === state.revision.hash));
@@ -14270,6 +14273,17 @@ async function beginAttempt(root, stepId, expectedHash, planId) {
   });
 }
 var reviewInputSchema = strictObject({
+  delivery: strictObject({
+    checks: strictObject({ unit: string().min(1), lint: string().min(1), types: string().min(1), e2e: array(string().min(1)) }),
+    manual: array(strictObject({
+      setup: string().trim().min(1),
+      steps: array(string().trim().min(1)).min(1),
+      expected: string().trim().min(1),
+      fixture: localPath.optional(),
+      existingEntry: string().trim().min(1).optional(),
+      result: _enum(["passed", "not-run"])
+    }).refine((value) => !!value.fixture || !!value.existingEntry, "Provide a runnable fixture path or existing entry point")).min(1)
+  }).optional().describe("Required on PR scope reviews: exact policy script IDs for unit/lint/types and existing E2E; reproducible developer checks with actual execution status."),
   prScope: prScopeSchema.optional().describe("For PR preflight: exact scope returned by check_pr_readiness, after committing intended changes. Ordinary work reviews may omit it."),
   stepId: recordId,
   reviewId: string().min(1).describe("Exact existing policy.reviews[].id (also workflow.revision.policy.reviewIds). Select the approved review requirement, not a new record name. The server generates the saved record id; attemptId identifies the attempt."),
@@ -15074,6 +15088,7 @@ var analysisId = string().regex(/^[a-z0-9][a-z0-9._-]{0,99}$/);
 var text4 = string().trim().min(1).max(1600);
 var flowCitation = object({ path: localPath, quote: text4, line: number().int().positive().optional() });
 var evidence = array(analysisId).max(20);
+var designImage = object({ path: localPath, hash: sha256, alt: text4 });
 var flowSchema = object({
   id: analysisId,
   title: text4,
@@ -15095,7 +15110,14 @@ var flowSchema = object({
     state: array(text4).default([]),
     events: array(text4).default([]),
     lifecycle: array(text4).default([]),
-    evidence
+    evidence,
+    contracts: array(object({
+      kind: _enum(["interface", "type", "function", "store"]),
+      name: string().trim().min(1).max(160),
+      path: localPath,
+      signature: string().trim().min(1).max(4e3),
+      evidence
+    })).max(12).optional().describe("Relevant code declarations/signatures, not full implementations. Observed contracts need citations from path; proposed paths may not exist yet. Keep concrete props/state names in their existing fields.")
   })).min(1).max(80),
   edges: array(object({
     id: analysisId,
@@ -15114,7 +15136,33 @@ var flowSchema = object({
     steps: array(object({ edge: analysisId, effect: text4, condition: text4.optional() })).min(1).max(80),
     outcome: text4,
     limitations: array(text4).default([])
-  })).min(1).max(20),
+  })).max(20),
+  design: object({
+    stage: _enum(["visual-review", "detailed-design"]),
+    screens: array(object({
+      id: analysisId,
+      page: analysisId,
+      title: text4,
+      reference: designImage.optional(),
+      image: designImage,
+      feedback: array(text4).max(20).default([]),
+      confirmation: object({ evidence: analysisId, imageHash: sha256 }).optional(),
+      regions: array(object({
+        node: analysisId,
+        x: number().min(0).max(100),
+        y: number().min(0).max(100),
+        width: number().positive().max(100),
+        height: number().positive().max(100)
+      })).max(30).default([])
+    })).min(1).max(6),
+    detailRequest: analysisId.optional().describe("Evidence quoting the user request to proceed with detailed design; visual confirmation alone is insufficient."),
+    quality: array(object({
+      category: _enum(["accessibility", "performance", "security", "resilience", "responsive", "other"]),
+      requirement: text4,
+      verification: text4,
+      nodes: array(analysisId).min(1).max(20)
+    })).max(20).default([])
+  }).optional(),
   invariants: array(object({
     id: analysisId,
     statement: text4,
@@ -15122,6 +15170,9 @@ var flowSchema = object({
     evidence
   })).default([]),
   limitations: array(text4).min(1).max(30)
+}).superRefine((flow, ctx) => {
+  if (!flow.scenarios.length && flow.design?.stage !== "visual-review") ctx.addIssue({ code: "custom", message: "Event scenarios are required outside visual review", path: ["scenarios"] });
+  if (flow.design && (flow.basis !== "proposed" || flow.scope.snapshot)) ctx.addIssue({ code: "custom", message: "Design screens require a proposed working flow", path: ["design"] });
 });
 var findingSchema = object({
   id: analysisId,
@@ -15157,6 +15208,57 @@ var analysisWriteSchema = object({
 // src/application/project-flows.ts
 import { readFile as readFile5, readdir as readdir3, realpath as realpath6 } from "node:fs/promises";
 import { join as join7, relative as relative6, resolve as resolve5 } from "node:path";
+
+// src/application/flow-design.ts
+import { createHash as createHash4 } from "node:crypto";
+function validateFlowDesign(flow) {
+  const design = flow.design;
+  if (!design) return;
+  const nodes = new Map(flow.nodes.map((n) => [n.id, n]));
+  const ids = /* @__PURE__ */ new Set();
+  for (const screen of design.screens) {
+    if (ids.has(screen.id)) throw new Error("Duplicate design screen ID");
+    ids.add(screen.id);
+    if (nodes.get(screen.page)?.kind !== "page") throw new Error("Design screen must reference a page");
+    for (const asset of [screen.image, ...screen.reference ? [screen.reference] : []]) {
+      if (!flow.scope.files.includes(asset.path)) throw new Error("Design image must be included in scope.files");
+    }
+    if (screen.confirmation && (!flow.evidence[screen.confirmation.evidence] || screen.confirmation.imageHash !== screen.image.hash)) {
+      throw new Error("Design confirmation requires evidence and the exact image hash");
+    }
+    for (const region of screen.regions) {
+      let node = nodes.get(region.node);
+      if (node?.kind !== "component") throw new Error("Design region must link a component");
+      while (node && node.id !== screen.page) node = node.parent ? nodes.get(node.parent) : void 0;
+      if (!node || region.x + region.width > 100 || region.y + region.height > 100) throw new Error("Design region must fit its image and belong to its page");
+    }
+  }
+  if (design.stage === "visual-review") {
+    if (flow.edges.length || flow.scenarios.length || design.quality.length || design.screens.some((s) => s.regions.length) || flow.nodes.some((n) => n.kind !== "page" || n.contracts?.length || n.props.length || n.state.length || n.events.length || n.lifecycle.length)) {
+      throw new Error("Visual review contains pages and mockups only; detailed design requires a subsequent request");
+    }
+  } else if (design.screens.some((s) => !s.confirmation) || !design.detailRequest || !flow.evidence[design.detailRequest]) {
+    throw new Error("Detailed design requires confirmed images and user request evidence");
+  }
+  for (const item of design.quality) if (item.nodes.some((id4) => !nodes.has(id4))) throw new Error("Unknown quality requirement node");
+}
+async function loadFlowDesignImages(root, flow) {
+  const images = {};
+  let bytes = 0;
+  for (const screen of flow.design?.screens ?? []) for (const asset of [screen.image, ...screen.reference ? [screen.reference] : []]) {
+    const data = await projectFileBytes(root, asset.path);
+    if (createHash4("sha256").update(data).digest("hex") !== asset.hash) throw new Error(`Design image hash changed: ${asset.path}`);
+    bytes += data.length;
+    if (bytes > 24 * 1024 * 1024) throw new Error("Design images exceed the 24 MiB total budget");
+    if (images[asset.path]) continue;
+    const mime = data.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10])) ? "image/png" : data[0] === 255 && data[1] === 216 && data[2] === 255 ? "image/jpeg" : data.toString("ascii", 0, 4) === "RIFF" && data.toString("ascii", 8, 12) === "WEBP" ? "image/webp" : null;
+    if (!mime) throw new Error("Design images must be PNG, JPEG or WebP raster files");
+    images[asset.path] = `data:${mime};base64,${data.toString("base64")}`;
+  }
+  return images;
+}
+
+// src/application/project-flows.ts
 var envelope = object({
   version: union([literal(1), literal(2)]),
   record: analysisWriteSchema.shape.record,
@@ -15211,14 +15313,24 @@ function validateGraph(flow) {
       visited.add(parent);
       parent = nodes.get(parent).parent;
     }
+    const contracts = /* @__PURE__ */ new Set();
+    for (const contract of node.contracts ?? []) {
+      const key = `${contract.path}:${contract.name}`;
+      if (contracts.has(key)) throw new Error(`Duplicate node contract: ${key}`);
+      contracts.add(key);
+      if (flow.basis === "observed" && !contract.evidence.some((id4) => flow.evidence[id4]?.path === contract.path)) {
+        throw new Error(`Observed contract requires evidence from its path: ${key}`);
+      }
+    }
   }
-  for (const item of [...flow.nodes, ...flow.edges, ...flow.invariants]) {
+  for (const item of [...flow.nodes, ...flow.nodes.flatMap((n) => n.contracts ?? []), ...flow.edges, ...flow.invariants]) {
     if (flow.basis === "observed" && !item.evidence.length) throw new Error("Observed graph elements require evidence");
     if (item.evidence.some((id4) => !flow.evidence[id4])) throw new Error("Unknown flow evidence ID");
   }
   for (const edge of flow.edges) if (!nodes.has(edge.from) || !nodes.has(edge.to)) throw new Error("Unknown flow edge endpoint");
   for (const scenario of flow.scenarios) if (!nodes.has(scenario.entry) || scenario.steps.some((s) => !edges.has(s.edge))) throw new Error("Unknown scenario node/edge");
   if (flow.scope.discoveryRoots.some((r) => r.split("/").some((p) => p === ".."))) throw new Error("Invalid discovery root");
+  validateFlowDesign(flow);
 }
 async function checkQuotes(root, citations, files, snapshot) {
   const texts = /* @__PURE__ */ new Map();
@@ -15361,11 +15473,15 @@ async function saveProjectAnalysis(root, systemRoot2, input) {
       }
     }
     const flowQuoteHashes = await checkQuotes(root, Object.values(flow.evidence), flow.scope.files, flow.scope.snapshot);
+    await loadFlowDesignImages(root, flow);
     const paths = flow.scope.snapshot ? (await projectSnapshot(root, flow.scope.snapshot.baseRef)).files : await inventory2(root);
     const discovered = discoveryFiles(paths, flow.scope.discoveryRoots, flow.scope.discoveryMode);
     const files = [.../* @__PURE__ */ new Set([...flow.scope.files, ...discovered])];
     const hashes = {};
     for (const p of files) hashes[p] = flow.scope.snapshot ? contentHash(await code(root, p, flow.scope.snapshot)) : (await projectFileHash(root, p)).hash;
+    for (const screen of flow.design?.screens ?? []) for (const asset of [screen.image, ...screen.reference ? [screen.reference] : []]) {
+      if (hashes[asset.path] !== asset.hash) throw new Error("Design image changed during capture");
+    }
     for (const quoted of [quoteHashes, flowQuoteHashes]) for (const [path, hash6] of Object.entries(quoted)) {
       if (hashes[path] !== hash6) throw new Error("Source changed during analysis capture; reread before saving");
     }
@@ -15449,6 +15565,7 @@ async function getProjectAnalysis(root, systemRoot2, options = {}) {
       title: data.title,
       freshness,
       ..."basis" in data ? { basis: data.basis, scenarios: data.scenarios.map((s) => ({ id: s.id, event: s.event })) } : { status: data.status, observation: data.observation },
+      ..."basis" in data && data.design ? { design: { stage: data.design.stage, screens: data.design.screens.map((s) => ({ id: s.id, page: s.page, imageHash: s.image.hash, confirmed: !!s.confirmation })) } } : {},
       ...options.full ? { data } : {}
     });
   }
@@ -15466,6 +15583,8 @@ async function validateAnalysisReferences(root, systemRoot2, refs, checkSources2
   for (const ref2 of refs) {
     try {
       const stored = await readEnvelope(root, ref2.kind, ref2.id, ref2.hash);
+      if (stored.record.kind === "flow" && stored.record.data.design?.stage === "visual-review") errors.push(`Visual-review flow is not an implementation contract: ${ref2.id}`);
+      if (stored.record.kind === "flow" && stored.record.data.design) await loadFlowDesignImages(root, stored.record.data);
       if (checkSources2) {
         if ((await readEnvelope(root, ref2.kind, ref2.id)).hash !== ref2.hash) errors.push(`Analysis version changed: ${ref2.id}`);
         errors.push(...(await analysisFreshness(root, stored, systemRoot2, scan)).reasons.map((r) => `${ref2.id}: ${r}`));
@@ -15792,10 +15911,10 @@ function flowToMermaid(flow, scenarioId) {
   function node(id4, indent) {
     const n = flow.nodes.find((n2) => n2.id === id4);
     const children = flow.nodes.filter((c) => c.parent === id4);
-    const details = [n.label, ...["props", "state", "events", "lifecycle"].flatMap((k) => n[k].length ? [`${k}: ${n[k].join(", ")}`] : [])].map(label).join("<br/>");
+    const details = [n.label, ...["props", "state", "events", "lifecycle"].flatMap((k) => n[k].length ? [`${k}: ${n[k].join(", ")}`] : []), ...(n.contracts ?? []).map((c) => `${c.kind} ${c.name} (${c.path}): ${c.signature}`)].map(label).join("<br/>");
     if (children.length) {
       lines.push(`${indent}subgraph ${ids.get(id4)}["${label(n.label)}"]`);
-      if ([n.props, n.state, n.events, n.lifecycle].some((values) => values.length)) lines.push(`${indent}  ${ids.get(id4)}info["${details}"]`);
+      if (n.contracts?.length || [n.props, n.state, n.events, n.lifecycle].some((values) => values.length)) lines.push(`${indent}  ${ids.get(id4)}info["${details}"]`);
       for (const child of children) node(child.id, `${indent}  `);
       lines.push(`${indent}end`);
     } else lines.push(`${indent}${ids.get(id4)}["${label(n.kind)} \xB7 ${details}"]`);
@@ -15817,26 +15936,51 @@ function flowToHtml(flow, freshness, options = {}) {
     const c = flow.evidence[id4];
     return c ? `<p><b>${html(c.path)}${c.line ? `:${c.line}` : ""}</b><br><code>${html(c.quote)}</code></p>` : "";
   };
+  const visualOnly = flow.design?.stage === "visual-review";
+  const imageSrc = (path) => {
+    const src = options.images?.[path];
+    if (!src || !/^data:image\/(?:png|jpeg|webp);base64,[A-Za-z0-9+/=]+$/.test(src)) throw new Error(`Missing validated design image: ${path}`);
+    return src;
+  };
+  const gallery = flow.design ? `<section class="design-gallery"><h2>${visualOnly ? t("\uC2DC\uC548 \uAC80\uD1A0", "Visual review") : t("\uD655\uC778\uB41C \uC2DC\uC548\uACFC \uC0C1\uC138 \uC124\uACC4", "Confirmed mockups and detailed design")}</h2><p>${t("\uD53C\uB4DC\uBC31\uC740 \uB300\uD654\uC5D0\uC11C \uC2DC\uC548 ID\uC640 \uD568\uAED8 \uC804\uB2EC\uD558\uC138\uC694. \uC2DC\uC548 \uD655\uC778\uC740 \uAD6C\uD604 \uC2B9\uC778\uC774 \uC544\uB2D9\uB2C8\uB2E4.", "Send feedback in the conversation with the screen ID. Visual confirmation is not implementation approval.")}</p>${flow.design.screens.map((screen) => `<article class="design-screen"><h3>${html(screen.title)} <code>${html(screen.id)}</code></h3><p>${html(screen.page)} \xB7 ${screen.confirmation ? t("\uC2DC\uC548 \uD655\uC778 \uAE30\uB85D \uC788\uC74C", "Visual confirmation recorded") : t("\uAC80\uD1A0 \uC911", "Awaiting feedback")}</p><div class="design-pair">${screen.reference ? `<figure><figcaption>${t("\uCC38\uACE0 \uC774\uBBF8\uC9C0", "Reference image")}</figcaption><img src="${imageSrc(screen.reference.path)}" alt="${html(screen.reference.alt)}"></figure>` : ""}<figure><figcaption>${t("\uB300\uC0C1 \uD398\uC774\uC9C0 \uC2DC\uC548", "Target page mockup")}</figcaption><div class="design-image"><img src="${imageSrc(screen.image.path)}" alt="${html(screen.image.alt)}">${screen.regions.map((region) => `<a class="design-region" href="#flow-node-${html(region.node)}" style="left:${region.x}%;top:${region.y}%;width:${region.width}%;height:${region.height}%" aria-label="${html(region.node)}">${html(flow.nodes.find((n) => n.id === region.node)?.label ?? region.node)}</a>`).join("")}</div><details><summary>${t("\uC774\uBBF8\uC9C0 \uBC84\uC804", "Image version")}</summary><code>${html(screen.image.path)} \xB7 ${html(screen.image.hash)}</code></details></figure></div>${screen.feedback.length ? `<ul>${screen.feedback.map((f) => `<li>${html(f)}</li>`).join("")}</ul>` : ""}${screen.confirmation ? `<details><summary>${t("\uD655\uC778 \uADFC\uAC70", "Confirmation evidence")}</summary>${citation2(screen.confirmation.evidence)}</details>` : ""}</article>`).join("")}${flow.design.detailRequest ? `<details><summary>${t("\uC0C1\uC138 \uC124\uACC4 \uC694\uCCAD \uADFC\uAC70", "Detailed-design request evidence")}</summary>${citation2(flow.design.detailRequest)}</details>` : ""}${flow.design.quality.length ? `<h3>${t("\uBE44\uAE30\uB2A5 \uC694\uAD6C\uC0AC\uD56D\uACFC \uAC80\uC99D", "Quality requirements and verification")}</h3><ul>${flow.design.quality.map((q) => `<li><b>${html(q.category)}</b> ${html(q.requirement)}<br>${t("\uAC80\uC99D:", "Verify:")} ${html(q.verification)} \xB7 ${q.nodes.map((id4) => `<a href="#flow-node-${html(id4)}">${html(id4)}</a>`).join(", ")}</li>`).join("")}</ul>` : ""}</section>` : "";
   const statusLabel = freshness === "current" ? t("\uC0DD\uC131 \uC2DC\uC810\uC5D0 \uBD84\uC11D \uB300\uC0C1 \uD30C\uC77C \uC77C\uCE58", "Analyzed files matched at export") : freshness;
   const data = JSON.stringify(flow).replace(/</g, "\\u003c").replace(/>/g, "\\u003e").replace(/&/g, "\\u0026");
   function card(id4) {
     const n = flow.nodes.find((n2) => n2.id === id4);
     const children = flow.nodes.filter((c) => c.parent === id4);
-    return `<section class="node ${children.length ? "group" : ""}" data-node="${html(id4)}"><header><small>${html(n.kind)}</small><h2>${html(n.label)}</h2></header>${["props", "state", "events", "lifecycle"].filter((k) => n[k].length).map((k) => `<p><b>${k}</b> ${n[k].map(html).join(" \xB7 ")}</p>`).join("")}${children.length ? `<div class="children">${children.map((c) => card(c.id)).join("")}</div>` : ""}<details><summary>${t("\uADFC\uAC70", "Evidence")}</summary>${n.evidence.map(citation2).join("") || `<p>${t("\uC81C\uC548\uB41C \uAD6C\uC870", "Proposed structure")}</p>`}</details></section>`;
+    return `<section class="node ${children.length ? "group" : ""}" id="flow-node-${html(id4)}" data-node="${html(id4)}" tabindex="-1"><header><small>${html(n.kind)}</small><h2>${html(n.label)}</h2></header>${["props", "state", "events", "lifecycle"].filter((k) => n[k].length).map((k) => `<p><b>${k}</b> ${n[k].map(html).join(" \xB7 ")}</p>`).join("")}${(n.contracts ?? []).map((c) => `<div class="contract"><p><b>${html(c.kind)}</b> <code>${html(c.name)}</code></p><small>${html(c.path)}</small><pre>${html(c.signature)}</pre><details><summary>${t("\uACC4\uC57D \uADFC\uAC70", "Contract evidence")}</summary>${c.evidence.map(citation2).join("") || `<p>${t("\uC124\uACC4 \uC81C\uC548 \xB7 \uAD6C\uD604 \uADFC\uAC70 \uC5C6\uC74C", "Proposed contract \xB7 no implementation evidence")}</p>`}</details></div>`).join("")}${children.length ? `<div class="children">${children.map((c) => card(c.id)).join("")}</div>` : ""}<details><summary>${t("\uADFC\uAC70", "Evidence")}</summary>${n.evidence.map(citation2).join("") || `<p>${t("\uC81C\uC548\uB41C \uAD6C\uC870", "Proposed structure")}</p>`}</details></section>`;
   }
   return `<!doctype html><html lang="${language}"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${html(flow.title)}</title>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#f2f5f7;color:#182934;font:15px/1.5 system-ui,sans-serif}main{max-width:1580px;margin:auto;padding:28px}h1{font-size:28px;margin:0 0 8px}h2{font-size:17px;margin:2px 0 10px}small{color:#536675;text-transform:uppercase;letter-spacing:.07em}p{margin:5px 0}button,select{font:inherit;padding:9px;border:1px solid #879ba8;border-radius:7px;background:white;color:#182934}button{cursor:pointer}button:focus-visible,select:focus-visible{outline:3px solid #0987c5}.bar{display:flex;gap:14px;align-items:center;margin:20px 0;flex-wrap:wrap}.badge{padding:4px 10px;border-radius:20px;background:#e5eaf0}.layout{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:24px}.map{position:relative;display:grid;grid-template-columns:minmax(0,2fr) minmax(220px,1fr);gap:58px;align-content:start}.node{position:relative;z-index:1;border:1px solid #b6c5cf;border-radius:12px;padding:15px;background:white;transition:opacity .15s,border-color .15s}.node.group{background:#eaf0f5}.children{display:grid;gap:24px;margin:18px 10px 4px}.node p{font-size:13px;overflow-wrap:anywhere}.node b{color:#486174;font-size:11px;display:inline-block;min-width:54px}.node.affected{border:2px solid #31a4c4}.node.active{border-color:#c65c0b;box-shadow:0 0 0 3px #f4c896}.node.dim{opacity:.55}.external{display:grid;gap:26px;align-content:start}.pages{display:grid;gap:26px}svg{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:visible}aside{border:1px solid #cad5dd;border-radius:12px;background:white;padding:16px;align-self:start}ol{padding-left:20px}li{margin:8px 0}li button{width:100%;text-align:left;font-size:13px}li button.selected{background:#fff0dc;border-color:#c65c0b}.muted{color:#536675}code{overflow-wrap:anywhere}.limit p{overflow-wrap:anywhere}aside{min-width:0}details{font-size:12px;margin-top:12px}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#eaf0f5;padding:15px}summary{cursor:pointer}.legend{margin-top:16px;font-size:13px}.limit{margin-top:20px;max-width:1000px}@media(max-width:900px){.layout{grid-template-columns:1fr}.map{grid-template-columns:1fr;gap:30px}main{padding:15px}aside{order:-1}}@media(prefers-reduced-motion:reduce){*{transition:none!important}}
-</style><main><small>FS \xB7 ${t("\uD398\uC774\uC9C0 \uAD6C\uC131\uACFC \uC774\uBCA4\uD2B8 \uC601\uD5A5", "Page structure and event effects")}</small><h1>${html(flow.title)}</h1><p>${html(flow.summary)}</p><div class="bar"><span class="badge">${flow.basis === "observed" ? t("\uCF54\uB4DC\uC5D0\uC11C \uD574\uC11D\uD55C \uD750\uB984", "Interpreted from code") : t("\uC124\uACC4 \uC608\uC2DC \xB7 \uAD6C\uD604 \uC0AC\uC2E4 \uC544\uB2D8", "Proposed design \xB7 not implementation evidence")}</span><span class="badge">${html(statusLabel)}</span><label>${t("\uC774\uBCA4\uD2B8", "Event")} <select id="scenario">${flow.scenarios.map((s) => `<option value="${html(s.id)}"${s.id === options.scenarioId ? " selected" : ""}>${html(s.title)}</option>`).join("")}</select></label><button id="previous">${t("\uC774\uC804 \uB2E8\uACC4", "Previous step")}</button><button id="next">${t("\uB2E4\uC74C \uB2E8\uACC4", "Next step")}</button></div>
-<div class="layout"><div class="map" id="map"><div class="pages">${flow.nodes.filter((n) => !n.parent && n.kind === "page").map((n) => card(n.id)).join("")}</div><div class="external">${flow.nodes.filter((n) => !n.parent && n.kind !== "page").map((n) => card(n.id)).join("")}</div><svg id="edges" aria-hidden="true"></svg></div><aside><h2 id="event"></h2><p id="outcome" class="muted"></p><ol id="steps"></ol><p id="effect" role="status" aria-live="polite"></p><details id="edge-evidence" open><summary>${t("\uC120\uD0DD\uD55C \uAD00\uACC4\uC758 \uCF54\uB4DC \uADFC\uAC70", "Code evidence for selected relation")}</summary><div id="edge-citations"></div></details><div class="legend">${t("\uCCAD\uB85D: \uC774 \uC774\uBCA4\uD2B8\uC758 \uC601\uD5A5 \uBC94\uC704", "Teal: affected by this event")}<br>${t("\uC8FC\uD669: \uC120\uD0DD\uD55C \uB2E8\uACC4\uC758 \uCD9C\uBC1C\xB7\uB3C4\uCC29 \uBE14\uB85D", "Orange: source and destination of selected step")}<br>${t("\uD654\uC0B4\uD45C: \uC120\uD0DD\uD55C \uD638\uCD9C/\uC77D\uAE30/\uC4F0\uAE30 \uAD00\uACC4", "Arrow: selected call/read/write relation")}<br>${t("\uC21C\uC11C\uB294 \uAE30\uB85D\uD55C \uC2DC\uB098\uB9AC\uC624\uC758 \uC21C\uC11C\uC785\uB2C8\uB2E4.", "Order follows the recorded scenario.")}</div></aside></div>
+*{box-sizing:border-box}.design-gallery{margin:24px 0}.design-screen{padding:18px;margin:16px 0;border:1px solid #b6c5cf;border-radius:12px;background:white;overflow-wrap:anywhere}.design-pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:20px}.design-pair figure{margin:0;min-width:0}.design-pair img{display:block;width:100%;height:auto}.design-image{position:relative}.design-region{position:absolute;border:2px solid #0369a1;background:#e0f2fe44;color:#102a43;font:12px/1.4 system-ui;text-decoration:none;overflow:hidden}.design-region:focus-visible{outline:3px solid #c65c0b}.node:target{outline:3px solid #0369a1}body{margin:0;background:#f2f5f7;color:#182934;font:15px/1.5 system-ui,sans-serif}main{max-width:1580px;margin:auto;padding:28px}h1{font-size:28px;margin:0 0 8px}h2{font-size:17px;margin:2px 0 10px}small{color:#536675;text-transform:uppercase;letter-spacing:.07em}p{margin:5px 0}button,select{font:inherit;padding:9px;border:1px solid #879ba8;border-radius:7px;background:white;color:#182934}button{cursor:pointer}button:focus-visible,select:focus-visible{outline:3px solid #0987c5}.bar{display:flex;gap:14px;align-items:center;margin:20px 0;flex-wrap:wrap}.badge{padding:4px 10px;border-radius:20px;background:#e5eaf0}.layout{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:24px}.map{position:relative;display:grid;grid-template-columns:minmax(0,2fr) minmax(220px,1fr);gap:58px;align-content:start}.node{position:relative;z-index:1;border:1px solid #b6c5cf;border-radius:12px;padding:15px;background:white;transition:opacity .15s,border-color .15s}.node.group{background:#eaf0f5}.children{display:grid;gap:24px;margin:18px 10px 4px}.node p{font-size:13px;overflow-wrap:anywhere}.node b{color:#486174;font-size:11px;display:inline-block;min-width:54px}.node.affected{border:2px solid #31a4c4}.node.active{border-color:#c65c0b;box-shadow:0 0 0 3px #f4c896}.node.dim{opacity:.55}.external{display:grid;gap:26px;align-content:start}.pages{display:grid;gap:26px;align-content:start}svg{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:visible}aside{border:1px solid #cad5dd;border-radius:12px;background:white;padding:16px;align-self:start}ol{padding-left:20px}li{margin:8px 0}li button{width:100%;text-align:left;font-size:13px}li button.selected{background:#fff0dc;border-color:#c65c0b}.muted{color:#536675}code{overflow-wrap:anywhere}.limit p{overflow-wrap:anywhere}aside{min-width:0}details{font-size:12px;margin-top:12px}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#eaf0f5;padding:15px}summary{cursor:pointer}.contract{margin-top:12px;border-top:1px solid #cad5dd;padding-top:8px}.contract small{text-transform:none;letter-spacing:0;overflow-wrap:anywhere}.contract pre{margin:5px 0;font-size:12px}.node h2{overflow-wrap:anywhere}.page-links{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 20px}.page-links button{font-size:13px;overflow-wrap:anywhere;text-align:left}.legend{margin-top:16px;font-size:13px}.limit{margin-top:20px;max-width:1000px}@media(max-width:900px){.layout{grid-template-columns:1fr}.map{grid-template-columns:1fr;gap:30px}main{padding:15px}aside{order:-1}}@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style><main><small>FS \xB7 ${t("\uD398\uC774\uC9C0 \uAD6C\uC131\uACFC \uC774\uBCA4\uD2B8 \uC601\uD5A5", "Page structure and event effects")}</small><h1>${html(flow.title)}</h1><p>${html(flow.summary)}</p><div class="bar"><span class="badge">${flow.basis === "observed" ? t("\uCF54\uB4DC\uC5D0\uC11C \uD574\uC11D\uD55C \uD750\uB984", "Interpreted from code") : t("\uC124\uACC4 \uC81C\uC548 \xB7 \uAD6C\uD604 \uC0AC\uC2E4 \uC544\uB2D8", "Proposed design \xB7 not implementation evidence")}</span><span class="badge">${html(statusLabel)}</span>${visualOnly ? "" : `<label>${t("\uC774\uBCA4\uD2B8", "Event")} <select id="scenario">${flow.scenarios.map((s) => `<option value="${html(s.id)}"${s.id === options.scenarioId ? " selected" : ""}>${html(s.title)}</option>`).join("")}</select></label><button id="previous">${t("\uC774\uC804 \uB2E8\uACC4", "Previous step")}</button><button id="next">${t("\uB2E4\uC74C \uB2E8\uACC4", "Next step")}</button>`}</div>
+${gallery}
+${visualOnly ? "" : `<nav aria-label="${t("\uC774\uBCA4\uD2B8 \uAD00\uB828 \uD398\uC774\uC9C0", "Pages involved in this event")}"><b>${t("\uC774\uBCA4\uD2B8 \uAD00\uB828 \uD398\uC774\uC9C0", "Pages involved in this event")}</b><div id="page-impact" class="page-links"></div><p class="muted">${t("\uD398\uC774\uC9C0 \uC5F0\uACB0\uC740 \uAE30\uB85D\uB41C \uC870\uAC74\uC5D0 \uB530\uB985\uB2C8\uB2E4. \uB2E4\uB978 \uB77C\uC6B0\uD2B8\uC758 \uC989\uC2DC \uB80C\uB354\uB9C1\uC744 \uB73B\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.", "Page relationships follow recorded conditions; they do not imply immediate rendering on another route.")}</p></nav>
+<div class="layout"><div class="map" id="map"><div class="pages">${flow.nodes.filter((n) => !n.parent && n.kind === "page").map((n) => card(n.id)).join("")}</div><div class="external">${flow.nodes.filter((n) => !n.parent && n.kind !== "page").map((n) => card(n.id)).join("")}</div><svg id="edges" aria-hidden="true"></svg></div><aside><h2 id="event"></h2><p id="outcome" class="muted"></p><ol id="steps"></ol><p id="effect" role="status" aria-live="polite"></p><details id="edge-evidence" open><summary>${t("\uC120\uD0DD\uD55C \uAD00\uACC4\uC758 \uCF54\uB4DC \uADFC\uAC70", "Code evidence for selected relation")}</summary><div id="edge-citations"></div></details><div class="legend">${t("\uCCAD\uB85D: \uC774 \uC774\uBCA4\uD2B8\uC758 \uC601\uD5A5 \uBC94\uC704", "Teal: affected by this event")}<br>${t("\uC8FC\uD669: \uC120\uD0DD\uD55C \uB2E8\uACC4\uC758 \uCD9C\uBC1C\xB7\uB3C4\uCC29 \uBE14\uB85D", "Orange: source and destination of selected step")}<br>${t("\uD654\uC0B4\uD45C: \uC120\uD0DD\uD55C \uD638\uCD9C/\uC77D\uAE30/\uC4F0\uAE30 \uAD00\uACC4", "Arrow: selected call/read/write relation")}<br>${t("\uC21C\uC11C\uB294 \uAE30\uB85D\uD55C \uC2DC\uB098\uB9AC\uC624\uC758 \uC21C\uC11C\uC785\uB2C8\uB2E4.", "Order follows the recorded scenario.")}</div></aside></div>`}
+
 <div class="limit"><b>${t("\uBD84\uC11D \uCD9C\uCC98", "Analysis provenance")}</b><p>${html(options.projectPath ?? t("\uCD9C\uCC98 \uACBD\uB85C \uBBF8\uC9C0\uC815", "Project path not provided"))}</p><p>${t("\uC0DD\uC131:", "Generated:")} ${html(options.generatedAt ?? t("\uBBF8\uAE30\uB85D", "Not recorded"))} \xB7 ${t("\uBD84\uC11D \uBC84\uC804:", "Analysis version:")} <code>${html(options.flowHash ?? t("\uBBF8\uAE30\uB85D", "Not recorded"))}</code></p><p>${t("\uC624\uD504\uB77C\uC778 \uD30C\uC77C\uC740 \uC0DD\uC131 \uB2F9\uC2DC\uC758 \uC0C1\uD0DC\uC785\uB2C8\uB2E4. \uC774\uD6C4 \uCF54\uB4DC \uBCC0\uACBD \uC5EC\uBD80\uB294 \uB2E4\uC2DC \uC0DD\uC131\uD560 \uB54C \uD655\uC778\uD569\uB2C8\uB2E4.", "This offline file captures export-time state. Rerender to check later code changes.")}</p>${flow.scope.snapshot ? `<p>${t("Git \uAE30\uC900:", "Git basis:")} ${html(flow.scope.snapshot.baseRef)} \xB7 ${html(flow.scope.snapshot.expectedCommit)}</p>` : `<p>${t("\uAE30\uC900: \uBD84\uC11D \uB2F9\uC2DC\uC758 \uC791\uC5C5 \uD3F4\uB354 \uCF54\uB4DC", "Basis: working-tree code at analysis time")}</p>`}<ul>${(options.reasons ?? []).map((r) => `<li>${html(r)}</li>`).join("")}</ul><details><summary>${t("\uBD84\uC11D\uD55C \uD30C\uC77C\uACFC \uC0C8 \uD30C\uC77C \uD0D0\uC0C9 \uBC94\uC704", "Analyzed files and discovery scope")}</summary><ul>${flow.scope.files.map((p) => `<li>${html(p)}</li>`).join("")}</ul><p>${t("\uC0C8 \uD30C\uC77C \uD0D0\uC0C9:", "Discovery:")} ${flow.scope.discoveryRoots.map(html).join(", ")}</p></details><details><summary>${t("\uAE30\uB85D\uB41C \uB3D9\uC791\uACFC \uADDC\uCE59", "Recorded behavior and rules")}</summary>${flow.invariants.map((i) => `<p><b>${html(i.authority)}</b> ${html(i.statement)}</p>${i.evidence.map(citation2).join("")}`).join("") || `<p>${t("\uBCC4\uB3C4 \uAE30\uB85D \uC5C6\uC74C", "No additional records")}</p>`}</details><b>${t("\uBD84\uC11D \uBC94\uC704\uC640 \uBBF8\uD655\uC778", "Scope and unknowns")}</b><ul>${flow.limitations.map((s) => `<li>${html(s)}</li>`).join("")}</ul><p>${t("\uC774 \uADF8\uB9BC\uC740 \uC2E4\uD589 \uCD94\uC801\uC774\uB098 DOM \uCEE4\uBC0B\uC744 \uCE21\uC815\uD55C \uACB0\uACFC\uAC00 \uC544\uB2D9\uB2C8\uB2E4. \uC870\uAC74\xB7\uC2E4\uD328\xB7\uBCD1\uB82C \uACBD\uB85C\uB294 \uC2DC\uB098\uB9AC\uC624\uC640 \uAE30\uB85D\uB41C \uD55C\uACC4\uB85C \uD655\uC778\uD558\uC138\uC694.", "This diagram is not an executed trace or a DOM commit measurement. Check scenarios and limitations for conditional, failure and parallel paths.")}</p></div><details><summary>${t("\uAC19\uC740 \uB370\uC774\uD130\uC758 Mermaid \uC911\uCCA9 \uBE14\uB85D", "Mermaid nested blocks from the same data")}</summary><pre>${html(flowToMermaid(flow))}</pre></details></main>
 <script type="application/json" id="flow-data">${data}</script><script>
-const flow=JSON.parse(document.getElementById('flow-data').textContent);let scenario=flow.scenarios.find(s=>s.id===document.getElementById('scenario').value),step=0;
+${visualOnly ? "" : `const flow=JSON.parse(document.getElementById('flow-data').textContent);let scenario=flow.scenarios.find(s=>s.id===document.getElementById('scenario').value),step=0;
 const ns='http://www.w3.org/2000/svg';const el=(name,attrs)=>{const e=document.createElementNS(ns,name);Object.entries(attrs).forEach(([k,v])=>e.setAttribute(k,v));return e};
 function draw(){const svg=document.getElementById('edges'),map=document.getElementById('map'),r=map.getBoundingClientRect();svg.replaceChildren();svg.setAttribute('width',r.width);svg.setAttribute('height',r.height);const defs=el('defs',{}),marker=el('marker',{id:'arrow',markerWidth:10,markerHeight:10,refX:8,refY:3,orient:'auto',markerUnits:'strokeWidth'});marker.append(el('path',{d:'M0,0 L0,6 L9,3 z',fill:'#bf5707'}));defs.append(marker);svg.append(defs);const edge=flow.edges.find(e=>e.id===scenario.steps[step].edge);const get=id=>[...map.querySelectorAll('[data-node]')].find(n=>n.dataset.node===id);const a=get(edge.from).getBoundingClientRect(),b=get(edge.to).getBoundingClientRect();const right=b.left>=a.right-5,left=b.right<=a.left+5;let x1=(left?a.left:a.right)-r.left,y1=a.top+a.height/2-r.top,x2=(right?b.left:b.right)-r.left,y2=b.top+b.height/2-r.top;const mid=right||left?(x1+x2)/2:Math.max(a.right,b.right)-r.left+16;let d=edge.from===edge.to?'M '+x1+' '+y1+' c -40,-40 -40,40 0,12':'M '+x1+' '+y1+' C '+mid+' '+y1+', '+mid+' '+y2+', '+x2+' '+y2;svg.append(el('path',{d,fill:'none',stroke:'#bf5707','stroke-width':2.5,'marker-end':'url(#arrow)'}));}
 function showCitations(edge){const target=document.getElementById('edge-citations');target.replaceChildren();const relation=document.createElement('p');relation.textContent=edge.kind+' \xB7 '+edge.from+' \u2192 '+edge.to+(edge.condition?${JSON.stringify(t(" \xB7 \uC870\uAC74: ", " \xB7 Condition: "))}+edge.condition:'');target.append(relation);for(const id of edge.evidence){const c=flow.evidence[id];if(!c)continue;const p=document.createElement('p'),b=document.createElement('b'),pre=document.createElement('pre');b.textContent=c.path+(c.line?':'+c.line:'');pre.textContent=c.quote;p.append(b,pre);target.append(p);}if(!edge.evidence.length){const p=document.createElement('p');p.textContent=${JSON.stringify(t("\uAD6C\uD604 \uADFC\uAC70 \uC5C6\uC74C \xB7 \uC124\uACC4 \uC81C\uC548", "No implementation evidence \xB7 proposed design"))};target.append(p);}}
-function render(){const active=flow.edges.find(e=>e.id===scenario.steps[step].edge),affected=new Set([scenario.entry]);scenario.steps.forEach(s=>{const e=flow.edges.find(e=>e.id===s.edge);affected.add(e.from);affected.add(e.to)});for(const id of [...affected]){let n=flow.nodes.find(n=>n.id===id);while(n&&n.parent){affected.add(n.parent);n=flow.nodes.find(x=>x.id===n.parent)}}document.querySelectorAll('[data-node]').forEach(n=>{n.classList.toggle('affected',affected.has(n.dataset.node));n.classList.toggle('dim',!affected.has(n.dataset.node));n.classList.toggle('active',[active.from,active.to].includes(n.dataset.node))});document.getElementById('event').textContent=scenario.event;document.getElementById('outcome').textContent=scenario.outcome+(scenario.limitations.length?${JSON.stringify(t(" \xB7 \uD55C\uACC4: ", " \xB7 Limitations: "))}+scenario.limitations.join('; '):'');const list=document.getElementById('steps');list.replaceChildren();scenario.steps.forEach((s,i)=>{const e=flow.edges.find(e=>e.id===s.edge),li=document.createElement('li'),button=document.createElement('button');button.textContent=e.label;button.className=i===step?'selected':'';button.onclick=()=>{step=i;render()};li.append(button);list.append(li)});showCitations(active);document.getElementById('effect').textContent=(step+1)+'. '+scenario.steps[step].effect+(scenario.steps[step].condition?${JSON.stringify(t(" \xB7 \uC870\uAC74: ", " \xB7 Condition: "))}+scenario.steps[step].condition:'');requestAnimationFrame(draw);}
-document.getElementById('scenario').onchange=e=>{scenario=flow.scenarios.find(s=>s.id===e.target.value);step=0;render()};document.getElementById('next').onclick=()=>{step=(step+1)%scenario.steps.length;render()};document.getElementById('previous').onclick=()=>{step=(step+scenario.steps.length-1)%scenario.steps.length;render()};new ResizeObserver(draw).observe(document.getElementById('map'));document.querySelectorAll('details').forEach(e=>e.addEventListener('toggle',draw));render();
+function showPages(affected){
+  const target=document.getElementById('page-impact');target.replaceChildren();
+  const pages=flow.nodes.filter(n=>n.kind==='page'&&affected.has(n.id));
+  for(const page of pages){
+    const button=document.createElement('button');button.type='button';
+    button.dataset.page=page.id;button.textContent=page.label;
+    button.onclick=()=>{
+      const card=[...document.querySelectorAll('[data-node]')].find(n=>n.dataset.node===page.id);
+      card.scrollIntoView({block:'center'});card.focus({preventScroll:true});
+    };
+    target.append(button);
+  }
+  if(!pages.length)target.textContent=${JSON.stringify(t("\uC774 \uC2DC\uB098\uB9AC\uC624\uC5D0 \uAE30\uB85D\uB41C \uD398\uC774\uC9C0 \uC5C6\uC74C", "No pages recorded for this scenario"))};
+}
+function render(){const active=flow.edges.find(e=>e.id===scenario.steps[step].edge),affected=new Set([scenario.entry]);scenario.steps.forEach(s=>{const e=flow.edges.find(e=>e.id===s.edge);affected.add(e.from);affected.add(e.to)});for(const id of [...affected]){let n=flow.nodes.find(n=>n.id===id);while(n&&n.parent){affected.add(n.parent);n=flow.nodes.find(x=>x.id===n.parent)}}showPages(affected);document.querySelectorAll('[data-node]').forEach(n=>{n.classList.toggle('affected',affected.has(n.dataset.node));n.classList.toggle('dim',!affected.has(n.dataset.node));n.classList.toggle('active',[active.from,active.to].includes(n.dataset.node))});document.getElementById('event').textContent=scenario.event;document.getElementById('outcome').textContent=scenario.outcome+(scenario.limitations.length?${JSON.stringify(t(" \xB7 \uD55C\uACC4: ", " \xB7 Limitations: "))}+scenario.limitations.join('; '):'');const list=document.getElementById('steps');list.replaceChildren();scenario.steps.forEach((s,i)=>{const e=flow.edges.find(e=>e.id===s.edge),li=document.createElement('li'),button=document.createElement('button');button.textContent=flow.nodes.find(n=>n.id===e.from).label+' \u2192 '+flow.nodes.find(n=>n.id===e.to).label+': '+e.label;button.className=i===step?'selected':'';button.onclick=()=>{step=i;render()};li.append(button);list.append(li)});showCitations(active);document.getElementById('effect').textContent=(step+1)+'. '+scenario.steps[step].effect+(scenario.steps[step].condition?${JSON.stringify(t(" \xB7 \uC870\uAC74: ", " \xB7 Condition: "))}+scenario.steps[step].condition:'');requestAnimationFrame(draw);}
+document.getElementById('scenario').onchange=e=>{scenario=flow.scenarios.find(s=>s.id===e.target.value);step=0;render()};document.getElementById('next').onclick=()=>{step=(step+1)%scenario.steps.length;render()};document.getElementById('previous').onclick=()=>{step=(step+scenario.steps.length-1)%scenario.steps.length;render()};new ResizeObserver(draw).observe(document.getElementById('map'));document.querySelectorAll('details').forEach(e=>e.addEventListener('toggle',draw));render();`}
+
 </script></html>`;
 }
 
@@ -15918,7 +16062,10 @@ ${area.summary}`);
 ${flow.summary}
 
 [Interactive flow](${path}) \xB7 [Structured record](analysis/history/${ref2.hash}.json)`);
-      for (const node of flow.nodes) details.push(`- **${node.label}** (${node.kind}${node.parent ? `, parent: ${node.parent}` : ""}): ${["props", "state", "events", "lifecycle"].filter((k) => node[k].length).map((k) => `${k}: ${node[k].join(", ")}`).join("; ") || "See cited relationships."}`);
+      for (const node of flow.nodes) {
+        details.push(`- **${node.label}** (${node.kind}${node.parent ? `, parent: ${node.parent}` : ""}): ${["props", "state", "events", "lifecycle"].filter((k) => node[k].length).map((k) => `${k}: ${node[k].join(", ")}`).join("; ") || "See cited relationships."}`);
+        for (const contract of node.contracts ?? []) details.push(`  - ${contract.kind} **${contract.name}** (${contract.path}): ${contract.signature.replace(/\r?\n/g, " ")}`);
+      }
       for (const scenario of flow.scenarios) {
         details.push(`
 **${scenario.title}** \u2014 ${scenario.event}`);
@@ -25605,7 +25752,7 @@ var StdioServerTransport = class {
 };
 
 // src/application/knowledge/catalog.ts
-import { createHash as createHash4, randomUUID as randomUUID3 } from "node:crypto";
+import { createHash as createHash5, randomUUID as randomUUID3 } from "node:crypto";
 import { copyFile, mkdir as mkdir3, readFile as readFile9, readdir as readdir5, realpath as realpath8, rm as rm3, writeFile as writeFile3 } from "node:fs/promises";
 import { constants } from "node:fs";
 import { dirname as dirname4, isAbsolute as isAbsolute3, join as join12, relative as relative9, resolve as resolve7 } from "node:path";
@@ -25797,7 +25944,7 @@ var sourceReviewInputSchema = object({
 }).refine((review) => review.status !== "approved" || review.claims.length > 0 && review.conditions.length > 0 && review.exclusions.length > 0 && !review.unresolved.length && review.claims.every((claim) => claim.verdict === "supported" || claim.verdict === "qualified"), "Approval needs supported/qualified claims, conditions, exclusions and no unresolved questions");
 var emptyCatalog = () => ({ version: 1, facets: {}, documents: {} });
 function digest2(content) {
-  return createHash4("sha256").update(content).digest("hex");
+  return createHash5("sha256").update(content).digest("hex");
 }
 async function sourceFiles(root) {
   const sourceRoot = join12(root, "knowledge", "source");
@@ -26558,7 +26705,7 @@ async function startWork(root, options) {
   }
   const issues = state.revision.issues;
   const first = issues?.find((issue) => issue.id === options.stepId);
-  if (!first || first.dependsOn.length) throw new Error("Select an approved issue without incomplete dependencies");
+  if (!first || first.dependsOn.length || issues?.find((issue) => !issue.dependsOn.length)?.id !== first.id) throw new Error("Select the first approved issue without incomplete dependencies");
   const execution = await saveExecution(root, {
     revisionHash: options.revisionHash,
     kind: options.kind,
@@ -26649,42 +26796,56 @@ async function completeWork(root, options) {
 }
 
 // src/application/pr-readiness.ts
-async function checkPrReadiness(root, planId, base) {
+async function checkPrReadiness(root, planId, base, stepId) {
   const changes = await prScope(root, base);
   const state = await workflowContext(root, planId);
   const failures = [];
   if (changes.dirtyFiles.length) failures.push("Commit the intended changes before the final PR review; working tree/index is dirty");
   if (!changes.files.length) failures.push("No product changes against the PR merge base");
-  if (state.verification.status !== "verified") failures.push(`Execution is ${state.verification.status}; finish current approved work first`);
+  const step = stepId ? state.execution?.steps.find((item) => item.id === stepId) : void 0;
+  if (stepId) {
+    if (!step || step.status !== "complete" || step.remaining.length || !state.revision.approved || state.execution?.revisionHash !== state.revision.hash) failures.push("Select a completed issue from the current approved execution");
+    if (state.execution?.steps.some((item) => item.id !== stepId && item.status === "running")) failures.push("Finish one issue at a time");
+    if (step && changes.files.some((path) => !step.files.includes(path))) failures.push("PR contains files outside the selected issue contract");
+  }
+  const branch = (await git(root, ["branch", "--show-current"])).trim();
+  const baseBranch = (await git(root, ["rev-parse", "--symbolic-full-name", base])).trim().replace(/^refs\/(heads\/|remotes\/[^/]+\/)/, "");
+  if (!branch || ["main", "master", baseBranch].includes(branch)) failures.push("PR requires a separate issue branch, not the target branch or detached HEAD");
+  if (!stepId && state.verification.status !== "verified") failures.push(`Execution is ${state.verification.status}; finish current approved work first`);
   failures.push(...state.verification.failures);
   const policy = state.revision.policy;
   const sourceHash = state.verification.sourceHash;
   if (!policy) failures.push("An approved verification policy is required");
+  let e2eScripts = [];
   if (policy) {
     const discovery2 = new FileSystemProjectDiscovery();
     const profile = await discovery2.discover(await discovery2.createRef(root));
+    e2eScripts = Object.entries(profile.scripts).filter(([name, command]) => !/(^|:)(watch|dev|update|fix|ui)(:|$)/.test(name) && (/(^|:)(e2e|playwright|cypress)(:|$)/.test(name) || /\b(playwright\s+test|cypress\s+run)\b/.test(command))).map(([name]) => name);
     failures.push(...policyFailures(policy, profile.scripts, await sourceSnapshot(root)));
     for (const id4 of ["pr-safety", "pr-scope"]) {
       const requirement = policy.reviews.find((review) => review.id === id4);
       if (!requirement?.ruleIds.length) failures.push(`Plan must define ${id4} with explicit applicable rules`);
     }
   }
-  const checkId = state.verification.finalCheckId;
+  const checkId = stepId ? step?.checkIds.at(-1) : state.verification.finalCheckId;
   if (!checkId) failures.push("Missing final check record");
   else {
     const check = await readCheckRecord(root, checkId, planId);
-    if (check.purpose !== "verification" || !check.stable || check.sourceHash !== sourceHash || check.revisionHash !== state.revision.hash || !check.results.length || check.results.some((result2) => result2.status !== "passed" || !result2.passed) || policy && requiredScripts(policy).some((script) => !check.results.some((result2) => result2.capability === script && result2.status === "passed"))) {
+    if (check.purpose !== "verification" || !check.stable || check.sourceHash !== sourceHash || check.revisionHash !== state.revision.hash || stepId && check.attemptId !== step?.attemptId || !check.results.length || check.results.some((result2) => result2.status !== "passed" || !result2.passed) || policy && requiredScripts(policy).some((script) => !check.results.some((result2) => result2.capability === script && result2.status === "passed"))) {
       failures.push("Final checks are incomplete, failed or stale");
     }
   }
-  const reviews = await Promise.all(state.verification.reviewIds.map((id4) => readReview(root, id4, planId)));
+  const reviewIds = stepId ? step?.reviewIds ?? [] : state.verification.reviewIds;
+  const reviews = await Promise.all(reviewIds.map((id4) => readReview(root, id4, planId)));
   if (policy && sourceHash && state.revision.hash) {
     try {
-      await verifyReviews(root, reviews, policy, state.revision.hash, sourceHash, planId);
+      if (stepId && step) await verifyStep(root, step, policy, state.revision.hash, sourceHash, planId);
+      else await verifyReviews(root, reviews, policy, state.revision.hash, sourceHash, planId);
     } catch (error) {
       failures.push(error instanceof Error ? error.message : String(error));
     }
   }
+  let delivery;
   for (const id4 of ["pr-safety", "pr-scope"]) {
     const current = reviews.filter((review) => review.reviewId === id4 && review.status === "passed" && !review.remaining.length && review.revisionHash === state.revision.hash && review.sourceHash === sourceHash && samePrScope(review.prScope, changes.scope));
     if (!current.length) failures.push(`Missing passing ${id4} review for this exact PR base/head`);
@@ -26692,6 +26853,15 @@ async function checkPrReadiness(root, planId, base) {
       const covered = new Set(current.flatMap((review) => review.findings.flatMap((finding) => finding.files)));
       const missing = changes.files.filter((path) => !covered.has(path));
       if (missing.length) failures.push(`PR scope review omitted changed files: ${missing.join(", ")}`);
+      delivery = current.at(-1)?.delivery;
+      if (!delivery) failures.push("Missing developer test instructions and unit/lint/types/E2E delivery mapping on pr-scope review");
+      else {
+        const scripts = [.../* @__PURE__ */ new Set([delivery.checks.unit, delivery.checks.lint, delivery.checks.types, ...delivery.checks.e2e, ...e2eScripts])];
+        if (!policy || scripts.some((script) => !requiredScripts(policy).includes(script))) failures.push("Delivery checks must be required policy scripts, including existing E2E");
+        if (e2eScripts.some((script) => !delivery.checks.e2e.includes(script))) failures.push("Delivery mapping omitted existing E2E scripts");
+        const snapshot = await sourceSnapshot(root);
+        if (delivery.manual.some((item) => item.fixture && !snapshot[item.fixture])) failures.push("Developer test fixture is missing from project source");
+      }
     }
   }
   const finalChanges = await prScope(root, base);
@@ -26700,6 +26870,9 @@ async function checkPrReadiness(root, planId, base) {
     status: failures.length ? "blocked" : "ready",
     failures: [...new Set(failures)],
     ...changes,
+    stepId: stepId ?? null,
+    branch,
+    delivery: delivery ?? null,
     planId: planId ?? null,
     revisionHash: state.revision.hash,
     finalCheckId: checkId,
@@ -26829,13 +27002,13 @@ async function readRevisionDraft(root, path) {
 // src/application/knowledge/sources.ts
 import { execFile as execFile4 } from "node:child_process";
 import { lookup } from "node:dns/promises";
-import { createHash as createHash5, randomUUID as randomUUID5 } from "node:crypto";
+import { createHash as createHash6, randomUUID as randomUUID5 } from "node:crypto";
 import { mkdir as mkdir5, mkdtemp, readFile as readFile12, realpath as realpath10, rename as rename3, rm as rm5, writeFile as writeFile5 } from "node:fs/promises";
 import { isIP } from "node:net";
 import { tmpdir } from "node:os";
 import { join as join15 } from "node:path";
 import { promisify as promisify2 } from "node:util";
-var hash3 = (text7) => createHash5("sha256").update(text7).digest("hex");
+var hash3 = (text7) => createHash6("sha256").update(text7).digest("hex");
 var run3 = promisify2(execFile4);
 var sourcesSchema = record(ruleId, url());
 var snapshotSchema = object({
@@ -27414,6 +27587,7 @@ async function renderProjectFlow(root, systemRoot2, input) {
     const found = (await getProjectAnalysis(root, systemRoot2, { kind: "flow", ids: [options.id], full: true })).records[0];
     if (!found || found.hash !== options.expectedHash) throw new Error("Flow changed or missing; read its current hash");
     const flow = flowSchema.parse(found.data);
+    if (flow.design?.stage === "visual-review" && options.format !== "html") throw new Error("Visual review requires HTML with its mockup images");
     const freshness = found.freshness;
     if (!options.allowUnverified && (flow.basis !== "observed" || freshness.status !== "current")) {
       throw new Error(`Current observed flow required: ${flow.basis}/${freshness.status}. Reanalyze affected code, or explicitly preview with allowUnverified. ${freshness.reasons.join("; ")}`);
@@ -27425,7 +27599,7 @@ async function renderProjectFlow(root, systemRoot2, input) {
       generatedAt: (/* @__PURE__ */ new Date()).toISOString(),
       reasons: freshness.reasons
     };
-    const content = options.format === "html" ? flowToHtml(flow, freshness.status, { ...provenance, scenarioId: options.scenarioId, language: options.language }) : `%% ${JSON.stringify({ basis: flow.basis, freshness, ...provenance })}
+    const content = options.format === "html" ? flowToHtml(flow, freshness.status, { ...provenance, scenarioId: options.scenarioId, language: options.language, images: await loadFlowDesignImages(root, flow) }) : `%% ${JSON.stringify({ basis: flow.basis, freshness, ...provenance })}
 ${flowToMermaid(flow, options.scenarioId)}`;
     const output = join18(await directory(root, "diagrams"), `${options.id}.${options.format === "html" ? "html" : "mmd"}`);
     await atomic(output, content);
@@ -27634,10 +27808,10 @@ Draft: ${record2.hash}`
 }
 
 // src/application/release-manifest.ts
-import { createHash as createHash6 } from "node:crypto";
+import { createHash as createHash7 } from "node:crypto";
 import { readFile as readFile15, readdir as readdir7, writeFile as writeFile7 } from "node:fs/promises";
 import { join as join20 } from "node:path";
-var hash4 = (value) => createHash6("sha256").update(value).digest("hex");
+var hash4 = (value) => createHash7("sha256").update(value).digest("hex");
 async function installedReleaseIdentity(root) {
   const body = await readFile15(join20(root, "release-manifest.json"), "utf8");
   const manifest = JSON.parse(body);
@@ -27795,7 +27969,7 @@ server.registerTool("complete_work", {
   annotations: localWrite
 }, async ({ projectPath: path, ...options }) => result(await completeWork(projectPath(path), options)));
 server.registerTool("begin_work_attempt", {
-  description: "After save_execution creates pending steps, reserve one of three persisted attempts. expectedHash is the execution hash returned by save_execution, not the approved revision hash. Local development tests do not need attempts. Reuse returned ID for checks/reviews; cannot reset the budget by resuming.",
+  description: "After save_execution creates pending steps, reserve one of three persisted attempts for the next eligible issue in plan order. expectedHash is the execution hash returned by save_execution, not the approved revision hash. Local development tests do not need attempts. Reuse returned ID for checks/reviews; cannot reset the budget by resuming.",
   inputSchema: { projectPath: string().optional(), planId: recordId.optional(), stepId: recordId, expectedHash: string().describe("Current execution hash from save_execution or get_workflow_context") },
   annotations: localWrite
 }, async ({ projectPath: path, planId, stepId, expectedHash }) => result(await beginAttempt(projectPath(path), stepId, expectedHash, planId)));
@@ -27887,7 +28061,7 @@ server.registerTool("get_project_analysis", {
   return result(found);
 });
 server.registerTool("render_project_flow", {
-  description: "Export a stored, cited actual project flow to offline HTML or Mermaid. Requires current observed evidence by default; allowUnverified explicitly previews stale/proposed records. HTML shows source citations, scope and export-time freshness. Does not analyze code or verify runtime behavior.",
+  description: "Export a stored project flow to offline HTML or Mermaid. Requires current observed evidence by default; allowUnverified explicitly previews stale/proposed records. HTML embeds hash-verified local design images, feedback and component-region links when recorded. Visual review requires HTML. Does not generate images, analyze code or verify runtime behavior.",
   inputSchema: { projectPath: string().optional(), ...renderFlowOptions.shape },
   annotations: localWrite
 }, async ({ projectPath: path, ...options }) => result(await renderProjectFlow(projectPath(path), systemRoot, options)));
@@ -28013,10 +28187,10 @@ server.registerTool("get_change_context", {
   });
 });
 server.registerTool("check_pr_readiness", {
-  description: "Read-only local PR gate. Returns exact merge-base/base/head scope and missing evidence. Requires completed approved work, current checks and pr-safety/pr-scope semantic reviews bound to that scope. Does not run a model or create/merge a PR. Commit intended product changes before final review. A blocked first call provides the scope for save_semantic_review.",
-  inputSchema: { projectPath: string().optional(), planId: recordId.optional(), base: string().min(1) },
+  description: "Read-only local PR gate. Returns exact merge-base/base/head scope and missing evidence. Requires a completed approved issue (stepId) or completed plan, current checks and pr-safety/pr-scope semantic reviews bound to that scope. Does not run a model or create/merge a PR. Commit intended product changes before final review. A blocked first call provides the scope for save_semantic_review.",
+  inputSchema: { projectPath: string().optional(), planId: recordId.optional(), base: string().min(1), stepId: recordId.optional() },
   annotations: readOnly
-}, async ({ projectPath: path, planId, base }) => result(await checkPrReadiness(projectPath(path), planId, base)));
+}, async ({ projectPath: path, planId, base, stepId }) => result(await checkPrReadiness(projectPath(path), planId, base, stepId)));
 server.registerTool("run_project_checks", {
   title: "Run discovered project checks",
   description: "Run existing non-watch package scripts, retaining full logs and returning bounded failure excerpts. Use capabilities:[exact test script keys] for development checks instead of streaming shell logs; omit stage/required and keep planId/attemptId. Choose stage OR capabilities, never both. baseline stage selects tests/lint/types without build; explicit baseline: purpose:baseline + capabilities. After tests and review are ready, delivery runs all policy scripts; use its id for step checkIds and finalCheckId. coverage reports policy coverage; full is legacy, not readiness. Completion validates source, attempts and reviews.",

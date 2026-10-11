@@ -14,7 +14,7 @@ export async function startWork(root: string, options: {
   }
   const issues = state.revision.issues;
   const first = issues?.find(issue => issue.id === options.stepId);
-  if (!first || first.dependsOn.length) throw new Error('Select an approved issue without incomplete dependencies');
+  if (!first || first.dependsOn.length || issues?.find(issue => !issue.dependsOn.length)?.id !== first.id) throw new Error('Select the first approved issue without incomplete dependencies');
   const execution = await saveExecution(root, {
     revisionHash: options.revisionHash, kind: options.kind, status: 'in-progress',
     steps: issues!.map(({id}) => ({id, status: 'pending', checkIds: [], remaining: []})),

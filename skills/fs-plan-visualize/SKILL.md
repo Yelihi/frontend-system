@@ -1,6 +1,6 @@
 ---
 name: fs-plan-visualize
-description: Analyze or refresh an existing frontend's actual page, component, event and state flows and generate a cited interactive HTML diagram. Use for project-flow visualization; proposed design views require an explicit request.
+description: Visualize an existing frontend's actual flows or an explicitly requested implementation plan, with concrete code contracts and cross-page event/state relationships. Proposed design stays separate from observed code.
 ---
 
 # FS Plan Visualize
@@ -10,14 +10,27 @@ Use the host's native selection UI (Codex `request_user_input` when permitted),
 not a prose questionnaire. After asking, pause this task, including reads and browser
 inspection, until the actual answer. See the shared procedure for unavailable UI.
 
-Deliver a navigable diagram of the requested project's actual implementation. The
-host traces code; FS validates and stores evidence and renders the same record.
+For existing-code requests, deliver a navigable diagram of the actual implementation.
+For a request to visualize a plan, new feature or intended refactor, use the shared
+[planned-flow design procedure](../../references/workflows/project-flow-analysis.md#design-a-planned-flow):
+domain contracts first, then component/state ownership, then cross-page event effects.
+When design references are attached, first follow "Review page mockups before detailed
+design" in that procedure: generate a target-page mockup with available host image or
+prototype/screenshot tools and embed it with the reference in HTML. Wait for visual
+feedback; advance to component/state/event/quality design only on the user's subsequent
+request, reusing an already explicit confirmation and request rather than asking again.
+Discuss only material ambiguity; reuse prior decisions. This is a proposed view, not
+evidence of implementation. Do not require an extra permission question when the
+user already requested that design view. If the target itself is ambiguous, ask.
+The host interprets/designs; FS validates records and renders the same data.
 This request authorizes analysis records and diagram output, not product edits,
 plan approval or a project.md refresh. Honor an explicit no-write constraint.
 
 Use the user's project path or current project. Never substitute the FS source
 repository, a synthetic example or a future refactor for the target implementation.
-When scope is broad, identify the entry pages and split bounded flows by page/event;
+When scope is broad, identify entry pages and their consumers on other pages. Shared
+store/cache/module nodes appear once in each flow, outside individual pages. Split
+bounded flows by event without dropping its cross-page consumers;
 state coverage and omissions instead of claiming exhaustive whole-project analysis.
 
 ## Reuse, trace, render
@@ -35,6 +48,8 @@ state coverage and omissions instead of claiming exhaustive whole-project analys
    or unknown edges as limitations, and never invent missing stores or lifecycle
    behavior to fill the diagram. Code questions are investigated before asking
    the user; ask only for material unknown intent or an ambiguous target.
+   Use concrete identifiers and types in props/state/events and node contracts,
+   following "Code contracts and cross-page scope" in the shared procedure.
 3. For new/changed records, read
    `node <plugin-root>/bundle/tool-help.mjs save_project_analysis` for the payload;
    plugin root is two directories above this skill. Write a confined draft and
@@ -49,7 +64,9 @@ state coverage and omissions instead of claiming exhaustive whole-project analys
    requires current observed evidence. A stale rejection requires affected-code
    review, not enabling `allowUnverified` to bypass it. Only explicitly requested
    proposal/historical views use that flag, visibly distinguished from actual code.
-5. Check a meaningful normal/error/cleanup path against source or a suitable
+5. For visual review, check that every attached image decodes in the HTML, matches
+   its page and remains readable on the requested viewport. For detailed/observed flows,
+   check a meaningful normal/error/cleanup path against source or a suitable
    existing test. If browser access permits, inspect event/step selection and code
    citations in the generated file. Report unrun or blocked checks accurately.
 

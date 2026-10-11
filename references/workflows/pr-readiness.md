@@ -1,5 +1,57 @@
 # Review before creating a PR
 
+## Issue delivery (fs-work default)
+
+An implementation request invoking fs-work includes scoped commits, pushes and one PR
+per approved issue, unless the user chooses local-only delivery or applicable host/project
+policy restricts publishing. Review-only/verification-only requests do not authorize it.
+Never merge a PR or deploy by implication. Respect prior authorization; do not repeatedly
+ask permission for this same workflow.
+
+1. Select the next issue in plan order whose dependencies are complete. Reuse an existing
+   branch/PR for that issue on resume. Start a separate branch using the repository's
+   convention, otherwise `fs/<planId>/<issueId>`. Preserve unrelated dirty work; never
+   reset, stash, or include it blindly. Use the repository's known integration base.
+   For dependent unmerged issues, create a stacked branch/PR targeting the predecessor
+   branch and link that dependency. For independent issues, use the integration branch;
+   do not accidentally include earlier unmerged issues. If the project prohibits stacks,
+   wait for dependency merge without merging it yourself. Keep each worktree's FS records
+   bound to its actual source; never copy a passing status as proof on another checkout.
+2. Before editing, compare the issue contract with real callers. Unspecified domain
+   behavior, public interfaces, ownership or cross-page effects require a native user
+   question and pause per user-decisions.md. A new choice revises the approved plan;
+   it must not be hidden in a helper or PR description.
+3. Implement only this issue. Run unit tests, lint and type checks, plus existing E2E
+   and the approved policy checks. Missing infrastructure is a plan/setup blocker;
+   failed, not-run, unavailable or stale checks cannot be waived to submit a PR.
+   A combined script may cover several checks only after inspecting its actual body.
+4. Provide reproducible developer testing: setup/seed data, exact command or URL,
+   actions and expected observations, including the relevant failure path. Reuse a
+   runnable test, story or existing entry point. If the behavior cannot be exercised
+   there, add the smallest fixture/harness within the issue scope, without a public
+   production test route or real credentials. Report actual manual execution status;
+   instructions alone do not mean they were run. Required manual checks still block
+   when unperformed through the approved review obligations.
+5. Commit only intended changes and save pr-safety/pr-scope reviews bound to the current
+   PR scope. On pr-scope include `delivery.checks` with exact policy script IDs for
+   `unit`, `lint`, `types`, and an `e2e` array (empty only if none exists). Include
+   `delivery.manual`: setup, steps, expected, fixture path or existingEntry, and result
+   (`passed` or `not-run`). These are host judgments, not proof of test semantics.
+6. Save this step complete with its current check/review IDs; leave later steps pending.
+   Call check_pr_readiness with planId, base and **stepId**. Only `ready` allows PR
+   creation. Use the returned evidence and manual instructions in the PR body, together
+   with issue ID, scope, dependencies, limitations and the tested commit. Avoid duplicate
+   PRs on resume. Save the branch/base/PR URL in the execution note, retaining earlier
+   issue links. Then proceed sequentially; never start the next issue while this one
+   has a blocked question or failed check. Complete the whole execution only when all
+   steps are complete; do not mark later work done to satisfy the PR gate.
+
+The gate validates a completed issue independently of unfinished later issues. It also
+checks that the branch differs from the target, exact changed-file scope, current checks/reviews, delivery
+mapping and fixture existence. It cannot prove that host-written instructions are
+truthful or that an arbitrary wrapper script really performs lint/type/E2E checks.
+
+
 Use for `fs-review pre-pr --base <target-ref> [--plan <id>]` and before an authorized
 PR creation in FS work. This is a local gate, not a guarantee of bug-free or secure code.
 No remote PR/comment/push is authorized by a review request.
@@ -51,7 +103,9 @@ without PR submission keeps its current behavior.
    matching passing test record; committing unchanged contents does not require
    rerunning those tests. Failed/unperformed required verification is `remaining`
    and a failed review. This step can be the normal final work review, not a second pass.
-4. Complete execution through the existing guarded workflow with these review IDs.
+4. Complete the selected issue through the existing guarded workflow with these review
+   IDs; complete the execution only when all issues are done. Pass stepId to check
+   an individual issue while later work is pending.
    Call `check_pr_readiness` immediately before the authorized PR creation. A non-ready
    result stops that action. Source/base/head changes require scoped re-review;
    passing tests alone do not replace a missing review. Do not waive required evidence
@@ -60,7 +114,7 @@ without PR submission keeps its current behavior.
 The deterministic CLI uses the same gate and exits nonzero when blocked:
 
 ```sh
-fs pr-check . --base origin/main --plan <plan-id>
+fs pr-check . --base origin/main --plan <plan-id> --issue <issue-id>
 ```
 
 If chaining this before `gh pr create`, continue only on exit 0 and only when creation

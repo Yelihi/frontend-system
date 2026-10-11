@@ -5,6 +5,7 @@ export const analysisId = z.string().regex(/^[a-z0-9][a-z0-9._-]{0,99}$/);
 const text = z.string().trim().min(1).max(1600);
 export const flowCitation = z.object({path: localPath, quote: text, line: z.number().int().positive().optional()});
 const evidence = z.array(analysisId).max(20);
+const designImage = z.object({path: localPath, hash: sha256, alt: text});
 export const flowSchema = z.object({
   id: analysisId, title: text, basis: z.enum(['observed', 'proposed']),
   summary: text,
@@ -16,16 +17,37 @@ export const flowSchema = z.object({
   evidence: z.record(analysisId, flowCitation),
   nodes: z.array(z.object({id: analysisId, kind: z.enum(['page', 'component', 'store', 'cache', 'module', 'service', 'external']),
     label: text, parent: analysisId.optional(), props: z.array(text).default([]), state: z.array(text).default([]),
-    events: z.array(text).default([]), lifecycle: z.array(text).default([]), evidence})).min(1).max(80),
+    events: z.array(text).default([]), lifecycle: z.array(text).default([]), evidence,
+    contracts: z.array(z.object({kind: z.enum(['interface', 'type', 'function', 'store']),
+      name: z.string().trim().min(1).max(160), path: localPath,
+      signature: z.string().trim().min(1).max(4000), evidence,
+    })).max(12).optional().describe('Relevant code declarations/signatures, not full implementations. Observed contracts need citations from path; proposed paths may not exist yet. Keep concrete props/state names in their existing fields.'),
+  })).min(1).max(80),
   edges: z.array(z.object({id: analysisId, from: analysisId, to: analysisId,
     kind: z.enum(['call', 'read', 'write', 'subscribe', 'props', 'return', 'invalidate', 'cleanup']),
     label: text, condition: text.optional(), evidence})).max(200),
   scenarios: z.array(z.object({id: analysisId, title: text, entry: analysisId, event: text,
     steps: z.array(z.object({edge: analysisId, effect: text, condition: text.optional()})).min(1).max(80),
-    outcome: text, limitations: z.array(text).default([])})).min(1).max(20),
+    outcome: text, limitations: z.array(text).default([])})).max(20),
+  design: z.object({
+    stage: z.enum(['visual-review', 'detailed-design']),
+    screens: z.array(z.object({id: analysisId, page: analysisId, title: text,
+      reference: designImage.optional(), image: designImage,
+      feedback: z.array(text).max(20).default([]),
+      confirmation: z.object({evidence: analysisId, imageHash: sha256}).optional(),
+      regions: z.array(z.object({node: analysisId, x: z.number().min(0).max(100), y: z.number().min(0).max(100),
+        width: z.number().positive().max(100), height: z.number().positive().max(100)})).max(30).default([]),
+    })).min(1).max(6),
+    detailRequest: analysisId.optional().describe('Evidence quoting the user request to proceed with detailed design; visual confirmation alone is insufficient.'),
+    quality: z.array(z.object({category: z.enum(['accessibility', 'performance', 'security', 'resilience', 'responsive', 'other']),
+      requirement: text, verification: text, nodes: z.array(analysisId).min(1).max(20)})).max(20).default([]),
+  }).optional(),
   invariants: z.array(z.object({id: analysisId, statement: text,
     authority: z.enum(['observed', 'established', 'proposed']), evidence})).default([]),
   limitations: z.array(text).min(1).max(30),
+}).superRefine((flow, ctx) => {
+  if (!flow.scenarios.length && flow.design?.stage !== 'visual-review') ctx.addIssue({code:'custom',message:'Event scenarios are required outside visual review',path:['scenarios']});
+  if (flow.design && (flow.basis !== 'proposed' || flow.scope.snapshot)) ctx.addIssue({code:'custom',message:'Design screens require a proposed working flow',path:['design']});
 });
 export type ProjectFlow = z.infer<typeof flowSchema>;
 export const findingSchema = z.object({

@@ -457,6 +457,9 @@ export async function beginAttempt(root: string, stepId: string, expectedHash: s
     if (!step || step.status === "complete") throw new Error("Select an incomplete step");
     validateSteps(state.execution);
     if ((step.dependsOn ?? []).some((id) => state.execution!.steps.find((entry) => entry.id === id)?.status !== "complete")) throw new Error("Prerequisites are incomplete");
+    const next = state.execution.steps.find(item => item.status !== 'complete' &&
+      (item.dependsOn ?? []).every(id => state.execution!.steps.find(entry => entry.id === id)?.status === 'complete'));
+    if (next?.id !== stepId) throw new Error(`Complete the next eligible issue in plan order first: ${next?.id ?? 'none'}`);
     const folder = await planDirectory(root, "attempts", planId);
     const attempts = await Promise.all((await readdir(folder)).filter((name) => name.endsWith(".json")).map((name) => readAttempt(root, name.slice(0, -5), planId)));
     await requireDesignEvidence(root, state.revision, !attempts.some((item) => item.revisionHash === state.revision.hash));
@@ -469,6 +472,14 @@ export async function beginAttempt(root: string, stepId: string, expectedHash: s
 }
 
 export const reviewInputSchema = z.strictObject({
+  delivery: z.strictObject({
+    checks: z.strictObject({unit: z.string().min(1), lint: z.string().min(1), types: z.string().min(1), e2e: z.array(z.string().min(1))}),
+    manual: z.array(z.strictObject({
+      setup: z.string().trim().min(1), steps: z.array(z.string().trim().min(1)).min(1), expected: z.string().trim().min(1),
+      fixture: localPath.optional(), existingEntry: z.string().trim().min(1).optional(),
+      result: z.enum(['passed', 'not-run']),
+    }).refine(value => !!value.fixture || !!value.existingEntry, 'Provide a runnable fixture path or existing entry point')).min(1),
+  }).optional().describe('Required on PR scope reviews: exact policy script IDs for unit/lint/types and existing E2E; reproducible developer checks with actual execution status.'),
   prScope: prScopeSchema.optional().describe('For PR preflight: exact scope returned by check_pr_readiness, after committing intended changes. Ordinary work reviews may omit it.'),
   stepId: recordId, reviewId: z.string().min(1).describe('Exact existing policy.reviews[].id (also workflow.revision.policy.reviewIds). Select the approved review requirement, not a new record name. The server generates the saved record id; attemptId identifies the attempt.'), attemptId: recordId,
   status: z.enum(["passed", "failed"]),
@@ -528,7 +539,7 @@ export async function verifyReviews(root: string, reviews: Review[], policy: Ver
   }
 }
 
-async function verifyStep(root: string, step: Execution["steps"][number], policy: VerificationPolicy, revisionHash: string, sourceHash: string, planId?: string) {
+export async function verifyStep(root: string, step: Execution["steps"][number], policy: VerificationPolicy, revisionHash: string, sourceHash: string, planId?: string) {
   if (!step.attemptId) throw new Error("Policy steps require a recorded attempt");
   const attempt = await readAttempt(root, step.attemptId, planId);
   if (attempt.stepId !== step.id || attempt.revisionHash !== revisionHash) throw new Error("Step attempt does not match");

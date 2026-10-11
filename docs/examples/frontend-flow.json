@@ -16,14 +16,14 @@
     {
       "id": "edit-page",
       "kind": "page",
-      "label": "/orders/:id/edit · 주문 편집",
+      "label": "OrderEditPage · /orders/:id/edit",
       "evidence": [],
       "state": [
-        "route: orderId"
+        "orderId: OrderId"
       ],
       "lifecycle": [
-        "진입 → draft 초기화",
-        "이탈 → 요청 취소/소유권 종료"
+        "mount → draftStore.initialize(order)",
+        "unmount → orderClient.abort(owner)"
       ]
     },
     {
@@ -32,21 +32,32 @@
       "label": "OrderForm",
       "evidence": [],
       "props": [
-        "orderId"
+        "orderId: OrderId",
+        "onSubmit: (input: OrderDraft) => Promise<SaveResult>"
       ],
       "state": [
-        "fieldErrors",
-        "pending"
+        "fieldErrors: Record<string, string>",
+        "pending: boolean"
       ],
       "events": [
-        "change(quantity)",
-        "submit",
-        "취소"
+        "onQuantityChange(value: number)",
+        "onSubmit(input: OrderDraft)",
+        "onCancel()"
       ],
       "lifecycle": [
-        "draft 구독/해제"
+        "mount → draftStore.subscribe(onDraftChange)",
+        "unmount → unsubscribe()"
       ],
-      "parent": "edit-page"
+      "parent": "edit-page",
+      "contracts": [
+        {
+          "kind": "interface",
+          "name": "OrderFormProps",
+          "path": "src/components/OrderForm.tsx",
+          "signature": "interface OrderFormProps {\n  orderId: OrderId;\n  onSubmit(input: OrderDraft): Promise<SaveResult>;\n}",
+          "evidence": []
+        }
+      ]
     },
     {
       "id": "preview",
@@ -54,26 +65,26 @@
       "label": "PricePreview",
       "evidence": [],
       "props": [
-        "currency"
+        "currency: string"
       ],
       "state": [
-        "draft에서 파생된 금액"
+        "total: number = calculateTotal(draft)"
       ],
       "lifecycle": [
-        "draft 구독 → 금액 표시"
+        "draftStore.subscribe(onDraftChange) → calculateTotal(draft)"
       ],
       "parent": "edit-page"
     },
     {
       "id": "list-page",
       "kind": "page",
-      "label": "/orders · 주문 목록",
+      "label": "OrdersPage · /orders",
       "evidence": [],
       "state": [
-        "filter"
+        "filter: OrderFilter"
       ],
       "lifecycle": [
-        "진입 → 목록 캐시 구독"
+        "mount → orderQueryCache.subscribe(filter, onOrdersChange)"
       ]
     },
     {
@@ -82,32 +93,33 @@
       "label": "OrdersTable",
       "evidence": [],
       "props": [
-        "filter"
+        "filter: OrderFilter"
       ],
       "state": [
-        "cached rows"
+        "rows: ReadonlyArray<Order>"
       ],
       "events": [
-        "편집 링크 클릭"
+        "onEdit(orderId: OrderId)"
       ],
       "lifecycle": [
-        "목록 캐시 변경 → 표시 후보 갱신"
+        "orderQueryCache.subscribe(filter, onOrdersChange)",
+        "unmount → unsubscribe()"
       ],
       "parent": "list-page"
     },
     {
       "id": "draft",
       "kind": "store",
-      "label": "DraftStore",
+      "label": "draftStore",
       "evidence": [],
       "state": [
-        "quantity",
-        "unitPrice",
-        "dirty"
+        "quantity: number",
+        "unitPrice: number",
+        "dirty: boolean"
       ],
       "events": [
-        "setQuantity",
-        "markSaved"
+        "setQuantity(value: number): void",
+        "markSaved(owner: string): void"
       ]
     },
     {
@@ -116,40 +128,75 @@
       "label": "OrderPolicy",
       "evidence": [],
       "events": [
-        "validateQuantity",
-        "calculateTotal"
+        "validateQuantity(input: OrderDraft): Record<string, string>",
+        "calculateTotal(input: OrderDraft): number"
       ],
-      "state": [
-        "순수 계산 · 상태 보관 없음"
+      "state": [],
+      "contracts": [
+        {
+          "kind": "type",
+          "name": "OrderId",
+          "path": "src/domain/order.ts",
+          "signature": "type OrderId = string",
+          "evidence": []
+        },
+        {
+          "kind": "interface",
+          "name": "Order",
+          "path": "src/domain/order.ts",
+          "signature": "interface Order {\n  id: OrderId;\n  quantity: number;\n  unitPrice: number;\n}",
+          "evidence": []
+        },
+        {
+          "kind": "type",
+          "name": "OrderDraft",
+          "path": "src/domain/order.ts",
+          "signature": "type OrderDraft = Pick<Order, 'id' | 'quantity' | 'unitPrice'>",
+          "evidence": []
+        }
       ]
     },
     {
       "id": "cache",
       "kind": "cache",
-      "label": "OrderQueryCache",
+      "label": "orderQueryCache",
       "evidence": [],
       "state": [
-        "orders",
-        "rollback snapshot",
-        "requestOwner"
+        "orders: ReadonlyArray<Order>",
+        "rollbackSnapshot: ReadonlyArray<Order> | null",
+        "requestOwner: string | null"
       ],
       "events": [
-        "optimisticWrite",
-        "commit",
-        "rollback",
-        "invalidate"
+        "optimisticWrite(input: OrderDraft, owner: string)",
+        "commit(order: Order, owner: string)",
+        "rollback(owner: string)",
+        "invalidate(orderId: OrderId)"
       ]
     },
     {
       "id": "api",
       "kind": "service",
-      "label": "OrderClient",
+      "label": "orderClient",
       "evidence": [],
       "events": [
-        "saveOrder(input, signal)"
+        "saveOrder(input: OrderDraft, signal: AbortSignal): Promise<SaveResult>"
       ],
-      "state": [
-        "입력 불변 · 재시도 정책 분리"
+      "state": [],
+      "contracts": [
+        {
+          "kind": "type",
+          "name": "SaveResult",
+          "path": "src/application/save-order.ts",
+          "signature": "type SaveResult =\n  | { ok: true; order: Order }\n  | { ok: false; message: string }",
+          "evidence": []
+        },
+        {
+          "kind": "function",
+          "name": "saveOrder",
+          "path": "src/application/save-order.ts",
+          "signature": "saveOrder(input: OrderDraft, signal: AbortSignal): Promise<SaveResult>",
+          "evidence": []
+        }
       ]
     }
   ],
@@ -394,6 +441,7 @@
     "실제 프로젝트의 분석 결과가 아닌 제안된 주문 편집 예시입니다.",
     "서버 내부 처리, 브라우저 스케줄러 및 실제 DOM 커밋은 기록하지 않았습니다.",
     "두 페이지는 라우트 대안입니다. 목록 캐시는 공유하지만 목록 화면 갱신은 해당 뷰가 마운트되어 구독할 때만 발생합니다.",
-    "낙관적 목록 갱신은 사용자 승인과 동시 수정 정책을 전제로 한 예시입니다. 실패 시 제출 전 스냅샷으로 복원하되 최신 요청 소유권을 먼저 확인합니다."
+    "낙관적 목록 갱신은 사용자 승인과 동시 수정 정책을 전제로 한 예시입니다. 실패 시 제출 전 스냅샷으로 복원하되 최신 요청 소유권을 먼저 확인합니다.",
+    "표시한 이름·시그니처는 제안입니다. OrderFilter 등 범위 밖 타입의 전체 정의와 구현은 생략했습니다."
   ]
 }

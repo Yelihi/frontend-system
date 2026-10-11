@@ -7,6 +7,7 @@ import {projectFile, projectFileHash, quoteLocationHint} from './source-file.js'
 import {projectSnapshot, readProjectSourceFile} from './project-snapshot.js';
 import {contentHash, readReferenceIndex, readIndexedReference} from './knowledge/reference-index.js';
 import {analysisId, analysisWriteSchema, flowSchema, findingSchema, type AnalysisReference, type ProjectFlow} from './flow-schema.js';
+import {loadFlowDesignImages, validateFlowDesign} from './flow-design.js';
 
 const envelope = z.object({version: z.union([z.literal(1), z.literal(2)]), record: analysisWriteSchema.shape.record,
   hashes: z.record(z.string(), z.string()), inventoryHash: z.string(), inventoryMode: z.enum(['source','all']).default('all'), roots: z.array(z.string()),
@@ -52,14 +53,24 @@ function validateGraph(flow: ProjectFlow) {
       if (!nodes.has(parent) || visited.has(parent)) throw new Error('Invalid or cyclic flow containment');
       visited.add(parent); parent = nodes.get(parent)!.parent;
     }
+    const contracts = new Set<string>();
+    for (const contract of node.contracts ?? []) {
+      const key = `${contract.path}:${contract.name}`;
+      if (contracts.has(key)) throw new Error(`Duplicate node contract: ${key}`);
+      contracts.add(key);
+      if (flow.basis === 'observed' && !contract.evidence.some(id => flow.evidence[id]?.path === contract.path)) {
+        throw new Error(`Observed contract requires evidence from its path: ${key}`);
+      }
+    }
   }
-  for (const item of [...flow.nodes, ...flow.edges, ...flow.invariants]) {
+  for (const item of [...flow.nodes, ...flow.nodes.flatMap(n => n.contracts ?? []), ...flow.edges, ...flow.invariants]) {
     if (flow.basis === 'observed' && !item.evidence.length) throw new Error('Observed graph elements require evidence');
     if (item.evidence.some(id => !flow.evidence[id])) throw new Error('Unknown flow evidence ID');
   }
   for (const edge of flow.edges) if (!nodes.has(edge.from) || !nodes.has(edge.to)) throw new Error('Unknown flow edge endpoint');
   for (const scenario of flow.scenarios) if (!nodes.has(scenario.entry) || scenario.steps.some(s => !edges.has(s.edge))) throw new Error('Unknown scenario node/edge');
   if (flow.scope.discoveryRoots.some(r => r.split('/').some(p => p === '..'))) throw new Error('Invalid discovery root');
+  validateFlowDesign(flow);
 }
 async function checkQuotes(root: string, citations: Array<{path: string; line?: number | undefined; quote: string}>, files: string[], snapshot?: ProjectFlow['scope']['snapshot']) {
   const texts = new Map<string, string>();
@@ -188,11 +199,15 @@ export async function saveProjectAnalysis(root: string, systemRoot: string, inpu
       }
     }
     const flowQuoteHashes = await checkQuotes(root, Object.values(flow.evidence), flow.scope.files, flow.scope.snapshot);
+    await loadFlowDesignImages(root, flow);
     const paths = flow.scope.snapshot ? (await projectSnapshot(root, flow.scope.snapshot.baseRef)).files : await inventory(root);
     const discovered = discoveryFiles(paths, flow.scope.discoveryRoots, flow.scope.discoveryMode);
     const files = [...new Set([...flow.scope.files, ...discovered])];
     const hashes: Record<string,string> = {};
     for (const p of files) hashes[p] = flow.scope.snapshot ? contentHash(await code(root, p, flow.scope.snapshot)) : (await projectFileHash(root, p)).hash;
+    for (const screen of flow.design?.screens ?? []) for (const asset of [screen.image, ...(screen.reference ? [screen.reference] : [])]) {
+      if (hashes[asset.path] !== asset.hash) throw new Error('Design image changed during capture');
+    }
     for (const quoted of [quoteHashes, flowQuoteHashes]) for (const [path, hash] of Object.entries(quoted)) {
       if (hashes[path] !== hash) throw new Error('Source changed during analysis capture; reread before saving');
     }
@@ -246,6 +261,7 @@ export async function getProjectAnalysis(root: string, systemRoot: string, optio
     const data = stored.record.data;
     rows.push({kind, id, hash:stored.hash, title:data.title, freshness,
       ...('basis' in data ? {basis:data.basis, scenarios:data.scenarios.map(s => ({id:s.id,event:s.event}))} : {status:data.status, observation:data.observation}),
+      ...('basis' in data && data.design ? {design:{stage:data.design.stage, screens:data.design.screens.map(s => ({id:s.id,page:s.page,imageHash:s.image.hash,confirmed:!!s.confirmation}))}} : {}),
       ...(options.full ? {data} : {})});
   }
   return {records:rows, total:selected.length, nextOffset:offset + limit < selected.length ? offset + limit : null, scan:scan.stats,
@@ -257,6 +273,8 @@ export async function validateAnalysisReferences(root: string, systemRoot: strin
   for (const ref of refs) {
     try {
       const stored = await readEnvelope(root, ref.kind, ref.id, ref.hash);
+      if (stored.record.kind === 'flow' && stored.record.data.design?.stage === 'visual-review') errors.push(`Visual-review flow is not an implementation contract: ${ref.id}`);
+      if (stored.record.kind === 'flow' && stored.record.data.design) await loadFlowDesignImages(root, stored.record.data);
       if (checkSources) {
         if ((await readEnvelope(root, ref.kind, ref.id)).hash !== ref.hash) errors.push(`Analysis version changed: ${ref.id}`);
         errors.push(...(await analysisFreshness(root, stored, systemRoot, scan)).reasons.map(r => `${ref.id}: ${r}`));

@@ -68,7 +68,10 @@ export async function prepareProjectReport(root:string, report:ProjectReport,
         projectPath:root, flowHash:ref.hash, language:'ko', generatedAt:new Date().toISOString(), reasons:[],
       })});
       details.push(`\n#### ${flow.title}\n\n${flow.summary}\n\n[Interactive flow](${path}) · [Structured record](analysis/history/${ref.hash}.json)`);
-      for (const node of flow.nodes) details.push(`- **${node.label}** (${node.kind}${node.parent ? `, parent: ${node.parent}` : ''}): ${(['props','state','events','lifecycle'] as const).filter(k => node[k].length).map(k => `${k}: ${node[k].join(', ')}`).join('; ') || 'See cited relationships.'}`);
+      for (const node of flow.nodes) {
+        details.push(`- **${node.label}** (${node.kind}${node.parent ? `, parent: ${node.parent}` : ''}): ${(['props','state','events','lifecycle'] as const).filter(k => node[k].length).map(k => `${k}: ${node[k].join(', ')}`).join('; ') || 'See cited relationships.'}`);
+        for (const contract of node.contracts ?? []) details.push(`  - ${contract.kind} **${contract.name}** (${contract.path}): ${contract.signature.replace(/\r?\n/g, ' ')}`);
+      }
       for (const scenario of flow.scenarios) {
         details.push(`\n**${scenario.title}** — ${scenario.event}`);
         scenario.steps.forEach((step, i) => {
