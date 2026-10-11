@@ -99,6 +99,18 @@ test("policy completion needs attempts, complete checks and current semantic evi
   } finally { await rm(f.root, { recursive: true, force: true }); }
 });
 
+test('attempts follow eligible issue order, including independent issues and blocked work', async () => {
+  const f = await setup();
+  try {
+    const steps = [...f.execution.steps, {...f.execution.steps[0]!,id:'later',title:'Later'}];
+    const saved = await saveExecution(f.root,{...f.execution,steps},f.saved.hash);
+    await assert.rejects(beginAttempt(f.root,'later',saved.hash), /next eligible issue.*order/);
+    assert.equal((await beginAttempt(f.root,'order',saved.hash)).stepId,'order');
+    const blocked = await saveExecution(f.root,{...f.execution,steps:[{...steps[0]!,status:'blocked'},steps[1]!] },saved.hash);
+    await assert.rejects(beginAttempt(f.root,'later',blocked.hash), /next eligible issue.*order/);
+  } finally {await rm(f.root,{recursive:true,force:true});}
+});
+
 test("attempt budgets survive checkpoints; cycles and unfinished dependencies fail", async () => {
   const f = await setup();
   try {

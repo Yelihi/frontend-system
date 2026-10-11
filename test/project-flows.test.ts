@@ -77,6 +77,7 @@ test('findings require authority and closure evidence while preserving immutable
 
 test('diagram projections preserve nesting and scenario identity without executing labels',()=>{
   const f=flow();f.nodes[1]!.label='</script><script>globalThis.pwned=true</script>';
+  f.nodes[2]!.contracts=[{kind:'function',name:'save',path:'src/save.ts',signature:'save(value: "</script><script>globalThis.pwned=true</script>"): string',evidence:['save']}];
   const rendered=flowToHtml(f,'stale');
   assert.ok(!rendered.includes('</script><script>globalThis.pwned=true'));
   assert.ok(rendered.includes('\\u003c/script\\u003e'));
@@ -92,6 +93,35 @@ test('diagram projections preserve nesting and scenario identity without executi
   assert.ok(!english.includes(" || '<p>"),'No literal fallback expression in node cards');
   new Function(english.match(/<script>([\s\S]*?)<\/script>/)![1]!);
   assert.match(rendered,/<html lang="ko">/);
+});
+
+test('code contracts retain typed boundaries and require their own source evidence for observed flows',async()=>{
+  const root=await fixture();
+  try {
+    const data=flow();
+    const contract={kind:'function' as const,name:'save',path:'src/save.ts',signature:'save(value: string): string',evidence:['save']};
+    data.nodes[2]!.contracts=[contract];
+    const saved=await saveProjectAnalysis(root,process.cwd(),{expectedHash:null,record:{kind:'flow',data}});
+    const record=(await getProjectAnalysis(root,process.cwd(),{ids:['save'],full:true})).records[0]!.data as ProjectFlow;
+    assert.deepEqual(record.nodes[2]!.contracts,[contract]);
+    assert.match(flowToMermaid(record),/save\(value: string\): string/);
+    assert.match(flowToHtml(record,'current'),/<pre>save\(value: string\): string<\/pre>/);
+    data.nodes[2]!.contracts=[{...contract,evidence:['caller']}];
+    await assert.rejects(saveProjectAnalysis(root,process.cwd(),{expectedHash:saved.hash,record:{kind:'flow',data}}),/contract requires evidence from its path/);
+    data.nodes[2]!.contracts=[{...contract,evidence:['save','missing']}];
+    await assert.rejects(saveProjectAnalysis(root,process.cwd(),{expectedHash:saved.hash,record:{kind:'flow',data}}),/Unknown flow evidence/);
+    data.nodes[2]!.contracts=[contract,contract];
+    await assert.rejects(saveProjectAnalysis(root,process.cwd(),{expectedHash:saved.hash,record:{kind:'flow',data}}),/Duplicate node contract/);
+    data.id='save-design'; data.basis='proposed';
+    data.nodes[2]!.contracts=[{...contract,path:'src/future-save.ts',evidence:[]}];
+    const proposed=await saveProjectAnalysis(root,process.cwd(),{expectedHash:null,record:{kind:'flow',data}});
+    assert.deepEqual(await validateAnalysisReferences(root,process.cwd(),[{kind:'flow',id:proposed.id,hash:proposed.hash,issueIds:['edit']}],true),[]);
+    const {renderProjectFlow}=await import('../src/application/render-project-flow.js');
+    await assert.rejects(renderProjectFlow(root,process.cwd(),{id:proposed.id,expectedHash:proposed.hash}),/Current observed flow required/);
+    const preview=await renderProjectFlow(root,process.cwd(),{id:proposed.id,expectedHash:proposed.hash,allowUnverified:true});
+    assert.match(await readFile(preview.path,'utf8'),/src\/future-save.ts/);
+    assert.equal(preview.basis,'proposed');
+  } finally {await rm(root,{recursive:true,force:true});}
 });
 
 test('bundled MCP stores confined flow drafts, serves bounded summaries and renders the pinned record',async()=>{
@@ -298,6 +328,7 @@ test('project reports generate human detail and HTML from pinned records while A
     await git(root, ['-c','user.name=Fixture','-c','user.email=fixture@example.test','commit','-m','Baseline']);
     const snapshot = await projectSnapshot(root);
     const data = flow(); data.scope.snapshot = {baseRef:'main',expectedCommit:snapshot.commit!};
+    data.nodes[2]!.contracts=[{kind:'function',name:'save',path:'src/save.ts',signature:'save(value: string): string',evidence:['save']}];
     const saved = await saveProjectAnalysis(root,process.cwd(),{expectedHash:null,record:{kind:'flow',data}});
     // A different worktree must not prevent documenting the unchanged main baseline.
     await writeFile(join(root,'src/caller.ts'),'throw new Error("working branch only");');
@@ -320,6 +351,7 @@ test('project reports generate human detail and HTML from pinned records while A
     const document = await readFile(join(root,'.frontend-system/project.md'),'utf8');
     assert.match(document,/state: input/); assert.match(document,/form → api/); assert.match(document,/Input ownership/);
     assert.match(document,/Interactive flow/);
+    assert.match(document,/save\(value: string\): string/);
     const html = await readFile(delivery.diagrams[0]!.path,'utf8');
     assert.match(html,/data-node="form"/); assert.ok(html.includes(saved.hash));
     const ai = await readProjectAiContext(root), index = JSON.parse(ai);

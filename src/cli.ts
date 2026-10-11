@@ -24,7 +24,7 @@ const usage = `Usage:
   fs inspect-context [project] [--overall]
   fs work-context [project] "<request>" [--plan <id>] [--mode prepare|implement|verify|review|refactor]
   fs change-context [project] [--base <ref>]
-  fs pr-check [project] --base <target-ref> [--plan <id>]
+  fs pr-check [project] --base <target-ref> [--plan <id>] [--issue <id>]
   fs checks [project] [--plan <id>] [--stage baseline|issue|delivery] [--issue <id>] [--required | --capability <script-id>] [--purpose baseline|verification] [--baseline <check-id>] [--attempt <id>]
   fs project-snapshot [project] [--base main]
   fs plans [project]
@@ -123,7 +123,7 @@ async function main(): Promise<void> {
   }
   if (command === 'pr-check') {
     if (!values.base) throw new Error('pr-check requires an explicit --base target branch/ref');
-    const readiness = await checkPrReadiness(root, values.plan, values.base);
+    const readiness = await checkPrReadiness(root, values.plan, values.base, values.issue);
     print(readiness);
     if (readiness.status !== 'ready') process.exitCode = 1;
     return;

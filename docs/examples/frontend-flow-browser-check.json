@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-06T07:53:28.811Z",
+  "checkedAt": "2026-10-11T04:52:50.787Z",
   "viewports": [
     [
       1560,
@@ -10,7 +10,7 @@
       844
     ]
   ],
-  "scenario": "save-failure step 4 active api/cache; invalid scenario excludes api/cache",
+  "scenario": "save-failure includes editor/list pages with conditional cache subscriber; invalid excludes list/cache/api; typed contracts visible; page links focus their targets",
   "jsErrors": [],
   "mobileOverflow": false
 }

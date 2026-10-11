@@ -47,3 +47,13 @@ export async function projectFile(root: string, path: string) {
   assertProjectSourceSize(Buffer.byteLength(content), local);
   return { absolute, path: local, content };
 }
+
+export async function projectFileBytes(root: string, path: string): Promise<Buffer> {
+  const {absolute} = await projectSourcePath(root, path);
+  const info = await stat(absolute);
+  if (!info.isFile()) throw new Error('Expected a regular project file');
+  assertProjectSourceSize(info.size, path);
+  const data = await readFile(absolute);
+  assertProjectSourceSize(data.length, path);
+  return data;
+}

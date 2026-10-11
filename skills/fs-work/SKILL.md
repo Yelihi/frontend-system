@@ -1,6 +1,6 @@
 ---
 name: fs-work
-description: Implement, refactor, set up or resume frontend work against agreed requirements, including tests, semantic review and recorded verification.
+description: Implement, refactor, set up or resume frontend work against agreed requirements, sequentially by plan issue, with separate branches/PRs, passing checks and developer test instructions.
 ---
 
 # FS Work
@@ -10,8 +10,35 @@ Use the host's native selection UI (Codex `request_user_input` when permitted),
 not a prose questionnaire. After asking, pause this task, including reads and browser
 inspection, until the actual answer. See the shared procedure for unavailable UI.
 
+Default delivery for an implementation request invoking this skill is one issue at a
+time, one branch and one PR per issue, following
+[issue delivery](../../references/workflows/pr-readiness.md). This invocation authorizes
+in-scope commits, pushes and PR creation unless the user requests local-only work or
+project/host policy restricts it. It does not authorize merging or deployment.
+Preserve an explicit alternative delivery instruction. Before editing, state the
+selected issue, branch/base and checks briefly; do not ask permission again for an
+already authorized delivery. Never combine existing plan issues just to simplify PRs.
+
+Before each issue, compare its contract with the actual callers, domain/error behavior,
+public interfaces, state ownership and cross-page effects. An uncovered material choice
+or contradiction must become an open decision through fs-plan, followed by a native
+question and a pause. Do not fill the gap with a preferred pattern or treat full access
+as a design answer. Existing explicit answers are reusable; fully specified work does
+not require a ceremonial question. Ordinary private helper choices remain discretionary.
+
 Implement the approved contract, preserving user decisions and evidence. The current
 host writes code; MCP manages versions, attempts, checks and completion. No nested model.
+
+If the approved plan adopts a flow's code contracts, use the pinned structured record
+and its node/contract names, paths, signatures and state ownership. Do not read HTML
+as implementation input or treat a proposed drawing as approval. Check the relevant
+types/callers and cross-page success/failure/conditional-consumer behavior against
+the plan; a material contract change returns to planning instead of silently renaming
+or relocating an agreed boundary.
+For image-led plans, use the confirmed mockup version plus its detailed-design record
+and quality checks. Inspect the selected image itself when implementing visual details;
+do not load base64 HTML into context. Compare the resulting page screenshot and its
+interactions with the approved scope. Visual confirmation alone never starts work.
 
 Before the first product or test edit, resolve the selected planId (list_plans only
 if unknown) and call get_workflow_context. If its approved revision or execution is
@@ -48,6 +75,7 @@ read only the needed schemas, not the full schema file.
    (cheap tests/lint/types, no build), OR purpose:baseline with capabilities:[script keys]
    and no stage for explicit scripts. Use the selected planId for baseline and later
    checks; another plan's check ID cannot be linked. Never combine stage and capabilities. Respect dependencies;
+   finish the current issue through its PR before beginning the next eligible issue;
    do not implement future steps early and reconstruct their records afterward. A small
    cohesive change should already be one issue, even across layers. Keep the existing
    provider and do not initiate paid generation implicitly.
@@ -107,8 +135,9 @@ read only the needed schemas, not the full schema file.
    refresh evidence invalidated by edits, and save complete execution
    only when the tool accepts it. A successful complete_work needs no extra status call;
    otherwise get_workflow_context suffices for final status; do not
-   rerun knowledge routing to confirm completion. Give a concise final response after
-   successful completion with guarantees, checks and material limitations.
+   rerun knowledge routing to confirm completion. Completion is the verification
+   checkpoint, not the end of default delivery: follow issue delivery to submit its
+   PR, then advance to the next issue. Report PR links, checks and limitations.
 
 
 For structural advice or a candidate with `investigationStatus: pending`, follow
@@ -122,7 +151,7 @@ unresolved material choices. Legacy checklists do not certify contextual applica
 Read only the procedure needed for the actual change:
 - [PR readiness](../../references/workflows/pr-readiness.md): before an authorized PR
   creation, reuse final reviews/checks and require `check_pr_readiness` to return ready.
-  Completion alone is not PR permission; ordinary work without PR submission adds no gate.
+  Use stepId for each issue; local-only work does not create a PR.
 - [fs-init](../../references/workflows/fs-init.md): new setup/provider configuration.
 - [fs-implement](../../references/workflows/fs-implement.md): feature/UI design questions
   not already settled by the approved contract. Preserve design systems and accessibility.
@@ -136,7 +165,8 @@ Read only the procedure needed for the actual change:
 Do not load all procedures for a bounded approved change. Main project.md is refreshed
 from main after merge, not from working edits. Ordinary fixes inside the approved
 contract need no repeated approval. Verification-only requests do not authorize new
-product edits. No automatic commit, push, deployment or external issue creation.
+product edits or PRs. No automatic merge, deployment or external issue creation.
+Commit/push/PR are included only in the implementation delivery scope above.
 
 For persisted event/state analysis, use
 [project-flow-analysis](../../references/workflows/project-flow-analysis.md).

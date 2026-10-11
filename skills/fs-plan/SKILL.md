@@ -64,8 +64,14 @@ A new feature begins with domain outcomes and proposed flows, then decisions and
 project.md remains a manually refreshed main index; never publish working proposals as facts.
 For a visualization-only request, use the focused
 [fs-plan-visualize](../fs-plan-visualize/SKILL.md) workflow. When visualization accompanies
-planning, deliver its cited observed flow through render_project_flow; never substitute a synthetic example or proposed design. Follow
-"Deliver an actual-code visualization" in that reference and return the actual HTML path.
+planning, select the requested view: current implementation uses cited observed flow;
+the intended plan uses a separate proposed flow. Follow "Design a planned flow" in
+that reference for domain-first contracts, component ownership and cross-page effects.
+Never substitute a synthetic example for the target project. Return the actual HTML
+path and basis. Bind adopted proposed contracts to the plan's decisions and checks.
+If reference images are supplied, use the shared visual-review stage first. Visual
+confirmation and a request for detailed design are separate from implementation
+approval. Do not bind a visual-review record as an implementation contract.
 
 ## Decide before writing the contract
 
@@ -142,6 +148,12 @@ For the opt-in CVA checker, read `node <plugin-root>/bundle/style-check.js --sch
 Choose variants[].defaults from the approved contract: none for no defaultVariants,
 per-axis for existing required defaults. Never add defaults just to satisfy a checker.
 
+Each implementation issue is a separately reviewable branch/PR in fs-work's default
+delivery. Put exact unit, lint and type-check scripts, existing E2E, and reproducible
+manual acceptance steps/fixture needs in the approved contract. Include pr-safety and
+pr-scope review obligations. Missing tooling is an explicit setup prerequisite, not
+an implicit skipped check. Resolve material domain/interface/state decisions before
+approving their implementation; full-access permissions do not resolve them.
 Default one jointly delivered change to one issue; describe coding order within it.
 Split for independently verifiable deliverables, real decision checkpoints or external
 prerequisites, not folder count. Preserve user milestones and existing approvals.

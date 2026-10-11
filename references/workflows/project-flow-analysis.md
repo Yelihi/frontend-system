@@ -28,8 +28,113 @@ that the interpretation is complete or correct.
 
 Inspect independent routes separately. Shared modules can be referenced by stable IDs
 within a flow; do not duplicate entire source bodies. Split large flows by scenario
-or page boundary. When an uncertainty affects a decision, inspect that dependency or
+or page boundary while retaining the event's cross-page consumers and shared state.
+When an uncertainty affects a decision, inspect that dependency or
 ask about the unresolved domain intent. Do not ask developers to look up code facts.
+
+## Code contracts and cross-page scope
+
+Keep explanations in the user's language, but preserve actual code identifiers:
+`OrderFormProps`, `onSubmit(input: OrderDraft): Promise<SaveResult>`,
+`draftStore.quantity: number`, `orderCache.byId: Record<OrderId, Order>`.
+Do not replace them with only "submit", "draft state" or translated descriptions.
+For scoped interface/type/function/store boundaries, use node `contracts` entries
+with `kind`, `name`, `path`, `signature`, `evidence`. Record only relevant members,
+not implementation bodies. Observed contracts cite declarations in their own path;
+unknown inferred types stay explicit limitations, not invented interfaces.
+Proposed paths may not exist yet; never add nonexistent files to `scope.files`.
+Use the existing props/state/events/lifecycle fields for concrete members, callbacks,
+subscription setup/cleanup and ownership. Contracts do not imply compiler validation.
+
+Follow each event beyond its entry page: shared store/cache writes or invalidation,
+other page/component readers, selectors, subscriptions and route re-entry. Keep shared
+resources outside individual page containers and represent each consumer under its
+own page. Retain relevant consumers even when their implementation will not change.
+Record the exact modified field/query key and the consuming callback/view. Distinguish
+immediate mounted subscriptions from later navigation/refetch; put these conditions
+on edges/steps. Do not imply two alternative routes are mounted simultaneously.
+Include failure/rollback consumers where applicable. HTML page links are derived from
+scenario edges and containment, not a second manually maintained page list. This is
+the recorded scenario's scope, not an automatically exhaustive impact analysis.
+
+## Design a planned flow
+
+Use when the user requests the intended plan/feature/refactor view. Reuse the selected
+plan, relevant observed analysis and existing decisions. Do not rescan the project or
+require a full planning ceremony just to visualize an already settled plan.
+With attached design references, complete the visual review below before this detailed
+procedure, unless the user already confirmed the exact mockup and requested detail.
+
+### Review page mockups before detailed design
+
+1. Inspect the attachment and the target page's requirements/conventions. Generate or
+   adapt a page mockup for this feature, preserving relevant design decisions. Use host
+   image-generation/editing capabilities with the attachment when available, following
+   that tool's skill; alternatively use an isolated disposable HTML prototype and a
+   real browser screenshot when those capabilities exist. Do not edit product code
+   to obtain a preview. A supplied complete target-page mockup can be reused as-is.
+   Keep an inspiration/reference image distinct from the proposed page result. If tools
+   cannot create or retrieve an image, explain the limitation; do not label the original
+   reference or a fabricated path as a newly generated target-page mockup.
+2. Save local PNG/JPEG/WebP assets under a project folder such as `design/fs/`, outside
+   `.frontend-system`, using new filenames per revision. Copy transient host attachments
+   there before saving; no remote URLs or SVG/HTML as images. Each file is limited to
+   8 MiB and the gallery to 24 MiB total. Record the SHA-256 of its bytes, alt text and
+   page ID in `design.screens`; include all image paths and textual requirements/answers
+   in `scope.files`. `reference` is the supplied inspiration; `image` is the target-page
+   mockup. The server embeds validated raster bytes into the HTML, not AI record JSON.
+3. Save `basis: proposed`, `design.stage: visual-review`, page nodes, empty edges and
+   scenarios. No invented technical event just to satisfy a schema. Render HTML with
+   `allowUnverified: true`. Show the result and gather feedback with native questions;
+   pause pending answers. Record relevant feedback, revise the actual image and rerender.
+   A generated picture cannot establish business rules or approval. Do not expand into
+   component/props/store/interface design merely because the preview looks complete.
+4. On explicit visual confirmation, link `confirmation.evidence` to an exact quoted
+   user answer in a project-relative requirements/feedback file and set `imageHash` to
+   the confirmed bytes. Keep the stage visual-review until the user requests detail;
+   confirmation alone is not that request. On the subsequent request, cite it through
+   `design.detailRequest` and switch to detailed-design. Reuse an explicit combined
+   confirmation/request. A changed image requires confirmation for its new hash;
+   invalidate earlier confirmation instead of silently carrying it over. Store only
+   task-relevant answers, not an entire conversation transcript.
+5. Perform the domain-first procedure below. Map useful image areas to component nodes
+   using percentage `regions` (x/y/width/height); clicking a region opens that component's
+   contract in the same HTML. Include state/props/interfaces, handler→function→store/cache
+   effects, external functions and relevant non-functional requirements in `design.quality`
+   with scoped node IDs and a concrete verification method. Discuss unknown accessibility,
+   responsive, loading/error, security and performance tradeoffs; do not invent numeric
+   budgets or requirements. Carry adopted items to the plan's obligations/checks, alongside
+   the pinned flow and image hashes. fs-work requires the implementation plan's approval,
+   independently of visual confirmation. Visual-review records cannot bind implementation
+   analysisRefs. Tool checks verify recorded links/bytes, not who actually spoke or whether
+   the image and domain interpretation are semantically correct.
+
+### Elaborate the implementation design
+
+1. Establish the changed domain boundary first: entity identity, meaningful fields,
+   invariants, allowed transitions, validation and error outcomes. Reuse actual domain
+   contracts. Ask only for unknown intent that changes behavior; do not assume business
+   rules from UI labels or force entity classes onto a project that does not use them.
+2. Then define the affected component boundaries and props/callback contracts, local
+   state vs store/cache ownership, and application/service function signatures. Reuse
+   conventions and prior answers. Discuss genuine ownership/lifecycle tradeoffs; routine
+   names within delegated implementation discretion need no question. An unresolved
+   material choice remains in the plan's open decisions and flow limitations; do not
+   depict a preferred option as a settled contract or start dependent implementation.
+3. Trace the proposed event through all relevant pages using the cross-page procedure
+   above. Save as `basis: proposed` under a distinct ID from the observed baseline,
+   citing existing code/requirements where applicable. Proposed contracts need not have
+   source evidence; the entire view remains explicitly proposed, including reused nodes.
+   A requested design view authorizes `allowUnverified: true` for its export, not bypassing
+   stale observed evidence. Reconcile stale plan inputs before adopting the design.
+4. For a saved plan, pin the adopted flow hash through `evidence.analysisRefs` to the
+   affected issues. Link approved decisions to required obligations identifying the
+   node and contract name/path/signature, ownership and cross-page effects. State which
+   details remain implementation discretion. Reuse the structured record rather than
+   copying its whole contents into plan.md. Check types/callers plus normal, failure and
+   conditional-consumer scenarios with existing tooling or scoped semantic review.
+   Drawing/recording is not approval. Implementation uses the plan and pinned JSON,
+   not the HTML. Later material design changes revise the plan before implementation.
 
 ## Records and freshness
 

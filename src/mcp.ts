@@ -189,7 +189,7 @@ server.registerTool("complete_work", {
 }, async ({ projectPath: path, ...options }) => result(await completeWork(projectPath(path), options)));
 
 server.registerTool("begin_work_attempt", {
-  description: "After save_execution creates pending steps, reserve one of three persisted attempts. expectedHash is the execution hash returned by save_execution, not the approved revision hash. Local development tests do not need attempts. Reuse returned ID for checks/reviews; cannot reset the budget by resuming.",
+  description: "After save_execution creates pending steps, reserve one of three persisted attempts for the next eligible issue in plan order. expectedHash is the execution hash returned by save_execution, not the approved revision hash. Local development tests do not need attempts. Reuse returned ID for checks/reviews; cannot reset the budget by resuming.",
   inputSchema: { projectPath: z.string().optional(), planId: recordId.optional(), stepId: recordId, expectedHash: z.string().describe("Current execution hash from save_execution or get_workflow_context") }, annotations: localWrite,
 }, async ({ projectPath: path, planId, stepId, expectedHash }) => result(await beginAttempt(projectPath(path), stepId, expectedHash, planId)));
 
@@ -274,7 +274,7 @@ server.registerTool('get_project_analysis', {
   return result(found);
 });
 server.registerTool('render_project_flow', {
-  description: 'Export a stored, cited actual project flow to offline HTML or Mermaid. Requires current observed evidence by default; allowUnverified explicitly previews stale/proposed records. HTML shows source citations, scope and export-time freshness. Does not analyze code or verify runtime behavior.',
+  description: 'Export a stored project flow to offline HTML or Mermaid. Requires current observed evidence by default; allowUnverified explicitly previews stale/proposed records. HTML embeds hash-verified local design images, feedback and component-region links when recorded. Visual review requires HTML. Does not generate images, analyze code or verify runtime behavior.',
   inputSchema: {projectPath: z.string().optional(), ...renderFlowOptions.shape}, annotations: localWrite,
 }, async ({projectPath: path, ...options}) => result(await renderProjectFlow(projectPath(path), systemRoot, options)));
 
@@ -386,9 +386,9 @@ server.registerTool("get_change_context", {
 });
 
 server.registerTool('check_pr_readiness', {
-  description: 'Read-only local PR gate. Returns exact merge-base/base/head scope and missing evidence. Requires completed approved work, current checks and pr-safety/pr-scope semantic reviews bound to that scope. Does not run a model or create/merge a PR. Commit intended product changes before final review. A blocked first call provides the scope for save_semantic_review.',
-  inputSchema: {projectPath: z.string().optional(), planId: recordId.optional(), base: z.string().min(1)}, annotations: readOnly,
-}, async ({projectPath: path, planId, base}) => result(await checkPrReadiness(projectPath(path), planId, base)));
+  description: 'Read-only local PR gate. Returns exact merge-base/base/head scope and missing evidence. Requires a completed approved issue (stepId) or completed plan, current checks and pr-safety/pr-scope semantic reviews bound to that scope. Does not run a model or create/merge a PR. Commit intended product changes before final review. A blocked first call provides the scope for save_semantic_review.',
+  inputSchema: {projectPath: z.string().optional(), planId: recordId.optional(), base: z.string().min(1), stepId: recordId.optional()}, annotations: readOnly,
+}, async ({projectPath: path, planId, base, stepId}) => result(await checkPrReadiness(projectPath(path), planId, base, stepId)));
 
 server.registerTool("run_project_checks", {
   title: "Run discovered project checks",

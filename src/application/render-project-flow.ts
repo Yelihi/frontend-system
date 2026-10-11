@@ -4,6 +4,7 @@ import {analysisId, flowSchema} from './flow-schema.js';
 import {getProjectAnalysis} from './project-flows.js';
 import {flowToHtml, flowToMermaid} from './flow-view.js';
 import {atomic, directory, digest, locked} from './workflow-store.js';
+import {loadFlowDesignImages} from './flow-design.js';
 
 export const renderFlowOptions = z.object({
   id: analysisId, expectedHash: z.string().regex(/^[a-f0-9]{64}$/),
@@ -19,6 +20,7 @@ export async function renderProjectFlow(root: string, systemRoot: string, input:
     const found = (await getProjectAnalysis(root, systemRoot, {kind:'flow', ids:[options.id], full:true})).records[0];
     if (!found || found.hash !== options.expectedHash) throw new Error('Flow changed or missing; read its current hash');
     const flow = flowSchema.parse(found.data);
+    if (flow.design?.stage === 'visual-review' && options.format !== 'html') throw new Error('Visual review requires HTML with its mockup images');
     const freshness = found.freshness as {status: string; reasons: string[]};
     if (!options.allowUnverified && (flow.basis !== 'observed' || freshness.status !== 'current')) {
       throw new Error(`Current observed flow required: ${flow.basis}/${freshness.status}. Reanalyze affected code, or explicitly preview with allowUnverified. ${freshness.reasons.join('; ')}`);
@@ -27,7 +29,7 @@ export async function renderProjectFlow(root: string, systemRoot: string, input:
     const provenance = {projectPath:resolve(root), flowHash:options.expectedHash,
       generatedAt:new Date().toISOString(), reasons:freshness.reasons};
     const content = options.format === 'html'
-      ? flowToHtml(flow, freshness.status, {...provenance, scenarioId:options.scenarioId, language:options.language})
+      ? flowToHtml(flow, freshness.status, {...provenance, scenarioId:options.scenarioId, language:options.language, images:await loadFlowDesignImages(root, flow)})
       : `%% ${JSON.stringify({basis:flow.basis, freshness, ...provenance})}\n${flowToMermaid(flow, options.scenarioId)}`;
     const output = join(await directory(root, 'diagrams'), `${options.id}.${options.format === 'html' ? 'html' : 'mmd'}`);
     await atomic(output, content);

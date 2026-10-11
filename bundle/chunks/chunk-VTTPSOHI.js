@@ -6489,6 +6489,15 @@ async function projectFile(root, path) {
   assertProjectSourceSize(Buffer.byteLength(content), local);
   return { absolute, path: local, content };
 }
+async function projectFileBytes(root, path) {
+  const { absolute } = await projectSourcePath(root, path);
+  const info = await stat(absolute);
+  if (!info.isFile()) throw new Error("Expected a regular project file");
+  assertProjectSourceSize(info.size, path);
+  const data = await readFile(absolute);
+  assertProjectSourceSize(data.length, path);
+  return data;
+}
 
 export {
   clone,
@@ -6530,5 +6539,6 @@ export {
   assertProjectSourceSize,
   quoteLocationHint,
   projectFileHash,
-  projectFile
+  projectFile,
+  projectFileBytes
 };
