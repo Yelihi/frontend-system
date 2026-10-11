@@ -162,7 +162,7 @@ server.registerTool("get_project_record", {
 
 server.registerTool("save_execution", {
   title: "Checkpoint a refactoring execution",
-  description: "Record stages against the approved revision. Reconcile source changes before saving. For approved issues, omit step title/files/dependsOn/requiredCheckIds to reuse the contract. Newly completed stages require current passing checks; completion requires all policy checks and reviews. A delivery record can serve both step checkIds and finalCheckId; preserve its attemptId. Never edit product files or reset user changes here.",
+  description: "Record stages against the approved revision. Reconcile source changes before saving. For approved issues, omit step title/files/dependsOn/requiredCheckIds to reuse the contract. For staged issues, save pending/approved testReview with actual user feedback and reviewed test file hashes before product implementation. Newly completed stages require confirmed unchanged test artifacts and current passing checks; completion requires all policy checks and reviews. A delivery record can serve both step checkIds and finalCheckId; preserve its attemptId. Never edit product files or reset user changes here.",
   inputSchema: { projectPath: z.string().optional(), planId: recordId.optional(), expectedHash: z.string().nullable(), execution: executionInputSchema }, annotations: localWrite,
 }, async ({ projectPath: path, planId, expectedHash, execution }) => result(await saveExecution(projectPath(path), execution, expectedHash, planId)));
 

@@ -8,7 +8,9 @@ policy restricts publishing. Review-only/verification-only requests do not autho
 Never merge a PR or deploy by implication. Respect prior authorization; do not repeatedly
 ask permission for this same workflow.
 
-1. Select the next issue in plan order whose dependencies are complete. Reuse an existing
+1. Each implementation issue/PR represents one domain flow, from its initiating event
+   through interactions and state changes to success/error outcomes. Technical layers
+   and tests are tasks inside that issue. Select the next issue in plan order whose dependencies are complete. Reuse an existing
    branch/PR for that issue on resume. Start a separate branch using the repository's
    convention, otherwise `fs/<planId>/<issueId>`. Preserve unrelated dirty work; never
    reset, stash, or include it blindly. Use the repository's known integration base.
@@ -21,7 +23,9 @@ ask permission for this same workflow.
    behavior, public interfaces, ownership or cross-page effects require a native user
    question and pause per user-decisions.md. A new choice revises the approved plan;
    it must not be hidden in a helper or PR description.
-3. Implement only this issue. Run unit tests, lint and type checks, plus existing E2E
+3. For staged plans, first write/reuse the issue's agreed tests, show their actual code
+   and results, and wait for user feedback. Preserve the approved testReview and hashes;
+   then implement only this domain flow. Run unit tests, lint and type checks, plus existing E2E
    and the approved policy checks. Missing infrastructure is a plan/setup blocker;
    failed, not-run, unavailable or stale checks cannot be waived to submit a PR.
    A combined script may cover several checks only after inspecting its actual body.

@@ -10,15 +10,28 @@ Use the host's native selection UI (Codex `request_user_input` when permitted),
 not a prose questionnaire. After asking, pause this task, including reads and browser
 inspection, until the actual answer. See the shared procedure for unavailable UI.
 
+When accompanying fs-plan, follow the visualization stages in
+[staged planning](../../references/workflows/staged-planning.md). Use the agreed
+domain and test-case IDs, collect feedback on proposed page flows, then refine supplied
+design references and detailed contracts. Keep case/issue-to-scenario links explicit.
+Standalone visualization does not require a full planning interview.
+
 For existing-code requests, deliver a navigable diagram of the actual implementation.
 For a request to visualize a plan, new feature or intended refactor, use the shared
 [planned-flow design procedure](../../references/workflows/project-flow-analysis.md#design-a-planned-flow):
 domain contracts first, then component/state ownership, then cross-page event effects.
+For planned implementation, one issue is one domain flow representable as a sequence
+diagram: trigger, participants and ordered calls, state/cache changes, and success/error
+outcomes. Keep its technical layers together. Identify the corresponding scenario IDs
+for each issue; normal/error variants can share the same issue. A multi-page overview
+may contain several issues, and crossing pages does not itself split one flow.
+Carry these boundaries into fs-plan; drawing alone does not create/approve issue contracts.
 When design references are attached, first follow "Review page mockups before detailed
 design" in that procedure: generate a target-page mockup with available host image or
 prototype/screenshot tools and embed it with the reference in HTML. Wait for visual
 feedback; advance to component/state/event/quality design only on the user's subsequent
-request, reusing an already explicit confirmation and request rather than asking again.
+request, including an already requested staged refinement, reusing explicit confirmation
+and scope rather than asking again.
 Discuss only material ambiguity; reuse prior decisions. This is a proposed view, not
 evidence of implementation. Do not require an extra permission question when the
 user already requested that design view. If the target itself is ambiguous, ask.
