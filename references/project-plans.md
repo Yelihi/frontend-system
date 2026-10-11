@@ -62,10 +62,22 @@ Do not treat a receipt as having read an unfamiliar contract. Persisted records 
 approval/completion requirements do not change with response detail.
 The readable design lives at `.frontend-system/plans/<id>/plan.md`. Its generated
 issue section is edited via the `issues` input. Each issue has `id`, `title`, `contract`,
-`files`, `dependsOn`, `requiredCheckIds` and `acceptance`. Put scope/exclusions,
+`files`, `dependsOn`, `requiredCheckIds`, `acceptance` and, for staged plans,
+`testCases` (id, given, when, then, method, planned files). `plan.ai.md` is an automatically
+generated reference index into this same revision, not separate approval or a second plan. Put scope/exclusions,
 interfaces, failure cases, test commands and important unanswered questions in the
-contract/design; resolve material questions before approval. One issue is enough
-for a small change. Every policy check must map to an issue; unknown dependencies,
+contract/design; resolve material questions before approval. One implementation issue
+means one domain flow expressible as one sequence diagram. Its contract names the
+initiating event, preconditions, participants and ordered calls, state/cache changes,
+success and applicable failure/rollback outcomes, and exclusions. UI, service, storage
+and tests are tasks inside that same issue. Separate independent domain outcomes,
+not technical layers or file counts; derive acceptance from the flow's outcomes.
+A shared visualization may contain several flows: identify the scenario IDs belonging
+to each issue in its contract and bind the flow record/hash through analysisRefs.
+Success/error scenarios for the same domain intent can belong to the same issue.
+The schema checks issue fields and references; the host must review the semantic
+boundary. Being drawable as one diagram alone does not prove a single domain flow.
+Every policy check must map to an issue; unknown dependencies,
 cycles and unknown checks are rejected. No remote issue is created.
 
 `approve_revision` binds the plan ID, revision version, design, policy and issues.

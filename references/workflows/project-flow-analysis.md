@@ -91,7 +91,8 @@ procedure, unless the user already confirmed the exact mockup and requested deta
    component/props/store/interface design merely because the preview looks complete.
 4. On explicit visual confirmation, link `confirmation.evidence` to an exact quoted
    user answer in a project-relative requirements/feedback file and set `imageHash` to
-   the confirmed bytes. Keep the stage visual-review until the user requests detail;
+   the confirmed bytes. Keep the stage visual-review until detail is requested
+   (including an existing staged-design request after mockup confirmation);
    confirmation alone is not that request. On the subsequent request, cite it through
    `design.detailRequest` and switch to detailed-design. Reuse an explicit combined
    confirmation/request. A changed image requires confirmation for its new hash;
@@ -218,8 +219,15 @@ Bind reused records with `save_revision.evidence.analysisRefs` entries:
 `{kind:"flow"|"finding",id,hash,issueIds:[...]}`. Each issue must belong to a recorded
 decision. The plan contains only the selected change, obligations, discretion, open
 questions and verification. Do not restate project analysis or copy all graph data.
-Use independent verifiable issues, not one issue per file. Citations and hashes are
-mechanical checks; the host must still verify that obligations express the decision.
+Use one domain flow per implementation issue: a user/system trigger, ordered
+interactions across participants, state/cache changes, and observable success/error
+outcomes expressible in a single sequence diagram. Name the corresponding scenario
+IDs in issue.contract; the existing analysisRefs pins their parent flow record/hash.
+Normal/error/rollback scenarios for the same intent belong to the same issue. A shared
+overview can contain multiple issues; neither a page boundary nor a technical layer
+is an issue boundary. Separate independently initiated domain outcomes even when they
+share files. Citations and hashes are mechanical checks; the host must still verify
+that both the domain-flow boundary and obligations express the developer's intent.
 
 Version/source freshness is checked before approval and starting work. Normal edits
 during authorized implementation preserve the pinned historical analysis. Completion

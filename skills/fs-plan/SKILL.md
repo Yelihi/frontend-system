@@ -1,6 +1,6 @@
 ---
 name: fs-plan
-description: Create or revise an implementation plan from project analysis and user decisions, or discuss a new product's requirements. Use fs-project for standalone whole-project analysis; planning does not edit product code.
+description: "Plan in feedback stages: domain, test cases, flow visualization and optional reference-driven design; hand off an agreed plan to test-first implementation. Use fs-project for standalone whole-project analysis; planning does not edit product code."
 ---
 
 # FS Plan
@@ -24,6 +24,15 @@ changed assumptions in the new plan. Refresh affected typed flow/finding records
 required for current evidence, but do not also rewrite old reports, inventories or
 numbering merely to make every document describe the new state. This does not permit
 reusing stale evidence or silently refreshing the main project.md baseline.
+
+## Stage the plan with user feedback
+
+Follow [staged planning](../../references/workflows/staged-planning.md): domain and
+initial design → test-case review → proposed page/flow HTML review → reference-driven
+mockup and detailed design feedback when supplied → final plan. Pause at the actual
+feedback checkpoints, not just ambiguous technical choices. Reuse existing scoped
+answers. A user asking to implement the resulting plan need not type fs-work; apply
+that workflow automatically, starting with test code and its feedback checkpoint.
 
 ## Inspect once, preserve usable evidence
 
@@ -154,11 +163,27 @@ manual acceptance steps/fixture needs in the approved contract. Include pr-safet
 pr-scope review obligations. Missing tooling is an explicit setup prerequisite, not
 an implicit skipped check. Resolve material domain/interface/state decisions before
 approving their implementation; full-access permissions do not resolve them.
-Default one jointly delivered change to one issue; describe coding order within it.
-Split for independently verifiable deliverables, real decision checkpoints or external
-prerequisites, not folder count. Preserve user milestones and existing approvals.
+The minimum implementation issue is ONE domain flow representable as one sequence
+diagram: an initiating user/system event, ordered interactions across participants,
+and an observable domain outcome. In each issue.contract name the trigger,
+preconditions, participants/calls, state/store/cache changes, success and applicable
+failure/rollback outcomes, and exclusions. Derive acceptance checks from those paths.
+Keep UI, service, persistence, error handling and tests for that flow in the SAME issue;
+these are implementation tasks within it, not separate implementation issues.
+Separate independently initiated domain outcomes (e.g. submit order vs cancel order),
+even if they share files or ship together. Normal/error branches of the same flow
+stay together; a retry initiated as a separate business operation may be another flow.
+A whole product journey does not become one flow merely because it fits on one diagram.
+Shared setup belongs to the first dependent flow where feasible; identify unavoidable
+standalone tooling preparation explicitly as a prerequisite, not a domain-flow issue.
+For existing plans with conflicting boundaries, revise through fs-plan before work;
+never silently split an approved issue or reuse its approval for a different contract.
+Preserve user milestones and existing decisions while reviewing affected boundaries.
 Do not duplicate source bodies or restate identical obligations across plan sections.
-The saved `.frontend-system/plans/<planId>/plan.md` is already readable. If the user
+The saved `.frontend-system/plans/<planId>/plan.md` is the human view; `plan.ai.md`
+is a compact index into the same canonical revision.json and pinned flow records.
+Use the index/current workflow metadata and selected contracts for AI implementation;
+do not read both full projections or regenerate a competing AI plan. If the user
 also requests a standalone copy, copy that projection after the final save instead
 of composing a second plan that can drift. When host orchestration is available,
 check the save receipt and copy that projection in the same call; return its path/hash

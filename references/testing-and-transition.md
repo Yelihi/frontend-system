@@ -6,6 +6,15 @@ without installing or writing tests/project memory. Existing checks may run when
 useful (and their normal result logs may be stored); explicit no-write requests
 exclude them. Report only checks actually executed.
 
+## Test-code feedback before implementation
+
+For planned fs-work, follow [staged work](workflows/staged-planning.md#work-stages-per-domain-flow-issue).
+The planning test-case review and work-time test-code review are separate checkpoints.
+Write/reuse every approved case for the current domain flow before product changes,
+show the actual tests/results, and wait for native user feedback. Record testReview
+against reviewed file hashes. Pre-implementation red tests are expected only for missing
+behavior, never a passed delivery check; setup failures remain explicit blockers.
+
 ## Current verification boundary
 
 Verify the changed guarantee with the smallest meaningful reproduction and relevant

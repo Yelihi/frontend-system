@@ -13776,7 +13776,15 @@ var checksSchema = array(object({
 var issueSchema = strictObject({
   id: recordId,
   title: string().min(1),
-  contract: string().min(1),
+  contract: string().min(1).describe("One domain flow expressible as a sequence diagram: initiating event, preconditions, participants/ordered calls, state/cache changes, success/error outcomes and exclusions. Keep UI/service/storage/tests together; separate independent domain outcomes. Name adopted visualization scenario IDs when present."),
+  testCases: array(strictObject({
+    id: recordId,
+    given: string().trim().min(1),
+    when: string().trim().min(1),
+    then: string().trim().min(1),
+    method: _enum(["unit", "integration", "e2e", "manual"]),
+    files: array(localPath).min(1)
+  })).min(1).optional().describe("Reviewed test-case contract for this domain flow. files are planned test/fixture paths, or manual reproduction instructions. Requires test-code feedback before completion."),
   files: array(localPath),
   dependsOn: array(recordId),
   requiredCheckIds: array(string()),
@@ -13799,7 +13807,13 @@ var executionObject = strictObject({
     dependsOn: array(recordId).optional(),
     requiredCheckIds: array(string()).optional(),
     reviewIds: array(recordId).optional(),
-    attemptId: recordId.optional()
+    attemptId: recordId.optional(),
+    testReview: strictObject({
+      status: _enum(["pending", "approved"]),
+      revisionHash: hash2,
+      confirmation: string(),
+      files: array(strictObject({ path: localPath, hash: hash2 })).min(1)
+    }).optional().describe("Test-first checkpoint: exact reviewed test/fixture/instruction file hashes and actual user feedback. Approval concerns tests, not product completion.")
   })).min(1),
   note: string()
 });
@@ -13982,12 +13996,24 @@ async function saveRevision(root, content, expectedHash, policy, planId, issues,
       content = `${design.trimEnd()}${marker}
 ## Issue contracts
 
-Edit these through save_revision.issues; progress is recorded in [progress.md](progress.md).
+Progress: [progress.md](progress.md). AI references: [plan.ai.md](plan.ai.md).
 
-\`\`\`json
-${JSON.stringify(nextIssues, null, 2)}
-\`\`\`
-`;
+${nextIssues.map(
+        (issue) => `### ${issue.id}: ${issue.title}
+
+${issue.contract}
+
+- Files: ${issue.files.join(", ")}
+- Depends on: ${issue.dependsOn.join(", ") || "none"}
+- Required checks: ${issue.requiredCheckIds.join(", ")}
+
+Acceptance:
+${issue.acceptance.map((item) => `- ${item}`).join("\n")}
+` + (issue.testCases ? `
+Test cases:
+${issue.testCases.map((item) => `- **${item.id}** (${item.method}) \u2014 Given: ${item.given}; When: ${item.when}; Then: ${item.then}. Files: ${item.files.join(", ")}`).join("\n")}
+` : "")
+      ).join("\n")}`;
       if (nextEvidence) content += `
 ## Decisions and evidence
 
@@ -14011,6 +14037,34 @@ ${nextEvidence.decisions.map((item) => `- ${item.id} [${item.status}, ${item.aut
     await atomic(join2(history, `${nextHash}.md`), content);
     await atomic(join2(base, planId ? "plan.md" : "revision.md"), content);
     await atomic(join2(base, "revision.json"), JSON.stringify({ version, hash: nextHash, approved: false, approval: "", policy: nextPolicy, issues: nextIssues, contractVersion, evidence: nextEvidence }));
+    if (planId) {
+      const index = {
+        planId,
+        version,
+        revisionHash: nextHash,
+        source: "revision.json",
+        human: "plan.md",
+        progress: "progress.md",
+        issues: nextIssues.map((issue) => ({
+          id: issue.id,
+          title: issue.title,
+          dependsOn: issue.dependsOn,
+          testCaseIds: issue.testCases?.map((item) => item.id) ?? [],
+          requiredCheckIds: issue.requiredCheckIds
+        })),
+        analysisRefs: nextEvidence?.analysisRefs ?? [],
+        openDecisionIds: nextEvidence?.decisions.filter((item) => item.status === "open").map((item) => item.id) ?? []
+      };
+      await atomic(join2(base, "plan.ai.md"), `# Plan reference index
+
+Generated from the same revision as plan.md. This index is not approval.
+Check get_workflow_context for the current revision/approval before editing; use get_revision(detail: contract) for issue/check contracts and detail: decisions only when their evidence is needed. Reuse an already read unchanged contract. Do not load HTML or duplicate human prose as implementation input.
+
+\`\`\`json
+${JSON.stringify(index)}
+\`\`\`
+`);
+    }
     return readRevision(root, planId);
   });
 }
@@ -14176,6 +14230,17 @@ async function saveExecution(root, input, expectedHash, planId) {
         throw new Error(`Prerequisites are incomplete: ${step.id}`);
       }
       const previous = state.execution?.steps.find(({ id: id4 }) => id4 === step.id);
+      const cases = state.revision.issues?.find((issue) => issue.id === step.id)?.testCases;
+      const review = step.testReview;
+      if (cases && (JSON.stringify(previous) !== JSON.stringify(step) || state.revisionChangedSinceCheckpoint || execution.status === "complete")) {
+        if ((step.status === "complete" || execution.status === "complete") && review?.status !== "approved") throw new Error(`Test-code feedback is required before completing issue: ${step.id}`);
+        if (review?.status === "approved") {
+          if (review.revisionHash !== execution.revisionHash) throw new Error(`Test review belongs to a different plan revision: ${step.id}`);
+          const paths = new Set(review.files.map((item) => item.path));
+          if (!review.confirmation.trim() || paths.size !== review.files.length || cases.some((item) => item.files.some((path2) => !paths.has(path2)))) throw new Error(`Test review requires actual user confirmation and every planned test artifact: ${step.id}`);
+          if (review.files.some((item) => fileHashes[item.path] !== item.hash)) throw new Error(`Reviewed test artifacts changed or are missing; request feedback again: ${step.id}`);
+        }
+      }
       if (step.status === "complete" && (JSON.stringify(previous) !== JSON.stringify(step) || state.revisionChangedSinceCheckpoint)) {
         if (!step.checkIds.length || step.remaining.length) throw new Error("Completed steps require checks and no remaining work");
         for (const id4 of step.checkIds) await verify(id4);
@@ -14223,6 +14288,8 @@ function validateIssues(issues, policy) {
   if (new Set(issues.map(({ id: id4 }) => id4)).size !== issues.length) throw new Error("Duplicate issue IDs");
   validateSteps({ steps: issues });
   for (const issue of issues) {
+    if (issue.testCases && new Set(issue.testCases.map((item) => item.id)).size !== issue.testCases.length) throw new Error("Duplicate test-case IDs within issue");
+    if (issue.testCases?.some((item) => item.files.some((path) => !issue.files.includes(path)))) throw new Error("Test artifacts must belong to issue files");
     if (issue.requiredCheckIds.some((id4) => !policy?.checks.some((check) => check.id === id4))) throw new Error("Unknown issue check");
   }
   if (policy?.checks.some((check) => !issues.some((issue) => issue.requiredCheckIds.includes(check.id)))) throw new Error("Every policy check needs an issue");
@@ -27942,7 +28009,7 @@ server.registerTool("get_project_record", {
 }, async ({ projectPath: path, kind, id: id4, offset, limit }) => result(await readProjectRecord(projectPath(path), kind, id4, offset, limit)));
 server.registerTool("save_execution", {
   title: "Checkpoint a refactoring execution",
-  description: "Record stages against the approved revision. Reconcile source changes before saving. For approved issues, omit step title/files/dependsOn/requiredCheckIds to reuse the contract. Newly completed stages require current passing checks; completion requires all policy checks and reviews. A delivery record can serve both step checkIds and finalCheckId; preserve its attemptId. Never edit product files or reset user changes here.",
+  description: "Record stages against the approved revision. Reconcile source changes before saving. For approved issues, omit step title/files/dependsOn/requiredCheckIds to reuse the contract. For staged issues, save pending/approved testReview with actual user feedback and reviewed test file hashes before product implementation. Newly completed stages require confirmed unchanged test artifacts and current passing checks; completion requires all policy checks and reviews. A delivery record can serve both step checkIds and finalCheckId; preserve its attemptId. Never edit product files or reset user changes here.",
   inputSchema: { projectPath: string().optional(), planId: recordId.optional(), expectedHash: string().nullable(), execution: executionInputSchema },
   annotations: localWrite
 }, async ({ projectPath: path, planId, expectedHash, execution }) => result(await saveExecution(projectPath(path), execution, expectedHash, planId)));

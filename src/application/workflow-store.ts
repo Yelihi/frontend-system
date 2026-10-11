@@ -16,7 +16,11 @@ const checksSchema = z.array(z.object({
   status: z.enum(["passed", "failed", "not-run"]), workingDirectory: z.string().optional(), reason: z.string().optional(),
 }));
 export const issueSchema = z.strictObject({
-  id: recordId, title: z.string().min(1), contract: z.string().min(1),
+  id: recordId, title: z.string().min(1), contract: z.string().min(1).describe('One domain flow expressible as a sequence diagram: initiating event, preconditions, participants/ordered calls, state/cache changes, success/error outcomes and exclusions. Keep UI/service/storage/tests together; separate independent domain outcomes. Name adopted visualization scenario IDs when present.'),
+  testCases: z.array(z.strictObject({
+    id: recordId, given: z.string().trim().min(1), when: z.string().trim().min(1), then: z.string().trim().min(1),
+    method: z.enum(['unit', 'integration', 'e2e', 'manual']), files: z.array(localPath).min(1),
+  })).min(1).optional().describe('Reviewed test-case contract for this domain flow. files are planned test/fixture paths, or manual reproduction instructions. Requires test-code feedback before completion.'),
   files: z.array(localPath), dependsOn: z.array(recordId),
   requiredCheckIds: z.array(z.string()), acceptance: z.array(z.string().min(1)).min(1),
 });
@@ -36,6 +40,10 @@ const executionObject = z.strictObject({
     requiredCheckIds: z.array(z.string()).optional(),
     reviewIds: z.array(recordId).optional(),
     attemptId: recordId.optional(),
+    testReview: z.strictObject({
+      status: z.enum(['pending', 'approved']), revisionHash: hash, confirmation: z.string(),
+      files: z.array(z.strictObject({path: localPath, hash})).min(1),
+    }).optional().describe('Test-first checkpoint: exact reviewed test/fixture/instruction file hashes and actual user feedback. Approval concerns tests, not product completion.'),
   })).min(1),
   note: z.string(),
 });
@@ -203,7 +211,10 @@ export async function saveRevision(root: string, content: string | undefined, ex
     if (planId) {
       const marker = "\n<!-- fs-issue-contracts -->\n";
       const design = content.includes(marker) ? content.slice(0, content.indexOf(marker)) : content;
-      content = `${design.trimEnd()}${marker}\n## Issue contracts\n\nEdit these through save_revision.issues; progress is recorded in [progress.md](progress.md).\n\n\`\`\`json\n${JSON.stringify(nextIssues, null, 2)}\n\`\`\`\n`;
+      content = `${design.trimEnd()}${marker}\n## Issue contracts\n\nProgress: [progress.md](progress.md). AI references: [plan.ai.md](plan.ai.md).\n\n${nextIssues!.map(issue =>
+        `### ${issue.id}: ${issue.title}\n\n${issue.contract}\n\n- Files: ${issue.files.join(', ')}\n- Depends on: ${issue.dependsOn.join(', ') || 'none'}\n- Required checks: ${issue.requiredCheckIds.join(', ')}\n\nAcceptance:\n${issue.acceptance.map(item => `- ${item}`).join('\n')}\n` +
+        (issue.testCases ? `\nTest cases:\n${issue.testCases.map(item => `- **${item.id}** (${item.method}) — Given: ${item.given}; When: ${item.when}; Then: ${item.then}. Files: ${item.files.join(', ')}`).join('\n')}\n` : '')
+      ).join('\n')}`;
       if (nextEvidence) content += `\n## Decisions and evidence\n\nProject: ${nextEvidence.projectHash}\n\n${nextEvidence.decisions.map((item) => `- ${item.id} [${item.status}, ${item.authority}]: ${item.question}\n  Choice: ${item.selected ?? 'none'} — ${item.rationale}\n  Options: ${item.options.map((option) => `${option.id}: ${option.description} (cost: ${option.cost})`).join('; ')}\n  Evidence: ${item.evidence.map((cite) => `${cite.path}:${cite.line}`).join(', ')}; knowledge: ${item.knowledgeIds.join(', ') || 'none'}\n  Confirmation: ${item.confirmation || 'not supplied'}\n  Rules: ${item.ruleIds.join(', ')}; issues: ${item.issueIds.join(', ')}\n  Reconsider: ${item.reconsiderWhen}`).join('\n\n')}\n`;
     }
     const nextHash = revisionDigest(content, nextPolicy, nextIssues, planId, version, contractVersion, nextEvidence);
@@ -215,6 +226,15 @@ export async function saveRevision(root: string, content: string | undefined, ex
     await atomic(join(history, `${nextHash}.md`), content);
     await atomic(join(base, planId ? "plan.md" : "revision.md"), content);
     await atomic(join(base, "revision.json"), JSON.stringify({ version, hash: nextHash, approved: false, approval: "", policy: nextPolicy, issues: nextIssues, contractVersion, evidence: nextEvidence }));
+    if (planId) {
+      const index = {planId, version, revisionHash: nextHash,
+        source: 'revision.json', human: 'plan.md', progress: 'progress.md',
+        issues: nextIssues!.map(issue => ({id: issue.id, title: issue.title, dependsOn: issue.dependsOn,
+          testCaseIds: issue.testCases?.map(item => item.id) ?? [], requiredCheckIds: issue.requiredCheckIds})),
+        analysisRefs: nextEvidence?.analysisRefs ?? [],
+        openDecisionIds: nextEvidence?.decisions.filter(item => item.status === 'open').map(item => item.id) ?? []};
+      await atomic(join(base, 'plan.ai.md'), `# Plan reference index\n\nGenerated from the same revision as plan.md. This index is not approval.\nCheck get_workflow_context for the current revision/approval before editing; use get_revision(detail: contract) for issue/check contracts and detail: decisions only when their evidence is needed. Reuse an already read unchanged contract. Do not load HTML or duplicate human prose as implementation input.\n\n\`\`\`json\n${JSON.stringify(index)}\n\`\`\`\n`);
+    }
     return readRevision(root, planId);
   });
 }
@@ -379,6 +399,17 @@ export async function saveExecution(root: string, input: ExecutionInput, expecte
         throw new Error(`Prerequisites are incomplete: ${step.id}`);
       }
       const previous = state.execution?.steps.find(({ id }) => id === step.id);
+      const cases = state.revision.issues?.find(issue => issue.id === step.id)?.testCases;
+      const review = step.testReview;
+      if (cases && (JSON.stringify(previous) !== JSON.stringify(step) || state.revisionChangedSinceCheckpoint || execution.status === 'complete')) {
+        if ((step.status === 'complete' || execution.status === 'complete') && review?.status !== 'approved') throw new Error(`Test-code feedback is required before completing issue: ${step.id}`);
+        if (review?.status === 'approved') {
+          if (review.revisionHash !== execution.revisionHash) throw new Error(`Test review belongs to a different plan revision: ${step.id}`);
+          const paths = new Set(review.files.map(item => item.path));
+          if (!review.confirmation.trim() || paths.size !== review.files.length || cases.some(item => item.files.some(path => !paths.has(path)))) throw new Error(`Test review requires actual user confirmation and every planned test artifact: ${step.id}`);
+          if (review.files.some(item => fileHashes[item.path] !== item.hash)) throw new Error(`Reviewed test artifacts changed or are missing; request feedback again: ${step.id}`);
+        }
+      }
       if (step.status === "complete" && (JSON.stringify(previous) !== JSON.stringify(step) || state.revisionChangedSinceCheckpoint)) {
         if (!step.checkIds.length || step.remaining.length) throw new Error("Completed steps require checks and no remaining work");
         for (const id of step.checkIds) await verify(id);
@@ -428,6 +459,8 @@ function validateIssues(issues: Issues, policy?: VerificationPolicy) {
   if (new Set(issues.map(({ id }) => id)).size !== issues.length) throw new Error("Duplicate issue IDs");
   validateSteps({ steps: issues });
   for (const issue of issues) {
+    if (issue.testCases && new Set(issue.testCases.map(item => item.id)).size !== issue.testCases.length) throw new Error('Duplicate test-case IDs within issue');
+    if (issue.testCases?.some(item => item.files.some(path => !issue.files.includes(path)))) throw new Error('Test artifacts must belong to issue files');
     if (issue.requiredCheckIds.some((id) => !policy?.checks.some((check) => check.id === id))) throw new Error("Unknown issue check");
   }
   if (policy?.checks.some((check) => !issues.some((issue) => issue.requiredCheckIds.includes(check.id)))) throw new Error("Every policy check needs an issue");

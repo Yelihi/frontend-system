@@ -67,6 +67,55 @@ test("named plans isolate approvals, attempts and evidence while preserving lega
   } finally { await rm(root, { recursive: true, force: true }); }
 });
 
+test('staged plans share human/AI revision and require feedback on unchanged test artifacts', async () => {
+  const root = await fixture();
+  try {
+    const planned = {...issue,testCases:[{id:'empty',given:'The fixture is ready',when:'Run the contract test',then:'One equals one',method:'unit' as const,files:['case.cjs']}]};
+    const evidence = await fixtureEvidence(root,policy(),[planned]);
+    const revision = await saveRevision(root,'# Domain flow',null,policy(),'staged',[planned],evidence);
+    const base = join(root,'.frontend-system/plans/staged');
+    const human = await readFile(join(base,'plan.md'),'utf8');
+    assert.match(human,/Given: The fixture is ready/);
+    assert.match(human,/plan.ai.md/);
+    const ai = await readFile(join(base,'plan.ai.md'),'utf8');
+    const index = JSON.parse(ai.match(/```json\n(.+)\n```/)![1]!);
+    assert.equal(index.revisionHash,revision.hash);
+    assert.deepEqual(index.issues[0].testCaseIds,['empty']);
+    assert.equal(index.source,'revision.json');
+    await approveRevision(root,revision.hash!,'Fixture owner approves the plan, not unseen test code','staged');
+    const execution = {revisionHash:revision.hash!,status:'in-progress' as const,steps:[{
+      id:'first',title:issue.title,files:issue.files,dependsOn:[],requiredCheckIds:issue.requiredCheckIds,
+      status:'pending' as const,checkIds:[] as string[],remaining:[] as string[],
+    }],note:'Synthetic staged-flow fixture'};
+    const initial = await saveExecution(root,execution,null,'staged');
+    const attempt = await beginAttempt(root,'first',initial.hash,'staged');
+    const check = await runProjectChecks(await profile(root),{planId:'staged',stage:'delivery',attemptId:attempt.id});
+    const done = {...execution,status:'complete' as const,finalCheckId:check.id,
+      steps:[{...execution.steps[0]!,status:'complete' as const,attemptId:attempt.id,checkIds:[check.id]}]};
+    await assert.rejects(saveExecution(root,done,initial.hash,'staged'),/Test-code feedback/);
+    const testReview = {status:'pending' as const,revisionHash:revision.hash!,confirmation:'',files:[{path:'case.cjs',hash:digest(testCode)}]};
+    const waiting = await saveExecution(root,{...execution,steps:[{...execution.steps[0]!,testReview}]},initial.hash,'staged');
+    await assert.rejects(saveExecution(root,{...done,steps:[{...done.steps[0]!,testReview}]},waiting.hash,'staged'),/Test-code feedback/);
+    const approved = {...testReview,status:'approved' as const,confirmation:'Fixture owner: these test assertions cover the agreed case.'};
+    await assert.rejects(saveExecution(root,{...done,steps:[{...done.steps[0]!,testReview:{...approved,confirmation:' '}}]},waiting.hash,'staged'),/actual user confirmation/);
+    await assert.rejects(saveExecution(root,{...done,steps:[{...done.steps[0]!,testReview:{...approved,files:[{path:'package.json',hash:digest('wrong')} ]}}]},waiting.hash,'staged'),/every planned test artifact/);
+    await assert.rejects(saveExecution(root,{...done,steps:[{...done.steps[0]!,testReview:{...approved,revisionHash:'0'.repeat(64)}}]},waiting.hash,'staged'),/different plan revision/);
+    const completed = {...done,steps:[{...done.steps[0]!,testReview:approved}]};
+    const saved = await saveExecution(root,completed,waiting.hash,'staged');
+    assert.equal((await workflowContext(root,'staged')).verification.status,'verified');
+    await writeFile(join(root,'case.cjs'),testCode+'\n// Changed after feedback');
+    await assert.rejects(saveExecution(root,completed,saved.hash,'staged'),/Reviewed test artifacts changed/);
+    await writeFile(join(root,'case.cjs'),testCode);
+    await writeFile(join(base,'plan.ai.md'),'This derived file is not approval');
+    assert.equal((await readRevision(root,'staged')).approved,true,'AI index cannot replace or invalidate the canonical contract');
+    const updated = await saveRevision(root,'# Revised domain flow',revision.hash!,undefined,'staged');
+    assert.match(await readFile(join(base,'plan.ai.md'),'utf8'),new RegExp(updated.hash!));
+    assert.equal(updated.approved,false);
+    await assert.rejects(saveRevision(root,'Invalid cases',updated.hash!,undefined,'staged',[{...planned,testCases:[planned.testCases[0]!,planned.testCases[0]!]}]),/Duplicate test-case/);
+    await assert.rejects(saveRevision(root,'Invalid paths',updated.hash!,undefined,'staged',[{...planned,testCases:[{...planned.testCases[0]!,files:['outside.cjs']}]}]),/Test artifacts must belong/);
+  } finally {await rm(root,{recursive:true,force:true});}
+});
+
 test("plan contracts reject unknown checks, cycles and unsafe paths before writing", async () => {
   const root = await fixture();
   const outside = await mkdtemp(join(tmpdir(), "fs-outside-"));

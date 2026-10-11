@@ -52,8 +52,9 @@ whole sequence as a prose questionnaire.
 If the user says "decide for me" or asks to skip questions, use project-backed
 defaults for remaining preferences and state material assumptions. Do not invent
 required business facts or treat silence as an answer. Once enough is known,
-briefly summarize the design direction and scope, then implement without an extra
-approval gate. Carry these answers into any OpenDesign brief so the user does not
+briefly summarize the design direction and scope, then follow the agreed test-code
+feedback checkpoint before product implementation. Do not add another design approval
+question when the same scope was already confirmed. Carry these answers into any OpenDesign brief so the user does not
 have to repeat them; preserve its required confirmation and billing workflow.
 
 For knowledge-backed judgments, follow `../../references/knowledge-indexing.md` (work-time search): search observed symptoms after inspecting code, then read selected evidence and applicability conditions. Concepts and uncertain claims alone do not authorize code changes.

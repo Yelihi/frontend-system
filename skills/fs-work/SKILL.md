@@ -1,6 +1,6 @@
 ---
 name: fs-work
-description: Implement, refactor, set up or resume frontend work against agreed requirements, sequentially by plan issue, with separate branches/PRs, passing checks and developer test instructions.
+description: Implement or resume an agreed plan, including plain-language implementation requests, through test-first code feedback, domain-flow implementation and per-issue PR verification.
 ---
 
 # FS Work
@@ -25,6 +25,16 @@ or contradiction must become an open decision through fs-plan, followed by a nat
 question and a pause. Do not fill the gap with a preferred pattern or treat full access
 as a design answer. Existing explicit answers are reusable; fully specified work does
 not require a ceremonial question. Ordinary private helper choices remain discretionary.
+
+Apply this skill when the user asks to implement the agreed plan even without saying
+fs-work. Resolve the current saved plan and resume its unfinished phase. Follow
+[staged planning and test-first work](../../references/workflows/staged-planning.md):
+write/reuse all approved cases for the current domain-flow issue → show actual test
+code/results → native feedback and pause → record approved testReview → product
+implementation → passing checks and PR. Plan approval or an implementation request
+alone does not approve test code the user has not yet seen. Persist the test checkpoint
+through save_execution; never claim feedback from a test runner. Existing tests can
+be reused, but still show their relevant coverage at this checkpoint.
 
 Implement the approved contract, preserving user decisions and evidence. The current
 host writes code; MCP manages versions, attempts, checks and completion. No nested model.
@@ -76,10 +86,16 @@ read only the needed schemas, not the full schema file.
    and no stage for explicit scripts. Use the selected planId for baseline and later
    checks; another plan's check ID cannot be linked. Never combine stage and capabilities. Respect dependencies;
    finish the current issue through its PR before beginning the next eligible issue;
-   do not implement future steps early and reconstruct their records afterward. A small
-   cohesive change should already be one issue, even across layers. Keep the existing
-   provider and do not initiate paid generation implicitly.
-3. Implement within file/API/domain/state/type/security constraints. Preserve reference
+   do not implement future steps early and reconstruct their records afterward.
+   Each implementation issue must cover one domain flow: its initiating event through
+   ordered calls, state/cache changes and success/error outcomes, across all relevant
+   layers/pages. Implement and verify those paths together; do not split UI, storage,
+   error handling or tests into separate PRs for the same flow. If the approved plan
+   instead splits by layer or bundles independent domain flows, resolve the boundary
+   through fs-plan before starting; do not silently rewrite its approved issues.
+   Keep the existing provider and do not initiate paid generation implicitly.
+3. First complete the test-code feedback checkpoint above. Only then implement
+   within file/API/domain/state/type/security constraints. Preserve reference
    ownership, error paths and actual caller behavior. User-owned tradeoffs and explicit
    prohibitions remain fixed; discretionary internal helpers remain discretionary.
    Before rewriting behavior that must remain unchanged, reuse adequate regressions or
