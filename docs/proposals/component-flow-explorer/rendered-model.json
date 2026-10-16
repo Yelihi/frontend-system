@@ -1,0 +1,1320 @@
+{
+  "schemaVersion": "discussion-1",
+  "title": "FS · 화면에서 읽는 설계",
+  "basis": "proposed",
+  "provenance": "Synthetic discussion fixture. Not an analyzed project or executed runtime trace.",
+  "theme": {
+    "surface": "#f7f8fa",
+    "accent": "#177964",
+    "ink": "#233c36"
+  },
+  "nodes": [
+    {
+      "id": "search",
+      "kind": "page",
+      "name": "SearchPage",
+      "parent": null,
+      "props": [],
+      "state": [
+        "route.query: string",
+        "route.page: number"
+      ],
+      "events": [],
+      "lifecycle": [],
+      "signature": "",
+      "intent": "검색 조건은 URL에, 서버 결과는 query cache에 소유권을 둔다.",
+      "basis": "proposed",
+      "evidence": [],
+      "framework": {
+        "name": "React / Next.js (proposed)",
+        "execution": "Server route + client boundary",
+        "reason": "시안의 설계 가정. 실제 directive/import 근거 없음.",
+        "hooks": []
+      }
+    },
+    {
+      "id": "search-box",
+      "kind": "component",
+      "name": "SearchBox",
+      "parent": "search",
+      "props": [
+        "value: string",
+        "onQueryChange(query: string): void"
+      ],
+      "state": [
+        "draftQuery: string",
+        "isComposing: boolean"
+      ],
+      "events": [
+        "onInput → handleQueryChange(query)",
+        "onCompositionEnd → commitQuery(query)"
+      ],
+      "lifecycle": [
+        "unmount → cancelDebounce()"
+      ],
+      "signature": "interface SearchBoxProps {\n  value: string;\n  onQueryChange(query: string): void;\n}\nfunction handleQueryChange(query: string): void;\nfunction handleCompositionEnd(value: string): void;",
+      "intent": "입력과 확정 검색을 구분한다. IME 조합 중에는 요청하지 않는다.",
+      "basis": "proposed",
+      "evidence": [],
+      "framework": {
+        "name": "React / Next.js (proposed)",
+        "execution": "Client Component",
+        "reason": "시안의 설계 가정. 실제 directive/import 근거 없음.",
+        "hooks": [
+          "useState<string>(value) → draftQuery",
+          "useState<boolean>(false) → isComposing"
+        ]
+      }
+    },
+    {
+      "id": "suggestions",
+      "kind": "component",
+      "name": "AutocompleteList",
+      "parent": "search",
+      "props": [
+        "suggestions: Suggestion[]",
+        "onSelect(id: string): void"
+      ],
+      "state": [
+        "activeIndex: number"
+      ],
+      "events": [
+        "onKeyDown → selectSuggestion(id)"
+      ],
+      "lifecycle": [
+        "query 변경 → 이전 요청 취소"
+      ],
+      "signature": "type Suggestion = { id: string; label: string };",
+      "intent": "취소뿐 아니라 requestId로 늦은 응답을 판별한다.",
+      "basis": "proposed",
+      "evidence": [],
+      "framework": {
+        "name": "React / Next.js (proposed)",
+        "execution": "Client Component",
+        "reason": "시안의 설계 가정. 실제 directive/import 근거 없음.",
+        "hooks": []
+      }
+    },
+    {
+      "id": "results",
+      "kind": "component",
+      "name": "SearchResults",
+      "parent": "search",
+      "props": [
+        "items: Resource[]",
+        "selectedIds: ReadonlySet<string>",
+        "onAdd(id: string): void"
+      ],
+      "state": [],
+      "events": [
+        "onAdd(id) → addToCollection(id)"
+      ],
+      "lifecycle": [],
+      "signature": "interface SearchResultsProps {\n  items: Resource[];\n  selectedIds: ReadonlySet<string>;\n  onAdd(id: string): void;\n}",
+      "intent": "화면에 표시된 순번을 데이터의 식별자로 사용하지 않는다.",
+      "basis": "proposed",
+      "evidence": [],
+      "framework": {
+        "name": "React / Next.js (proposed)",
+        "execution": "Client Component",
+        "reason": "시안의 설계 가정. 실제 directive/import 근거 없음.",
+        "hooks": []
+      }
+    },
+    {
+      "id": "resource-card",
+      "kind": "component",
+      "name": "ResourceCard",
+      "parent": "results",
+      "props": [
+        "resource: Resource",
+        "onAdd(id: string): void"
+      ],
+      "state": [],
+      "events": [
+        "onClick → onAdd(resource.id)"
+      ],
+      "lifecycle": [],
+      "signature": "interface ResourceCardProps { resource: Resource; onAdd(id: string): void }",
+      "intent": "동일한 정의를 여러 인스턴스가 사용한다. key는 resource.id.",
+      "basis": "proposed",
+      "evidence": [],
+      "framework": {
+        "name": "React / Next.js (proposed)",
+        "execution": "Client Component",
+        "reason": "시안의 설계 가정. 실제 directive/import 근거 없음.",
+        "hooks": []
+      }
+    },
+    {
+      "id": "pagination",
+      "kind": "component",
+      "name": "Pagination",
+      "parent": "search",
+      "props": [
+        "page: number",
+        "totalPages: number"
+      ],
+      "state": [],
+      "events": [
+        "onPageChange → navigateSearch(query, page)"
+      ],
+      "lifecycle": [],
+      "signature": "",
+      "intent": "검색어 변경 시 page=1로 되돌린다.",
+      "basis": "proposed",
+      "evidence": [],
+      "framework": {
+        "name": "React / Next.js (proposed)",
+        "execution": "Client Component",
+        "reason": "시안의 설계 가정. 실제 directive/import 근거 없음.",
+        "hooks": []
+      }
+    },
+    {
+      "id": "collection-preview",
+      "kind": "component",
+      "name": "CollectionPreview",
+      "parent": "search",
+      "props": [
+        "collectionId: string"
+      ],
+      "state": [],
+      "events": [],
+      "lifecycle": [
+        "subscribe → collection cache",
+        "unmount → unsubscribe"
+      ],
+      "signature": "interface CollectionPreviewProps {\n  collectionId: string;\n}\nfunction CollectionPreview(props: CollectionPreviewProps): ReactNode;",
+      "intent": "다른 페이지에서 확정한 순서를 동일 cache에서 읽는다.",
+      "basis": "proposed",
+      "evidence": [],
+      "framework": {
+        "name": "React / Next.js (proposed)",
+        "execution": "Client Component",
+        "reason": "시안의 설계 가정. 실제 directive/import 근거 없음.",
+        "hooks": [
+          "useCollectionQuery(collectionId) → orderedIds"
+        ]
+      }
+    },
+    {
+      "id": "collection",
+      "kind": "page",
+      "name": "CollectionPage",
+      "parent": null,
+      "props": [],
+      "state": [
+        "collectionId: string"
+      ],
+      "events": [],
+      "lifecycle": [],
+      "signature": "",
+      "intent": "순서 변경은 안정된 ID 배열을 다룬다. 엔티티 ID 자체는 바꾸지 않는다.",
+      "basis": "proposed",
+      "evidence": [],
+      "framework": {
+        "name": "React / Next.js (proposed)",
+        "execution": "Server route + client boundary",
+        "reason": "시안의 설계 가정. 실제 directive/import 근거 없음.",
+        "hooks": []
+      }
+    },
+    {
+      "id": "sortable-list",
+      "kind": "component",
+      "name": "SortableResourceList",
+      "parent": "collection",
+      "props": [
+        "orderedIds: readonly ResourceId[]",
+        "disabled: boolean",
+        "onReorder(activeId: ResourceId, overId: ResourceId): void"
+      ],
+      "state": [
+        "activeId: ResourceId | null"
+      ],
+      "events": [
+        "onDragEnd → handleReorder(activeId, overId)",
+        "onMoveUp → handleReorder(id, previousId)"
+      ],
+      "lifecycle": [
+        "orderedIds props 변경 → 표시 순서 갱신"
+      ],
+      "signature": "interface SortableResourceListProps {\n  orderedIds: readonly ResourceId[];\n  disabled: boolean;\n  onReorder(activeId: ResourceId, overId: ResourceId): void;\n}\nfunction handleReorder(activeId: ResourceId, overId: ResourceId): void;",
+      "intent": "마우스 드래그와 키보드 이동에 같은 도메인 연산을 적용한다.",
+      "basis": "proposed",
+      "evidence": [],
+      "framework": {
+        "name": "React / Next.js (proposed)",
+        "execution": "Client Component",
+        "reason": "시안의 설계 가정. 실제 directive/import 근거 없음.",
+        "hooks": [
+          "useState<ResourceId | null>(null) → activeId"
+        ]
+      }
+    },
+    {
+      "id": "sortable-item",
+      "kind": "component",
+      "name": "SortableResourceItem",
+      "parent": "sortable-list",
+      "props": [
+        "resource: Resource",
+        "position: number",
+        "onMove(id: string, targetId: string): void"
+      ],
+      "state": [],
+      "events": [
+        "onDragStart → setActiveId(id)"
+      ],
+      "lifecycle": [],
+      "signature": "type ResourceId = string;",
+      "intent": "position은 표시 값이다. ResourceId와 분리한다.",
+      "basis": "proposed",
+      "evidence": [],
+      "framework": {
+        "name": "React / Next.js (proposed)",
+        "execution": "Client Component",
+        "reason": "시안의 설계 가정. 실제 directive/import 근거 없음.",
+        "hooks": []
+      }
+    },
+    {
+      "id": "save-status",
+      "kind": "component",
+      "name": "SaveStatus",
+      "parent": "collection",
+      "props": [
+        "status: 'idle' | 'saving' | 'saved' | 'error'"
+      ],
+      "state": [],
+      "events": [
+        "onRetry → retryReorder()"
+      ],
+      "lifecycle": [],
+      "signature": "",
+      "intent": "실패하면 이전 순서를 복구하고 오류를 알린다.",
+      "basis": "proposed",
+      "evidence": [],
+      "framework": {
+        "name": "React / Next.js (proposed)",
+        "execution": "Client Component",
+        "reason": "시안의 설계 가정. 실제 directive/import 근거 없음.",
+        "hooks": []
+      }
+    },
+    {
+      "id": "search-controller",
+      "kind": "module",
+      "name": "useResourceSearch",
+      "parent": null,
+      "props": [],
+      "state": [
+        "requestId: number",
+        "controller: AbortController"
+      ],
+      "events": [
+        "search(query, page)",
+        "acceptResponse(requestId)"
+      ],
+      "lifecycle": [
+        "query 변경 → abort(previous)",
+        "dispose → abort(current)"
+      ],
+      "signature": "search(query: string, page: number): Promise<Resource[]>",
+      "intent": "실제 네트워크 호출이 아닌 제안된 책임 경계를 보여준다.",
+      "basis": "proposed",
+      "evidence": [],
+      "environment": "app"
+    },
+    {
+      "id": "search-cache",
+      "kind": "cache",
+      "name": "resourceQueryCache",
+      "parent": null,
+      "props": [],
+      "state": [
+        "key: ['resources', query, page]",
+        "data: Resource[]"
+      ],
+      "events": [
+        "setQueryData(key, resources)"
+      ],
+      "lifecycle": [],
+      "signature": "",
+      "intent": "검색 조건별 결과를 분리한다.",
+      "basis": "proposed",
+      "evidence": [],
+      "environment": "app"
+    },
+    {
+      "id": "order-store",
+      "kind": "store",
+      "name": "reorderSession",
+      "parent": null,
+      "props": [],
+      "state": [
+        "previousIds: readonly ResourceId[]",
+        "pendingIds: readonly ResourceId[]",
+        "mutationId: string"
+      ],
+      "events": [
+        "beginReorder(ids)",
+        "rollback(mutationId)"
+      ],
+      "lifecycle": [],
+      "signature": "type ReorderSession = { previousIds: readonly string[]; pendingIds: readonly string[]; mutationId: string }",
+      "intent": "시연은 저장 중 추가 이동을 잠근다. 병렬 재정렬 병합은 다루지 않는다.",
+      "basis": "proposed",
+      "evidence": [],
+      "environment": "app"
+    },
+    {
+      "id": "collection-cache",
+      "kind": "cache",
+      "name": "collectionQueryCache",
+      "parent": null,
+      "props": [],
+      "state": [
+        "key: ['collection', 'reading']",
+        "orderedIds: readonly ResourceId[]",
+        "version: number"
+      ],
+      "events": [
+        "setOrder(ids)",
+        "restore(previousIds)"
+      ],
+      "lifecycle": [],
+      "signature": "",
+      "intent": "두 페이지가 읽는 공통 순서. Entity ID는 변경하지 않는다.",
+      "basis": "proposed",
+      "evidence": [],
+      "environment": "app"
+    },
+    {
+      "id": "collection-api",
+      "kind": "service",
+      "name": "collectionApi",
+      "parent": null,
+      "props": [],
+      "state": [],
+      "events": [
+        "reorder({ orderedIds, expectedVersion, mutationId })"
+      ],
+      "lifecycle": [],
+      "signature": "reorder(input: ReorderInput): Promise<{ version: number }>",
+      "intent": "서버는 권한·중복 ID·누락 ID·version을 검증하고 원자적으로 저장한다.",
+      "basis": "proposed",
+      "evidence": [],
+      "environment": "backend"
+    },
+    {
+      "id": "database",
+      "kind": "external",
+      "name": "collections database",
+      "parent": null,
+      "props": [],
+      "state": [
+        "orderedIds: ResourceId[]",
+        "version: number"
+      ],
+      "events": [
+        "compareVersionAndUpdate()"
+      ],
+      "lifecycle": [],
+      "signature": "",
+      "intent": "클라이언트는 즉시 보이는 순서를 계산하고, 영속 순서의 최종 확정은 서버가 담당한다.",
+      "basis": "proposed",
+      "evidence": [],
+      "environment": "backend"
+    },
+    {
+      "id": "resource-api",
+      "kind": "service",
+      "name": "resourceApi",
+      "parent": null,
+      "props": [],
+      "state": [],
+      "events": [
+        "search(query, signal)"
+      ],
+      "lifecycle": [],
+      "signature": "search(query: string, signal: AbortSignal): Promise<Resource[]>",
+      "intent": "검색 결과를 제공하는 API. 이 시안에서는 요청과 응답을 실행하지 않는다.",
+      "basis": "proposed",
+      "evidence": [],
+      "environment": "backend"
+    }
+  ],
+  "instances": [
+    {
+      "id": "search-box-1",
+      "node": "search-box",
+      "page": "search",
+      "parentInstance": null,
+      "entityKey": null
+    },
+    {
+      "id": "suggestions-1",
+      "node": "suggestions",
+      "page": "search",
+      "parentInstance": null,
+      "entityKey": null
+    },
+    {
+      "id": "results-1",
+      "node": "results",
+      "page": "search",
+      "parentInstance": null,
+      "entityKey": null
+    },
+    {
+      "id": "card-a",
+      "node": "resource-card",
+      "page": "search",
+      "parentInstance": "results-1",
+      "entityKey": "a"
+    },
+    {
+      "id": "card-b",
+      "node": "resource-card",
+      "page": "search",
+      "parentInstance": "results-1",
+      "entityKey": "b"
+    },
+    {
+      "id": "card-c",
+      "node": "resource-card",
+      "page": "search",
+      "parentInstance": "results-1",
+      "entityKey": "c"
+    },
+    {
+      "id": "pagination-1",
+      "node": "pagination",
+      "page": "search",
+      "parentInstance": null,
+      "entityKey": null
+    },
+    {
+      "id": "preview-1",
+      "node": "collection-preview",
+      "page": "search",
+      "parentInstance": null,
+      "entityKey": null
+    },
+    {
+      "id": "sortable-list-1",
+      "node": "sortable-list",
+      "page": "collection",
+      "parentInstance": null,
+      "entityKey": null
+    },
+    {
+      "id": "row-a",
+      "node": "sortable-item",
+      "page": "collection",
+      "parentInstance": "sortable-list-1",
+      "entityKey": "a"
+    },
+    {
+      "id": "row-b",
+      "node": "sortable-item",
+      "page": "collection",
+      "parentInstance": "sortable-list-1",
+      "entityKey": "b"
+    },
+    {
+      "id": "row-c",
+      "node": "sortable-item",
+      "page": "collection",
+      "parentInstance": "sortable-list-1",
+      "entityKey": "c"
+    },
+    {
+      "id": "save-status-1",
+      "node": "save-status",
+      "page": "collection",
+      "parentInstance": null,
+      "entityKey": null
+    }
+  ],
+  "pages": [
+    {
+      "id": "search",
+      "route": "/resources",
+      "title": "검색 페이지",
+      "scenes": [
+        "ready",
+        "suggesting",
+        "reordered"
+      ],
+      "domain": "자료 탐색"
+    },
+    {
+      "id": "collection",
+      "route": "/collections/reading",
+      "title": "컬렉션 페이지",
+      "scenes": [
+        "idle",
+        "optimistic",
+        "saved",
+        "error"
+      ],
+      "domain": "컬렉션"
+    }
+  ],
+  "resources": [
+    {
+      "id": "a",
+      "title": "상태의 소유권",
+      "category": "ARCHITECTURE",
+      "color": "#e6eee9"
+    },
+    {
+      "id": "b",
+      "title": "비동기 경계 설계",
+      "category": "CONCURRENCY",
+      "color": "#efe9f7"
+    },
+    {
+      "id": "c",
+      "title": "참조와 불변성",
+      "category": "JAVASCRIPT",
+      "color": "#f3ebdd"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "reorder-success",
+      "title": "순서 변경 · 저장 성공",
+      "issue": "reorder-collection",
+      "steps": [
+        {
+          "id": "drag",
+          "fromNode": "sortable-item",
+          "toNode": "sortable-list",
+          "label": "handleReorder(c, a)",
+          "effect": "C를 첫 위치로 옮긴다. ID c는 그대로 유지한다.",
+          "page": "collection",
+          "scene": "idle",
+          "before": [
+            "a",
+            "b",
+            "c"
+          ],
+          "after": [
+            "a",
+            "b",
+            "c"
+          ],
+          "guard": null,
+          "fromInstance": "row-c",
+          "toInstance": "sortable-list-1"
+        },
+        {
+          "id": "snapshot",
+          "fromNode": "sortable-list",
+          "toNode": "order-store",
+          "label": "beginReorder(nextIds)",
+          "effect": "저장 실패 복구용 이전 순서와 mutationId를 보관한다.",
+          "page": "collection",
+          "scene": "idle",
+          "before": {
+            "previousIds": null
+          },
+          "after": {
+            "previousIds": [
+              "a",
+              "b",
+              "c"
+            ],
+            "pendingIds": [
+              "c",
+              "a",
+              "b"
+            ],
+            "mutationId": "m1"
+          },
+          "guard": null
+        },
+        {
+          "id": "optimistic",
+          "fromNode": "order-store",
+          "toNode": "collection-cache",
+          "label": "setOrder([c, a, b])",
+          "effect": "클라이언트 cache를 먼저 갱신한다. 저장 중 추가 이동은 잠근다.",
+          "page": "collection",
+          "scene": "optimistic",
+          "before": [
+            "a",
+            "b",
+            "c"
+          ],
+          "after": [
+            "c",
+            "a",
+            "b"
+          ],
+          "guard": null
+        },
+        {
+          "id": "preview",
+          "fromNode": "collection-cache",
+          "toNode": "collection-preview",
+          "label": "notifySubscribers()",
+          "effect": "동일 cache 변경이 컬렉션 목록과 검색 페이지 미리보기에 전파된다. 두 소비자 사이의 렌더 순서는 정의하지 않는다.",
+          "page": "search",
+          "scene": "reordered",
+          "before": [
+            "a",
+            "b",
+            "c"
+          ],
+          "after": [
+            "c",
+            "a",
+            "b"
+          ],
+          "guard": null,
+          "effects": [
+            {
+              "fromNode": "collection-cache",
+              "toNode": "sortable-list",
+              "toInstance": "sortable-list-1",
+              "page": "collection",
+              "scene": "optimistic"
+            },
+            {
+              "fromNode": "collection-cache",
+              "toNode": "collection-preview",
+              "toInstance": "preview-1",
+              "page": "search",
+              "scene": "reordered"
+            }
+          ],
+          "ordering": "unordered-consumers"
+        },
+        {
+          "id": "persist",
+          "fromNode": "order-store",
+          "toNode": "collection-api",
+          "label": "reorder(ids, version=7)",
+          "effect": "화면 순서는 클라이언트가 계산하지만 영속화는 서버가 검증한다.",
+          "page": "collection",
+          "scene": "optimistic",
+          "before": {
+            "expectedVersion": 7
+          },
+          "after": {
+            "request": "m1",
+            "orderedIds": [
+              "c",
+              "a",
+              "b"
+            ]
+          },
+          "guard": null
+        },
+        {
+          "id": "commit",
+          "fromNode": "collection-api",
+          "toNode": "database",
+          "label": "compareVersionAndUpdate()",
+          "effect": "권한·ID 집합·version 일치 시 원자적으로 저장한다.",
+          "page": "collection",
+          "scene": "optimistic",
+          "before": {
+            "version": 7,
+            "orderedIds": [
+              "a",
+              "b",
+              "c"
+            ]
+          },
+          "after": {
+            "version": 8,
+            "orderedIds": [
+              "c",
+              "a",
+              "b"
+            ]
+          },
+          "guard": "expectedVersion === persistedVersion"
+        },
+        {
+          "id": "ack",
+          "fromNode": "collection-api",
+          "toNode": "collection-cache",
+          "label": "acceptAck(m1, version=8)",
+          "effect": "성공 응답으로 version을 갱신한다.",
+          "page": "collection",
+          "scene": "saved",
+          "before": {
+            "version": 7
+          },
+          "after": {
+            "version": 8
+          },
+          "guard": null
+        },
+        {
+          "id": "saved",
+          "fromNode": "collection-cache",
+          "toNode": "save-status",
+          "label": "setStatus(saved)",
+          "effect": "저장 완료를 표시하고 이동 잠금을 해제한다.",
+          "page": "collection",
+          "scene": "saved",
+          "before": "saving",
+          "after": "saved",
+          "guard": null
+        }
+      ],
+      "basis": "proposed",
+      "category": "event",
+      "pages": [
+        "collection",
+        "search"
+      ]
+    },
+    {
+      "id": "reorder-failure",
+      "title": "순서 변경 · 실패와 복구",
+      "issue": "reorder-collection",
+      "steps": [
+        {
+          "id": "drag",
+          "fromNode": "sortable-item",
+          "toNode": "sortable-list",
+          "label": "handleReorder(c, a)",
+          "effect": "C를 첫 위치로 옮긴다. ID c는 그대로 유지한다.",
+          "page": "collection",
+          "scene": "idle",
+          "before": [
+            "a",
+            "b",
+            "c"
+          ],
+          "after": [
+            "a",
+            "b",
+            "c"
+          ],
+          "guard": null,
+          "fromInstance": "row-c",
+          "toInstance": "sortable-list-1"
+        },
+        {
+          "id": "snapshot",
+          "fromNode": "sortable-list",
+          "toNode": "order-store",
+          "label": "beginReorder(nextIds)",
+          "effect": "저장 실패 복구용 이전 순서와 mutationId를 보관한다.",
+          "page": "collection",
+          "scene": "idle",
+          "before": {
+            "previousIds": null
+          },
+          "after": {
+            "previousIds": [
+              "a",
+              "b",
+              "c"
+            ],
+            "pendingIds": [
+              "c",
+              "a",
+              "b"
+            ],
+            "mutationId": "m1"
+          },
+          "guard": null
+        },
+        {
+          "id": "optimistic",
+          "fromNode": "order-store",
+          "toNode": "collection-cache",
+          "label": "setOrder([c, a, b])",
+          "effect": "클라이언트 cache를 먼저 갱신한다. 저장 중 추가 이동은 잠근다.",
+          "page": "collection",
+          "scene": "optimistic",
+          "before": [
+            "a",
+            "b",
+            "c"
+          ],
+          "after": [
+            "c",
+            "a",
+            "b"
+          ],
+          "guard": null
+        },
+        {
+          "id": "preview",
+          "fromNode": "collection-cache",
+          "toNode": "collection-preview",
+          "label": "notifySubscribers()",
+          "effect": "동일 cache 변경이 컬렉션 목록과 검색 페이지 미리보기에 전파된다. 두 소비자 사이의 렌더 순서는 정의하지 않는다.",
+          "page": "search",
+          "scene": "reordered",
+          "before": [
+            "a",
+            "b",
+            "c"
+          ],
+          "after": [
+            "c",
+            "a",
+            "b"
+          ],
+          "guard": null,
+          "effects": [
+            {
+              "fromNode": "collection-cache",
+              "toNode": "sortable-list",
+              "toInstance": "sortable-list-1",
+              "page": "collection",
+              "scene": "optimistic"
+            },
+            {
+              "fromNode": "collection-cache",
+              "toNode": "collection-preview",
+              "toInstance": "preview-1",
+              "page": "search",
+              "scene": "reordered"
+            }
+          ],
+          "ordering": "unordered-consumers"
+        },
+        {
+          "id": "persist",
+          "fromNode": "order-store",
+          "toNode": "collection-api",
+          "label": "reorder(ids, version=7)",
+          "effect": "화면 순서는 클라이언트가 계산하지만 영속화는 서버가 검증한다.",
+          "page": "collection",
+          "scene": "optimistic",
+          "before": {
+            "expectedVersion": 7
+          },
+          "after": {
+            "request": "m1",
+            "orderedIds": [
+              "c",
+              "a",
+              "b"
+            ]
+          },
+          "guard": null
+        },
+        {
+          "id": "failure",
+          "fromNode": "collection-api",
+          "toNode": "order-store",
+          "label": "reject(m1, networkError)",
+          "effect": "이 시나리오는 서버 저장 전 네트워크 실패를 가정한다.",
+          "page": "collection",
+          "scene": "optimistic",
+          "before": "saving",
+          "after": "error",
+          "guard": null
+        },
+        {
+          "id": "rollback",
+          "fromNode": "order-store",
+          "toNode": "collection-cache",
+          "label": "restore(previousIds)",
+          "effect": "현재 mutationId가 m1일 때만 스냅샷으로 복구한다.",
+          "page": "collection",
+          "scene": "error",
+          "before": [
+            "c",
+            "a",
+            "b"
+          ],
+          "after": [
+            "a",
+            "b",
+            "c"
+          ],
+          "guard": "m1 === currentMutationId"
+        },
+        {
+          "id": "restore-view",
+          "fromNode": "collection-cache",
+          "toNode": "collection-preview",
+          "label": "notifySubscribers()",
+          "effect": "동일 cache 변경이 컬렉션 목록과 검색 페이지 미리보기에 전파된다. 두 소비자 사이의 렌더 순서는 정의하지 않는다.",
+          "page": "search",
+          "scene": "ready",
+          "before": [
+            "c",
+            "a",
+            "b"
+          ],
+          "after": [
+            "a",
+            "b",
+            "c"
+          ],
+          "guard": null,
+          "effects": [
+            {
+              "fromNode": "collection-cache",
+              "toNode": "sortable-list",
+              "toInstance": "sortable-list-1",
+              "page": "collection",
+              "scene": "error"
+            },
+            {
+              "fromNode": "collection-cache",
+              "toNode": "collection-preview",
+              "toInstance": "preview-1",
+              "page": "search",
+              "scene": "ready"
+            }
+          ],
+          "ordering": "unordered-consumers"
+        },
+        {
+          "id": "show-error",
+          "fromNode": "order-store",
+          "toNode": "save-status",
+          "label": "setStatus(error)",
+          "effect": "복구 사실과 재시도 가능 상태를 표시한다.",
+          "page": "collection",
+          "scene": "error",
+          "before": "saving",
+          "after": "error",
+          "guard": null
+        }
+      ],
+      "basis": "proposed",
+      "category": "event",
+      "pages": [
+        "collection",
+        "search"
+      ]
+    },
+    {
+      "id": "search-race",
+      "title": "자동완성 · 늦은 응답 무시",
+      "issue": "search-resources",
+      "steps": [
+        {
+          "id": "input",
+          "fromNode": "search-box",
+          "toNode": "search-controller",
+          "label": "handleQueryChange(\"state\")",
+          "effect": "IME 조합이 끝난 입력을 확정하고 debounce를 예약한다.",
+          "page": "search",
+          "scene": "suggesting",
+          "before": {
+            "draftQuery": "sta"
+          },
+          "after": {
+            "draftQuery": "state"
+          },
+          "guard": null
+        },
+        {
+          "id": "request",
+          "fromNode": "search-controller",
+          "toNode": "resource-api",
+          "label": "search(query, requestId=12)",
+          "effect": "이전 요청을 취소하고 새 요청 번호를 부여한다.",
+          "page": "search",
+          "scene": "suggesting",
+          "before": {
+            "requestId": 11
+          },
+          "after": {
+            "requestId": 12
+          },
+          "guard": null
+        },
+        {
+          "id": "stale",
+          "fromNode": "resource-api",
+          "toNode": "search-controller",
+          "label": "ignoreResponse(requestId=11)",
+          "effect": "늦게 도착한 이전 응답은 화면과 cache의 현재 결과를 덮어쓰지 않는다.",
+          "page": "search",
+          "scene": "suggesting",
+          "before": {
+            "currentRequest": 12
+          },
+          "after": {
+            "currentRequest": 12
+          },
+          "guard": "response.requestId !== currentRequestId"
+        },
+        {
+          "id": "results",
+          "fromNode": "search-controller",
+          "toNode": "search-cache",
+          "label": "acceptResponse(requestId=12)",
+          "effect": "현재 요청의 결과만 검색 조건별 cache에 기록한다.",
+          "page": "search",
+          "scene": "ready",
+          "before": {
+            "items": []
+          },
+          "after": {
+            "items": [
+              "a",
+              "b",
+              "c"
+            ]
+          },
+          "guard": null
+        },
+        {
+          "id": "render",
+          "fromNode": "search-cache",
+          "toNode": "results",
+          "label": "renderResources(items)",
+          "effect": "ResourceCard 인스턴스에 props를 전달한다.",
+          "page": "search",
+          "scene": "ready",
+          "before": {
+            "status": "loading"
+          },
+          "after": {
+            "status": "success"
+          },
+          "guard": null
+        }
+      ],
+      "basis": "proposed",
+      "category": "event",
+      "pages": [
+        "search"
+      ]
+    },
+    {
+      "id": "search-subscribe",
+      "title": "검색 페이지 · CollectionPreview 구독 시작",
+      "category": "lifecycle",
+      "basis": "proposed",
+      "steps": [
+        {
+          "id": "subscribe",
+          "fromNode": "collection-preview",
+          "toNode": "collection-cache",
+          "page": "search",
+          "scene": "ready",
+          "label": "subscribeCollection(\"reading\")",
+          "effect": "CollectionPreview가 공유 컬렉션 캐시의 변경을 구독한다.",
+          "changes": [
+            {
+              "ownerNode": "collection-preview",
+              "owner": "CollectionPreview",
+              "field": "subscription",
+              "before": "없음",
+              "after": "활성"
+            }
+          ],
+          "measurement": "설계 가정"
+        }
+      ],
+      "pages": [
+        "search"
+      ]
+    },
+    {
+      "id": "search-cleanup",
+      "title": "검색 페이지 · unmount 정리",
+      "category": "lifecycle",
+      "basis": "proposed",
+      "steps": [
+        {
+          "id": "debounce",
+          "fromNode": "search",
+          "toNode": "search-box",
+          "page": "search",
+          "scene": "ready",
+          "label": "cancelDebounce()",
+          "effect": "예약된 검색 입력 작업을 취소한다.",
+          "changes": [
+            {
+              "ownerNode": "search-box",
+              "owner": "SearchBox",
+              "field": "debounceTimer",
+              "before": "예약됨",
+              "after": null
+            }
+          ],
+          "measurement": "설계 가정"
+        },
+        {
+          "id": "abort",
+          "fromNode": "search",
+          "toNode": "search-controller",
+          "page": "search",
+          "scene": "ready",
+          "label": "dispose() → abort(current)",
+          "effect": "진행 중인 검색 요청을 취소한다.",
+          "changes": [
+            {
+              "ownerNode": "search-controller",
+              "owner": "useResourceSearch",
+              "field": "controller.signal.aborted",
+              "before": false,
+              "after": true
+            }
+          ],
+          "measurement": "설계 가정"
+        },
+        {
+          "id": "unsubscribe",
+          "fromNode": "collection-preview",
+          "toNode": "collection-cache",
+          "page": "search",
+          "scene": "ready",
+          "label": "unsubscribeCollection()",
+          "effect": "구독을 해제한다. 공유 캐시 데이터는 삭제하지 않는다.",
+          "changes": [
+            {
+              "ownerNode": "collection-preview",
+              "owner": "CollectionPreview",
+              "field": "subscription",
+              "before": "활성",
+              "after": "해제"
+            }
+          ],
+          "measurement": "설계 가정"
+        }
+      ],
+      "pages": [
+        "search"
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "ordering",
+      "status": "proposed",
+      "choice": "Stable IDs + orderedIds[] + optimistic cache + server version check",
+      "notApproved": true
+    }
+  ],
+  "limitations": [
+    "의도적으로 작성한 설명용 fixture이며 실제 프로젝트의 분석 결과가 아닙니다.",
+    "하이라이트와 값은 미리 작성한 시나리오입니다. 실제 네트워크·DB·드래그 실행 추적이 아닙니다.",
+    "동시 편집 충돌·전송 후 응답 유실·오프라인 재시도는 별도의 설계와 시나리오가 필요합니다."
+  ],
+  "browserApis": [
+    {
+      "name": "AbortController",
+      "ownerNode": "search-controller",
+      "detail": "controller · abort(previous/current)"
+    }
+  ],
+  "navigation": [
+    {
+      "id": "open-collection",
+      "to": "collection",
+      "label": "컬렉션 전체 열기",
+      "condition": "Reading collection의 전체 열기 선택",
+      "basis": "proposed",
+      "from": "search"
+    },
+    {
+      "id": "return-search",
+      "to": "search",
+      "label": "라이브러리로 이동",
+      "condition": "상단 라이브러리 선택",
+      "basis": "proposed",
+      "from": "collection"
+    }
+  ],
+  "board": {
+    "width": 2020,
+    "height": 940,
+    "shell": {
+      "x": 16,
+      "y": 16,
+      "width": 1636,
+      "height": 900
+    },
+    "content": {
+      "x": 18,
+      "y": 110,
+      "width": 1314,
+      "height": 804
+    },
+    "appLane": {
+      "x": 48,
+      "y": 710,
+      "width": 1260,
+      "height": 178
+    },
+    "sidebar": {
+      "x": 1332,
+      "y": 110,
+      "width": 318,
+      "height": 804,
+      "browserY": 148
+    },
+    "remote": {
+      "x": 1700,
+      "y": 148,
+      "width": 288,
+      "height": 744
+    },
+    "frames": [
+      {
+        "page": "search",
+        "x": 48,
+        "y": 148,
+        "width": 600
+      },
+      {
+        "page": "collection",
+        "x": 684,
+        "y": 148,
+        "width": 600
+      }
+    ],
+    "placements": {
+      "search-controller": {
+        "x": 62,
+        "y": 762,
+        "width": 297.5
+      },
+      "search-cache": {
+        "x": 373.5,
+        "y": 762,
+        "width": 297.5
+      },
+      "order-store": {
+        "x": 685,
+        "y": 762,
+        "width": 297.5
+      },
+      "collection-cache": {
+        "x": 996.5,
+        "y": 762,
+        "width": 297.5
+      },
+      "collection-api": {
+        "x": 1714,
+        "y": 200,
+        "width": 260
+      },
+      "database": {
+        "x": 1714,
+        "y": 326,
+        "width": 260
+      },
+      "resource-api": {
+        "x": 1714,
+        "y": 452,
+        "width": 260
+      }
+    }
+  }
+}

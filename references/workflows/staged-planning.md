@@ -50,6 +50,39 @@ Resolve the current plan ID/revision; ask only if more than one plan could be me
 An explicit fs-work request also resumes the current saved phase, not an assumed fresh
 plan. Planning-only requests stop at the requested planning stage.
 
+## Native plan presentation
+
+At planning handoff and before fs-work starts or resumes (including a plain-language
+implementation request), present the selected plan in the conversation, not only a
+file link. Reuse the current contract and execution context; fetch only missing or
+changed sections. Identify planId/revision, intended outcome, ordered domain-flow
+issues, exclusions, required checks and the next feedback checkpoint. Link the human
+plan and HTML for detail; do not load HTML or regenerate the design for this preview.
+
+- In Codex Default mode, when `update_plan` is exposed and permitted, call it before
+  test/product edits with issue IDs and domain-outcome titles in dependency order.
+  Use the actual tool schema. Keep at most one issue in progress; preserve known
+  completed issues on resume. Briefly state the current phase (tests → feedback →
+  implementation → checks/PR). Update the UI when that phase or issue changes, not
+  after every tool call. A test-feedback wait is not completion; mark an issue done
+  only after its required verification and authorized delivery. This checklist is
+  a view of the saved contract, not a new plan or an approval record.
+- In Codex Plan mode, follow the host's final-plan protocol: a decision-complete
+  plan uses one `<proposed_plan>` block with tags on their own lines, without a code
+  fence. Include the substantive plan, not just a path. Do not call `update_plan`,
+  start work, or persist changes forbidden by the host's read-only mode. If the
+  requested draft is not saved yet, say so; persist it only in a permitted mode.
+- If the native plan tool is unavailable, show the same concise preview in Markdown
+  and disclose that it is not the native plan UI. Never simulate a successful tool
+  call or emit host events through MCP. If the user specifically requires the Plan
+  mode review/implementation chooser, direct them to `/plan` and end before edits;
+  FS cannot switch the host mode itself. Do not use proposed-plan tags as a Default
+  mode workaround. Other hosts use their available native plan mechanism.
+
+Showing the plan does not add another approval when the exact plan and execution
+are already authorized, nor bypass unresolved decisions or test-code feedback.
+If scope changes, revise the canonical plan through fs-plan before updating its UI.
+
 ## Work stages (per domain-flow issue)
 
 1. **Write the tests first.** Begin the approved issue/attempt and record baseline

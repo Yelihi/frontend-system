@@ -46,6 +46,16 @@ store/cache/module nodes appear once in each flow, outside individual pages. Spl
 bounded flows by event without dropping its cross-page consumers;
 state coverage and omissions instead of claiming exhaustive whole-project analysis.
 
+## Page and route explorer
+
+For page-based interactive visualization, use the packaged
+[page-flow renderer](references/page-flow.md) after tracing and persisting the actual
+flows below. Map the target project's evidence into its input; include route nodes,
+recorded event/lifecycle scenarios, concrete contracts and optional actual screen captures.
+Use the same renderer for a plan addition without overwriting observed facts. Do not
+substitute demo HTML for the target or imply automatic complete analysis/capture.
+Keep the canonical FS export and add this page explorer as a linked output.
+
 ## Reuse, trace, render
 
 1. Query `get_project_analysis` for relevant flow summaries and dependency freshness.

@@ -1,0 +1,33 @@
+{
+  "id": "dismiss-confirmation",
+  "title": "주문 완료 메시지 닫기 · 제안",
+  "baseHash": "6cb9e60ad5b46ae1e26f8b840dc91984498bc3154bd2f4dcd044bff00a36890e",
+  "scenarios": [
+    {
+      "id": "dismiss-confirmation",
+      "title": "주문 완료 메시지 닫기",
+      "category": "event",
+      "steps": [
+        {
+          "id": "dismiss",
+          "fromNode": "form",
+          "toNode": "form",
+          "page": "page",
+          "scene": "success",
+          "label": "onDismissConfirmation()",
+          "effect": "제안: 완료 메시지를 닫는다. 화면 이미지는 기존 성공 화면을 참조하며 신규 버튼은 아직 구현하지 않았다.",
+          "changes": [
+            {
+              "ownerNode": "form",
+              "owner": "OrderForm",
+              "field": "status.submitted",
+              "before": true,
+              "after": false
+            }
+          ],
+          "measurement": "계획 · 미구현"
+        }
+      ]
+    }
+  ]
+}

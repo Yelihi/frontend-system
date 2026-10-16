@@ -1,0 +1,119 @@
+{
+  "date": "2026-10-13",
+  "basis": "Proposed folio fixture",
+  "artifactHash": "426576309939d5ec0efd252d800fb52a354250b7eb7c1665904ddae3eaa823c6",
+  "specHash": "11c66b0eb92d9cddafb11a7ed2db66c26c3f8b2b809c80d9472a2828cee8c9ff",
+  "templateHash": "f8d58df62de057c60064ba7e3307b6e7c580907aef7c2f7d89b99cf233c1639e",
+  "passedInteractions": [
+    "exactly one view selected across board and pages",
+    "peripheral dependencies do not overlap page frames; two consumer arrows"
+  ],
+  "schemaRejections": 16,
+  "deterministicBuild": true,
+  "notVerified": [
+    "Many-page layout",
+    "Real multi-page subscriptions",
+    "Mobile viewport resizing",
+    "Existing node replacement/removal and automatic plan-to-observed promotion",
+    "Large route-graph performance and lazy loading",
+    "Production FS command integration",
+    "Frame-by-frame flicker measurement and thousands-of-nodes performance"
+  ],
+  "browserFrameChecks": [
+    "pages and app resources inside browser; backend outside; no page-resource overlap",
+    "two fan-out arrows retained",
+    "exclusive view selection and zoom work",
+    "observed fixture retains real screenshot, state delta and component inspector"
+  ],
+  "layoutCalculationChecks": {
+    "pages": 8,
+    "resources": 30,
+    "browserApis": 6,
+    "noPageOverlap": true
+  },
+  "consoleErrors": [],
+  "contentLayout": {
+    "headerRemoved": true,
+    "appsInPageContent": true,
+    "browserApisInSidePane": true,
+    "stateDeltaPreserved": true
+  },
+  "flowSelectionChecks": [
+    "page options filtered by owned nodes and cross-page effects",
+    "selected page retained while stepping a cross-page flow",
+    "board restores all flow options",
+    "lifecycle category and before/after state displayed",
+    "page-to-module lifecycle edge rendered",
+    "empty page has no invented flow and can return to board"
+  ],
+  "planAdditionChecks": {
+    "baselineUnchanged": true,
+    "staleHashRejected": true,
+    "duplicateIdsRejected": true,
+    "danglingReferencesRejected": true,
+    "forcedProposedBasis": true,
+    "baselineScreenLabeled": true
+  },
+  "recordedScenarios": 5,
+  "routeChecks": {
+    "initialOverview": true,
+    "domainGroups": true,
+    "hoverPreviewWithoutPinning": true,
+    "keyboardFocusPreview": true,
+    "clickPins": true,
+    "openPinnedPage": "select an execution flow after pinning a node",
+    "exclusiveViews": true,
+    "conditionalAndSelfEdges": "synthetic authentication fixture only",
+    "noInventedObservedEdges": true,
+    "plannedNavigationAdditive": true
+  },
+  "selectChecks": {
+    "nativeKeyboardSelection": true,
+    "appearance": "none",
+    "arrowInsetPx": 14,
+    "textPaddingRightPx": 44,
+    "desktopWidthPx": 420,
+    "desktopOverflow": false
+  },
+  "routeRefinement": {
+    "neutralCards": true,
+    "unchangedHoverDimensions": true,
+    "unchangedHoverPathCoordinates": true,
+    "noArrowMarkers": true,
+    "flowAnimationCSS": true,
+    "persistentPaths": "verified from renderer implementation; frame timing not instrumented",
+    "wheelZoom": true,
+    "dragPan": true,
+    "onlyRouteTabInitially": true,
+    "flowSelectionRevealsRelatedTabs": true,
+    "scopeUpdatesOnFlowSelection": true,
+    "independentVerticalFlowScroll": true,
+    "selectionDuringPanDisabled": true
+  },
+  "syntheticLoadCheck": {
+    "routes": 60,
+    "connections": 182,
+    "flows": 35,
+    "fitZoomPercent": 27,
+    "bodyHorizontalOverflow": false,
+    "scrollableFlowPanel": true,
+    "consoleErrors": [],
+    "note": "Interaction smoke check; not a frame-rate or large-production benchmark"
+  },
+  "tracePresentationUpdate": {
+    "date": "2026-10-16",
+    "domainDescriptionInHeading": true,
+    "functionNameBelowProgress": true,
+    "buildChecksPassed": true,
+    "pageCaptures": "Reused; verified changes do not affect captured page content",
+    "browserRecheck": "Unavailable: no browser connected in current session",
+    "previousBrowserChecks": "Recorded before this presentation update"
+  },
+  "releasePackaging": {
+    "version": "0.8.0",
+    "renderer": "skills/fs-plan-visualize/scripts",
+    "packagedExecutionPassed": true,
+    "browserRecheck": false,
+    "captures": "Existing captured screens reused; no target-product UI changed"
+  }
+}

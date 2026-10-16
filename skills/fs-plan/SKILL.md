@@ -33,6 +33,9 @@ mockup and detailed design feedback when supplied → final plan. Pause at the a
 feedback checkpoints, not just ambiguous technical choices. Reuse existing scoped
 answers. A user asking to implement the resulting plan need not type fs-work; apply
 that workflow automatically, starting with test code and its feedback checkpoint.
+Present the final plan in the conversation through
+[native plan presentation](../../references/workflows/staged-planning.md#native-plan-presentation);
+a saved file link alone is not the handoff.
 
 ## Inspect once, preserve usable evidence
 

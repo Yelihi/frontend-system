@@ -1,0 +1,1078 @@
+{
+  "browserApis": [
+    {
+      "name": "fetch",
+      "ownerNode": "send",
+      "detail": "POST /api/orders · Response.ok"
+    }
+  ],
+  "schemaVersion": "discussion-2",
+  "title": "Order fixture · 관측 화면",
+  "basis": "observed",
+  "baseline": {
+    "commit": "154c7e359c1b823e9253568961a0f73f5844e645",
+    "flow": {
+      "id": "order-observed",
+      "hash": "2b9b60500b6aeb17403248fc214249acb4d672545905553cca71a77e214010c1"
+    }
+  },
+  "nodes": [
+    {
+      "id": "page",
+      "kind": "page",
+      "label": "Page",
+      "props": [],
+      "state": [],
+      "events": [],
+      "lifecycle": [],
+      "evidence": [
+        {
+          "path": "app/page.jsx",
+          "quote": "return <main><h1>Order acceptance fixture</h1><OrderForm><p>{serverLabel()}</p></OrderForm></main>;",
+          "line": 5
+        }
+      ],
+      "name": "Page",
+      "basis": "observed",
+      "signature": "",
+      "intent": "Page"
+    },
+    {
+      "id": "form",
+      "kind": "component",
+      "label": "OrderForm",
+      "parent": "page",
+      "props": [
+        "children: server-rendered React content"
+      ],
+      "state": [
+        "status.pending: boolean",
+        "status.error: string",
+        "status.submitted: boolean",
+        "submit: stable callback"
+      ],
+      "events": [
+        "onSubmit(event) → preventDefault(); submit(1)",
+        "onClick → statusAction()"
+      ],
+      "lifecycle": [
+        "mount: useState initializes status and submit"
+      ],
+      "evidence": [
+        {
+          "path": "app/order-form.jsx",
+          "quote": "'use client';",
+          "line": 1
+        },
+        {
+          "path": "app/order-form.jsx",
+          "quote": "const [status, setStatus] = useState({ pending: false, error: '', submitted: false });",
+          "line": 12
+        },
+        {
+          "path": "app/order-form.jsx",
+          "quote": "<form onSubmit={event => { event.preventDefault(); void submit(1); }}>",
+          "line": 16
+        }
+      ],
+      "contracts": [
+        {
+          "kind": "function",
+          "name": "OrderForm",
+          "path": "app/order-form.jsx",
+          "signature": "OrderForm({ children })",
+          "evidence": [
+            "state",
+            "event"
+          ]
+        }
+      ],
+      "name": "OrderForm",
+      "basis": "observed",
+      "signature": "OrderForm({ children })",
+      "intent": "상태 payload를 받고 버튼·오류·완료 문구를 표시한다.",
+      "framework": {
+        "name": "Next.js / React",
+        "execution": "Client Component",
+        "reason": "app/order-form.jsx:1 · 'use client'",
+        "hooks": [
+          "useState(status)",
+          "useState(() => createOrderSubmitter(send, setStatus))"
+        ]
+      }
+    },
+    {
+      "id": "submitter",
+      "kind": "module",
+      "label": "createOrderSubmitter",
+      "props": [],
+      "state": [
+        "pending: boolean (closure; separate from status.pending)"
+      ],
+      "events": [
+        "submit(quantity) → Promise<boolean>"
+      ],
+      "lifecycle": [],
+      "evidence": [
+        {
+          "path": "src/domain/orders.js",
+          "quote": "export function createOrderSubmitter(send, changed) {",
+          "line": 5
+        },
+        {
+          "path": "src/domain/orders.js",
+          "quote": "if (pending) return false;",
+          "line": 8
+        },
+        {
+          "path": "src/domain/orders.js",
+          "quote": "pending = true;\n    changed({ pending: true, error: '', submitted: false });",
+          "line": 10
+        },
+        {
+          "path": "src/domain/orders.js",
+          "quote": "} finally {\n      pending = false;",
+          "line": 19
+        }
+      ],
+      "contracts": [
+        {
+          "kind": "function",
+          "name": "createOrderSubmitter",
+          "path": "src/domain/orders.js",
+          "signature": "createOrderSubmitter(send, changed)",
+          "evidence": [
+            "domain"
+          ]
+        }
+      ],
+      "name": "createOrderSubmitter",
+      "environment": "app",
+      "basis": "observed",
+      "signature": "createOrderSubmitter(send, changed)",
+      "intent": "클로저 잠금과 changed 콜백을 분리한다."
+    },
+    {
+      "id": "send",
+      "kind": "service",
+      "label": "send(quantity) / fetch",
+      "props": [],
+      "state": [],
+      "events": [
+        "POST /api/orders",
+        "non-ok → throw Error"
+      ],
+      "lifecycle": [],
+      "evidence": [
+        {
+          "path": "app/order-form.jsx",
+          "quote": "const response = await fetch('/api/orders', { method: 'POST', body: JSON.stringify({ quantity }) });",
+          "line": 7
+        },
+        {
+          "path": "app/order-form.jsx",
+          "quote": "if (!response.ok) throw new Error('Order failed. Try again.');",
+          "line": 8
+        }
+      ],
+      "name": "send(quantity) / fetch",
+      "environment": "app",
+      "basis": "observed",
+      "signature": "",
+      "intent": "send(quantity) / fetch"
+    },
+    {
+      "id": "api",
+      "kind": "service",
+      "label": "POST /api/orders",
+      "props": [],
+      "state": [],
+      "events": [
+        "Response.json({ accepted: true })"
+      ],
+      "lifecycle": [],
+      "evidence": [
+        {
+          "path": "app/api/orders/route.js",
+          "quote": "export async function POST() { return Response.json({ accepted: true }); }",
+          "line": 1
+        }
+      ],
+      "name": "POST /api/orders",
+      "environment": "backend",
+      "basis": "observed",
+      "signature": "",
+      "intent": "POST /api/orders"
+    },
+    {
+      "id": "action",
+      "kind": "service",
+      "label": "statusAction",
+      "props": [],
+      "state": [],
+      "events": [
+        "return 'available'"
+      ],
+      "lifecycle": [],
+      "evidence": [
+        {
+          "path": "app/actions.js",
+          "quote": "export async function statusAction() { return 'available'; }",
+          "line": 2
+        }
+      ],
+      "name": "statusAction",
+      "environment": "backend",
+      "basis": "observed",
+      "signature": "",
+      "intent": "statusAction"
+    },
+    {
+      "id": "catalog",
+      "kind": "module",
+      "label": "serverLabel",
+      "props": [],
+      "state": [],
+      "events": [
+        "return 'Server-rendered catalogue'"
+      ],
+      "lifecycle": [],
+      "evidence": [
+        {
+          "path": "src/server/catalog.js",
+          "quote": "export function serverLabel() { return 'Server-rendered catalogue'; }",
+          "line": 2
+        }
+      ],
+      "name": "serverLabel",
+      "environment": "backend",
+      "basis": "observed",
+      "signature": "",
+      "intent": "serverLabel"
+    }
+  ],
+  "instances": [
+    {
+      "id": "form-1",
+      "node": "form",
+      "page": "page"
+    }
+  ],
+  "pages": [
+    {
+      "id": "page",
+      "title": "주문 페이지",
+      "route": "/",
+      "scenes": [
+        "idle",
+        "pending",
+        "error",
+        "success"
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "failure-retry",
+      "title": "실제 함수 · 실패 → 재시도 → 성공",
+      "steps": [
+        {
+          "id": "entry",
+          "edge": "submit",
+          "fromNode": "form",
+          "toNode": "submitter",
+          "page": "page",
+          "scene": "idle",
+          "label": "submit(1)",
+          "effect": "onSubmit은 기본 제출을 막고 submit(1)을 호출한다.",
+          "changes": [
+            {
+              "owner": "submit",
+              "field": "quantity",
+              "before": "호출 전",
+              "after": 1,
+              "ownerNode": "submitter"
+            }
+          ],
+          "measurement": "코드 해석",
+          "evidence": [
+            {
+              "path": "app/order-form.jsx",
+              "quote": "<form onSubmit={event => { event.preventDefault(); void submit(1); }}>",
+              "line": 16
+            },
+            {
+              "path": "app/order-form.jsx",
+              "quote": "const [submit] = useState(() => createOrderSubmitter(send, setStatus));",
+              "line": 13
+            }
+          ]
+        },
+        {
+          "id": "busy",
+          "edge": "busy",
+          "fromNode": "submitter",
+          "toNode": "form",
+          "page": "page",
+          "scene": "pending",
+          "label": "changed({ pending:true, error:\"\", submitted:false })",
+          "effect": "changed 콜백으로 전달된 실제 값. React commit 시각은 별도다.",
+          "changes": [
+            {
+              "owner": "OrderForm",
+              "field": "status.pending",
+              "before": false,
+              "after": true,
+              "ownerNode": "form"
+            },
+            {
+              "owner": "OrderForm",
+              "field": "status.error",
+              "before": "",
+              "after": "",
+              "ownerNode": "form"
+            },
+            {
+              "owner": "OrderForm",
+              "field": "status.submitted",
+              "before": false,
+              "after": false,
+              "ownerNode": "form"
+            }
+          ],
+          "measurement": "실측 · 원본 함수의 changed 콜백",
+          "evidence": [
+            {
+              "path": "src/domain/orders.js",
+              "quote": "pending = true;\n    changed({ pending: true, error: '', submitted: false });",
+              "line": 10
+            },
+            {
+              "path": "app/order-form.jsx",
+              "quote": "const [submit] = useState(() => createOrderSubmitter(send, setStatus));",
+              "line": 13
+            }
+          ]
+        },
+        {
+          "id": "send",
+          "edge": "transport",
+          "fromNode": "submitter",
+          "toNode": "send",
+          "page": "page",
+          "scene": "pending",
+          "label": "await send(quantity)",
+          "effect": "주입된 전송 함수가 받은 실제 인자.",
+          "changes": [
+            {
+              "owner": "send",
+              "field": "quantity",
+              "before": "호출 전",
+              "after": 1,
+              "ownerNode": "send"
+            }
+          ],
+          "measurement": "실측 · 전송 테스트 경계",
+          "evidence": [
+            {
+              "path": "src/domain/orders.js",
+              "quote": "await send(quantity);\n      changed({ pending: false, error: '', submitted: true });",
+              "line": 13
+            },
+            {
+              "path": "app/order-form.jsx",
+              "quote": "const response = await fetch('/api/orders', { method: 'POST', body: JSON.stringify({ quantity }) });",
+              "line": 7
+            }
+          ]
+        },
+        {
+          "id": "duplicate",
+          "edge": "ignore",
+          "fromNode": "submitter",
+          "toNode": "form",
+          "page": "page",
+          "scene": "pending",
+          "label": "duplicate → false, no callback or request",
+          "effect": "추가 전송 없이 false 반환. 기존 요청은 계속된다.",
+          "changes": [
+            {
+              "owner": "send",
+              "field": "calls",
+              "before": 1,
+              "after": 1,
+              "ownerNode": "send"
+            },
+            {
+              "owner": "duplicate",
+              "field": "return",
+              "before": "호출 전",
+              "after": false,
+              "ownerNode": "submitter"
+            }
+          ],
+          "measurement": "실측 · 중복 호출",
+          "evidence": [
+            {
+              "path": "src/domain/orders.js",
+              "quote": "if (pending) return false;",
+              "line": 8
+            }
+          ]
+        },
+        {
+          "id": "failure",
+          "edge": "fail",
+          "fromNode": "submitter",
+          "toNode": "form",
+          "page": "page",
+          "scene": "error",
+          "label": "changed({ pending:false, error:message, submitted:false })",
+          "effect": "주입한 요청 실패가 오류 콜백으로 전달된다.",
+          "changes": [
+            {
+              "owner": "OrderForm",
+              "field": "status.pending",
+              "before": true,
+              "after": false,
+              "ownerNode": "form"
+            },
+            {
+              "owner": "OrderForm",
+              "field": "status.error",
+              "before": "",
+              "after": "Order failed. Try again.",
+              "ownerNode": "form"
+            },
+            {
+              "owner": "OrderForm",
+              "field": "status.submitted",
+              "before": false,
+              "after": false,
+              "ownerNode": "form"
+            }
+          ],
+          "measurement": "실측 · 원본 함수의 changed 콜백",
+          "evidence": [
+            {
+              "path": "src/domain/orders.js",
+              "quote": "changed({ pending: false, error: error instanceof Error ? error.message : 'Order failed', submitted: false });",
+              "line": 17
+            },
+            {
+              "path": "app/order-form.jsx",
+              "quote": "{status.error && <p role=\"alert\">{status.error}</p>}",
+              "line": 18
+            }
+          ]
+        },
+        {
+          "id": "unlock-failure",
+          "edge": "unlock",
+          "fromNode": "submitter",
+          "toNode": "submitter",
+          "page": "page",
+          "scene": "error",
+          "label": "finally: pending = false",
+          "effect": "finally가 클로저 잠금을 해제한다. status.pending과 다른 변수다.",
+          "changes": [
+            {
+              "owner": "submitter closure",
+              "field": "pending",
+              "before": true,
+              "after": false,
+              "ownerNode": "submitter"
+            }
+          ],
+          "measurement": "코드 해석",
+          "evidence": [
+            {
+              "path": "src/domain/orders.js",
+              "quote": "} finally {\n      pending = false;",
+              "line": 19
+            }
+          ]
+        },
+        {
+          "id": "retry",
+          "edge": "busy",
+          "fromNode": "submitter",
+          "toNode": "form",
+          "page": "page",
+          "scene": "pending",
+          "label": "changed({ pending:true, error:\"\", submitted:false })",
+          "effect": "재시도에서 기존 오류를 비우고 pending으로 전환한다.",
+          "changes": [
+            {
+              "owner": "OrderForm",
+              "field": "status.pending",
+              "before": false,
+              "after": true,
+              "ownerNode": "form"
+            },
+            {
+              "owner": "OrderForm",
+              "field": "status.error",
+              "before": "Order failed. Try again.",
+              "after": "",
+              "ownerNode": "form"
+            },
+            {
+              "owner": "OrderForm",
+              "field": "status.submitted",
+              "before": false,
+              "after": false,
+              "ownerNode": "form"
+            }
+          ],
+          "measurement": "실측 · 원본 함수의 changed 콜백",
+          "evidence": [
+            {
+              "path": "src/domain/orders.js",
+              "quote": "pending = true;\n    changed({ pending: true, error: '', submitted: false });",
+              "line": 10
+            },
+            {
+              "path": "app/order-form.jsx",
+              "quote": "const [submit] = useState(() => createOrderSubmitter(send, setStatus));",
+              "line": 13
+            }
+          ]
+        },
+        {
+          "id": "success",
+          "edge": "ok",
+          "fromNode": "submitter",
+          "toNode": "form",
+          "page": "page",
+          "scene": "success",
+          "label": "changed({ pending:false, error:\"\", submitted:true })",
+          "effect": "성공 콜백 시점의 payload. 아직 finally 전이므로 closure.pending은 true다.",
+          "changes": [
+            {
+              "owner": "OrderForm",
+              "field": "status.pending",
+              "before": true,
+              "after": false,
+              "ownerNode": "form"
+            },
+            {
+              "owner": "OrderForm",
+              "field": "status.error",
+              "before": "",
+              "after": "",
+              "ownerNode": "form"
+            },
+            {
+              "owner": "OrderForm",
+              "field": "status.submitted",
+              "before": false,
+              "after": true,
+              "ownerNode": "form"
+            }
+          ],
+          "measurement": "실측 · 원본 함수의 changed 콜백",
+          "evidence": [
+            {
+              "path": "src/domain/orders.js",
+              "quote": "await send(quantity);\n      changed({ pending: false, error: '', submitted: true });",
+              "line": 13
+            },
+            {
+              "path": "app/order-form.jsx",
+              "quote": "const [submit] = useState(() => createOrderSubmitter(send, setStatus));",
+              "line": 13
+            }
+          ]
+        },
+        {
+          "id": "unlock-success",
+          "edge": "unlock",
+          "fromNode": "submitter",
+          "toNode": "submitter",
+          "page": "page",
+          "scene": "success",
+          "label": "finally: pending = false",
+          "effect": "finally 후 제출 함수가 true를 반환한다.",
+          "changes": [
+            {
+              "owner": "submitter closure",
+              "field": "pending",
+              "before": true,
+              "after": false,
+              "ownerNode": "submitter"
+            }
+          ],
+          "measurement": "코드 해석",
+          "evidence": [
+            {
+              "path": "src/domain/orders.js",
+              "quote": "} finally {\n      pending = false;",
+              "line": 19
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "initial",
+      "title": "초기 화면",
+      "entry": "page",
+      "event": "route /",
+      "steps": [
+        {
+          "id": "initial-0",
+          "edge": "label",
+          "fromNode": "page",
+          "toNode": "catalog",
+          "page": "page",
+          "scene": "idle",
+          "label": "serverLabel()",
+          "effect": "서버에서 catalogue 문자열 생성",
+          "changes": [],
+          "measurement": "코드 해석",
+          "evidence": [
+            {
+              "path": "app/page.jsx",
+              "quote": "return <main><h1>Order acceptance fixture</h1><OrderForm><p>{serverLabel()}</p></OrderForm></main>;",
+              "line": 5
+            },
+            {
+              "path": "src/server/catalog.js",
+              "quote": "export function serverLabel() { return 'Server-rendered catalogue'; }",
+              "line": 2
+            }
+          ]
+        },
+        {
+          "id": "initial-1",
+          "edge": "compose",
+          "fromNode": "page",
+          "toNode": "form",
+          "page": "page",
+          "scene": "idle",
+          "label": "children = <p>{serverLabel()}</p>",
+          "effect": "children을 클라이언트 OrderForm에 전달",
+          "changes": [],
+          "measurement": "코드 해석",
+          "evidence": [
+            {
+              "path": "app/page.jsx",
+              "quote": "return <main><h1>Order acceptance fixture</h1><OrderForm><p>{serverLabel()}</p></OrderForm></main>;",
+              "line": 5
+            }
+          ]
+        }
+      ],
+      "outcome": "초기 status는 pending=false, error=\"\", submitted=false",
+      "limitations": [],
+      "category": "lifecycle"
+    },
+    {
+      "id": "success",
+      "title": "주문 성공",
+      "entry": "form",
+      "event": "submit(1)",
+      "steps": [
+        {
+          "id": "success-0",
+          "edge": "submit",
+          "fromNode": "form",
+          "toNode": "submitter",
+          "page": "page",
+          "scene": "idle",
+          "label": "submit(1)",
+          "effect": "클로저의 pending 검사 후 양의 정수 확인",
+          "changes": [],
+          "measurement": "코드 해석",
+          "evidence": [
+            {
+              "path": "app/order-form.jsx",
+              "quote": "<form onSubmit={event => { event.preventDefault(); void submit(1); }}>",
+              "line": 16
+            },
+            {
+              "path": "app/order-form.jsx",
+              "quote": "const [submit] = useState(() => createOrderSubmitter(send, setStatus));",
+              "line": 13
+            }
+          ]
+        },
+        {
+          "id": "success-1",
+          "edge": "busy",
+          "fromNode": "submitter",
+          "toNode": "form",
+          "page": "page",
+          "scene": "pending",
+          "label": "changed({ pending:true, error:\"\", submitted:false })",
+          "effect": "pending=true, status pending=true로 콜백 호출",
+          "changes": [],
+          "measurement": "코드 해석",
+          "evidence": [
+            {
+              "path": "src/domain/orders.js",
+              "quote": "pending = true;\n    changed({ pending: true, error: '', submitted: false });",
+              "line": 10
+            },
+            {
+              "path": "app/order-form.jsx",
+              "quote": "const [submit] = useState(() => createOrderSubmitter(send, setStatus));",
+              "line": 13
+            }
+          ]
+        },
+        {
+          "id": "success-2",
+          "edge": "transport",
+          "fromNode": "submitter",
+          "toNode": "send",
+          "page": "page",
+          "scene": "pending",
+          "label": "await send(quantity)",
+          "effect": "send(1) 대기",
+          "changes": [],
+          "measurement": "코드 해석",
+          "evidence": [
+            {
+              "path": "src/domain/orders.js",
+              "quote": "await send(quantity);\n      changed({ pending: false, error: '', submitted: true });",
+              "line": 13
+            },
+            {
+              "path": "app/order-form.jsx",
+              "quote": "const response = await fetch('/api/orders', { method: 'POST', body: JSON.stringify({ quantity }) });",
+              "line": 7
+            }
+          ]
+        },
+        {
+          "id": "success-3",
+          "edge": "post",
+          "fromNode": "send",
+          "toNode": "api",
+          "page": "page",
+          "scene": "pending",
+          "label": "fetch POST JSON quantity",
+          "effect": "POST는 accepted:true를 반환",
+          "changes": [],
+          "measurement": "코드 해석",
+          "evidence": [
+            {
+              "path": "app/order-form.jsx",
+              "quote": "const response = await fetch('/api/orders', { method: 'POST', body: JSON.stringify({ quantity }) });",
+              "line": 7
+            },
+            {
+              "path": "app/api/orders/route.js",
+              "quote": "export async function POST() { return Response.json({ accepted: true }); }",
+              "line": 1
+            }
+          ]
+        },
+        {
+          "id": "success-4",
+          "edge": "ok",
+          "fromNode": "submitter",
+          "toNode": "form",
+          "page": "page",
+          "scene": "success",
+          "label": "changed({ pending:false, error:\"\", submitted:true })",
+          "effect": "status.submitted=true; 클로저 pending은 finally 전까지 true",
+          "changes": [],
+          "measurement": "코드 해석",
+          "evidence": [
+            {
+              "path": "src/domain/orders.js",
+              "quote": "await send(quantity);\n      changed({ pending: false, error: '', submitted: true });",
+              "line": 13
+            },
+            {
+              "path": "app/order-form.jsx",
+              "quote": "const [submit] = useState(() => createOrderSubmitter(send, setStatus));",
+              "line": 13
+            }
+          ]
+        },
+        {
+          "id": "success-5",
+          "edge": "unlock",
+          "fromNode": "submitter",
+          "toNode": "submitter",
+          "page": "page",
+          "scene": "success",
+          "label": "finally: pending = false",
+          "effect": "클로저 pending=false; promise true 반환",
+          "changes": [],
+          "measurement": "코드 해석",
+          "evidence": [
+            {
+              "path": "src/domain/orders.js",
+              "quote": "} finally {\n      pending = false;",
+              "line": 19
+            }
+          ]
+        }
+      ],
+      "outcome": "Order received 표시",
+      "limitations": [],
+      "category": "event"
+    },
+    {
+      "id": "failure",
+      "title": "요청 실패",
+      "entry": "form",
+      "event": "non-ok response 또는 fetch rejection",
+      "steps": [
+        {
+          "id": "failure-0",
+          "edge": "submit",
+          "fromNode": "form",
+          "toNode": "submitter",
+          "page": "page",
+          "scene": "idle",
+          "label": "submit(1)",
+          "effect": "submit(1)",
+          "changes": [],
+          "measurement": "코드 해석",
+          "evidence": [
+            {
+              "path": "app/order-form.jsx",
+              "quote": "<form onSubmit={event => { event.preventDefault(); void submit(1); }}>",
+              "line": 16
+            },
+            {
+              "path": "app/order-form.jsx",
+              "quote": "const [submit] = useState(() => createOrderSubmitter(send, setStatus));",
+              "line": 13
+            }
+          ]
+        },
+        {
+          "id": "failure-1",
+          "edge": "busy",
+          "fromNode": "submitter",
+          "toNode": "form",
+          "page": "page",
+          "scene": "pending",
+          "label": "changed({ pending:true, error:\"\", submitted:false })",
+          "effect": "이전 error를 비우고 pending=true",
+          "changes": [],
+          "measurement": "코드 해석",
+          "evidence": [
+            {
+              "path": "src/domain/orders.js",
+              "quote": "pending = true;\n    changed({ pending: true, error: '', submitted: false });",
+              "line": 10
+            },
+            {
+              "path": "app/order-form.jsx",
+              "quote": "const [submit] = useState(() => createOrderSubmitter(send, setStatus));",
+              "line": 13
+            }
+          ]
+        },
+        {
+          "id": "failure-2",
+          "edge": "transport",
+          "fromNode": "submitter",
+          "toNode": "send",
+          "page": "page",
+          "scene": "pending",
+          "label": "await send(quantity)",
+          "effect": "실패하는 send(1)",
+          "changes": [],
+          "measurement": "코드 해석",
+          "evidence": [
+            {
+              "path": "src/domain/orders.js",
+              "quote": "await send(quantity);\n      changed({ pending: false, error: '', submitted: true });",
+              "line": 13
+            },
+            {
+              "path": "app/order-form.jsx",
+              "quote": "const response = await fetch('/api/orders', { method: 'POST', body: JSON.stringify({ quantity }) });",
+              "line": 7
+            }
+          ]
+        },
+        {
+          "id": "failure-3",
+          "edge": "fail",
+          "fromNode": "submitter",
+          "toNode": "form",
+          "page": "page",
+          "scene": "error",
+          "label": "changed({ pending:false, error:message, submitted:false })",
+          "effect": "오류 문자열을 status.error에 전달",
+          "changes": [],
+          "measurement": "코드 해석",
+          "evidence": [
+            {
+              "path": "src/domain/orders.js",
+              "quote": "changed({ pending: false, error: error instanceof Error ? error.message : 'Order failed', submitted: false });",
+              "line": 17
+            },
+            {
+              "path": "app/order-form.jsx",
+              "quote": "{status.error && <p role=\"alert\">{status.error}</p>}",
+              "line": 18
+            }
+          ]
+        },
+        {
+          "id": "failure-4",
+          "edge": "unlock",
+          "fromNode": "submitter",
+          "toNode": "submitter",
+          "page": "page",
+          "scene": "error",
+          "label": "finally: pending = false",
+          "effect": "pending=false; promise false 반환",
+          "changes": [],
+          "measurement": "코드 해석",
+          "evidence": [
+            {
+              "path": "src/domain/orders.js",
+              "quote": "} finally {\n      pending = false;",
+              "line": 19
+            }
+          ]
+        }
+      ],
+      "outcome": "오류를 표시하고 재시도 가능",
+      "limitations": [],
+      "category": "event"
+    },
+    {
+      "id": "duplicate",
+      "title": "중복 제출",
+      "entry": "form",
+      "event": "in-flight submit(1)",
+      "steps": [
+        {
+          "id": "duplicate-0",
+          "edge": "submit",
+          "fromNode": "form",
+          "toNode": "submitter",
+          "page": "page",
+          "scene": "pending",
+          "label": "submit(1)",
+          "effect": "두 번째 submit(1)",
+          "changes": [],
+          "measurement": "코드 해석",
+          "evidence": [
+            {
+              "path": "app/order-form.jsx",
+              "quote": "<form onSubmit={event => { event.preventDefault(); void submit(1); }}>",
+              "line": 16
+            },
+            {
+              "path": "app/order-form.jsx",
+              "quote": "const [submit] = useState(() => createOrderSubmitter(send, setStatus));",
+              "line": 13
+            }
+          ]
+        },
+        {
+          "id": "duplicate-1",
+          "edge": "ignore",
+          "fromNode": "submitter",
+          "toNode": "form",
+          "page": "page",
+          "scene": "pending",
+          "label": "duplicate → false, no callback or request",
+          "effect": "pending이 true라 추가 send와 changed 없이 false 반환",
+          "changes": [],
+          "measurement": "코드 해석",
+          "evidence": [
+            {
+              "path": "src/domain/orders.js",
+              "quote": "if (pending) return false;",
+              "line": 8
+            }
+          ]
+        }
+      ],
+      "outcome": "기존 요청 유지",
+      "limitations": [],
+      "category": "event"
+    },
+    {
+      "id": "invalid",
+      "title": "잘못된 수량",
+      "entry": "submitter",
+      "event": "submit(0)",
+      "steps": [
+        {
+          "id": "invalid-0",
+          "edge": "invalid",
+          "fromNode": "submitter",
+          "toNode": "form",
+          "page": "page",
+          "scene": "idle",
+          "label": "invalid quantity → rejected promise",
+          "effect": "pending=false일 때 정수/양수 검증 실패",
+          "changes": [],
+          "measurement": "코드 해석",
+          "evidence": [
+            {
+              "path": "src/domain/orders.js",
+              "quote": "if (!Number.isInteger(quantity) || quantity <= 0) throw new Error('Quantity must be a positive integer');",
+              "line": 9
+            }
+          ]
+        }
+      ],
+      "outcome": "요청과 상태 변경 없이 reject; UI는 1만 전달",
+      "limitations": [],
+      "category": "event"
+    },
+    {
+      "id": "availability",
+      "title": "재고 확인",
+      "entry": "form",
+      "event": "Check availability click",
+      "steps": [
+        {
+          "id": "availability-0",
+          "edge": "availability",
+          "fromNode": "form",
+          "toNode": "action",
+          "page": "page",
+          "scene": "idle",
+          "label": "void statusAction()",
+          "effect": "server action 결과는 소비하지 않음",
+          "changes": [],
+          "measurement": "코드 해석",
+          "evidence": [
+            {
+              "path": "app/order-form.jsx",
+              "quote": "<button type=\"button\" onClick={() => void statusAction()}>Check availability</button>",
+              "line": 21
+            },
+            {
+              "path": "app/actions.js",
+              "quote": "export async function statusAction() { return 'available'; }",
+              "line": 2
+            }
+          ]
+        }
+      ],
+      "outcome": "화면 상태 변경 없음",
+      "limitations": [],
+      "category": "event"
+    }
+  ],
+  "capture": {
+    "environment": "Next dev + local fault-injection proxy; initial/pending/500-error/success",
+    "crop": {
+      "x": 0,
+      "y": 0,
+      "width": 760,
+      "height": 570
+    },
+    "componentMapping": "OrderForm renders the main section; JSX evidence + clipped DOM rect",
+    "trace": "runtime-trace.json"
+  }
+}

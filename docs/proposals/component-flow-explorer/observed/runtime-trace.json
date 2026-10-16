@@ -1,0 +1,79 @@
+{
+  "source": "test/fixtures/frontend/src/domain/orders.js",
+  "measurement": "Original domain function with injected transport; callback values observed, React commits and closure locals not instrumented",
+  "invalidRejected": true,
+  "duplicateRejected": true,
+  "calls": 2,
+  "sequence": [
+    {
+      "kind": "status",
+      "before": {
+        "pending": false,
+        "error": "",
+        "submitted": false
+      },
+      "after": {
+        "pending": true,
+        "error": "",
+        "submitted": false
+      }
+    },
+    {
+      "kind": "send",
+      "quantity": 1
+    },
+    {
+      "kind": "duplicate",
+      "value": false,
+      "status": {
+        "pending": true,
+        "error": "",
+        "submitted": false
+      },
+      "calls": 1
+    },
+    {
+      "kind": "status",
+      "before": {
+        "pending": true,
+        "error": "",
+        "submitted": false
+      },
+      "after": {
+        "pending": false,
+        "error": "Order failed. Try again.",
+        "submitted": false
+      }
+    },
+    {
+      "kind": "status",
+      "before": {
+        "pending": false,
+        "error": "Order failed. Try again.",
+        "submitted": false
+      },
+      "after": {
+        "pending": true,
+        "error": "",
+        "submitted": false
+      }
+    },
+    {
+      "kind": "send",
+      "quantity": 1
+    },
+    {
+      "kind": "status",
+      "before": {
+        "pending": true,
+        "error": "",
+        "submitted": false
+      },
+      "after": {
+        "pending": false,
+        "error": "",
+        "submitted": true
+      }
+    }
+  ]
+}

@@ -22,3 +22,8 @@ Return the human report, AI context and automatically generated HTML links, with
 coverage and completion status. Partial saves are checkpoints; continue inspectable
 remaining areas unless blocked or paused. Do not read HTML into AI context. Planning is `fs-plan`;
 standalone visualization is `fs-plan-visualize` and does not refresh project.md.
+
+For a requested page/route/component preview, also follow the packaged
+[page-flow renderer](../fs-plan-visualize/references/page-flow.md). Reuse the current
+saved analysis and preserve its coverage limits; this supplemental view does not
+make a partial project analysis complete. Missing screenshots stay uncaptured.

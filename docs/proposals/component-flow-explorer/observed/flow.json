@@ -1,0 +1,553 @@
+{
+  "id": "order-observed",
+  "title": "주문 제출의 실제 상태 흐름",
+  "basis": "observed",
+  "summary": "OrderForm → createOrderSubmitter → send → POST. 상태 콜백과 클로저 잠금을 구별한다.",
+  "scope": {
+    "files": [
+      "app/actions.js",
+      "app/api/orders/route.js",
+      "app/layout.jsx",
+      "app/order-form.jsx",
+      "app/page.jsx",
+      "src/domain/orders.js",
+      "src/features/cart/index.js",
+      "src/features/cart/internal/price.js",
+      "src/features/checkout/index.js",
+      "src/server/catalog.js",
+      "src/server/public.js"
+    ],
+    "discoveryRoots": [
+      "app",
+      "src"
+    ],
+    "snapshot": {
+      "baseRef": "main",
+      "expectedCommit": "154c7e359c1b823e9253568961a0f73f5844e645"
+    }
+  },
+  "evidence": {
+    "page": {
+      "path": "app/page.jsx",
+      "line": 5,
+      "quote": "return <main><h1>Order acceptance fixture</h1><OrderForm><p>{serverLabel()}</p></OrderForm></main>;"
+    },
+    "client": {
+      "path": "app/order-form.jsx",
+      "line": 1,
+      "quote": "'use client';"
+    },
+    "state": {
+      "path": "app/order-form.jsx",
+      "line": 12,
+      "quote": "const [status, setStatus] = useState({ pending: false, error: '', submitted: false });"
+    },
+    "binding": {
+      "path": "app/order-form.jsx",
+      "line": 13,
+      "quote": "const [submit] = useState(() => createOrderSubmitter(send, setStatus));"
+    },
+    "event": {
+      "path": "app/order-form.jsx",
+      "line": 16,
+      "quote": "<form onSubmit={event => { event.preventDefault(); void submit(1); }}>"
+    },
+    "send": {
+      "path": "app/order-form.jsx",
+      "line": 7,
+      "quote": "const response = await fetch('/api/orders', { method: 'POST', body: JSON.stringify({ quantity }) });"
+    },
+    "http-error": {
+      "path": "app/order-form.jsx",
+      "line": 8,
+      "quote": "if (!response.ok) throw new Error('Order failed. Try again.');"
+    },
+    "render": {
+      "path": "app/order-form.jsx",
+      "line": 17,
+      "quote": "<button disabled={status.pending} type=\"submit\">{status.pending ? 'Submitting' : 'Place order'}</button>"
+    },
+    "error-view": {
+      "path": "app/order-form.jsx",
+      "line": 18,
+      "quote": "{status.error && <p role=\"alert\">{status.error}</p>}"
+    },
+    "success-view": {
+      "path": "app/order-form.jsx",
+      "line": 19,
+      "quote": "{status.submitted && <p role=\"status\">Order received</p>}"
+    },
+    "domain": {
+      "path": "src/domain/orders.js",
+      "line": 5,
+      "quote": "export function createOrderSubmitter(send, changed) {"
+    },
+    "duplicate": {
+      "path": "src/domain/orders.js",
+      "line": 8,
+      "quote": "if (pending) return false;"
+    },
+    "invalid": {
+      "path": "src/domain/orders.js",
+      "line": 9,
+      "quote": "if (!Number.isInteger(quantity) || quantity <= 0) throw new Error('Quantity must be a positive integer');"
+    },
+    "pending": {
+      "path": "src/domain/orders.js",
+      "line": 10,
+      "quote": "pending = true;\n    changed({ pending: true, error: '', submitted: false });"
+    },
+    "success": {
+      "path": "src/domain/orders.js",
+      "line": 13,
+      "quote": "await send(quantity);\n      changed({ pending: false, error: '', submitted: true });"
+    },
+    "failure": {
+      "path": "src/domain/orders.js",
+      "line": 17,
+      "quote": "changed({ pending: false, error: error instanceof Error ? error.message : 'Order failed', submitted: false });"
+    },
+    "finally": {
+      "path": "src/domain/orders.js",
+      "line": 19,
+      "quote": "} finally {\n      pending = false;"
+    },
+    "api": {
+      "path": "app/api/orders/route.js",
+      "line": 1,
+      "quote": "export async function POST() { return Response.json({ accepted: true }); }"
+    },
+    "availability": {
+      "path": "app/order-form.jsx",
+      "line": 21,
+      "quote": "<button type=\"button\" onClick={() => void statusAction()}>Check availability</button>"
+    },
+    "action": {
+      "path": "app/actions.js",
+      "line": 2,
+      "quote": "export async function statusAction() { return 'available'; }"
+    },
+    "catalog": {
+      "path": "src/server/catalog.js",
+      "line": 2,
+      "quote": "export function serverLabel() { return 'Server-rendered catalogue'; }"
+    }
+  },
+  "nodes": [
+    {
+      "id": "page",
+      "kind": "page",
+      "label": "Page",
+      "props": [],
+      "state": [],
+      "events": [],
+      "lifecycle": [],
+      "evidence": [
+        "page"
+      ]
+    },
+    {
+      "id": "form",
+      "kind": "component",
+      "label": "OrderForm",
+      "props": [
+        "children: server-rendered React content"
+      ],
+      "state": [
+        "status.pending: boolean",
+        "status.error: string",
+        "status.submitted: boolean",
+        "submit: stable callback"
+      ],
+      "events": [
+        "onSubmit(event) → preventDefault(); submit(1)",
+        "onClick → statusAction()"
+      ],
+      "lifecycle": [
+        "mount: useState initializes status and submit"
+      ],
+      "evidence": [
+        "client",
+        "state",
+        "event"
+      ],
+      "parent": "page",
+      "contracts": [
+        {
+          "kind": "function",
+          "name": "OrderForm",
+          "path": "app/order-form.jsx",
+          "signature": "OrderForm({ children })",
+          "evidence": [
+            "state",
+            "event"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "submitter",
+      "kind": "module",
+      "label": "createOrderSubmitter",
+      "props": [],
+      "state": [
+        "pending: boolean (closure; separate from status.pending)"
+      ],
+      "events": [
+        "submit(quantity) → Promise<boolean>"
+      ],
+      "lifecycle": [],
+      "evidence": [
+        "domain",
+        "duplicate",
+        "pending",
+        "finally"
+      ],
+      "contracts": [
+        {
+          "kind": "function",
+          "name": "createOrderSubmitter",
+          "path": "src/domain/orders.js",
+          "signature": "createOrderSubmitter(send, changed)",
+          "evidence": [
+            "domain"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "send",
+      "kind": "service",
+      "label": "send(quantity) / fetch",
+      "props": [],
+      "state": [],
+      "events": [
+        "POST /api/orders",
+        "non-ok → throw Error"
+      ],
+      "lifecycle": [],
+      "evidence": [
+        "send",
+        "http-error"
+      ]
+    },
+    {
+      "id": "api",
+      "kind": "service",
+      "label": "POST /api/orders",
+      "props": [],
+      "state": [],
+      "events": [
+        "Response.json({ accepted: true })"
+      ],
+      "lifecycle": [],
+      "evidence": [
+        "api"
+      ]
+    },
+    {
+      "id": "action",
+      "kind": "service",
+      "label": "statusAction",
+      "props": [],
+      "state": [],
+      "events": [
+        "return 'available'"
+      ],
+      "lifecycle": [],
+      "evidence": [
+        "action"
+      ]
+    },
+    {
+      "id": "catalog",
+      "kind": "module",
+      "label": "serverLabel",
+      "props": [],
+      "state": [],
+      "events": [
+        "return 'Server-rendered catalogue'"
+      ],
+      "lifecycle": [],
+      "evidence": [
+        "catalog"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "compose",
+      "from": "page",
+      "to": "form",
+      "kind": "props",
+      "label": "children = <p>{serverLabel()}</p>",
+      "evidence": [
+        "page"
+      ]
+    },
+    {
+      "id": "label",
+      "from": "page",
+      "to": "catalog",
+      "kind": "call",
+      "label": "serverLabel()",
+      "evidence": [
+        "page",
+        "catalog"
+      ]
+    },
+    {
+      "id": "submit",
+      "from": "form",
+      "to": "submitter",
+      "kind": "call",
+      "label": "submit(1)",
+      "evidence": [
+        "event",
+        "binding"
+      ]
+    },
+    {
+      "id": "busy",
+      "from": "submitter",
+      "to": "form",
+      "kind": "write",
+      "label": "changed({ pending:true, error:\"\", submitted:false })",
+      "evidence": [
+        "pending",
+        "binding"
+      ]
+    },
+    {
+      "id": "transport",
+      "from": "submitter",
+      "to": "send",
+      "kind": "call",
+      "label": "await send(quantity)",
+      "evidence": [
+        "success",
+        "send"
+      ]
+    },
+    {
+      "id": "post",
+      "from": "send",
+      "to": "api",
+      "kind": "call",
+      "label": "fetch POST JSON quantity",
+      "evidence": [
+        "send",
+        "api"
+      ]
+    },
+    {
+      "id": "ok",
+      "from": "submitter",
+      "to": "form",
+      "kind": "write",
+      "label": "changed({ pending:false, error:\"\", submitted:true })",
+      "evidence": [
+        "success",
+        "binding"
+      ]
+    },
+    {
+      "id": "fail",
+      "from": "submitter",
+      "to": "form",
+      "kind": "write",
+      "label": "changed({ pending:false, error:message, submitted:false })",
+      "evidence": [
+        "failure",
+        "error-view"
+      ]
+    },
+    {
+      "id": "unlock",
+      "from": "submitter",
+      "to": "submitter",
+      "kind": "write",
+      "label": "finally: pending = false",
+      "evidence": [
+        "finally"
+      ]
+    },
+    {
+      "id": "ignore",
+      "from": "submitter",
+      "to": "form",
+      "kind": "return",
+      "label": "duplicate → false, no callback or request",
+      "evidence": [
+        "duplicate"
+      ]
+    },
+    {
+      "id": "invalid",
+      "from": "submitter",
+      "to": "form",
+      "kind": "return",
+      "label": "invalid quantity → rejected promise",
+      "evidence": [
+        "invalid"
+      ]
+    },
+    {
+      "id": "availability",
+      "from": "form",
+      "to": "action",
+      "kind": "call",
+      "label": "void statusAction()",
+      "evidence": [
+        "availability",
+        "action"
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "initial",
+      "title": "초기 화면",
+      "entry": "page",
+      "event": "route /",
+      "steps": [
+        {
+          "edge": "label",
+          "effect": "서버에서 catalogue 문자열 생성"
+        },
+        {
+          "edge": "compose",
+          "effect": "children을 클라이언트 OrderForm에 전달"
+        }
+      ],
+      "outcome": "초기 status는 pending=false, error=\"\", submitted=false",
+      "limitations": []
+    },
+    {
+      "id": "success",
+      "title": "주문 성공",
+      "entry": "form",
+      "event": "submit(1)",
+      "steps": [
+        {
+          "edge": "submit",
+          "effect": "클로저의 pending 검사 후 양의 정수 확인"
+        },
+        {
+          "edge": "busy",
+          "effect": "pending=true, status pending=true로 콜백 호출"
+        },
+        {
+          "edge": "transport",
+          "effect": "send(1) 대기"
+        },
+        {
+          "edge": "post",
+          "effect": "POST는 accepted:true를 반환"
+        },
+        {
+          "edge": "ok",
+          "effect": "status.submitted=true; 클로저 pending은 finally 전까지 true"
+        },
+        {
+          "edge": "unlock",
+          "effect": "클로저 pending=false; promise true 반환"
+        }
+      ],
+      "outcome": "Order received 표시",
+      "limitations": []
+    },
+    {
+      "id": "failure",
+      "title": "요청 실패",
+      "entry": "form",
+      "event": "non-ok response 또는 fetch rejection",
+      "steps": [
+        {
+          "edge": "submit",
+          "effect": "submit(1)"
+        },
+        {
+          "edge": "busy",
+          "effect": "이전 error를 비우고 pending=true"
+        },
+        {
+          "edge": "transport",
+          "effect": "실패하는 send(1)"
+        },
+        {
+          "edge": "fail",
+          "effect": "오류 문자열을 status.error에 전달"
+        },
+        {
+          "edge": "unlock",
+          "effect": "pending=false; promise false 반환"
+        }
+      ],
+      "outcome": "오류를 표시하고 재시도 가능",
+      "limitations": []
+    },
+    {
+      "id": "duplicate",
+      "title": "중복 제출",
+      "entry": "form",
+      "event": "in-flight submit(1)",
+      "steps": [
+        {
+          "edge": "submit",
+          "effect": "두 번째 submit(1)"
+        },
+        {
+          "edge": "ignore",
+          "effect": "pending이 true라 추가 send와 changed 없이 false 반환"
+        }
+      ],
+      "outcome": "기존 요청 유지",
+      "limitations": []
+    },
+    {
+      "id": "invalid",
+      "title": "잘못된 수량",
+      "entry": "submitter",
+      "event": "submit(0)",
+      "steps": [
+        {
+          "edge": "invalid",
+          "effect": "pending=false일 때 정수/양수 검증 실패"
+        }
+      ],
+      "outcome": "요청과 상태 변경 없이 reject; UI는 1만 전달",
+      "limitations": []
+    },
+    {
+      "id": "availability",
+      "title": "재고 확인",
+      "entry": "form",
+      "event": "Check availability click",
+      "steps": [
+        {
+          "edge": "availability",
+          "effect": "server action 결과는 소비하지 않음"
+        }
+      ],
+      "outcome": "화면 상태 변경 없음",
+      "limitations": []
+    }
+  ],
+  "invariants": [
+    {
+      "id": "guard",
+      "statement": "진행 중 동일 submitter의 재호출은 false를 반환하고 send를 추가 호출하지 않는다.",
+      "authority": "observed",
+      "evidence": [
+        "duplicate"
+      ]
+    }
+  ],
+  "limitations": [
+    "POST는 검증·저장 없는 테스트 응답이다. 실제 주문 DB는 없다.",
+    "실제 코드에는 외부 store/cache와 구독이 없다.",
+    "성공/실패 콜백 호출과 React commit은 같은 시각임을 보장하지 않는다.",
+    "availability 오류 처리 및 unmount 취소 처리는 구현되어 있지 않다."
+  ]
+}

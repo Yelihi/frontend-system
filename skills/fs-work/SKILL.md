@@ -5,6 +5,10 @@ description: Implement or resume an agreed plan, including plain-language implem
 
 # FS Work
 
+Before execution or resumption, show the selected saved plan through
+[native plan presentation](../../references/workflows/staged-planning.md#native-plan-presentation).
+Use the host's plan UI when available, including for plain-language implementation requests.
+
 For material unanswered choices, follow [ask and pause](../../references/workflows/user-decisions.md).
 Use the host's native selection UI (Codex `request_user_input` when permitted),
 not a prose questionnaire. After asking, pause this task, including reads and browser

@@ -20,6 +20,23 @@ try {
   assert.ok(!pack.files.some(file => file.path.startsWith('knowledge/')));
   await exec('tar', ['-xzf', join(temp, pack.filename), '-C', temp]);
   const releaseManifest = JSON.parse(await readFile(join(temp, 'package/release-manifest.json'), 'utf8'));
+  const explorer = join(temp, 'package/skills/fs-plan-visualize');
+  const explorerInput = join(explorer, 'references/page-flow-input.json');
+  const explorerOut = join(temp, 'page-flow');
+  await exec(process.execPath, [join(explorer, 'scripts/build.mjs'), explorerInput, explorerOut], {cwd: temp});
+  const pageView = JSON.parse(await readFile(join(explorerOut, 'rendered-model.json'), 'utf8'));
+  assert.deepEqual(pageView.scenarios[0].pages, ['example-page']);
+  assert.equal(pageView.scenarios[0].steps[0].changes[0].after, true);
+  const {modelHash} = await import('../skills/fs-plan-visualize/scripts/compose.mjs');
+  const baseView = JSON.parse(await readFile(explorerInput, 'utf8'));
+  const additionPath = join(temp, 'addition.json');
+  await writeFile(additionPath, JSON.stringify({id:'addition',baseHash:modelHash(baseView),scenarios:[{...baseView.scenarios[0],id:'extra'}]}));
+  await exec(process.execPath,[join(explorer,'scripts/build.mjs'),explorerInput,explorerOut,additionPath],{cwd:temp});
+  assert.equal(JSON.parse(await readFile(join(explorerOut,'rendered-model.json'),'utf8')).scenarios.length,2);
+  const unsafeInput = join(temp, 'unsafe-view.json');
+  await writeFile(unsafeInput, JSON.stringify({...baseView,nodes:[{...baseView.nodes[0],id:'bad"onclick="x'}]}));
+  await assert.rejects(exec(process.execPath,[join(explorer,'scripts/build.mjs'),unsafeInput,explorerOut],{cwd:temp}));
+
   for (const [path, expectedHash] of Object.entries(releaseManifest.files)) {
     const actual = createHash('sha256').update(await readFile(join(temp, 'package', path))).digest('hex');
     assert.equal(actual, expectedHash, `Packaged release file differs: ${path}`);

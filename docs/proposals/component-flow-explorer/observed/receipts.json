@@ -1,0 +1,128 @@
+{
+  "snapshot": {
+    "baseRef": "main",
+    "commit": "154c7e359c1b823e9253568961a0f73f5844e645",
+    "sourceHash": "e6360600d0634300495d050307d2517f4a6a2a5f60c3f4ff143927cc8e7fb1a4",
+    "files": [
+      "AGENTS.md",
+      "app/actions.js",
+      "app/api/orders/route.js",
+      "app/layout.jsx",
+      "app/order-form.jsx",
+      "app/page.jsx",
+      "CLAUDE.md",
+      "e2e/order.spec.mjs",
+      "eslint.config.mjs",
+      "jsconfig.json",
+      "next.config.mjs",
+      "package-lock.json",
+      "package.json",
+      "playwright.config.mjs",
+      "scripts/acceptance.mjs",
+      "scripts/check-boundaries.mjs",
+      "src/domain/orders.js",
+      "src/features/cart/index.js",
+      "src/features/cart/internal/price.js",
+      "src/features/checkout/index.js",
+      "src/server/catalog.js",
+      "src/server/public.js",
+      "tests/order.test.mjs",
+      "tsconfig.check.json"
+    ],
+    "manifests": {
+      "package.json": {
+        "name": "fs-frontend-acceptance",
+        "private": true,
+        "type": "module",
+        "scripts": {
+          "dev": "next dev --hostname 127.0.0.1 --port 3217",
+          "build": "next build --webpack",
+          "lint": "eslint app src",
+          "typecheck": "tsc --noEmit -p tsconfig.check.json",
+          "check:boundaries": "node scripts/check-boundaries.mjs",
+          "test:unit": "node --test tests/order.test.mjs",
+          "test:e2e": "playwright test",
+          "acceptance": "node scripts/acceptance.mjs"
+        },
+        "dependencies": {
+          "next": "16.3.5",
+          "react": "19.3.0",
+          "react-dom": "19.3.0",
+          "server-only": "0.0.1"
+        },
+        "devDependencies": {
+          "@playwright/test": "1.63.0",
+          "eslint": "9.39.2",
+          "eslint-plugin-react-hooks": "7.1.1",
+          "eslint-plugin-jsx-a11y": "6.10.2",
+          "typescript": "5.9.3"
+        }
+      }
+    },
+    "workingChanges": [],
+    "status": "versioned",
+    "totalFiles": 24,
+    "nextOffset": null,
+    "documentHash": null,
+    "documentStatus": {
+      "status": "missing",
+      "analyzedCommit": null
+    }
+  },
+  "flow": {
+    "id": "order-observed",
+    "kind": "flow",
+    "hash": "2b9b60500b6aeb17403248fc214249acb4d672545905553cca71a77e214010c1",
+    "status": "saved",
+    "authority": "Host analysis recorded; no execution, approval, or automatic project.md refresh"
+  },
+  "context": {
+    "projectDocument": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/dist/observed-order-project/.frontend-system/project.md",
+    "status": {
+      "baseRef": "main",
+      "analyzedCommit": "154c7e359c1b823e9253568961a0f73f5844e645",
+      "sourceHash": "e6360600d0634300495d050307d2517f4a6a2a5f60c3f4ff143927cc8e7fb1a4",
+      "updatedAt": "2026-10-12T15:04:41.306Z",
+      "analysisStatus": "complete",
+      "mainCommit": "154c7e359c1b823e9253568961a0f73f5844e645",
+      "workingChanges": [],
+      "status": "current"
+    },
+    "delivery": {
+      "analysisStatus": "complete",
+      "aiContext": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/dist/observed-order-project/.frontend-system/evidence/context-db1b68ae11a9f2533764d0dcfad58b62f337003162c9aba3b57033ecf5d38be2.json",
+      "diagrams": [
+        {
+          "path": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/dist/observed-order-project/.frontend-system/diagrams/project-2b9b60500b6aeb17403248fc214249acb4d672545905553cca71a77e214010c1.html",
+          "hash": "bab511168f0ae4664487ee95c208eb2319dadaaef2967436d8fdfe3686c68619"
+        }
+      ]
+    },
+    "reuse": {
+      "bound": [],
+      "excluded": [
+        {
+          "id": "environment",
+          "reason": "이번 자료는 화면 및 실행 계약 연결 평가다. semantic trigger 재사용 binding은 별도 검증하지 않음."
+        },
+        {
+          "id": "architecture",
+          "reason": "이번 자료는 화면 및 실행 계약 연결 평가다. semantic trigger 재사용 binding은 별도 검증하지 않음."
+        },
+        {
+          "id": "orders",
+          "reason": "이번 자료는 화면 및 실행 계약 연결 평가다. semantic trigger 재사용 binding은 별도 검증하지 않음."
+        },
+        {
+          "id": "shared",
+          "reason": "이번 자료는 화면 및 실행 계약 연결 평가다. semantic trigger 재사용 binding은 별도 검증하지 않음."
+        },
+        {
+          "id": "delivery",
+          "reason": "이번 자료는 화면 및 실행 계약 연결 평가다. semantic trigger 재사용 binding은 별도 검증하지 않음."
+        }
+      ],
+      "meaning": "Bound statements can emit saved triggers after dependency validation. Excluded statements remain review context; never imply cache hits."
+    }
+  }
+}

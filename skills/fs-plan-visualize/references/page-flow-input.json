@@ -1,0 +1,83 @@
+{
+  "schemaVersion": "page-flow-1",
+  "title": "Input shape example",
+  "basis": "proposed",
+  "nodes": [
+    {
+      "id": "example-page",
+      "kind": "page",
+      "name": "ExamplePage",
+      "parent": null,
+      "props": [],
+      "state": [],
+      "events": [],
+      "lifecycle": [],
+      "signature": "",
+      "intent": "Example shape only",
+      "evidence": []
+    },
+    {
+      "id": "example-panel",
+      "kind": "component",
+      "name": "ExamplePanel",
+      "parent": "example-page",
+      "props": [],
+      "state": [
+        "visible: boolean"
+      ],
+      "events": [
+        "onOpen()"
+      ],
+      "lifecycle": [],
+      "signature": "",
+      "intent": "Example shape only",
+      "evidence": []
+    }
+  ],
+  "instances": [
+    {
+      "id": "example-panel-1",
+      "node": "example-panel",
+      "page": "example-page"
+    }
+  ],
+  "pages": [
+    {
+      "id": "example-page",
+      "title": "예시 페이지",
+      "route": "/example",
+      "scenes": [
+        "idle"
+      ]
+    }
+  ],
+  "navigation": [],
+  "scenarios": [
+    {
+      "id": "example-open",
+      "title": "패널 열기",
+      "category": "event",
+      "basis": "proposed",
+      "steps": [
+        {
+          "id": "open",
+          "fromNode": "example-panel",
+          "toNode": "example-panel",
+          "page": "example-page",
+          "scene": "idle",
+          "label": "onOpen()",
+          "effect": "패널을 연다.",
+          "changes": [
+            {
+              "ownerNode": "example-panel",
+              "owner": "ExamplePanel",
+              "field": "visible",
+              "before": false,
+              "after": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
