@@ -7,6 +7,7 @@ import type * as z from 'zod/v4';
 export async function completeWork(root: string, options: {
   planId: string; expectedHash: string; attemptId: string; baselineCheckId?: string | undefined;
   reviews: Array<z.input<typeof reviewInputSchema>>;
+  caseEvidence?: Array<{caseId: string; checkId?: string | undefined; testName?: string | undefined; reviewId?: string | undefined}> | undefined;
 }) {
   const state = await workflowContext(root, options.planId);
   const execution = state.execution;
@@ -35,7 +36,8 @@ export async function completeWork(root: string, options: {
     const saved = await saveExecution(root, {
       ...execution, status: 'complete', finalCheckId: checked.id,
       ...(baselineCheckId ? {baselineCheckId} : {}),
-      steps: [{...step, status: 'complete', remaining: [], checkIds: [checked.id], reviewIds, attemptId: options.attemptId}],
+      steps: [{...step, status: 'complete', remaining: [], checkIds: [checked.id], reviewIds, attemptId: options.attemptId,
+        ...(options.caseEvidence ? {caseEvidence: options.caseEvidence.map(item => ({...item, ...(!item.checkId && item.testName ? {checkId: checked.id} : {})}))} : {})}],
       note: 'Host declared the approved single issue ready; delivery checks, explicit semantic reviews and completion guards accepted.',
     }, options.expectedHash, options.planId);
     return {status: 'complete' as const, executionHash: saved.hash, check, reviewIds,

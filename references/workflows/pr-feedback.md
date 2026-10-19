@@ -52,8 +52,10 @@ Candidate trigger → follow-up investigation → expected and forbidden matches
 ```
 
 Only authorized `learn` recording uses `save_project_record(kind:evidence)` and its
-current hash. Save confirmed decisions with `kind:decisions`; proposed remedies stay
-evidence. Preserve prior reasons when superseding a decision. Rejected claims may be
+current hash. Save confirmed reusable decisions with `save_project_decision` and their
+conditions, exclusions, triggers, existing entrypoints and source confirmation.
+Keep older Markdown decision notes readable; do not automatically convert them.
+Proposed remedies stay evidence. Preserve prior reasons when superseding a decision. Rejected claims may be
 retained locally as rejected with their counterexample, never as accepted guidance.
 Read-only review returns this compact proposal without incidental memory writes.
 

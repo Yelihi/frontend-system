@@ -5,6 +5,7 @@ import * as z from "zod/v4";
 
 import { FileSystemProjectDiscovery } from "../adapters/filesystem/project-discovery.js";
 import { prScope, prScopeSchema, samePrScope } from './pr-scope.js';
+import { analysisId, flowSchema } from './flow-schema.js';
 import { localPath, policySchema, policyFailures, policyProtectionFailures, requiredScripts, policyInputSchema, type PolicyInput, type VerificationPolicy } from "./policy.js";
 import { bindDesignEvidence, boundEvidenceSchema, designContractFailures, evidenceFreshness, updateDesignDecisions, type DecisionUpdates, type DesignEvidence, type BoundEvidence } from './design-evidence.js';
 
@@ -20,7 +21,8 @@ export const issueSchema = z.strictObject({
   testCases: z.array(z.strictObject({
     id: recordId, given: z.string().trim().min(1), when: z.string().trim().min(1), then: z.string().trim().min(1),
     method: z.enum(['unit', 'integration', 'e2e', 'manual']), files: z.array(localPath).min(1),
-  })).min(1).optional().describe('Reviewed test-case contract for this domain flow. files are planned test/fixture paths, or manual reproduction instructions. Requires test-code feedback before completion.'),
+    flowId: analysisId.optional(), scenarioId: analysisId.optional(),
+  })).min(1).optional().describe('Approved test intent for this domain flow. Version 3 runs tests through implementation and reviews evidence afterward; version 2 retains the test-code feedback checkpoint.'),
   files: z.array(localPath), dependsOn: z.array(recordId),
   requiredCheckIds: z.array(z.string()), acceptance: z.array(z.string().min(1)).min(1),
 });
@@ -44,6 +46,11 @@ const executionObject = z.strictObject({
       status: z.enum(['pending', 'approved']), revisionHash: hash, confirmation: z.string(),
       files: z.array(z.strictObject({path: localPath, hash})).min(1),
     }).optional().describe('Test-first checkpoint: exact reviewed test/fixture/instruction file hashes and actual user feedback. Approval concerns tests, not product completion.'),
+    caseEvidence: z.array(z.strictObject({
+      caseId: recordId, checkId: recordId.optional(), testName: z.string().trim().min(1).optional(),
+      reviewId: recordId.optional(),
+    })).optional(),
+    implementationReview: z.strictObject({sourceHash: hash, confirmation: z.string().trim().min(1)}).optional(),
   })).min(1),
   note: z.string(),
 });
@@ -59,7 +66,7 @@ const revisionSchema = z.object({
   version: z.number().int().positive(), hash, approved: z.boolean(), approval: z.string(),
   policy: policySchema.optional(), issues: issuesSchema.optional(),
   // Evidence and storage call each other at runtime; defer schema lookup until parsing.
-  contractVersion: z.literal(2).optional(), evidence: z.lazy(() => boundEvidenceSchema).optional(),
+  contractVersion: z.union([z.literal(2), z.literal(3)]).optional(), evidence: z.lazy(() => boundEvidenceSchema).optional(),
 });
 const executionRecordSchema = z.object({
   execution: executionSchema, fileHashes: z.record(z.string(), z.string()), updatedAt: z.string(),
@@ -161,15 +168,15 @@ export async function readRevision(root: string, planId?: string) {
     drifted: !!metadata && metadata.hash !== currentHash,
     policy: metadata?.policy, issues: metadata?.issues,
     contractVersion: metadata?.contractVersion, evidence: metadata?.evidence,
-    evidenceStatus: metadata?.contractVersion === 2 ? metadata.evidence ? 'recorded' : 'missing' : 'legacy',
+    evidenceStatus: metadata?.contractVersion ? metadata.evidence ? 'recorded' : 'missing' : 'legacy',
   };
 }
 
-function revisionDigest(content: string, policy?: VerificationPolicy, issues?: Issues, planId?: string, version?: number, contractVersion?: 2, evidence?: BoundEvidence) {
+function revisionDigest(content: string, policy?: VerificationPolicy, issues?: Issues, planId?: string, version?: number, contractVersion?: 2 | 3, evidence?: BoundEvidence) {
   return digest(policy || issues || planId ? JSON.stringify({ content, policy, issues, planId, ...(planId ? { version } : {}), ...(contractVersion ? {contractVersion, evidence} : {}) }) : content);
 }
 
-export async function saveRevision(root: string, content: string | undefined, expectedHash: string | null, policy?: PolicyInput, planId?: string, issues?: Issues, evidence?: DesignEvidence, decisionUpdates?: DecisionUpdates, evidenceRoutes?: DesignEvidence['routes']) {
+export async function saveRevision(root: string, content: string | undefined, expectedHash: string | null, policy?: PolicyInput, planId?: string, issues?: Issues, evidence?: DesignEvidence, decisionUpdates?: DecisionUpdates, evidenceRoutes?: DesignEvidence['routes'], workflowVersion?: 2 | 3) {
   return locked(root, async () => {
     const current = await readRevision(root, planId);
     if (current.hash !== expectedHash) throw new Error("Revision changed; reread before saving");
@@ -205,15 +212,29 @@ export async function saveRevision(root: string, content: string | undefined, ex
       });
     }
     const nextIssues = issues === undefined ? current.issues : issuesSchema.parse(issues);
-    const contractVersion = current.contractVersion ?? (evidence || (planId && !current.version) ? 2 : undefined);
+    if (workflowVersion === 2 && current.contractVersion === 3) throw new Error('Cannot downgrade a continuous-work revision');
+    const contractVersion = workflowVersion ?? current.contractVersion ?? (evidence || (planId && !current.version) ? 3 : undefined);
     if (planId && (!nextPolicy || !nextIssues)) throw new Error("Named plans require a verification policy and issue contracts");
     if (nextIssues) validateIssues(nextIssues, nextPolicy);
+    if (nextIssues?.some(issue => issue.testCases?.some(item => item.flowId))) {
+      const { getProjectAnalysis } = await import('./project-flows.js');
+      const { installedSystemRoot } = await import('./knowledge/routing.js');
+      for (const item of nextIssues.flatMap(issue => issue.testCases ?? []).filter(item => item.flowId)) {
+        const ref = nextEvidence?.analysisRefs?.find(ref => ref.kind === 'flow' && ref.id === item.flowId);
+        if (!ref) throw new Error(`Test case ${item.id} requires a pinned flow reference`);
+        const found = (await getProjectAnalysis(root, installedSystemRoot(), {kind:'flow', ids:[item.flowId!], full:true})).records[0];
+        if (!found || found.hash !== ref.hash ||
+          !flowSchema.parse(found.data).scenarios.some(scenario => scenario.id === item.scenarioId)) {
+          throw new Error(`Test case ${item.id} references an unknown or changed flow scenario`);
+        }
+      }
+    }
     if (planId) {
       const marker = "\n<!-- fs-issue-contracts -->\n";
       const design = content.includes(marker) ? content.slice(0, content.indexOf(marker)) : content;
       content = `${design.trimEnd()}${marker}\n## Issue contracts\n\nProgress: [progress.md](progress.md). AI references: [plan.ai.md](plan.ai.md).\n\n${nextIssues!.map(issue =>
         `### ${issue.id}: ${issue.title}\n\n${issue.contract}\n\n- Files: ${issue.files.join(', ')}\n- Depends on: ${issue.dependsOn.join(', ') || 'none'}\n- Required checks: ${issue.requiredCheckIds.join(', ')}\n\nAcceptance:\n${issue.acceptance.map(item => `- ${item}`).join('\n')}\n` +
-        (issue.testCases ? `\nTest cases:\n${issue.testCases.map(item => `- **${item.id}** (${item.method}) — Given: ${item.given}; When: ${item.when}; Then: ${item.then}. Files: ${item.files.join(', ')}`).join('\n')}\n` : '')
+        (issue.testCases ? `\nTest cases:\n${issue.testCases.map(item => `- **${item.id}** (${item.method})${item.flowId ? ` [${item.flowId}/${item.scenarioId}]` : ''} — Given: ${item.given}; When: ${item.when}; Then: ${item.then}. Files: ${item.files.join(', ')}`).join('\n')}\n` : '')
       ).join('\n')}`;
       if (nextEvidence) content += `\n## Decisions and evidence\n\nProject: ${nextEvidence.projectHash}\n\n${nextEvidence.decisions.map((item) => `- ${item.id} [${item.status}, ${item.authority}]: ${item.question}\n  Choice: ${item.selected ?? 'none'} — ${item.rationale}\n  Options: ${item.options.map((option) => `${option.id}: ${option.description} (cost: ${option.cost})`).join('; ')}\n  Evidence: ${item.evidence.map((cite) => `${cite.path}:${cite.line}`).join(', ')}; knowledge: ${item.knowledgeIds.join(', ') || 'none'}\n  Confirmation: ${item.confirmation || 'not supplied'}\n  Rules: ${item.ruleIds.join(', ')}; issues: ${item.issueIds.join(', ')}\n  Reconsider: ${item.reconsiderWhen}`).join('\n\n')}\n`;
     }
@@ -259,7 +280,7 @@ export async function approveRevision(root: string, expectedHash: string, approv
 }
 
 async function requireDesignEvidence(root: string, revision: Awaited<ReturnType<typeof readRevision>>, checkSources: boolean) {
-  if (revision.contractVersion !== 2) return;
+  if (!revision.contractVersion) return;
   const failures = designContractFailures(revision.evidence, revision.policy, revision.issues);
   if (revision.evidence) failures.push(...await evidenceFreshness(root, revision.evidence, checkSources));
   if (failures.length) throw new Error(failures.join('; '));
@@ -302,7 +323,7 @@ export async function workflowContext(root: string, planId?: string) {
   const changedFiles = saved && current ? [...new Set([...Object.keys(current), ...Object.keys(saved.fileHashes)])]
     .filter((path) => current[path] !== saved.fileHashes[path]).sort() : [];
   const protectionFailures = revision.policy ? policyProtectionFailures(revision.policy) : [];
-  if (revision.contractVersion === 2) {
+  if (revision.contractVersion) {
     protectionFailures.push(...designContractFailures(revision.evidence, revision.policy, revision.issues));
     if (revision.evidence) protectionFailures.push(...await evidenceFreshness(root, revision.evidence, false));
   }
@@ -401,7 +422,7 @@ export async function saveExecution(root: string, input: ExecutionInput, expecte
       const previous = state.execution?.steps.find(({ id }) => id === step.id);
       const cases = state.revision.issues?.find(issue => issue.id === step.id)?.testCases;
       const review = step.testReview;
-      if (cases && (JSON.stringify(previous) !== JSON.stringify(step) || state.revisionChangedSinceCheckpoint || execution.status === 'complete')) {
+      if (cases && state.revision.contractVersion !== 3 && (JSON.stringify(previous) !== JSON.stringify(step) || state.revisionChangedSinceCheckpoint || execution.status === 'complete')) {
         if ((step.status === 'complete' || execution.status === 'complete') && review?.status !== 'approved') throw new Error(`Test-code feedback is required before completing issue: ${step.id}`);
         if (review?.status === 'approved') {
           if (review.revisionHash !== execution.revisionHash) throw new Error(`Test review belongs to a different plan revision: ${step.id}`);
@@ -409,6 +430,37 @@ export async function saveExecution(root: string, input: ExecutionInput, expecte
           if (!review.confirmation.trim() || paths.size !== review.files.length || cases.some(item => item.files.some(path => !paths.has(path)))) throw new Error(`Test review requires actual user confirmation and every planned test artifact: ${step.id}`);
           if (review.files.some(item => fileHashes[item.path] !== item.hash)) throw new Error(`Reviewed test artifacts changed or are missing; request feedback again: ${step.id}`);
         }
+      }
+      if (state.revision.contractVersion === 3 && cases && step.status === 'complete') {
+        const evidence = step.caseEvidence ?? [];
+        if (new Set(evidence.map(item => item.caseId)).size !== evidence.length ||
+          cases.some(item => !evidence.some(record => record.caseId === item.id)) ||
+          evidence.some(item => !cases.some(testCase => testCase.id === item.caseId))) {
+          throw new Error(`Every approved test case needs distinct execution evidence: ${step.id}`);
+        }
+        for (const item of evidence) {
+          const testCase = cases.find(testCase => testCase.id === item.caseId)!;
+          if (!item.checkId && !item.reviewId) throw new Error(`Case ${item.caseId} has no check or semantic review evidence`);
+          if (item.checkId) {
+            const check = await verify(item.checkId);
+            if (check.attemptId !== step.attemptId || !step.checkIds.includes(item.checkId)) throw new Error(`Case ${item.caseId} uses a check outside this issue attempt`);
+            if (!check.results.some(result => result.status === 'passed' &&
+              (item.testName ? result.output.split(/\r?\n/).some(line => {
+                const name = line.match(/^\s*ok \d+ - (.+)$/)?.[1] ?? line.match(/^\s*✔ (.+?)(?: \([\d.]+ms\))?$/u)?.[1];
+                return name?.trim() === item.testName;
+              }) : false))) {
+              if (!item.reviewId) throw new Error(`Case ${item.caseId} has no matching passing test in the check log or reviewed result`);
+            } else continue;
+          }
+          const review = await readReview(root, item.reviewId!, planId);
+          if (review.status !== 'passed' || review.revisionHash !== execution.revisionHash || review.sourceHash !== sourceHash ||
+            review.attemptId !== step.attemptId || review.stepId !== step.id || !step.reviewIds?.includes(review.id) ||
+            !review.findings.some(finding => finding.testCaseId === item.caseId) ||
+            (testCase.method !== 'manual' && !item.checkId)) throw new Error(`Case ${item.caseId} lacks current, scoped review evidence`);
+        }
+      }
+      if (step.implementationReview && (step.status !== 'complete' || step.implementationReview.sourceHash !== sourceHash)) {
+        throw new Error(`Implementation feedback is stale or the issue is unfinished: ${step.id}`);
       }
       if (step.status === "complete" && (JSON.stringify(previous) !== JSON.stringify(step) || state.revisionChangedSinceCheckpoint)) {
         if (!step.checkIds.length || step.remaining.length) throw new Error("Completed steps require checks and no remaining work");
@@ -439,6 +491,18 @@ export async function saveExecution(root: string, input: ExecutionInput, expecte
   });
 }
 
+export async function recordImplementationFeedback(root: string, planId: string, stepId: string,
+  expectedHash: string, sourceHash: string, confirmation: string) {
+  if (!confirmation.trim()) throw new Error('Actual user implementation feedback is required');
+  const state = await workflowContext(root, planId);
+  if (state.executionHash !== expectedHash || state.verification.sourceHash !== sourceHash ||
+    state.revision.contractVersion !== 3 || !state.execution) throw new Error('Review the current completed work before confirming it');
+  const step = state.execution.steps.find(item => item.id === stepId);
+  if (!step || step.status !== 'complete') throw new Error('Implementation feedback requires a completed issue');
+  return saveExecution(root, {...state.execution, steps: state.execution.steps.map(item => item.id === stepId
+    ? {...item, implementationReview: {sourceHash, confirmation}} : item)}, expectedHash, planId);
+}
+
 function validateSteps(execution: { steps: Array<{ id: string; dependsOn?: string[] | undefined }> }) {
   const steps = new Map(execution.steps.map((step) => [step.id, step]));
   const visited = new Set<string>();
@@ -460,6 +524,7 @@ function validateIssues(issues: Issues, policy?: VerificationPolicy) {
   validateSteps({ steps: issues });
   for (const issue of issues) {
     if (issue.testCases && new Set(issue.testCases.map(item => item.id)).size !== issue.testCases.length) throw new Error('Duplicate test-case IDs within issue');
+    if (issue.testCases?.some(item => Boolean(item.flowId) !== Boolean(item.scenarioId))) throw new Error('Test case flow and scenario IDs must be supplied together');
     if (issue.testCases?.some(item => item.files.some(path => !issue.files.includes(path)))) throw new Error('Test artifacts must belong to issue files');
     if (issue.requiredCheckIds.some((id) => !policy?.checks.some((check) => check.id === id))) throw new Error("Unknown issue check");
   }
@@ -516,7 +581,7 @@ export const reviewInputSchema = z.strictObject({
   prScope: prScopeSchema.optional().describe('For PR preflight: exact scope returned by check_pr_readiness, after committing intended changes. Ordinary work reviews may omit it.'),
   stepId: recordId, reviewId: z.string().min(1).describe('Exact existing policy.reviews[].id (also workflow.revision.policy.reviewIds). Select the approved review requirement, not a new record name. The server generates the saved record id; attemptId identifies the attempt.'), attemptId: recordId,
   status: z.enum(["passed", "failed"]),
-  findings: z.array(z.strictObject({ ruleId: z.string().min(1), files: z.array(z.string()).min(1), evidence: z.string().min(1), conclusion: z.string().min(1) })).min(1),
+  findings: z.array(z.strictObject({ ruleId: z.string().min(1), testCaseId: recordId.optional(), files: z.array(z.string()).min(1), evidence: z.string().min(1), conclusion: z.string().min(1) })).min(1),
   remaining: z.array(z.string()), resolvedExceptions: z.array(z.string()),
 });
 const reviewSchema = reviewInputSchema.extend({ id: recordId, revisionHash: hash, sourceHash: hash, createdAt: z.string(), authority: z.literal("host-model-review") });

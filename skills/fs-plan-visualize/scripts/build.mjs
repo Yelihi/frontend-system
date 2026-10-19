@@ -76,6 +76,14 @@ for (const scenario of spec.scenarios) {
   assert.ok(['event','lifecycle'].includes(scenario.category),'Unknown scenario category');
   assert.ok(['observed','proposed'].includes(scenario.basis),'Unknown scenario basis');
   assert.ok(scenario.steps.length,'Scenario needs steps');
+  if(scenario.testCases){
+    assert.ok(Array.isArray(scenario.testCases),'Scenario test cases must be a list');
+    assert.equal(new Set(scenario.testCases.map(item=>item.id)).size,scenario.testCases.length,'Duplicate scenario test case');
+    for(const item of scenario.testCases){
+      assert.match(item.id,/^[a-zA-Z][a-zA-Z0-9_-]*$/,'Unsafe test case ID');
+      assert.ok(typeof item.expected==='string' && item.expected.trim(),'Test case needs expected outcome');
+    }
+  }
   assert.equal(new Set(scenario.steps.map(step => step.id)).size, scenario.steps.length);
   for (const step of scenario.steps) {
     assert.ok(nodes.has(step.fromNode) && nodes.has(step.toNode), 'Dangling scenario edge');

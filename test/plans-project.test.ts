@@ -11,9 +11,12 @@ import { FileSystemProjectDiscovery } from "../src/adapters/filesystem/project-d
 import { projectDocumentStatus, projectSnapshot, readProjectSource, readProjectSources, recordProjectRefresh } from "../src/application/project-snapshot.js";
 import { readProjectDocument, writeProjectArtifacts } from "../src/application/project-store.js";
 import { runProjectChecks } from "../src/application/run-capabilities.js";
-import { approveRevision, beginAttempt, digest, listPlans, readCheckRecord, readRevision, saveExecution, saveRevision, workflowContext } from "../src/application/workflow-store.js";
+import { approveRevision, beginAttempt, digest, listPlans, readCheckRecord, readRevision, recordImplementationFeedback, saveExecution, saveRevision, workflowContext } from "../src/application/workflow-store.js";
 import { ruleId, ruleSchema, type VerificationPolicy } from "../src/application/policy.js";
 import { fixtureEvidence } from './design-evidence-fixture.js';
+import {git} from '../src/application/git-state.js';
+import {checkPrReadiness} from '../src/application/pr-readiness.js';
+import {workReview} from '../src/application/work-review.js';
 
 const run = promisify(execFile);
 const discovery = new FileSystemProjectDiscovery();
@@ -72,7 +75,7 @@ test('staged plans share human/AI revision and require feedback on unchanged tes
   try {
     const planned = {...issue,testCases:[{id:'empty',given:'The fixture is ready',when:'Run the contract test',then:'One equals one',method:'unit' as const,files:['case.cjs']}]};
     const evidence = await fixtureEvidence(root,policy(),[planned]);
-    const revision = await saveRevision(root,'# Domain flow',null,policy(),'staged',[planned],evidence);
+    const revision = await saveRevision(root,'# Domain flow',null,policy(),'staged',[planned],evidence,undefined,undefined,2);
     const base = join(root,'.frontend-system/plans/staged');
     const human = await readFile(join(base,'plan.md'),'utf8');
     assert.match(human,/Given: The fixture is ready/);
@@ -113,6 +116,50 @@ test('staged plans share human/AI revision and require feedback on unchanged tes
     assert.equal(updated.approved,false);
     await assert.rejects(saveRevision(root,'Invalid cases',updated.hash!,undefined,'staged',[{...planned,testCases:[planned.testCases[0]!,planned.testCases[0]!]}]),/Duplicate test-case/);
     await assert.rejects(saveRevision(root,'Invalid paths',updated.hash!,undefined,'staged',[{...planned,testCases:[{...planned.testCases[0]!,files:['outside.cjs']}]}]),/Test artifacts must belong/);
+  } finally {await rm(root,{recursive:true,force:true});}
+});
+
+test('continuous plans use approved test intent and require current case evidence without a mid-work user checkpoint', async () => {
+  const root = await fixture();
+  try {
+    await git(root,['init','-b','main']);
+    await git(root,['config','user.name','FS fixture']);
+    await git(root,['config','user.email','fs@example.invalid']);
+    await writeFile(join(root,'.gitignore'),'.frontend-system/\n');
+    await git(root,['add','.']); await git(root,['commit','-m','baseline']);
+    const planned = {...issue, testCases:[{id:'contract-case',given:'The fixture is ready',
+      when:'Run the contract test',then:'One equals one',method:'unit' as const,files:['case.cjs']}]};
+    const revision = await saveRevision(root,'# Continuous work',null,policy(),'continuous',[planned],
+      await fixtureEvidence(root,policy(),[planned]));
+    assert.equal(revision.contractVersion,3);
+    await approveRevision(root,revision.hash!,'Fixture owner approves the outcome and test intent','continuous');
+    await git(root,['checkout','-b','feature']);
+    await writeFile(join(root,'note.txt'),'An implementation note\n');
+    const execution = {revisionHash:revision.hash!,status:'in-progress' as const,
+      steps:[{id:'first',status:'pending' as const,checkIds:[] as string[],remaining:[] as string[]}],note:'Fixture'};
+    const initial = await saveExecution(root,execution,null,'continuous');
+    const attempt = await beginAttempt(root,'first',initial.hash,'continuous');
+    const check = await runProjectChecks(await profile(root),{planId:'continuous',stage:'delivery',attemptId:attempt.id});
+    const complete = {...execution,status:'complete' as const,finalCheckId:check.id,
+      steps:[{...execution.steps[0]!,status:'complete' as const,checkIds:[check.id],attemptId:attempt.id}]};
+    await assert.rejects(saveExecution(root,complete,initial.hash,'continuous'),/execution evidence/);
+    await assert.rejects(saveExecution(root,{...complete,steps:[{...complete.steps[0]!,caseEvidence:[
+      {caseId:'contract-case',checkId:check.id,testName:'wrong name'}]}]},initial.hash,'continuous'),/no matching passing test/);
+    const accepted = await saveExecution(root,{...complete,steps:[{...complete.steps[0]!,caseEvidence:[
+      {caseId:'contract-case',checkId:check.id,testName:'contract'}]}]},initial.hash,'continuous');
+    assert.equal((await workflowContext(root,'continuous')).verification.status,'verified');
+    const review = await workReview(root,'continuous','first','main');
+    assert.match(review.diff,/An implementation note/);
+    assert.equal((await workReview(root,'continuous','first','main',false)).diff,'');
+    assert.equal(review.cases[0]?.evidence?.testName,'contract');
+    assert.ok((await checkPrReadiness(root,'continuous','main','first')).failures.some(item => item.includes('implementation feedback')));
+    const confirmed = await recordImplementationFeedback(root,'continuous','first',accepted.hash,review.sourceHash,
+      'Fixture owner reviewed this exact implementation and test evidence');
+    assert.ok(confirmed.hash);
+    assert.ok(!(await checkPrReadiness(root,'continuous','main','first')).failures.some(item => item.includes('implementation feedback')));
+    await writeFile(join(root,'note.txt'),'Changed after feedback\n');
+    assert.ok((await checkPrReadiness(root,'continuous','main','first')).failures.some(item => item.includes('implementation feedback')));
+    assert.ok(accepted.hash);
   } finally {await rm(root,{recursive:true,force:true});}
 });
 

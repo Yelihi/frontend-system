@@ -33,6 +33,9 @@ For an aggregate, preserve all contributing flow references in `baseline.flows` 
   from source interpretation. For a propagation group, add `ordering: unordered-consumers`
   and `effects: [{fromNode, toNode, page, scene, fromInstance?, toInstance?}, ...]`;
   it expresses shared causation, not measured concurrent commits.
+  A scenario may include `testCases: [{id, expected}]` copied from the approved plan.
+  The viewer labels these as planned cases; it does not claim they passed. Keep IDs
+  aligned with the pinned flow/scenario references in the plan.
 - `browserApis`: optional `{name, ownerNode, detail}` referring to an app node.
 
 Include recorded initial/mount/update/cleanup and success/failure flows relevant to the

@@ -3,13 +3,14 @@ import * as z from 'zod/v4';
 import {analysisId, flowSchema} from './flow-schema.js';
 import {getProjectAnalysis} from './project-flows.js';
 import {flowToHtml, flowToMermaid} from './flow-view.js';
-import {atomic, directory, digest, locked} from './workflow-store.js';
+import {atomic, directory, digest, locked, recordId, workflowContext} from './workflow-store.js';
 import {loadFlowDesignImages} from './flow-design.js';
 
 export const renderFlowOptions = z.object({
   id: analysisId, expectedHash: z.string().regex(/^[a-f0-9]{64}$/),
   language: z.enum(['ko', 'en']).default('ko').describe('Fixed HTML controls only; evidence and authored analysis stay unchanged.'),
   scenarioId: analysisId.optional(), format: z.enum(['html', 'mermaid']).default('html'),
+  planId: recordId.optional(),
   allowUnverified: z.boolean().default(false).describe('Explicit preview of proposed or stale analysis; never certifies current implementation.'),
 });
 
@@ -28,8 +29,18 @@ export async function renderProjectFlow(root: string, systemRoot: string, input:
     if (options.scenarioId && !flow.scenarios.some(s => s.id === options.scenarioId)) throw new Error('Unknown flow scenario');
     const provenance = {projectPath:resolve(root), flowHash:options.expectedHash,
       generatedAt:new Date().toISOString(), reasons:freshness.reasons};
+    const linked = options.planId ? await workflowContext(root, options.planId) : null;
+    if (linked && !linked.revision.evidence?.analysisRefs?.some(ref => ref.kind === 'flow' && ref.id === flow.id && ref.hash === options.expectedHash)) {
+      throw new Error('The selected plan does not pin this flow version');
+    }
+    const caseLinks = linked ? Object.fromEntries(flow.scenarios.map(scenario => [scenario.id,
+      linked.revision.issues?.flatMap(issue => (issue.testCases ?? [])
+        .filter(item => item.flowId === flow.id && item.scenarioId === scenario.id)
+        .map(item => ({id:item.id, method:item.method, expected:item.then,
+          status: linked.verification.status === 'verified' && linked.execution?.steps.find(step => step.id === issue.id)?.caseEvidence?.some(entry => entry.caseId === item.id)
+            ? 'verified' : 'unverified'}))) ?? []])) : undefined;
     const content = options.format === 'html'
-      ? flowToHtml(flow, freshness.status, {...provenance, scenarioId:options.scenarioId, language:options.language, images:await loadFlowDesignImages(root, flow)})
+      ? flowToHtml(flow, freshness.status, {...provenance, scenarioId:options.scenarioId, language:options.language, caseLinks:caseLinks ?? {}, images:await loadFlowDesignImages(root, flow)})
       : `%% ${JSON.stringify({basis:flow.basis, freshness, ...provenance})}\n${flowToMermaid(flow, options.scenarioId)}`;
     const output = join(await directory(root, 'diagrams'), `${options.id}.${options.format === 'html' ? 'html' : 'mmd'}`);
     await atomic(output, content);

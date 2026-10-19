@@ -21,6 +21,7 @@ import { revisionInfluence, revisionReceipt, revisionWindow } from '../src/appli
 import { readReferenceIndex } from '../src/application/knowledge/reference-index.js';
 import { startWork } from '../src/application/start-work.js';
 import { completeWork } from '../src/application/complete-work.js';
+import {saveProjectDecision} from '../src/application/project-decisions.js';
 
 const system = process.cwd();
 
@@ -61,6 +62,28 @@ async function fixture() {
   await writeFile(join(root,'request.mjs'),code); await writeFile(join(root,'contract.mjs'),check);
   return root;
 }
+
+test('adopted project decisions bind their confirmed text and invalidate plans when changed', async () => {
+  const root = await fixture();
+  try {
+    const stored = {version:1 as const,id:'request-owner',status:'active' as const,title:'Keep request owner',
+      decision:'Delegate the request once',confirmation:'Synthetic evaluator supplied this contract',
+      conditions:['The request is delegated to the existing sender'],exclusions:['The caller owns transport'],
+      scope:['request boundary'],triggers:['request','send'],entrypoints:['request.mjs'],
+      preserve:['Return sender result'],avoid:['Duplicate transport policy'],
+      reconsiderWhen:'Sender contract changes',verification:['Run the behavior test'],sources:['fixture review']};
+    const saved = await saveProjectDecision(root,stored,null);
+    const evidence = await fixtureEvidence(root,policy,[issue]);
+    evidence.projectDecisionRefs = [{id:stored.id,hash:saved.hash}];
+    evidence.decisions[0]!.projectDecisionId = stored.id;
+    evidence.decisions[0]!.authority = 'existing';
+    const revision = await saveRevision(root,'Reuse confirmed request decision',null,policy,'local-decision',[issue],evidence);
+    await approveRevision(root,revision.hash!,'Use this scoped plan','local-decision');
+    await saveProjectDecision(root,{...stored,status:'superseded'},saved.hash);
+    assert.ok((await workflowContext(root,'local-decision')).verification.failures.some(item => item.includes('Linked project decision changed')));
+    await assert.rejects(approveRevision(root,revision.hash!,'Old decision still applies','local-decision'),/Linked project decision changed/);
+  } finally {await rm(root,{recursive:true,force:true});}
+});
 
 test('model discretion cannot authorize a new mandatory domain outcome, while supplied contracts remain usable', async () => {
   const root = await fixture();

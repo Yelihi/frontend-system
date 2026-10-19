@@ -14,6 +14,7 @@ import { contentHash } from './knowledge/reference-index.js';
 import { readProjectEvidence } from './design-evidence.js';
 import { retrieveProjectFacts } from './project-facts.js';
 import {getProjectAnalysis} from './project-flows.js';
+import { searchProjectDecisions } from './project-decisions.js';
 
 export async function taskContext(
   discovery: ProjectDiscoveryPort,
@@ -42,6 +43,10 @@ export async function taskContext(
   const document = await readProjectDocument(projectPath);
   const context = await buildWorkContext(discovery, profile, request, knowledge.applicable, rules);
   const files = request.files ?? context.relevantFiles.map(({path}) => path).filter((path) => /\.[cm]?[jt]sx?$/.test(path)).slice(0, 40);
+  const projectDecisions = await searchProjectDecisions(projectPath, {
+    request: [request.raw, ...request.constraints, ...(request.observations ?? []).map(item => item.observation)].join('\n'),
+    files, technologies: profile.technologies.map(({name}) => name),
+  });
   const storedProject = await readProjectEvidence(projectPath).then(value => ({record: value.record, error: null}),
     (error: unknown) => ({record: null, error: String(error)}));
   const projectFacts = storedProject.record ? await retrieveProjectFacts(projectPath, systemRoot, storedProject.record, files, request.interpretations, request.snapshot)
@@ -62,7 +67,7 @@ export async function taskContext(
     inspection: { recorded: !!previous, changedFiles: inspectionChanges, needsRefresh: !previous || inspectionChanges.length > 0 },
     // Pinned policy is returned here independently of lexical knowledge search.
     workflow, plans: await listPlans(projectPath),
-    routing, contextId, projectFacts,
+    routing, contextId, projectFacts, projectDecisions,
     projectAnalysis: await getProjectAnalysis(projectPath, systemRoot, {files}),
     knowledgeSelection: { observations: request.observations ?? [], gaps: knowledge.gaps,
       inspectWith: "Routing already executed. Read relevant reference bodies; request more code or semantic discovery only for unresolved scope.",
@@ -85,7 +90,9 @@ export function summarizeWorkflow(state: Awaited<ReturnType<typeof workflowConte
           ? 'Before product/test edits, start_work with this planId/revisionHash and a dependency-free approved stepId. It initializes pending issues, reserves an attempt and records baseline checks using the existing guards. Review its status and failures; partial errors retain saved records. For custom baseline selection use save_execution, begin_work_attempt and run_project_checks separately.'
           : 'Before product/test edits, save_execution with pending approved issue IDs and expectedHash:null, then begin_work_attempt with its returned execution hash. Capture baseline checks under this planId before edits.'
         : execution.status === 'complete' && !state.needsRevalidation
-          ? 'Execution is recorded complete. Report current verification and limitations; do not reroute solely to finish.'
+          ? revision.contractVersion === 3
+            ? 'Execution is technically complete. Show the current CLI diff and case evidence, record actual user implementation feedback, then check PR readiness. Do not infer feedback from test results.'
+            : 'Execution is recorded complete. Report current verification and limitations; do not reroute solely to finish.'
           : 'Resume the recorded steps. Before editing a pending step, use begin_work_attempt with the current executionHash; retain its attemptId for checks/review and save completion only after verification.',
     revision: { planId: revision.planId, hash: revision.hash, version: revision.version,
       approved: revision.approved, drifted: revision.drifted,
@@ -123,6 +130,7 @@ export function summarizeTaskContext(state: Awaited<ReturnType<typeof taskContex
     projectAnalysis: state.projectAnalysis,
     projectFacts: {facts: state.projectFacts.facts, matched: state.projectFacts.matched, omitted: state.projectFacts.omitted,
       authority: state.projectFacts.authority, ...('unavailable' in state.projectFacts ? {unavailable: state.projectFacts.unavailable} : {})},
+    projectDecisions: state.projectDecisions,
     routing: 'candidates' in routing ? {status: routing.status, hash: routing.hash,
       ...(candidateChanges ? {candidateChanges} : {}),
       files: Object.keys(routing.inspection.analysis.hashes), requirements: Object.keys(routing.requirements),

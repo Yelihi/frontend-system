@@ -13,6 +13,7 @@ import { recalledAnalysis } from './analysis-receipts.js';
 import { bindProjectFacts, factReuseSchema, createFactGuardChecker } from './project-facts.js';
 import { quoteLocationHint } from './source-file.js';
 import {analysisReferenceSchema} from './flow-schema.js';
+import {readProjectDecision} from './project-decisions.js';
 import {validateAnalysisReferences} from './project-flows.js';
 
 const text = z.string().trim().min(1).max(4000);
@@ -112,9 +113,11 @@ const judgment = z.object({ investigation: investigationAssessmentSchema.optiona
 const recordedDesignEvidenceSchema = z.object({
   version: z.literal(1), projectHash: sha256,
   analysisRefs: z.array(analysisReferenceSchema).max(100).optional(),
+  projectDecisionRefs: z.array(z.object({id, hash: sha256})).max(50).optional(),
   // Routing loads project evidence too; resolve the shared schema after ESM initialization.
   routes: z.array(z.object({ input: z.lazy(() => routingInputSchema), hash: sha256, judgments: z.array(judgment) })).min(1).max(100),
   decisions: z.array(z.object({ id, question: text, evidence: z.array(citationSchema).min(1), knowledgeIds: z.array(id),
+    projectDecisionId: id.optional(),
     options: z.array(z.object({ id, description: text, cost: text })).min(1), selected: id.nullable(),
     status: z.enum(['resolved', 'open', 'excluded']), authority: z.enum(['user', 'existing', 'model']), confirmation: z.string().max(4000).default('').describe('For a resolved user or existing decision, quote the supplied answer or established contract. Citations do not replace confirmation. Keep unanswered open choices unconfirmed; never fabricate consent.'),
     rationale: text, reconsiderWhen: text, ruleIds: z.array(text), issueIds: z.array(id),
@@ -181,6 +184,20 @@ export async function updateDesignDecisions(root: string, current: BoundEvidence
 
 export async function bindDesignEvidence(root: string, input: DesignEvidence, systemRoot = installedSystemRoot()): Promise<BoundEvidence> {
   const parsed = designEvidenceSchema.parse(input);
+  const projectDecisionRefs = new Map(parsed.projectDecisionRefs?.map(item => [item.id, item.hash]) ?? []);
+  if (projectDecisionRefs.size !== (parsed.projectDecisionRefs?.length ?? 0)) throw new Error('Duplicate project decision references');
+  for (const decision of parsed.decisions.filter(item => item.projectDecisionId)) {
+    const expected = projectDecisionRefs.get(decision.projectDecisionId!);
+    if (!expected || decision.authority !== 'existing' || decision.status !== 'resolved') throw new Error(`Invalid project decision adoption: ${decision.id}`);
+    const source = await readProjectDecision(root, decision.projectDecisionId!);
+    if (source.hash !== expected || source.decision.status !== 'active' ||
+      !source.decision.confirmation.includes(decision.confirmation) || !decision.confirmation.trim()) {
+      throw new Error(`Project decision changed or confirmation was not preserved: ${decision.projectDecisionId}`);
+    }
+  }
+  if ([...projectDecisionRefs.keys()].some(key => !parsed.decisions.some(decision => decision.projectDecisionId === key))) {
+    throw new Error('Project decision references need an adopting plan decision');
+  }
   const analysisErrors = await validateAnalysisReferences(root, systemRoot, parsed.analysisRefs ?? [], true);
   if (analysisErrors.length) throw new Error(analysisErrors.join('; '));
   const issueIds = new Set(parsed.decisions.flatMap(d => d.issueIds));
@@ -239,6 +256,12 @@ export { designContractFailures } from './design-contract.js';
 
 export async function evidenceFreshness(root: string, evidence: BoundEvidence, checkSources: boolean, systemRoot = installedSystemRoot()) {
   const errors: string[] = await validateAnalysisReferences(root, systemRoot, evidence.analysisRefs ?? [], checkSources);
+  for (const ref of evidence.projectDecisionRefs ?? []) {
+    try {
+      const current = await readProjectDecision(root, ref.id);
+      if (current.hash !== ref.hash || current.decision.status !== 'active') errors.push(`Linked project decision changed: ${ref.id}`);
+    } catch { errors.push(`Linked project decision unavailable: ${ref.id}`); }
+  }
   const checkFacts = createFactGuardChecker(root, systemRoot);
   if (checkSources) for (const route of evidence.routes) for (const guard of route.input.factGuards ?? []) {
     errors.push(...await checkFacts(guard));

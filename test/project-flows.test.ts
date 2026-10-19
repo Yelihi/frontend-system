@@ -82,6 +82,9 @@ test('diagram projections preserve nesting and scenario identity without executi
   assert.ok(!rendered.includes('</script><script>globalThis.pwned=true'));
   assert.ok(rendered.includes('\\u003c/script\\u003e'));
   assert.ok(rendered.includes('stale'));
+  const withCases=flowToHtml(f,'current',{caseLinks:{submit:[{id:'case-1',method:'unit',expected:'Reject before storage',status:'unverified'}]}});
+  assert.match(withCases,/case-1/);
+  assert.match(withCases,/unverified/);
   const mmd=flowToMermaid(f,'submit');assert.match(mmd,/subgraph n0/);assert.match(mmd,/1 · save\(input\)/);
   assert.equal(flowToHtml(f,'stale'),rendered,'Rendering is deterministic');
   f.evidence.save!.quote='근거 · 조건: 원본 유지';

@@ -19,12 +19,14 @@ import {analysisWriteSchema} from './application/flow-schema.js';
 import {renderProjectFlow, renderFlowOptions} from './application/render-project-flow.js';
 import {readRevisionDraft} from './application/revision-draft.js';
 import {checkPrReadiness} from './application/pr-readiness.js';
+import {workReview} from './application/work-review.js';
 
 const usage = `Usage:
   fs inspect-context [project] [--overall]
   fs work-context [project] "<request>" [--plan <id>] [--mode prepare|implement|verify|review|refactor]
   fs change-context [project] [--base <ref>]
   fs pr-check [project] --base <target-ref> [--plan <id>] [--issue <id>]
+  fs work-review [project] --base <target-ref> --plan <id> --issue <id>
   fs checks [project] [--plan <id>] [--stage baseline|issue|delivery] [--issue <id>] [--required | --capability <script-id>] [--purpose baseline|verification] [--baseline <check-id>] [--attempt <id>]
   fs project-snapshot [project] [--base main]
   fs plans [project]
@@ -35,7 +37,7 @@ const usage = `Usage:
   fs knowledge-search [repository] "<query>"
   fs flow-list [project]
   fs flow-save <project> .frontend-system/drafts/<name>.json
-  fs flow-render <project> <id> --expected-hash <hash> [--scenario <id>] [--language ko|en] [--format html|mermaid] [--allow-unverified]
+  fs flow-render <project> <id> --expected-hash <hash> [--plan <id>] [--scenario <id>] [--language ko|en] [--format html|mermaid] [--allow-unverified]
   fs mcp
 
 These are deterministic helpers. Use the fs-* Skills in Codex or Claude Code for complete workflows.`;
@@ -105,6 +107,7 @@ async function main(): Promise<void> {
   }
   if (command === "flow-render") return print(await renderProjectFlow(root, systemRoot, renderFlowOptions.parse({
     id:rest[0], expectedHash:values['expected-hash'], scenarioId:values.scenario,
+    planId:values.plan,
     language:values.language, format:values.format, allowUnverified:values['allow-unverified'],
   })));
   if (command === "inspect-context") return inspect(root, values.overall);
@@ -126,6 +129,12 @@ async function main(): Promise<void> {
     const readiness = await checkPrReadiness(root, values.plan, values.base, values.issue);
     print(readiness);
     if (readiness.status !== 'ready') process.exitCode = 1;
+    return;
+  }
+  if (command === 'work-review') {
+    if (!values.base || !values.plan || !values.issue) throw new Error('work-review requires --base, --plan and --issue');
+    const {diff, ...review} = await workReview(root, values.plan, values.issue, values.base);
+    process.stdout.write(`${JSON.stringify(review, null, 2)}\n\n${diff}`);
     return;
   }
   if (command === "project-snapshot") return print({ ...await projectSnapshot(root, values.base), documentStatus: await projectDocumentStatus(root) });

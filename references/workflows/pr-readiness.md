@@ -23,9 +23,10 @@ ask permission for this same workflow.
    behavior, public interfaces, ownership or cross-page effects require a native user
    question and pause per user-decisions.md. A new choice revises the approved plan;
    it must not be hidden in a helper or PR description.
-3. For staged plans, first write/reuse the issue's agreed tests, show their actual code
-   and results, and wait for user feedback. Preserve the approved testReview and hashes;
-   then implement only this domain flow. Run unit tests, lint and type checks, plus existing E2E
+3. For version 3 plans, write/reuse the agreed cases and implement the flow continuously.
+   Complete current caseEvidence and show the implementation diff and results in the CLI;
+   record the user's feedback for the current source before PR creation. Version 2
+   plans retain their testReview checkpoint. Run unit tests, lint and type checks, plus existing E2E
    and the approved policy checks. Missing infrastructure is a plan/setup blocker;
    failed, not-run, unavailable or stale checks cannot be waived to submit a PR.
    A combined script may cover several checks only after inspecting its actual body.
@@ -42,6 +43,8 @@ ask permission for this same workflow.
    `delivery.manual`: setup, steps, expected, fixture path or existingEntry, and result
    (`passed` or `not-run`). These are host judgments, not proof of test semantics.
 6. Save this step complete with its current check/review IDs; leave later steps pending.
+   The version 3 implementation feedback is separate from technical completion and
+   is required by check_pr_readiness before PR creation.
    Call check_pr_readiness with planId, base and **stepId**. Only `ready` allows PR
    creation. Use the returned evidence and manual instructions in the PR body, together
    with issue ID, scope, dependencies, limitations and the tested commit. Avoid duplicate

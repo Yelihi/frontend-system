@@ -8,7 +8,7 @@ type Revision = Awaited<ReturnType<typeof readRevision>>;
 // Detail selection must not hide unresolved obligations from the host.
 export function revisionDiagnostics(revision: Revision) {
   return {
-    contractDiagnostics: revision.contractVersion === 2 ? designContractFailures(revision.evidence, revision.policy, revision.issues)
+    contractDiagnostics: revision.contractVersion ? designContractFailures(revision.evidence, revision.policy, revision.issues)
       .concat(revision.policy ? policyProtectionFailures(revision.policy) : []) : [],
     diagnosticsScope: 'Stored contract links only; approval still checks current evidence, sources, scripts and guards. This receipt is not approval.',
   };

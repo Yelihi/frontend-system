@@ -1,6 +1,6 @@
 ---
 name: fs-plan
-description: "Plan in feedback stages: domain, test cases, flow visualization and optional reference-driven design; hand off an agreed plan to test-first implementation. Use fs-project for standalone whole-project analysis; planning does not edit product code."
+description: "Discuss domain and visual design, then review an enforceable plan including test intent; hand it to continuous test-first implementation. Use fs-project for standalone whole-project analysis."
 ---
 
 # FS Plan
@@ -27,12 +27,12 @@ reusing stale evidence or silently refreshing the main project.md baseline.
 
 ## Stage the plan with user feedback
 
-Follow [staged planning](../../references/workflows/staged-planning.md): domain and
-initial design → test-case review → proposed page/flow HTML review → reference-driven
-mockup and detailed design feedback when supplied → final plan. Pause at the actual
-feedback checkpoints, not just ambiguous technical choices. Reuse existing scoped
-answers. A user asking to implement the resulting plan need not type fs-work; apply
-that workflow automatically, starting with test code and its feedback checkpoint.
+Follow [staged planning](../../references/workflows/staged-planning.md): discuss domain
+and proposed page/flow HTML → include risk-based test cases in final plan review →
+reference-driven detailed design feedback when supplied → continuous implementation.
+Pause for material design choices and the final plan, not an additional version 3
+test-code approval. Reuse existing scoped answers. A user asking to implement the
+resulting plan need not type fs-work; apply that workflow automatically.
 Present the final plan in the conversation through
 [native plan presentation](../../references/workflows/staged-planning.md#native-plan-presentation);
 a saved file link alone is not the handoff.
@@ -52,6 +52,11 @@ Start with summary (omit detail). Do not preload full routing/context/source bod
 summary has the contextId, candidates and prerequisites. Read selected knowledge for
 investigation questions; use includeRelations only for missing relationships. Request
 full only after identifying a needed field absent from the summary.
+Inspect get_work_context.projectDecisions candidates alongside shared knowledge.
+Read selected bodies with get_project_decision, then compare conditions, exclusions,
+entrypoints and original confirmation with this task's callers and outcomes. Record
+an adopted local choice by projectDecisionId and projectDecisionRefs[id/hash] in plan
+evidence. A lexical match is not adoption; a changed source requires reassessment.
 For a large main analysis, read save_project_context payloadSchema, write {analysis}
 to .frontend-system/drafts/<id>.json and pass draftFile with expectedCommit/expectedHash.
 Each user-decision statement needs confirmation quoting the supplied answer. After a

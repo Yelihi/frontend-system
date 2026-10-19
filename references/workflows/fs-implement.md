@@ -52,8 +52,9 @@ whole sequence as a prose questionnaire.
 If the user says "decide for me" or asks to skip questions, use project-backed
 defaults for remaining preferences and state material assumptions. Do not invent
 required business facts or treat silence as an answer. Once enough is known,
-briefly summarize the design direction and scope, then follow the agreed test-code
-feedback checkpoint before product implementation. Do not add another design approval
+briefly summarize the design direction and scope, then follow the approved plan's
+workflow version. Version 3 continues through tests and implementation before the
+user reviews the diff; version 2 retains its saved test-code checkpoint. Do not add another design approval
 question when the same scope was already confirmed. Carry these answers into any OpenDesign brief so the user does not
 have to repeat them; preserve its required confirmation and billing workflow.
 

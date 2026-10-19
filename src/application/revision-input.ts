@@ -8,4 +8,5 @@ export const revisionPayloadSchema = z.strictObject({
   policy: policyInputSchema.optional(), issues: issuesSchema.optional(), evidence: designEvidenceSchema.optional(),
   decisionUpdates: decisionUpdatesSchema.optional().describe('Patch existing choices by ID; cannot accompany evidence. New selections require supplied confirmation. Include evidenceRoutes for new answer documents.'),
   evidenceRoutes: designEvidenceSchema.shape.routes.optional().describe('Fresh working contextIds with explicit judgments; cannot accompany full evidence. Include sources still cited by retained decisions.'),
+  workflowVersion: z.literal(3).optional().describe('New named plans default to continuous version 3. Set on a revised version 2 plan only to migrate it with a new approval.'),
 });

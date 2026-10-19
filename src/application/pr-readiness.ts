@@ -12,6 +12,13 @@ export async function checkPrReadiness(root: string, planId: string | undefined,
   if (changes.dirtyFiles.length) failures.push('Commit the intended changes before the final PR review; working tree/index is dirty');
   if (!changes.files.length) failures.push('No product changes against the PR merge base');
   const step = stepId ? state.execution?.steps.find(item => item.id === stepId) : undefined;
+  if (state.revision.contractVersion === 3) {
+    const reviewed = stepId ? (step ? [step] : []) : state.execution?.steps ?? [];
+    if (!reviewed.length || reviewed.some(item => !item.implementationReview?.confirmation ||
+      item.implementationReview.sourceHash !== state.verification.sourceHash)) {
+      failures.push('Missing user implementation feedback for the current source; review the CLI diff before PR creation');
+    }
+  }
   if (stepId) {
     if (!step || step.status !== 'complete' || step.remaining.length || !state.revision.approved
       || state.execution?.revisionHash !== state.revision.hash) failures.push('Select a completed issue from the current approved execution');

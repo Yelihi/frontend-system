@@ -31,9 +31,10 @@ import { runProjectChecks, summarizeChecks } from "./application/run-capabilitie
 import { startWork } from './application/start-work.js';
 import { completeWork } from './application/complete-work.js';
 import { checkPrReadiness } from './application/pr-readiness.js';
+import { workReview } from './application/work-review.js';
 import {
   approveRevision, digest, executionInputSchema, listPlans, readCheckRecord, readProjectRecord, readRevision, recordId,
-  saveExecution, saveProjectRecord, saveRevision, workflowContext, beginAttempt, saveReview, reviewInputSchema,
+  saveExecution, saveProjectRecord, saveRevision, workflowContext, beginAttempt, saveReview, reviewInputSchema, recordImplementationFeedback,
 } from "./application/workflow-store.js";
 import { revisionPayloadSchema } from "./application/revision-input.js";
 import { revisionDiagnostics, revisionInfluence, revisionReceipt, revisionWindow } from './application/revision-response.js';
@@ -45,6 +46,7 @@ import { readReferenceIndex, searchReferenceIndex, readIndexedReference } from "
 import { discoverKnowledgeTriggers, triggerDiscoverySchema, inspectCodeKnowledge, saveKnowledgeReview, triggerInspectionSchema, checkJudgmentSchema } from "./application/knowledge/trigger-review.js";
 import { projectSnapshot, projectDocumentStatus, projectDocumentHash, recordProjectRefresh, readProjectSource, readProjectSources } from "./application/project-snapshot.js";
 import { taskContext, summarizeTaskContext, summarizeWorkflow } from "./application/task-context.js";
+import { projectDecisionSchema, readProjectDecision, saveProjectDecision } from './application/project-decisions.js';
 import type { ProjectAnalysis, ProjectConfig, WorkRequest } from "./domain/types.js";
 import { readProjectEvidence } from './application/design-evidence.js';
 import {analysisId, analysisWriteSchema} from './application/flow-schema.js';
@@ -128,14 +130,14 @@ server.registerTool("save_revision", {
     // parsed below with the same full schema, also exported by tool-help.
     content: revisionPayloadSchema.shape.content,
     policy: z.unknown().optional(), issues: z.unknown().optional(), evidence: z.unknown().optional(),
-    decisionUpdates: z.unknown().optional(), evidenceRoutes: z.unknown().optional(), expectedHash: z.string().nullable(),
+    decisionUpdates: z.unknown().optional(), evidenceRoutes: z.unknown().optional(), workflowVersion: z.literal(3).optional(), expectedHash: z.string().nullable(),
     draftFile: z.string().optional().describe('Optional .frontend-system/drafts/<name>.json containing only content/policy/issues/evidence/decisionUpdates/evidenceRoutes instead of inline payload. Same validation and freshness gates. Patch the file after errors instead of resending the full plan. Never includes projectPath, planId, expectedHash or approval.'),
     detail: z.enum(['summary', 'full']).default('summary') }, annotations: localWrite,
 }, async ({ projectPath: path, planId, expectedHash, detail, draftFile, ...inline }) => {
   if (draftFile && Object.values(inline).some(value => value !== undefined)) throw new Error('Choose draftFile or inline revision fields, not both');
   const draft = draftFile ? await readRevisionDraft(projectPath(path), draftFile) : undefined;
   const payload = revisionPayloadSchema.parse(draft ? draft.input : inline);
-  const revision = await saveRevision(projectPath(path), payload.content, expectedHash, payload.policy, planId, payload.issues, payload.evidence, payload.decisionUpdates, payload.evidenceRoutes);
+  const revision = await saveRevision(projectPath(path), payload.content, expectedHash, payload.policy, planId, payload.issues, payload.evidence, payload.decisionUpdates, payload.evidenceRoutes, payload.workflowVersion);
   return result({...(detail === 'full' ? {...revision, ...revisionDiagnostics(revision)} : revisionReceipt(revision)), ...(draft ? {draftSource: draft.source} : {})});
 });
 
@@ -160,11 +162,37 @@ server.registerTool("get_project_record", {
   inputSchema: { projectPath: z.string().optional(), kind: z.enum(["evidence", "decisions"]), id: recordId, offset: z.number().int().min(0).default(0), limit: z.number().int().min(1).max(500).default(200) }, annotations: readOnly,
 }, async ({ projectPath: path, kind, id, offset, limit }) => result(await readProjectRecord(projectPath(path), kind, id, offset, limit)));
 
+server.registerTool('save_project_decision', {
+  title: 'Save a confirmed project decision for conditional reuse',
+  description: 'Save an owner-confirmed local decision with scope, triggers, conditions, exclusions and verification. Search returns candidates only; this does not publish shared knowledge or authorize a plan.',
+  inputSchema: { projectPath: z.string().optional(), decision: projectDecisionSchema, expectedHash: z.string().nullable() }, annotations: localWrite,
+}, async ({projectPath: path, decision, expectedHash}) => result(await saveProjectDecision(projectPath(path), decision, expectedHash)));
+
+server.registerTool('get_project_decision', {
+  title: 'Read a selected reusable project decision',
+  description: 'Read the complete selected decision and hash. Compare its conditions and exclusions with current code before adoption.',
+  inputSchema: { projectPath: z.string().optional(), id: recordId }, annotations: readOnly,
+}, async ({projectPath: path, id}) => result(await readProjectDecision(projectPath(path), id)));
+
 server.registerTool("save_execution", {
   title: "Checkpoint a refactoring execution",
-  description: "Record stages against the approved revision. Reconcile source changes before saving. For approved issues, omit step title/files/dependsOn/requiredCheckIds to reuse the contract. For staged issues, save pending/approved testReview with actual user feedback and reviewed test file hashes before product implementation. Newly completed stages require confirmed unchanged test artifacts and current passing checks; completion requires all policy checks and reviews. A delivery record can serve both step checkIds and finalCheckId; preserve its attemptId. Never edit product files or reset user changes here.",
+  description: "Record stages against the approved revision and current source. Omit approved step metadata to reuse the contract. Version 2 test cases retain testReview; version 3 test cases require caseEvidence from current checks/reviews, then separate user implementation feedback before PR. Completion still needs all policy checks and semantic reviews. Never reset user changes here.",
   inputSchema: { projectPath: z.string().optional(), planId: recordId.optional(), expectedHash: z.string().nullable(), execution: executionInputSchema }, annotations: localWrite,
 }, async ({ projectPath: path, planId, expectedHash, execution }) => result(await saveExecution(projectPath(path), execution, expectedHash, planId)));
+
+server.registerTool('record_implementation_feedback', {
+  title: 'Record user feedback on completed implementation',
+  description: 'After showing the current diff and verification, record actual user confirmation for the exact source hash. This is required for version 3 PR readiness, not for automated completion.',
+  inputSchema: {projectPath: z.string().optional(), planId: recordId, stepId: recordId,
+    expectedHash: z.string(), sourceHash: z.string(), confirmation: z.string().min(1)}, annotations: localWrite,
+}, async ({projectPath: path, planId, stepId, expectedHash, sourceHash, confirmation}) =>
+  result(await recordImplementationFeedback(projectPath(path), planId, stepId, expectedHash, sourceHash, confirmation)));
+
+server.registerTool('get_work_review', {
+  title: 'Inspect implementation changes and case evidence before PR',
+  description: 'Return bounded issue/file/case evidence. Show the full diff to the user with fs work-review in the CLI; a displayed diff is not approval.',
+  inputSchema: {projectPath: z.string().optional(), planId: recordId, stepId: recordId, base: z.string().min(1)}, annotations: readOnly,
+}, async ({projectPath: path, planId, stepId, base}) => result(await workReview(projectPath(path), planId, stepId, base, false)));
 
 server.registerTool("get_check_record", {
   title: "Read recorded check evidence",
@@ -184,8 +212,10 @@ server.registerTool("start_work", {
 }, async ({ projectPath: path, ...options }) => result(await startWork(projectPath(path), options)));
 
 server.registerTool("complete_work", {
-  description: "Complete one approved single-issue execution: run delivery checks, record the supplied host semantic reviews, then apply existing completion guards. Calling declares no remaining work. Supply every policy review explicitly; reviewId is its existing requirement ID, not a new record name. Only status:complete means accepted. Failure keeps saved evidence and returns recovery information. Use individual tools for multi-issue work or to reuse an already passing final check.",
-  inputSchema: { projectPath: z.string().optional(), planId: recordId, expectedHash: z.string(), attemptId: recordId, baselineCheckId: recordId.optional(), reviews: z.array(reviewInputSchema) }, annotations: localWrite,
+  description: "Complete one approved single-issue execution: run delivery checks, record explicit semantic reviews and version 3 caseEvidence, then apply completion guards. Passing checks alone do not prove each test case. Supply every policy review explicitly. PR creation still needs current user implementation feedback. Only status:complete means accepted.",
+  inputSchema: { projectPath: z.string().optional(), planId: recordId, expectedHash: z.string(), attemptId: recordId, baselineCheckId: recordId.optional(),
+    caseEvidence: executionInputSchema.shape.steps.element.shape.caseEvidence,
+    reviews: z.array(reviewInputSchema) }, annotations: localWrite,
 }, async ({ projectPath: path, ...options }) => result(await completeWork(projectPath(path), options)));
 
 server.registerTool("begin_work_attempt", {
@@ -340,7 +370,7 @@ server.registerTool("save_project_context", {
 
 server.registerTool("get_work_context", {
   title: "Build focused frontend work context",
-  description: "Inspect code and route knowledge in one call. Supply request and files; pin specification documents separately in requirements. Returns a process-local contextId for save_revision.evidence.routes, compact candidates and mandatory rules. Detail full returns raw analysis. No need to repeat discover/inspect tools unless scope or interpretations change. After saving project.md refresh this context before binding a plan. Interpretations and user decisions still belong to the host.",
+  description: "Inspect code and route shared knowledge plus project-local decision candidates in one call. Supply request and files; pin specification documents separately in requirements. Returns a process-local contextId for save_revision.evidence.routes. Read and judge selected decisions under their conditions and exclusions before reuse. Detail full returns raw analysis. After saving project.md refresh this context before binding a plan.",
   inputSchema: {
     projectPath: z.string().optional(), planId: recordId.optional(),
     request: z.string().describe('Describe the observed behavior/change and relevant constraints. Put document paths in requirements; summarize their actual meaning here instead of searching by their filenames.'),

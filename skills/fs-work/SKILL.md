@@ -1,6 +1,6 @@
 ---
 name: fs-work
-description: Implement or resume an agreed plan, including plain-language implementation requests, through test-first code feedback, domain-flow implementation and per-issue PR verification.
+description: Implement or resume an agreed plan through test-first continuous work, scoped verification, CLI implementation feedback and per-issue PR readiness.
 ---
 
 # FS Work
@@ -32,13 +32,11 @@ not require a ceremonial question. Ordinary private helper choices remain discre
 
 Apply this skill when the user asks to implement the agreed plan even without saying
 fs-work. Resolve the current saved plan and resume its unfinished phase. Follow
-[staged planning and test-first work](../../references/workflows/staged-planning.md):
-write/reuse all approved cases for the current domain-flow issue → show actual test
-code/results → native feedback and pause → record approved testReview → product
-implementation → passing checks and PR. Plan approval or an implementation request
-alone does not approve test code the user has not yet seen. Persist the test checkpoint
-through save_execution; never claim feedback from a test runner. Existing tests can
-be reused, but still show their relevant coverage at this checkpoint.
+[staged planning and continuous work](../../references/workflows/staged-planning.md):
+write/reuse the approved cases → implement the issue → run checks and semantic review
+→ show the CLI diff and case evidence → receive implementation feedback → PR readiness.
+Version 2 plans retain their original test-code feedback checkpoint until explicitly
+revised to version 3. Reuse prior actual approval for unchanged scope.
 
 Implement the approved contract, preserving user decisions and evidence. The current
 host writes code; MCP manages versions, attempts, checks and completion. No nested model.
@@ -98,8 +96,9 @@ read only the needed schemas, not the full schema file.
    instead splits by layer or bundles independent domain flows, resolve the boundary
    through fs-plan before starting; do not silently rewrite its approved issues.
    Keep the existing provider and do not initiate paid generation implicitly.
-3. First complete the test-code feedback checkpoint above. Only then implement
-   within file/API/domain/state/type/security constraints. Preserve reference
+3. For version 2 first complete its stored test-code feedback checkpoint. For version 3,
+   implement within file/API/domain/state/type/security constraints after approved
+   test intent, without a mid-work user pause. Preserve reference
    ownership, error paths and actual caller behavior. User-owned tradeoffs and explicit
    prohibitions remain fixed; discretionary internal helpers remain discretionary.
    Before rewriting behavior that must remain unchanged, reuse adequate regressions or
@@ -142,7 +141,8 @@ read only the needed schemas, not the full schema file.
    over another generic reminder.
 6. For one jointly delivered issue, once code review findings are ready and no work remains,
    use complete_work with the current execution hash, attemptId, baselineCheckId and every
-   explicit approved review. Each reviewId selects policy.reviews[].id, not a new record
+   explicit approved review and version 3 caseEvidence for each planned test case.
+   Each reviewId selects policy.reviews[].id, not a new record
    name; the server generates record IDs. This runs delivery checks and then the existing
    review/completion guards. Only status:complete is completion. Partial errors preserve
    accepted records for repair through the individual tools; do not repeat passing checks
@@ -156,8 +156,11 @@ read only the needed schemas, not the full schema file.
    only when the tool accepts it. A successful complete_work needs no extra status call;
    otherwise get_workflow_context suffices for final status; do not
    rerun knowledge routing to confirm completion. Completion is the verification
-   checkpoint, not the end of default delivery: follow issue delivery to submit its
-   PR, then advance to the next issue. Report PR links, checks and limitations.
+   checkpoint, not the end of default delivery: show the issue with `fs work-review`
+   and receive actual user implementation feedback. Record it against the current
+   source hash through record_implementation_feedback, then follow issue delivery to
+   submit its PR. Do not fabricate feedback from passing tests. Advance to the next
+   issue after this issue's authorized delivery. Report PR links, checks and limitations.
 
 
 For structural advice or a candidate with `investigationStatus: pending`, follow
