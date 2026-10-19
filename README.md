@@ -345,23 +345,30 @@ sequenceDiagram
     T->>P: project.md 갱신·이전 기록 보존
 ```
 
-## 실제 프로젝트 화면과 코드 흐름
+## 실제 화면과 라우트별 코드 흐름
 
-![Next.js 주문 예제의 실패 화면, 호출 흐름, 상태 변화와 컴포넌트 계약을 함께 보여주는 FS HTML](docs/diagrams/order-flow.png)
+아래 예제는 **실행 가능한 두 페이지 주문 앱**을 브라우저에서 열어 주문을 저장하고,
+`/`에서 `/activity/`로 이동한 실제 화면을 캡처한 것입니다. FS의 HTML에서는 먼저
+라우트 관계를 보고, 흐름을 선택해 호출·상태 변화와 각 단계의 화면을 따라갑니다.
 
-[직접 탐색하는 HTML](docs/diagrams/order-flow/index.html) · [예제 코드](test/fixtures/frontend) · [분석·캡처 근거](docs/proposals/component-flow-explorer/observed/proposal.md)
+![주문 생성과 활동 기록 라우트, 두 방향의 이동을 보여주는 FS 라우트 개요](docs/diagrams/routed-routes.png)
 
-이 그림은 FS가 **기존 Next.js 주문 예제의 실제 화면**과 저장된 코드 흐름을 연결해 만든
-HTML의 한 장면입니다. 실패 화면은 예제 앱에서 캡처했고, `changed` 콜백 값은 원본
-도메인 함수를 실행해 기록했습니다. 왼쪽에서는 페이지와 이벤트별 화면을, 오른쪽에서는
-컴포넌트의 props·state·handler·실행 경계를 확인합니다. 아래 단계에서는 함수 호출과
-상태값의 이전·이후를 따라갈 수 있습니다. 현재 예제의 주문 페이지 한 곳을 분석한
-결과이며, 임의의 프로젝트 화면을 자동으로 전부 캡처했다는 뜻은 아닙니다.
+주문 저장 단계에서는 실제 저장 완료 화면과 `orderStore`의 변경을 함께 보여줍니다.
 
-HTML을 로컬에서 열면 라우트 개요, 단계 선택, 화면·노드 클릭을 사용할 수 있습니다.
-GitHub 화면에서 HTML 소스만 보인다면 파일과 같은 폴더의 자료를 내려받아 브라우저에서
-열거나 저장소 루트에서 `python3 -m http.server 4173`을 실행한 뒤
-`http://localhost:4173/docs/diagrams/order-flow/`로 접속하세요.
+![주문 저장 단계 3/6의 실제 앱 화면과 상태 변화](docs/diagrams/routed-order-step.png)
+
+활동 기록 단계로 이동하면 같은 주문이 다른 페이지에 표시됩니다. 아래는 흐름의
+마지막 단계 6/6과 실제로 렌더링된 활동 기록 화면입니다.
+
+![활동 기록 단계 6/6의 실제 앱 화면, 컴포넌트 연결 및 상태 변화](docs/diagrams/routed-flow-step.png)
+
+[직접 탐색하는 HTML](docs/diagrams/routed-flow/index.html) · [실행 가능한 예제 코드](docs/examples/routed-order-app/) · [입력·캡처·재생성 근거](docs/diagrams/routed-flow/README.md)
+
+이것은 문서용 예제의 **실제 브라우저 실행 결과**이며 임의 프로젝트를 자동으로
+캡처했다는 의미는 아닙니다. HTML에서 라우트 선택 → 흐름 선택 → 단계 이동을 하면
+실제 화면과 함수·상태의 전후 값을 볼 수 있습니다. GitHub에서 HTML 소스만 보이면
+저장소 루트에서 `python3 -m http.server 4173`을 실행하고
+`http://localhost:4173/docs/diagrams/routed-flow/`로 접속하세요.
 
 ## FS 구조
 

@@ -1,9 +1,10 @@
 # FS 시각화 예제와 지식 흐름도
 
-첫 예제는 FS 자체 렌더러로 만든 [실제 주문 화면·흐름 HTML](order-flow/index.html)과
-[README용 캡처](order-flow.png)입니다. 기존 Next.js 예제의 저장된 분석과
-초기·대기·오류·성공 화면 캡처를 사용했습니다. [입력·캡처·재생성 안내](order-flow/README.md)를
-참고하세요. 아래 두 지식 흐름도는 이전에 만든 개념 설명 자료로 보존합니다.
+첫 예제는 FS 자체 렌더러로 만든 [두 라우트의 실제 주문 화면·흐름 HTML](routed-flow/index.html)입니다.
+[라우트 개요](routed-routes.png), [주문 저장 단계](routed-order-step.png),
+[활동 기록 단계](routed-flow-step.png)를 README에서 볼 수 있습니다.
+[실행 앱·캡처·재생성 안내](routed-flow/README.md)를 참고하세요.
+아래 지식 흐름도는 이전에 만든 개념 설명 자료로 보존합니다.
 
 [처음부터 읽는 설명](../../README.md#fs-전체-시퀀스)과 함께 보는 시각 자료입니다.
 2026-10-08 작업 트리의 코드·스킬 절차를 근거로 작성했습니다. 설치된 release와 아직 배포하지 않은

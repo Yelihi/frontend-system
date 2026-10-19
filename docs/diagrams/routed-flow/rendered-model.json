@@ -1,0 +1,463 @@
+{
+  "schemaVersion": "page-flow-1",
+  "title": "Northstar · 실제 주문 흐름",
+  "basis": "observed",
+  "baseline": {
+    "commit": "40b264f39e0826d56cd748b68d9faf79ab316507",
+    "flow": {
+      "id": "routed-order-observed",
+      "hash": "a9b63b50bf99f1b692e2beda524f734f969145f00a7fbbcfab87c7a949b9b55d"
+    }
+  },
+  "nodes": [
+    {
+      "id": "order",
+      "kind": "page",
+      "name": "OrderPage",
+      "parent": null,
+      "props": [],
+      "state": [
+        "route: /"
+      ],
+      "events": [
+        "View activity → /activity/"
+      ],
+      "lifecycle": [],
+      "signature": "",
+      "intent": "주문을 입력하고 저장 결과를 보여준다.",
+      "evidence": [
+        {
+          "path": "docs/examples/routed-order-app/index.html",
+          "line": 28,
+          "quote": "<form id=\"order-form\">"
+        }
+      ]
+    },
+    {
+      "id": "order-form",
+      "kind": "component",
+      "name": "OrderForm",
+      "parent": "order",
+      "props": [
+        "item: string",
+        "quantity: number"
+      ],
+      "state": [
+        "result: hidden | saved | error"
+      ],
+      "events": [
+        "submit → saveOrder(item, quantity)",
+        "View activity → /activity/"
+      ],
+      "lifecycle": [],
+      "signature": "saveOrder(item: string, quantity: number): Order",
+      "intent": "입력을 검증하고 저장 완료 링크를 표시한다.",
+      "evidence": [
+        {
+          "path": "docs/examples/routed-order-app/app.js",
+          "line": 40,
+          "quote": "document.querySelector('#order-form').addEventListener('submit'"
+        }
+      ]
+    },
+    {
+      "id": "activity",
+      "kind": "page",
+      "name": "ActivityPage",
+      "parent": null,
+      "props": [],
+      "state": [
+        "route: /activity/"
+      ],
+      "events": [
+        "Create another → /"
+      ],
+      "lifecycle": [
+        "load → renderActivity()"
+      ],
+      "signature": "",
+      "intent": "저장된 주문을 다시 읽어 보여준다.",
+      "evidence": [
+        {
+          "path": "docs/examples/routed-order-app/activity/index.html",
+          "line": 28,
+          "quote": "<div id=\"activity-list\""
+        }
+      ]
+    },
+    {
+      "id": "activity-list",
+      "kind": "component",
+      "name": "ActivityList",
+      "parent": "activity",
+      "props": [],
+      "state": [
+        "orders: Order[]"
+      ],
+      "events": [],
+      "lifecycle": [
+        "load → renderActivity()"
+      ],
+      "signature": "renderActivity(): void",
+      "intent": "브라우저에 저장된 주문 목록을 표시한다.",
+      "evidence": [
+        {
+          "path": "docs/examples/routed-order-app/app.js",
+          "line": 27,
+          "quote": "list.replaceChildren(...orders.map(order => {"
+        }
+      ]
+    },
+    {
+      "id": "order-store",
+      "kind": "module",
+      "name": "orderStore",
+      "parent": null,
+      "props": [],
+      "state": [
+        "orders: Order[] in localStorage"
+      ],
+      "events": [
+        "saveOrder(item, quantity)",
+        "readOrders()"
+      ],
+      "lifecycle": [],
+      "signature": "readOrders(): Order[]\nsaveOrder(item: string, quantity: number): Order",
+      "intent": "두 페이지에서 같은 저장 기록을 읽고 쓴다.",
+      "evidence": [
+        {
+          "path": "docs/examples/routed-order-app/app.js",
+          "line": 15,
+          "quote": "localStorage.setItem(storageKey, JSON.stringify([...orders, order]));"
+        }
+      ],
+      "environment": "app"
+    }
+  ],
+  "instances": [
+    {
+      "id": "order-form",
+      "node": "order-form",
+      "page": "order"
+    },
+    {
+      "id": "activity-list",
+      "node": "activity-list",
+      "page": "activity"
+    }
+  ],
+  "pages": [
+    {
+      "id": "order",
+      "title": "주문 생성",
+      "route": "/",
+      "domain": "주문",
+      "scenes": [
+        "idle",
+        "saved"
+      ]
+    },
+    {
+      "id": "activity",
+      "title": "활동 기록",
+      "route": "/activity/",
+      "domain": "주문",
+      "scenes": [
+        "empty",
+        "populated"
+      ]
+    }
+  ],
+  "navigation": [
+    {
+      "id": "to-activity",
+      "from": "order",
+      "to": "activity",
+      "label": "View activity",
+      "condition": "메뉴 또는 저장 완료 링크 선택",
+      "basis": "observed",
+      "evidence": [
+        {
+          "path": "docs/examples/routed-order-app/index.html",
+          "line": 17,
+          "quote": "href=\"/activity/\""
+        },
+        {
+          "path": "docs/examples/routed-order-app/app.js",
+          "line": 55,
+          "quote": "link.href = '/activity/';"
+        }
+      ]
+    },
+    {
+      "id": "to-order",
+      "from": "activity",
+      "to": "order",
+      "label": "Create another",
+      "condition": "메뉴 또는 새 주문 링크 선택",
+      "basis": "observed",
+      "evidence": [
+        {
+          "path": "docs/examples/routed-order-app/activity/index.html",
+          "line": 16,
+          "quote": "href=\"/\""
+        }
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "create-and-review",
+      "title": "주문 저장 → 활동 기록 확인",
+      "category": "event",
+      "basis": "observed",
+      "steps": [
+        {
+          "id": "validate",
+          "fromNode": "order-form",
+          "toNode": "order-form",
+          "page": "order",
+          "scene": "idle",
+          "label": "onSubmit(event)",
+          "effect": "품목과 수량을 확인한다.",
+          "evidence": [
+            {
+              "path": "docs/examples/routed-order-app/app.js",
+              "line": 45,
+              "quote": "!Number.isInteger(quantity)"
+            }
+          ]
+        },
+        {
+          "id": "write",
+          "fromNode": "order-form",
+          "toNode": "order-store",
+          "page": "order",
+          "scene": "idle",
+          "label": "saveOrder(\"Desk lamp\", 2)",
+          "effect": "주문 ORD-001을 브라우저 저장소에 기록한다.",
+          "changes": [
+            {
+              "ownerNode": "order-store",
+              "owner": "orderStore",
+              "field": "orders",
+              "before": [],
+              "after": [
+                {
+                  "id": "ORD-001",
+                  "item": "Desk lamp",
+                  "quantity": 2
+                }
+              ]
+            }
+          ],
+          "evidence": [
+            {
+              "path": "docs/examples/routed-order-app/app.js",
+              "line": 15,
+              "quote": "localStorage.setItem(storageKey, JSON.stringify([...orders, order]));"
+            }
+          ]
+        },
+        {
+          "id": "confirm",
+          "fromNode": "order-store",
+          "toNode": "order-form",
+          "page": "order",
+          "scene": "saved",
+          "label": "result.append(\"Saved ORD-001\")",
+          "effect": "저장 완료와 활동 기록 링크를 표시한다.",
+          "changes": [
+            {
+              "ownerNode": "order-form",
+              "owner": "OrderForm",
+              "field": "result",
+              "before": "hidden",
+              "after": "Saved ORD-001"
+            }
+          ],
+          "evidence": [
+            {
+              "path": "docs/examples/routed-order-app/app.js",
+              "line": 53,
+              "quote": "result.append(`Saved ${order.id}. `);"
+            }
+          ]
+        },
+        {
+          "id": "navigate",
+          "fromNode": "order-form",
+          "toNode": "activity",
+          "page": "activity",
+          "scene": "populated",
+          "label": "href=\"/activity/\"",
+          "effect": "활동 기록 페이지로 이동한다.",
+          "evidence": [
+            {
+              "path": "docs/examples/routed-order-app/app.js",
+              "line": 55,
+              "quote": "link.href = '/activity/';"
+            }
+          ]
+        },
+        {
+          "id": "read",
+          "fromNode": "activity",
+          "toNode": "order-store",
+          "page": "activity",
+          "scene": "populated",
+          "label": "readOrders()",
+          "effect": "페이지 초기화 때 저장된 주문을 읽는다.",
+          "evidence": [
+            {
+              "path": "docs/examples/routed-order-app/app.js",
+              "line": 20,
+              "quote": "const orders = readOrders();"
+            }
+          ]
+        },
+        {
+          "id": "render",
+          "fromNode": "order-store",
+          "toNode": "activity-list",
+          "page": "activity",
+          "scene": "populated",
+          "label": "renderActivity()",
+          "effect": "주문 1건을 목록과 건수에 표시한다.",
+          "changes": [
+            {
+              "ownerNode": "activity-list",
+              "owner": "ActivityList",
+              "field": "visibleOrders",
+              "before": [],
+              "after": [
+                {
+                  "id": "ORD-001",
+                  "item": "Desk lamp",
+                  "quantity": 2
+                }
+              ]
+            }
+          ],
+          "evidence": [
+            {
+              "path": "docs/examples/routed-order-app/app.js",
+              "line": 27,
+              "quote": "list.replaceChildren(...orders.map(order => {"
+            }
+          ]
+        }
+      ],
+      "pages": [
+        "order",
+        "activity"
+      ]
+    },
+    {
+      "id": "empty-activity",
+      "title": "기록이 없을 때",
+      "category": "lifecycle",
+      "basis": "observed",
+      "steps": [
+        {
+          "id": "empty-read",
+          "fromNode": "activity",
+          "toNode": "order-store",
+          "page": "activity",
+          "scene": "empty",
+          "label": "readOrders()",
+          "effect": "새 브라우저에서는 저장된 주문이 없다.",
+          "evidence": [
+            {
+              "path": "docs/examples/routed-order-app/app.js",
+              "line": 5,
+              "quote": "localStorage.getItem(storageKey) ?? '[]'"
+            }
+          ]
+        },
+        {
+          "id": "empty-render",
+          "fromNode": "order-store",
+          "toNode": "activity-list",
+          "page": "activity",
+          "scene": "empty",
+          "label": "renderActivity()",
+          "effect": "빈 목록 안내를 표시한다.",
+          "evidence": [
+            {
+              "path": "docs/examples/routed-order-app/app.js",
+              "line": 24,
+              "quote": "list.textContent = 'No orders yet. Create an order to see it here.';"
+            }
+          ]
+        }
+      ],
+      "pages": [
+        "activity"
+      ]
+    }
+  ],
+  "browserApis": [
+    {
+      "name": "localStorage",
+      "ownerNode": "order-store",
+      "detail": "fs-routed-order-example-v1 · orders[]"
+    }
+  ],
+  "board": {
+    "width": 2020,
+    "height": 940,
+    "shell": {
+      "x": 16,
+      "y": 16,
+      "width": 1636,
+      "height": 900
+    },
+    "content": {
+      "x": 18,
+      "y": 110,
+      "width": 1314,
+      "height": 804
+    },
+    "appLane": {
+      "x": 48,
+      "y": 710,
+      "width": 1260,
+      "height": 178
+    },
+    "sidebar": {
+      "x": 1332,
+      "y": 110,
+      "width": 318,
+      "height": 804,
+      "browserY": 148
+    },
+    "remote": {
+      "x": 1700,
+      "y": 148,
+      "width": 288,
+      "height": 744
+    },
+    "frames": [
+      {
+        "page": "order",
+        "x": 48,
+        "y": 148,
+        "width": 600
+      },
+      {
+        "page": "activity",
+        "x": 684,
+        "y": 148,
+        "width": 600
+      }
+    ],
+    "placements": {
+      "order-store": {
+        "x": 62,
+        "y": 762,
+        "width": 297.5
+      }
+    }
+  }
+}

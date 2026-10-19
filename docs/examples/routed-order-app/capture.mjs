@@ -22,7 +22,7 @@ const browser=await chromium.launch();
 const screens={};
 async function capture(page,key,selector){
  const width=760,height=570;
- const region=await page.locator(selector).evaluate(el=>{const r=el.getBoundingClientRect();return {x:r.x/innerWidth,y:r.y/innerHeight,width:r.width/innerWidth,height:r.height/innerHeight};});
+ const region=await page.locator(selector).evaluate(el=>{const r=el.getBoundingClientRect();const x=Math.max(0,r.x/innerWidth),y=Math.max(0,r.y/innerHeight);return {x,y,width:Math.min(r.width/innerWidth,1-x),height:Math.min(r.height/innerHeight,1-y)};});
  const png=await page.screenshot({path:join(output,key+'.png')});
  screens[key]={image:'data:image/png;base64,'+png.toString('base64'),width,height,regions:[{instance:key.startsWith('order')?'order-form':'activity-list',...region}]};
 }
