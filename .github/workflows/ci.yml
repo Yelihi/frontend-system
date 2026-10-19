@@ -55,6 +55,7 @@ jobs:
       - run: npx --no-install playwright install --with-deps chromium
         working-directory: test/fixtures/frontend
       - run: npm run test:frontend
+      - run: node docs/proposals/component-flow-explorer/check-browser.mjs
       - run: npm ci
       - run: npm run build
       - run: python3 test/evals/fs-comparison/v4/runner_test.py

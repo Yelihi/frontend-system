@@ -142,9 +142,12 @@ if (Object.keys(assets).length) {
     }
   }
 }
+const expectedScreens=spec.pages.flatMap(page=>page.scenes.map(scene=>page.id+':'+scene));
+const missingScreens=expectedScreens.filter(key=>!assets.screens?.[key]);
+const captureCoverage={status:missingScreens.length?'incomplete':'complete',expected:expectedScreens.length,captured:expectedScreens.length-missingScreens.length,missing:missingScreens};
 await mkdir(output, {recursive: true});
 const json = value => JSON.stringify(value).replaceAll('<', '\\u003c');
 await writeFile(new URL('index.html', output), template.replace('/*__SPEC__*/', () => json(spec)).replace('/*__ASSETS__*/', () => json(assets.screens ?? {})));
 await writeFile(new URL('rendered-model.json', output), JSON.stringify(spec,null,2)+'\n');
-await writeFile(new URL('capture-input.json', output), JSON.stringify({specHash, templateHash, scenes}));
-console.log(JSON.stringify({path: new URL('index.html', output).pathname, semanticNodes:nodes.size, instances:instances.size, scenarios:spec.scenarios.length, capturedScreens:Object.keys(assets.screens ?? {}).length}));
+await writeFile(new URL('capture-input.json', output), JSON.stringify({specHash, templateHash, scenes, captureCoverage}));
+console.log(JSON.stringify({path: new URL('index.html', output).pathname, semanticNodes:nodes.size, instances:instances.size, scenarios:spec.scenarios.length, capturedScreens:Object.keys(assets.screens ?? {}).length,captureCoverage}));

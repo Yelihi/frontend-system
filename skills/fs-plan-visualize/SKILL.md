@@ -51,7 +51,12 @@ state coverage and omissions instead of claiming exhaustive whole-project analys
 For page-based interactive visualization, use the packaged
 [page-flow renderer](references/page-flow.md) after tracing and persisting the actual
 flows below. Map the target project's evidence into its input; include route nodes,
-recorded event/lifecycle scenarios, concrete contracts and optional actual screen captures.
+recorded event/lifecycle scenarios and concrete contracts. For a screen-based request,
+capture the actual relevant page states before calling the result complete; inspect
+the renderer's captureCoverage for missing page:scene pairs. If capture is blocked,
+report the concrete blocker and deliver the explicitly labeled component structure
+as a partial result, not a finished screen preview. Never capture the explorer itself
+as a substitute for the application.
 Use the same renderer for a plan addition without overwriting observed facts. Do not
 substitute demo HTML for the target or imply automatic complete analysis/capture.
 Keep the canonical FS export and add this page explorer as a linked output.
@@ -59,6 +64,12 @@ Keep the canonical FS export and add this page explorer as a linked output.
 ## Reuse, trace, render
 
 1. Query `get_project_analysis` for relevant flow summaries and dependency freshness.
+   For a feature addition, first locate the existing explorer's input model and linked
+   index.html. Reuse the current baseline and add proposed flows separately. If absent,
+   create an observed baseline for the affected pages and their cross-page consumers;
+   do not require an exhaustive whole-project analysis/capture for a bounded feature.
+   Expand that baseline when new dependencies are discovered. Link the baseline and
+   proposed explorer outputs together; never patch generated index.html as source.
    Reuse current records after checking their scope and limitations. Read selected
    full records only when needed. Analyze missing or stale relationships with the
    shared [project-flow-analysis](../../references/workflows/project-flow-analysis.md)

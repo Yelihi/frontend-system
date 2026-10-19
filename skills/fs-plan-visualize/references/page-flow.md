@@ -58,11 +58,22 @@ made to the authored input and rerendered, not patched into generated HTML.
 
 ## Screens, not invented UI
 
-Without screen assets, the viewer explicitly shows an uncaptured page. It never creates
+Without screen assets, the viewer shows recorded component names and state in a labeled
+structural view, in both page and board modes. These cards are not a reconstructed UI
+or evidence that every component is visible in the selected state. It never creates
 a sample product screen from a matching route ID. Capture authorized local project pages
 with an available browser tool; use the same page/scene state and viewport. Map actual
 component regions using code evidence plus DOM measurements. If browsing is unavailable,
 deliver the structural model and state that screen capture is missing.
+
+For a screen-based request, capture is part of delivery, not an optional polish step.
+The build receipt and capture-input.json contain captureCoverage with the missing
+page:scene keys. Use it to capture the requested states, rebuild, and check that each
+image decodes and matches the actual application. An incomplete list is a partial
+screen deliverable; explain the actual blocker (server, authentication, data or browser
+access). Do not reuse another scene's image as the missing state or capture this
+explorer's structural cards as application screenshots. Initial builds without assets
+remain supported so the capture manifest can be generated.
 
 Place `assets.json` in the output directory, then rerun the same command:
 
@@ -86,6 +97,12 @@ as current. Proposed views on existing screenshots explicitly show a baseline-sc
 Keep PNG/base64 and full HTML out of ordinary AI planning context; read the small model instead.
 
 ## Add a feature to a baseline
+
+Locate and reuse an existing explorer input after checking its source freshness. A
+missing whole-project index.html does not require capturing the whole project first:
+create the affected pages and shared consumers as a bounded observed baseline and
+state its coverage. Extend it as related pages are discovered. Keep a link to that
+baseline beside the proposed output in the plan/project's existing diagram index.
 
 Keep the original view model. An optional third argument names an addition JSON:
 `{id, title, baseHash, nodes?, pages?, instances?, navigation?, scenarios}`. Compute
