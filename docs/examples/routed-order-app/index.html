@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Orders · Northstar</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script defer src="/app.js"></script>
+</head>
+<body data-page="orders">
+  <div class="shell">
+    <aside class="sidebar">
+      <a class="brand" href="/"><span class="brand-mark">N</span> northstar <small>OPERATIONS</small></a>
+      <p class="nav-label">WORKSPACE</p>
+      <nav aria-label="Main navigation">
+        <a class="nav-link active" aria-current="page" href="/">New order</a>
+        <a class="nav-link" href="/activity/">Activity</a>
+      </nav>
+      <div class="sidebar-foot"><span class="status-dot"></span> Local workspace</div>
+    </aside>
+    <main>
+      <header class="topbar"><span>Workspace / Orders</span><span>Operations console</span></header>
+      <div class="content">
+        <p class="eyebrow">ORDERS / CREATE</p>
+        <div class="title-row"><div><h1>Create an order</h1><p class="lead">Record an item and review it in activity.</p></div><a class="quiet-link" href="/activity/">View activity →</a></div>
+        <section class="panel" aria-labelledby="order-heading">
+          <div class="panel-head"><div><p class="eyebrow">NEW ENTRY</p><h2 id="order-heading">Order details</h2></div><span class="pill">Draft</span></div>
+          <form id="order-form">
+            <label for="item">Item name</label><input id="item" name="item" value="Desk lamp" required maxlength="80">
+            <label for="quantity">Quantity</label><input id="quantity" name="quantity" type="number" min="1" max="99" value="2" required>
+            <div class="form-foot"><span>Saved in this browser</span><button type="submit">Save order</button></div>
+          </form>
+          <div id="order-result" class="result" role="status" hidden></div>
+        </section>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
