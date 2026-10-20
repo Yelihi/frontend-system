@@ -5,6 +5,7 @@ import { dirname, isAbsolute, join, relative, resolve } from "node:path";
 import * as z from "zod/v4";
 
 import { confinedRead, readReferenceIndex, contentHash as referenceHash, evaluateRetrievalChecks, evaluateTriggerChecks, triggerPublicationFailures, technologyKey, type ReferenceIndex } from "./reference-index.js";
+import { readHtmlCapture } from './html-capture.js';
 
 import { terms } from "./knowledge-resolver.js";
 import { readRuleProposal } from "./rule-proposals.js";
@@ -13,6 +14,18 @@ import { pendingNote, sourceSelection } from "./source-state.js";
 export type KnowledgeSourceType = "manual" | "imported" | "attachment";
 
 const reviewText = z.string().trim().min(1).max(1200);
+const sourceCaptureSchema = z.object({
+  basis: z.enum(['live-page', 'user-provided-document']),
+  sourceId: z.string().regex(/^[a-z0-9][a-z0-9._-]*$/).optional(),
+  bodyHash: z.string().regex(/^[a-f0-9]{64}$/).optional(),
+  manifestHash: z.string().regex(/^[a-f0-9]{64}$/).optional(),
+  checkedAt: z.iso.date(),
+  sections: z.array(reviewText).min(1).max(100),
+  hasCodeExamples: z.boolean(),
+  codeExamples: z.array(z.object({ location: reviewText, noteQuote: reviewText })).max(100),
+  unread: z.array(reviewText).max(100),
+}).refine((capture) => capture.hasCodeExamples === (capture.codeExamples.length > 0),
+  'List every inspected code example, or explicitly record that the page has none');
 export const sourceReviewInputSchema = z.object({
   status: z.enum(["on-review", "approved", "changes-requested"]),
   reviewer: z.enum(["host", "user"]), summary: reviewText,
@@ -21,6 +34,7 @@ export const sourceReviewInputSchema = z.object({
     verdict: z.enum(["supported", "qualified", "unsupported", "unverified"]) })).max(100),
   conditions: z.array(reviewText).max(30), exclusions: z.array(reviewText).max(30),
   unresolved: z.array(reviewText).max(30),
+  capture: sourceCaptureSchema.optional(),
 }).refine((review) => review.status !== "approved" || (review.claims.length > 0 && review.conditions.length > 0 &&
   review.exclusions.length > 0 && !review.unresolved.length && review.claims.every((claim) =>
     claim.verdict === "supported" || claim.verdict === "qualified")), "Approval needs supported/qualified claims, conditions, exclusions and no unresolved questions");
@@ -102,6 +116,14 @@ function readSource(root: string, path: string) {
   return confinedRead(sourceRoot, relative(sourceRoot, sourcePath(root, path)));
 }
 
+function hasLinkedSource(document: KnowledgeDocument, body: string) {
+  return !!linkedSourceUrl(document, body);
+}
+
+function linkedSourceUrl(document: KnowledgeDocument, body: string) {
+  return document.sourceUrl ?? body.match(/^-?\s*(?:원문 URL|요청 URL|등록 URL|확인한 URL|출처|출처 URL|source URL|original URL):\s*(https?:\/\/\S+)/im)?.[1];
+}
+
 async function knowledgeDirectory(root: string, path: string) {
   let directory = await realpath(root);
   for (const part of path.split("/")) {
@@ -156,6 +178,23 @@ export async function reviewKnowledgeSource(root: string, id: string, expectedSo
   if (sourceMetadataHash(document) !== expectedMetadataHash) throw new Error("Source metadata changed; reread before reviewing");
   if ((document.sourceReview ? digest(JSON.stringify(document.sourceReview)) : null) !== expectedReviewHash) throw new Error("Source review changed; reread before saving");
   if (review.claims.some((claim) => !body.includes(claim.quote))) throw new Error("Review quotes must exist in the source document");
+  if (review.status === 'approved' && hasLinkedSource(document, body)) {
+    if (!review.capture || review.capture.unread.length) throw new Error('URL source approval requires inspection of every relevant section and code example in the live page or supplied document; unread material must remain on review');
+    if (review.capture.codeExamples.some((example) => !body.includes(example.noteQuote)))
+      throw new Error('Inspected code examples need a corresponding summary in the saved source document');
+    if (review.capture.basis === 'live-page') {
+      const {sourceId, bodyHash, manifestHash} = review.capture;
+      if (!sourceId || !bodyHash || !manifestHash) throw new Error('Live-page review requires a tool-generated HTML capture identity');
+      const captured = await readHtmlCapture(root, sourceId);
+      if (captured.url !== linkedSourceUrl(document, body) || captured.checkedAt !== review.capture.checkedAt ||
+        captured.bodyHash !== bodyHash || captured.manifestHash !== manifestHash || captured.manifest.interactive)
+        throw new Error('HTML capture is stale, interactive or belongs to a different source; inspect rendered tabs or use a supplied document');
+      if (JSON.stringify(review.capture.sections) !== JSON.stringify(captured.manifest.sections) ||
+        JSON.stringify(review.capture.codeExamples.map(example => example.location)) !==
+          JSON.stringify(captured.manifest.codeExamples.map(example => example.location)))
+        throw new Error('Review inventory must cover every captured HTML section and code example');
+    }
+  }
   document.sourceReview = { ...review, sourceHash: expectedSourceHash, metadataHash: sourceMetadataHash(document), reviewedAt: new Date().toISOString() };
   await saveKnowledgeCatalog(root, catalog);
   return { id, status: review.status, state: lifecycle(document, body), reviewHash: digest(JSON.stringify(document.sourceReview)),
@@ -373,6 +412,29 @@ export async function knowledgeStatus(root: string): Promise<{
   };
 }
 
+export async function knowledgeUpdateQueue(root: string) {
+  const status = await knowledgeStatus(root);
+  const catalog = await loadKnowledgeCatalog(root);
+  const index = await readReferenceIndex(join(root, "references", "learned"));
+  const candidates = [...status.lifecycle.active, ...status.lifecycle.merged]
+    .filter((id) => status.unpublished.includes(id) && catalog.documents[id])
+    .sort()
+    .map((id) => {
+      const document = catalog.documents[id]!;
+      const references = (index?.entries ?? []).filter((entry) => Object.hasOwn(entry.sources, id));
+      return {
+        id, title: document.title, path: document.path, sourceHash: document.contentHash,
+        state: status.lifecycle.merged.includes(id) ? "merged" as const : "active" as const,
+        reviewStatus: (Object.keys(status.sourceReviews) as SourceReviewStatus[])
+          .find((state) => status.sourceReviews[state].includes(id))!,
+        needsRecatalog: status.changed.includes(document.path),
+        existingReferences: references.map((entry) => entry.id),
+        sharedSourceIds: [...new Set(references.flatMap((entry) => Object.keys(entry.sources)))].filter((sourceId) => sourceId !== id).sort(),
+      };
+    });
+  return { candidates, pendingCount: status.lifecycle.pending.length, invalid: status.stateErrors, deleted: status.deleted };
+}
+
 // Hash the published contract as well as the original; unrelated sources stay current.
 function publicationHash(index: ReferenceIndex, sourceId: string, sourceReview?: SourceReview): string {
   const entries = index.entries.filter((entry) => entry.sources[sourceId]);
@@ -476,6 +538,8 @@ export async function validateKnowledgeSync(root: string, ids: string[], require
       const body = await readSource(root, source.path);
       if (sourceSelection(body) && lifecycle(source, body) !== "merged")
         throw new Error(`Shared reference requires merged source review: ${entry.id}/${sourceId}`);
+      if (!ids.includes(sourceId) && source.publishedArtifactsHash !== publicationHash(index, sourceId, source.sourceReview))
+        throw new Error(`Shared reference update requires co-source sync: ${entry.id}/${sourceId}`);
     }
   }
   return { documents: updated, referenceCount: index.entries.length, retrievalChecks, triggerChecks,

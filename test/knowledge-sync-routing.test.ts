@@ -4,7 +4,7 @@ import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
-import { addKnowledgeNote as addPendingNote, knowledgeStatus, markKnowledgeSynced, validateKnowledgeSync } from "../src/application/knowledge/catalog.js";
+import { addKnowledgeNote as addPendingNote, knowledgeStatus, knowledgeUpdateQueue, markKnowledgeSynced, validateKnowledgeSync } from "../src/application/knowledge/catalog.js";
 import { contentHash, readReferenceIndex, type ReferenceIndex } from "../src/application/knowledge/reference-index.js";
 import { discoverKnowledgeTriggers, inspectCodeKnowledge, saveKnowledgeReview } from "../src/application/knowledge/trigger-review.js";
 
@@ -97,6 +97,59 @@ test("plain notes → v3 publication → artifact changes invalidate only affect
     background.routing = { mode: "deferred", reason: "Direct judgment needs clarification" };
     delete entry.triggers; delete entry.checks; index.triggerChecks = []; await save();
     await assert.rejects(markKnowledgeSynced(root, [note.document.id]), /Deferred routing/);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+test("adding a source to an existing reference publishes both source bindings together", async () => {
+  const root = await mkdtemp(join(tmpdir(), "fs-shared-reference-"));
+  try {
+    const first = await addKnowledgeNote(root, { title: "First condition", content: "Name a complex condition when it explains intent." });
+    await approveFixtureSource(root, first.document.id);
+    const learned = join(root, "references/learned");
+    await mkdir(learned, { recursive: true });
+    const body = "Name a complex condition only when the name clarifies intent.";
+    const entry: ReferenceIndex["entries"][number] = {
+      id: "condition-names", kind: "concept", title: "Condition names", summary: body,
+      path: "condition-names.md", contentHash: contentHash(body), keywords: ["condition"],
+      domains: ["code-quality"], technologies: [], excludedTechnologies: [],
+      conditions: ["Complex condition"], exclusions: ["Simple one-time expression"],
+      evidenceKind: "experience", review: "reviewed", sources: { [first.document.id]: first.document.contentHash }, related: [],
+      routing: { mode: "direct", reason: "Review condition intent" },
+      triggers: [{ kind: "path", value: "src/conditions.ts" }],
+      checks: [{ id: "intent", question: "Does the name clarify intent?", guidance: body, verification: "review" }],
+    };
+    const index: ReferenceIndex = {
+      version: 3, entries: [entry], outcomes: [{ sourceId: first.document.id, sourceHash: first.document.contentHash, action: "represented", reason: "Initial condition judgment" }],
+      triggerChecks: [
+        { signals: [{ kind: "path", value: "src/conditions.ts" }], technologies: [], expectedIds: [entry.id], forbiddenIds: [] },
+        { signals: [{ kind: "path", value: "src/unrelated.ts" }], technologies: [], expectedIds: [], forbiddenIds: [entry.id] },
+      ],
+    };
+    const save = () => writeFile(join(learned, "index.json"), JSON.stringify(index));
+    await writeFile(join(learned, entry.path), body);
+    await save();
+    await markKnowledgeSynced(root, [first.document.id]);
+
+    const second = await addKnowledgeNote(root, { title: "Second condition", content: "Preserve evaluation order when naming conditions." });
+    await approveFixtureSource(root, second.document.id);
+    const extendedBody = `${body}\nPreserve evaluation order when naming conditions.`;
+    await writeFile(join(learned, entry.path), extendedBody);
+    entry.contentHash = contentHash(extendedBody);
+    entry.checks![0]!.guidance = extendedBody;
+    entry.sources[second.document.id] = second.document.contentHash;
+    index.outcomes.push({ sourceId: second.document.id, sourceHash: second.document.contentHash, action: "represented", reason: "Adds behavior preservation to the existing judgment" });
+    await save();
+    assert.deepEqual((await knowledgeStatus(root)).unpublished.sort(), [first.document.id, second.document.id].sort());
+    const queue = await knowledgeUpdateQueue(root);
+    assert.deepEqual(queue.candidates.map((item) => item.id), [first.document.id, second.document.id].sort());
+    assert.deepEqual(queue.candidates.map((item) => item.existingReferences), [[entry.id], [entry.id]]);
+    assert.deepEqual(queue.candidates.find((item) => item.id === second.document.id)?.sharedSourceIds, [first.document.id]);
+    await assert.rejects(markKnowledgeSynced(root, [second.document.id]), /Shared reference update requires co-source sync/);
+    await markKnowledgeSynced(root, [first.document.id, second.document.id]);
+    assert.deepEqual((await knowledgeStatus(root)).unpublished, []);
+    assert.match(await readFile(join(learned, entry.path), "utf8"), /Name a complex condition.*\nPreserve evaluation order/);
+    assert.deepEqual((await knowledgeUpdateQueue(root)).candidates, []);
+    assert.deepEqual(Object.keys(index.entries[0]!.sources).sort(), [first.document.id, second.document.id].sort());
   } finally { await rm(root, { recursive: true, force: true }); }
 });
 

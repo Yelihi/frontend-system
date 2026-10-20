@@ -4,6 +4,8 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
 import { catalogKnowledgeDocument, knowledgeStatus, markKnowledgeSynced, readKnowledgeDocument, reviewKnowledgeSource } from "../src/application/knowledge/catalog.js";
+import { readHtmlCapture } from '../src/application/knowledge/html-capture.js';
+import { checkSources, registerSource } from '../src/application/knowledge/sources.js';
 import { approveFixtureSource, addActiveFixtureNote as addKnowledgeNote } from "./source-review-fixture.js";
 
 test("source approval gates sync, binds evidence and invalidates on source/provenance/review changes", async () => {
@@ -67,4 +69,53 @@ test("legacy published sources remain explicitly unreviewed and need review on t
     await writeFile(join(root, "references/learned/index.json"), JSON.stringify({ version: 3, entries: [], outcomes: [{ sourceId: document.id, sourceHash: document.contentHash, action: "omitted", reason: "Historical source" }] }));
     await assert.rejects(markKnowledgeSynced(root, [document.id]), /Source review required/);
   } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+test("URL knowledge cannot be approved with uninspected or unsaved code examples", async () => {
+  const root = await mkdtemp(join(tmpdir(), "fs-link-review-"));
+  try {
+    const {document} = await addKnowledgeNote(root, {title: "Example", content: "Before: mixed branches. After: separate event paths."});
+    await catalogKnowledgeDocument(root, {id: document.id, path: document.path, title: document.title,
+      summary: document.summary, sourceType: "imported", sourceUrl: "https://example.org/guide", facets: {}});
+    await registerSource(root, 'guide', 'https://example.org/guide', null);
+    await checkSources(root, ['guide'], async () => new Response('<main><h1>Example</h1><pre><code>const before = true;</code></pre></main>',
+      {headers: {'content-type': 'text/html'}}), async () => [{address: '93.184.215.14', family: 4}]);
+    const captured = await readHtmlCapture(root, 'guide');
+    const source = await readKnowledgeDocument(root, document.id);
+    const review = {status: "approved" as const, reviewer: "host" as const, summary: "Inspected example", scope: "Whole page",
+      claims: [{quote: "Before: mixed branches.", assessment: "Contrasting example", evidence: "Page example inspected", verdict: "qualified" as const}],
+      conditions: ["Shared event path"], exclusions: ["Already separated"], unresolved: [] as string[]};
+    const save = (input: Parameters<typeof reviewKnowledgeSource>[5]) => reviewKnowledgeSource(root, document.id,
+      source.sourceHash, source.metadataHash, source.reviewHash, input);
+    await assert.rejects(save(review), /requires inspection/);
+    const capture = {basis: "live-page" as const, sourceId: 'guide', bodyHash: captured.bodyHash,
+      manifestHash: captured.manifestHash, checkedAt: captured.checkedAt, sections: captured.manifest.sections,
+      hasCodeExamples: true, codeExamples: [{location: "code-1", noteQuote: "Before: mixed branches. After: separate event paths."}], unread: ["Second code tab"]};
+    await assert.rejects(save({...review, capture}), /unread material/);
+    await assert.rejects(save({...review, capture: {...capture, unread: [], codeExamples: [{location: "Example 1", noteQuote: "Missing summary"}]}}), /corresponding summary/);
+    await assert.rejects(save({...review, capture: {...capture, unread: [], codeExamples: [{...capture.codeExamples[0]!, location: 'invented'}]}}), /inventory must cover/);
+    await assert.rejects(save({...review, capture: {...capture, unread: [], manifestHash: '0'.repeat(64)}}), /stale, interactive/);
+    await checkSources(root, ['guide'], async () => new Response('<main><h1>Example</h1><div role="tablist"><button role="tab">Code</button></div><pre>const before = true;</pre></main>',
+      {headers: {'content-type': 'text/html'}}), async () => [{address: '93.184.215.14', family: 4}]);
+    const tabbed = await readHtmlCapture(root, 'guide');
+    await assert.rejects(save({...review, capture: {...capture, unread: [], bodyHash: tabbed.bodyHash,
+      manifestHash: tabbed.manifestHash, sections: tabbed.manifest.sections}}), /stale, interactive/);
+    await checkSources(root, ['guide'], async () => new Response('<main><h1>Example</h1><pre><code>const before = true;</code></pre></main>',
+      {headers: {'content-type': 'text/html'}}), async () => [{address: '93.184.215.14', family: 4}]);
+    assert.equal((await save({...review, capture: {...capture, unread: []}})).state, "merged");
+  } finally { await rm(root, {recursive: true, force: true}); }
+});
+
+test("a contributed link in the note body cannot bypass capture review without catalog URL metadata", async () => {
+  const root = await mkdtemp(join(tmpdir(), "fs-contributed-link-review-"));
+  try {
+    const {document} = await addKnowledgeNote(root, {title: "Linked note",
+      content: "- 원문 URL: https://example.org/guide\n\nThe example separates two event paths."});
+    const source = await readKnowledgeDocument(root, document.id);
+    await assert.rejects(reviewKnowledgeSource(root, document.id, source.sourceHash, source.metadataHash, source.reviewHash, {
+      status: "approved", reviewer: "host", summary: "Read linked note", scope: "Source page",
+      claims: [{quote: "The example separates two event paths.", assessment: "Example summary", evidence: "Source page", verdict: "qualified"}],
+      conditions: ["Separate event paths"], exclusions: ["Same event path"], unresolved: [],
+    }), /requires inspection/);
+  } finally { await rm(root, {recursive: true, force: true}); }
 });

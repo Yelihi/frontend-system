@@ -12,8 +12,13 @@ points, not blanket presets. Separate framework requirements from preferences an
 implementation details. Follow linked-knowledge.md for permitted capture/reuse.
 
 `check_knowledge_sources` fetches only registered URLs, with conditional validators,
-timeouts, size bounds and public-address checks. It accepts plain text/Markdown;
-HTML/PDF needs a host browser or an explicitly registered official text counterpart.
+timeouts, size bounds and public-address checks. It stores text/Markdown snapshots.
+For HTML with a main/article element it also records a hashed inventory of headings
+and static `<pre>` code blocks in the ignored local cache and returns their IDs/hashes.
+This proves what the HTTP response contained, not what a rendered tab reveals or what
+the reviewer understood. Interactive controls remain `needs-host`; inspect their
+rendered states in a browser or use an explicitly supplied source document. PDFs need
+a host tool or an explicitly registered official text counterpart.
 Do not guess a counterpart URL or replace a complete capture with partial text.
 Failures preserve the previous snapshot and are reported, never called unchanged.
 HTTP 206 or Content-Range responses are rejected as partial captures even when

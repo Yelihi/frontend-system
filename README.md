@@ -71,8 +71,9 @@ claude plugin list
 | `fs-knowledge active` | 관리자가 `state: active`로 선택한 원문을 모아 구조화 |
 | `fs-knowledge review` | 선택된 원문의 근거·조건·예외 검토. 유효한 승인을 받은 지식은 merged로 판단 |
 | `fs-knowledge sync` | merged 지식의 미반영 변경을 참조 문서·검색 색인·trigger로 변환 |
+| `fs-knowledge update` | 병합된 원문 중 active/merged 미반영 목록을 CLI에 보여주고, 검토→기존 참조 보강 또는 신규 참조 작성→적용·예외 사례 시험→sync를 순차 진행 |
 
-`active`, `review`, `sync`는 **FS 원본 저장소에서 관리자가 실행**합니다. `merged`는 검토 결과에서 계산하므로 metadata에 직접 쓰지 않습니다. 프로젝트의 PR 리뷰를 공유 지식으로 바로 승격하지 않으며, sync 후 배포·설치본 업데이트는 별도입니다.
+`active`, `review`, `sync`, `update`는 **FS 원본 저장소에서 관리자가 실행**합니다. `merged`는 검토 결과에서 계산하므로 metadata에 직접 쓰지 않습니다. `update`는 pending 원문을 자동 선택하지 않으며, 기존 참조에 새 원문을 더하면 기존 근거와 적용·예외 사례도 다시 검사합니다. 실패한 묶음은 sync 완료로 표시하지 않고 다른 독립 항목을 계속 처리합니다. 프로젝트의 PR 리뷰를 공유 지식으로 바로 승격하지 않으며, sync 후 배포·설치본 업데이트는 별도입니다.
 
 반복할 프로젝트 선택은 `.frontend-system/decisions/<id>.md`에 적용 조건·예외·기존 진입점·검증 방법과 함께 저장합니다. 다음 작업의 `get_work_context`는 관련 결정을 후보로 검색합니다. 후보라는 사실만으로 적용하지 않고 현재 코드와 조건을 확인한 뒤 계획에 해시로 연결합니다. 기존 자유형 결정 메모는 그대로 보존하며 자동 승인하지 않습니다.
 

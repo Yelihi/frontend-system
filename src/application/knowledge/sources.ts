@@ -9,6 +9,7 @@ import { promisify } from "node:util";
 import * as z from "zod/v4";
 import { ruleId } from "../policy.js";
 import { loadKnowledgeCatalog, validateKnowledgeSync } from "./catalog.js";
+import { saveHtmlCapture } from './html-capture.js';
 
 const hash = (text: string) => createHash("sha256").update(text).digest("hex");
 const run = promisify(execFile);
@@ -150,6 +151,21 @@ export async function checkSources(root: string, ids?: string[], transport = fet
         }
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const type = response.headers.get("content-type") ?? "";
+        if (/text\/html/.test(type)) {
+          const body = await boundedText(response);
+          try {
+            const capture = await saveHtmlCapture(root, id, sourceUrl, url.href, body);
+            results.push({id, url: sourceUrl, status: 'needs-host', reason: capture.manifest.interactive
+              ? 'Static HTML contains interactive controls; inspect every rendered tab in a browser or use a supplied document.'
+              : 'Static HTML inventory captured; compare rendered page and saved example summaries before approval.',
+              capture: {checkedAt: capture.checkedAt, finalUrl: capture.finalUrl, bodyHash: capture.bodyHash, manifestHash: capture.manifestHash,
+                sections: capture.manifest.sections, codeExamples: capture.manifest.codeExamples}});
+          } catch (error) {
+            if (!(error instanceof Error) || !error.message.includes('no main/article')) throw error;
+            results.push({id, url: sourceUrl, status: 'needs-host', reason: error.message});
+          }
+          continue;
+        }
         if (!/text\/(plain|markdown)|application\/(x-)?markdown/.test(type)) {
           await response.body?.cancel();
           results.push({ id, url: sourceUrl, status: "needs-host", reason: "Use the host browser to inspect HTML/PDF or register an official Markdown source. Previous capture preserved." });

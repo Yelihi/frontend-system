@@ -19,5 +19,7 @@ export async function approveFixtureSource(root: string, id: string) {
     status: "approved", reviewer: "host", summary: "Synthetic fixture reviewed for this test only", scope: "Publication contract fixture",
     claims: [{ quote: source.content.trim().slice(0, 100), assessment: "Fixture content matches the scenario", evidence: "Hand-authored test setup; not a real-world factual claim", verdict: "qualified" }],
     conditions: ["This synthetic test"], exclusions: ["Production knowledge"], unresolved: [],
+    ...(source.document.sourceUrl ? {capture: {basis: 'user-provided-document' as const, checkedAt: "2026-10-20", sections: ["Synthetic fixture"],
+      hasCodeExamples: false, codeExamples: [], unread: []}} : {}),
   });
 }

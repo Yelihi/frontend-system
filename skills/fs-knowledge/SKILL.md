@@ -1,6 +1,6 @@
 ---
 name: fs-knowledge
-description: Contribute programming knowledge through pending GitHub PRs, or maintain selected sources and sync reviewed references. Supports fs-knowledge add, active, review and sync.
+description: Contribute programming knowledge through pending GitHub PRs, or maintain selected sources and sync reviewed references. Supports fs-knowledge add, active, review, sync and update.
 ---
 
 # FS Knowledge
@@ -23,6 +23,9 @@ submission from an unrelated request to save private project notes.
 
 - **Add (`fs-knowledge add`, link, note or excerpt):** follow
   `../../references/workflows/fs-knowledge-add.md` and `../../references/linked-knowledge.md`.
+  For a URL, inspect the actual page, its examples/code tabs and explanations before
+  writing the note. If any relevant content is inaccessible, record it and leave the
+  source partial; ask for the missing material when it blocks a faithful review.
   Use prepare_knowledge_contribution, then submit_knowledge_contribution with its exact
   id/hash. The tools manage contributor state outside both the project and plugin cache.
 - **Local-only add:** use add_knowledge_note with an explicitly selected source checkout.
@@ -49,6 +52,12 @@ submission from an unrelated request to save private project notes.
   unpublished. Only merged sources may sync. Do not activate or review pending/active
   notes during sync; report these queues without loading their bodies. Check remote
   updates only for selected sources; changed evidence returns to review.
+- **Update (`fs-knowledge update`):** follow
+  `../../references/workflows/fs-knowledge-update.md`. Show the selected active/merged
+  queue before work, then review, draft, test and sync independent source groups in
+  sequence. Include previously published co-sources when adding to an existing
+  learned reference. Pending sources remain unselected; failed groups remain
+  unpublished and do not stop unrelated groups.
 
 During sync, distinguish concepts, conditional decisions and rule candidates. Save
 new/changed obligations using `save_rule_proposal`; present grounds, conditions,

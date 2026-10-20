@@ -9,6 +9,12 @@ No routing JSON, target path or extra submit sentence is required from the user.
    record provenance/capture scope, and normalize the contribution into Markdown. The
    automated contribution accepts one Markdown document, not arbitrary binary uploads.
    Do not silently omit an attachment that cannot be represented; retain/report its limits.
+   Open every relevant section and code example/tab on the linked page. For each example,
+   record its location, before/after or illustrative role, the author's rationale and
+   conditions in your own words. If a material example is inaccessible, mark the note
+   partial and explain what is missing; do not submit it as a complete capture.
+   Keep the original link on a `- 원문 URL:` line so the later review gate recognizes
+   contributed links even before the maintainer records catalog URL metadata.
 2. Organize the supplied material using relevant source-template sections: context,
    claims, evidence, applicability, counterexamples and open questions. Preserve the
    author’s claims, distinguish AI interpretation, and leave unknowns unknown. Do not
@@ -27,6 +33,11 @@ No routing JSON, target path or extra submit sentence is required from the user.
    id/hash after the error is resolved; do not prepare duplicate drafts, silently
    switch repositories or claim a local save was uploaded. An existing closed PR is
    reported as closed, not silently replaced.
+
+If the maintainer asks to inspect the knowledge document in the CLI before merging,
+read the exact pending Markdown from the contribution PR (or its prepared draft before
+submission) and display it with its source and omissions. This is read-only; do not
+change metadata, review status or sync state on the basis of inspection alone.
 
 The maintainer decides whether to merge the PR, then selects state: active in the source.
 Active preparation, review, sync and plugin release are separate stages. A contributor's

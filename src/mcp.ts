@@ -14,7 +14,7 @@ import {
   catalogKnowledgeDocument,
   addKnowledgeNote, knowledgeNoteSchema, prepareActiveKnowledge, selectMergedKnowledge,
   readKnowledgeDocument, reviewKnowledgeSource, sourceReviewInputSchema,
-  knowledgeStatus,
+  knowledgeStatus, knowledgeUpdateQueue,
   markKnowledgeSynced,
   validateKnowledgeSync,
   searchKnowledge,
@@ -438,6 +438,12 @@ server.registerTool("knowledge_status", {
   annotations: readOnly,
 }, async ({ repositoryRoot }) => result(await knowledgeStatus(repositoryPath(repositoryRoot))));
 
+server.registerTool("list_knowledge_updates", {
+  title: "List sources awaiting knowledge update",
+  description: "List selected active and reviewed merged sources awaiting sync with titles, already-linked references and shared source IDs. Empty existingReferences does not rule out a relevant unlinked reference. Pending notes are counted but never selected. Read-only; no review, sync or model test is run.",
+  inputSchema: { repositoryRoot: z.string().optional() }, annotations: readOnly,
+}, async ({ repositoryRoot }) => result(await knowledgeUpdateQueue(repositoryPath(repositoryRoot))));
+
 server.registerTool("search_knowledge", {
   title: "Search source knowledge metadata",
   description: "Rank a small metadata-only shortlist using catalog facets and lexical terms before the model opens source documents.",
@@ -460,7 +466,7 @@ server.registerTool("read_source_knowledge", {
 
 server.registerTool("save_source_review", {
   title: "Record a grounded source review before sync",
-  description: "Save host/user semantic judgments bound to source and metadata hashes. Approval requires quoted supported/qualified claims, applicability, exclusions and no unresolved questions. This validates records, not factual truth, rule approval or publication. Never fabricate user review.",
+  description: "Save host/user semantic judgments bound to source and metadata hashes. URL approval requires a tool-captured static HTML inventory or explicitly user-provided document, no unread material and example summaries in the note. Interactive tabs require separate browser evidence or a supplied document. This validates records, not semantic correctness, rule approval or publication. Never fabricate user review.",
   inputSchema: { repositoryRoot: z.string().optional(), id: z.string(), expectedSourceHash: z.string(), expectedMetadataHash: z.string(),
     expectedReviewHash: z.string().nullable(), review: sourceReviewInputSchema }, annotations: localWrite,
 }, async ({ repositoryRoot, id, expectedSourceHash, expectedMetadataHash, expectedReviewHash, review }) => {
@@ -608,7 +614,7 @@ server.registerTool("register_knowledge_source", {
 }, async ({ repositoryRoot, id, url, expectedHash }) => result(await registerSource(repositoryPath(repositoryRoot), id, url, expectedHash)));
 
 server.registerTool("check_knowledge_sources", {
-  description: "On request, conditionally fetch registered public text/Markdown sources and cache changes. Returns metadata, never whole bodies. HTML needs host inspection; failures preserve previous captures.",
+  description: "On request, fetch registered public sources. Text/Markdown snapshots are diffed; static HTML returns a hashed section/code-block inventory without full bodies. Interactive HTML and PDFs still need host inspection. Failures preserve previous text captures.",
   inputSchema: { repositoryRoot: z.string().optional(), ids: z.array(z.string()).min(1).optional() }, annotations: { ...localWrite, openWorldHint: true },
 }, async ({ repositoryRoot, ids }) => result(await checkSources(repositoryPath(repositoryRoot), ids)));
 

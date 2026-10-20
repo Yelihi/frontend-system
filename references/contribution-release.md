@@ -57,9 +57,15 @@ was not included. Explicit local-only saves remain possible with an explicit che
 
 ## Maintainer: select and review knowledge
 
-Merge a contribution PR to accept the pending original. In the source checkout, change
-its frontmatter to `state: active`, then invoke `fs-knowledge active`, `fs-knowledge review`,
-and `fs-knowledge sync` separately. Metadata selection remains maintainer-owned.
+Review the pending document in GitHub or read it in the CLI before merging its
+contribution PR. Merge accepts the pending original; it does not change the metadata.
+For a source selected for sync, change its frontmatter to `state: active` in the source
+checkout and commit/push that change. Then invoke `fs-knowledge active`,
+`fs-knowledge review`, and `fs-knowledge sync` separately. Metadata selection
+remains maintainer-owned.
+For selected sources awaiting both review and sync, `fs-knowledge update` shows the
+active/merged queue and runs those stages sequentially with application cases. It
+does not select pending contributions, merge PRs or release the plugin.
 
 Git PR merge and the calculated knowledge status merged are distinct. Knowledge merged
 means the active source has a current approved review. Sync only consumes those sources;

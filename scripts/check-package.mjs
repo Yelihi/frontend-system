@@ -109,7 +109,7 @@ try {
   }
   assert.equal(definitions.find(({name}) => name === 'save_revision').inputSchema.properties.evidence.type, undefined);
   await assert.rejects(exec(process.execPath, [helper, 'not-a-tool'], {cwd: temp}), error => error.code === 2);
-  for (const name of ['save_project_analysis', 'get_project_analysis', 'render_project_flow', 'list_plans', 'get_project_snapshot', 'read_project_source', 'get_project_document', 'record_project_refresh', 'save_revision', 'run_project_checks', 'begin_work_attempt', 'start_work', 'complete_work', 'save_semantic_review', 'save_rule_proposal', 'check_knowledge_sources', 'read_source_change', 'inspect_code_knowledge', 'save_knowledge_review', 'add_knowledge_note', 'discover_knowledge_triggers', 'read_source_knowledge', 'save_source_review']) assert.ok(tools.includes(name), name);
+  for (const name of ['save_project_analysis', 'get_project_analysis', 'render_project_flow', 'list_plans', 'get_project_snapshot', 'read_project_source', 'get_project_document', 'record_project_refresh', 'save_revision', 'run_project_checks', 'begin_work_attempt', 'start_work', 'complete_work', 'save_semantic_review', 'save_rule_proposal', 'check_knowledge_sources', 'read_source_change', 'inspect_code_knowledge', 'save_knowledge_review', 'add_knowledge_note', 'discover_knowledge_triggers', 'read_source_knowledge', 'save_source_review', 'list_knowledge_updates']) assert.ok(tools.includes(name), name);
   const note = await client.callTool({ name: 'add_knowledge_note', arguments: { repositoryRoot: temp, title: 'Package note', content: 'A short note; not yet reviewed knowledge.' } });
   assert.ok(!note.isError, JSON.stringify(note));
   const sourceId = JSON.parse(note.content[0].text).document.id;
@@ -118,6 +118,8 @@ try {
   let source = JSON.parse(sourceRead.content[0].text);
   assert.equal(source.state, 'pending');
   assert.equal(source.reviewStatus, 'on-review');
+  const pendingUpdates = await client.callTool({name: 'list_knowledge_updates', arguments: {repositoryRoot: temp}});
+  assert.deepEqual(JSON.parse(pendingUpdates.content[0].text).candidates, []);
   assert.ok(tools.includes('prepare_active_knowledge'));
   const collected = await client.callTool({name: 'prepare_active_knowledge', arguments: {repositoryRoot: temp}});
   assert.deepEqual(JSON.parse(collected.content[0].text).prepared, []);
@@ -128,6 +130,8 @@ try {
   const activeRead = await client.callTool({name: 'read_source_knowledge', arguments: {repositoryRoot: temp, id: sourceId}});
   source = JSON.parse(activeRead.content[0].text);
   assert.equal(source.state, 'active');
+  const activeUpdates = await client.callTool({name: 'list_knowledge_updates', arguments: {repositoryRoot: temp}});
+  assert.equal(JSON.parse(activeUpdates.content[0].text).candidates[0].id, sourceId);
   const sourceReview = await client.callTool({ name: 'save_source_review', arguments: {
     repositoryRoot: temp, id: sourceId, expectedSourceHash: source.sourceHash, expectedMetadataHash: source.metadataHash, expectedReviewHash: source.reviewHash,
     review: { status: 'changes-requested', reviewer: 'host', summary: 'Package fixture needs evidence', scope: 'Package smoke', claims: [], conditions: [], exclusions: [], unresolved: ['Not a factual source review'] },
