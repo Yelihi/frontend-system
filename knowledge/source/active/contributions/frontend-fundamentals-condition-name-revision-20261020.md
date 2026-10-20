@@ -31,14 +31,14 @@ state: active
 
 ```ts
 // code-1: 앞 조건이 거짓이면 뒤의 배열 검색을 건너뛴다.
-groups.some(group => isTarget(group) && values.some(isInRange));
+items.filter(item => item.groups.some(group => isTarget(group) && item.values.some(isInRange)));
 
 // code-2: 조건에 이름을 붙였지만, 뒤의 배열 검색을 먼저 계산한다.
-groups.some(group => {
+items.filter(item => item.groups.some(group => {
   const matchesTarget = isTarget(group);
-  const hasValueInRange = values.some(isInRange);
+  const hasValueInRange = item.values.some(isInRange);
   return matchesTarget && hasValueInRange;
-});
+}));
 ```
 
 핵심 비교는 이름이 읽는 사람에게 뜻을 더하는지와, 이름을 도입하면서 평가 순서·횟수를 바꾸지 않는지다. `isTarget`, `isInRange`는 원문에 있는 별도 함수가 아니라 구조 설명용 표시다.
