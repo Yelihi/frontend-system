@@ -474,5 +474,6 @@
   "tanstack-query-important-defaults": "https://tanstack.com/query/latest/docs/framework/react/guides/important-defaults",
   "architecture-micro-frontends-tradeoffs": "https://martinfowler.com/articles/micro-frontends.html",
   "chromium-renderingng-architecture": "https://developer.chrome.com/docs/chromium/renderingng-architecture",
-  "webgl-fundamentals-how-it-works": "https://webglfundamentals.org/webgl/lessons/webgl-how-it-works.html"
+  "webgl-fundamentals-how-it-works": "https://webglfundamentals.org/webgl/lessons/webgl-how-it-works.html",
+  "frontend-fundamentals-code-quality-readability-name-complex-conditions-revision-20261020": "https://frontend-fundamentals.com/code-quality/code/examples/condition-name.html"
 }
