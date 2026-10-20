@@ -27,6 +27,22 @@ state: active
 - `code-1` (📝 코드 예시, 개선 전): 상품 목록에서 `filter` 안에 카테고리 `some`, 다시 가격 `some`을 중첩한다. 카테고리 ID 일치와 가격 범위 판정을 하나의 논리식에 넣어 선택 기준이 즉시 드러나지 않는다.
 - `code-2` (✏️ 개선해보기, 개선 후): 같은 콜백 안에서 카테고리 일치를 `isSameCategory`, 상품 가격 중 범위에 드는 값의 존재를 `isPriceInRange`로 명명한 뒤 결합한다. 원문은 이 이름들이 선택 의도를 드러낸다고 설명한다. 별도 함수나 클래스로 추출하는 예시는 아니다.
 
+아래는 두 원문 코드의 **제어 흐름을 재구성한 축약 예시**다. 식별자와 보조 함수는 설명을 위해 바꿨으며 원문 코드나 실행 가능한 완성 코드가 아니다.
+
+```ts
+// code-1: 앞 조건이 거짓이면 뒤의 배열 검색을 건너뛴다.
+groups.some(group => isTarget(group) && values.some(isInRange));
+
+// code-2: 조건에 이름을 붙였지만, 뒤의 배열 검색을 먼저 계산한다.
+groups.some(group => {
+  const matchesTarget = isTarget(group);
+  const hasValueInRange = values.some(isInRange);
+  return matchesTarget && hasValueInRange;
+});
+```
+
+핵심 비교는 이름이 읽는 사람에게 뜻을 더하는지와, 이름을 도입하면서 평가 순서·횟수를 바꾸지 않는지다. `isTarget`, `isInRange`는 원문에 있는 별도 함수가 아니라 구조 설명용 표시다.
+
 ## AI 해석과 적용 전 확인
 
 - 이 글을 모든 조건식 추출 의무로 해석하지 않는다. 해당 조건이 실제로 복잡한지, 이름이 도메인 의미를 더하는지, 재사용·테스트 필요가 있는지 먼저 본다.
