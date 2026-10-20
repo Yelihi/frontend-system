@@ -37,7 +37,8 @@
     ],
     "artifact": [
       "concept-guide",
-      "reviewed-summary"
+      "reviewed-summary",
+      "revision-candidate"
     ],
     "maturity": [
       "foundational",
@@ -10068,6 +10069,24 @@
         "reviewedAt": "2026-10-05T01:47:45.260Z"
       },
       "updatedAt": "2026-10-05T01:47:45.255Z"
+    },
+    "frontend-fundamentals-code-quality-readability-name-complex-conditions-revision-20261020": {
+      "id": "frontend-fundamentals-code-quality-readability-name-complex-conditions-revision-20261020",
+      "path": "knowledge/source/active/contributions/frontend-fundamentals-condition-name-revision-20261020.md",
+      "title": "복잡한 조건에 이름 붙이기 — 발행본 교체 후보",
+      "summary": "원문의 개선 전후 코드와 적용 예외를 직접 확인한 재수집 후보",
+      "sourceType": "imported",
+      "facets": {
+        "topic": [
+          "code-quality"
+        ],
+        "artifact": [
+          "revision-candidate"
+        ]
+      },
+      "sourceUrl": "https://frontend-fundamentals.com/code-quality/code/examples/condition-name.html",
+      "contentHash": "12473bcdf7bcfcbad0df0523a4a2334d192cae8f309c2f110b0a689226785541",
+      "updatedAt": "2026-10-20T05:16:50.055Z"
     }
   }
 }
