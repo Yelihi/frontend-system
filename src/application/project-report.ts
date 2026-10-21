@@ -4,6 +4,7 @@ import {analysisId} from './flow-schema.js';
 import {sha256} from './policy.js';
 import {readBaselineRecords} from './project-flows.js';
 import {flowToHtml} from './flow-view.js';
+import {prepareFlowExplorer} from './page-flow-view.js';
 import {installedSystemRoot} from './knowledge/routing.js';
 import type {validateProjectEvidence} from './design-evidence.js';
 
@@ -64,9 +65,17 @@ export async function prepareProjectReport(root:string, report:ProjectReport,
       if (stored.record.kind !== 'flow') throw new Error('Expected report flow');
       const flow = stored.record.data;
       const path = `diagrams/project-${ref.hash}.html`;
-      if (!artifacts.some(a => a.path === path)) artifacts.push({path, content:flowToHtml(flow, 'current', {
-        projectPath:root, flowHash:ref.hash, language:'ko', generatedAt:new Date().toISOString(), reasons:[],
-      })});
+      if (!artifacts.some(a => a.path === path)) {
+        const explorer = flow.pages?.length ? await prepareFlowExplorer(root, installedSystemRoot(), flow, ref.hash, `project-${ref.hash}`) : undefined;
+        artifacts.push({path, content:explorer?.html ?? flowToHtml(flow, 'current', {
+          projectPath:root, flowHash:ref.hash, language:'ko', generatedAt:new Date().toISOString(), reasons:[],
+        })});
+        if (explorer) {
+          artifacts.push({path:path.replace(/\.html$/,'.model.json'),content:JSON.stringify(explorer.model)},
+            {path:path.replace(/\.html$/,'.capture.json'),content:JSON.stringify(explorer.captureInput)});
+          details.push(`Screen captures: ${explorer.coverage.captured}/${explorer.coverage.expected}; missing: ${explorer.coverage.missing.join(', ') || 'none'}.`);
+        }
+      }
       details.push(`\n#### ${flow.title}\n\n${flow.summary}\n\n[Interactive flow](${path}) · [Structured record](analysis/history/${ref.hash}.json)`);
       for (const node of flow.nodes) {
         details.push(`- **${node.label}** (${node.kind}${node.parent ? `, parent: ${node.parent}` : ''}): ${(['props','state','events','lifecycle'] as const).filter(k => node[k].length).map(k => `${k}: ${node[k].join(', ')}`).join('; ') || 'See cited relationships.'}`);

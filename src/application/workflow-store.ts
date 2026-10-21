@@ -18,6 +18,18 @@ const checksSchema = z.array(z.object({
 }));
 export const issueSchema = z.strictObject({
   id: recordId, title: z.string().min(1), contract: z.string().min(1).describe('One domain flow expressible as a sequence diagram: initiating event, preconditions, participants/ordered calls, state/cache changes, success/error outcomes and exclusions. Keep UI/service/storage/tests together; separate independent domain outcomes. Name adopted visualization scenario IDs when present.'),
+  implementationTargets: z.array(z.strictObject({
+    target: z.string().trim().min(1).describe('Planned function, component, service or boundary; not a claim that code already exists'),
+    files: z.array(localPath).min(1), decisionId: recordId,
+    knowledgeIds: z.array(recordId),
+    flowTarget: z.object({flowId: analysisId, nodeId: analysisId, contractName: z.string().trim().min(1)}).optional(),
+    instruction: z.string().trim().min(1).describe('Concrete implementation instruction derived from the decision and applicable knowledge'),
+    verification: z.string().trim().min(1).describe('Observable test, static check or scoped semantic review'),
+    noKnowledgeReason: z.string().trim().min(1).optional().describe('Required when no learned reference applies after prospective search'),
+  }).superRefine((target, context) => {
+    if (!target.knowledgeIds.length && !target.noKnowledgeReason) context.addIssue({code:'custom',path:['noKnowledgeReason'],message:'Explain the prospective knowledge search when no learned reference applies'});
+    if (target.knowledgeIds.length && target.noKnowledgeReason) context.addIssue({code:'custom',path:['noKnowledgeReason'],message:'Omit noKnowledgeReason when knowledge is linked'});
+  })).min(1).optional().describe('Prospective knowledge coverage for planned behavior-bearing boundaries. Existing plans may omit this legacy-compatible field.'),
   testCases: z.array(z.strictObject({
     id: recordId, given: z.string().trim().min(1), when: z.string().trim().min(1), then: z.string().trim().min(1),
     method: z.enum(['unit', 'integration', 'e2e', 'manual']), files: z.array(localPath).min(1),
@@ -216,6 +228,7 @@ export async function saveRevision(root: string, content: string | undefined, ex
     const contractVersion = workflowVersion ?? current.contractVersion ?? (evidence || (planId && !current.version) ? 3 : undefined);
     if (planId && (!nextPolicy || !nextIssues)) throw new Error("Named plans require a verification policy and issue contracts");
     if (nextIssues) validateIssues(nextIssues, nextPolicy);
+    if (nextEvidence && nextIssues) await validatePlanFlows(root, nextEvidence, nextIssues);
     if (nextIssues?.some(issue => issue.testCases?.some(item => item.flowId))) {
       const { getProjectAnalysis } = await import('./project-flows.js');
       const { installedSystemRoot } = await import('./knowledge/routing.js');
@@ -234,6 +247,7 @@ export async function saveRevision(root: string, content: string | undefined, ex
       const design = content.includes(marker) ? content.slice(0, content.indexOf(marker)) : content;
       content = `${design.trimEnd()}${marker}\n## Issue contracts\n\nProgress: [progress.md](progress.md). AI references: [plan.ai.md](plan.ai.md).\n\n${nextIssues!.map(issue =>
         `### ${issue.id}: ${issue.title}\n\n${issue.contract}\n\n- Files: ${issue.files.join(', ')}\n- Depends on: ${issue.dependsOn.join(', ') || 'none'}\n- Required checks: ${issue.requiredCheckIds.join(', ')}\n\nAcceptance:\n${issue.acceptance.map(item => `- ${item}`).join('\n')}\n` +
+        (issue.implementationTargets ? `\nPlanned implementation boundaries:\n${issue.implementationTargets.map(target => `- **${target.target}** (${target.files.join(', ')}): ${target.instruction} Knowledge: ${target.knowledgeIds.join(', ') || `none (${target.noKnowledgeReason})`}. Decision: ${target.decisionId}.${target.flowTarget ? ` Flow: ${target.flowTarget.flowId}/${target.flowTarget.nodeId}/${target.flowTarget.contractName}.` : ''} Verify: ${target.verification}`).join('\n')}\n` : '') +
         (issue.testCases ? `\nTest cases:\n${issue.testCases.map(item => `- **${item.id}** (${item.method})${item.flowId ? ` [${item.flowId}/${item.scenarioId}]` : ''} — Given: ${item.given}; When: ${item.when}; Then: ${item.then}. Files: ${item.files.join(', ')}`).join('\n')}\n` : '')
       ).join('\n')}`;
       if (nextEvidence) content += `\n## Decisions and evidence\n\nProject: ${nextEvidence.projectHash}\n\n${nextEvidence.decisions.map((item) => `- ${item.id} [${item.status}, ${item.authority}]: ${item.question}\n  Choice: ${item.selected ?? 'none'} — ${item.rationale}\n  Options: ${item.options.map((option) => `${option.id}: ${option.description} (cost: ${option.cost})`).join('; ')}\n  Evidence: ${item.evidence.map((cite) => `${cite.path}:${cite.line}`).join(', ')}; knowledge: ${item.knowledgeIds.join(', ') || 'none'}\n  Confirmation: ${item.confirmation || 'not supplied'}\n  Rules: ${item.ruleIds.join(', ')}; issues: ${item.issueIds.join(', ')}\n  Reconsider: ${item.reconsiderWhen}`).join('\n\n')}\n`;
@@ -284,6 +298,18 @@ async function requireDesignEvidence(root: string, revision: Awaited<ReturnType<
   const failures = designContractFailures(revision.evidence, revision.policy, revision.issues);
   if (revision.evidence) failures.push(...await evidenceFreshness(root, revision.evidence, checkSources));
   if (failures.length) throw new Error(failures.join('; '));
+  if (revision.evidence && revision.issues) await validatePlanFlows(root, revision.evidence, revision.issues);
+}
+
+async function validatePlanFlows(root: string, evidence: BoundEvidence, issues: Issues) {
+  const {readPinnedFlow} = await import('./project-flows.js');
+  const {validateFlowPlan} = await import('./flow-contracts.js');
+  for (const issue of issues) for (const target of issue.implementationTargets ?? []) {
+    if (target.flowTarget && !evidence.analysisRefs?.some(r => r.kind === 'flow' && r.id === target.flowTarget!.flowId && r.issueIds.includes(issue.id)))
+      throw new Error(`Implementation target requires an issue-linked flow: ${target.target}`);
+  }
+  for (const ref of evidence.analysisRefs?.filter(r => r.kind === 'flow') ?? [])
+    validateFlowPlan(await readPinnedFlow(root, ref.id, ref.hash), evidence, issues);
 }
 
 export async function saveProjectRecord(root: string, kind: "evidence" | "decisions", id: string, content: string, expectedHash: string | null) {

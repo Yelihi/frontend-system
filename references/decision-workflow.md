@@ -70,6 +70,15 @@ product redesign. Do not repeatedly seek approval for already authorized work.
 In the final answer, connect each material conclusion to its evidence and the
 limits of that evidence. Scale the report to the task; a few sentences can suffice.
 
+Show a short, readable report in the CLI when a meaningful review, test or work
+phase finishes, before asking the next question or moving to another phase. State
+what was examined or changed, the concrete input situation, what happened before
+and after, why that difference matters, and what remains unverified. Explain counts
+in terms of the operation they count and the path that caused the difference; a
+bare number or "passed" is not enough. A small phase needs only a few sentences,
+not a separate report file. Keep a completed phase distinct from publication or
+deployment, which may still be pending.
+
 - **Conclusion:** state the finding or achieved change. Distinguish a confirmed
   defect, a conditional risk, a hypothesis and a proposal where that affects the decision.
 - **Evidence:** cite the relevant inspected file/location, source or observed result.

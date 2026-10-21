@@ -140,10 +140,12 @@ export function summarizeTaskContext(state: Awaited<ReturnType<typeof taskContex
         reused: true, candidateCount: routing.candidates.length,
         readWith: 'Reuse candidate metadata and discovery from this contextId. Omit knownContextId to receive them again.',
       } : {reused: false,
-      candidates: routing.candidates.map(({id, title, review, conditions, exclusions, reasons, investigation, investigationStatus}) => ({id, title, review, conditions, exclusions, reasons,
+      candidates: routing.candidates.map(({id, referenceHash, title, review, conditions, exclusions, reasons, investigation, investigationStatus}) => ({id, referenceHash, title, review, conditions, exclusions, reasons,
         investigationStatus, investigation: investigation ? {questions: investigation.questions.length, readWith: "read_learned_knowledge"} : null,
         locations: [...new Set(routing.inspection.candidates.find((item) => item.id === id)?.matches.map((match) => `${match.path}:${match.line}`) ?? [])]})),
       scopeSearch: routing.scopeSearch, structureSearch: routing.structureSearch,
+      semanticLenses: routing.semanticLenses,
+      semanticLensCoverage: routing.semanticLensCoverage,
       semanticDiscovery: {entries: routing.discovery.entries.map(({id, triggers, conditions, exclusions}) => {
         // Candidate metadata is already in this response. Only share it when the
         // values really match; a second retrieval may carry different conditions.

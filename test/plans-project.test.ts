@@ -152,6 +152,13 @@ test('continuous plans use approved test intent and require current case evidenc
     assert.match(review.diff,/An implementation note/);
     assert.equal((await workReview(root,'continuous','first','main',false)).diff,'');
     assert.equal(review.cases[0]?.evidence?.testName,'contract');
+    const reviewCli = [join(process.cwd(),'dist/src/cli.js'),'work-review',root,
+      '--base','main','--plan','continuous','--issue','first'];
+    const summary = await run(process.execPath,reviewCli);
+    assert.match(summary.stdout,/Recorded review findings:\n- None recorded/);
+    assert.match(summary.stdout,/contract-case: One equals one/);
+    assert.doesNotMatch(summary.stdout,/\+An implementation note/);
+    assert.match((await run(process.execPath,[...reviewCli,'--diff'])).stdout,/\+An implementation note/);
     assert.ok((await checkPrReadiness(root,'continuous','main','first')).failures.some(item => item.includes('implementation feedback')));
     const confirmed = await recordImplementationFeedback(root,'continuous','first',accepted.hash,review.sourceHash,
       'Fixture owner reviewed this exact implementation and test evidence');

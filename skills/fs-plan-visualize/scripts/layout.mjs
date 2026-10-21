@@ -3,7 +3,7 @@ export function browserLayout(spec) {
  const columns=Math.min(spec.pages.length,2),pageWidth=600,gap=36,left=48,top=148;
  const sidebarX=left+columns*(pageWidth+gap)+12,sidebarWidth=288;
  const app=spec.nodes.filter(n=>n.environment==='app');
- const remote=spec.nodes.filter(n=>['backend','external'].includes(n.environment));
+ const remote=spec.nodes.filter(n=>['backend','external','unknown'].includes(n.environment));
  const rows=Math.ceil(spec.pages.length/columns);
  const browserY=top,appColumns=columns*2,appY=top+rows*550+12;
  const appWidth=sidebarX-left-24,cardWidth=(appWidth-28-(appColumns-1)*14)/appColumns;

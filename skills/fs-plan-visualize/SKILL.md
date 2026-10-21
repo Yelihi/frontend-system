@@ -5,6 +5,11 @@ description: Visualize an existing frontend's actual flows or an explicitly requ
 
 # FS Plan Visualize
 
+Follow [the shared design-flow contract](../../references/workflows/design-flow-contract.md)
+for canonical page/scene data, scoped learned judgments, no-image wireframes, actual
+captures, iterative feedback and implementation links. The saved graph feeds both
+HTML and plan contracts; do not author another semantic graph for the viewer.
+
 For material unanswered choices, follow [ask and pause](../../references/workflows/user-decisions.md).
 Use the host's native selection UI (Codex `request_user_input` when permitted),
 not a prose questionnaire. After asking, pause this task, including reads and browser
@@ -50,7 +55,7 @@ state coverage and omissions instead of claiming exhaustive whole-project analys
 
 For page-based interactive visualization, use the packaged
 [page-flow renderer](references/page-flow.md) after tracing and persisting the actual
-flows below. Map the target project's evidence into its input; include route nodes,
+flows below. Author pages/scenes in the saved canonical flow; its projection supplies the renderer input. include route nodes,
 recorded event/lifecycle scenarios and concrete contracts. For a screen-based request,
 capture the actual relevant page states before calling the result complete; inspect
 the renderer's captureCoverage for missing page:scene pairs. If capture is blocked,
@@ -59,12 +64,12 @@ as a partial result, not a finished screen preview. Never capture the explorer i
 as a substitute for the application.
 Use the same renderer for a plan addition without overwriting observed facts. Do not
 substitute demo HTML for the target or imply automatic complete analysis/capture.
-Keep the canonical FS export and add this page explorer as a linked output.
+The canonical structured flow export is this page explorer. Retain the legacy logical view only for records without pages.
 
 ## Reuse, trace, render
 
 1. Query `get_project_analysis` for relevant flow summaries and dependency freshness.
-   For a feature addition, first locate the existing explorer's input model and linked
+   For a feature addition, first locate the existing canonical flow version and linked
    index.html. Reuse the current baseline and add proposed flows separately. If absent,
    create an observed baseline for the affected pages and their cross-page consumers;
    do not require an exhaustive whole-project analysis/capture for a bounded feature.
@@ -91,7 +96,7 @@ Keep the canonical FS export and add this page explorer as a linked output.
    Use `basis: observed` for existing implementation. A matching citation proves
    its presence, not the truth of the interpretation.
 4. Call `render_project_flow` with the saved `id` and `expectedHash`, normally
-   `format: html`. Set `language: en` for English controls (default `ko`);
+   `format: html`. Set `language: en` for the English logical view (default `ko` uses the page explorer);
    authored labels and code evidence retain their original language. Use `scenarioId`
    for a requested initial event. Do not rewrite exported HTML: change the record or
    renderer options and rerender so the returned artifact hash remains valid. The default

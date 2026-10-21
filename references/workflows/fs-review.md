@@ -14,12 +14,16 @@ Read `../../references/decision-workflow.md`. For reported bugs, intermittent fa
 2. Trace callers and consumers in both directions, state/data ownership, side effects,
    error paths and existing tests. Check actual framework/version semantics. Follow
    related files beyond the shortlist while preserving the requested edit boundary.
+   Check applicable plan/project decisions and selected learned conditions first,
+   then review independently for risks that learned knowledge does not cover.
+   Keep the selected knowledge set small and justified by the actual behavior.
 3. Identify concrete failure conditions, domain violations and maintenance costs.
    Distinguish facts, hypotheses and measurements. Compare viable local remedies,
    preservation and broader alternatives. Explain why a choice fits this project;
    do not automatically replace a library or split a component by size/hook count.
 4. For review-only requests, return prioritized findings with evidence, costs and
-   necessary test cases; do not edit product or test code. If nothing merits a change,
+   necessary test cases directly in the CLI response; do not edit product or test code.
+   If nothing merits a change,
    say so and state verification limits. Record actual user decisions, not invented consent.
 5. When fixes are requested/approved, apply the agreed local remedy, consumer updates
    and meaningful tests using `../../references/testing-and-transition.md`. Broader

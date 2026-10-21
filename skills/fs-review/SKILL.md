@@ -30,6 +30,15 @@ after the owner's actual confirmation; save_project_decision records its scope,
 exclusions, existing entrypoints and verification without publishing shared knowledge.
 
 Trace callers, imports, domain events, state ownership, error/retry paths and tests.
+Review in two bounded passes. First compare the approved plan, project decisions and
+selected learned references with the changed code: report missed applications only
+when their conditions hold, and explain exclusions. Then inspect the same behavior
+independently with the model's general engineering judgment, even where no learned
+reference exists: correctness, trust boundaries, error/race/state paths, scope,
+framework/browser behavior and test quality. Do not treat an empty learned match
+as a clean review or load the full catalog to compensate. Present concrete concerns
+and their file locations directly in the CLI response, ordered by impact; the diff
+is supporting evidence, not the review report.
 Use `../../references/frontend-quality.md` for applicable review dimensions. Read
 selected knowledge evidence/conditions after inspecting the actual code, using
 `../../references/knowledge-indexing.md#작업-중-검색`. Use `discover_knowledge_triggers` for scoped semantic descriptions, then

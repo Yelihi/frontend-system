@@ -6,6 +6,15 @@ Flow descriptions precede function names; state changes retain concrete owners/f
 It complements the persisted FS logical flow export; it does not replace its evidence,
 freshness, design approval or implementation gates. Rendering and interaction use no model calls.
 
+## Canonical FS flows (default)
+
+Use [design-flow-contract](../../../references/workflows/design-flow-contract.md).
+Author pages/scenes and contract links on the saved FS flow, then call render_project_flow.
+The tool derives the explorer model and emits HTML/model/capture manifest paths. Rerender
+from the saved graph; do not separately map its semantic content by hand. Captures belong
+in design/fs/<flow-id>.captures.json. Proposed scenes with blocks render wireframes.
+The following script input remains supported for existing standalone explorers.
+
 ## Inputs from the actual project
 
 Read the compact [input example](page-flow-input.json) for field shape, not its sample

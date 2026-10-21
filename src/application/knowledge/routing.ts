@@ -2,7 +2,7 @@ import { basename, dirname, extname, join } from 'node:path';
 import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import * as z from 'zod/v4';
-import { contentHash, readReferenceIndex, searchReferenceIndex, readIndexedReference } from './reference-index.js';
+import { contentHash, readReferenceIndex, searchReferenceIndex, readIndexedReference, semanticReviewLenses } from './reference-index.js';
 import { triggerInspectionSchema } from './trigger-schema.js';
 import { inspectCodeKnowledge, discoverKnowledgeTriggers } from './trigger-review.js';
 import { projectFile } from './code-triggers.js';
@@ -61,7 +61,7 @@ export async function routeKnowledge(root: string, systemRoot: string, input: Ro
   const ids = [...new Set([...inspection.candidates.map(({ id }) => id), ...lexical.map(({ id }) => id), ...scopeMatches.map(({id}) => id), ...structureMatches.map(({id}) => id)])];
   const candidates = await Promise.all(ids.map(async (id) => {
     const { entry } = await readIndexedReference(learned, id, 0, 1);
-    return { id, contentHash: entry.contentHash, title: entry.title, review: entry.review,
+    return { id, referenceHash: contentHash(JSON.stringify(entry)), contentHash: entry.contentHash, title: entry.title, review: entry.review,
       conditions: entry.conditions, exclusions: entry.exclusions, checks: entry.checks ?? [],
       investigation: entry.investigation ?? null, investigationStatus: entry.investigation ? "pending" : "legacy-checklist",
       reasons: [inspection.candidates.some((item) => item.id === id) ? 'code-trigger' : '',
@@ -71,6 +71,8 @@ export async function routeKnowledge(root: string, systemRoot: string, input: Ro
       readWith: 'read_learned_knowledge' };
   }));
   const payload = { request, inspection, discovery, candidates, requirements,
+    semanticLenses: semanticReviewLenses(index, request.technologies),
+    semanticLensCoverage: 'Only direct semantic-only references with investigation questions; use scoped discovery for other knowledge. This is not exhaustive code review.',
     structureSearch: {query: structureQuery, candidateCount: structureMatches.length,
       authority: 'Observed syntax used for retrieval only; inspect callers and applicability. Not a defect, complete investigation or authorization.'},
     scopeSearch: {query: scopeQuery, candidateCount: scopeMatches.length,

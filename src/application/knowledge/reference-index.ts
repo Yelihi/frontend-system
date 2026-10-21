@@ -105,6 +105,17 @@ export function matchKnowledgeTriggers(index: ReferenceIndex, signals: Array<z.i
   });
 }
 
+export function semanticReviewLenses(index: ReferenceIndex, technologies: string[] = []) {
+  const tech = technologies.map(technologyKey);
+  return index.entries.filter(entry => entry.routing?.mode === 'direct' && entry.investigation &&
+    entry.triggers?.length && entry.triggers.every(trigger => trigger.kind === 'semantic') &&
+    !entry.excludedTechnologies.some(value => tech.includes(technologyKey(value))) &&
+    (!tech.length || !entry.technologies.length || entry.technologies.some(value => tech.includes(technologyKey(value)))))
+    .map(entry => ({id: entry.id, domains: entry.domains,
+      question: entry.investigation!.questions.find(item => item.role === 'applicability')?.instruction ?? entry.conditions[0],
+      authority: 'Review lens only; inspect relevant code or planned operation before judgment'}));
+}
+
 export function evaluateTriggerChecks(index: ReferenceIndex) {
   return (index.triggerChecks ?? []).map((check) => {
     const ids = matchKnowledgeTriggers(index, check.signals, check.technologies).map(({ entry }) => entry.id);
@@ -195,5 +206,5 @@ export async function readIndexedReference(root: string, id: string, offset = 0,
   if (contentHash(body) !== entry.contentHash) throw new Error(`Reference changed; resync required: ${id}`);
   const start = Math.max(0, offset);
   const end = start + Math.max(1, Math.min(12000, limit));
-  return { entry, content: body.slice(start, end), totalCharacters: body.length, nextOffset: end < body.length ? end : null };
+  return { entry, referenceHash: contentHash(JSON.stringify(entry)), content: body.slice(start, end), totalCharacters: body.length, nextOffset: end < body.length ? end : null };
 }

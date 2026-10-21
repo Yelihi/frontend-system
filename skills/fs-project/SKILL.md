@@ -5,6 +5,11 @@ description: Analyze an entire existing project to create .frontend-system/proje
 
 # FS Project
 
+Follow [the shared design-flow contract](../../references/workflows/design-flow-contract.md)
+for canonical page/scene data, scoped learned judgments, no-image wireframes, actual
+captures, iterative feedback and implementation links. The saved graph feeds both
+HTML and plan contracts; do not author another semantic graph for the viewer.
+
 `fs-project [path] [--base <branch>]` creates the project analysis.
 `fs-project update [path] [--base <branch>]` refreshes it explicitly.
 These are host-chat requests, not shell subcommands.
@@ -23,7 +28,7 @@ coverage and completion status. Partial saves are checkpoints; continue inspecta
 remaining areas unless blocked or paused. Do not read HTML into AI context. Planning is `fs-plan`;
 standalone visualization is `fs-plan-visualize` and does not refresh project.md.
 
-For a requested page/route/component preview, also follow the packaged
+For the automatic page/route/component preview, follow the packaged
 [page-flow renderer](../fs-plan-visualize/references/page-flow.md). Reuse the current
 saved analysis and preserve its coverage limits; this supplemental view does not
 make a partial project analysis complete. Missing screenshots stay uncaptured.

@@ -1,11 +1,66 @@
 # Design feedback, plan review, then continuous implementation
 
+## Entry paths and prospective knowledge
+
+First identify the starting state; do not treat every project as a refactor.
+
+- **New project:** Record the intended users, first valuable domain outcome, core
+  entities and invariants, data ownership and sensitivity, permissions, external
+  integrations, target runtime/deployment constraints and available verification
+  environment. Ask only for material unanswered choices, one native question at a
+  time. Propose framework, architecture and infrastructure from these constraints,
+  relevant learned knowledge and current authoritative documentation when versions
+  matter. Keep UI theme and nonessential future features open. Do not claim an empty
+  repository has observed architecture. In an empty repository, save the user's
+  confirmed answers as a small root `project-brief.md` planning artifact. Inspect
+  that actual file with fs-project and pass it explicitly in get_work_context.files
+  (it yields a path fact, not JS/TS syntax) and requirements. Cite its exact text
+  for established domain choices; mark implementation paths as planned. This makes
+  a bound plan possible before framework installation without inventing code
+  citations. If even the brief cannot be saved, report an unbound draft rather than
+  claiming an approved FS execution plan.
+- **Existing project without an FS refactor:** Inspect the current boundaries and
+  conventions, then follow the affected caller/state/error paths. Preserve unrelated
+  behavior and avoid a whole-project refactor. An observed convention is evidence,
+  not permission to repeat a risky pattern; resolve a conflict within this feature's
+  scope through a plan decision.
+- **Existing project with an FS refactor:** Reuse current project facts, approved
+  decisions and shared boundaries under their recorded conditions. Inspect changed
+  dependencies and the new domain flow; do not rescan unchanged code by default.
+
+Before finalizing each domain-flow issue, list only its behavior-bearing planned
+boundaries (functions, components, services and state owners). For each, write the
+caller/event, inputs and result, state/effect ownership, normal/error/overlap paths
+and proposed files. Search learned metadata with those descriptions and concrete
+failure symptoms; inspect relevant semantic lenses and exclusions even when no
+existing-code trigger fires. Use get_work_context.routing.semanticLenses for existing
+code; for an empty project, page discover_knowledge_triggers by relevant domains and
+search the planned operation with search_learned_knowledge. Read selected bodies,
+compare alternatives and record
+apply/keep/not-applicable or missing context. Existing code citations support
+observations; proposed names and calls are hypotheses, not static trigger evidence.
+Bind the chosen instruction and its verification to issue.implementationTargets and
+the resolved decision. If nothing relevant is published, state the searched scope and
+reason. Prefer a few precise target contracts over a rule for every statement.
+After implementation, route the newly written code once to catch previously unseen
+static or semantic candidates; that second pass can reveal a missed plan choice.
+
 For new feature/refactor plans, use these stages in order. Resume at the first
 unfinished stage; reuse actual feedback whose scope and artifacts have not changed.
 The user reviews the domain/visual design, the final plan including test intent,
 and the implemented diff. Ask through user-decisions.md for material choices, not
 routine test-code approval in a version 3 execution. Do not infer a decision from
 silence or tool permissions. Version 2 plans retain their old test-review checkpoint.
+
+## Shared design and screen states
+
+Use [design-flow-contract](design-flow-contract.md) throughout the stages. A short request
+is enough to start an iterative draft. With no image, create structural HTML wireframes
+and discuss domain behavior and loading/error/empty states there; do not skip visual
+planning. For existing pages use actual captures of the selected baseline. Save scenarios,
+contracts, scoped learned judgments and test intent once, then derive HTML and bind the
+plan to those IDs. Later user requirements are normal design input, not only explicit
+review comments. Reopen only affected choices and retain unchanged answers.
 
 ## Planning stages
 
@@ -101,8 +156,9 @@ If scope changes, revise the canonical plan through fs-plan before updating its 
    runner output stays unverified until reviewed; a green command alone does not prove
    each case. The completion gate accepts the verified issue without a test-code pause.
 3. **Show the completed change and receive feedback.** Run `fs work-review <project>
-   --base <target> --plan <id> --issue <id>` to show exact files, diff, cases and
-   evidence in the CLI. Present the meaningful assertions, actual test/browser results
+   --base <target> --plan <id> --issue <id>` to show files, planned knowledge applications,
+   recorded review findings, cases and evidence in the CLI. Add `--diff` when the patch
+   is needed. Present the meaningful assertions, actual test/browser results
    and untested limits. Apply feedback within scope and rerun invalidated checks.
    Record the user's actual answer using record_implementation_feedback on the current
    source/execution hash. PR readiness rejects a missing or stale answer. User feedback

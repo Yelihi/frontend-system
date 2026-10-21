@@ -73,3 +73,11 @@ On sync, connect only observable code signals or cited semantic interpretations 
 the candidate. Conditions and exceptions govern applicability after retrieval. New
 mandatory obligations still need the owner's exact approval. Never directly rewrite
 learned/index.json from a PR comment or silently override existing project decisions.
+
+## Design-discussion candidates
+
+The same dispositions apply to feedback in a visualization/domain discussion. Cite the
+flow/scenario/node IDs, revision and relevant supplied answer instead of inventing a PR
+URL. The host may propose a local candidate without the user remembering learned IDs.
+A candidate does not publish knowledge, establish a universal rule, or authorize a
+public contribution. Follow design-flow-contract.md for ordinary local design updates.

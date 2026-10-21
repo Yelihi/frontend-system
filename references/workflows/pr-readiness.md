@@ -24,7 +24,7 @@ ask permission for this same workflow.
    question and pause per user-decisions.md. A new choice revises the approved plan;
    it must not be hidden in a helper or PR description.
 3. For version 3 plans, write/reuse the agreed cases and implement the flow continuously.
-   Complete current caseEvidence and show the implementation diff and results in the CLI;
+   Complete current caseEvidence and show review findings and results in the CLI (diff on request);
    record the user's feedback for the current source before PR creation. Version 2
    plans retain their testReview checkpoint. Run unit tests, lint and type checks, plus existing E2E
    and the approved policy checks. Missing infrastructure is a plan/setup blocker;
@@ -65,7 +65,11 @@ No remote PR/comment/push is authorized by a review request.
 
 ## Spend review effort in this order
 
-1. **Safety and correctness (`pr-safety`).** Inspect changed behavior and affected
+1. **Plan and learned adherence.** Compare changed behavior with approved
+   implementation targets, project decisions and only the learned references whose
+   applicability conditions hold. Record omissions, exclusions and uncertain cases;
+   a missing learned match is not a passing safety review.
+2. **Safety and correctness (`pr-safety`).** Independently inspect changed behavior and affected
    callers: reachable error paths (including swallowed errors and false success),
    races/retries/cancellation, input ownership, browser/server trust boundaries,
    exposed secrets and unsafe rendering. Start with existing focused checks. Treat
@@ -73,13 +77,13 @@ No remote PR/comment/push is authorized by a review request.
    concrete loop establishes impact; a hook count is not a defect. Do not claim a
    universal security guarantee. Required runtime evidence that is unavailable stays
    unmet, not a passing review with a footnote.
-2. **Domain and scope (`pr-scope`).** Compare the entire PR diff from merge-base,
+3. **Domain and scope (`pr-scope`).** Compare the entire PR diff from merge-base,
    including tests/config/deletions, with the approved requirements and decisions.
    Identify missing behaviors, invented features, unapproved abstractions and weakened
    checks. Read consumers beyond the diff when needed; every changed file needs a
    scope finding. Mark out-of-scope behavior as remaining work rather than silently
    broadening the plan to accommodate it.
-3. **Maintainability.** Apply relevant approved design/architecture rules. Separate
+4. **Maintainability.** Apply relevant approved design/architecture rules. Separate
    mandatory violations from optional improvements; group nonblocking suggestions.
    Do not block solely for a preferred pattern or unrelated refactor. Stop a deep
    optional review while material safety/domain failures remain unresolved.

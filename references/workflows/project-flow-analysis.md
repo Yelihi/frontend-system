@@ -1,5 +1,9 @@
 # Analyze once, reuse with evidence
 
+For structured page/scene contracts, knowledge bindings and no-image wireframes, follow
+[design-flow-contract](design-flow-contract.md). The procedure below retains the legacy
+image-led path; a wireframe does not require raster-image confirmation.
+
 Use for a project's first analysis, an affected flow missing from existing records,
 or an explicit project analysis refresh. For ordinary changes first query
 `get_project_analysis` with the task's files. Read selected full records only when

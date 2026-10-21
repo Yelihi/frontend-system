@@ -19,6 +19,9 @@ import {
   string,
   union
 } from "./chunk-MHL22X7X.js";
+import {
+  validateStructuredFlow
+} from "./chunk-VEDZPQTV.js";
 
 // src/application/project-flows.ts
 import { readFile as readFile7, readdir as readdir4, realpath as realpath7 } from "node:fs/promises";
@@ -464,6 +467,15 @@ var text = string().trim().min(1).max(1600);
 var flowCitation = object({ path: localPath, quote: text, line: number().int().positive().optional() });
 var evidence = array(analysisId).max(20);
 var designImage = object({ path: localPath, hash: sha256, alt: text });
+var flowTestCaseSchema = object({
+  id: analysisId,
+  scenarioId: analysisId,
+  given: text,
+  when: text,
+  then: text,
+  method: _enum(["unit", "integration", "e2e", "manual"])
+});
+var outcomeKind = _enum(["idle", "loading", "success", "empty", "error", "cancelled", "retry", "custom"]);
 var flowSchema = object({
   id: analysisId,
   title: text,
@@ -476,6 +488,53 @@ var flowSchema = object({
     snapshot: object({ baseRef: string(), expectedCommit: sha256.or(string().regex(/^[a-f0-9]{40}$/)) }).optional()
   }),
   evidence: record(analysisId, flowCitation),
+  designState: _enum(["draft", "ready"]).optional().describe("New structured designs start draft; ready permits plan binding, not implementation approval."),
+  pages: array(object({
+    node: analysisId,
+    route: text,
+    domain: text.optional(),
+    scenes: array(object({
+      id: analysisId,
+      title: text,
+      kind: outcomeKind,
+      description: text,
+      blocks: array(object({
+        node: analysisId,
+        role: _enum(["heading", "input", "action", "list", "content", "feedback", "navigation"]),
+        label: text,
+        content: array(text).max(12).optional(),
+        span: _enum(["full", "half"]).optional()
+      })).max(30).optional().describe("Ordered proposed wireframe regions; not evidence of the existing UI.")
+    })).min(1).max(20)
+  })).min(1).max(80).optional(),
+  navigation: array(object({
+    id: analysisId,
+    from: analysisId,
+    to: analysisId,
+    label: text,
+    condition: text,
+    evidence
+  })).max(200).optional(),
+  knowledge: array(object({
+    id: analysisId,
+    referenceId: analysisId,
+    referenceHash: sha256,
+    judgment: _enum(["apply", "keep", "not-applicable", "needs-context", "needs-decision"]),
+    rationale: text,
+    decisionId: analysisId.optional(),
+    evidence,
+    nodes: array(analysisId),
+    edges: array(analysisId),
+    scenarios: array(analysisId)
+  })).max(80).optional().describe("Scoped learned judgments. Plan binding checks adoption and exact knowledge version; a link alone is not approval."),
+  testCases: array(flowTestCaseSchema).max(80).optional(),
+  checks: array(object({
+    id: analysisId,
+    requirement: text,
+    nodes: array(analysisId),
+    scenarios: array(analysisId),
+    testCaseIds: array(analysisId).min(1)
+  })).max(80).optional(),
   nodes: array(object({
     id: analysisId,
     kind: _enum(["page", "component", "store", "cache", "module", "service", "external"]),
@@ -486,6 +545,7 @@ var flowSchema = object({
     events: array(text).default([]),
     lifecycle: array(text).default([]),
     evidence,
+    architecture: object({ layer: text, runtime: _enum(["browser", "server", "shared", "external"]), responsibility: text }).optional(),
     contracts: array(object({
       kind: _enum(["interface", "type", "function", "store"]),
       name: string().trim().min(1).max(160),
@@ -508,7 +568,21 @@ var flowSchema = object({
     title: text,
     entry: analysisId,
     event: text,
-    steps: array(object({ edge: analysisId, effect: text, condition: text.optional() })).min(1).max(80),
+    category: _enum(["event", "lifecycle"]).optional(),
+    variant: outcomeKind.optional(),
+    steps: array(object({
+      edge: analysisId,
+      effect: text,
+      condition: text.optional(),
+      views: array(object({ page: analysisId, scene: analysisId })).min(1).optional(),
+      changes: array(object({
+        ownerNode: analysisId,
+        field: text,
+        before: text,
+        after: text,
+        basis: _enum(["source", "measured", "proposed"])
+      })).optional()
+    })).min(1).max(80),
     outcome: text,
     limitations: array(text).default([])
   })).max(20),
@@ -546,7 +620,7 @@ var flowSchema = object({
   })).default([]),
   limitations: array(text).min(1).max(30)
 }).superRefine((flow, ctx) => {
-  if (!flow.scenarios.length && flow.design?.stage !== "visual-review") ctx.addIssue({ code: "custom", message: "Event scenarios are required outside visual review", path: ["scenarios"] });
+  if (!flow.scenarios.length && flow.design?.stage !== "visual-review" && !(flow.pages?.length && flow.designState === "draft")) ctx.addIssue({ code: "custom", message: "Event scenarios are required outside visual review", path: ["scenarios"] });
   if (flow.design && (flow.basis !== "proposed" || flow.scope.snapshot)) ctx.addIssue({ code: "custom", message: "Design screens require a proposed working flow", path: ["design"] });
 });
 var findingSchema = object({
@@ -893,6 +967,15 @@ function matchKnowledgeTriggers(index, signals, technologies = []) {
     return matched.length ? [{ entry, matched }] : [];
   });
 }
+function semanticReviewLenses(index, technologies = []) {
+  const tech = technologies.map(technologyKey);
+  return index.entries.filter((entry) => entry.routing?.mode === "direct" && entry.investigation && entry.triggers?.length && entry.triggers.every((trigger) => trigger.kind === "semantic") && !entry.excludedTechnologies.some((value) => tech.includes(technologyKey(value))) && (!tech.length || !entry.technologies.length || entry.technologies.some((value) => tech.includes(technologyKey(value))))).map((entry) => ({
+    id: entry.id,
+    domains: entry.domains,
+    question: entry.investigation.questions.find((item) => item.role === "applicability")?.instruction ?? entry.conditions[0],
+    authority: "Review lens only; inspect relevant code or planned operation before judgment"
+  }));
+}
 function evaluateTriggerChecks(index) {
   return (index.triggerChecks ?? []).map((check) => {
     const ids = matchKnowledgeTriggers(index, check.signals, check.technologies).map(({ entry }) => entry.id);
@@ -993,7 +1076,7 @@ async function readIndexedReference(root, id4, offset = 0, limit = 6e3) {
   if (contentHash(body) !== entry.contentHash) throw new Error(`Reference changed; resync required: ${id4}`);
   const start = Math.max(0, offset);
   const end = start + Math.max(1, Math.min(12e3, limit));
-  return { entry, content: body.slice(start, end), totalCharacters: body.length, nextOffset: end < body.length ? end : null };
+  return { entry, referenceHash: contentHash(JSON.stringify(entry)), content: body.slice(start, end), totalCharacters: body.length, nextOffset: end < body.length ? end : null };
 }
 
 // src/application/project-snapshot.ts
@@ -1666,6 +1749,7 @@ async function routeKnowledge(root, systemRoot, input) {
     const { entry } = await readIndexedReference(learned, id4, 0, 1);
     return {
       id: id4,
+      referenceHash: contentHash(JSON.stringify(entry)),
       contentHash: entry.contentHash,
       title: entry.title,
       review: entry.review,
@@ -1689,6 +1773,8 @@ async function routeKnowledge(root, systemRoot, input) {
     discovery,
     candidates,
     requirements,
+    semanticLenses: semanticReviewLenses(index, request.technologies),
+    semanticLensCoverage: "Only direct semantic-only references with investigation questions; use scoped discovery for other knowledge. This is not exhaustive code review.",
     structureSearch: {
       query: structureQuery,
       candidateCount: structureMatches.length,
@@ -1837,7 +1923,20 @@ function designContractFailures(evidence2, policy, issues) {
     if (rule.layer === "domain" && rule.obligation === "required" && !owners.some((item) => item.authority !== "model" && item.confirmation))
       errors.push(`Required domain rule needs supplied or established domain authority: ${rule.id}. Link the existing contract when it already specifies this outcome; otherwise keep the new outcome open. Model discretion cannot establish domain requirements.`);
   }
-  for (const issue of issues ?? []) if (!decisions.some((item) => item.status === "resolved" && item.issueIds.includes(issue.id))) errors.push(`Issue lacks a decision: ${issue.id}`);
+  const applied = new Set(evidence2.routes.flatMap((route) => route.judgments.filter((item) => item.decision === "apply").map((item) => item.referenceId)));
+  for (const issue of issues ?? []) {
+    if (!decisions.some((item) => item.status === "resolved" && item.issueIds.includes(issue.id))) errors.push(`Issue lacks a decision: ${issue.id}`);
+    const targets = issue.implementationTargets ?? [];
+    if (new Set(targets.map((item) => item.target)).size !== targets.length) errors.push(`Duplicate implementation target: ${issue.id}`);
+    for (const target of targets) {
+      const decision = decisions.find((item) => item.id === target.decisionId && item.status === "resolved" && item.issueIds.includes(issue.id));
+      if (!decision) errors.push(`Implementation target lacks a resolved issue decision: ${issue.id}/${target.target}`);
+      if (target.files.some((file) => !issue.files.includes(file))) errors.push(`Implementation target file outside issue: ${issue.id}/${target.target}`);
+      for (const id4 of target.knowledgeIds) {
+        if (!decision?.knowledgeIds.includes(id4) || !applied.has(id4)) errors.push(`Implementation target knowledge is not adopted: ${issue.id}/${target.target}/${id4}`);
+      }
+    }
+  }
   return errors;
 }
 
@@ -2157,6 +2256,19 @@ var issueSchema = strictObject({
   id: recordId,
   title: string().min(1),
   contract: string().min(1).describe("One domain flow expressible as a sequence diagram: initiating event, preconditions, participants/ordered calls, state/cache changes, success/error outcomes and exclusions. Keep UI/service/storage/tests together; separate independent domain outcomes. Name adopted visualization scenario IDs when present."),
+  implementationTargets: array(strictObject({
+    target: string().trim().min(1).describe("Planned function, component, service or boundary; not a claim that code already exists"),
+    files: array(localPath).min(1),
+    decisionId: recordId,
+    knowledgeIds: array(recordId),
+    flowTarget: object({ flowId: analysisId, nodeId: analysisId, contractName: string().trim().min(1) }).optional(),
+    instruction: string().trim().min(1).describe("Concrete implementation instruction derived from the decision and applicable knowledge"),
+    verification: string().trim().min(1).describe("Observable test, static check or scoped semantic review"),
+    noKnowledgeReason: string().trim().min(1).optional().describe("Required when no learned reference applies after prospective search")
+  }).superRefine((target, context) => {
+    if (!target.knowledgeIds.length && !target.noKnowledgeReason) context.addIssue({ code: "custom", path: ["noKnowledgeReason"], message: "Explain the prospective knowledge search when no learned reference applies" });
+    if (target.knowledgeIds.length && target.noKnowledgeReason) context.addIssue({ code: "custom", path: ["noKnowledgeReason"], message: "Omit noKnowledgeReason when knowledge is linked" });
+  })).min(1).optional().describe("Prospective knowledge coverage for planned behavior-bearing boundaries. Existing plans may omit this legacy-compatible field."),
   testCases: array(strictObject({
     id: recordId,
     given: string().trim().min(1),
@@ -2380,9 +2492,10 @@ async function saveRevision(root, content, expectedHash, policy, planId, issues,
     const contractVersion = workflowVersion ?? current.contractVersion ?? (evidence2 || planId && !current.version ? 3 : void 0);
     if (planId && (!nextPolicy || !nextIssues)) throw new Error("Named plans require a verification policy and issue contracts");
     if (nextIssues) validateIssues(nextIssues, nextPolicy);
+    if (nextEvidence && nextIssues) await validatePlanFlows(root, nextEvidence, nextIssues);
     if (nextIssues?.some((issue) => issue.testCases?.some((item) => item.flowId))) {
-      const { getProjectAnalysis: getProjectAnalysis2 } = await import("./project-flows-E3RTC4ZS.js");
-      const { installedSystemRoot: installedSystemRoot2 } = await import("./routing-SZTNG77L.js");
+      const { getProjectAnalysis: getProjectAnalysis2 } = await import("./project-flows-IUEYFASR.js");
+      const { installedSystemRoot: installedSystemRoot2 } = await import("./routing-XIF4XXAG.js");
       for (const item of nextIssues.flatMap((issue) => issue.testCases ?? []).filter((item2) => item2.flowId)) {
         const ref = nextEvidence?.analysisRefs?.find((ref2) => ref2.kind === "flow" && ref2.id === item.flowId);
         if (!ref) throw new Error(`Test case ${item.id} requires a pinned flow reference`);
@@ -2411,7 +2524,10 @@ ${issue.contract}
 
 Acceptance:
 ${issue.acceptance.map((item) => `- ${item}`).join("\n")}
-` + (issue.testCases ? `
+` + (issue.implementationTargets ? `
+Planned implementation boundaries:
+${issue.implementationTargets.map((target) => `- **${target.target}** (${target.files.join(", ")}): ${target.instruction} Knowledge: ${target.knowledgeIds.join(", ") || `none (${target.noKnowledgeReason})`}. Decision: ${target.decisionId}.${target.flowTarget ? ` Flow: ${target.flowTarget.flowId}/${target.flowTarget.nodeId}/${target.flowTarget.contractName}.` : ""} Verify: ${target.verification}`).join("\n")}
+` : "") + (issue.testCases ? `
 Test cases:
 ${issue.testCases.map((item) => `- **${item.id}** (${item.method})${item.flowId ? ` [${item.flowId}/${item.scenarioId}]` : ""} \u2014 Given: ${item.given}; When: ${item.when}; Then: ${item.then}. Files: ${item.files.join(", ")}`).join("\n")}
 ` : "")
@@ -2501,6 +2617,17 @@ async function requireDesignEvidence(root, revision, checkSources) {
   const failures = designContractFailures(revision.evidence, revision.policy, revision.issues);
   if (revision.evidence) failures.push(...await evidenceFreshness(root, revision.evidence, checkSources));
   if (failures.length) throw new Error(failures.join("; "));
+  if (revision.evidence && revision.issues) await validatePlanFlows(root, revision.evidence, revision.issues);
+}
+async function validatePlanFlows(root, evidence2, issues) {
+  const { readPinnedFlow: readPinnedFlow2 } = await import("./project-flows-IUEYFASR.js");
+  const { validateFlowPlan } = await import("./flow-contracts-Z7YRYNMA.js");
+  for (const issue of issues) for (const target of issue.implementationTargets ?? []) {
+    if (target.flowTarget && !evidence2.analysisRefs?.some((r) => r.kind === "flow" && r.id === target.flowTarget.flowId && r.issueIds.includes(issue.id)))
+      throw new Error(`Implementation target requires an issue-linked flow: ${target.target}`);
+  }
+  for (const ref of evidence2.analysisRefs?.filter((r) => r.kind === "flow") ?? [])
+    validateFlowPlan(await readPinnedFlow2(root, ref.id, ref.hash), evidence2, issues);
 }
 async function saveProjectRecord(root, kind, id4, content, expectedHash) {
   recordId.parse(id4);
@@ -2927,7 +3054,7 @@ async function inventory2(root) {
 }
 var inRoots = (path, roots) => roots.some((r) => r === "." || path === r || path.startsWith(`${r}/`));
 var structuralSource = (path) => /\.(?:[cm]?[jt]sx?|vue|svelte|astro|html?|css|s[ac]ss|less|mdx|json|ya?ml|toml|graphql|gql|wasm)$/i.test(path);
-var discoveryFiles = (paths, roots, mode) => paths.filter((p) => config(p) || inRoots(p, roots) && (mode === "all" || structuralSource(p))).sort();
+var discoveryFiles = (paths, roots, mode) => paths.filter((p) => !/^design\/fs\/(?:[^/]+\.captures\.json|captures\/.*\.png)$/.test(p) && (config(p) || inRoots(p, roots) && (mode === "all" || structuralSource(p)))).sort();
 var inventoryHash = (paths, roots, mode) => contentHash(JSON.stringify(discoveryFiles(paths, roots, mode)));
 async function readEnvelope(root, kind, id4, hash3) {
   analysisId.parse(id4);
@@ -2982,6 +3109,12 @@ function validateGraph(flow) {
   for (const scenario of flow.scenarios) if (!nodes.has(scenario.entry) || scenario.steps.some((s) => !edges.has(s.edge))) throw new Error("Unknown scenario node/edge");
   if (flow.scope.discoveryRoots.some((r) => r.split("/").some((p) => p === ".."))) throw new Error("Invalid discovery root");
   validateFlowDesign(flow);
+  validateStructuredFlow(flow);
+}
+async function readPinnedFlow(root, id4, hash3) {
+  const stored = await readEnvelope(root, "flow", id4, hash3);
+  if (stored.record.kind !== "flow") throw new Error("Expected flow record");
+  return stored.record.data;
 }
 async function checkQuotes(root, citations, files, snapshot) {
   const texts = /* @__PURE__ */ new Map();
@@ -3104,6 +3237,11 @@ async function saveProjectAnalysis(root, systemRoot, input) {
       flow = flowSchema.parse(parsed.record.data);
       validateGraph(flow);
       parsed.record.data = flow;
+      for (const judgment2 of flow.knowledge ?? []) {
+        const { entry } = await readIndexedReference(join9(systemRoot, "references/learned"), judgment2.referenceId, 0, 1);
+        if (contentHash(JSON.stringify(entry)) !== judgment2.referenceHash) throw new Error(`Flow knowledge changed: ${judgment2.referenceId}`);
+        knowledgeHashes[judgment2.referenceId] = contentHash(JSON.stringify(entry));
+      }
     } else {
       const finding = findingSchema.parse(parsed.record.data);
       parsed.record.data = finding;
@@ -3216,6 +3354,13 @@ async function getProjectAnalysis(root, systemRoot, options = {}) {
       title: data.title,
       freshness,
       ..."basis" in data ? { basis: data.basis, scenarios: data.scenarios.map((s) => ({ id: s.id, event: s.event })) } : { status: data.status, observation: data.observation },
+      ..."basis" in data && data.pages ? {
+        designState: data.designState ?? null,
+        pages: data.pages.map((p) => ({ node: p.node, route: p.route, scenes: p.scenes.map((s) => ({ id: s.id, kind: s.kind })) })),
+        contractCount: data.nodes.reduce((sum, n) => sum + (n.contracts?.length ?? 0), 0),
+        knowledge: data.knowledge?.map((k) => ({ id: k.id, referenceId: k.referenceId, judgment: k.judgment })) ?? [],
+        testCaseCount: data.testCases?.length ?? 0
+      } : {},
       ..."basis" in data && data.design ? { design: { stage: data.design.stage, screens: data.design.screens.map((s) => ({ id: s.id, page: s.page, imageHash: s.image.hash, confirmed: !!s.confirmation })) } } : {},
       ...options.full ? { data } : {}
     });
@@ -3250,6 +3395,7 @@ async function validateAnalysisReferences(root, systemRoot, refs, checkSources) 
 export {
   ruleId,
   sha256,
+  localPath,
   ruleSchema,
   policyInputSchema,
   requiredScripts,
@@ -3276,6 +3422,7 @@ export {
   flowSchema,
   analysisWriteSchema,
   loadFlowDesignImages,
+  readPinnedFlow,
   readBaselineRecords,
   analysisFreshness,
   saveProjectAnalysis,

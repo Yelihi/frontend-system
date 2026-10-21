@@ -33,6 +33,7 @@ import {
   issuesSchema,
   listPlans,
   loadFlowDesignImages,
+  localPath,
   locked,
   policyFailures,
   policyInputSchema,
@@ -47,6 +48,7 @@ import {
   readBaselineRecords,
   readCheckRecord,
   readIndexedReference,
+  readPinnedFlow,
   readProjectDecision,
   readProjectEvidence,
   readProjectRecord,
@@ -88,7 +90,7 @@ import {
   verifyReviews,
   verifyStep,
   workflowContext
-} from "./chunks/chunk-A6BN4PS3.js";
+} from "./chunks/chunk-NNO7GVJO.js";
 import {
   $ZodObject,
   $ZodType,
@@ -113,6 +115,8 @@ import {
   parse,
   parseAsync,
   preprocess,
+  projectFile,
+  projectFileBytes,
   record,
   safeParse,
   safeParseAsync,
@@ -124,6 +128,7 @@ import {
   url,
   uuid
 } from "./chunks/chunk-MHL22X7X.js";
+import "./chunks/chunk-VEDZPQTV.js";
 import {
   __commonJS,
   __toESM
@@ -13047,7 +13052,7 @@ var require_dist = __commonJS({
 });
 
 // src/application/project-report.ts
-import { join } from "node:path";
+import { join as join2 } from "node:path";
 
 // src/application/flow-view.ts
 var html = (s) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
@@ -13132,6 +13137,194 @@ document.getElementById('scenario').onchange=e=>{scenario=flow.scenarios.find(s=
 </script></html>`;
 }
 
+// src/application/page-flow-view.ts
+import { join } from "node:path";
+import { pathToFileURL } from "node:url";
+import { createHash } from "node:crypto";
+var viewId = (id) => "v" + Buffer.from(id).toString("hex");
+var captureSchema = object({
+  flowHash: sha256,
+  sourceCommit: string().regex(/^[a-f0-9]{40}$/).optional(),
+  screens: array(object({
+    page: analysisId,
+    scene: analysisId,
+    kind: _enum(["capture", "mockup"]),
+    path: localPath,
+    hash: sha256,
+    url: url().optional(),
+    capturedAt: iso_exports.datetime(),
+    width: number().int().positive().max(2e4),
+    height: number().int().positive().max(2e4),
+    regions: array(object({
+      node: analysisId,
+      x: number().min(0).max(1),
+      y: number().min(0).max(1),
+      width: number().positive().max(1),
+      height: number().positive().max(1)
+    })).max(80)
+  })).max(160),
+  blocked: array(object({ page: analysisId, scene: analysisId, reason: string().min(1) })).optional()
+});
+function projectFlowView(flow, flowHash, plan) {
+  if (!flow.pages?.length) throw new Error("Page explorer needs structured pages");
+  const ownerPage = (id) => {
+    let node = flow.nodes.find((n) => n.id === id);
+    const seen = /* @__PURE__ */ new Set();
+    while (node?.parent && !seen.has(node.id)) {
+      seen.add(node.id);
+      node = flow.nodes.find((n) => n.id === node.parent);
+    }
+    return node?.kind === "page" ? node.id : void 0;
+  };
+  const citations = (ids) => ids.map((id) => flow.evidence[id]);
+  return {
+    schemaVersion: "page-flow-2",
+    canonical: true,
+    title: flow.title,
+    basis: flow.basis,
+    baseline: { commit: flow.scope.snapshot?.expectedCommit, flow: { id: flow.id, hash: flowHash } },
+    designState: flow.designState ?? null,
+    nodes: flow.nodes.map((node) => ({
+      id: viewId(node.id),
+      sourceId: node.id,
+      kind: node.kind,
+      name: node.label,
+      parent: node.parent ? viewId(node.parent) : null,
+      props: node.props,
+      state: node.state,
+      events: node.events,
+      lifecycle: node.lifecycle,
+      signature: node.contracts?.map((c) => `${c.path}
+${c.signature}`).join("\n\n") ?? "",
+      contracts: node.contracts ?? [],
+      architecture: node.architecture ?? null,
+      intent: node.architecture?.responsibility ?? "",
+      evidence: citations(node.evidence),
+      environment: ["page", "component"].includes(node.kind) ? void 0 : node.architecture ? { browser: "app", server: "backend", shared: "app", external: "external" }[node.architecture.runtime] : "unknown"
+    })),
+    instances: flow.nodes.filter((n) => n.kind === "component" && ownerPage(n.id)).map((node) => ({
+      id: viewId(node.id + "-instance"),
+      sourceId: node.id + "-instance",
+      node: viewId(node.id),
+      page: viewId(ownerPage(node.id)),
+      ...flow.nodes.find((n) => n.id === node.parent)?.kind === "component" ? { parentInstance: viewId(node.parent + "-instance") } : {}
+    })),
+    pages: flow.pages.map((page) => ({
+      id: viewId(page.node),
+      sourceId: page.node,
+      title: flow.nodes.find((n) => n.id === page.node).label,
+      route: page.route,
+      domain: page.domain,
+      scenes: page.scenes.map((s) => viewId(s.id)),
+      sceneDetails: page.scenes.map((s) => ({ ...s, id: viewId(s.id), sourceId: s.id, blocks: s.blocks?.map((b) => ({ ...b, node: viewId(b.node) })) }))
+    })),
+    relations: flow.edges.map((e) => ({ ...e, from: viewId(e.from), to: viewId(e.to) })),
+    navigation: (flow.navigation ?? []).map((n) => ({ ...n, id: viewId(n.id), from: viewId(n.from), to: viewId(n.to), basis: flow.basis, evidence: citations(n.evidence) })),
+    scenarios: flow.scenarios.map((s) => ({
+      id: viewId(s.id),
+      sourceId: s.id,
+      title: s.title,
+      basis: flow.basis,
+      category: s.category ?? "event",
+      variant: s.variant ?? "custom",
+      steps: s.steps.map((step, index) => {
+        const edge = flow.edges.find((e) => e.id === step.edge);
+        const view = step.views?.[0];
+        if (!view) throw new Error("Page flow step needs an explicit page/scene");
+        return {
+          id: viewId(s.id + "-" + index),
+          edgeId: edge.id,
+          fromNode: viewId(edge.from),
+          toNode: viewId(edge.to),
+          page: viewId(view.page),
+          scene: viewId(view.scene),
+          views: step.views.map((v) => ({ page: viewId(v.page), scene: viewId(v.scene) })),
+          label: edge.label,
+          effect: step.effect,
+          guard: step.condition ?? edge.condition,
+          changes: step.changes?.map((c) => ({ ...c, ownerNode: viewId(c.ownerNode), owner: flow.nodes.find((n) => n.id === c.ownerNode).label })),
+          measurement: flow.basis === "proposed" ? "\uC124\uACC4 \uC608\uC0C1 \uC0C1\uD0DC \xB7 \uC2E4\uD589 \uCE21\uC815 \uC544\uB2D8" : "\uCF54\uB4DC/\uCE21\uC815 \uADFC\uAC70\uB294 \uD56D\uBAA9\uBCC4 \uD655\uC778",
+          evidence: citations(edge.evidence)
+        };
+      }),
+      testCases: (flow.testCases ?? []).filter((c) => c.scenarioId === s.id).map((c) => ({ id: viewId(c.id), sourceId: c.id, expected: c.then, method: c.method, given: c.given, when: c.when }))
+    })),
+    knowledge: (flow.knowledge ?? []).map((k) => ({
+      ...k,
+      nodes: k.nodes.map(viewId),
+      scenarios: k.scenarios.map(viewId),
+      evidence: citations(k.evidence),
+      confirmation: plan?.approved && plan.decisions.some((d) => d.id === k.decisionId && d.status === "resolved") ? "approved" : "review"
+    })),
+    checks: (flow.checks ?? []).map((c) => ({ ...c, nodes: c.nodes.map(viewId), scenarios: c.scenarios.map(viewId) }))
+  };
+}
+async function prepareFlowExplorer(root, systemRoot2, flow, flowHash, outputName, plan, freshness = "current", initialScenario) {
+  const spec = projectFlowView(flow, flowHash, plan);
+  const index = flow.knowledge?.length ? await readReferenceIndex(join(systemRoot2, "references/learned")) : void 0;
+  const knowledge = spec.knowledge.map((k) => {
+    const entry = index?.entries.find((e) => e.id === k.referenceId);
+    return {
+      ...k,
+      title: entry && contentHash(JSON.stringify(entry)) === k.referenceHash ? entry.title : k.referenceId,
+      versionStatus: entry && contentHash(JSON.stringify(entry)) === k.referenceHash ? "current" : "unavailable",
+      sources: entry && contentHash(JSON.stringify(entry)) === k.referenceHash ? Object.keys(entry.sources) : []
+    };
+  });
+  const manifestPath = `design/fs/${flow.id}.captures.json`;
+  let manifest;
+  try {
+    manifest = captureSchema.parse(JSON.parse((await projectFile(root, manifestPath)).content));
+  } catch (error) {
+    if (error.code !== "ENOENT") throw error;
+  }
+  const screens = {};
+  let bytes = 0;
+  if (manifest) {
+    if (manifest.flowHash !== flowHash) throw new Error("Capture manifest belongs to another flow version");
+    if (flow.scope.snapshot && manifest.sourceCommit !== flow.scope.snapshot.expectedCommit) throw new Error("Capture source commit differs from observed baseline");
+    for (const blocked2 of manifest.blocked ?? []) {
+      if (!flow.pages?.find((p) => p.node === blocked2.page)?.scenes.some((s) => s.id === blocked2.scene)) throw new Error("Unknown blocked capture scene");
+      if (manifest.screens.some((s) => s.page === blocked2.page && s.scene === blocked2.scene)) throw new Error("A captured scene cannot also be blocked");
+    }
+    for (const screen of manifest.screens) {
+      if (!flow.pages?.find((p) => p.node === screen.page)?.scenes.some((s) => s.id === screen.scene)) throw new Error("Capture references an unknown page/scene");
+      if (flow.basis === "observed" && (screen.kind !== "capture" || !screen.url)) throw new Error("Observed view requires an actual page capture and URL");
+      const key = viewId(screen.page) + ":" + viewId(screen.scene);
+      if (screens[key]) throw new Error("Duplicate captured scene");
+      const data = await projectFileBytes(root, screen.path);
+      bytes += data.length;
+      if (bytes > 24 * 1024 * 1024) throw new Error("Flow captures exceed 24 MiB");
+      if (createHash("sha256").update(data).digest("hex") !== screen.hash) throw new Error("Captured image hash changed");
+      if (data.length < 24 || !data.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]))) throw new Error("Flow captures must be PNG");
+      if (data.readUInt32BE(16) !== screen.width || data.readUInt32BE(20) !== screen.height) throw new Error("Capture dimensions differ from PNG");
+      const regions = screen.regions.map((region) => {
+        const instance = spec.instances.find((i) => i.node === viewId(region.node) && i.page === viewId(screen.page));
+        if (!instance || region.x + region.width > 1.001 || region.y + region.height > 1.001) throw new Error("Capture region does not belong to its page or bounds");
+        return { instance: instance.id, x: region.x, y: region.y, width: region.width, height: region.height };
+      });
+      screens[key] = { image: "data:image/png;base64," + data.toString("base64"), width: screen.width, height: screen.height, regions, kind: screen.kind };
+    }
+  }
+  const { prepareExplorer } = await import(pathToFileURL(join(systemRoot2, "skills/fs-plan-visualize/scripts/renderer.mjs")).href);
+  const captures = manifest?.screens.map(({ page, scene, ...details }) => ({ ...details, page: viewId(page), scene: viewId(scene) })) ?? [];
+  const blocked = manifest?.blocked?.map((b) => ({ ...b, page: viewId(b.page), scene: viewId(b.scene) })) ?? [];
+  const rendered = await prepareExplorer({ ...spec, knowledge, captures, blocked, freshness, initialScenario, modelFile: `${outputName}.model.json` }, manifest ? { flowHash, screens } : {});
+  const decode2 = (id) => Buffer.from(id.slice(1), "hex").toString();
+  const coverage = { ...rendered.captureInput.captureCoverage, missing: rendered.captureInput.captureCoverage.missing.map((key) => key.split(":").map(decode2).join(":")) };
+  const captureInput = {
+    flowId: flow.id,
+    flowHash,
+    sourceCommit: flow.scope.snapshot?.expectedCommit,
+    manifestPath,
+    pages: flow.pages,
+    captureCoverage: coverage,
+    blocked: manifest?.blocked ?? [],
+    instruction: "Capture actual project pages at this code version; save PNGs and manifest. Proposed blocks are wireframes, never runtime captures."
+  };
+  return { html: rendered.html, model: rendered.spec, captureInput, coverage };
+}
+
 // src/application/project-report.ts
 var text = string().trim().min(1).max(4e3);
 var ref = object({ id: analysisId, hash: sha256 });
@@ -13197,13 +13390,23 @@ ${area.summary}`);
       if (stored.record.kind !== "flow") throw new Error("Expected report flow");
       const flow = stored.record.data;
       const path = `diagrams/project-${ref2.hash}.html`;
-      if (!artifacts.some((a) => a.path === path)) artifacts.push({ path, content: flowToHtml(flow, "current", {
-        projectPath: root,
-        flowHash: ref2.hash,
-        language: "ko",
-        generatedAt: (/* @__PURE__ */ new Date()).toISOString(),
-        reasons: []
-      }) });
+      if (!artifacts.some((a) => a.path === path)) {
+        const explorer = flow.pages?.length ? await prepareFlowExplorer(root, installedSystemRoot(), flow, ref2.hash, `project-${ref2.hash}`) : void 0;
+        artifacts.push({ path, content: explorer?.html ?? flowToHtml(flow, "current", {
+          projectPath: root,
+          flowHash: ref2.hash,
+          language: "ko",
+          generatedAt: (/* @__PURE__ */ new Date()).toISOString(),
+          reasons: []
+        }) });
+        if (explorer) {
+          artifacts.push(
+            { path: path.replace(/\.html$/, ".model.json"), content: JSON.stringify(explorer.model) },
+            { path: path.replace(/\.html$/, ".capture.json"), content: JSON.stringify(explorer.captureInput) }
+          );
+          details.push(`Screen captures: ${explorer.coverage.captured}/${explorer.coverage.expected}; missing: ${explorer.coverage.missing.join(", ") || "none"}.`);
+        }
+      }
       details.push(`
 #### ${flow.title}
 
@@ -13261,7 +13464,7 @@ ${f.question ?? ""}
     })),
     read: "Select area and statement IDs; read only relevant evidence and immutable flow/finding records. HTML is for humans. Freshness is separate from completeness."
   };
-  return { context, details: details.join("\n\n"), artifacts: artifacts.map((a) => ({ ...a, absolutePath: join(root, ".frontend-system", a.path) })) };
+  return { context, details: details.join("\n\n"), artifacts: artifacts.map((a) => ({ ...a, absolutePath: join2(root, ".frontend-system", a.path) })) };
 }
 
 // src/application/project-analysis-input.ts
@@ -22963,15 +23166,15 @@ var StdioServerTransport = class {
 };
 
 // src/application/knowledge/catalog.ts
-import { createHash as createHash2, randomUUID as randomUUID3 } from "node:crypto";
+import { createHash as createHash3, randomUUID as randomUUID3 } from "node:crypto";
 import { copyFile, mkdir as mkdir3, readFile as readFile4, readdir as readdir2, realpath as realpath3, rm as rm3, writeFile as writeFile3 } from "node:fs/promises";
 import { constants } from "node:fs";
-import { dirname, isAbsolute, join as join5, relative as relative2, resolve as resolve2 } from "node:path";
+import { dirname, isAbsolute, join as join6, relative as relative2, resolve as resolve2 } from "node:path";
 
 // src/application/knowledge/html-capture.ts
-import { createHash, randomUUID } from "node:crypto";
+import { createHash as createHash2, randomUUID } from "node:crypto";
 import { mkdir, readFile, realpath, rename, rm, writeFile } from "node:fs/promises";
-import { join as join2 } from "node:path";
+import { join as join3 } from "node:path";
 
 // node_modules/parse5/dist/common/unicode.js
 var UNDEFINED_CODE_POINTS = /* @__PURE__ */ new Set([
@@ -30828,7 +31031,7 @@ function parse2(html2, options) {
 }
 
 // src/application/knowledge/html-capture.ts
-var digest2 = (value) => createHash("sha256").update(value).digest("hex");
+var digest2 = (value) => createHash2("sha256").update(value).digest("hex");
 var text2 = (node) => node.nodeName === "#text" ? node.value ?? "" : (node.childNodes ?? []).map(text2).join("");
 var attribute = (node, name) => node.attrs?.find((item) => item.name === name)?.value;
 function htmlCaptureManifest(html2) {
@@ -30873,11 +31076,11 @@ var recordSchema = object({
 });
 async function capturePath(root, id) {
   if (!/^[a-z0-9][a-z0-9._-]*$/.test(id)) throw new Error("Invalid source ID");
-  const folder = join2(root, "knowledge/.cache/html-captures");
+  const folder = join3(root, "knowledge/.cache/html-captures");
   await mkdir(folder, { recursive: true });
-  const canonical = join2(await realpath(root), "knowledge/.cache/html-captures");
+  const canonical = join3(await realpath(root), "knowledge/.cache/html-captures");
   if (await realpath(folder) !== canonical) throw new Error("HTML capture directory must not traverse symlinks");
-  return join2(canonical, `${id}.json`);
+  return join3(canonical, `${id}.json`);
 }
 async function saveHtmlCapture(root, id, url2, finalUrl, html2) {
   const manifest = htmlCaptureManifest(html2);
@@ -30908,13 +31111,13 @@ async function readHtmlCapture(root, id) {
 
 // src/application/knowledge/knowledge-resolver.ts
 import { readFile as readFile2, readdir } from "node:fs/promises";
-import { basename, join as join3, relative } from "node:path";
+import { basename, join as join4, relative } from "node:path";
 async function markdownFiles(root) {
   const found = [];
   const visit = async (directory2) => {
     try {
       for (const entry of await readdir(directory2, { withFileTypes: true })) {
-        const path = join3(directory2, entry.name);
+        const path = join4(directory2, entry.name);
         if (entry.isDirectory()) await visit(path);
         else if (entry.isFile() && entry.name.endsWith(".md") && entry.name.toLowerCase() !== "readme.md") found.push(path);
       }
@@ -30942,7 +31145,7 @@ var KnowledgeResolver = class {
     const index = await readReferenceIndex(this.root);
     if (index) {
       for (const entry of searchReferenceIndex(index, [request.raw, ...request.constraints ?? [], ...(request.observations ?? []).map((item) => item.observation)].join(" "), profile.technologies.map((item) => item.name))) {
-        applicable.push({ ...entry, path: join3(this.root, entry.path) });
+        applicable.push({ ...entry, path: join4(this.root, entry.path) });
       }
     }
     for (const path of index ? [] : await markdownFiles(this.root)) {
@@ -30983,7 +31186,7 @@ ${content}`.toLowerCase();
 
 // src/application/knowledge/rule-proposals.ts
 import { mkdir as mkdir2, readFile as readFile3, realpath as realpath2, rename as rename2, rm as rm2, writeFile as writeFile2 } from "node:fs/promises";
-import { join as join4, resolve } from "node:path";
+import { join as join5, resolve } from "node:path";
 import { randomUUID as randomUUID2 } from "node:crypto";
 var proposalInputSchema = strictObject({
   id: ruleId,
@@ -31013,10 +31216,10 @@ async function readRuleProposal(root, id) {
   return record2;
 }
 async function save(root, record2, expectedHash) {
-  const folder = join4(resolve(root), "knowledge/proposals");
+  const folder = join5(resolve(root), "knowledge/proposals");
   await mkdir2(folder, { recursive: true });
-  if (await realpath2(folder) !== join4(await realpath2(root), "knowledge/proposals")) throw new Error("Proposal path must not traverse symlinks");
-  const path = join4(folder, `${record2.proposal.id}.json`);
+  if (await realpath2(folder) !== join5(await realpath2(root), "knowledge/proposals")) throw new Error("Proposal path must not traverse symlinks");
+  const path = join5(folder, `${record2.proposal.id}.json`);
   const lock = `${path}.lock`;
   await mkdir2(lock);
   const temp = `${path}.${randomUUID2()}.tmp`;
@@ -31108,17 +31311,17 @@ var sourceReviewInputSchema = object({
 }).refine((review) => review.status !== "approved" || review.claims.length > 0 && review.conditions.length > 0 && review.exclusions.length > 0 && !review.unresolved.length && review.claims.every((claim) => claim.verdict === "supported" || claim.verdict === "qualified"), "Approval needs supported/qualified claims, conditions, exclusions and no unresolved questions");
 var emptyCatalog = () => ({ version: 1, facets: {}, documents: {} });
 function digest3(content) {
-  return createHash2("sha256").update(content).digest("hex");
+  return createHash3("sha256").update(content).digest("hex");
 }
 async function sourceFiles(root) {
-  const sourceRoot = join5(root, "knowledge", "source");
+  const sourceRoot = join6(root, "knowledge", "source");
   const found = [];
   const visit = async (directory2) => {
     try {
       for (const entry of await readdir2(directory2, { withFileTypes: true })) {
-        const path = join5(directory2, entry.name);
+        const path = join6(directory2, entry.name);
         if (entry.isDirectory()) await visit(path);
-        else if (entry.isFile() && entry.name.endsWith(".md") && path !== join5(sourceRoot, "template.md")) found.push(relative2(root, path));
+        else if (entry.isFile() && entry.name.endsWith(".md") && path !== join6(sourceRoot, "template.md")) found.push(relative2(root, path));
       }
     } catch (error) {
       if (error.code !== "ENOENT") throw error;
@@ -31129,28 +31332,28 @@ async function sourceFiles(root) {
 }
 async function loadKnowledgeCatalog(root) {
   try {
-    return JSON.parse(await readFile4(join5(root, "knowledge", "catalog.json"), "utf8"));
+    return JSON.parse(await readFile4(join6(root, "knowledge", "catalog.json"), "utf8"));
   } catch (error) {
     if (error.code === "ENOENT") return emptyCatalog();
     throw error;
   }
 }
 async function saveKnowledgeCatalog(root, catalog) {
-  await mkdir3(join5(root, "knowledge"), { recursive: true });
-  await writeFile3(join5(root, "knowledge", "catalog.json"), `${JSON.stringify(catalog, null, 2)}
+  await mkdir3(join6(root, "knowledge"), { recursive: true });
+  await writeFile3(join6(root, "knowledge", "catalog.json"), `${JSON.stringify(catalog, null, 2)}
 `);
 }
 function sourcePath(root, path) {
   const sourceRoot = resolve2(root, "knowledge", "source");
   const absolute = resolve2(root, path);
-  if (absolute === join5(sourceRoot, "template.md")) throw new Error("Knowledge template is not source material; copy it into source/manual first.");
+  if (absolute === join6(sourceRoot, "template.md")) throw new Error("Knowledge template is not source material; copy it into source/manual first.");
   if (isAbsolute(path) || absolute !== sourceRoot && !absolute.startsWith(`${sourceRoot}/`)) {
     throw new Error("Knowledge path must be relative and inside knowledge/source.");
   }
   return absolute;
 }
 function readSource(root, path) {
-  const sourceRoot = join5(root, "knowledge/source");
+  const sourceRoot = join6(root, "knowledge/source");
   return confinedRead(sourceRoot, relative2(sourceRoot, sourcePath(root, path)));
 }
 function hasLinkedSource(document, body) {
@@ -31162,7 +31365,7 @@ function linkedSourceUrl(document, body) {
 async function knowledgeDirectory(root, path) {
   let directory2 = await realpath3(root);
   for (const part of path.split("/")) {
-    directory2 = join5(directory2, part);
+    directory2 = join6(directory2, part);
     await mkdir3(directory2, { recursive: true });
     if (await realpath3(directory2) !== directory2) throw new Error("Knowledge directory must not traverse symlinks");
   }
@@ -31301,13 +31504,13 @@ async function addKnowledgeNote(root, input) {
   const id = `note-${randomUUID3()}`;
   await knowledgeDirectory(root, "knowledge/source/manual");
   const path = `knowledge/source/manual/${id}.md`;
-  await writeFile3(join5(root, path), body, { flag: "wx" });
+  await writeFile3(join6(root, path), body, { flag: "wx" });
   try {
     const result2 = await catalogKnowledgeDocument(root, { id, path, title: note.title, summary: note.content.slice(0, 200), sourceType: "manual", facets: {} });
-    if (result2.duplicateOf) await rm3(join5(root, path));
+    if (result2.duplicateOf) await rm3(join6(root, path));
     return { ...result2, status: "pending; user selects state: active before preparation and review" };
   } catch (error) {
-    await rm3(join5(root, path));
+    await rm3(join6(root, path));
     throw error;
   }
 }
@@ -31334,7 +31537,7 @@ async function prepareActiveKnowledge(root) {
       const target = path.startsWith("knowledge/source/active/") ? path : `knowledge/source/active/${relative2("knowledge/source", path)}`;
       if (target !== path) {
         await knowledgeDirectory(root, dirname(target));
-        await copyFile(join5(root, path), join5(root, target), constants.COPYFILE_EXCL);
+        await copyFile(join6(root, path), join6(root, target), constants.COPYFILE_EXCL);
       }
       let saved;
       try {
@@ -31342,12 +31545,12 @@ async function prepareActiveKnowledge(root) {
         saved = await catalogKnowledgeDocument(root, { ...input, path: target });
         if (saved.duplicateOf) throw new Error(`Duplicate source ${saved.duplicateOf}; original retained, resolve explicitly`);
       } catch (error) {
-        if (target !== path && await readSource(root, target) === body) await rm3(join5(root, target));
+        if (target !== path && await readSource(root, target) === body) await rm3(join6(root, target));
         throw error;
       }
       if (target !== path) {
         if (await readSource(root, path) !== body) throw new Error(`Original changed after catalog update; retained both paths (${target})`);
-        await rm3(join5(root, path));
+        await rm3(join6(root, path));
       }
       prepared.push({ id: saved.document.id, path: target, previousPath: path, moved: target !== path });
     } catch (error) {
@@ -31385,7 +31588,7 @@ async function knowledgeStatus(root) {
       stateErrors.push({ path, message: error instanceof Error ? error.message : String(error) });
     }
   }
-  const index = await readReferenceIndex(join5(root, "references", "learned"));
+  const index = await readReferenceIndex(join6(root, "references", "learned"));
   const affectedReferences = (index?.entries ?? []).filter((entry) => Object.entries(entry.sources).some(([id, hash3]) => {
     const document = catalog.documents[id];
     return !document || actual.get(document.path) !== hash3;
@@ -31393,7 +31596,7 @@ async function knowledgeStatus(root) {
   const affected = new Set(affectedReferences);
   for (const entry of index?.entries ?? []) {
     try {
-      if (digest3(await confinedRead(join5(root, "references/learned"), entry.path)) !== entry.contentHash) affected.add(entry.id);
+      if (digest3(await confinedRead(join6(root, "references/learned"), entry.path)) !== entry.contentHash) affected.add(entry.id);
     } catch {
       affected.add(entry.id);
     }
@@ -31401,7 +31604,7 @@ async function knowledgeStatus(root) {
   const ruleProposals = [];
   let proposalFiles = [];
   try {
-    proposalFiles = await readdir2(join5(root, "knowledge/proposals"));
+    proposalFiles = await readdir2(join6(root, "knowledge/proposals"));
   } catch (error) {
     if (error.code !== "ENOENT") throw error;
   }
@@ -31450,7 +31653,7 @@ async function knowledgeStatus(root) {
 async function knowledgeUpdateQueue(root) {
   const status = await knowledgeStatus(root);
   const catalog = await loadKnowledgeCatalog(root);
-  const index = await readReferenceIndex(join5(root, "references", "learned"));
+  const index = await readReferenceIndex(join6(root, "references", "learned"));
   const candidates = [...status.lifecycle.active, ...status.lifecycle.merged].filter((id) => status.unpublished.includes(id) && catalog.documents[id]).sort().map((id) => {
     const document = catalog.documents[id];
     const references = (index?.entries ?? []).filter((entry) => Object.hasOwn(entry.sources, id));
@@ -31498,7 +31701,7 @@ async function searchKnowledge(root, query, facets = {}, limit = 5) {
 async function validateKnowledgeSync(root, ids, requireInvestigations = false) {
   const catalog = await loadKnowledgeCatalog(root);
   const updated = [];
-  const learnedRoot = join5(root, "references", "learned");
+  const learnedRoot = join6(root, "references", "learned");
   const index = await readReferenceIndex(learnedRoot);
   if (!index) throw new Error("Publish references/learned/index.json before marking sources synced.");
   const triggerFailures = triggerPublicationFailures(index);
@@ -31580,7 +31783,7 @@ async function validateKnowledgeSync(root, ids, requireInvestigations = false) {
 async function markKnowledgeSynced(root, ids, requireInvestigations = false) {
   const validated = await validateKnowledgeSync(root, ids, requireInvestigations);
   const catalog = await loadKnowledgeCatalog(root);
-  const index = await readReferenceIndex(join5(root, "references/learned"));
+  const index = await readReferenceIndex(join6(root, "references/learned"));
   for (const document of validated.documents) {
     if (catalog.documents[document.id]?.contentHash !== document.contentHash) throw new Error(`Source catalog changed: ${document.id}`);
     if (digest3(await readSource(root, document.path)) !== document.contentHash) throw new Error(`Source changed during publication: ${document.id}`);
@@ -31597,7 +31800,7 @@ async function markKnowledgeSynced(root, ids, requireInvestigations = false) {
 
 // src/application/project-store.ts
 import { mkdir as mkdir4, readFile as readFile5, rm as rm4, writeFile as writeFile4 } from "node:fs/promises";
-import { join as join6 } from "node:path";
+import { join as join7 } from "node:path";
 var directoryName = ".frontend-system";
 var configSchema = strictObject({
   version: literal(1),
@@ -31620,29 +31823,29 @@ async function optionalRead(path) {
   }
 }
 async function readProjectDocument(root) {
-  return await optionalRead(join6(root, directoryName, "project.md")) || optionalRead(join6(root, directoryName, "init.md"));
+  return await optionalRead(join7(root, directoryName, "project.md")) || optionalRead(join7(root, directoryName, "init.md"));
 }
 async function readProjectAiContext(root) {
   const document = await readProjectDocument(root);
   const match = /<!-- fs-project-context ([a-f0-9]{64}) -->/.exec(document);
   if (!match) return document;
-  const content = await readFile5(join6(root, directoryName, "evidence", `context-${match[1]}.json`), "utf8");
+  const content = await readFile5(join7(root, directoryName, "evidence", `context-${match[1]}.json`), "utf8");
   if (digest(content) !== match[1]) throw new Error("Project AI context changed; refresh the analysis");
   return content;
 }
 async function readProjectConfig(root) {
-  const content = await optionalRead(join6(root, directoryName, "config.json"));
+  const content = await optionalRead(join7(root, directoryName, "config.json"));
   return content ? configSchema.parse(JSON.parse(content)) : void 0;
 }
 async function writeProjectConfig(root, config) {
   const validated = configSchema.parse(config);
-  const directory2 = join6(root, directoryName);
+  const directory2 = join7(root, directoryName);
   await mkdir4(directory2, { recursive: true });
-  await writeFile4(join6(directory2, "config.json"), `${JSON.stringify(validated, null, 2)}
+  await writeFile4(join7(directory2, "config.json"), `${JSON.stringify(validated, null, 2)}
 `);
 }
 async function readProjectState(root) {
-  const content = await optionalRead(join6(root, directoryName, "state.json"));
+  const content = await optionalRead(join7(root, directoryName, "state.json"));
   return content ? JSON.parse(content) : void 0;
 }
 function section(title, entries) {
@@ -31679,12 +31882,12 @@ async function writeProjectArtifacts(profile, analysis, options = {}) {
     if (snapshot.commit && options.expectedCommit !== snapshot.commit) throw new Error("Save context against the inspected main commit; main may have changed");
     if (!snapshot.commit && options.expectedCommit) throw new Error("The inspected main commit is unavailable");
     const base = await directory(root);
-    const path = join6(base, "project.md");
+    const path = join7(base, "project.md");
     const previous = await optionalRead(path);
     if (options.expectedHash !== void 0 && (previous ? digest(previous) : null) !== options.expectedHash) throw new Error("Project document changed; reread before saving");
     if (snapshot.commit && options.expectedHash === void 0) throw new Error("Provide the current project document hash (null for a new document)");
-    const legacy = await optionalRead(join6(base, "init.md"));
-    if (previous) await atomic(join6(await directory(root, "project-history"), `${digest(previous)}.md`), previous);
+    const legacy = await optionalRead(join7(base, "init.md"));
+    if (previous) await atomic(join7(await directory(root, "project-history"), `${digest(previous)}.md`), previous);
     const metadata = { baseRef: snapshot.baseRef, analyzedCommit: snapshot.commit, sourceHash: snapshot.sourceHash, updatedAt: (/* @__PURE__ */ new Date()).toISOString(), analysisStatus: analysis.report?.status ?? "legacy" };
     const evidence = analysis.evidence ? await validateProjectEvidence(root, analysis.evidence, snapshot.baseRef, snapshot.commit) : null;
     const evidenceBody = evidence ? JSON.stringify(evidence) : null;
@@ -31702,10 +31905,10 @@ async function writeProjectArtifacts(profile, analysis, options = {}) {
     }) : null;
     const contextHash = contextBody ? digest(contextBody) : null;
     if (report && contextBody && contextHash) {
-      await atomic(join6(await directory(root, "evidence"), `context-${contextHash}.json`), contextBody);
-      for (const artifact of report.artifacts) await atomic(join6(await directory(root, "diagrams"), artifact.path.slice("diagrams/".length)), artifact.content);
+      await atomic(join7(await directory(root, "evidence"), `context-${contextHash}.json`), contextBody);
+      for (const artifact of report.artifacts) await atomic(join7(await directory(root, "diagrams"), artifact.path.slice("diagrams/".length)), artifact.content);
     }
-    if (evidenceBody) await atomic(join6(await directory(root, "evidence"), `project-${evidenceHash}.json`), evidenceBody);
+    if (evidenceBody) await atomic(join7(await directory(root, "evidence"), `project-${evidenceHash}.json`), evidenceBody);
     const mainProfile = { ...profile, project: { ...profile.project, git: { ...profile.project.git, ...snapshot.commit ? { commit: snapshot.commit } : {} } } };
     const content = [
       `<!-- frontend-system-context ${JSON.stringify(metadata)} -->`,
@@ -31731,7 +31934,7 @@ Coverage: ${evidence.completeness}. Citations are checked; semantic accuracy is 
       ] : ["Analysis format: legacy; structured claim evidence has not been recorded."],
       `Tracked files: ${snapshot.files.length}. Page get_project_snapshot for the complete baseline inventory.`,
       `Package manifests: ${Object.keys(snapshot.manifests).join(", ") || "none"}. Read selected manifests from the baseline snapshot.`,
-      ...await optionalRead(join6(base, "analysis/index.md")) ? ["## Flow and improvement index\n\n[Flow/finding index](analysis/index.md). Query get_project_analysis for working-tree freshness; the baseline report pins its own observed versions."] : ["Flow/finding index has not been saved. No reusable flow is implied."],
+      ...await optionalRead(join7(base, "analysis/index.md")) ? ["## Flow and improvement index\n\n[Flow/finding index](analysis/index.md). Query get_project_analysis for working-tree freshness; the baseline report pins its own observed versions."] : ["Flow/finding index has not been saved. No reusable flow is implied."],
       snapshot.commit ? `Base: ${snapshot.baseRef} @ ${snapshot.commit}. Check current status with get_project_snapshot; local edits are not main facts.` : "No committed main baseline. This is initial context, not verified main state.",
       legacy ? "Previous inspection preserved: [init.md](init.md). Reconcile its decisions explicitly." : "",
       previous ? `Previous context preserved: [history](project-history/${digest(previous)}.md).` : "",
@@ -31739,19 +31942,19 @@ Coverage: ${evidence.completeness}. Citations are checked; semantic accuracy is 
     ].join("\n\n");
     if ((await projectSnapshot(root, options.baseRef)).commit !== snapshot.commit) throw new Error("Main changed during context generation; retry with new facts");
     await atomic(path, content);
-    await rm4(join6(base, "project-refresh.json"), { force: true });
-    const ignored = await optionalRead(join6(base, ".gitignore"));
+    await rm4(join7(base, "project-refresh.json"), { force: true });
+    const ignored = await optionalRead(join7(base, ".gitignore"));
     const missing = ["state.json", "reports/", ".workflow-lock/"].filter((line) => !ignored.split(/\r?\n/).includes(line));
-    if (missing.length) await atomic(join6(base, ".gitignore"), `${ignored}${ignored && !ignored.endsWith("\n") ? "\n" : ""}${missing.join("\n")}
+    if (missing.length) await atomic(join7(base, ".gitignore"), `${ignored}${ignored && !ignored.endsWith("\n") ? "\n" : ""}${missing.join("\n")}
 `);
-    await atomic(join6(base, "state.json"), JSON.stringify({
+    await atomic(join7(base, "state.json"), JSON.stringify({
       ...snapshot.commit ? { analyzedCommit: snapshot.commit } : {},
       fileHashes: snapshot.workingChanges.length ? {} : await sourceSnapshot(root),
       updatedAt: metadata.updatedAt
     }, null, 2));
     return {
       analysisStatus: analysis.report?.status ?? "legacy",
-      aiContext: contextHash ? join6(base, "evidence", `context-${contextHash}.json`) : null,
+      aiContext: contextHash ? join7(base, "evidence", `context-${contextHash}.json`) : null,
       diagrams: report?.artifacts.map((a) => ({ path: a.absolutePath, hash: digest(a.content) })) ?? []
     };
   });
@@ -31760,7 +31963,7 @@ Coverage: ${evidence.completeness}. Citations are checked; semantic accuracy is 
 // src/application/run-capabilities.ts
 import { execFile } from "node:child_process";
 import { randomUUID as randomUUID4 } from "node:crypto";
-import { dirname as dirname2, join as join7, relative as relative3 } from "node:path";
+import { dirname as dirname2, join as join8, relative as relative3 } from "node:path";
 function checkOrder(name) {
   if (/^(lint|typecheck)(:|$)/.test(name)) return 0;
   if (/^(check)(:|$)/.test(name)) return 1;
@@ -31857,7 +32060,7 @@ async function runProjectChecks(profile, options = {}) {
     const manifest = [...profile.paths.manifests].sort((a, b) => b.length - a.length).find((path) => dirname2(path) !== "." && script.startsWith(`${dirname2(path)}:`));
     const folder = manifest ? dirname2(manifest) : "";
     const name = folder ? script.slice(folder.length + 1) : script;
-    const workingDirectory = join7(root, folder);
+    const workingDirectory = join8(root, folder);
     if (!profile.scripts[script] || eligible.capabilities.some((item) => item.workingDirectory === workingDirectory && item.script === name)) continue;
     const manager = profile.capabilities.find((item) => item.workingDirectory === workingDirectory)?.packageManager ?? profile.packageManager?.name ?? "npm";
     eligible.capabilities.push({ name, script: name, command: `${manager} run ${name}`, packageManager: manager, workingDirectory });
@@ -32122,6 +32325,7 @@ async function workReview(root, planId, stepId, base, includeDiff = true) {
   const step = state.execution?.steps.find((item) => item.id === stepId);
   const issue = state.revision.issues?.find((item) => item.id === stepId);
   if (!step || !issue || !state.verification.sourceHash) throw new Error("Select an existing plan execution issue");
+  const reviews = await Promise.all((step.reviewIds ?? []).map((id) => readReview(root, id, planId)));
   const mergeBase = (await git(root, ["merge-base", base, "HEAD"])).trim();
   const paths = (await git(root, ["diff", "--name-only", "--no-renames", "-z", mergeBase, "--"])).split("\0").filter(Boolean);
   const untracked = (await git(root, ["ls-files", "--others", "--exclude-standard", "-z"])).split("\0").filter(Boolean);
@@ -32130,6 +32334,28 @@ async function workReview(root, planId, stepId, base, includeDiff = true) {
   const tracked = paths.filter((path) => !path.startsWith(".frontend-system/"));
   const diff = includeDiff && tracked.length ? await git(root, ["diff", "--no-ext-diff", "--no-textconv", mergeBase, "--", ...tracked]) : "";
   const additions = includeDiff ? await Promise.all(untracked.filter((path) => !path.startsWith(".frontend-system/")).map(async (path) => untrackedDiff(root, path))) : [];
+  const flowContracts = [];
+  for (const flowId of new Set(issue.implementationTargets?.flatMap((t) => t.flowTarget ? [t.flowTarget.flowId] : []))) {
+    const ref2 = state.revision.evidence?.analysisRefs?.find((r) => r.kind === "flow" && r.id === flowId);
+    if (!ref2) throw new Error(`Missing pinned implementation flow: ${flowId}`);
+    const flow = await readPinnedFlow(root, ref2.id, ref2.hash);
+    for (const target of issue.implementationTargets?.filter((t) => t.flowTarget?.flowId === flowId) ?? []) {
+      const node = flow.nodes.find((n) => n.id === target.flowTarget.nodeId);
+      const contract = node?.contracts?.find((c) => c.name === target.flowTarget.contractName);
+      if (!node || !contract) throw new Error(`Missing pinned implementation contract: ${target.target}`);
+      flowContracts.push({
+        target: target.target,
+        flowId,
+        flowHash: ref2.hash,
+        nodeId: node.id,
+        contract,
+        architecture: node.architecture ?? null,
+        state: node.state,
+        checks: flow.checks?.filter((c) => c.nodes.includes(node.id)) ?? [],
+        meaning: "Approved design to compare with current code; not an automatic implementation pass"
+      });
+    }
+  }
   return {
     planId,
     issueId: stepId,
@@ -32146,8 +32372,19 @@ async function workReview(root, planId, stepId, base, includeDiff = true) {
       expected: item.then,
       evidence: step.caseEvidence?.find((value) => value.caseId === item.id) ?? null
     })) ?? [],
+    implementationTargets: issue.implementationTargets ?? [],
+    flowContracts,
     checkIds: step.checkIds,
-    reviewIds: step.reviewIds ?? [],
+    remaining: step.remaining,
+    verificationFailures: state.verification.failures,
+    reviews: reviews.map((review) => ({
+      id: review.id,
+      reviewId: review.reviewId,
+      status: review.status,
+      current: review.sourceHash === state.verification.sourceHash && review.revisionHash === state.revision.hash,
+      findings: review.findings,
+      remaining: review.remaining
+    })),
     feedback: step.implementationReview ?? null,
     diff: diff + additions.join("")
   };
@@ -32276,13 +32513,13 @@ async function readRevisionDraft(root, path) {
 // src/application/knowledge/sources.ts
 import { execFile as execFile3 } from "node:child_process";
 import { lookup } from "node:dns/promises";
-import { createHash as createHash3, randomUUID as randomUUID5 } from "node:crypto";
+import { createHash as createHash4, randomUUID as randomUUID5 } from "node:crypto";
 import { mkdir as mkdir5, mkdtemp, readFile as readFile7, realpath as realpath6, rename as rename3, rm as rm5, writeFile as writeFile5 } from "node:fs/promises";
 import { isIP } from "node:net";
 import { tmpdir } from "node:os";
-import { join as join8 } from "node:path";
+import { join as join9 } from "node:path";
 import { promisify } from "node:util";
-var hash = (text3) => createHash3("sha256").update(text3).digest("hex");
+var hash = (text3) => createHash4("sha256").update(text3).digest("hex");
 var run2 = promisify(execFile3);
 var sourcesSchema = record(ruleId, url());
 var snapshotSchema = object({
@@ -32305,21 +32542,21 @@ async function optional2(path) {
   }
 }
 async function sourceRegistry(root) {
-  const raw = await optional2(join8(root, "knowledge/sources.json"));
+  const raw = await optional2(join9(root, "knowledge/sources.json"));
   return { sources: raw ? sourcesSchema.parse(JSON.parse(raw)) : {}, hash: raw ? hash(raw) : null };
 }
 async function registerSource(root, id, url2, expectedHash) {
   ruleId.parse(id);
   validateUrl(url2);
-  const folder = join8(root, "knowledge");
+  const folder = join9(root, "knowledge");
   await mkdir5(folder, { recursive: true });
-  if (await realpath6(folder) !== join8(await realpath6(root), "knowledge")) throw new Error("Knowledge directory must not be a symlink");
-  const lock = join8(folder, ".sources-lock");
+  if (await realpath6(folder) !== join9(await realpath6(root), "knowledge")) throw new Error("Knowledge directory must not be a symlink");
+  const lock = join9(folder, ".sources-lock");
   await mkdir5(lock);
   try {
     const current = await sourceRegistry(root);
     if (current.hash !== expectedHash) throw new Error("Source registry changed; reread it");
-    await replace(join8(folder, "sources.json"), `${JSON.stringify({ ...current.sources, [id]: url2 }, null, 2)}
+    await replace(join9(folder, "sources.json"), `${JSON.stringify({ ...current.sources, [id]: url2 }, null, 2)}
 `);
     return sourceRegistry(root);
   } finally {
@@ -32336,9 +32573,9 @@ async function replace(path, data) {
   }
 }
 async function cacheFolder(root) {
-  const folder = join8(root, "knowledge/.cache/sources");
+  const folder = join9(root, "knowledge/.cache/sources");
   await mkdir5(folder, { recursive: true });
-  if (await realpath6(folder) !== join8(await realpath6(root), "knowledge/.cache/sources")) throw new Error("Source cache must not traverse symlinks");
+  if (await realpath6(folder) !== join9(await realpath6(root), "knowledge/.cache/sources")) throw new Error("Source cache must not traverse symlinks");
   return folder;
 }
 function privateAddress(address) {
@@ -32376,10 +32613,10 @@ async function documentDiff(before, after) {
 
 ${after}`;
   if (before === after) return "";
-  const temp = await mkdtemp(join8(tmpdir(), "fs-source-diff-"));
+  const temp = await mkdtemp(join9(tmpdir(), "fs-source-diff-"));
   try {
-    await writeFile5(join8(temp, "previous.md"), before);
-    await writeFile5(join8(temp, "current.md"), after);
+    await writeFile5(join9(temp, "previous.md"), before);
+    await writeFile5(join9(temp, "current.md"), after);
     try {
       return (await run2("git", ["diff", "--no-index", "--no-ext-diff", "--no-color", "--unified=4", "previous.md", "current.md"], { cwd: temp, maxBuffer: 6 * 1024 * 1024 })).stdout;
     } catch (error) {
@@ -32400,7 +32637,7 @@ async function checkSources(root, ids, transport = fetch, resolveHost = (hostnam
   for (const id of selected) {
     ruleId.parse(id);
     const sourceUrl = registry.sources[id];
-    const path = join8(folder, `${id}.json`);
+    const path = join9(folder, `${id}.json`);
     const lock = `${path}.lock`;
     let acquired = false;
     try {
@@ -32490,7 +32727,7 @@ async function checkSources(root, ids, transport = fetch, resolveHost = (hostnam
 }
 async function readSourceChange(root, id, offset = 0, limit = 12e3, full = false, expectedHash) {
   ruleId.parse(id);
-  const record2 = snapshotSchema.parse(JSON.parse(await readFile7(join8(await cacheFolder(root), `${id}.json`), "utf8")));
+  const record2 = snapshotSchema.parse(JSON.parse(await readFile7(join9(await cacheFolder(root), `${id}.json`), "utf8")));
   if ((await sourceRegistry(root)).sources[id] !== record2.url || expectedHash && record2.hash !== expectedHash) throw new Error("Source changed; restart review");
   const content = full ? record2.body : record2.diff;
   const start = Math.max(0, offset);
@@ -32499,7 +32736,7 @@ async function readSourceChange(root, id, offset = 0, limit = 12e3, full = false
 }
 async function acknowledgeSource(root, id, expectedHash, sourceId) {
   ruleId.parse(id);
-  const path = join8(await cacheFolder(root), `${id}.json`);
+  const path = join9(await cacheFolder(root), `${id}.json`);
   const lock = `${path}.lock`;
   await mkdir5(lock);
   try {
@@ -32517,7 +32754,7 @@ async function acknowledgeSource(root, id, expectedHash, sourceId) {
 }
 
 // src/application/task-context.ts
-import { join as join10, relative as relative7 } from "node:path";
+import { join as join11, relative as relative7 } from "node:path";
 
 // src/application/context/build-work-context.ts
 import { relative as relative5 } from "node:path";
@@ -32564,7 +32801,7 @@ async function buildWorkContext(discovery2, profile, request, knowledge, rules) 
 
 // src/application/rules/rule-resolver.ts
 import { readFile as readFile8, readdir as readdir3 } from "node:fs/promises";
-import { join as join9, relative as relative6 } from "node:path";
+import { join as join10, relative as relative6 } from "node:path";
 function slug(value) {
   return value.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, "-").replace(/^-|-$/g, "");
 }
@@ -32574,10 +32811,10 @@ function technologyDomain(value) {
 async function ruleFiles(root, domains) {
   const files = [];
   for (const domain of domains) {
-    const directory2 = join9(root, domain);
+    const directory2 = join10(root, domain);
     try {
       for (const entry of await readdir3(directory2, { withFileTypes: true })) {
-        if (entry.isFile() && entry.name.endsWith(".md")) files.push(join9(directory2, entry.name));
+        if (entry.isFile() && entry.name.endsWith(".md")) files.push(join10(directory2, entry.name));
       }
     } catch (error) {
       if (error.code !== "ENOENT") throw error;
@@ -32682,8 +32919,8 @@ async function taskContext(discovery2, systemRoot2, projectPath2, request, planI
     const files2 = new Set((await discovery2.listFiles(projectPath2)).map((path) => relative7(projectPath2, path)));
     if (request.observations.some((item) => !files2.has(item.path))) throw new Error("Observations must cite existing project files");
   }
-  const knowledge = await new KnowledgeResolver(join10(systemRoot2, "references", "learned")).resolve(profile, request);
-  const rules = await new RuleResolver(join10(systemRoot2, "mandatory-rules")).resolve(
+  const knowledge = await new KnowledgeResolver(join11(systemRoot2, "references", "learned")).resolve(profile, request);
+  const rules = await new RuleResolver(join11(systemRoot2, "mandatory-rules")).resolve(
     profile,
     request,
     knowledge.applicable,
@@ -32831,8 +33068,9 @@ function summarizeTaskContext(state, knownContextId) {
         readWith: "Reuse candidate metadata and discovery from this contextId. Omit knownContextId to receive them again."
       } : {
         reused: false,
-        candidates: routing.candidates.map(({ id, title, review, conditions, exclusions, reasons, investigation, investigationStatus }) => ({
+        candidates: routing.candidates.map(({ id, referenceHash, title, review, conditions, exclusions, reasons, investigation, investigationStatus }) => ({
           id,
+          referenceHash,
           title,
           review,
           conditions,
@@ -32844,6 +33082,8 @@ function summarizeTaskContext(state, knownContextId) {
         })),
         scopeSearch: routing.scopeSearch,
         structureSearch: routing.structureSearch,
+        semanticLenses: routing.semanticLenses,
+        semanticLensCoverage: routing.semanticLensCoverage,
         semanticDiscovery: {
           entries: routing.discovery.entries.map(({ id, triggers, conditions, exclusions }) => {
             const candidate = routing.candidates.find((item) => item.id === id);
@@ -32877,7 +33117,7 @@ function summarizeTaskContext(state, knownContextId) {
 }
 
 // src/application/render-project-flow.ts
-import { join as join11, resolve as resolve4 } from "node:path";
+import { join as join12, resolve as resolve4 } from "node:path";
 var renderFlowOptions = object({
   id: analysisId,
   expectedHash: string().regex(/^[a-f0-9]{64}$/),
@@ -32918,9 +33158,23 @@ async function renderProjectFlow(root, systemRoot2, input) {
         status: linked.verification.status === "verified" && linked.execution?.steps.find((step) => step.id === issue.id)?.caseEvidence?.some((entry) => entry.caseId === item.id) ? "verified" : "unverified"
       }))) ?? []
     ])) : void 0;
-    const content = options.format === "html" ? flowToHtml(flow, freshness.status, { ...provenance, scenarioId: options.scenarioId, language: options.language, caseLinks: caseLinks ?? {}, images: await loadFlowDesignImages(root, flow) }) : `%% ${JSON.stringify({ basis: flow.basis, freshness, ...provenance })}
-${flowToMermaid(flow, options.scenarioId)}`;
-    const output = join11(await directory(root, "diagrams"), `${options.id}.${options.format === "html" ? "html" : "mmd"}`);
+    const explorer = options.format === "html" && options.language === "ko" && flow.pages?.length ? await prepareFlowExplorer(
+      root,
+      systemRoot2,
+      flow,
+      options.expectedHash,
+      options.id,
+      linked ? { approved: linked.revision.approved, decisions: linked.revision.evidence?.decisions ?? [] } : void 0,
+      freshness.status,
+      options.scenarioId
+    ) : void 0;
+    const content = explorer?.html ?? (options.format === "html" ? flowToHtml(flow, freshness.status, { ...provenance, scenarioId: options.scenarioId, language: options.language, caseLinks: caseLinks ?? {}, images: await loadFlowDesignImages(root, flow) }) : `%% ${JSON.stringify({ basis: flow.basis, freshness, ...provenance })}
+${flowToMermaid(flow, options.scenarioId)}`);
+    const output = join12(await directory(root, "diagrams"), `${options.id}.${options.format === "html" ? "html" : "mmd"}`);
+    if (explorer) {
+      await atomic(join12(await directory(root, "diagrams"), `${options.id}.model.json`), JSON.stringify(explorer.model));
+      await atomic(join12(await directory(root, "diagrams"), `${options.id}.capture.json`), JSON.stringify(explorer.captureInput));
+    }
     await atomic(output, content);
     return {
       path: output,
@@ -32928,6 +33182,7 @@ ${flowToMermaid(flow, options.scenarioId)}`;
       flowHash: options.expectedHash,
       freshness,
       basis: flow.basis,
+      ...explorer ? { captureCoverage: explorer.coverage, modelPath: output.replace(/\.html$/, ".model.json"), capturePath: output.replace(/\.html$/, ".capture.json") } : {},
       generatedAt: provenance.generatedAt,
       meaning: "Cited static interpretation at export time, not an executed trace. Rerender to check source changes."
     };
@@ -32939,7 +33194,7 @@ import { execFile as execFile4 } from "node:child_process";
 import { randomUUID as randomUUID6 } from "node:crypto";
 import { mkdir as mkdir6, readFile as readFile9, rename as rename4, rm as rm6, writeFile as writeFile6 } from "node:fs/promises";
 import { homedir } from "node:os";
-import { join as join12 } from "node:path";
+import { join as join13 } from "node:path";
 import { promisify as promisify2 } from "node:util";
 var exec = promisify2(execFile4);
 var repository = string().regex(/^[\w.-]+\/[\w.-]+$/);
@@ -32962,9 +33217,9 @@ var recordSchema2 = object({
   commit: sha.optional(),
   url: string().url().optional()
 });
-var home = () => join12(homedir(), ".frontend-system", "contributions");
+var home = () => join13(homedir(), ".frontend-system", "contributions");
 async function contributionRepository(systemRoot2) {
-  const plugin = JSON.parse(await readFile9(join12(systemRoot2, ".codex-plugin/plugin.json"), "utf8"));
+  const plugin = JSON.parse(await readFile9(join13(systemRoot2, ".codex-plugin/plugin.json"), "utf8"));
   const match = String(plugin.repository).match(/^https:\/\/github\.com\/([\w.-]+\/[\w.-]+?)(?:\.git)?\/?$/);
   return repository.parse(match?.[1]);
 }
@@ -32983,16 +33238,16 @@ async function prepareKnowledgeContribution(systemRoot2, input, storage = home()
     content: pendingNote(`${note.content}
 `)
   };
-  const directory2 = join12(storage, id);
+  const directory2 = join13(storage, id);
   await mkdir6(directory2, { recursive: true, mode: 448 });
   const hash3 = draftHash(record2);
-  await writeFile6(join12(directory2, "draft.json"), JSON.stringify({ ...record2, hash: hash3 }, null, 2), { flag: "wx", mode: 384 });
+  await writeFile6(join13(directory2, "draft.json"), JSON.stringify({ ...record2, hash: hash3 }, null, 2), { flag: "wx", mode: 384 });
   return {
     id,
     hash: hash3,
     repository: record2.repository,
     path: record2.path,
-    localDraft: join12(directory2, "draft.json"),
+    localDraft: join13(directory2, "draft.json"),
     state: "pending",
     status: "prepared; not submitted",
     next: "submit_knowledge_contribution"
@@ -33002,7 +33257,7 @@ function githubClient(directory2) {
   return async (method, path, body) => {
     const args = ["api", "--hostname", "github.com", "--method", method, path];
     if (body !== void 0) {
-      const input = join12(directory2, "request.json");
+      const input = join13(directory2, "request.json");
       await writeFile6(input, JSON.stringify(body), { mode: 384 });
       args.push("--input", input);
     }
@@ -33033,9 +33288,9 @@ async function optional3(request, path) {
 }
 async function submitKnowledgeContribution(systemRoot2, id, expectedHash, storage = home(), request) {
   uuid2.parse(id);
-  const directory2 = join12(storage, id);
-  const file = join12(directory2, "draft.json");
-  await mkdir6(join12(directory2, "submit.lock"));
+  const directory2 = join13(storage, id);
+  const file = join13(directory2, "draft.json");
+  await mkdir6(join13(directory2, "submit.lock"));
   try {
     const record2 = recordSchema2.parse(JSON.parse(await readFile9(file, "utf8")));
     if (record2.id !== id || record2.hash !== expectedHash || draftHash(record2) !== expectedHash || record2.repository !== await contributionRepository(systemRoot2) || record2.path !== `knowledge/source/contributions/${id}.md` || sourceSelection(record2.content) !== "pending")
@@ -33122,17 +33377,17 @@ Draft: ${record2.hash}`
       };
     }
   } finally {
-    await rm6(join12(directory2, "submit.lock"), { recursive: true, force: true });
+    await rm6(join13(directory2, "submit.lock"), { recursive: true, force: true });
   }
 }
 
 // src/application/release-manifest.ts
-import { createHash as createHash4 } from "node:crypto";
+import { createHash as createHash5 } from "node:crypto";
 import { readFile as readFile10, readdir as readdir4, writeFile as writeFile7 } from "node:fs/promises";
-import { join as join13 } from "node:path";
-var hash2 = (value) => createHash4("sha256").update(value).digest("hex");
+import { join as join14 } from "node:path";
+var hash2 = (value) => createHash5("sha256").update(value).digest("hex");
 async function installedReleaseIdentity(root) {
-  const body = await readFile10(join13(root, "release-manifest.json"), "utf8");
+  const body = await readFile10(join14(root, "release-manifest.json"), "utf8");
   const manifest = JSON.parse(body);
   return {
     pluginVersion: manifest.pluginVersion,

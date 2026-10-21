@@ -5,6 +5,11 @@ description: Implement or resume an agreed plan through test-first continuous wo
 
 # FS Work
 
+Follow [the shared design-flow contract](../../references/workflows/design-flow-contract.md)
+for canonical page/scene data, scoped learned judgments, no-image wireframes, actual
+captures, iterative feedback and implementation links. The saved graph feeds both
+HTML and plan contracts; do not author another semantic graph for the viewer.
+
 Before execution or resumption, show the selected saved plan through
 [native plan presentation](../../references/workflows/staged-planning.md#native-plan-presentation).
 Use the host's plan UI when available, including for plain-language implementation requests.
@@ -33,8 +38,8 @@ not require a ceremonial question. Ordinary private helper choices remain discre
 Apply this skill when the user asks to implement the agreed plan even without saying
 fs-work. Resolve the current saved plan and resume its unfinished phase. Follow
 [staged planning and continuous work](../../references/workflows/staged-planning.md):
-write/reuse the approved cases → implement the issue → run checks and semantic review
-→ show the CLI diff and case evidence → receive implementation feedback → PR readiness.
+write/reuse the approved cases → implement the issue → run checks and two-pass review
+→ show CLI findings and case evidence (diff on request) → receive implementation feedback → PR readiness.
 Version 2 plans retain their original test-code feedback checkpoint until explicitly
 revised to version 3. Reuse prior actual approval for unchanged scope.
 
@@ -123,11 +128,27 @@ read only the needed schemas, not the full schema file.
    sourcefile alone does not set its loader. Reuse the installed React/transformer.
 4. Review changed product AND test code. For each guarantee identify its trigger,
    forbidden outcome and an assertion or concrete counterexample that would expose it.
+   Compare every issue.implementationTargets instruction with its actual target,
+   callers and verification. First check missed plan/learned applications with their
+   conditions and exclusions. Then independently inspect reachable security, correctness,
+   race/state/error, framework and test risks even without a matching learned rule.
+   Reuse the same inspected code and context for both passes; do not start a second
+   full-project read or model session. Fix clear, in-scope violations before reporting;
+   report remaining concrete concerns in the CLI, not only a diff or a passing-check claim.
+   After the first implementation pass, call get_work_context
+   once with mode verify and the changed behavior-bearing code files. Investigate new
+   candidates against their conditions and exclusions; use the returned semanticLenses
+   to look for structural questions that keyword and static routing missed, including semantic candidates
+   suggested by the actual call/state/effect paths. A new candidate is not a defect;
+   keep correct code and record why. Repair an in-scope miss and rerun affected checks;
+   a new material product or architecture choice returns to fs-plan. Do not loop over
+   unchanged contexts or read every learned body. This post-write route complements
+   the prospective plan; it cannot certify exhaustive knowledge coverage.
    Directory names, test count and model confidence are not semantic proof. Check real
    callers, ownership and dependency edges. save_semantic_review must address every
    ruleId in its selected policy review; scope reviews during planning, not by dropping
-   findings afterward. Record actual limitations and current file evidence. Independent
-   review is selective, not an automatic extra pass for ordinary changes.
+   findings afterward. Record actual limitations and current file evidence. A separate
+   reviewer is selective, not an automatic extra agent for ordinary changes.
    Supply the required findings through complete_work, or save the required reviews
    before checkpointing a step as complete; a passing
    automated check alone cannot satisfy that checkpoint. Reuse an already passing

@@ -127,3 +127,12 @@ commit is not complete coverage. On later tasks use get_project_document (defaul
 view), then selected evidence/flow IDs; view:human is for reading the user report. Do not duplicate the same
 report at repository-root `project.md`. No implementation test is claimed merely
 because its source was inspected. Suggest `fs-plan <change>` as the next command.
+
+## Actual page explorer
+
+Use the [shared design-flow contract](design-flow-contract.md) to populate pages/scenes
+on observed flows and capture actual reachable screens. The automatic report projects
+these records into the route/page explorer; no additional visualize command is needed.
+Static-analysis completeness and screenshot coverage are separate. Report both, and
+continue accessible captures rather than treating an initial structural export as a
+finished screen deliverable. Preserve the chosen code baseline when running the app.

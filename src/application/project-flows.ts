@@ -8,6 +8,7 @@ import {projectSnapshot, readProjectSourceFile} from './project-snapshot.js';
 import {contentHash, readReferenceIndex, readIndexedReference} from './knowledge/reference-index.js';
 import {analysisId, analysisWriteSchema, flowSchema, findingSchema, type AnalysisReference, type ProjectFlow} from './flow-schema.js';
 import {loadFlowDesignImages, validateFlowDesign} from './flow-design.js';
+import {validateStructuredFlow} from './flow-contracts.js';
 
 const envelope = z.object({version: z.union([z.literal(1), z.literal(2)]), record: analysisWriteSchema.shape.record,
   hashes: z.record(z.string(), z.string()), inventoryHash: z.string(), inventoryMode: z.enum(['source','all']).default('all'), roots: z.array(z.string()),
@@ -21,7 +22,10 @@ async function inventory(root: string) {
 const inRoots = (path: string, roots: string[]) => roots.some(r => r === '.' || path === r || path.startsWith(`${r}/`));
 const structuralSource = (path: string) => /\.(?:[cm]?[jt]sx?|vue|svelte|astro|html?|css|s[ac]ss|less|mdx|json|ya?ml|toml|graphql|gql|wasm)$/i.test(path);
 // ponytail: broad content invalidation; add reverse-dependency tracking only if unrelated reanalysis becomes costly.
-const discoveryFiles = (paths: string[], roots: string[], mode: 'source'|'all') => paths.filter(p => config(p) || (inRoots(p, roots) && (mode === 'all' || structuralSource(p)))).sort();
+// Generated capture artifacts are checked separately; adding them must not invalidate their own flow.
+const discoveryFiles = (paths: string[], roots: string[], mode: 'source'|'all') => paths.filter(p =>
+  !/^design\/fs\/(?:[^/]+\.captures\.json|captures\/.*\.png)$/.test(p) &&
+  (config(p) || (inRoots(p, roots) && (mode === 'all' || structuralSource(p))))).sort();
 const inventoryHash = (paths: string[], roots: string[], mode: 'source'|'all') => contentHash(JSON.stringify(discoveryFiles(paths, roots, mode)));
 async function readEnvelope(root: string, kind: 'flow' | 'finding', id: string, hash?: string) {
   analysisId.parse(id);
@@ -71,6 +75,13 @@ function validateGraph(flow: ProjectFlow) {
   for (const scenario of flow.scenarios) if (!nodes.has(scenario.entry) || scenario.steps.some(s => !edges.has(s.edge))) throw new Error('Unknown scenario node/edge');
   if (flow.scope.discoveryRoots.some(r => r.split('/').some(p => p === '..'))) throw new Error('Invalid discovery root');
   validateFlowDesign(flow);
+  validateStructuredFlow(flow);
+}
+
+export async function readPinnedFlow(root: string, id: string, hash: string): Promise<ProjectFlow> {
+  const stored = await readEnvelope(root, 'flow', id, hash);
+  if (stored.record.kind !== 'flow') throw new Error('Expected flow record');
+  return stored.record.data;
 }
 async function checkQuotes(root: string, citations: Array<{path: string; line?: number | undefined; quote: string}>, files: string[], snapshot?: ProjectFlow['scope']['snapshot']) {
   const texts = new Map<string, string>();
@@ -179,7 +190,14 @@ export async function saveProjectAnalysis(root: string, systemRoot: string, inpu
     let quoteHashes: Record<string, string> = {};
     let flow: ProjectFlow;
     const knowledgeHashes: Record<string, string> = {};
-    if (parsed.record.kind === 'flow') { flow = flowSchema.parse(parsed.record.data); validateGraph(flow); parsed.record.data = flow; }
+    if (parsed.record.kind === 'flow') {
+      flow = flowSchema.parse(parsed.record.data); validateGraph(flow); parsed.record.data = flow;
+      for (const judgment of flow.knowledge ?? []) {
+        const {entry} = await readIndexedReference(join(systemRoot, 'references/learned'), judgment.referenceId, 0, 1);
+        if (contentHash(JSON.stringify(entry)) !== judgment.referenceHash) throw new Error(`Flow knowledge changed: ${judgment.referenceId}`);
+        knowledgeHashes[judgment.referenceId] = contentHash(JSON.stringify(entry));
+      }
+    }
     else {
       const finding = findingSchema.parse(parsed.record.data); parsed.record.data = finding;
       const linked = await readEnvelope(root, 'flow', finding.flow.id);
@@ -261,6 +279,10 @@ export async function getProjectAnalysis(root: string, systemRoot: string, optio
     const data = stored.record.data;
     rows.push({kind, id, hash:stored.hash, title:data.title, freshness,
       ...('basis' in data ? {basis:data.basis, scenarios:data.scenarios.map(s => ({id:s.id,event:s.event}))} : {status:data.status, observation:data.observation}),
+      ...('basis' in data && data.pages ? {designState:data.designState??null,
+        pages:data.pages.map(p=>({node:p.node,route:p.route,scenes:p.scenes.map(s=>({id:s.id,kind:s.kind}))})),
+        contractCount:data.nodes.reduce((sum,n)=>sum+(n.contracts?.length??0),0),
+        knowledge:data.knowledge?.map(k=>({id:k.id,referenceId:k.referenceId,judgment:k.judgment}))??[],testCaseCount:data.testCases?.length??0} : {}),
       ...('basis' in data && data.design ? {design:{stage:data.design.stage, screens:data.design.screens.map(s => ({id:s.id,page:s.page,imageHash:s.image.hash,confirmed:!!s.confirmation}))}} : {}),
       ...(options.full ? {data} : {})});
   }

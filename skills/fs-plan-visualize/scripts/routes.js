@@ -23,6 +23,7 @@ function initRoutes(){
  document.querySelector('#route-fit').onclick=fitRoutes;
  new ResizeObserver(drawRoutes).observe(document.querySelector('#route-map'));
  showRoutes();
+ if(spec.initialScenario&&scenario){routeScope=scenario.pages;updateRouteTabs();document.querySelector('#page-'+scenario.steps[0].page).click();}
 }
 function applyRouteCamera(){document.querySelector('#route-map').style.transform=`translate(${routeCamera.x}px,${routeCamera.y}px) scale(${routeCamera.scale})`;document.querySelector('#route-zoom').textContent=Math.round(routeCamera.scale*100)+'%';}
 function zoomRoutes(scale,x,y){const viewport=document.querySelector('#route-viewport');x??=viewport.clientWidth/2;y??=viewport.clientHeight/2;const next=Math.max(.15,Math.min(3,scale)),ratio=next/routeCamera.scale;routeCamera.x=x-(x-routeCamera.x)*ratio;routeCamera.y=y-(y-routeCamera.y)*ratio;routeCamera.scale=next;applyRouteCamera();}
@@ -50,6 +51,7 @@ function previewRoutes(id){
  detail.dataset.route=id;detail.dataset.pinned=String(id===pinnedRoute);
  const page=spec.pages.find(p=>p.id===id),flows=spec.scenarios.filter(s=>s.pages.includes(id));
  detail.innerHTML='<div class="route-detail-heading"><strong>'+esc(page.title??nodes.get(id).name)+'</strong><code>'+esc(page.route)+'</code><span>'+(id===pinnedRoute?'선택됨':'미리보기 · 클릭하여 고정')+'</span></div><div class="route-detail-columns"><div><h3>페이지 이동</h3>'+(related.length?'<ul class="route-links">'+related.map(e=>'<li><span class="route-basis">'+(e.basis==='observed'?'관측':'계획')+'</span><code>'+esc(spec.pages.find(p=>p.id===e.from).route)+' → '+esc(spec.pages.find(p=>p.id===e.to).route)+'</code><p>'+esc(e.label)+' · '+esc(e.condition)+'</p></li>').join('')+'</ul>':'<p class="route-empty">기록된 이동 없음</p>')+'</div><div><h3>실행 흐름 <span>'+flows.length+'</span></h3><div class="route-flows">'+flows.map(s=>'<button data-open-flow="'+esc(s.id)+'" '+(id!==pinnedRoute?'disabled':'')+'><span class="flow-kind">'+(s.category==='lifecycle'?'라이프사이클':'이벤트')+'</span><strong>'+esc(s.title)+'</strong><small>'+s.steps.length+'단계 · '+(s.basis==='observed'?'관측':'계획')+'</small></button>').join('')+(flows.length?'':'<p class="route-empty">기록된 흐름 없음</p>')+'</div></div></div>';
+ if(!flows.length&&id===pinnedRoute){const open=document.createElement('button');open.textContent='화면 구조 보기';open.onclick=()=>{routeScope=[id];updateRouteTabs();document.querySelector('#page-'+id).click();};detail.append(open);}
  detail.querySelectorAll('[data-open-flow]').forEach(button=>button.onclick=()=>{scenario=spec.scenarios.find(s=>s.id===button.dataset.openFlow);stepIndex=0;routeScope=scenario.pages;updateRouteTabs();document.querySelector('#page-'+id).click();});
 }
 function drawRoutes(){

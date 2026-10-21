@@ -26,7 +26,7 @@ const usage = `Usage:
   fs work-context [project] "<request>" [--plan <id>] [--mode prepare|implement|verify|review|refactor]
   fs change-context [project] [--base <ref>]
   fs pr-check [project] --base <target-ref> [--plan <id>] [--issue <id>]
-  fs work-review [project] --base <target-ref> --plan <id> --issue <id>
+  fs work-review [project] --base <target-ref> --plan <id> --issue <id> [--diff]
   fs checks [project] [--plan <id>] [--stage baseline|issue|delivery] [--issue <id>] [--required | --capability <script-id>] [--purpose baseline|verification] [--baseline <check-id>] [--attempt <id>]
   fs project-snapshot [project] [--base main]
   fs plans [project]
@@ -77,6 +77,7 @@ async function main(): Promise<void> {
       purpose: { type: "string" },
       baseline: { type: "string" },
       required: { type: "boolean", default: false },
+      diff: { type: "boolean", default: false },
       stage: { type: "string" },
       issue: { type: "string" },
       plan: { type: "string" },
@@ -133,8 +134,30 @@ async function main(): Promise<void> {
   }
   if (command === 'work-review') {
     if (!values.base || !values.plan || !values.issue) throw new Error('work-review requires --base, --plan and --issue');
-    const {diff, ...review} = await workReview(root, values.plan, values.issue, values.base);
-    process.stdout.write(`${JSON.stringify(review, null, 2)}\n\n${diff}`);
+    const review = await workReview(root, values.plan, values.issue, values.base, values.diff);
+    const lines = [`Work review: ${review.planId} / ${review.issueId}`, `Verification: ${review.verification}`,
+      `Changed files: ${review.files.join(', ') || 'none'}`];
+    if (review.outsideIssue.length) lines.push(`Outside approved issue: ${review.outsideIssue.join(', ')}`);
+    for (const failure of review.verificationFailures) lines.push(`Verification failure: ${failure}`);
+    for (const remaining of review.remaining) lines.push(`Remaining work: ${remaining}`);
+    lines.push('Planned knowledge applications (verify against code):');
+    for (const target of review.implementationTargets) lines.push(
+      `- ${target.target} (${target.files.join(', ')}): ${target.instruction} [${target.knowledgeIds.join(', ') || target.noKnowledgeReason}] — verify: ${target.verification}`);
+    if (!review.implementationTargets.length) lines.push('- No saved implementation targets');
+    for (const item of review.flowContracts) lines.push(
+      `- Flow ${item.flowId}/${item.nodeId}: ${item.contract.path}\n  ${item.contract.signature}\n  Layer: ${item.architecture?.layer ?? 'not recorded'}; state: ${item.state.join(', ') || 'none'}\n  ${item.checks.map(c => `${c.requirement} [${c.testCaseIds.join(', ')}]`).join('; ')}`);
+    lines.push('Recorded review findings:');
+    for (const record of review.reviews) {
+      lines.push(`- ${record.reviewId}: ${record.status}${record.current ? '' : ' (stale)'}`);
+      for (const finding of record.findings) lines.push(`  ${finding.files.join(', ')}: ${finding.conclusion} — ${finding.evidence}`);
+      for (const remaining of record.remaining) lines.push(`  Remaining: ${remaining}`);
+    }
+    if (!review.reviews.length) lines.push('- None recorded; model review has not been evidenced');
+    lines.push('Test cases:');
+    for (const item of review.cases) lines.push(`- ${item.id}: ${item.expected} — ${item.evidence ? JSON.stringify(item.evidence) : 'no evidence'}`);
+    if (!review.cases.length) lines.push('- None in this plan');
+    lines.push(`Checks: ${review.checkIds.join(', ') || 'none'}`);
+    process.stdout.write(`${lines.join('\n')}\n${values.diff ? `\n${review.diff}` : '\nUse --diff for the patch.\n'}`);
     return;
   }
   if (command === "project-snapshot") return print({ ...await projectSnapshot(root, values.base), documentStatus: await projectDocumentStatus(root) });

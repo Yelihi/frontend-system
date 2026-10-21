@@ -5,6 +5,11 @@ description: "Discuss domain and visual design, then review an enforceable plan 
 
 # FS Plan
 
+Follow [the shared design-flow contract](../../references/workflows/design-flow-contract.md)
+for canonical page/scene data, scoped learned judgments, no-image wireframes, actual
+captures, iterative feedback and implementation links. The saved graph feeds both
+HTML and plan contracts; do not author another semantic graph for the viewer.
+
 For material unanswered choices, follow [ask and pause](../../references/workflows/user-decisions.md).
 Use the host's native selection UI (Codex `request_user_input` when permitted),
 not a prose questionnaire. After asking, pause this task, including reads and browser
@@ -79,6 +84,7 @@ Use get_project_analysis before rereading source; record bounded cited flows ind
 of knowledge registration. Pin reused flow/finding hashes through evidence.analysisRefs.
 A new feature begins with domain outcomes and proposed flows, then decisions and plan.
 project.md remains a manually refreshed main index; never publish working proposals as facts.
+Use the entry path in [staged planning](../../references/workflows/staged-planning.md#entry-paths-and-prospective-knowledge) before choosing a framework or copying a convention.
 For a visualization-only request, use the focused
 [fs-plan-visualize](../fs-plan-visualize/SKILL.md) workflow. When visualization accompanies
 planning, select the requested view: current implementation uses cited observed flow;
@@ -86,11 +92,25 @@ the intended plan uses a separate proposed flow. Follow "Design a planned flow" 
 that reference for domain-first contracts, component ownership and cross-page effects.
 Never substitute a synthetic example for the target project. Return the actual HTML
 path and basis. Bind adopted proposed contracts to the plan's decisions and checks.
-If reference images are supplied, use the shared visual-review stage first. Visual
+Without images, begin with the structured HTML wireframe and relevant loading/error states. If reference images are supplied, use the shared visual-review stage first. Visual
 confirmation and a request for detailed design are separate from implementation
 approval. Do not bind a visual-review record as an implementation contract.
 
 ## Decide before writing the contract
+
+For each planned function, component or service that owns domain behavior, state, an
+external effect or a public contract, run the prospective knowledge pass in
+[staged planning](../../references/workflows/staged-planning.md#entry-paths-and-prospective-knowledge).
+Describe the intended operation and its caller/owner before searching learned metadata.
+Search by behavior and failure symptom, not only a proposed function name. Inspect the
+`get_work_context.routing.semanticLenses` questions even when lexical candidates are
+empty. For a new project with no code files, page `discover_knowledge_triggers` by
+relevant domains and search intended operations with `search_learned_knowledge`.
+Inspect the relevant index conditions, exclusions and selected bodies; cite observed code when it
+exists, and label unbuilt code as a proposal. Do not emit a static code trigger for a
+function that does not yet exist. Record the result in issue.implementationTargets,
+including a reason when no published knowledge applies. This pass does not certify
+that every relevant semantic reference was found.
 
 Ask only material unresolved choices after checking code and prior answers. Present
 code evidence, applicable knowledge conditions/exclusions, alternatives and costs,
@@ -171,6 +191,12 @@ manual acceptance steps/fixture needs in the approved contract. Include pr-safet
 pr-scope review obligations. Missing tooling is an explicit setup prerequisite, not
 an implicit skipped check. Resolve material domain/interface/state decisions before
 approving their implementation; full-access permissions do not resolve them.
+For new plans, include issue.implementationTargets for each behavior-bearing planned
+boundary. Each target names its planned files and target, resolved issue decision,
+adopted learned IDs (or a concrete no-match reason), implementation instruction and
+verification. Do not enumerate trivial private helpers or duplicate full learned text.
+Use the same decision's rule/check links for mandatory obligations. The server checks
+reference/decision/file links, not the completeness or truth of the prospective search.
 The minimum implementation issue is ONE domain flow representable as one sequence
 diagram: an initiating user/system event, ordered interactions across participants,
 and an observable domain outcome. In each issue.contract name the trigger,

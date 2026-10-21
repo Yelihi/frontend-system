@@ -1,7 +1,7 @@
 import type { BoundEvidence } from './design-evidence.js';
 import type { VerificationPolicy } from './policy.js';
 
-export function designContractFailures(evidence: BoundEvidence | undefined, policy: VerificationPolicy | undefined, issues: Array<{id: string; files: string[]}> | undefined): string[] {
+export function designContractFailures(evidence: BoundEvidence | undefined, policy: VerificationPolicy | undefined, issues: Array<{id: string; files: string[]; implementationTargets?: Array<{target: string; files: string[]; decisionId: string; knowledgeIds: string[]}> | undefined}> | undefined): string[] {
   if (!evidence) return ['Evidence-based plans require project analysis, routing judgments and decisions'];
   const errors: string[] = [];
   const decisions = evidence.decisions;
@@ -26,6 +26,19 @@ export function designContractFailures(evidence: BoundEvidence | undefined, poli
     if (rule.layer === 'domain' && rule.obligation === 'required' && !owners.some(item => item.authority !== 'model' && item.confirmation))
       errors.push(`Required domain rule needs supplied or established domain authority: ${rule.id}. Link the existing contract when it already specifies this outcome; otherwise keep the new outcome open. Model discretion cannot establish domain requirements.`);
   }
-  for (const issue of issues ?? []) if (!decisions.some((item) => item.status === 'resolved' && item.issueIds.includes(issue.id))) errors.push(`Issue lacks a decision: ${issue.id}`);
+  const applied = new Set(evidence.routes.flatMap(route => route.judgments.filter(item => item.decision === 'apply').map(item => item.referenceId)));
+  for (const issue of issues ?? []) {
+    if (!decisions.some((item) => item.status === 'resolved' && item.issueIds.includes(issue.id))) errors.push(`Issue lacks a decision: ${issue.id}`);
+    const targets = issue.implementationTargets ?? [];
+    if (new Set(targets.map(item => item.target)).size !== targets.length) errors.push(`Duplicate implementation target: ${issue.id}`);
+    for (const target of targets) {
+      const decision = decisions.find(item => item.id === target.decisionId && item.status === 'resolved' && item.issueIds.includes(issue.id));
+      if (!decision) errors.push(`Implementation target lacks a resolved issue decision: ${issue.id}/${target.target}`);
+      if (target.files.some(file => !issue.files.includes(file))) errors.push(`Implementation target file outside issue: ${issue.id}/${target.target}`);
+      for (const id of target.knowledgeIds) {
+        if (!decision?.knowledgeIds.includes(id) || !applied.has(id)) errors.push(`Implementation target knowledge is not adopted: ${issue.id}/${target.target}/${id}`);
+      }
+    }
+  }
   return errors;
 }

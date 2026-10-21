@@ -40,6 +40,22 @@ export async function fixtureJudgments(root: string, candidates: Array<{id:strin
     const spec=index!.entries.find(e=>e.id===id)!.investigation;
     const base={referenceId:id,decision:'not-applicable' as const,rationale:'Synthetic protocol keeps the existing independent request boundary; no shared policy layer requested'};
     if (!spec) return base;
+    if (id==='code-quality-context-and-contracts' || id==='code-quality-change-boundaries') {
+      const path=files[0]!;
+      const quote=(await readFile(join(root,path),'utf8')).split('\n')[0]!;
+      return {...base,investigation:{findings:spec.questions.map(q=>({questionId:q.id,
+        status:q.role==='exclusion'?'supported' as const:'unknown' as const,
+        basis:q.role==='exclusion'?'code' as const:'unknown' as const,
+        rationale:q.role==='exclusion'?'This fixture preserves its existing explicit protocol boundary; it does not request a code-quality refactor':'No code-quality change intent is established by this synthetic fixture',
+        citations:q.role==='exclusion'?[{path,line:1,quote}]:[]})),action:'keep' as const,
+        limitations:['Synthetic protocol fixture only; no product code-quality conclusion.']}};
+    }
+    if (id.startsWith('accessibility-')) {
+      return {...base,decision:'needs-context' as const,investigation:{findings:spec.questions.map(q=>({questionId:q.id,
+        status:'unknown' as const,basis:'unknown' as const,
+        rationale:'Synthetic fixture has no rendered DOM or keyboard interaction evidence for accessibility judgment',citations:[]})),
+        action:'inspect' as const,limitations:['Synthetic source alone does not establish browser or assistive technology behavior.']}};
+    }
     if (id!=='request-policy-boundaries') throw new Error(`Author a specific fixture assessment for ${id}`);
     const path=files.find(p=>p==='request.mjs')!;
     const quote=(await readFile(join(root,path),'utf8')).trim();
