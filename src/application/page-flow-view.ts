@@ -30,7 +30,7 @@ export function projectFlowView(flow: ProjectFlow, flowHash: string, plan?: Flow
     schemaVersion:'page-flow-2',canonical:true,title:flow.title,basis:flow.basis,
     baseline:{commit:flow.scope.snapshot?.expectedCommit,flow:{id:flow.id,hash:flowHash}},
     designState:flow.designState??null,
-    nodes:flow.nodes.map(node=>({id:viewId(node.id),sourceId:node.id,kind:node.kind,name:node.label,
+    nodes:flow.nodes.map(node=>({id:viewId(node.id),sourceId:node.id,kind:node.kind,name:node.label,basis:flow.basis,
       parent:node.parent?viewId(node.parent):null,props:node.props,state:node.state,events:node.events,lifecycle:node.lifecycle,
       signature:node.contracts?.map(c=>`${c.path}\n${c.signature}`).join('\n\n')??'',contracts:node.contracts??[],
       architecture:node.architecture??null,intent:node.architecture?.responsibility??'',evidence:citations(node.evidence),
@@ -39,7 +39,7 @@ export function projectFlowView(flow: ProjectFlow, flowHash: string, plan?: Flow
     instances:flow.nodes.filter(n=>n.kind==='component'&&ownerPage(n.id)).map(node=>({id:viewId(node.id+'-instance'),sourceId:node.id+'-instance',node:viewId(node.id),page:viewId(ownerPage(node.id)!),
       ...(flow.nodes.find(n=>n.id===node.parent)?.kind==='component'?{parentInstance:viewId(node.parent+'-instance')}:{})})),
     pages:flow.pages.map(page=>({id:viewId(page.node),sourceId:page.node,title:flow.nodes.find(n=>n.id===page.node)!.label,route:page.route,domain:page.domain,
-      scenes:page.scenes.map(s=>viewId(s.id)),sceneDetails:page.scenes.map(s=>({...s,id:viewId(s.id),sourceId:s.id,blocks:s.blocks?.map(b=>({...b,node:viewId(b.node)}))}))})),
+      scenes:page.scenes.map(s=>viewId(s.id)),sceneDetails:page.scenes.map(s=>({...s,basis:flow.basis,id:viewId(s.id),sourceId:s.id,blocks:s.blocks?.map(b=>({...b,node:viewId(b.node)}))}))})),
     relations:flow.edges.map(e=>({...e,from:viewId(e.from),to:viewId(e.to)})),
     navigation:(flow.navigation??[]).map(n=>({...n,id:viewId(n.id),from:viewId(n.from),to:viewId(n.to),basis:flow.basis,evidence:citations(n.evidence)})),
     scenarios:flow.scenarios.map(s=>({id:viewId(s.id),sourceId:s.id,title:s.title,basis:flow.basis,category:s.category??'event',variant:s.variant??'custom',
@@ -108,5 +108,5 @@ export async function prepareFlowExplorer(root:string, systemRoot:string, flow:P
   const captureInput={flowId:flow.id,flowHash,sourceCommit:flow.scope.snapshot?.expectedCommit,manifestPath,
     pages:flow.pages,captureCoverage:coverage,blocked:manifest?.blocked??[],
     instruction:'Capture actual project pages at this code version; save PNGs and manifest. Proposed blocks are wireframes, never runtime captures.'};
-  return {html:rendered.html,model:rendered.spec,captureInput,coverage};
+  return {html:rendered.html,model:rendered.spec,captureInput,coverage, spec:{...spec,knowledge,captures,blocked}, screens};
 }

@@ -1,5 +1,7 @@
 // Run after npm run build and starting test/fixtures/frontend on port 3217.
 import assert from 'node:assert/strict';
+import {execFileSync} from 'node:child_process';
+import {prepareProjectView,projectViewShell} from '../dist/src/application/project-visualization.js';
 import {mkdtemp,mkdir,readFile,writeFile,copyFile} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {join,resolve} from 'node:path';
@@ -93,6 +95,36 @@ try {
  const draftView=await renderProjectFlow(proposedRoot,systemRoot,{id:draft.id,expectedHash:draftSaved.hash,allowUnverified:true});
  await page.goto(pathToFileURL(draftView.path).href);await page.locator('.route-node').click();await page.getByRole('button',{name:'화면 구조 보기',exact:true}).click();assert.equal(await page.locator('#screen .wireframe').count(),1);
  checks.push('draft without invented scenarios opens its wireframe');assert.deepEqual(errors,[]);
- const report={output,checks,sourceHashes,actualPreview:actual.path,wireframePreview:proposed.path,browserErrors:errors,limits:['HTTP results are injected; no backend verification','Learned link display checked, not semantic correctness','Chromium only']};
+ // Exercise a single local-file entry containing observed captures and proposed pages.
+ // Git pins the copied fixture code; proposals remain explicitly unimplemented.
+ const git=(...args)=>execFileSync('git',['-C',root,...args],{encoding:'utf8'}).trim();
+ git('init','-b','main');git('config','user.name','FS fixture');git('config','user.email','fs@example.invalid');
+ git('add','app','src');git('commit','-m','Observed browser fixture');
+ const commit=git('rev-parse','HEAD');observed.scope.snapshot={baseRef:'main',expectedCommit:commit};
+ const pinned=await saveProjectAnalysis(root,systemRoot,{expectedHash:saved.hash,record:{kind:'flow',data:observed}});
+ await write(join(root,'design/fs/order-runtime.captures.json'),{flowHash:pinned.hash,sourceCommit:commit,screens});
+ const baseline={version:1,status:'complete',baseline:{baseRef:'main',expectedCommit:commit},flows:[{id:observed.id,hash:pinned.hash}]};
+ const baseView=await prepareProjectView(root,systemRoot,baseline,[{ref:pinned,flow:observed}],'baseline');
+ const issueView=await prepareProjectView(root,systemRoot,baseline,[{ref:pinned,flow:observed},{ref:proposedSaved,flow}],'issue');
+ const combined=join(output,'project-index');await mkdir(combined);
+ await write(join(combined,'baseline.html'),baseView.html);await write(join(combined,'baseline.model.json'),baseView.model);
+ await write(join(combined,'issue.html'),issueView.html);await write(join(combined,'issue.model.json'),issueView.model);
+ await write(join(combined,'index.html'),projectViewShell('baseline.html',[{id:'search',title:'검색 기능 설계',path:'issue.html'},{id:'stale',title:'오래된 설계',reason:'재검토 필요'}]));
+ for(const width of [1440,390]){
+  await page.setViewportSize({width,height:1000});await page.goto(pathToFileURL(join(combined,'index.html')).href);
+  const frame=page.frameLocator('iframe');await frame.locator('.route-node').first().click();await frame.locator('[data-open-flow]').first().click();
+  await frame.locator('#screen .screen-image').waitFor();
+  assert.ok(await frame.locator('#screen .screen-image').evaluate(img=>img.complete&&img.naturalWidth===1280));
+  await page.locator('#view').selectOption('issue.html');await frame.locator('.route-node').nth(1).click();await frame.locator('[data-open-flow]').last().click();
+  assert.equal(await frame.locator('#screen .wireframe').count(),1);await frame.locator('#next').click();
+  assert.match(await frame.locator('#screen').textContent(),/다시 시도/);assert.match(await frame.locator('#inspector').textContent(),/code-quality-context-and-contracts/);
+  await frame.locator('#board-toggle').click();assert.equal(await frame.locator('#board .wireframe').count(),2);
+  assert.equal(await page.locator('#view option:disabled').count(),1);
+  assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+ }
+ await page.setViewportSize({width:1440,height:1000});await page.screenshot({path:join(output,'project-issue.png'),fullPage:true});
+ checks.push('project index: observed PNGs, issue selection, three routes, cross-page error wireframes, learned, stale option, 1440/390');
+ assert.deepEqual(errors,[]);
+ const report={output,checks,sourceHashes,projectPreview:join(combined,'index.html'),actualPreview:actual.path,wireframePreview:proposed.path,browserErrors:errors,limits:['HTTP results are injected; no backend verification','Learned link display checked, not semantic correctness','Chromium only']};
  await write(join(output,'report.json'),report);console.log(JSON.stringify(report,null,2));
 }finally{await browser.close();}

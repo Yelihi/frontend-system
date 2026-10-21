@@ -1,3 +1,4 @@
+import {git} from './git-state.js';
 import {readFile, readdir, realpath} from 'node:fs/promises';
 import {join, relative, resolve} from 'node:path';
 import * as z from 'zod/v4';
@@ -144,15 +145,31 @@ export async function readBaselineRecords(root: string, systemRoot: string, refs
     const stored = await readEnvelope(root, ref.kind, ref.id, ref.hash);
     const flow = stored.record.kind === 'flow' ? stored.record.data
       : flowSchema.parse((await readEnvelope(root, 'flow', stored.record.data.flow.id, stored.record.data.flow.hash)).record.data);
-    if (flow.basis !== 'observed' || flow.scope.snapshot?.baseRef !== snapshot.baseRef || flow.scope.snapshot.expectedCommit !== snapshot.expectedCommit) {
-      throw new Error(`Baseline report requires observed records from the same snapshot: ${ref.id}`);
+    if (flow.basis !== 'observed' || flow.scope.snapshot?.baseRef !== snapshot.baseRef || !flow.scope.snapshot.expectedCommit) {
+      throw new Error(`Baseline report requires observed records from the same base branch: ${ref.id}`);
     }
+    if(flow.scope.snapshot.expectedCommit!==snapshot.expectedCommit)await git(root,['merge-base','--is-ancestor',flow.scope.snapshot.expectedCommit,snapshot.expectedCommit]);
     const freshness = await analysisFreshness(root, stored, systemRoot, scan);
     if (freshness.status !== 'current') throw new Error(`Baseline record is stale: ${ref.id}: ${freshness.reasons.join('; ')}`);
     records.push(stored);
   }
   return records;
 }
+export async function checkBaselineReuse(root:string,systemRoot:string,refs:Array<{id:string;hash:string}>,snapshot:NonNullable<ProjectFlow['scope']['snapshot']>){
+  const scan=freshnessScan(root,systemRoot,snapshot);
+  const results=[];
+  for(const ref of refs){
+    try{
+      const stored=await readEnvelope(root,'flow',ref.id,ref.hash);
+      if(stored.record.kind!=='flow'||stored.record.data.basis!=='observed'||stored.record.data.scope.snapshot?.baseRef!==snapshot.baseRef)throw new Error('Observed base branch differs');
+      await git(root,['merge-base','--is-ancestor',stored.record.data.scope.snapshot.expectedCommit,snapshot.expectedCommit]);
+      const freshness=await analysisFreshness(root,stored,systemRoot,scan);
+      results.push({id:ref.id,...freshness});
+    }catch(error){results.push({id:ref.id,status:'stale' as const,reasons:[String(error)]});}
+  }
+  return results;
+}
+
 export async function analysisFreshness(root: string, stored: Envelope, systemRoot: string, scan = freshnessScan(root, systemRoot)) {
   const reasons: string[] = [];
   const paths = await scan.inventory();
@@ -186,6 +203,8 @@ export async function saveProjectAnalysis(root: string, systemRoot: string, inpu
     try { previous = await readEnvelope(root, parsed.record.kind, parsed.record.data.id); }
     catch (error) { if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error; }
     if ((previous?.hash ?? null) !== parsed.expectedHash) throw new Error('Analysis changed; read current hash before updating');
+    if(previous?.record.kind==='flow'&&parsed.record.kind==='flow'&&previous.record.data.basis!==parsed.record.data.basis)
+      throw new Error('Keep observed and proposed records separate; save a new flow ID and reconcile through the issue');
     const initialPaths = await inventory(root);
     let quoteHashes: Record<string, string> = {};
     let flow: ProjectFlow;

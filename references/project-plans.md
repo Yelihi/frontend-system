@@ -35,7 +35,10 @@ An uncommitted repository can record initial constraints with a null commit, cle
 marked unversioned. If generation fails, record `failed` and the reason; retain the
 last document. A successful save clears refresh state.
 
-Read status at the start of plan/work: `missing`, `unversioned`, `current`, `pending`,
+For plan/visualize entry use get_project_analysis(projectView:true) and follow
+[automatic baseline preparation](workflows/project-visualization-lifecycle.md). During
+approved fs-work preserve its pinned baseline; do not automatically repin it.
+Read status: `missing`, `unversioned`, `current`, `pending`,
 `stale` or `failed`. Current means the analyzed main tree matches, not that tests
 passed or the remote is up to date. Generated `.frontend-system` documents/evidence
 are excluded from tree comparison; its config.json is included. Product/test/config

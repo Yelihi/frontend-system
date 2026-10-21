@@ -5,6 +5,8 @@ import {sha256} from './policy.js';
 import {readBaselineRecords} from './project-flows.js';
 import {flowToHtml} from './flow-view.js';
 import {prepareFlowExplorer} from './page-flow-view.js';
+import {prepareProjectView, type ProjectView} from './project-visualization.js';
+import {digest} from './workflow-store.js';
 import {installedSystemRoot} from './knowledge/routing.js';
 import type {validateProjectEvidence} from './design-evidence.js';
 
@@ -100,10 +102,18 @@ export async function prepareProjectReport(root:string, report:ProjectReport,
       details.push(`\n**${f.title}** (${f.kind}/${f.status}): ${f.observation}\n\nConsequence: ${f.consequence}\n\n${f.alternatives.map(a => `- ${a.description} — ${a.cost}`).join('\n')}\n\n${f.question ?? ''}\n\n[Finding](analysis/history/${ref.hash}.json)`);
     }
   }
-  const context = {version:1, baseline:snapshot, analysisStatus:parsed.status,
+  const projectView:ProjectView={version:1,baseline:snapshot,status:parsed.status,
+    flows:[...refs.values()].filter(r=>r.kind==='flow').map(({id,hash})=>({id,hash}))};
+  const viewBody=JSON.stringify(projectView),viewHash=digest(viewBody);
+  const combined=await prepareProjectView(root,installedSystemRoot(),projectView,
+    records.filter(r=>r.record.kind==='flow').map(r=>({ref:{id:r.record.data.id,hash:r.hash},flow:r.record.data as import('./flow-schema.js').ProjectFlow})));
+  artifacts.push({path:`diagrams/baseline-${viewHash}.json`,content:viewBody},
+    {path:`diagrams/project-view-${viewHash}.html`,content:combined.html});
+  if(combined.model)artifacts.push({path:`diagrams/project-view-${viewHash}.model.json`,content:JSON.stringify(combined.model)});
+  const context = {version:1, visualization:{hash:viewHash,path:'diagrams/index.html'}, baseline:snapshot, analysisStatus:parsed.status,
     coverage:Object.fromEntries(['inspected','excluded','pending','blocked'].map(status => [status,evidence.coverage.filter(c => c.status === status).length])),
     evidence:evidencePath, areas:parsed.areas.map(({flows,findings,...area}) => ({...area,
       flows:flows.map(r => ({...r,path:`analysis/history/${r.hash}.json`})), findings:findings.map(r => ({...r,path:`analysis/history/${r.hash}.json`}))})),
     read:'Select area and statement IDs; read only relevant evidence and immutable flow/finding records. HTML is for humans. Freshness is separate from completeness.'};
-  return {context, details:details.join('\n\n'), artifacts:artifacts.map(a => ({...a, absolutePath:join(root,'.frontend-system',a.path)}))};
+  return {context, projectView:{hash:viewHash,data:projectView}, details:details.join('\n\n'), artifacts:artifacts.map(a => ({...a, absolutePath:join(root,'.frontend-system',a.path)}))};
 }

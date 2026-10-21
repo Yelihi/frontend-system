@@ -14,8 +14,9 @@ import { projectSnapshot, projectDocumentStatus } from "./application/project-sn
 import { listPlans, workflowContext } from "./application/workflow-store.js";
 import type { WorkRequest } from "./domain/types.js";
 
-import {getProjectAnalysis, saveProjectAnalysis} from './application/project-flows.js';
-import {analysisWriteSchema} from './application/flow-schema.js';
+import {projectAnalysisReadiness} from './application/project-readiness.js';
+import {writeProjectAnalysis} from './application/project-analysis-write.js';
+import {getProjectAnalysis} from './application/project-flows.js';
 import {renderProjectFlow, renderFlowOptions} from './application/render-project-flow.js';
 import {readRevisionDraft} from './application/revision-draft.js';
 import {checkPrReadiness} from './application/pr-readiness.js';
@@ -35,8 +36,9 @@ const usage = `Usage:
   fs source-read [repository] <id> [--offset <characters>]
   fs knowledge-status [repository]
   fs knowledge-search [repository] "<query>"
-  fs flow-list [project]
+  fs flow-list [project] [--overall]
   fs flow-save <project> .frontend-system/drafts/<name>.json
+  fs flow-render <project> --overall [--issue <id>]
   fs flow-render <project> <id> --expected-hash <hash> [--plan <id>] [--scenario <id>] [--language ko|en] [--format html|mermaid] [--allow-unverified]
   fs mcp
 
@@ -99,14 +101,16 @@ async function main(): Promise<void> {
 
   const root = resolve(rawPath ?? process.cwd());
   if (command === "flow-list") {
+    if(values.overall)return print(await projectAnalysisReadiness(root,systemRoot));
     if (!/^\d+$/.test(values.offset)) throw new Error('Provide a nonnegative offset');
     return print(await getProjectAnalysis(root, systemRoot, {kind:'flow', offset:Number(values.offset)}));
   }
   if (command === "flow-save") {
     if (!rest[0]) throw new Error('Provide a confined JSON draft path');
-    return print(await saveProjectAnalysis(root, systemRoot, analysisWriteSchema.parse((await readRevisionDraft(root, rest[0])).input)));
+    return print(await writeProjectAnalysis(root, systemRoot, (await readRevisionDraft(root, rest[0])).input));
   }
   if (command === "flow-render") return print(await renderProjectFlow(root, systemRoot, renderFlowOptions.parse({
+    projectView:values.overall,issueId:values.overall?values.issue:undefined,
     id:rest[0], expectedHash:values['expected-hash'], scenarioId:values.scenario,
     planId:values.plan,
     language:values.language, format:values.format, allowUnverified:values['allow-unverified'],

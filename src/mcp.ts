@@ -49,8 +49,10 @@ import { taskContext, summarizeTaskContext, summarizeWorkflow } from "./applicat
 import { projectDecisionSchema, readProjectDecision, saveProjectDecision } from './application/project-decisions.js';
 import type { ProjectAnalysis, ProjectConfig, WorkRequest } from "./domain/types.js";
 import { readProjectEvidence } from './application/design-evidence.js';
-import {analysisId, analysisWriteSchema} from './application/flow-schema.js';
-import {saveProjectAnalysis, getProjectAnalysis} from './application/project-flows.js';
+import {projectAnalysisReadiness} from './application/project-readiness.js';
+import {writeProjectAnalysis} from './application/project-analysis-write.js';
+import {analysisId} from './application/flow-schema.js';
+import {getProjectAnalysis} from './application/project-flows.js';
 import {renderProjectFlow, renderFlowOptions} from './application/render-project-flow.js';
 import {contributionInput, prepareKnowledgeContribution, submitKnowledgeContribution} from './application/knowledge/contribution.js';
 import {installedReleaseIdentity} from './application/release-manifest.js';
@@ -279,17 +281,18 @@ server.registerTool("configure_project", {
 });
 
 server.registerTool('save_project_analysis', {
-  description: 'Persist a cited flow or finding from a JSON draft. Read save_project_analysis payloadSchema with bundle/tool-help.mjs first. expectedHash is null for new IDs. Does not refresh project.md, approve a plan or verify runtime behavior.',
+  description: 'Persist a cited flow, finding, or issue change (record.kind=change) from a JSON draft. Read save_project_analysis payloadSchema with bundle/tool-help.mjs first. expectedHash is null for new IDs. Does not refresh project.md, approve a plan or verify runtime behavior.',
   inputSchema: {projectPath: z.string().optional(), draftFile: z.string()}, annotations: localWrite,
 }, async ({projectPath: path, draftFile}) => {
   const root = projectPath(path);
-  return result(await saveProjectAnalysis(root, systemRoot, analysisWriteSchema.parse((await readRevisionDraft(root, draftFile)).input)));
+  return result(await writeProjectAnalysis(root, systemRoot, (await readRevisionDraft(root, draftFile)).input));
 });
 server.registerTool('get_project_analysis', {
-  description: 'Read flow/finding summaries with current dependency freshness. For detail full select IDs; at most three records per page and 24000 data characters. Oversized details return an artifact path for bounded local reads. Include resolved/dismissed history; no automatic project.md writes. Flow freshness is not runtime verification.',
-  inputSchema: {projectPath: z.string().optional(), kind: z.enum(['flow', 'finding']).optional(), ids: z.array(analysisId).min(1).max(10).optional(),
+  description: 'Read flow/finding summaries with current dependency freshness. projectView:true returns whole-project readiness, changed paths, reusable flows and issue status; run it before plan/visualize. For detail full select IDs; at most three records per page and 24000 data characters. Oversized details return an artifact path for bounded local reads. Include resolved/dismissed history; no automatic project.md writes. Flow freshness is not runtime verification.',
+  inputSchema: {projectPath: z.string().optional(), projectView:z.boolean().default(false), baseRef:z.string().optional(), kind: z.enum(['flow', 'finding']).optional(), ids: z.array(analysisId).min(1).max(10).optional(),
     files: z.array(z.string()).max(100).optional(), detail: z.enum(['summary', 'full']).default('summary'), offset: z.number().int().min(0).default(0), limit: z.number().int().min(1).max(20).default(10)}, annotations: readOnly,
-}, async ({projectPath: path, detail, ...options}) => {
+}, async ({projectPath: path, detail, projectView, baseRef, ...options}) => {
+  if(projectView)return result(await projectAnalysisReadiness(projectPath(path),systemRoot,baseRef));
   if (detail === 'full' && !options.ids?.length) throw new Error('Full analysis requires selected IDs');
   const found = await getProjectAnalysis(projectPath(path), systemRoot, {...options, limit: detail === 'full' ? Math.min(options.limit, 3) : options.limit, full: detail === 'full'});
   let remaining = 24000;
@@ -304,7 +307,7 @@ server.registerTool('get_project_analysis', {
   return result(found);
 });
 server.registerTool('render_project_flow', {
-  description: 'Export a stored project flow to offline HTML or Mermaid. Requires current observed evidence by default; allowUnverified explicitly previews stale/proposed records. HTML embeds hash-verified local design images, feedback and component-region links when recorded. Visual review requires HTML. Does not generate images, analyze code or verify runtime behavior.',
+  description: 'Export a stored project flow to offline HTML or Mermaid. projectView:true renders the whole-project index, optionally selecting issueId; omit per-flow id/hash for that mode. Requires current observed evidence by default; allowUnverified explicitly previews stale/proposed records. HTML embeds hash-verified local design images, feedback and component-region links when recorded. Visual review requires HTML. Does not generate images, analyze code or verify runtime behavior.',
   inputSchema: {projectPath: z.string().optional(), ...renderFlowOptions.shape}, annotations: localWrite,
 }, async ({projectPath: path, ...options}) => result(await renderProjectFlow(projectPath(path), systemRoot, options)));
 

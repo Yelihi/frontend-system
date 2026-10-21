@@ -6,7 +6,8 @@ Follow [project-flow-analysis](project-flow-analysis.md) for the ordered environ
 dependencies → flows → knowledge → findings pass. Reuse existing records before
 rescanning. The full inventory below is for first analysis or an explicit overall
 refresh; ordinary tasks inspect only affected scopes. Save main context on first
-authorized analysis or explicit manual refresh, not automatically after work.
+authorized analysis or refresh, including plan/visualize entry through
+[project visualization lifecycle](project-visualization-lifecycle.md), not during approved work.
 
 1. Read `../project-plans.md`. Use get_project_snapshot and read_project_source for
    official main facts; use inspect_project for working-tree diagnostics. Pass `overall: true` when the user supplied `--overall` or explicitly asked for autonomous inspection.

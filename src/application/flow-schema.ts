@@ -37,6 +37,7 @@ export const flowSchema = z.object({
   checks: z.array(z.object({id: analysisId, requirement: text, nodes: z.array(analysisId),
     scenarios: z.array(analysisId), testCaseIds: z.array(analysisId).min(1)})).max(80).optional(),
   nodes: z.array(z.object({id: analysisId, kind: z.enum(['page', 'component', 'store', 'cache', 'module', 'service', 'external']),
+    entityId: analysisId.optional().describe('Explicit project-wide identity. Reuse only for the same page/state/service contract, never merely the same label.'),
     label: text, parent: analysisId.optional(), props: z.array(text).default([]), state: z.array(text).default([]),
     events: z.array(text).default([]), lifecycle: z.array(text).default([]), evidence,
     architecture: z.object({layer: text, runtime: z.enum(['browser', 'server', 'shared', 'external']), responsibility: text}).optional(),

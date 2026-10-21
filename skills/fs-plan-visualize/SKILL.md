@@ -42,7 +42,7 @@ evidence of implementation. Do not require an extra permission question when the
 user already requested that design view. If the target itself is ambiguous, ask.
 The host interprets/designs; FS validates records and renders the same data.
 This request authorizes analysis records and diagram output, not product edits,
-plan approval or a project.md refresh. Honor an explicit no-write constraint.
+plan approval. It authorizes the baseline analysis/refresh described below. Honor an explicit no-write constraint.
 
 Use the user's project path or current project. Never substitute the FS source
 repository, a synthetic example or a future refactor for the target implementation.
@@ -69,12 +69,10 @@ The canonical structured flow export is this page explorer. Retain the legacy lo
 ## Reuse, trace, render
 
 1. Query `get_project_analysis` for relevant flow summaries and dependency freshness.
-   For a feature addition, first locate the existing canonical flow version and linked
-   index.html. Reuse the current baseline and add proposed flows separately. If absent,
-   create an observed baseline for the affected pages and their cross-page consumers;
-   do not require an exhaustive whole-project analysis/capture for a bounded feature.
-   Expand that baseline when new dependencies are discovered. Link the baseline and
-   proposed explorer outputs together; never patch generated index.html as source.
+   First follow [project visualization lifecycle](../../references/workflows/project-visualization-lifecycle.md).
+   Missing baseline means automatic whole-project analysis; partial means resume;
+   stale means refresh affected dependencies. Return here after that procedure.
+   Save issue change sets against that baseline and use the same index.html for previews.
    Reuse current records after checking their scope and limitations. Read selected
    full records only when needed. Analyze missing or stale relationships with the
    shared [project-flow-analysis](../../references/workflows/project-flow-analysis.md)
@@ -109,7 +107,7 @@ The canonical structured flow export is this page explorer. Retain the legacy lo
    existing test. If browser access permits, inspect event/step selection and code
    citations in the generated file. Report unrun or blocked checks accurately.
 
-Output is `.frontend-system/diagrams/<id>.html` in the target project. Return its
+Project entry is `.frontend-system/diagrams/index.html`; individual output remains `.frontend-system/diagrams/<id>.html` in the target project. Return its
 actual path, a clickable link, the covered pages/events and an appropriate local
 open command if useful. Distinguish static interpretation from executed tests and
 runtime rendering. Offline HTML captures export-time freshness; it does not watch

@@ -3,7 +3,7 @@ import {copyFile, writeFile} from 'node:fs/promises';
 import {fileURLToPath} from 'node:url';
 import * as z from 'zod/v4';
 import {revisionPayloadSchema} from '../dist/src/application/revision-input.js';
-import {analysisWriteSchema} from '../dist/src/application/flow-schema.js';
+import {projectAnalysisWriteSchema} from '../dist/src/application/project-analysis-write.js';
 import {Client} from '@modelcontextprotocol/sdk/client/index.js';
 import {StdioClientTransport} from '@modelcontextprotocol/sdk/client/stdio.js';
 
@@ -15,7 +15,7 @@ try {
   const {tools} = await client.listTools();
   // The revision repeats citation/judgment/route schemas across new and patch inputs.
   // Standard local JSON Schema refs share those definitions without changing validation.
-  await writeFile(new URL('../bundle/tool-schemas.json', import.meta.url), JSON.stringify({version: 1, tools, payloadSchemas: {save_project_context: z.toJSONSchema(projectContextPayloadSchema, {io: "input"}), save_revision: z.toJSONSchema(revisionPayloadSchema, {io: "input", reused: "ref"}), save_project_analysis: z.toJSONSchema(analysisWriteSchema, {io: "input"})}}) + '\n');
+  await writeFile(new URL('../bundle/tool-schemas.json', import.meta.url), JSON.stringify({version: 1, tools, payloadSchemas: {save_project_context: z.toJSONSchema(projectContextPayloadSchema, {io: "input"}), save_revision: z.toJSONSchema(revisionPayloadSchema, {io: "input", reused: "ref"}), save_project_analysis: z.toJSONSchema(projectAnalysisWriteSchema, {io: "input"})}}) + '\n');
   await copyFile(new URL('./tool-help.mjs', import.meta.url), new URL('../bundle/tool-help.mjs', import.meta.url));
   console.log(`Exported read-only help for ${tools.length} MCP tools.`);
 } finally { await client.close(); }

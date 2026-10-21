@@ -5,7 +5,8 @@ For structured page/scene contracts, knowledge bindings and no-image wireframes,
 image-led path; a wireframe does not require raster-image confirmation.
 
 Use for a project's first analysis, an affected flow missing from existing records,
-or an explicit project analysis refresh. For ordinary changes first query
+or an authorized project analysis refresh (including plan/visualize automatic readiness).
+For entry follow [project visualization lifecycle](project-visualization-lifecycle.md); for affected-flow detail query
 `get_project_analysis` with the task's files. Read selected full records only when
 their summaries are insufficient (up to three per page, shared character budget).
 Use nextOffset or bounded local JSON reads for omitted details. A current hash means declared dependencies match, not

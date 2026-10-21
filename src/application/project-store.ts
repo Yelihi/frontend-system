@@ -5,6 +5,7 @@ import { atomic, digest, directory, locked, sourceSnapshot } from "./workflow-st
 
 import { projectSnapshot } from "./project-snapshot.js";
 import { validateProjectEvidence } from './design-evidence.js';
+import {refreshProjectViewShell} from './project-changes.js';
 import {prepareProjectReport} from './project-report.js';
 
 import type { ProjectAnalysis, ProjectConfig, ProjectProfile, ProjectState } from "../domain/types.js";
@@ -125,6 +126,8 @@ export async function writeProjectArtifacts(profile: ProjectProfile, analysis: P
       renderProject(mainProfile, analysis),
       ...(report ? [
         `<!-- fs-project-context ${contextHash} -->`,
+        `<!-- fs-project-view ${report.projectView.hash} -->`,
+        `[프로젝트 전체 시각화](diagrams/index.html)`,
         `## Analysis delivery\n\nStatus: **${report.context.analysisStatus}**. This is static analysis, not runtime verification.\n\n[AI context](evidence/context-${contextHash}.json) · Read selected records by ID; diagrams are human projections.`,
         `## Detailed project analysis\n\n${report.details}`,
       ] : []),
@@ -144,7 +147,15 @@ export async function writeProjectArtifacts(profile: ProjectProfile, analysis: P
     ].join("\n\n");
     // Recheck after generation; a failed refresh preserves the last successful document.
     if ((await projectSnapshot(root, options.baseRef)).commit !== snapshot.commit) throw new Error("Main changed during context generation; retry with new facts");
-    await atomic(path, content);
+    const previousViewer=await optionalRead(join(base,'diagrams/index.html'));
+    try {
+      await atomic(path, content);
+      if(report)await refreshProjectViewShell(root,report.projectView);
+    } catch(error) {
+      if(previous)await atomic(path,previous);else await rm(path,{force:true});
+      if(previousViewer)await atomic(join(base,'diagrams/index.html'),previousViewer);
+      throw error;
+    }
     await rm(join(base, "project-refresh.json"), { force: true });
     const ignored = await optionalRead(join(base, ".gitignore"));
     const missing = ["state.json", "reports/", ".workflow-lock/"].filter((line) => !ignored.split(/\r?\n/).includes(line));
@@ -154,6 +165,7 @@ export async function writeProjectArtifacts(profile: ProjectProfile, analysis: P
       fileHashes: snapshot.workingChanges.length ? {} : await sourceSnapshot(root), updatedAt: metadata.updatedAt,
     } satisfies ProjectState, null, 2));
     return {analysisStatus:analysis.report?.status ?? 'legacy',
+      visualization:report ? join(base,'diagrams/index.html') : null,
       aiContext:contextHash ? join(base, 'evidence', `context-${contextHash}.json`) : null,
       diagrams:report?.artifacts.map(a => ({path:a.absolutePath, hash:digest(a.content)})) ?? []};
   });

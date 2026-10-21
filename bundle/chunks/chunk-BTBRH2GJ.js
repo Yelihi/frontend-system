@@ -23,16 +23,57 @@ import {
   validateStructuredFlow
 } from "./chunk-VEDZPQTV.js";
 
+// src/application/git-state.ts
+import { execFile } from "node:child_process";
+function git(root, args) {
+  return new Promise((resolve6, reject) => {
+    execFile("git", ["-C", root, ...args], { maxBuffer: 10 * 1024 * 1024, env: { ...process.env, LC_ALL: "C" } }, (error, stdout, stderr) => {
+      if (error) reject(Object.assign(new Error(stderr.trim() || error.message), { code: error.code, stderr }));
+      else resolve6(stdout);
+    });
+  });
+}
+async function changedFiles(root, base) {
+  const names = /* @__PURE__ */ new Set();
+  if (base) {
+    for (const path of (await git(root, ["diff", "--name-only", "--no-renames", "-z", base, "--"])).split("\0").filter(Boolean)) names.add(path);
+  }
+  const entries = (await git(root, ["status", "--porcelain=v1", "-z", "--untracked-files=all"])).split("\0").filter(Boolean);
+  for (let index = 0; index < entries.length; index++) {
+    const entry = entries[index];
+    names.add(entry.slice(3));
+    if (/[RC]/.test(entry.slice(0, 2))) names.add(entries[++index]);
+  }
+  return [...names].filter((path) => path !== ".frontend-system" && !path.startsWith(".frontend-system/")).sort();
+}
+async function reviewBase(root, requested) {
+  if (requested) {
+    await git(root, ["rev-parse", "--verify", requested]);
+    return requested;
+  }
+  if (await git(root, ["status", "--porcelain"])) return "HEAD";
+  const head = (await git(root, ["rev-parse", "HEAD"])).trim();
+  try {
+    await git(root, ["rev-parse", "--verify", `${head}^`]);
+    return `${head}^`;
+  } catch {
+    return head;
+  }
+}
+async function diffStat(root, base) {
+  return (await git(root, ["diff", "--stat", base, "--"])).trim();
+}
+
 // src/application/project-flows.ts
 import { readFile as readFile7, readdir as readdir4, realpath as realpath7 } from "node:fs/promises";
 import { join as join9, relative as relative7, resolve as resolve5 } from "node:path";
 
 // src/adapters/filesystem/project-discovery.ts
-import { execFile } from "node:child_process";
+import { execFile as execFile2 } from "node:child_process";
 import { access, readFile, readdir } from "node:fs/promises";
 import { basename, dirname, join, relative, resolve } from "node:path";
 import { promisify } from "node:util";
-var run = promisify(execFile);
+var run = promisify(execFile2);
 var ignoredDirectories = /* @__PURE__ */ new Set([
   ".git",
   ".frontend-system",
@@ -78,7 +119,7 @@ async function exists(path) {
     () => false
   );
 }
-async function git(rootPath, args) {
+async function git2(rootPath, args) {
   try {
     return (await run("git", ["-C", rootPath, ...args])).stdout.trim();
   } catch {
@@ -158,10 +199,10 @@ var FileSystemProjectDiscovery = class {
   async createRef(rootPath) {
     const root = resolve(rootPath);
     if (!await exists(root)) throw new Error(`Project path does not exist: ${root}`);
-    const repositoryRoot = await git(root, ["rev-parse", "--show-toplevel"]) ?? root;
-    const remoteHead = await git(root, ["symbolic-ref", "--short", "refs/remotes/origin/HEAD"]);
-    const currentBranch = await git(root, ["branch", "--show-current"]);
-    const commit2 = await git(root, ["rev-parse", "HEAD"]);
+    const repositoryRoot = await git2(root, ["rev-parse", "--show-toplevel"]) ?? root;
+    const remoteHead = await git2(root, ["symbolic-ref", "--short", "refs/remotes/origin/HEAD"]);
+    const currentBranch = await git2(root, ["branch", "--show-current"]);
+    const commit2 = await git2(root, ["rev-parse", "HEAD"]);
     return {
       id: basename(root).toLowerCase().replace(/[^a-z0-9]+/g, "-"),
       name: basename(root),
@@ -268,49 +309,6 @@ import { join as join8, relative as relative6, resolve as resolve4 } from "node:
 // src/application/pr-scope.ts
 import { createHash } from "node:crypto";
 import { realpath } from "node:fs/promises";
-
-// src/application/git-state.ts
-import { execFile as execFile2 } from "node:child_process";
-function git2(root, args) {
-  return new Promise((resolve6, reject) => {
-    execFile2("git", ["-C", root, ...args], { maxBuffer: 10 * 1024 * 1024, env: { ...process.env, LC_ALL: "C" } }, (error, stdout, stderr) => {
-      if (error) reject(Object.assign(new Error(stderr.trim() || error.message), { code: error.code, stderr }));
-      else resolve6(stdout);
-    });
-  });
-}
-async function changedFiles(root, base) {
-  const names = /* @__PURE__ */ new Set();
-  if (base) {
-    for (const path of (await git2(root, ["diff", "--name-only", "--no-renames", "-z", base, "--"])).split("\0").filter(Boolean)) names.add(path);
-  }
-  const entries = (await git2(root, ["status", "--porcelain=v1", "-z", "--untracked-files=all"])).split("\0").filter(Boolean);
-  for (let index = 0; index < entries.length; index++) {
-    const entry = entries[index];
-    names.add(entry.slice(3));
-    if (/[RC]/.test(entry.slice(0, 2))) names.add(entries[++index]);
-  }
-  return [...names].filter((path) => path !== ".frontend-system" && !path.startsWith(".frontend-system/")).sort();
-}
-async function reviewBase(root, requested) {
-  if (requested) {
-    await git2(root, ["rev-parse", "--verify", requested]);
-    return requested;
-  }
-  if (await git2(root, ["status", "--porcelain"])) return "HEAD";
-  const head = (await git2(root, ["rev-parse", "HEAD"])).trim();
-  try {
-    await git2(root, ["rev-parse", "--verify", `${head}^`]);
-    return `${head}^`;
-  } catch {
-    return head;
-  }
-}
-async function diffStat(root, base) {
-  return (await git2(root, ["diff", "--stat", base, "--"])).trim();
-}
-
-// src/application/pr-scope.ts
 var commit = string().regex(/^[a-f0-9]{40,64}$/);
 var prScopeSchema = strictObject({
   base: string().min(1).refine((value) => !value.startsWith("-") && !value.includes("\0")),
@@ -321,13 +319,13 @@ var prScopeSchema = strictObject({
 });
 async function prScope(root, base) {
   prScopeSchema.shape.base.parse(base);
-  const top = (await git2(root, ["rev-parse", "--show-toplevel"])).trim();
+  const top = (await git(root, ["rev-parse", "--show-toplevel"])).trim();
   if (await realpath(top) !== await realpath(root)) throw new Error("PR review requires the repository root, not a package subdirectory");
-  const baseCommit = (await git2(root, ["rev-parse", "--verify", `${base}^{commit}`])).trim();
-  const headCommit = (await git2(root, ["rev-parse", "--verify", "HEAD^{commit}"])).trim();
-  const mergeBase = (await git2(root, ["merge-base", baseCommit, headCommit])).trim();
-  const diff = await git2(root, ["diff", "--binary", "--no-ext-diff", "--no-textconv", mergeBase, headCommit, "--"]);
-  const files = (await git2(root, ["diff", "--name-only", "--no-renames", "-z", mergeBase, headCommit, "--"])).split("\0").filter((path) => path && path !== ".frontend-system" && !path.startsWith(".frontend-system/")).sort();
+  const baseCommit = (await git(root, ["rev-parse", "--verify", `${base}^{commit}`])).trim();
+  const headCommit = (await git(root, ["rev-parse", "--verify", "HEAD^{commit}"])).trim();
+  const mergeBase = (await git(root, ["merge-base", baseCommit, headCommit])).trim();
+  const diff = await git(root, ["diff", "--binary", "--no-ext-diff", "--no-textconv", mergeBase, headCommit, "--"]);
+  const files = (await git(root, ["diff", "--name-only", "--no-renames", "-z", mergeBase, headCommit, "--"])).split("\0").filter((path) => path && path !== ".frontend-system" && !path.startsWith(".frontend-system/")).sort();
   const scope2 = prScopeSchema.parse({
     base,
     baseCommit,
@@ -538,6 +536,7 @@ var flowSchema = object({
   nodes: array(object({
     id: analysisId,
     kind: _enum(["page", "component", "store", "cache", "module", "service", "external"]),
+    entityId: analysisId.optional().describe("Explicit project-wide identity. Reuse only for the same page/state/service contract, never merely the same label."),
     label: text,
     parent: analysisId.optional(),
     props: array(text).default([]),
@@ -1103,26 +1102,26 @@ function boundReadWindows(windows, offset, budget = 24e3) {
 var included = (path) => !path.split("/").includes(".frontend-system") || path === ".frontend-system/config.json";
 async function projectSnapshot(root, baseRef = "main") {
   if (!/^[a-zA-Z0-9][a-zA-Z0-9._/-]*$/.test(baseRef) || baseRef.includes("..")) throw new Error("Invalid base branch");
-  const head = await git2(root, ["rev-parse", "--verify", "--quiet", "HEAD"]).then((value) => value.trim(), (error) => {
+  const head = await git(root, ["rev-parse", "--verify", "--quiet", "HEAD"]).then((value) => value.trim(), (error) => {
     if (error.code === 1 && !error.stderr?.trim() || /not a git repository/i.test(error.stderr ?? "")) return null;
     throw error;
   });
   if (!head) return { baseRef, commit: null, sourceHash: digest("[]"), files: [], manifests: {}, workingChanges: [], status: "unversioned" };
-  const commit2 = (await git2(root, ["rev-parse", "--verify", `${baseRef}^{commit}`])).trim();
-  const tree = (await git2(root, ["ls-tree", "-r", "-z", commit2, "--", "."])).split("\0").filter(Boolean);
+  const commit2 = (await git(root, ["rev-parse", "--verify", `${baseRef}^{commit}`])).trim();
+  const tree = (await git(root, ["ls-tree", "-r", "-z", commit2, "--", "."])).split("\0").filter(Boolean);
   const entries = tree.map((line) => ({ path: line.slice(line.indexOf("	") + 1), object: line.slice(0, line.indexOf("	")) })).filter(({ path }) => included(path)).sort((a, b) => a.path.localeCompare(b.path));
   const files = entries.map(({ path }) => path);
   const manifests = {};
   for (const path of files.filter((path2) => /(^|\/)package\.json$/.test(path2))) {
     try {
-      manifests[path] = JSON.parse(await git2(root, ["show", `${commit2}:./${path}`]));
+      manifests[path] = JSON.parse(await git(root, ["show", `${commit2}:./${path}`]));
     } catch {
       manifests[path] = { error: "Manifest could not be parsed at the base commit" };
     }
   }
   const workingChanges = [...new Set([
-    ...(await git2(root, ["diff", "--name-only", "--relative", "-z", commit2, "--", "."])).split("\0"),
-    ...(await git2(root, ["ls-files", "--others", "--exclude-standard", "-z", "--", "."])).split("\0")
+    ...(await git(root, ["diff", "--name-only", "--relative", "-z", commit2, "--", "."])).split("\0"),
+    ...(await git(root, ["ls-files", "--others", "--exclude-standard", "-z", "--", "."])).split("\0")
   ].filter((path) => path && included(path)))].sort();
   return { baseRef, commit: commit2, sourceHash: digest(JSON.stringify(entries)), files, manifests, workingChanges, status: "versioned" };
 }
@@ -1138,7 +1137,7 @@ async function readProjectSourceFile(root, path, expectedCommit, baseRef = "main
   return file;
 }
 async function sourceWindow(root, path, commit2, offset, limit) {
-  const content = await git2(root, ["show", `${commit2}:./${path}`]);
+  const content = await git(root, ["show", `${commit2}:./${path}`]);
   return { commit: commit2, path, hash: digest(content), content: content.slice(offset, offset + limit), totalCharacters: content.length, nextOffset: offset + limit < content.length ? offset + limit : null };
 }
 async function readProjectSources(root, paths, expectedCommit, baseRef = "main", offset = 0, limit = 6e3) {
@@ -1217,7 +1216,7 @@ async function inspectCode(root, paths, snapshot, includeRelations = false) {
   if (pinned) {
     for (const path of [.../* @__PURE__ */ new Set([...paths, ...pinned.files.filter((path2) => /(^|\/)(?:tsconfig|jsconfig)(?:\.[^/]+)?\.json$/.test(path2))])]) {
       if (!pinned.files.includes(path) || path.split("/").some((part) => ["node_modules", ".git", ".frontend-system"].includes(part))) throw new Error("Select a source file from the pinned snapshot");
-      const content = await git2(root, ["show", `${pinned.commit}:./${path}`]);
+      const content = await git(root, ["show", `${pinned.commit}:./${path}`]);
       assertProjectSourceSize(Buffer.byteLength(content), path);
       snapshotContents.set(resolve3(base, path), content);
     }
@@ -2494,8 +2493,8 @@ async function saveRevision(root, content, expectedHash, policy, planId, issues,
     if (nextIssues) validateIssues(nextIssues, nextPolicy);
     if (nextEvidence && nextIssues) await validatePlanFlows(root, nextEvidence, nextIssues);
     if (nextIssues?.some((issue) => issue.testCases?.some((item) => item.flowId))) {
-      const { getProjectAnalysis: getProjectAnalysis2 } = await import("./project-flows-IUEYFASR.js");
-      const { installedSystemRoot: installedSystemRoot2 } = await import("./routing-XIF4XXAG.js");
+      const { getProjectAnalysis: getProjectAnalysis2 } = await import("./project-flows-W43DYXUX.js");
+      const { installedSystemRoot: installedSystemRoot2 } = await import("./routing-FCP4VAGF.js");
       for (const item of nextIssues.flatMap((issue) => issue.testCases ?? []).filter((item2) => item2.flowId)) {
         const ref = nextEvidence?.analysisRefs?.find((ref2) => ref2.kind === "flow" && ref2.id === item.flowId);
         if (!ref) throw new Error(`Test case ${item.id} requires a pinned flow reference`);
@@ -2620,7 +2619,7 @@ async function requireDesignEvidence(root, revision, checkSources) {
   if (revision.evidence && revision.issues) await validatePlanFlows(root, revision.evidence, revision.issues);
 }
 async function validatePlanFlows(root, evidence2, issues) {
-  const { readPinnedFlow: readPinnedFlow2 } = await import("./project-flows-IUEYFASR.js");
+  const { readPinnedFlow: readPinnedFlow2 } = await import("./project-flows-W43DYXUX.js");
   const { validateFlowPlan } = await import("./flow-contracts-Z7YRYNMA.js");
   for (const issue of issues) for (const target of issue.implementationTargets ?? []) {
     if (target.flowTarget && !evidence2.analysisRefs?.some((r) => r.kind === "flow" && r.id === target.flowTarget.flowId && r.issueIds.includes(issue.id)))
@@ -3173,14 +3172,31 @@ async function readBaselineRecords(root, systemRoot, refs, snapshot) {
   for (const ref of refs) {
     const stored = await readEnvelope(root, ref.kind, ref.id, ref.hash);
     const flow = stored.record.kind === "flow" ? stored.record.data : flowSchema.parse((await readEnvelope(root, "flow", stored.record.data.flow.id, stored.record.data.flow.hash)).record.data);
-    if (flow.basis !== "observed" || flow.scope.snapshot?.baseRef !== snapshot.baseRef || flow.scope.snapshot.expectedCommit !== snapshot.expectedCommit) {
-      throw new Error(`Baseline report requires observed records from the same snapshot: ${ref.id}`);
+    if (flow.basis !== "observed" || flow.scope.snapshot?.baseRef !== snapshot.baseRef || !flow.scope.snapshot.expectedCommit) {
+      throw new Error(`Baseline report requires observed records from the same base branch: ${ref.id}`);
     }
+    if (flow.scope.snapshot.expectedCommit !== snapshot.expectedCommit) await git(root, ["merge-base", "--is-ancestor", flow.scope.snapshot.expectedCommit, snapshot.expectedCommit]);
     const freshness = await analysisFreshness(root, stored, systemRoot, scan);
     if (freshness.status !== "current") throw new Error(`Baseline record is stale: ${ref.id}: ${freshness.reasons.join("; ")}`);
     records.push(stored);
   }
   return records;
+}
+async function checkBaselineReuse(root, systemRoot, refs, snapshot) {
+  const scan = freshnessScan(root, systemRoot, snapshot);
+  const results = [];
+  for (const ref of refs) {
+    try {
+      const stored = await readEnvelope(root, "flow", ref.id, ref.hash);
+      if (stored.record.kind !== "flow" || stored.record.data.basis !== "observed" || stored.record.data.scope.snapshot?.baseRef !== snapshot.baseRef) throw new Error("Observed base branch differs");
+      await git(root, ["merge-base", "--is-ancestor", stored.record.data.scope.snapshot.expectedCommit, snapshot.expectedCommit]);
+      const freshness = await analysisFreshness(root, stored, systemRoot, scan);
+      results.push({ id: ref.id, ...freshness });
+    } catch (error) {
+      results.push({ id: ref.id, status: "stale", reasons: [String(error)] });
+    }
+  }
+  return results;
 }
 async function analysisFreshness(root, stored, systemRoot, scan = freshnessScan(root, systemRoot)) {
   const reasons = [];
@@ -3229,6 +3245,8 @@ async function saveProjectAnalysis(root, systemRoot, input) {
       if (error.code !== "ENOENT") throw error;
     }
     if ((previous?.hash ?? null) !== parsed.expectedHash) throw new Error("Analysis changed; read current hash before updating");
+    if (previous?.record.kind === "flow" && parsed.record.kind === "flow" && previous.record.data.basis !== parsed.record.data.basis)
+      throw new Error("Keep observed and proposed records separate; save a new flow ID and reconcile through the issue");
     const initialPaths = await inventory2(root);
     let quoteHashes = {};
     let flow;
@@ -3411,7 +3429,7 @@ export {
   searchReferenceIndex,
   evaluateRetrievalChecks,
   readIndexedReference,
-  git2 as git,
+  git,
   changedFiles,
   reviewBase,
   diffStat,
@@ -3419,11 +3437,13 @@ export {
   prScope,
   samePrScope,
   analysisId,
+  flowCitation,
   flowSchema,
   analysisWriteSchema,
   loadFlowDesignImages,
   readPinnedFlow,
   readBaselineRecords,
+  checkBaselineReuse,
   analysisFreshness,
   saveProjectAnalysis,
   getProjectAnalysis,
@@ -3467,8 +3487,10 @@ export {
   boundReadWindows,
   projectSnapshot,
   readProjectSource,
+  readProjectSourceFile,
   readProjectSources,
   projectDocumentHash,
+  contextMetadata,
   recordProjectRefresh,
   projectDocumentStatus,
   rememberAnalysis,

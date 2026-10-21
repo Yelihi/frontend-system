@@ -241,7 +241,9 @@ test('actual flow export rejects stale/proposed records, preserves the prior art
     assert.match(await readFile(preview.path,'utf8'),/Changed dependency: src\/save.ts/);
     await writeFile(join(root,'src/save.ts'),'export const save = (value: string) => value;');
     data.basis='proposed';
-    const proposal=await saveProjectAnalysis(root,process.cwd(),{expectedHash:saved.hash,record:{kind:'flow',data}});
+    await assert.rejects(saveProjectAnalysis(root,process.cwd(),{expectedHash:saved.hash,record:{kind:'flow',data}}),/Keep observed and proposed/);
+    data.id='save-proposal';
+    const proposal=await saveProjectAnalysis(root,process.cwd(),{expectedHash:null,record:{kind:'flow',data}});
     await assert.rejects(renderProjectFlow(root,process.cwd(),{id:data.id,expectedHash:proposal.hash}),/proposed\/current/);
     await assert.rejects(renderProjectFlow(root,process.cwd(),{id:data.id,expectedHash:proposal.hash,allowUnverified:true,scenarioId:'absent'}),/Unknown flow scenario/);
   } finally {await rm(root,{recursive:true,force:true});}
@@ -350,7 +352,8 @@ test('project reports generate human detail and HTML from pinned records while A
       knowledgeReview:'No applicable registered knowledge for this pure synchronous fixture.'}]}}) as import('../src/domain/types.js').ProjectAnalysis;
     const discovery = new FileSystemProjectDiscovery(); const profile = await discovery.discover(await discovery.createRef(root));
     const delivery = await writeProjectArtifacts(profile,analysis,{expectedCommit:snapshot.commit,expectedHash:null});
-    assert.equal(delivery.analysisStatus,'complete'); assert.equal(delivery.diagrams.length,1);
+    assert.equal(delivery.analysisStatus,'complete'); assert.ok(delivery.diagrams.some(d=>d.path.endsWith(`project-${saved.hash}.html`)));
+    assert.match(delivery.visualization!,/diagrams\/index.html$/);
     const document = await readFile(join(root,'.frontend-system/project.md'),'utf8');
     assert.match(document,/state: input/); assert.match(document,/form → api/); assert.match(document,/Input ownership/);
     assert.match(document,/Interactive flow/);

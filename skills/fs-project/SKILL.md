@@ -16,8 +16,8 @@ These are host-chat requests, not shell subcommands.
 
 Follow [project analysis](../../references/workflows/fs-project.md), using the current
 host AI and existing FS tools. Inspect the whole baseline inventory, explain code
-with evidence, and record unknown areas. An existing project.md is reused unless
-refresh is requested. Do not launch a nested model or edit product/test/config files.
+with evidence, and record unknown areas. Standalone fs-project reuses an existing project.md unless refresh is requested.
+When invoked from plan/visualize, follow [automatic baseline preparation](../../references/workflows/project-visualization-lifecycle.md). Do not launch a nested model or edit product/test/config files.
 
 Follow [user decisions](../../references/workflows/user-decisions.md) when a material
 answer is missing. Use the host's native selection UI (`request_user_input` in
@@ -26,7 +26,7 @@ until the actual answer. See the shared procedure for unavailable UI.
 Return the human report, AI context and automatically generated HTML links, with
 coverage and completion status. Partial saves are checkpoints; continue inspectable
 remaining areas unless blocked or paused. Do not read HTML into AI context. Planning is `fs-plan`;
-standalone visualization is `fs-plan-visualize` and does not refresh project.md.
+standalone visualization is `fs-plan-visualize`; it prepares the baseline before returning to visualization.
 
 For the automatic page/route/component preview, follow the packaged
 [page-flow renderer](../fs-plan-visualize/references/page-flow.md). Reuse the current

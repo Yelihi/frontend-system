@@ -1,14 +1,14 @@
 # Create or refresh the project baseline
 
-Use from `fs-project`, `fs-project update`, or first-time initialization for a saved
-FS plan. This procedure writes analysis records only, never product code or a plan.
+Use from `fs-project`, `fs-project update`, or automatic baseline preparation from fs-plan/fs-plan-visualize.
+Follow [project visualization lifecycle](project-visualization-lifecycle.md) for readiness and return handling. This procedure writes analysis records only, never product code or a plan.
 Use the target project, not the installed plugin/source repository.
 
 ## Select the snapshot and account for the whole project
 
 - `fs-project [path] [--base <branch>]` creates `.frontend-system/project.md`.
   If it already exists, return its path, baseline and freshness; do not overwrite it
-  unless the request also explicitly asks for refresh/reanalysis.
+  unless refresh/reanalysis is requested or the plan/visualize readiness procedure requires it.
 - `fs-project update [path] [--base <branch>]` explicitly authorizes a refresh;
   initialize if missing. Preserve previous context and confirmed decisions/history.
 - Reuse the document's established baseRef; on first use default to local `main`,
@@ -79,9 +79,8 @@ failure if possible; retain drafts. Do not retry a failing save indefinitely.
 ## Bind facts and save
 
 Check whether the required main baseline exists.
-A request to create a saved FS plan includes first-time baseline initialization;
-visualization alone does not. Creating the first baseline is distinct from refreshing
-an existing project.md, which remains an explicit user operation. An explicit no-write
+Plan and visualization requests include whole-project baseline initialization, continuation
+and freshness-driven refresh. Standalone fs-project update remains the explicit refresh entry. An explicit no-write
 or no-baseline constraint takes precedence: report the prerequisite and deliver only
 the requested unbound draft, without attempting save_revision or claiming enforcement.
 
@@ -118,7 +117,7 @@ Inspect bound/excluded IDs in the receipt: empty bound is not reusable trigger e
 When invoked as `fs-project`, stop after completing the analysis and projections (or
 reporting an actual blocker); do not continue into
 a new plan, approval, implementation or PR creation. When invoked to initialize
-a missing baseline within `fs-plan`, return to that planning procedure. On error,
+a missing baseline within `fs-plan` or `fs-plan-visualize`, return to the original procedure. On error,
 record the failed refresh and retain the previous document.
 
 Return the clickable `.frontend-system/project.md` path, base branch/commit, coverage

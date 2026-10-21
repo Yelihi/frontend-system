@@ -2,7 +2,8 @@
 
 ## Entry paths and prospective knowledge
 
-First identify the starting state; do not treat every project as a refactor.
+First follow [project visualization lifecycle](project-visualization-lifecycle.md) for baseline readiness.
+Then identify the starting state; do not treat every project as a refactor.
 
 - **New project:** Record the intended users, first valuable domain outcome, core
   entities and invariants, data ownership and sensitivity, permissions, external

@@ -110,11 +110,14 @@ Keep PNG/base64 and full HTML out of ordinary AI planning context; read the smal
 
 ## Add a feature to a baseline
 
-Locate and reuse an existing explorer input after checking its source freshness. A
-missing whole-project index.html does not require capturing the whole project first:
-create the affected pages and shared consumers as a bounded observed baseline and
-state its coverage. Extend it as related pages are discovered. Keep a link to that
-baseline beside the proposed output in the plan/project's existing diagram index.
+For canonical project work follow [project visualization lifecycle](../../../references/workflows/project-visualization-lifecycle.md).
+Missing baseline starts whole-project analysis, partial coverage resumes, and stale
+baseline refreshes before the original request continues. Context save creates a stable
+index.html. Save issue changes through save_project_analysis(record.kind=change), then
+render_project_flow(projectView:true, issueId). Add/replace/remove operations reference
+immutable canonical flows; actual code is reviewed on the next FS task before reconciliation.
+
+The following legacy append-only CLI remains for old explorer inputs only:
 
 Keep the original view model. An optional third argument names an addition JSON:
 `{id, title, baseHash, nodes?, pages?, instances?, navigation?, scenarios}`. Compute

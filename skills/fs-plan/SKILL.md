@@ -23,12 +23,10 @@ review obligations from [PR readiness](../../references/workflows/pr-readiness.m
 in the proposed policy. Reuse project decisions under their original conditions;
 new knowledge does not override a current scoped owner decision without discussion.
 
-Deliver the requested plan delta. Earlier narrative analysis reports describe their
-inspected snapshot; unless the user requests their refresh, retain them and state
-changed assumptions in the new plan. Refresh affected typed flow/finding records as
-required for current evidence, but do not also rewrite old reports, inventories or
-numbering merely to make every document describe the new state. This does not permit
-reusing stale evidence or silently refreshing the main project.md baseline.
+Follow [project visualization lifecycle](../../references/workflows/project-visualization-lifecycle.md)
+at entry: initialize the whole-project baseline if missing, resume partial coverage,
+or refresh stale dependencies automatically before returning to the requested plan.
+Preserve historical reports and confirmed decisions; never mix working changes into main.
 
 ## Stage the plan with user feedback
 
@@ -44,10 +42,9 @@ a saved file link alone is not the handoff.
 
 ## Inspect once, preserve usable evidence
 
-Use [project analysis](../../references/workflows/fs-project.md) when the first
-baseline is missing. `fs-project` is the explicit whole-project entry point;
-`fs-project update` refreshes it on user request. Reuse an existing baseline and
-inspect affected working changes instead of silently refreshing main.
+Use get_project_analysis(projectView:true) to choose initialization, continuation,
+refresh or reuse. The host performs analysis; deterministic tools validate records.
+Reuse the current complete baseline and inspect affected working changes separately.
 
 Reuse the selected planId. After main analysis, get_work_context with explicit code files and separate
 requirements:[document paths]. Describe the observed change in request, not merely a
