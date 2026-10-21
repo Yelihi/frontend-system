@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "deliver",
+  "type": "workflow",
+  "input": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/docs/diagrams/guide/feature.json",
+  "output": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/docs/diagrams/guide/feature.html",
+  "specification": {
+    "sha256": "a39ab8fc937382111adf6e2016ec3a64244f41b477b48b55805539ce3bc44e99",
+    "bytes": 4466
+  },
+  "artifact": {
+    "sha256": "9bfdbef3a53a12b4346806100d5058d1824169a45101fafe70bb8c61adcce606",
+    "bytes": 808731
+  },
+  "validation": {
+    "checksPassed": 9,
+    "checkCount": 9,
+    "compositionProfile": "showcase",
+    "compositionStatus": "pass",
+    "errors": 0,
+    "warnings": 0
+  }
+}

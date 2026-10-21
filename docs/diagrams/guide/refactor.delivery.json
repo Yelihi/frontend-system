@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "deliver",
+  "type": "workflow",
+  "input": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/docs/diagrams/guide/refactor.json",
+  "output": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/docs/diagrams/guide/refactor.html",
+  "specification": {
+    "sha256": "d7a861cee9725905633a348ea4b5d2d85824b7fbfd9cdfe2a6532b1bf0df3f02",
+    "bytes": 4452
+  },
+  "artifact": {
+    "sha256": "ee703e5b94f08f8093e886d8cad348b915ff0965bdfad8a69585b850bb94db9f",
+    "bytes": 808679
+  },
+  "validation": {
+    "checksPassed": 9,
+    "checkCount": 9,
+    "compositionProfile": "showcase",
+    "compositionStatus": "pass",
+    "errors": 0,
+    "warnings": 0
+  }
+}

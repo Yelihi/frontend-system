@@ -1,0 +1,98 @@
+{
+  "basis": "810484e78df91329ff5af6f792d3ab522e5af1d5",
+  "reviewer": "image-capable assistant",
+  "artifacts": [
+    {
+      "diagram_type": "architecture",
+      "output": "architecture.html",
+      "specification_sha256": "1c2a30b1a6fc9185b9f8f1e55bcf218fc810e140e1ba34c26d0601852c16e015",
+      "artifact_sha256": "48ea632068d621386e181c6b135828dfdec144f1ab84374dfc78fd50fc869377",
+      "validation": "9/9 showcase, 0 errors, 0 warnings",
+      "browser_evidence": "passed",
+      "visual_review": "passed",
+      "correction_rounds": 1,
+      "inspected_images": [
+        "architecture.visual-check.1440x900.light.png",
+        "architecture.visual-check.2048x1320.dark.png"
+      ],
+      "observations": [
+        "한국어 노드·역할 구분·연결선이 읽히며 겹침이나 잘림 없음",
+        "light/dark 및 넓은 화면의 배치 확인"
+      ],
+      "readme_capture": {
+        "path": "architecture.png",
+        "sha256": "95968bbd2f614b74f7c5b91aa00e46a595b52ff19a1433d0984a0cdda995e7a4"
+      }
+    },
+    {
+      "diagram_type": "workflow",
+      "output": "new-project.html",
+      "specification_sha256": "a7fe08511e90c124f18cbcf4b1273b75d823a2c7fc3099335ae3415b4f99de8d",
+      "artifact_sha256": "1925632f98a53beaa7caf04bffcaff92f4375daa5fd38cdee201e86b94410911",
+      "validation": "9/9 showcase, 0 errors, 0 warnings",
+      "browser_evidence": "passed",
+      "visual_review": "passed",
+      "correction_rounds": 1,
+      "inspected_images": [
+        "new-project.visual-check.1440x900.light.png",
+        "new-project.visual-check.2048x1320.dark.png"
+      ],
+      "observations": [
+        "한국어 노드·역할 구분·연결선이 읽히며 겹침이나 잘림 없음",
+        "light/dark 및 넓은 화면의 배치 확인"
+      ],
+      "readme_capture": {
+        "path": "new-project.png",
+        "sha256": "98271cc4170110518aade5c56fe06af00fdae5a4fb775e518eaa8b538c67a60d"
+      }
+    },
+    {
+      "diagram_type": "workflow",
+      "output": "refactor.html",
+      "specification_sha256": "d7a861cee9725905633a348ea4b5d2d85824b7fbfd9cdfe2a6532b1bf0df3f02",
+      "artifact_sha256": "ee703e5b94f08f8093e886d8cad348b915ff0965bdfad8a69585b850bb94db9f",
+      "validation": "9/9 showcase, 0 errors, 0 warnings",
+      "browser_evidence": "passed",
+      "visual_review": "passed",
+      "correction_rounds": 1,
+      "inspected_images": [
+        "refactor.visual-check.1440x900.light.png",
+        "refactor.visual-check.2048x1320.dark.png"
+      ],
+      "observations": [
+        "한국어 노드·역할 구분·연결선이 읽히며 겹침이나 잘림 없음",
+        "light/dark 및 넓은 화면의 배치 확인"
+      ],
+      "readme_capture": {
+        "path": "refactor.png",
+        "sha256": "9d6aca1a3746f9c37215ceee6dd9954d8787f583a9c9ddd7d8fd689745ae669a"
+      }
+    },
+    {
+      "diagram_type": "workflow",
+      "output": "feature.html",
+      "specification_sha256": "a39ab8fc937382111adf6e2016ec3a64244f41b477b48b55805539ce3bc44e99",
+      "artifact_sha256": "9bfdbef3a53a12b4346806100d5058d1824169a45101fafe70bb8c61adcce606",
+      "validation": "9/9 showcase, 0 errors, 0 warnings",
+      "browser_evidence": "passed",
+      "visual_review": "passed",
+      "correction_rounds": 1,
+      "inspected_images": [
+        "feature.visual-check.1440x900.light.png",
+        "feature.visual-check.2048x1320.dark.png"
+      ],
+      "observations": [
+        "한국어 노드·역할 구분·연결선이 읽히며 겹침이나 잘림 없음",
+        "light/dark 및 넓은 화면의 배치 확인"
+      ],
+      "readme_capture": {
+        "path": "feature.png",
+        "sha256": "1e5281c5e1e0d217e9616795ce1ddf10d1f85e2dc35677283198c303b99be106"
+      }
+    }
+  ],
+  "notes": [
+    "refactor dark 캡처에서 불완전 페인트를 발견해 같은 HTML의 visual-check를 단독 재실행하고 최신 캡처를 재확인함",
+    "기능 동작·모델 판단·모바일·모든 export 형식 검증을 뜻하지 않음"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "deliver",
+  "type": "architecture",
+  "input": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/docs/diagrams/guide/architecture.json",
+  "output": "/Volumes/Storage2TB/Projects/github/1.personal-project/7.frontend-system/docs/diagrams/guide/architecture.html",
+  "specification": {
+    "sha256": "1c2a30b1a6fc9185b9f8f1e55bcf218fc810e140e1ba34c26d0601852c16e015",
+    "bytes": 4029
+  },
+  "artifact": {
+    "sha256": "48ea632068d621386e181c6b135828dfdec144f1ab84374dfc78fd50fc869377",
+    "bytes": 809072
+  },
+  "validation": {
+    "checksPassed": 9,
+    "checkCount": 9,
+    "compositionProfile": "showcase",
+    "compositionStatus": "pass",
+    "errors": 0,
+    "warnings": 0
+  },
+  "evidence": {
+    "verified": true,
+    "repository": "https://github.com/Yelihi/frontend-system",
+    "revision": "810484e78df91329ff5af6f792d3ab522e5af1d5",
+    "references": 8
+  }
+}

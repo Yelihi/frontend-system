@@ -1,0 +1,223 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "01 · 새 프로젝트 시작",
+    "quality_profile": "showcase",
+    "legend": {
+      "entries": {
+        "external": {
+          "label": "사용자 · 결정"
+        },
+        "backend": {
+          "label": "AI model · 해석과 구현"
+        },
+        "security": {
+          "label": "FS · 절차와 검증"
+        }
+      }
+    }
+  },
+  "lanes": [
+    {
+      "id": "user",
+      "label": "사용자"
+    },
+    {
+      "id": "ai",
+      "label": "AI model"
+    },
+    {
+      "id": "fs",
+      "label": "FS"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "request",
+      "lane": "user",
+      "col": 0,
+      "type": "external",
+      "label": "서비스 목적 전달",
+      "sublabel": "fs-plan · 사용자 요청",
+      "width": 184,
+      "height": 78
+    },
+    {
+      "id": "context",
+      "lane": "fs",
+      "col": 0,
+      "type": "security",
+      "label": "신규 프로젝트 확인",
+      "sublabel": "분석 필요 / 재사용 판정",
+      "width": 184,
+      "height": 78
+    },
+    {
+      "id": "design",
+      "lane": "ai",
+      "col": 1,
+      "type": "backend",
+      "label": "요구사항 · 구조 제안",
+      "sublabel": "MVP · 도메인 · 실행 환경",
+      "width": 184,
+      "height": 78
+    },
+    {
+      "id": "view",
+      "lane": "fs",
+      "col": 1,
+      "type": "security",
+      "label": "흐름 HTML 생성",
+      "sublabel": "계약 · learned · 테스트 연결",
+      "width": 184,
+      "height": 78
+    },
+    {
+      "id": "approve",
+      "lane": "user",
+      "col": 2,
+      "type": "external",
+      "label": "설계 · 테스트 확정",
+      "sublabel": "시각화 피드백 → 구현 요청",
+      "width": 184,
+      "height": 78
+    },
+    {
+      "id": "plan",
+      "lane": "fs",
+      "col": 2,
+      "type": "security",
+      "label": "계획 버전 고정",
+      "sublabel": "plan.md · 참조 · 승인 기록",
+      "width": 184,
+      "height": 78
+    },
+    {
+      "id": "implement",
+      "lane": "ai",
+      "col": 3,
+      "type": "backend",
+      "label": "테스트 · 구현 · 리뷰",
+      "sublabel": "합의한 범위에서 계속 진행",
+      "width": 184,
+      "height": 78
+    },
+    {
+      "id": "verify",
+      "lane": "fs",
+      "col": 3,
+      "type": "security",
+      "label": "검사 · 근거 검증",
+      "sublabel": "타입 · lint · 테스트 기록",
+      "width": 184,
+      "height": 78
+    },
+    {
+      "id": "feedback",
+      "lane": "user",
+      "col": 4,
+      "type": "external",
+      "label": "CLI 결과 피드백",
+      "sublabel": "변경 내용 · 재현 방법 확인",
+      "width": 184,
+      "height": 78
+    },
+    {
+      "id": "gate",
+      "lane": "fs",
+      "col": 4,
+      "type": "security",
+      "label": "PR 준비 판정",
+      "sublabel": "필수 검사 · 리뷰 · 피드백",
+      "width": 184,
+      "height": 78
+    },
+    {
+      "id": "pr",
+      "lane": "ai",
+      "col": 5,
+      "type": "backend",
+      "label": "이슈별 PR 생성",
+      "sublabel": "하나의 도메인 흐름 단위",
+      "width": 184,
+      "height": 78
+    }
+  ],
+  "edges": [
+    {
+      "id": "step-0",
+      "from": "request",
+      "to": "context",
+      "role": "main"
+    },
+    {
+      "id": "step-1",
+      "from": "context",
+      "to": "design",
+      "role": "main"
+    },
+    {
+      "id": "step-2",
+      "from": "design",
+      "to": "view",
+      "role": "main"
+    },
+    {
+      "id": "step-3",
+      "from": "view",
+      "to": "approve",
+      "role": "main"
+    },
+    {
+      "id": "step-4",
+      "from": "approve",
+      "to": "plan",
+      "role": "main",
+      "route": "straight"
+    },
+    {
+      "id": "step-5",
+      "from": "plan",
+      "to": "implement",
+      "role": "main"
+    },
+    {
+      "id": "step-6",
+      "from": "implement",
+      "to": "verify",
+      "role": "main"
+    },
+    {
+      "id": "step-7",
+      "from": "verify",
+      "to": "feedback",
+      "role": "main"
+    },
+    {
+      "id": "step-8",
+      "from": "feedback",
+      "to": "gate",
+      "role": "main"
+    },
+    {
+      "id": "step-9",
+      "from": "gate",
+      "to": "pr",
+      "role": "main"
+    }
+  ],
+  "mainPath": [
+    "request",
+    "context",
+    "design",
+    "view",
+    "approve",
+    "plan",
+    "implement",
+    "verify",
+    "feedback",
+    "gate",
+    "pr"
+  ]
+}

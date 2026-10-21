@@ -1,0 +1,213 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "FS · 지식과 구현을 연결하는 구조",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "https://github.com/Yelihi/frontend-system",
+      "revision": "810484e78df91329ff5af6f792d3ab522e5af1d5"
+    }
+  },
+  "components": [
+    {
+      "id": "developer",
+      "type": "external",
+      "label": "사용자",
+      "sublabel": "목적 · 선택 · 피드백",
+      "pos": [
+        30,
+        300
+      ],
+      "size": [
+        200,
+        82
+      ],
+      "sources": [
+        {
+          "path": "references/workflows/user-decisions.md"
+        }
+      ]
+    },
+    {
+      "id": "host",
+      "type": "backend",
+      "label": "AI model",
+      "sublabel": "코드 해석 · 설계 · 구현 · 리뷰",
+      "pos": [
+        340,
+        300
+      ],
+      "size": [
+        200,
+        82
+      ],
+      "sources": [
+        {
+          "path": "skills/fs-work/SKILL.md"
+        }
+      ]
+    },
+    {
+      "id": "tools",
+      "type": "security",
+      "label": "FS 도구",
+      "sublabel": "검색 · 계약 검증 · 실행 기록",
+      "pos": [
+        650,
+        300
+      ],
+      "size": [
+        200,
+        82
+      ],
+      "sources": [
+        {
+          "path": "src/mcp.ts"
+        }
+      ]
+    },
+    {
+      "id": "records",
+      "type": "database",
+      "label": "프로젝트 기록",
+      "sublabel": "흐름 · 결정 · 계획 · 검사",
+      "pos": [
+        960,
+        300
+      ],
+      "size": [
+        200,
+        82
+      ],
+      "sources": [
+        {
+          "path": "src/application/project-store.ts"
+        }
+      ]
+    },
+    {
+      "id": "skills",
+      "type": "frontend",
+      "label": "FS 스킬",
+      "sublabel": "명령별 작업 절차와 규칙",
+      "pos": [
+        340,
+        70
+      ],
+      "size": [
+        200,
+        82
+      ],
+      "sources": [
+        {
+          "path": "skills/fs-plan/SKILL.md"
+        }
+      ]
+    },
+    {
+      "id": "knowledge",
+      "type": "database",
+      "label": "learned + index",
+      "sublabel": "원문 검토 → sync → 배포",
+      "pos": [
+        650,
+        70
+      ],
+      "size": [
+        200,
+        82
+      ],
+      "sources": [
+        {
+          "path": "src/application/knowledge/routing.ts"
+        }
+      ]
+    },
+    {
+      "id": "code",
+      "type": "external",
+      "label": "실제 프로젝트",
+      "sublabel": "소스 · 설정 · 테스트 · 화면",
+      "pos": [
+        340,
+        530
+      ],
+      "size": [
+        200,
+        82
+      ],
+      "sources": [
+        {
+          "path": "src/application/knowledge/code-triggers.ts"
+        }
+      ]
+    },
+    {
+      "id": "views",
+      "type": "frontend",
+      "label": "문서와 시각화",
+      "sublabel": "project.md · plan.md · HTML",
+      "pos": [
+        960,
+        530
+      ],
+      "size": [
+        200,
+        82
+      ],
+      "sources": [
+        {
+          "path": "src/application/project-visualization.ts"
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "intent",
+      "from": "developer",
+      "to": "host",
+      "label": "요구와 선택"
+    },
+    {
+      "id": "procedure",
+      "from": "skills",
+      "to": "host",
+      "label": "작업 지침",
+      "labelDy": 80
+    },
+    {
+      "id": "inspect",
+      "from": "code",
+      "to": "host",
+      "label": "소스와 실행 근거"
+    },
+    {
+      "id": "tool-call",
+      "from": "host",
+      "to": "tools",
+      "label": "MCP 호출"
+    },
+    {
+      "id": "retrieve",
+      "from": "knowledge",
+      "to": "tools",
+      "label": "조건 · 근거 · 예외",
+      "labelDy": 80
+    },
+    {
+      "id": "persist",
+      "from": "tools",
+      "to": "records",
+      "label": "검증 후 저장"
+    },
+    {
+      "id": "render",
+      "from": "records",
+      "to": "views",
+      "label": "같은 데이터로 생성",
+      "labelDy": 80
+    }
+  ]
+}
