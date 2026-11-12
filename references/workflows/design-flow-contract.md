@@ -150,3 +150,12 @@ feedback too: project-only, reusable, needs-context or rejected. Repetition is n
 Publishing shared knowledge still uses an explicitly authorized pending contribution and
 the existing active/review/sync process. A local design decision can apply immediately
 without publishing it, and a newly synced reference never silently rewrites an approved plan.
+
+## Optional four-tab review
+
+For a detailed interactive review, use `review.version:1` on the canonical flow and
+follow [the packaged review model](../../skills/fs-plan-visualize/references/page-flow.md#four-tab-review).
+The same scenario owns the ordered calls, typed field changes, invariant and test
+references; the HTML is a projection. Keep existing project theme/font families and
+accepted layout. Copy edits update their UI/contract/test projections together.
+Local plan confirmation is distinct from FS approval, implementation and execution.

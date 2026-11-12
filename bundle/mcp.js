@@ -94,7 +94,7 @@ import {
   verifyReviews,
   verifyStep,
   workflowContext
-} from "./chunks/chunk-BTBRH2GJ.js";
+} from "./chunks/chunk-DHIZO2QU.js";
 import {
   $ZodObject,
   $ZodType,
@@ -132,7 +132,9 @@ import {
   url,
   uuid
 } from "./chunks/chunk-MHL22X7X.js";
-import "./chunks/chunk-VEDZPQTV.js";
+import {
+  projectReviewView
+} from "./chunks/chunk-SVSDD2DJ.js";
 import {
   __commonJS,
   __toESM
@@ -13077,8 +13079,8 @@ function flowToMermaid(flow, scenarioId) {
   }
   for (const n of flow.nodes.filter((n2) => !n2.parent)) node(n.id, "  ");
   const scenario = flow.scenarios.find((s) => s.id === scenarioId);
-  for (const [i, edge] of flow.edges.filter((e) => !scenario || scenario.steps.some((s) => s.edge === e.id)).entries()) {
-    const steps = scenario?.steps.flatMap((s, j) => s.edge === edge.id ? [j + 1] : []) ?? [];
+  for (const [i, edge] of flow.edges.filter((e) => !scenario || scenario.steps.some((s) => (s.review?.edgeIds ?? [s.edge]).includes(e.id))).entries()) {
+    const steps = scenario?.steps.flatMap((s, j) => (s.review?.edgeIds ?? [s.edge]).includes(edge.id) ? [j + 1] : []) ?? [];
     lines.push(`  ${ids.get(edge.from)} -->|"${label(`${steps.length ? `${steps.join("/")} \xB7 ` : ""}${edge.label}${edge.condition ? ` [${edge.condition}]` : ""}`)}"| ${ids.get(edge.to)}`);
     if (steps.length) lines.push(`  linkStyle ${i} stroke:#0369a1,stroke-width:3px`);
   }
@@ -13188,6 +13190,7 @@ function projectFlowView(flow, flowHash, plan) {
     basis: flow.basis,
     baseline: { commit: flow.scope.snapshot?.expectedCommit, flow: { id: flow.id, hash: flowHash } },
     designState: flow.designState ?? null,
+    ...flow.review ? { review: projectReviewView(flow, flowHash) } : {},
     nodes: flow.nodes.map((node) => ({
       id: viewId(node.id),
       sourceId: node.id,
@@ -13385,6 +13388,7 @@ function composeProjectViews(parts, baseline, hash3) {
     sources: []
   };
   const screens = {};
+  result2.reviewFlows = [];
   for (const { flow, spec, screens: assets } of parts) {
     const nodeIds = new Map(flow.nodes.map((n) => [encoded(n.id), encoded(n.entityId ? `entity:${n.entityId}` : `${flow.id}:node:${n.id}`)]));
     const node = (id) => {
@@ -13393,6 +13397,7 @@ function composeProjectViews(parts, baseline, hash3) {
       return found;
     };
     const scoped = (id) => encoded(`${flow.id}:${id}`);
+    if (spec.review) result2.reviewFlows.push({ ...spec.review, captureRefs: Object.fromEntries((flow.pages ?? []).flatMap((p) => p.scenes.map((s) => [s.id, `${node(encoded(p.node))}:${scoped(encoded(s.id))}`]))) });
     const instance = (id) => {
       const item = spec.instances.find((i) => i.id === id);
       if (!item) throw new Error("Unknown component instance");

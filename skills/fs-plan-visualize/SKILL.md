@@ -118,3 +118,9 @@ do not fabricate a saved record or claim a mock diagram represents the project.
 For follow-up design decisions or implementation, carry the cited findings into
 `fs-plan`/`fs-work` within the user's requested scope. Visualization alone does not
 require either workflow or a separate approval ceremony.
+
+For a requested four-tab design review, use the optional canonical `review.version:1`
+model described in [page-flow](references/page-flow.md#four-tab-review). Keep the
+current FS theme and font families unless the user requests a theme change. Save and
+render through the existing tools; local HTML confirmations are drafts, not approval
+or test execution. Existing records retain their original viewer.

@@ -1,0 +1,18 @@
+Supplied source excerpt turn-source · src/views/recording/services/hooks/useRecordingTurn.ts
+await saveRecording(audio);
+
+Supplied source excerpt failure-source · src/views/recording/services/hooks/useRecordingTurn.ts
+saveFailure();
+
+Supplied source excerpt persistence-source · src/views/recording/services/hooks/useRoleplayRecordingPersistence.ts
+const recordingIdByBlob = useRef(new WeakMap<Blob, string>());
+
+Supplied source excerpt store-source · src/views/recording/models/stores/createRecordingSessionStore.ts
+saveFailure: () => set({ phase: "recorded", saving: false, saveFailed: true } as Partial<T>),
+
+Supplied source excerpt capture-source · src/features/session-recording/services/hooks/useRecordingSession.ts
+const [state, dispatch] = useReducer(recordingSessionReducer, { status: "idle" });
+
+Supplied source excerpt package-source · package.json
+"@tanstack/react-query": "^5.75.0",
+

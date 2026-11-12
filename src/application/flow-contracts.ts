@@ -1,7 +1,9 @@
+import {validateFlowReview} from './flow-review.js';
 import type {ProjectFlow} from './flow-schema.js';
 import type {BoundEvidence} from './design-evidence.js';
 
 export function validateStructuredFlow(flow: ProjectFlow) {
+  validateFlowReview(flow);
   const nodes = new Map(flow.nodes.map(node => [node.id, node]));
   const edges = new Set(flow.edges.map(edge => edge.id));
   const scenarios = new Set(flow.scenarios.map(scenario => scenario.id));

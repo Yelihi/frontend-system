@@ -1,0 +1,278 @@
+{
+  "id": "upload-review",
+  "title": "업로드 실패 후 재시도",
+  "basis": "proposed",
+  "summary": "작은 별도 프로젝트의 업로드 검토 fixture",
+  "scope": {
+    "files": [
+      "source-evidence.txt"
+    ],
+    "discoveryRoots": [
+      "."
+    ]
+  },
+  "evidence": {},
+  "designState": "draft",
+  "nodes": [
+    {
+      "id": "page",
+      "kind": "page",
+      "label": "UploadPage",
+      "evidence": [],
+      "architecture": {
+        "layer": "upload",
+        "runtime": "browser",
+        "responsibility": "UploadPage 역할"
+      },
+      "review": {
+        "changeKind": "unknown",
+        "reason": "범용 renderer 검사",
+        "contractIds": []
+      }
+    },
+    {
+      "id": "panel",
+      "kind": "component",
+      "label": "UploadPanel",
+      "evidence": [],
+      "architecture": {
+        "layer": "upload",
+        "runtime": "browser",
+        "responsibility": "UploadPanel 역할"
+      },
+      "review": {
+        "changeKind": "unknown",
+        "reason": "범용 renderer 검사",
+        "contractIds": [],
+        "graph": {
+          "row": 1,
+          "col": 1,
+          "caption": "UploadPanel"
+        }
+      },
+      "parent": "page"
+    },
+    {
+      "id": "uploader",
+      "kind": "module",
+      "label": "sendUpload",
+      "evidence": [],
+      "architecture": {
+        "layer": "upload",
+        "runtime": "browser",
+        "responsibility": "sendUpload 역할"
+      },
+      "review": {
+        "changeKind": "added",
+        "reason": "범용 renderer 검사",
+        "contractIds": [
+          "upload-contract"
+        ],
+        "graph": {
+          "row": 2,
+          "col": 1,
+          "caption": "sendUpload"
+        },
+        "flowCard": {
+          "order": 0,
+          "kind": "업로드 서비스"
+        }
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "upload",
+      "from": "panel",
+      "to": "uploader",
+      "kind": "call",
+      "label": "upload(file)",
+      "evidence": []
+    }
+  ],
+  "pages": [
+    {
+      "node": "page",
+      "route": "/upload",
+      "scenes": [
+        {
+          "id": "ready",
+          "title": "업로드 준비",
+          "kind": "idle",
+          "description": "합성 업로드 와이어프레임",
+          "blocks": [
+            {
+              "node": "panel",
+              "role": "action",
+              "label": "업로드"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "upload-case",
+      "title": "파일 업로드",
+      "entry": "panel",
+      "event": "업로드 클릭",
+      "steps": [
+        {
+          "edge": "upload",
+          "effect": "업로드 요청",
+          "views": [
+            {
+              "page": "page",
+              "scene": "ready"
+            }
+          ],
+          "review": {
+            "id": "upload-step",
+            "title": "업로드 요청",
+            "code": "upload(file)",
+            "edgeIds": [
+              "upload"
+            ],
+            "ruleIds": [
+              "u1"
+            ],
+            "testIds": [
+              "unit-upload"
+            ],
+            "changes": [
+              {
+                "fieldId": "attempts",
+                "before": 0,
+                "after": 1,
+                "changeKind": "changed",
+                "basis": "proposed"
+              }
+            ]
+          }
+        }
+      ],
+      "outcome": "업로드 결과 확인",
+      "limitations": []
+    }
+  ],
+  "testCases": [
+    {
+      "id": "unit-upload",
+      "scenarioId": "upload-case",
+      "given": "고정 파일",
+      "when": "upload 실행",
+      "then": "요청 1회",
+      "method": "unit",
+      "review": {
+        "title": "요청 횟수 확인",
+        "runner": "Vitest",
+        "layer": "unit",
+        "setup": [
+          "새 uploader 인스턴스"
+        ],
+        "mutation": "중복 요청 시 실패",
+        "limits": "실제 서버 미검증",
+        "nodeIds": [
+          "uploader"
+        ],
+        "ruleIds": [
+          "u1"
+        ],
+        "stepIds": [
+          "upload-step"
+        ]
+      }
+    }
+  ],
+  "invariants": [
+    {
+      "id": "u1",
+      "statement": "업로드 요청은 한 번만 전송",
+      "authority": "proposed",
+      "evidence": [],
+      "review": {
+        "title": "단일 요청",
+        "status": "제안",
+        "nodeIds": [
+          "uploader"
+        ],
+        "testIds": [
+          "unit-upload"
+        ],
+        "source": "upload.ts"
+      }
+    }
+  ],
+  "limitations": [
+    "합성 fixture · 실제 업로드 구현 아님"
+  ],
+  "review": {
+    "version": 1,
+    "projectLabel": "Upload Lab",
+    "sourceCommit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "domain": {
+      "name": "파일 업로드",
+      "scope": "파일 전송",
+      "terms": [
+        {
+          "term": "파일",
+          "meaning": "전송 대상"
+        }
+      ],
+      "excluded": [
+        "서버 구현"
+      ]
+    },
+    "contracts": [
+      {
+        "id": "upload-contract",
+        "title": "전송 계약",
+        "status": "신규 제안",
+        "path": "upload.ts",
+        "nodeIds": [
+          "uploader"
+        ],
+        "signature": "upload(file: File): Promise<void>; // </script><script>window.injected=true</script>",
+        "description": "파일 전송",
+        "evidence": [],
+        "changeKind": "added"
+      }
+    ],
+    "fields": [
+      {
+        "id": "attempts",
+        "ownerNodeId": "uploader",
+        "name": "attempts",
+        "fieldKind": "result",
+        "type": "number",
+        "description": "전송 횟수",
+        "initial": 0,
+        "evidence": []
+      }
+    ],
+    "screens": [
+      {
+        "sceneId": "ready",
+        "title": "업로드 화면",
+        "blocks": [
+          {
+            "id": "upload-action",
+            "role": "actions",
+            "nodeId": "panel",
+            "label": "전송",
+            "content": [
+              "취소",
+              "보내기"
+            ]
+          }
+        ]
+      }
+    ],
+    "edits": [],
+    "graphNote": "라이브러리 없음",
+    "dependencyEdgeIds": [
+      "upload"
+    ]
+  }
+}

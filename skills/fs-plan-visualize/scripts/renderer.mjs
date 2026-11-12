@@ -125,8 +125,15 @@ for (const node of spec.nodes.filter(node=>!['page','component'].includes(node.k
 const specHash = createHash('sha256').update(JSON.stringify(spec)).digest('hex');
 const boardScript = await readFile(new URL('board.js', source), 'utf8');
 const routesScript = await readFile(new URL('routes.js', source), 'utf8');
-const template = (await readFile(new URL('viewer.html', source), 'utf8'))
+let template = (await readFile(new URL('viewer.html', source), 'utf8'))
   .replace('/*__BOARD_SCRIPT__*/', () => boardScript).replace('/*__ROUTES_SCRIPT__*/', () => routesScript);
+const reviewAssets=spec.review||spec.reviewFlows?.length?await Promise.all(['review-viewer.css','review-viewer.js','review-edges.js','review-viewer.html'].map(name=>readFile(new URL(name,source),'utf8'))):null;
+const reviewTemplate=reviewAssets?reviewAssets[3].replace('/*__REVIEW_CSS__*/',()=>reviewAssets[0]).replace('/*__REVIEW_SCRIPT__*/',()=>reviewAssets[1]).replace('/*__REVIEW_EDGES__*/',()=>reviewAssets[2]):null;
+if(spec.review){
+ assert.equal(spec.review.version,1,'Unsupported review version');
+ assert.ok(spec.canonical,'Review viewer requires a canonical flow');
+ template=reviewTemplate;
+}
 const templateHash = createHash('sha256').update(template).digest('hex');
 if (Object.keys(assets).length) {
   if(spec.canonical)assert.equal(assets.flowHash,spec.baseline.flow.hash,'Capture belongs to another flow version');
@@ -149,6 +156,19 @@ const missingScreens=expectedScreens.filter(key=>!assets.screens?.[key]);
 const captureCoverage={status:missingScreens.length?'incomplete':'complete',expected:expectedScreens.length,captured:expectedScreens.length-missingScreens.length,missing:missingScreens};
 
 const json=value=>JSON.stringify(value).replaceAll('<','\\u003c');
-return {spec,html:template.replace('/*__SPEC__*/',()=>json(spec)).replace('/*__ASSETS__*/',()=>json(assets.screens??{})),
- captureInput:{specHash,templateHash,flowHash:spec.baseline?.flow?.hash,scenes,captureCoverage},captureCoverage};
+const captureScreens=Object.fromEntries(spec.pages.flatMap(page=>(page.sceneDetails??[]).flatMap(scene=>{
+ const asset=assets.screens?.[page.id+':'+scene.id];
+ return asset?[[scene.sourceId,{...asset,regions:asset.regions.map(region=>({...region,nodeId:spec.instances.find(i=>i.id===region.instance)?.sourceId.replace(/-instance$/,'')}))}]]:[];
+})));
+let html=template.replace('/*__REVIEW_DATA__*/',()=>json({...spec.review,freshness:spec.freshness,initialScenario:spec.initialScenario,captureScreens})).replace('/*__SPEC__*/',()=>json(spec)).replace('/*__ASSETS__*/',()=>json(assets.screens??{}));
+if(spec.reviewFlows?.length){
+ assert.ok(spec.canonical,'Aggregate reviews require canonical flows');
+ const views=[{title:'전체 프로젝트',html},...spec.reviewFlows.map(review=>{
+  assert.equal(review.version,1,'Unsupported review version');
+  const captureScreens=Object.fromEntries(Object.entries(review.captureRefs??{}).flatMap(([scene,key])=>assets.screens?.[key]?[[scene,{...assets.screens[key],regions:assets.screens[key].regions.map(region=>({...region,nodeId:spec.instances.find(i=>i.id===region.instance)?.sourceId.replace(/-instance$/,'')}))}]]:[]));
+  return {title:review.title,html:reviewTemplate.replace('/*__REVIEW_DATA__*/',()=>json({...review,captureScreens}))};
+ })];
+ html=`<!doctype html><html lang="ko"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FS · 프로젝트 검토</title><style>body{margin:0;font:14px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f8f9fb}header{padding:12px 20px;border-bottom:1px solid #e2e5ea}select{font:inherit;padding:7px}iframe{display:block;width:100%;height:calc(100vh - 60px);border:0}</style><header><label>검토 흐름 <select></select></label></header><iframe title="프로젝트 흐름 검토"></iframe><script>const views=${json(views)},select=document.querySelector('select'),frame=document.querySelector('iframe');views.forEach((v,i)=>{const o=document.createElement('option');o.value=i;o.textContent=v.title;select.append(o)});select.onchange=()=>frame.srcdoc=views[select.value].html;select.onchange();</script></html>`;
+}
+return {spec,html,captureInput:{specHash,templateHash,flowHash:spec.baseline?.flow?.hash,scenes,captureCoverage},captureCoverage};
 }

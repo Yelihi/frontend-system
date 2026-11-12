@@ -7,6 +7,8 @@ import {projectFile, projectFileBytes} from './source-file.js';
 import {contentHash, readReferenceIndex} from './knowledge/reference-index.js';
 import {createHash} from 'node:crypto';
 
+import {projectReviewView} from './flow-review.js';
+
 const viewId = (id: string) => 'v' + Buffer.from(id).toString('hex');
 const captureSchema = z.object({flowHash: sha256, sourceCommit: z.string().regex(/^[a-f0-9]{40}$/).optional(),
   screens: z.array(z.object({page: analysisId, scene: analysisId, kind: z.enum(['capture','mockup']),
@@ -30,6 +32,7 @@ export function projectFlowView(flow: ProjectFlow, flowHash: string, plan?: Flow
     schemaVersion:'page-flow-2',canonical:true,title:flow.title,basis:flow.basis,
     baseline:{commit:flow.scope.snapshot?.expectedCommit,flow:{id:flow.id,hash:flowHash}},
     designState:flow.designState??null,
+    ...(flow.review?{review:projectReviewView(flow,flowHash)}:{}),
     nodes:flow.nodes.map(node=>({id:viewId(node.id),sourceId:node.id,kind:node.kind,name:node.label,basis:flow.basis,
       parent:node.parent?viewId(node.parent):null,props:node.props,state:node.state,events:node.events,lifecycle:node.lifecycle,
       signature:node.contracts?.map(c=>`${c.path}\n${c.signature}`).join('\n\n')??'',contracts:node.contracts??[],

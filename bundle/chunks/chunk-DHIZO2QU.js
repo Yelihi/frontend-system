@@ -2,6 +2,7 @@ import { createRequire as __fsCreateRequire } from 'node:module'; import { fileU
 import {
   PROJECT_SOURCE_MAX_BYTES,
   _enum,
+  _null,
   array,
   assertProjectSourceSize,
   boolean,
@@ -17,11 +18,12 @@ import {
   record,
   strictObject,
   string,
-  union
+  union,
+  url
 } from "./chunk-MHL22X7X.js";
 import {
   validateStructuredFlow
-} from "./chunk-VEDZPQTV.js";
+} from "./chunk-SVSDD2DJ.js";
 
 // src/application/git-state.ts
 import { execFile } from "node:child_process";
@@ -412,19 +414,19 @@ var policyInputSchema = policyObject.extend({
 });
 var policySchema = policyObject.superRefine((policy, context) => {
   for (const group of [policy.rules, policy.checks, policy.reviews, policy.exceptions]) {
-    if (new Set(group.map(({ id: id4 }) => id4)).size !== group.length) context.addIssue({ code: "custom", message: "Duplicate policy IDs" });
+    if (new Set(group.map(({ id: id5 }) => id5)).size !== group.length) context.addIssue({ code: "custom", message: "Duplicate policy IDs" });
   }
-  const ids = new Set(policy.rules.map(({ id: id4 }) => id4));
+  const ids2 = new Set(policy.rules.map(({ id: id5 }) => id5));
   for (const check of policy.checks) {
     if (check.guardPaths?.some((path) => !policy.guards.some((guard) => guard.path === path))) {
       context.addIssue({ code: "custom", message: `Check references an unpinned verification asset: ${check.id}` });
     }
   }
   for (const item of [...policy.checks, ...policy.reviews]) {
-    if (item.ruleIds.some((id4) => !ids.has(id4))) context.addIssue({ code: "custom", message: "Unknown policy rule" });
+    if (item.ruleIds.some((id5) => !ids2.has(id5))) context.addIssue({ code: "custom", message: "Unknown policy rule" });
   }
   for (const exception of policy.exceptions) {
-    if (!ids.has(exception.ruleId)) context.addIssue({ code: "custom", message: "Unknown exception rule" });
+    if (!ids2.has(exception.ruleId)) context.addIssue({ code: "custom", message: "Unknown exception rule" });
     if (!policy.reviews.some((review) => review.ruleIds.includes(exception.ruleId))) context.addIssue({ code: "custom", message: "Migration exception requires a resolution review" });
   }
   for (const rule of policy.rules.filter((rule2) => rule2.obligation === "required")) {
@@ -459,26 +461,85 @@ function policyFailures(policy, scripts, files) {
   ];
 }
 
+// src/application/flow-review-schema.ts
+var id = string().regex(/^[a-zA-Z0-9][a-zA-Z0-9._-]{0,99}$/);
+var text = string().min(1).max(4e3);
+var changeKind = _enum(["existing", "modified", "added", "unknown"]);
+var fieldValue = union([string().max(1600), number().finite(), boolean(), _null(), object({ status: _enum(["unknown", "absent"]) }).strict()]);
+var ids = array(id).max(80);
+var reviewStepSchema = object({
+  id,
+  title: text,
+  code: text,
+  edgeIds: ids.min(1),
+  ruleIds: ids,
+  testIds: ids,
+  changes: array(object({ fieldId: id, before: fieldValue, after: fieldValue, changeKind: _enum(["changed", "preserved"]), basis: _enum(["source", "measured", "proposed"]) }).strict()).max(40)
+}).strict();
+var reviewTestSchema = object({ title: text, runner: text, layer: text, setup: array(text), mutation: text, limits: text, nodeIds: ids, ruleIds: ids, stepIds: ids }).strict();
+var reviewNodeSchema = object({
+  changeKind,
+  reason: text,
+  contractIds: ids,
+  flowCard: object({ order: number().int().min(0), kind: text }).strict().optional(),
+  graph: object({ row: number().int().min(1).max(30), col: number().int().min(1).max(3), caption: text }).strict().optional()
+}).strict();
+var block = object({
+  id,
+  role: _enum(["progress", "content", "microphone", "timer", "feedback", "player", "actions"]),
+  nodeId: id,
+  label: text,
+  content: array(text).max(12),
+  value: number().min(0).max(100).optional(),
+  editId: id.optional()
+}).strict();
+var flowReviewSchema = object({
+  version: literal(1),
+  projectLabel: text,
+  sourceCommit: string().regex(/^[a-f0-9]{40}$/),
+  sourceBaseUrl: url().refine((v) => v.startsWith("https://"), "Source links require HTTPS").optional(),
+  domain: object({ name: text, scope: text, terms: array(object({ term: text, meaning: text }).strict()), excluded: array(text) }).strict(),
+  contracts: array(object({ id, title: text, status: text, path: localPath, nodeIds: ids.min(1), signature: text, description: text, evidence: ids, changeKind }).strict()).max(80),
+  fields: array(object({ id, ownerNodeId: id, name: text, fieldKind: _enum(["state", "ref", "db", "result", "unknown"]), type: text, description: text, display: _enum(["badge", "table", "both"]).default("both"), initial: fieldValue, evidence: ids }).strict()).max(160),
+  screens: array(object({ sceneId: id, title: text, blocks: array(block).min(1).max(30) }).strict()).min(1).max(80),
+  edits: array(object({
+    id,
+    title: text,
+    initial: text,
+    existing: text,
+    maxLength: number().int().positive().max(1600),
+    nodeIds: ids,
+    contractIds: ids,
+    testIds: ids,
+    ruleIds: ids,
+    signatureToken: text.optional()
+  }).strict()).max(12),
+  graphNote: text,
+  dependencyEdgeIds: ids
+}).strict();
+
 // src/application/flow-schema.ts
 var analysisId = string().regex(/^[a-z0-9][a-z0-9._-]{0,99}$/);
-var text = string().trim().min(1).max(1600);
-var flowCitation = object({ path: localPath, quote: text, line: number().int().positive().optional() });
+var text2 = string().trim().min(1).max(1600);
+var flowCitation = object({ path: localPath, quote: text2, line: number().int().positive().optional() });
 var evidence = array(analysisId).max(20);
-var designImage = object({ path: localPath, hash: sha256, alt: text });
+var designImage = object({ path: localPath, hash: sha256, alt: text2 });
 var flowTestCaseSchema = object({
   id: analysisId,
   scenarioId: analysisId,
-  given: text,
-  when: text,
-  then: text,
+  given: text2,
+  when: text2,
+  then: text2,
+  review: reviewTestSchema.optional(),
   method: _enum(["unit", "integration", "e2e", "manual"])
 });
 var outcomeKind = _enum(["idle", "loading", "success", "empty", "error", "cancelled", "retry", "custom"]);
 var flowSchema = object({
   id: analysisId,
-  title: text,
+  title: text2,
   basis: _enum(["observed", "proposed"]),
-  summary: text,
+  summary: text2,
+  review: flowReviewSchema.optional(),
   scope: object({
     files: array(localPath).min(1).max(100),
     discoveryMode: _enum(["source", "all"]).default("source").describe("source tracks new code/config/data files, not Markdown reports. Use all for Markdown-driven routes/content. Explicit files are always hashed."),
@@ -489,18 +550,18 @@ var flowSchema = object({
   designState: _enum(["draft", "ready"]).optional().describe("New structured designs start draft; ready permits plan binding, not implementation approval."),
   pages: array(object({
     node: analysisId,
-    route: text,
-    domain: text.optional(),
+    route: text2,
+    domain: text2.optional(),
     scenes: array(object({
       id: analysisId,
-      title: text,
+      title: text2,
       kind: outcomeKind,
-      description: text,
+      description: text2,
       blocks: array(object({
         node: analysisId,
         role: _enum(["heading", "input", "action", "list", "content", "feedback", "navigation"]),
-        label: text,
-        content: array(text).max(12).optional(),
+        label: text2,
+        content: array(text2).max(12).optional(),
         span: _enum(["full", "half"]).optional()
       })).max(30).optional().describe("Ordered proposed wireframe regions; not evidence of the existing UI.")
     })).min(1).max(20)
@@ -509,8 +570,8 @@ var flowSchema = object({
     id: analysisId,
     from: analysisId,
     to: analysisId,
-    label: text,
-    condition: text,
+    label: text2,
+    condition: text2,
     evidence
   })).max(200).optional(),
   knowledge: array(object({
@@ -518,7 +579,7 @@ var flowSchema = object({
     referenceId: analysisId,
     referenceHash: sha256,
     judgment: _enum(["apply", "keep", "not-applicable", "needs-context", "needs-decision"]),
-    rationale: text,
+    rationale: text2,
     decisionId: analysisId.optional(),
     evidence,
     nodes: array(analysisId),
@@ -528,7 +589,7 @@ var flowSchema = object({
   testCases: array(flowTestCaseSchema).max(80).optional(),
   checks: array(object({
     id: analysisId,
-    requirement: text,
+    requirement: text2,
     nodes: array(analysisId),
     scenarios: array(analysisId),
     testCaseIds: array(analysisId).min(1)
@@ -537,14 +598,15 @@ var flowSchema = object({
     id: analysisId,
     kind: _enum(["page", "component", "store", "cache", "module", "service", "external"]),
     entityId: analysisId.optional().describe("Explicit project-wide identity. Reuse only for the same page/state/service contract, never merely the same label."),
-    label: text,
+    label: text2,
     parent: analysisId.optional(),
-    props: array(text).default([]),
-    state: array(text).default([]),
-    events: array(text).default([]),
-    lifecycle: array(text).default([]),
+    review: reviewNodeSchema.optional(),
+    props: array(text2).default([]),
+    state: array(text2).default([]),
+    events: array(text2).default([]),
+    lifecycle: array(text2).default([]),
     evidence,
-    architecture: object({ layer: text, runtime: _enum(["browser", "server", "shared", "external"]), responsibility: text }).optional(),
+    architecture: object({ layer: text2, runtime: _enum(["browser", "server", "shared", "external"]), responsibility: text2 }).optional(),
     contracts: array(object({
       kind: _enum(["interface", "type", "function", "store"]),
       name: string().trim().min(1).max(160),
@@ -558,42 +620,44 @@ var flowSchema = object({
     from: analysisId,
     to: analysisId,
     kind: _enum(["call", "read", "write", "subscribe", "props", "return", "invalidate", "cleanup"]),
-    label: text,
-    condition: text.optional(),
+    label: text2,
+    condition: text2.optional(),
+    delivery: _enum(["normal", "lost"]).optional(),
     evidence
   })).max(200),
   scenarios: array(object({
     id: analysisId,
-    title: text,
+    title: text2,
     entry: analysisId,
-    event: text,
+    event: text2,
     category: _enum(["event", "lifecycle"]).optional(),
     variant: outcomeKind.optional(),
     steps: array(object({
       edge: analysisId,
-      effect: text,
-      condition: text.optional(),
+      review: reviewStepSchema.optional(),
+      effect: text2,
+      condition: text2.optional(),
       views: array(object({ page: analysisId, scene: analysisId })).min(1).optional(),
       changes: array(object({
         ownerNode: analysisId,
-        field: text,
-        before: text,
-        after: text,
+        field: text2,
+        before: text2,
+        after: text2,
         basis: _enum(["source", "measured", "proposed"])
       })).optional()
     })).min(1).max(80),
-    outcome: text,
-    limitations: array(text).default([])
+    outcome: text2,
+    limitations: array(text2).default([])
   })).max(20),
   design: object({
     stage: _enum(["visual-review", "detailed-design"]),
     screens: array(object({
       id: analysisId,
       page: analysisId,
-      title: text,
+      title: text2,
       reference: designImage.optional(),
       image: designImage,
-      feedback: array(text).max(20).default([]),
+      feedback: array(text2).max(20).default([]),
       confirmation: object({ evidence: analysisId, imageHash: sha256 }).optional(),
       regions: array(object({
         node: analysisId,
@@ -606,40 +670,41 @@ var flowSchema = object({
     detailRequest: analysisId.optional().describe("Evidence quoting the user request to proceed with detailed design; visual confirmation alone is insufficient."),
     quality: array(object({
       category: _enum(["accessibility", "performance", "security", "resilience", "responsive", "other"]),
-      requirement: text,
-      verification: text,
+      requirement: text2,
+      verification: text2,
       nodes: array(analysisId).min(1).max(20)
     })).max(20).default([])
   }).optional(),
   invariants: array(object({
     id: analysisId,
-    statement: text,
+    statement: text2,
     authority: _enum(["observed", "established", "proposed"]),
-    evidence
+    evidence,
+    review: object({ title: text2, status: text2, nodeIds: array(analysisId), testIds: array(analysisId), source: localPath }).strict().optional()
   })).default([]),
-  limitations: array(text).min(1).max(30)
+  limitations: array(text2).min(1).max(30)
 }).superRefine((flow, ctx) => {
   if (!flow.scenarios.length && flow.design?.stage !== "visual-review" && !(flow.pages?.length && flow.designState === "draft")) ctx.addIssue({ code: "custom", message: "Event scenarios are required outside visual review", path: ["scenarios"] });
   if (flow.design && (flow.basis !== "proposed" || flow.scope.snapshot)) ctx.addIssue({ code: "custom", message: "Design screens require a proposed working flow", path: ["design"] });
 });
 var findingSchema = object({
   id: analysisId,
-  title: text,
+  title: text2,
   flow: object({ id: analysisId, hash: sha256 }),
   kind: _enum(["violation", "choice", "hypothesis"]),
   status: _enum(["open", "deferred", "planned", "resolved", "dismissed"]),
-  observation: text,
-  consequence: text,
+  observation: text2,
+  consequence: text2,
   evidence: array(flowCitation).min(1).max(12),
   knowledgeIds: array(analysisId).default([]),
-  alternatives: array(object({ id: analysisId, description: text, cost: text })).min(1).max(6),
-  question: text.optional(),
+  alternatives: array(object({ id: analysisId, description: text2, cost: text2 })).min(1).max(6),
+  question: text2.optional(),
   authority: flowCitation.optional().describe("A violation needs a cited established requirement. This does not authorize edits."),
   resolution: object({
-    summary: text,
+    summary: text2,
     method: _enum(["static-review", "executed-check", "owner-decision"]),
     evidence: array(flowCitation).min(1),
-    reconsiderWhen: text
+    reconsiderWhen: text2
   }).optional()
 });
 var analysisReferenceSchema = object({
@@ -654,38 +719,38 @@ var analysisWriteSchema = object({
 });
 
 // src/application/knowledge/investigation.ts
-var text2 = string().trim().min(1).max(1200);
-var id = string().regex(/^[a-z0-9][a-z0-9._-]*$/);
+var text3 = string().trim().min(1).max(1200);
+var id2 = string().regex(/^[a-z0-9][a-z0-9._-]*$/);
 var investigationSchema = object({
   version: literal(1),
   questions: array(object({
-    id,
+    id: id2,
     kind: _enum(["code", "intent"]),
     role: _enum(["applicability", "exclusion", "context"]),
-    instruction: text2
+    instruction: text3
   })).min(2).max(12),
-  preserve: array(text2).min(1).max(10),
-  alternatives: array(object({ option: text2, tradeoff: text2 })).min(1).max(5),
-  onMissing: text2
+  preserve: array(text3).min(1).max(10),
+  alternatives: array(object({ option: text3, tradeoff: text3 })).min(1).max(5),
+  onMissing: text3
 }).superRefine((value, context) => {
   if (new Set(value.questions.map((q) => q.id)).size !== value.questions.length)
     context.addIssue({ code: "custom", message: "Duplicate investigation question IDs" });
   for (const role of ["applicability", "exclusion"]) if (!value.questions.some((q) => q.role === role))
     context.addIssue({ code: "custom", message: `Investigation needs an explicit ${role} question` });
 });
-var citation = object({ path: text2, line: number().int().positive(), quote: text2 });
+var citation = object({ path: text3, line: number().int().positive(), quote: text3 });
 var investigationAssessmentSchema = object({
   findings: array(object({
-    questionId: id,
+    questionId: id2,
     status: _enum(["supported", "refuted", "unknown"]),
     basis: _enum(["code", "inference", "owner", "unknown"]),
-    rationale: text2,
+    rationale: text3,
     citations: array(citation).max(8),
-    confirmation: text2.optional().describe("Required for basis owner: exact substring of a cited supplied answer/contract. A paraphrase is not confirmation; keep unknown without owner evidence.")
+    confirmation: text3.optional().describe("Required for basis owner: exact substring of a cited supplied answer/contract. A paraphrase is not confirmation; keep unknown without owner evidence.")
   })).min(1).max(12),
   action: _enum(["recommend", "repair", "ask", "inspect", "keep"]),
   authority: object({ basis: _enum(["approved-contract", "existing-behavior"]), citation }).optional(),
-  limitations: array(text2).min(1).max(10)
+  limitations: array(text3).min(1).max(10)
 });
 function validateInvestigation(spec, decision, raw) {
   if (!spec) {
@@ -857,61 +922,61 @@ function relationCollector(c, checker, paths, limit = 200) {
 import { createHash as createHash2 } from "node:crypto";
 import { readFile as readFile2, realpath as realpath2 } from "node:fs/promises";
 import { isAbsolute, relative as relative2, resolve as resolve2 } from "node:path";
-var text3 = string().min(1).max(600);
-var id2 = string().regex(/^[a-z0-9][a-z0-9._-]*$/);
+var text4 = string().min(1).max(600);
+var id3 = string().regex(/^[a-z0-9][a-z0-9._-]*$/);
 var hash = string().regex(/^[a-f0-9]{64}$/);
-var triggerSchema = object({ kind: _enum(["call", "import", "path", "jsx-element", "jsx-attribute", "semantic", "syntax"]), value: text3, description: text3.optional() });
+var triggerSchema = object({ kind: _enum(["call", "import", "path", "jsx-element", "jsx-attribute", "semantic", "syntax"]), value: text4, description: text4.optional() });
 var knowledgeCheckSchema = object({
-  id: id2,
-  question: text3,
-  guidance: text3,
+  id: id3,
+  question: text4,
+  guidance: text4,
   verification: _enum(["review", "static", "behavior", "runtime"])
 });
 var referenceIndexSchema = object({
   version: union([literal(1), literal(2), literal(3)]),
   entries: array(object({
-    id: id2,
+    id: id3,
     kind: _enum(["concept", "decision", "rule"]),
-    title: text3,
-    summary: text3,
+    title: text4,
+    summary: text4,
     rule: ruleSchema.optional(),
-    ruleApproval: object({ proposalId: id2, proposalHash: hash }).optional(),
-    path: text3,
+    ruleApproval: object({ proposalId: id3, proposalHash: hash }).optional(),
+    path: text4,
     contentHash: hash,
-    keywords: array(text3).max(30),
-    domains: array(text3).max(15),
-    technologies: array(text3).max(15),
-    excludedTechnologies: array(text3).max(15),
-    conditions: array(text3).max(15),
-    exclusions: array(text3).max(15),
+    keywords: array(text4).max(30),
+    domains: array(text4).max(15),
+    technologies: array(text4).max(15),
+    excludedTechnologies: array(text4).max(15),
+    conditions: array(text4).max(15),
+    exclusions: array(text4).max(15),
     evidenceKind: _enum(["public-contract", "implementation", "experience", "hypothesis"]),
     review: _enum(["reviewed", "uncertain"]),
-    sources: record(id2, hash),
-    related: array(id2).max(15),
-    routing: object({ mode: _enum(["direct", "supporting", "deferred"]), reason: text3 }).optional(),
+    sources: record(id3, hash),
+    related: array(id3).max(15),
+    routing: object({ mode: _enum(["direct", "supporting", "deferred"]), reason: text4 }).optional(),
     triggers: array(triggerSchema).min(1).max(30).optional(),
     investigation: investigationSchema.optional(),
     checks: array(knowledgeCheckSchema).min(1).max(15).optional()
   })).max(1e4),
   retrievalChecks: array(object({
-    query: text3,
-    technologies: array(text3).max(15),
-    expectedIds: array(id2).max(20),
-    forbiddenIds: array(id2).max(20),
+    query: text4,
+    technologies: array(text4).max(15),
+    expectedIds: array(id3).max(20),
+    forbiddenIds: array(id3).max(20),
     expectEmpty: boolean().optional()
   })).max(1e3).optional(),
   triggerChecks: array(object({
     signals: array(triggerSchema).max(30),
-    technologies: array(text3).max(15),
-    expectedIds: array(id2).max(20),
-    forbiddenIds: array(id2).max(20),
+    technologies: array(text4).max(15),
+    expectedIds: array(id3).max(20),
+    forbiddenIds: array(id3).max(20),
     expectEmpty: boolean().optional()
   })).max(1e3).optional(),
   outcomes: array(object({
-    sourceId: id2,
+    sourceId: id3,
     sourceHash: hash,
     action: _enum(["represented", "deferred", "omitted"]),
-    reason: text3
+    reason: text4
   })).max(1e4)
 });
 var contentHash = (value) => createHash2("sha256").update(value).digest("hex");
@@ -933,15 +998,15 @@ async function readReferenceIndex(root) {
     throw error;
   }
   const index = referenceIndexSchema.parse(JSON.parse(raw));
-  const ids = new Set(index.entries.map((entry) => entry.id));
-  if (ids.size !== index.entries.length) throw new Error("Duplicate knowledge IDs.");
+  const ids2 = new Set(index.entries.map((entry) => entry.id));
+  if (ids2.size !== index.entries.length) throw new Error("Duplicate knowledge IDs.");
   if (new Set(index.outcomes.map((item) => item.sourceId)).size !== index.outcomes.length) throw new Error("Duplicate source outcomes.");
   for (const entry of index.entries) {
     if (index.version === 3) {
       if (!entry.routing) throw new Error(`Missing routing disposition: ${entry.id}`);
       if (entry.routing.mode === "direct" && (!entry.triggers || !entry.checks || !entry.conditions.length || !entry.exclusions.length)) throw new Error(`Direct routing needs triggers, checks and applicability: ${entry.id}`);
       if (entry.routing.mode !== "direct" && (entry.triggers || entry.checks)) throw new Error(`Only direct knowledge may own checks: ${entry.id}`);
-      if (entry.routing.mode === "supporting" && !entry.related.some((id4) => index.entries.find((item) => item.id === id4)?.routing?.mode === "direct")) throw new Error(`Supporting knowledge needs a direct reference: ${entry.id}`);
+      if (entry.routing.mode === "supporting" && !entry.related.some((id5) => index.entries.find((item) => item.id === id5)?.routing?.mode === "direct")) throw new Error(`Supporting knowledge needs a direct reference: ${entry.id}`);
       if (entry.triggers?.some((trigger) => trigger.kind === "semantic" && !trigger.description)) throw new Error(`Semantic trigger needs a description: ${entry.id}`);
     }
     if (entry.investigation && entry.routing?.mode !== "direct") throw new Error(`Only direct knowledge may own investigation: ${entry.id}`);
@@ -950,10 +1015,10 @@ async function readReferenceIndex(root) {
     if (entry.kind === "rule" && (index.version < 2 || !entry.rule || !entry.ruleApproval || entry.review !== "reviewed" || entry.rule.id !== entry.id)) throw new Error(`Rule needs an approved v2 definition: ${entry.id}`);
     if (entry.kind !== "rule" && (entry.rule || entry.ruleApproval)) throw new Error(`Rule metadata on non-rule: ${entry.id}`);
     if (!Object.keys(entry.sources).length) throw new Error(`Missing source evidence: ${entry.id}`);
-    if (entry.related.some((related) => !ids.has(related))) throw new Error(`Unknown related knowledge: ${entry.id}`);
+    if (entry.related.some((related) => !ids2.has(related))) throw new Error(`Unknown related knowledge: ${entry.id}`);
   }
   for (const check of [...index.retrievalChecks ?? [], ...index.triggerChecks ?? []]) {
-    if (check.expectEmpty && check.expectedIds.length > 0 || [...check.expectedIds, ...check.forbiddenIds].some((id4) => !ids.has(id4)) || check.expectedIds.some((id4) => check.forbiddenIds.includes(id4))) throw new Error("Invalid retrieval check IDs.");
+    if (check.expectEmpty && check.expectedIds.length > 0 || [...check.expectedIds, ...check.forbiddenIds].some((id5) => !ids2.has(id5)) || check.expectedIds.some((id5) => check.forbiddenIds.includes(id5))) throw new Error("Invalid retrieval check IDs.");
   }
   return index;
 }
@@ -977,8 +1042,8 @@ function semanticReviewLenses(index, technologies = []) {
 }
 function evaluateTriggerChecks(index) {
   return (index.triggerChecks ?? []).map((check) => {
-    const ids = matchKnowledgeTriggers(index, check.signals, check.technologies).map(({ entry }) => entry.id);
-    return { ...check, ids, passed: check.expectedIds.every((id4) => ids.includes(id4)) && check.forbiddenIds.every((id4) => !ids.includes(id4)) && (!check.expectEmpty || ids.length === 0) };
+    const ids2 = matchKnowledgeTriggers(index, check.signals, check.technologies).map(({ entry }) => entry.id);
+    return { ...check, ids: ids2, passed: check.expectedIds.every((id5) => ids2.includes(id5)) && check.forbiddenIds.every((id5) => !ids2.includes(id5)) && (!check.expectEmpty || ids2.length === 0) };
   });
 }
 function triggerPublicationFailures(index) {
@@ -1064,15 +1129,15 @@ function searchReferenceIndex(index, query, technologies = [], limit = 5) {
 }
 function evaluateRetrievalChecks(index) {
   return (index.retrievalChecks ?? []).map((check) => {
-    const ids = searchReferenceIndex(index, check.query, check.technologies).map(({ id: id4 }) => id4);
-    return { ...check, ids, passed: check.expectedIds.every((id4) => ids.includes(id4)) && check.forbiddenIds.every((id4) => !ids.includes(id4)) && (!check.expectEmpty || ids.length === 0) };
+    const ids2 = searchReferenceIndex(index, check.query, check.technologies).map(({ id: id5 }) => id5);
+    return { ...check, ids: ids2, passed: check.expectedIds.every((id5) => ids2.includes(id5)) && check.forbiddenIds.every((id5) => !ids2.includes(id5)) && (!check.expectEmpty || ids2.length === 0) };
   });
 }
-async function readIndexedReference(root, id4, offset = 0, limit = 6e3) {
-  const entry = (await readReferenceIndex(root))?.entries.find((entry2) => entry2.id === id4);
-  if (!entry) throw new Error(`Unknown indexed knowledge: ${id4}`);
+async function readIndexedReference(root, id5, offset = 0, limit = 6e3) {
+  const entry = (await readReferenceIndex(root))?.entries.find((entry2) => entry2.id === id5);
+  if (!entry) throw new Error(`Unknown indexed knowledge: ${id5}`);
   const body = await confinedRead(root, entry.path);
-  if (contentHash(body) !== entry.contentHash) throw new Error(`Reference changed; resync required: ${id4}`);
+  if (contentHash(body) !== entry.contentHash) throw new Error(`Reference changed; resync required: ${id5}`);
   const start = Math.max(0, offset);
   const end = start + Math.max(1, Math.min(12e3, limit));
   return { entry, referenceHash: contentHash(JSON.stringify(entry)), content: body.slice(start, end), totalCharacters: body.length, nextOffset: end < body.length ? end : null };
@@ -1371,35 +1436,35 @@ import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
 // src/application/knowledge/trigger-schema.ts
-var text4 = string().trim().min(1).max(600);
+var text5 = string().trim().min(1).max(600);
 var interpretationSchema = object({
-  path: text4,
+  path: text5,
   line: number().int().positive(),
   column: number().int().positive().default(1),
-  evidence: text4,
-  signal: text4,
-  interpretation: text4
+  evidence: text5,
+  signal: text5,
+  interpretation: text5
 });
 var triggerInspectionSchema = object({
   includeRelations: boolean().optional().describe("Return up to 200 function/call/argument/dispatch facts for scoped investigation; omitted by default."),
-  files: array(text4).min(1).max(40),
-  technologies: array(text4).max(15).default([]),
+  files: array(text5).min(1).max(40),
+  technologies: array(text5).max(15).default([]),
   interpretations: array(interpretationSchema).max(40).default([]),
-  snapshot: object({ baseRef: text4, expectedCommit: text4 }).optional()
+  snapshot: object({ baseRef: text5, expectedCommit: text5 }).optional()
 });
 var checkJudgmentSchema = object({
   investigation: investigationAssessmentSchema.optional(),
   itemId: string().regex(/^[a-f0-9]{64}$/),
   decision: _enum(["apply", "keep", "not-applicable", "needs-context", "needs-decision"]),
-  rationale: text4,
-  evidence: text4,
+  rationale: text5,
+  evidence: text5,
   evidenceLine: number().int().positive().optional(),
-  verification: object({ kind: _enum(["none", "static", "test", "browser", "profiler"]), reason: text4 })
+  verification: object({ kind: _enum(["none", "static", "test", "browser", "profiler"]), reason: text5 })
 });
 var triggerDiscoverySchema = object({
   query: string().max(600).default(""),
-  technologies: array(text4).max(15).default([]),
-  domains: array(text4).max(15).default([]),
+  technologies: array(text5).max(15).default([]),
+  domains: array(text5).max(15).default([]),
   offset: number().int().min(0).default(0),
   limit: number().int().min(1).max(20).default(10),
   expectedHash: string().optional()
@@ -1418,8 +1483,8 @@ async function discoverKnowledgeTriggers(systemRoot, input) {
   if (request.domains.some((domain) => !domains.has(domain))) throw new Error(`Unknown domains; use: ${[...domains].sort().join(", ")}`);
   let entries = index.entries.filter((entry) => entry.triggers?.some((trigger) => trigger.kind === "semantic") && (!entry.routing || entry.routing.mode === "direct") && (!request.domains.length || entry.domains.some((domain) => request.domains.includes(domain))) && !entry.excludedTechnologies.some((value) => technologies.includes(technologyKey(value))) && (!technologies.length || !entry.technologies.length || entry.technologies.some((value) => technologies.includes(technologyKey(value)))));
   if (request.query.trim()) {
-    const ids = searchReferenceIndex({ ...index, entries }, request.query, request.technologies, 20).map(({ id: id4 }) => id4);
-    entries = ids.map((id4) => entries.find((entry) => entry.id === id4));
+    const ids2 = searchReferenceIndex({ ...index, entries }, request.query, request.technologies, 20).map(({ id: id5 }) => id5);
+    entries = ids2.map((id5) => entries.find((entry) => entry.id === id5));
   }
   return {
     hash: hash3,
@@ -1512,7 +1577,7 @@ async function inspectCodeKnowledge(projectRoot, systemRoot, input) {
   };
   return { ...payload, inspectionHash: contentHash(JSON.stringify(payload)), elapsedMs: performance.now() - started };
 }
-async function saveKnowledgeReview(projectRoot, systemRoot, input, expectedInspectionHash, judgments, id4, expectedHash) {
+async function saveKnowledgeReview(projectRoot, systemRoot, input, expectedInspectionHash, judgments, id5, expectedHash) {
   const inspection = await inspectCodeKnowledge(projectRoot, systemRoot, input);
   if (inspection.request.snapshot) throw new Error("Implementation reviews require working-tree evidence");
   if (inspection.inspectionHash !== expectedInspectionHash) throw new Error("Inspection changed; inspect code and knowledge again");
@@ -1549,7 +1614,7 @@ async function saveKnowledgeReview(projectRoot, systemRoot, input, expectedInspe
     authority: "host-model-review",
     verification: "unverified; run existing project checks and policy reviews"
   };
-  const saved = await saveProjectRecord(projectRoot, "evidence", id4, JSON.stringify(record2, null, 2), expectedHash);
+  const saved = await saveProjectRecord(projectRoot, "evidence", id5, JSON.stringify(record2, null, 2), expectedHash);
   return { ...saved, status: record2.status, pending: pending.length, verification: record2.verification };
 }
 
@@ -1743,11 +1808,11 @@ async function routeKnowledge(root, systemRoot, input) {
     const file = request.snapshot ? await readProjectSourceFile(root, path, request.snapshot.expectedCommit, request.snapshot.baseRef) : await projectFile(root, path);
     requirements[file.path] = contentHash(file.content);
   }
-  const ids = [.../* @__PURE__ */ new Set([...inspection.candidates.map(({ id: id4 }) => id4), ...lexical.map(({ id: id4 }) => id4), ...scopeMatches.map(({ id: id4 }) => id4), ...structureMatches.map(({ id: id4 }) => id4)])];
-  const candidates = await Promise.all(ids.map(async (id4) => {
-    const { entry } = await readIndexedReference(learned, id4, 0, 1);
+  const ids2 = [.../* @__PURE__ */ new Set([...inspection.candidates.map(({ id: id5 }) => id5), ...lexical.map(({ id: id5 }) => id5), ...scopeMatches.map(({ id: id5 }) => id5), ...structureMatches.map(({ id: id5 }) => id5)])];
+  const candidates = await Promise.all(ids2.map(async (id5) => {
+    const { entry } = await readIndexedReference(learned, id5, 0, 1);
     return {
-      id: id4,
+      id: id5,
       referenceHash: contentHash(JSON.stringify(entry)),
       contentHash: entry.contentHash,
       title: entry.title,
@@ -1758,10 +1823,10 @@ async function routeKnowledge(root, systemRoot, input) {
       investigation: entry.investigation ?? null,
       investigationStatus: entry.investigation ? "pending" : "legacy-checklist",
       reasons: [
-        inspection.candidates.some((item) => item.id === id4) ? "code-trigger" : "",
-        lexical.some((item) => item.id === id4) ? "request-search" : "",
-        scopeMatches.some((item) => item.id === id4) ? "scope-search" : "",
-        structureMatches.some((item) => item.id === id4) ? "structure-search" : ""
+        inspection.candidates.some((item) => item.id === id5) ? "code-trigger" : "",
+        lexical.some((item) => item.id === id5) ? "request-search" : "",
+        scopeMatches.some((item) => item.id === id5) ? "scope-search" : "",
+        structureMatches.some((item) => item.id === id5) ? "structure-search" : ""
       ].filter(Boolean),
       readWith: "read_learned_knowledge"
     };
@@ -1799,15 +1864,15 @@ import { realpath as realpath4 } from "node:fs/promises";
 var receipts = /* @__PURE__ */ new Map();
 async function rememberAnalysis(root, projectHash, route) {
   const canonicalRoot = await realpath4(root);
-  const id4 = contentHash(JSON.stringify([canonicalRoot, projectHash, route.hash]));
-  receipts.delete(id4);
-  receipts.set(id4, structuredClone({ root: canonicalRoot, projectHash, route }));
+  const id5 = contentHash(JSON.stringify([canonicalRoot, projectHash, route.hash]));
+  receipts.delete(id5);
+  receipts.set(id5, structuredClone({ root: canonicalRoot, projectHash, route }));
   if (receipts.size > 32) receipts.delete(receipts.keys().next().value);
-  return id4;
+  return id5;
 }
-async function recalledAnalysis(root, id4) {
-  const receipt = receipts.get(id4);
-  if (!receipt || receipt.root !== await realpath4(root)) throw new Error(`Unknown analysis context ${id4}; call get_work_context again in this project. Saved plans remain available.`);
+async function recalledAnalysis(root, id5) {
+  const receipt = receipts.get(id5);
+  if (!receipt || receipt.root !== await realpath4(root)) throw new Error(`Unknown analysis context ${id5}; call get_work_context again in this project. Saved plans remain available.`);
   return structuredClone(receipt);
 }
 
@@ -1843,11 +1908,11 @@ async function saveProjectDecision(root, input, expectedHash) {
   if (existing && !existing.isFile()) throw new Error("Project decision must be a regular file");
   return saveProjectRecord(root, "decisions", decision.id, JSON.stringify(decision, null, 2), expectedHash);
 }
-async function readProjectDecision(root, id4) {
-  decisionId.parse(id4);
-  const path = join6(root, ".frontend-system", "decisions", `${id4}.md`);
+async function readProjectDecision(root, id5) {
+  decisionId.parse(id5);
+  const path = join6(root, ".frontend-system", "decisions", `${id5}.md`);
   if (!(await lstat(path)).isFile()) throw new Error("Project decision must be a regular file");
-  const raw = (await readProjectRecord(root, "decisions", id4, 0, 1e4)).content;
+  const raw = (await readProjectRecord(root, "decisions", id5, 0, 1e4)).content;
   return { decision: projectDecisionSchema.parse(JSON.parse(raw)), hash: contentHash(raw) };
 }
 async function searchProjectDecisions(root, input) {
@@ -1904,17 +1969,17 @@ function designContractFailures(evidence2, policy, issues) {
   if (!evidence2) return ["Evidence-based plans require project analysis, routing judgments and decisions"];
   const errors = [];
   const decisions = evidence2.decisions;
-  if (new Set(decisions.map(({ id: id4 }) => id4)).size !== decisions.length) errors.push("Duplicate decisions");
+  if (new Set(decisions.map(({ id: id5 }) => id5)).size !== decisions.length) errors.push("Duplicate decisions");
   if (evidence2.routes.some((route) => route.judgments.some(({ decision }) => decision.startsWith("needs-")))) errors.push("Resolve pending knowledge judgments");
   for (const route of evidence2.routes) for (const item of route.judgments) {
     if (item.decision === "apply" && !decisions.some((decision) => decision.status === "resolved" && decision.knowledgeIds.includes(item.referenceId))) errors.push(`Adopted knowledge lacks a decision: ${item.referenceId}`);
   }
   for (const item of decisions) {
-    if (new Set(item.options.map(({ id: id4 }) => id4)).size !== item.options.length) errors.push(`Duplicate options: ${item.id}`);
-    if (item.status === "open" || item.status === "resolved" && !item.options.some(({ id: id4 }) => id4 === item.selected)) errors.push(`Unresolved decision: ${item.id}`);
+    if (new Set(item.options.map(({ id: id5 }) => id5)).size !== item.options.length) errors.push(`Duplicate options: ${item.id}`);
+    if (item.status === "open" || item.status === "resolved" && !item.options.some(({ id: id5 }) => id5 === item.selected)) errors.push(`Unresolved decision: ${item.id}`);
     if (item.status === "excluded" && (item.ruleIds.length || item.issueIds.length || item.selected)) errors.push(`Excluded decision cannot authorize work: ${item.id}`);
     if (item.authority !== "model" && !item.confirmation) errors.push(`Missing supplied decision evidence: ${item.id}`);
-    if (item.ruleIds.some((id4) => !policy?.rules.some((rule) => rule.id === id4)) || item.issueIds.some((id4) => !issues?.some((issue) => issue.id === id4))) errors.push(`Unknown contract links: ${item.id}`);
+    if (item.ruleIds.some((id5) => !policy?.rules.some((rule) => rule.id === id5)) || item.issueIds.some((id5) => !issues?.some((issue) => issue.id === id5))) errors.push(`Unknown contract links: ${item.id}`);
   }
   for (const rule of policy?.rules ?? []) {
     const owners = decisions.filter((item) => item.status === "resolved" && item.ruleIds.includes(rule.id));
@@ -1931,8 +1996,8 @@ function designContractFailures(evidence2, policy, issues) {
       const decision = decisions.find((item) => item.id === target.decisionId && item.status === "resolved" && item.issueIds.includes(issue.id));
       if (!decision) errors.push(`Implementation target lacks a resolved issue decision: ${issue.id}/${target.target}`);
       if (target.files.some((file) => !issue.files.includes(file))) errors.push(`Implementation target file outside issue: ${issue.id}/${target.target}`);
-      for (const id4 of target.knowledgeIds) {
-        if (!decision?.knowledgeIds.includes(id4) || !applied.has(id4)) errors.push(`Implementation target knowledge is not adopted: ${issue.id}/${target.target}/${id4}`);
+      for (const id5 of target.knowledgeIds) {
+        if (!decision?.knowledgeIds.includes(id5) || !applied.has(id5)) errors.push(`Implementation target knowledge is not adopted: ${issue.id}/${target.target}/${id5}`);
       }
     }
   }
@@ -1940,27 +2005,27 @@ function designContractFailures(evidence2, policy, issues) {
 }
 
 // src/application/design-evidence.ts
-var text5 = string().trim().min(1).max(4e3);
-var id3 = string().regex(/^[a-z0-9][a-z0-9._-]{0,119}$/);
-var citationSchema = object({ path: localPath, line: number().int().positive(), quote: text5, hash: sha256 });
+var text6 = string().trim().min(1).max(4e3);
+var id4 = string().regex(/^[a-z0-9][a-z0-9._-]{0,119}$/);
+var citationSchema = object({ path: localPath, line: number().int().positive(), quote: text6, hash: sha256 });
 var citationInputSchema = citationSchema.extend({
   hash: sha256.optional(),
   line: citationSchema.shape.line.optional().describe("Omit for an exact quote occurring once; the server resolves its line. Repeated quotes require an explicit line.")
 });
 var projectEvidenceSchema = object({
   version: literal(1),
-  coverage: array(object({ path: localPath, status: _enum(["inspected", "pending", "blocked", "excluded"]), reason: text5 })).min(1),
+  coverage: array(object({ path: localPath, status: _enum(["inspected", "pending", "blocked", "excluded"]), reason: text6 })).min(1),
   statements: array(object({
-    id: id3,
+    id: id4,
     kind: _enum(["fact", "interpretation", "user-decision", "unknown"]),
-    statement: text5,
+    statement: text6,
     evidence: array(citationInputSchema),
     confirmation: string().max(4e3).default("").describe("Required when kind is user-decision: copy the supplied answer. A citation or a summary alone is not confirmation."),
     absence: boolean().default(false),
     scope: array(localPath).default([]).describe("Exact inspected file paths extending the claim, e.g. src/client.ts. Not folder names, globs or semantic labels. These files also become reuse dependencies; omit when citations and reuse.dependencies already cover the claim."),
-    limitations: array(text5).default([]),
+    limitations: array(text6).default([]),
     reuse: factReuseSchema.optional(),
-    reuseReason: text5.optional().describe("Why this code claim cannot emit a saved semantic trigger, e.g. no applicable registered signal or an untraced dependency. Omit when reuse is supplied.")
+    reuseReason: text6.optional().describe("Why this code claim cannot emit a saved semantic trigger, e.g. no applicable registered signal or an untraced dependency. Omit when reuse is supplied.")
   })).min(1)
 });
 var projectEvidenceInputSchema = projectEvidenceSchema.extend({ version: literal(1).default(1) }).superRefine((value, context) => {
@@ -1999,7 +2064,7 @@ async function validateProjectEvidence(root, evidence2, baseRef, commit2) {
   const inventory3 = commit2 ? snapshot.files.filter((path) => !path.startsWith(".frontend-system/")) : (await new FileSystemProjectDiscovery().listFiles(root)).map((path) => relative5(root, path)).filter((path) => !path.startsWith(".frontend-system/"));
   const covered = new Map(parsed.coverage.map((item) => [item.path, item]));
   if (covered.size !== parsed.coverage.length || inventory3.some((path) => !covered.has(path)) || parsed.coverage.some(({ path }) => !inventory3.includes(path))) throw new Error(`Coverage must account for the whole baseline inventory. Missing: ${inventory3.filter((path) => !covered.has(path)).join(", ") || "none"}; outside baseline: ${parsed.coverage.filter(({ path }) => !inventory3.includes(path)).map(({ path }) => path).join(", ") || "none"}. Working requirements are not main facts. Duplicate paths are invalid.`);
-  if (new Set(parsed.statements.map(({ id: id4 }) => id4)).size !== parsed.statements.length) throw new Error("Duplicate statement IDs");
+  if (new Set(parsed.statements.map(({ id: id5 }) => id5)).size !== parsed.statements.length) throw new Error("Duplicate statement IDs");
   for (const item of parsed.statements) {
     if (["fact", "interpretation"].includes(item.kind) && !item.evidence.length) throw new Error("Code claims require citations");
     if (item.kind === "user-decision" && !item.confirmation) throw new Error(`Statement ${item.id}: user-decision requires confirmation containing the supplied answer. Patch that field in the analysis draft; do not reinterpret the decision or invent consent.`);
@@ -2038,35 +2103,35 @@ async function readProjectEvidence(root) {
   projectEvidenceSchema.parse(stored);
   return { hash: match[1], documentHash: contentHash(document), record: stored };
 }
-var judgment = object({ investigation: investigationAssessmentSchema.optional().describe("Required for apply/keep/not-applicable when the candidate has an investigation specification; read its questions with read_learned_knowledge. A rationale or grouped dismissal cannot replace these findings."), referenceId: id3, decision: _enum(["apply", "keep", "not-applicable", "needs-context", "needs-decision"]), rationale: text5 });
+var judgment = object({ investigation: investigationAssessmentSchema.optional().describe("Required for apply/keep/not-applicable when the candidate has an investigation specification; read its questions with read_learned_knowledge. A rationale or grouped dismissal cannot replace these findings."), referenceId: id4, decision: _enum(["apply", "keep", "not-applicable", "needs-context", "needs-decision"]), rationale: text6 });
 var recordedDesignEvidenceSchema = object({
   version: literal(1),
   projectHash: sha256,
   analysisRefs: array(analysisReferenceSchema).max(100).optional(),
-  projectDecisionRefs: array(object({ id: id3, hash: sha256 })).max(50).optional(),
+  projectDecisionRefs: array(object({ id: id4, hash: sha256 })).max(50).optional(),
   // Routing loads project evidence too; resolve the shared schema after ESM initialization.
   routes: array(object({ input: lazy(() => routingInputSchema), hash: sha256, judgments: array(judgment) })).min(1).max(100),
   decisions: array(object({
-    id: id3,
-    question: text5,
+    id: id4,
+    question: text6,
     evidence: array(citationSchema).min(1),
-    knowledgeIds: array(id3),
-    projectDecisionId: id3.optional(),
-    options: array(object({ id: id3, description: text5, cost: text5 })).min(1),
-    selected: id3.nullable(),
+    knowledgeIds: array(id4),
+    projectDecisionId: id4.optional(),
+    options: array(object({ id: id4, description: text6, cost: text6 })).min(1),
+    selected: id4.nullable(),
     status: _enum(["resolved", "open", "excluded"]),
     authority: _enum(["user", "existing", "model"]),
     confirmation: string().max(4e3).default("").describe("For a resolved user or existing decision, quote the supplied answer or established contract. Citations do not replace confirmation. Keep unanswered open choices unconfirmed; never fabricate consent."),
-    rationale: text5,
-    reconsiderWhen: text5,
-    ruleIds: array(text5),
-    issueIds: array(id3)
+    rationale: text6,
+    reconsiderWhen: text6,
+    ruleIds: array(text6),
+    issueIds: array(id4)
   })).min(1)
 });
 var decisionInput = recordedDesignEvidenceSchema.shape.decisions.element.omit({ status: true, selected: true }).extend({ evidence: array(citationInputSchema).min(1) });
 var decisionInputSchema = decisionInput.extend({
   status: _enum(["resolved", "open", "excluded"]),
-  selected: id3.nullable().default(null).describe("Required option ID for resolved; omit or null for open/excluded.")
+  selected: id4.nullable().default(null).describe("Required option ID for resolved; omit or null for open/excluded.")
 }).superRefine((value, context) => {
   if (value.status === "resolved" !== (value.selected !== null)) context.addIssue({
     code: "custom",
@@ -2082,7 +2147,7 @@ var designEvidenceSchema = recordedDesignEvidenceSchema.extend({
     strictObject({
       contextId: sha256,
       judgments: array(judgment),
-      dismissed: array(strictObject({ referenceIds: array(id3).min(1), rationale: text5 })).default([])
+      dismissed: array(strictObject({ referenceIds: array(id4).min(1), rationale: text6 })).default([])
     })
   ])).min(1).max(100),
   decisions: array(decisionInputSchema).min(1)
@@ -2095,22 +2160,22 @@ var boundEvidenceSchema = recordedDesignEvidenceSchema.extend({
   requirementHashes: record(string(), sha256).optional()
 });
 var decisionUpdatesSchema = array(strictObject({
-  id: id3,
+  id: id4,
   changes: strictObject({
     status: _enum(["resolved", "open", "excluded"]).optional(),
-    selected: id3.nullable().optional(),
-    confirmation: text5.optional(),
-    rationale: text5.optional(),
-    knowledgeIds: array(id3).optional(),
-    ruleIds: array(text5).optional(),
-    issueIds: array(id3).optional(),
+    selected: id4.nullable().optional(),
+    confirmation: text6.optional(),
+    rationale: text6.optional(),
+    knowledgeIds: array(id4).optional(),
+    ruleIds: array(text6).optional(),
+    issueIds: array(id4).optional(),
     evidence: array(citationInputSchema).min(1).optional()
   }).refine((value) => Object.keys(value).length > 0, "Supply changed fields")
 })).min(1).max(100);
 async function updateDesignDecisions(root, current, input, routes) {
   const updates = input ? decisionUpdatesSchema.parse(input) : [];
-  const ids = new Set(updates.map((update) => update.id));
-  if (ids.size !== updates.length || updates.some((update) => !current.decisions.some((decision) => decision.id === update.id))) throw new Error("Decision updates require unique existing IDs");
+  const ids2 = new Set(updates.map((update) => update.id));
+  if (ids2.size !== updates.length || updates.some((update) => !current.decisions.some((decision) => decision.id === update.id))) throw new Error("Decision updates require unique existing IDs");
   const decisions = current.decisions.map((decision) => {
     const changes = updates.find((update) => update.id === decision.id)?.changes;
     if (!changes) return decision;
@@ -2142,7 +2207,7 @@ async function bindDesignEvidence(root, input, systemRoot = installedSystemRoot(
   const analysisErrors = await validateAnalysisReferences(root, systemRoot, parsed.analysisRefs ?? [], true);
   if (analysisErrors.length) throw new Error(analysisErrors.join("; "));
   const issueIds = new Set(parsed.decisions.flatMap((d) => d.issueIds));
-  if (parsed.analysisRefs?.some((r) => r.issueIds.some((id4) => !issueIds.has(id4)))) throw new Error("Analysis references must link to decision-owned issue IDs");
+  if (parsed.analysisRefs?.some((r) => r.issueIds.some((id5) => !issueIds.has(id5)))) throw new Error("Analysis references must link to decision-owned issue IDs");
   const project = await readProjectEvidence(root);
   const routes = await Promise.all(parsed.routes.map(async (route) => {
     if (!("contextId" in route)) {
@@ -2163,7 +2228,7 @@ async function bindDesignEvidence(root, input, systemRoot = installedSystemRoot(
     const current = await routeKnowledge(root, systemRoot, route.input);
     if (current.hash !== route.hash) throw new Error("Routing evidence changed; repeat scoped analysis");
     const choices = new Map(route.judgments.map((item) => [item.referenceId, item]));
-    if (choices.size !== route.judgments.length || choices.size !== current.candidates.length || current.candidates.some(({ id: id4 }) => !choices.has(id4))) throw new Error(`Review every retrieved candidate exactly once. Missing: ${current.candidates.filter(({ id: id4 }) => !choices.has(id4)).map(({ id: id4 }) => id4).join(", ") || "none"}; unknown: ${[...choices.keys()].filter((id4) => !current.candidates.some((candidate) => candidate.id === id4)).join(", ") || "none"}. Duplicated judgments are invalid; explicit grouped dismissals are allowed.`);
+    if (choices.size !== route.judgments.length || choices.size !== current.candidates.length || current.candidates.some(({ id: id5 }) => !choices.has(id5))) throw new Error(`Review every retrieved candidate exactly once. Missing: ${current.candidates.filter(({ id: id5 }) => !choices.has(id5)).map(({ id: id5 }) => id5).join(", ") || "none"}; unknown: ${[...choices.keys()].filter((id5) => !current.candidates.some((candidate) => candidate.id === id5)).join(", ") || "none"}. Duplicated judgments are invalid; explicit grouped dismissals are allowed.`);
     for (const candidate of current.candidates) {
       if (candidate.review === "uncertain" && choices.get(candidate.id).decision === "apply") throw new Error("Uncertain knowledge cannot be adopted");
       const { entry } = await readIndexedReference(join7(systemRoot, "references/learned"), candidate.id, 0, 1);
@@ -2192,7 +2257,7 @@ async function bindDesignEvidence(root, input, systemRoot = installedSystemRoot(
       citation2.hash = inspectedHash;
       Object.assign(citation2, await validateCitation(root, citation2));
     }
-    if (decision.knowledgeIds.some((id4) => !references[id4])) throw new Error("Decision references unrouted knowledge");
+    if (decision.knowledgeIds.some((id5) => !references[id5])) throw new Error("Decision references unrouted knowledge");
   }
   return boundEvidenceSchema.parse({ ...parsed, projectHash: project.documentHash, routes, referenceHashes: references, sourceHashes: sources, configHashes: configs, requirementHashes: requirements, projectRecordHash: project.hash });
 }
@@ -2221,11 +2286,11 @@ async function evidenceFreshness(root, evidence2, checkSources, systemRoot = ins
   } catch (error) {
     errors.push(String(error));
   }
-  for (const [id4, hash3] of Object.entries(evidence2.referenceHashes)) {
+  for (const [id5, hash3] of Object.entries(evidence2.referenceHashes)) {
     try {
-      if (contentHash(JSON.stringify((await readIndexedReference(join7(systemRoot, "references/learned"), id4, 0, 1)).entry)) !== hash3) errors.push(`Linked knowledge changed: ${id4}`);
+      if (contentHash(JSON.stringify((await readIndexedReference(join7(systemRoot, "references/learned"), id5, 0, 1)).entry)) !== hash3) errors.push(`Linked knowledge changed: ${id5}`);
     } catch {
-      errors.push(`Linked knowledge unavailable: ${id4}`);
+      errors.push(`Linked knowledge unavailable: ${id5}`);
     }
   }
   for (const [path, hash3] of Object.entries({ ...evidence2.requirementHashes, ...checkSources ? { ...evidence2.sourceHashes, ...evidence2.configHashes } : {} })) {
@@ -2422,11 +2487,11 @@ async function listPlans(root) {
     if (error.code === "ENOENT") return [];
     throw error;
   }
-  return Promise.all(entries.filter((entry) => entry.isDirectory() && recordId.safeParse(entry.name).success).sort((a, b) => a.name.localeCompare(b.name)).map(async ({ name: id4 }) => {
-    const revision = await readRevision(root, id4);
+  return Promise.all(entries.filter((entry) => entry.isDirectory() && recordId.safeParse(entry.name).success).sort((a, b) => a.name.localeCompare(b.name)).map(async ({ name: id5 }) => {
+    const revision = await readRevision(root, id5);
     return {
-      id: id4,
-      path: join8(root, ".frontend-system", scope(id4), "plan.md"),
+      id: id5,
+      path: join8(root, ".frontend-system", scope(id5), "plan.md"),
       version: revision.version,
       hash: revision.hash,
       approved: revision.approved
@@ -2493,8 +2558,8 @@ async function saveRevision(root, content, expectedHash, policy, planId, issues,
     if (nextIssues) validateIssues(nextIssues, nextPolicy);
     if (nextEvidence && nextIssues) await validatePlanFlows(root, nextEvidence, nextIssues);
     if (nextIssues?.some((issue) => issue.testCases?.some((item) => item.flowId))) {
-      const { getProjectAnalysis: getProjectAnalysis2 } = await import("./project-flows-W43DYXUX.js");
-      const { installedSystemRoot: installedSystemRoot2 } = await import("./routing-FCP4VAGF.js");
+      const { getProjectAnalysis: getProjectAnalysis2 } = await import("./project-flows-FO27I4ZA.js");
+      const { installedSystemRoot: installedSystemRoot2 } = await import("./routing-IN4X3PEI.js");
       for (const item of nextIssues.flatMap((issue) => issue.testCases ?? []).filter((item2) => item2.flowId)) {
         const ref = nextEvidence?.analysisRefs?.find((ref2) => ref2.kind === "flow" && ref2.id === item.flowId);
         if (!ref) throw new Error(`Test case ${item.id} requires a pinned flow reference`);
@@ -2619,8 +2684,8 @@ async function requireDesignEvidence(root, revision, checkSources) {
   if (revision.evidence && revision.issues) await validatePlanFlows(root, revision.evidence, revision.issues);
 }
 async function validatePlanFlows(root, evidence2, issues) {
-  const { readPinnedFlow: readPinnedFlow2 } = await import("./project-flows-W43DYXUX.js");
-  const { validateFlowPlan } = await import("./flow-contracts-Z7YRYNMA.js");
+  const { readPinnedFlow: readPinnedFlow2 } = await import("./project-flows-FO27I4ZA.js");
+  const { validateFlowPlan } = await import("./flow-contracts-H6P34ZNL.js");
   for (const issue of issues) for (const target of issue.implementationTargets ?? []) {
     if (target.flowTarget && !evidence2.analysisRefs?.some((r) => r.kind === "flow" && r.id === target.flowTarget.flowId && r.issueIds.includes(issue.id)))
       throw new Error(`Implementation target requires an issue-linked flow: ${target.target}`);
@@ -2628,20 +2693,20 @@ async function validatePlanFlows(root, evidence2, issues) {
   for (const ref of evidence2.analysisRefs?.filter((r) => r.kind === "flow") ?? [])
     validateFlowPlan(await readPinnedFlow2(root, ref.id, ref.hash), evidence2, issues);
 }
-async function saveProjectRecord(root, kind, id4, content, expectedHash) {
-  recordId.parse(id4);
+async function saveProjectRecord(root, kind, id5, content, expectedHash) {
+  recordId.parse(id5);
   if (!content.trim()) throw new Error("Record must not be empty");
   return locked(root, async () => {
-    const path = join8(await directory(root, kind), `${id4}.md`);
+    const path = join8(await directory(root, kind), `${id5}.md`);
     const previous = await optional2(path);
     if ((previous ? digest(previous) : null) !== expectedHash) throw new Error("Record changed; reread before saving");
     await atomic(path, content);
     return { path, hash: digest(content) };
   });
 }
-async function readProjectRecord(root, kind, id4, offset = 0, limit = 200) {
-  recordId.parse(id4);
-  const content = await optional2(join8(root, ".frontend-system", kind, `${id4}.md`));
+async function readProjectRecord(root, kind, id5, offset = 0, limit = 200) {
+  recordId.parse(id5);
+  const content = await optional2(join8(root, ".frontend-system", kind, `${id5}.md`));
   if (!content) throw new Error("Record not found");
   const lines = content.split("\n");
   return { hash: digest(content), content: lines.slice(offset, offset + limit).join("\n"), totalLines: lines.length, nextOffset: offset + limit < lines.length ? offset + limit : null };
@@ -2696,9 +2761,9 @@ async function saveCheckRecord(root, record2, planId) {
   await writeFile(path, JSON.stringify(validated, null, 2), { flag: "wx" });
   return { id: record2.id, path };
 }
-async function readCheckRecord(root, id4, planId) {
-  recordId.parse(id4);
-  return checkRecordSchema.parse(JSON.parse(await readFile6(join8(root, ".frontend-system", scope(planId), "checks", `${id4}.json`), "utf8")));
+async function readCheckRecord(root, id5, planId) {
+  recordId.parse(id5);
+  return checkRecordSchema.parse(JSON.parse(await readFile6(join8(root, ".frontend-system", scope(planId), "checks", `${id5}.json`), "utf8")));
 }
 async function saveExecution(root, input, expectedHash, planId) {
   const parsed = executionInputSchema.parse(input);
@@ -2708,7 +2773,7 @@ async function saveExecution(root, input, expectedHash, planId) {
     const execution = executionSchema.parse({
       ...parsed,
       steps: parsed.steps.map((step) => {
-        const issue = state.revision.issues?.find(({ id: id4 }) => id4 === step.id);
+        const issue = state.revision.issues?.find(({ id: id5 }) => id5 === step.id);
         return issue ? {
           title: issue.title,
           files: issue.files,
@@ -2726,24 +2791,24 @@ async function saveExecution(root, input, expectedHash, planId) {
     if (state.revision.issues) {
       const issues = state.revision.issues;
       if (execution.steps.length !== issues.length || issues.some((issue) => {
-        const step = execution.steps.find(({ id: id4 }) => id4 === issue.id);
+        const step = execution.steps.find(({ id: id5 }) => id5 === issue.id);
         return !step || step.title !== issue.title || JSON.stringify(step.files) !== JSON.stringify(issue.files) || JSON.stringify(step.dependsOn ?? []) !== JSON.stringify(issue.dependsOn) || JSON.stringify(step.requiredCheckIds ?? []) !== JSON.stringify(issue.requiredCheckIds);
       })) throw new Error("Execution must preserve approved issue contracts; revise the plan to change them");
     }
     const policy = state.revision.policy;
     for (const exception of policy?.exceptions ?? []) {
-      if (!execution.steps.some(({ id: id4 }) => id4 === exception.resolveByStep)) throw new Error(`Missing exception resolution step: ${exception.resolveByStep}`);
+      if (!execution.steps.some(({ id: id5 }) => id5 === exception.resolveByStep)) throw new Error(`Missing exception resolution step: ${exception.resolveByStep}`);
     }
     if (state.execution?.revisionHash === execution.revisionHash) {
       for (const old of state.execution.steps) {
-        if (!execution.steps.some(({ id: id4 }) => id4 === old.id)) throw new Error("Preserve existing step IDs and their attempt history; revise the plan explicitly instead of resetting work");
+        if (!execution.steps.some(({ id: id5 }) => id5 === old.id)) throw new Error("Preserve existing step IDs and their attempt history; revise the plan explicitly instead of resetting work");
       }
     }
-    const verify = async (id4, full = false) => {
-      const record2 = await readCheckRecord(root, id4, planId);
+    const verify = async (id5, full = false) => {
+      const record2 = await readCheckRecord(root, id5, planId);
       const hasBehaviorCheck = record2.results.some((result) => /(^|:)(test|e2e)(:|$)/.test(result.capability)) || policy?.checks.some((check) => record2.results.some((result) => result.capability === check.script) && policy.rules.some((rule) => rule.verification === "behavior-test" && check.ruleIds.includes(rule.id)));
       if (record2.purpose !== "verification" || !record2.stable || record2.sourceHash !== sourceHash || record2.revisionHash !== execution.revisionHash || !record2.results.length || record2.results.some((result) => result.status !== "passed") || full && (!policy && !record2.full || !hasBehaviorCheck)) {
-        throw new Error(`Check ${id4} does not verify the current source and revision`);
+        throw new Error(`Check ${id5} does not verify the current source and revision`);
       }
       if (policy && full && requiredScripts(policy).some((script) => !record2.results.some((result) => result.capability === script && result.status === "passed"))) {
         throw new Error("Required checks are missing from the final run");
@@ -2754,10 +2819,10 @@ async function saveExecution(root, input, expectedHash, planId) {
       if ((await readCheckRecord(root, execution.baselineCheckId, planId)).purpose !== "baseline") throw new Error("Expected a baseline check record");
     }
     for (const step of execution.steps) {
-      if (["running", "complete"].includes(step.status) && (step.dependsOn ?? []).some((id4) => execution.steps.find((entry) => entry.id === id4)?.status !== "complete")) {
+      if (["running", "complete"].includes(step.status) && (step.dependsOn ?? []).some((id5) => execution.steps.find((entry) => entry.id === id5)?.status !== "complete")) {
         throw new Error(`Prerequisites are incomplete: ${step.id}`);
       }
-      const previous = state.execution?.steps.find(({ id: id4 }) => id4 === step.id);
+      const previous = state.execution?.steps.find(({ id: id5 }) => id5 === step.id);
       const cases = state.revision.issues?.find((issue) => issue.id === step.id)?.testCases;
       const review = step.testReview;
       if (cases && state.revision.contractVersion !== 3 && (JSON.stringify(previous) !== JSON.stringify(step) || state.revisionChangedSinceCheckpoint || execution.status === "complete")) {
@@ -2796,7 +2861,7 @@ async function saveExecution(root, input, expectedHash, planId) {
       }
       if (step.status === "complete" && (JSON.stringify(previous) !== JSON.stringify(step) || state.revisionChangedSinceCheckpoint)) {
         if (!step.checkIds.length || step.remaining.length) throw new Error("Completed steps require checks and no remaining work");
-        for (const id4 of step.checkIds) await verify(id4);
+        for (const id5 of step.checkIds) await verify(id5);
         if (policy) await verifyStep(root, step, policy, execution.revisionHash, sourceHash, planId);
       }
     }
@@ -2809,7 +2874,7 @@ async function saveExecution(root, input, expectedHash, planId) {
         const profile = await discovery.discover(await discovery.createRef(root));
         const failures = policyFailures(policy, profile.scripts, fileHashes);
         if (failures.length) throw new Error(failures.join("; "));
-        const reviews = await Promise.all(execution.steps.flatMap((step) => (step.reviewIds ?? []).map((id4) => readReview(root, id4, planId))));
+        const reviews = await Promise.all(execution.steps.flatMap((step) => (step.reviewIds ?? []).map((id5) => readReview(root, id5, planId))));
         await verifyReviews(root, reviews, policy, execution.revisionHash, sourceHash, planId);
       }
     }
@@ -2833,26 +2898,26 @@ function validateSteps(execution) {
   const steps = new Map(execution.steps.map((step) => [step.id, step]));
   const visited = /* @__PURE__ */ new Set();
   const visiting = /* @__PURE__ */ new Set();
-  const visit = (id4) => {
-    if (visited.has(id4)) return;
-    if (visiting.has(id4)) throw new Error("Cyclic step dependencies");
-    const step = steps.get(id4);
-    if (!step) throw new Error(`Unknown dependency: ${id4}`);
-    visiting.add(id4);
+  const visit = (id5) => {
+    if (visited.has(id5)) return;
+    if (visiting.has(id5)) throw new Error("Cyclic step dependencies");
+    const step = steps.get(id5);
+    if (!step) throw new Error(`Unknown dependency: ${id5}`);
+    visiting.add(id5);
     for (const dependency of step.dependsOn ?? []) visit(dependency);
-    visiting.delete(id4);
-    visited.add(id4);
+    visiting.delete(id5);
+    visited.add(id5);
   };
-  for (const id4 of steps.keys()) visit(id4);
+  for (const id5 of steps.keys()) visit(id5);
 }
 function validateIssues(issues, policy) {
-  if (new Set(issues.map(({ id: id4 }) => id4)).size !== issues.length) throw new Error("Duplicate issue IDs");
+  if (new Set(issues.map(({ id: id5 }) => id5)).size !== issues.length) throw new Error("Duplicate issue IDs");
   validateSteps({ steps: issues });
   for (const issue of issues) {
     if (issue.testCases && new Set(issue.testCases.map((item) => item.id)).size !== issue.testCases.length) throw new Error("Duplicate test-case IDs within issue");
     if (issue.testCases?.some((item) => Boolean(item.flowId) !== Boolean(item.scenarioId))) throw new Error("Test case flow and scenario IDs must be supplied together");
     if (issue.testCases?.some((item) => item.files.some((path) => !issue.files.includes(path)))) throw new Error("Test artifacts must belong to issue files");
-    if (issue.requiredCheckIds.some((id4) => !policy?.checks.some((check) => check.id === id4))) throw new Error("Unknown issue check");
+    if (issue.requiredCheckIds.some((id5) => !policy?.checks.some((check) => check.id === id5))) throw new Error("Unknown issue check");
   }
   if (policy?.checks.some((check) => !issues.some((issue) => issue.requiredCheckIds.includes(check.id)))) throw new Error("Every policy check needs an issue");
   if (policy?.exceptions.some((exception) => !issues.some((issue) => issue.id === exception.resolveByStep))) throw new Error("Missing exception resolution issue");
@@ -2876,20 +2941,20 @@ ${execution.note}
   await atomic(path, body);
 }
 var attemptSchema = object({ id: recordId, stepId: recordId, revisionHash: hash2, number: number().int().min(1).max(3), createdAt: string() });
-async function readAttempt(root, id4, planId) {
-  recordId.parse(id4);
-  return attemptSchema.parse(JSON.parse(await readFile6(join8(root, ".frontend-system", scope(planId), "attempts", `${id4}.json`), "utf8")));
+async function readAttempt(root, id5, planId) {
+  recordId.parse(id5);
+  return attemptSchema.parse(JSON.parse(await readFile6(join8(root, ".frontend-system", scope(planId), "attempts", `${id5}.json`), "utf8")));
 }
 async function beginAttempt(root, stepId, expectedHash, planId) {
   recordId.parse(stepId);
   return locked(root, async () => {
     const state = await workflowContext(root, planId);
     if (state.executionHash !== expectedHash || !state.execution || !state.revision.approved || state.revision.hash !== state.execution.revisionHash) throw new Error("Reread the current approved execution");
-    const step = state.execution.steps.find(({ id: id4 }) => id4 === stepId);
+    const step = state.execution.steps.find(({ id: id5 }) => id5 === stepId);
     if (!step || step.status === "complete") throw new Error("Select an incomplete step");
     validateSteps(state.execution);
-    if ((step.dependsOn ?? []).some((id4) => state.execution.steps.find((entry) => entry.id === id4)?.status !== "complete")) throw new Error("Prerequisites are incomplete");
-    const next = state.execution.steps.find((item) => item.status !== "complete" && (item.dependsOn ?? []).every((id4) => state.execution.steps.find((entry) => entry.id === id4)?.status === "complete"));
+    if ((step.dependsOn ?? []).some((id5) => state.execution.steps.find((entry) => entry.id === id5)?.status !== "complete")) throw new Error("Prerequisites are incomplete");
+    const next = state.execution.steps.find((item) => item.status !== "complete" && (item.dependsOn ?? []).every((id5) => state.execution.steps.find((entry) => entry.id === id5)?.status === "complete"));
     if (next?.id !== stepId) throw new Error(`Complete the next eligible issue in plan order first: ${next?.id ?? "none"}`);
     const folder = await planDirectory(root, "attempts", planId);
     const attempts = await Promise.all((await readdir3(folder)).filter((name) => name.endsWith(".json")).map((name) => readAttempt(root, name.slice(0, -5), planId)));
@@ -2923,28 +2988,28 @@ var reviewInputSchema = strictObject({
   resolvedExceptions: array(string())
 });
 var reviewSchema = reviewInputSchema.extend({ id: recordId, revisionHash: hash2, sourceHash: hash2, createdAt: string(), authority: literal("host-model-review") });
-async function readReview(root, id4, planId) {
-  recordId.parse(id4);
-  return reviewSchema.parse(JSON.parse(await readFile6(join8(root, ".frontend-system", scope(planId), "reviews", `${id4}.json`), "utf8")));
+async function readReview(root, id5, planId) {
+  recordId.parse(id5);
+  return reviewSchema.parse(JSON.parse(await readFile6(join8(root, ".frontend-system", scope(planId), "reviews", `${id5}.json`), "utf8")));
 }
 async function saveReview(root, input, planId) {
   const data = reviewInputSchema.parse(input);
   return locked(root, async () => {
     const state = await workflowContext(root, planId);
     const policy = state.revision.policy;
-    const requirement = policy?.reviews.find(({ id: id4 }) => id4 === data.reviewId);
+    const requirement = policy?.reviews.find(({ id: id5 }) => id5 === data.reviewId);
     if (!state.revision.approved || !policy) throw new Error("Review requires the current approved policy");
-    if (!requirement) throw new Error(`Unknown policy reviewId ${data.reviewId}. Select an existing review requirement: ${policy.reviews.map(({ id: id4 }) => id4).join(", ") || "none"}. The server generates the saved record id; do not invent a reviewId.`);
-    if (!state.execution?.steps.some(({ id: id4 }) => id4 === data.stepId)) throw new Error("Review requires an existing execution step; select its approved issue ID");
+    if (!requirement) throw new Error(`Unknown policy reviewId ${data.reviewId}. Select an existing review requirement: ${policy.reviews.map(({ id: id5 }) => id5).join(", ") || "none"}. The server generates the saved record id; do not invent a reviewId.`);
+    if (!state.execution?.steps.some(({ id: id5 }) => id5 === data.stepId)) throw new Error("Review requires an existing execution step; select its approved issue ID");
     const attempt = await readAttempt(root, data.attemptId, planId);
     if (attempt.revisionHash !== state.revision.hash || attempt.stepId !== data.stepId) throw new Error("Review attempt does not match");
     const snapshot = await sourceSnapshot(root);
     const changes = data.prScope ? await prScope(root, data.prScope.base) : null;
     if (changes && (changes.dirtyFiles.length || !samePrScope(data.prScope, changes.scope))) throw new Error("PR scope changed or has uncommitted files; reread before reviewing");
-    if (data.findings.some((finding) => !policy.rules.some(({ id: id4 }) => id4 === finding.ruleId) || finding.files.some((file) => !snapshot[file] && !changes?.files.includes(file)))) throw new Error("Review findings require existing files (or PR deletions) and policy rules");
-    const missingRules = requirement.ruleIds.filter((id4) => !data.findings.some((finding) => finding.ruleId === id4));
+    if (data.findings.some((finding) => !policy.rules.some(({ id: id5 }) => id5 === finding.ruleId) || finding.files.some((file) => !snapshot[file] && !changes?.files.includes(file)))) throw new Error("Review findings require existing files (or PR deletions) and policy rules");
+    const missingRules = requirement.ruleIds.filter((id5) => !data.findings.some((finding) => finding.ruleId === id5));
     if (missingRules.length) throw new Error(`Review must address all required rules. Review ${data.reviewId} is missing: ${missingRules.join(", ")}. Supply findings for these approved rule IDs; do not remove obligations to pass.`);
-    if (data.resolvedExceptions.some((id4) => !policy.exceptions.some((item) => item.id === id4))) throw new Error("Unknown exception resolution");
+    if (data.resolvedExceptions.some((id5) => !policy.exceptions.some((item) => item.id === id5))) throw new Error("Unknown exception resolution");
     if (data.status === "passed" && data.remaining.length) throw new Error("Passing review cannot have remaining work");
     const review = reviewSchema.parse({ ...data, id: randomUUID(), revisionHash: state.revision.hash, sourceHash: digest(JSON.stringify(snapshot)), createdAt: (/* @__PURE__ */ new Date()).toISOString(), authority: "host-model-review" });
     await writeFile(join8(await planDirectory(root, "reviews", planId), `${review.id}.json`), JSON.stringify(review), { flag: "wx" });
@@ -2974,14 +3039,14 @@ async function verifyStep(root, step, policy, revisionHash, sourceHash, planId) 
   if (!step.attemptId) throw new Error("Policy steps require a recorded attempt");
   const attempt = await readAttempt(root, step.attemptId, planId);
   if (attempt.stepId !== step.id || attempt.revisionHash !== revisionHash) throw new Error("Step attempt does not match");
-  const records = await Promise.all(step.checkIds.map((id4) => readCheckRecord(root, id4, planId)));
+  const records = await Promise.all(step.checkIds.map((id5) => readCheckRecord(root, id5, planId)));
   if (records.some((item) => item.attemptId !== attempt.id)) throw new Error("Step checks must belong to its attempt");
-  const checks = step.requiredCheckIds ?? policy.checks.map(({ id: id4 }) => id4);
-  for (const id4 of checks) {
-    const check = policy.checks.find((item) => item.id === id4);
-    if (!check || !records.some((record2) => record2.results.some((result) => result.capability === check.script && result.status === "passed"))) throw new Error(`Missing required step check: ${id4}`);
+  const checks = step.requiredCheckIds ?? policy.checks.map(({ id: id5 }) => id5);
+  for (const id5 of checks) {
+    const check = policy.checks.find((item) => item.id === id5);
+    if (!check || !records.some((record2) => record2.results.some((result) => result.capability === check.script && result.status === "passed"))) throw new Error(`Missing required step check: ${id5}`);
   }
-  const reviews = await Promise.all((step.reviewIds ?? []).map((id4) => readReview(root, id4, planId)));
+  const reviews = await Promise.all((step.reviewIds ?? []).map((id5) => readReview(root, id5, planId)));
   if (reviews.some((review) => review.stepId !== step.id || review.attemptId !== attempt.id)) throw new Error("Step reviews must belong to its attempt");
   await verifyReviews(root, reviews, { ...policy, exceptions: policy.exceptions.filter((item) => item.resolveByStep === step.id) }, revisionHash, sourceHash, planId);
 }
@@ -2992,10 +3057,10 @@ function validateFlowDesign(flow) {
   const design = flow.design;
   if (!design) return;
   const nodes = new Map(flow.nodes.map((n) => [n.id, n]));
-  const ids = /* @__PURE__ */ new Set();
+  const ids2 = /* @__PURE__ */ new Set();
   for (const screen of design.screens) {
-    if (ids.has(screen.id)) throw new Error("Duplicate design screen ID");
-    ids.add(screen.id);
+    if (ids2.has(screen.id)) throw new Error("Duplicate design screen ID");
+    ids2.add(screen.id);
     if (nodes.get(screen.page)?.kind !== "page") throw new Error("Design screen must reference a page");
     for (const asset of [screen.image, ...screen.reference ? [screen.reference] : []]) {
       if (!flow.scope.files.includes(asset.path)) throw new Error("Design image must be included in scope.files");
@@ -3017,7 +3082,7 @@ function validateFlowDesign(flow) {
   } else if (design.screens.some((s) => !s.confirmation) || !design.detailRequest || !flow.evidence[design.detailRequest]) {
     throw new Error("Detailed design requires confirmed images and user request evidence");
   }
-  for (const item of design.quality) if (item.nodes.some((id4) => !nodes.has(id4))) throw new Error("Unknown quality requirement node");
+  for (const item of design.quality) if (item.nodes.some((id5) => !nodes.has(id5))) throw new Error("Unknown quality requirement node");
 }
 async function loadFlowDesignImages(root, flow) {
   const images = {};
@@ -3055,15 +3120,15 @@ var inRoots = (path, roots) => roots.some((r) => r === "." || path === r || path
 var structuralSource = (path) => /\.(?:[cm]?[jt]sx?|vue|svelte|astro|html?|css|s[ac]ss|less|mdx|json|ya?ml|toml|graphql|gql|wasm)$/i.test(path);
 var discoveryFiles = (paths, roots, mode) => paths.filter((p) => !/^design\/fs\/(?:[^/]+\.captures\.json|captures\/.*\.png)$/.test(p) && (config(p) || inRoots(p, roots) && (mode === "all" || structuralSource(p)))).sort();
 var inventoryHash = (paths, roots, mode) => contentHash(JSON.stringify(discoveryFiles(paths, roots, mode)));
-async function readEnvelope(root, kind, id4, hash3) {
-  analysisId.parse(id4);
+async function readEnvelope(root, kind, id5, hash3) {
+  analysisId.parse(id5);
   if (hash3 && !/^[a-f0-9]{64}$/.test(hash3)) throw new Error("Invalid analysis hash");
-  const path = join9(resolve5(root), ".frontend-system/analysis", ...hash3 ? ["history", `${hash3}.json`] : [kind, `${id4}.json`]);
+  const path = join9(resolve5(root), ".frontend-system/analysis", ...hash3 ? ["history", `${hash3}.json`] : [kind, `${id5}.json`]);
   const actual = await realpath7(path);
-  if (actual !== join9(await realpath7(root), ".frontend-system/analysis", ...hash3 ? ["history", `${hash3}.json`] : [kind, `${id4}.json`])) throw new Error("Analysis records cannot traverse symlinks");
+  if (actual !== join9(await realpath7(root), ".frontend-system/analysis", ...hash3 ? ["history", `${hash3}.json`] : [kind, `${id5}.json`])) throw new Error("Analysis records cannot traverse symlinks");
   const raw = await readFile7(actual, "utf8");
   const record2 = envelope.parse(JSON.parse(raw));
-  if (record2.record.kind !== kind || record2.record.data.id !== id4 || hash3 && contentHash(raw) !== hash3) throw new Error("Analysis identity/hash mismatch");
+  if (record2.record.kind !== kind || record2.record.data.id !== id5 || hash3 && contentHash(raw) !== hash3) throw new Error("Analysis identity/hash mismatch");
   return { hash: contentHash(raw), ...record2 };
 }
 async function code(root, path, snapshot) {
@@ -3076,9 +3141,9 @@ function validateGraph(flow) {
   const edges = new Map(flow.edges.map((e) => [e.id, e]));
   for (const [kind, items] of Object.entries({ nodes: flow.nodes, edges: flow.edges, scenarios: flow.scenarios, invariants: flow.invariants })) {
     const seen = /* @__PURE__ */ new Set(), duplicates = /* @__PURE__ */ new Set();
-    for (const { id: id4 } of items) {
-      if (seen.has(id4)) duplicates.add(id4);
-      seen.add(id4);
+    for (const { id: id5 } of items) {
+      if (seen.has(id5)) duplicates.add(id5);
+      seen.add(id5);
     }
     if (duplicates.size) throw new Error(`Duplicate flow IDs in ${kind}: ${[...duplicates].join(", ")}. Update existing entries by ID instead of appending them.`);
   }
@@ -3095,14 +3160,14 @@ function validateGraph(flow) {
       const key = `${contract.path}:${contract.name}`;
       if (contracts.has(key)) throw new Error(`Duplicate node contract: ${key}`);
       contracts.add(key);
-      if (flow.basis === "observed" && !contract.evidence.some((id4) => flow.evidence[id4]?.path === contract.path)) {
+      if (flow.basis === "observed" && !contract.evidence.some((id5) => flow.evidence[id5]?.path === contract.path)) {
         throw new Error(`Observed contract requires evidence from its path: ${key}`);
       }
     }
   }
   for (const item of [...flow.nodes, ...flow.nodes.flatMap((n) => n.contracts ?? []), ...flow.edges, ...flow.invariants]) {
     if (flow.basis === "observed" && !item.evidence.length) throw new Error("Observed graph elements require evidence");
-    if (item.evidence.some((id4) => !flow.evidence[id4])) throw new Error("Unknown flow evidence ID");
+    if (item.evidence.some((id5) => !flow.evidence[id5])) throw new Error("Unknown flow evidence ID");
   }
   for (const edge of flow.edges) if (!nodes.has(edge.from) || !nodes.has(edge.to)) throw new Error("Unknown flow edge endpoint");
   for (const scenario of flow.scenarios) if (!nodes.has(scenario.entry) || scenario.steps.some((s) => !edges.has(s.edge))) throw new Error("Unknown scenario node/edge");
@@ -3110,8 +3175,8 @@ function validateGraph(flow) {
   validateFlowDesign(flow);
   validateStructuredFlow(flow);
 }
-async function readPinnedFlow(root, id4, hash3) {
-  const stored = await readEnvelope(root, "flow", id4, hash3);
+async function readPinnedFlow(root, id5, hash3) {
+  const stored = await readEnvelope(root, "flow", id5, hash3);
   if (stored.record.kind !== "flow") throw new Error("Expected flow record");
   return stored.record.data;
 }
@@ -3160,9 +3225,9 @@ function freshnessScan(root, systemRoot, snapshot) {
       return hashes.get(path);
     },
     index: () => index ??= readReferenceIndex(join9(systemRoot, "references/learned")),
-    knowledge: (id4) => {
-      if (!knowledge.has(id4)) knowledge.set(id4, readIndexedReference(join9(systemRoot, "references/learned"), id4, 0, 1));
-      return knowledge.get(id4);
+    knowledge: (id5) => {
+      if (!knowledge.has(id5)) knowledge.set(id5, readIndexedReference(join9(systemRoot, "references/learned"), id5, 0, 1));
+      return knowledge.get(id5);
     }
   };
 }
@@ -3213,13 +3278,13 @@ async function analysisFreshness(root, stored, systemRoot, scan = freshnessScan(
     }
   }
   const index = Object.keys(stored.knowledgeHashes).length ? await scan.index() : void 0;
-  for (const [id4, hash3] of Object.entries(stored.knowledgeHashes)) {
-    const entry = index?.entries.find((e) => e.id === id4);
-    if (!entry || contentHash(JSON.stringify(entry)) !== hash3) reasons.push(`Changed knowledge: ${id4}`);
+  for (const [id5, hash3] of Object.entries(stored.knowledgeHashes)) {
+    const entry = index?.entries.find((e) => e.id === id5);
+    if (!entry || contentHash(JSON.stringify(entry)) !== hash3) reasons.push(`Changed knowledge: ${id5}`);
     else try {
-      await scan.knowledge(id4);
+      await scan.knowledge(id5);
     } catch {
-      reasons.push(`Changed or unavailable knowledge body: ${id4}`);
+      reasons.push(`Changed or unavailable knowledge body: ${id5}`);
     }
   }
   if (stored.record.kind === "finding") {
@@ -3272,11 +3337,11 @@ async function saveProjectAnalysis(root, systemRoot, input) {
       if (["resolved", "dismissed"].includes(finding.status) && !finding.resolution) throw new Error("Closing a finding requires resolution evidence and reconsideration condition");
       quoteHashes = await checkQuotes(root, [...finding.evidence, ...finding.authority ? [finding.authority] : [], ...finding.resolution?.evidence ?? []], flow.scope.files, flow.scope.snapshot);
       const index = await readReferenceIndex(join9(systemRoot, "references/learned"));
-      for (const id4 of finding.knowledgeIds) {
-        const entry = index?.entries.find((e) => e.id === id4);
-        if (!entry) throw new Error(`Unknown finding knowledge: ${id4}`);
-        await readIndexedReference(join9(systemRoot, "references/learned"), id4, 0, 1);
-        knowledgeHashes[id4] = contentHash(JSON.stringify(entry));
+      for (const id5 of finding.knowledgeIds) {
+        const entry = index?.entries.find((e) => e.id === id5);
+        if (!entry) throw new Error(`Unknown finding knowledge: ${id5}`);
+        await readIndexedReference(join9(systemRoot, "references/learned"), id5, 0, 1);
+        knowledgeHashes[id5] = contentHash(JSON.stringify(entry));
       }
     }
     const flowQuoteHashes = await checkQuotes(root, Object.values(flow.evidence), flow.scope.files, flow.scope.snapshot);
@@ -3352,22 +3417,22 @@ async function getProjectAnalysis(root, systemRoot, options = {}) {
       throw error;
     }
     for (const name of names.filter((n) => n.endsWith(".json")).sort()) {
-      const id4 = name.slice(0, -5);
-      if (options.ids && !options.ids.includes(id4)) continue;
-      const stored = await readEnvelope(root, kind, id4);
+      const id5 = name.slice(0, -5);
+      if (options.ids && !options.ids.includes(id5)) continue;
+      const stored = await readEnvelope(root, kind, id5);
       if (options.files?.length && !options.files.some((p) => p in stored.hashes || inRoots(p, stored.roots))) continue;
-      selected.push({ kind, id: id4, stored });
+      selected.push({ kind, id: id5, stored });
     }
   }
   const offset = options.offset ?? 0, limit = options.limit ?? 10;
   const scan = freshnessScan(root, systemRoot);
   const rows = [];
-  for (const { kind, id: id4, stored } of selected.slice(offset, offset + limit)) {
+  for (const { kind, id: id5, stored } of selected.slice(offset, offset + limit)) {
     const freshness = await analysisFreshness(root, stored, systemRoot, scan);
     const data = stored.record.data;
     rows.push({
       kind,
-      id: id4,
+      id: id5,
       hash: stored.hash,
       title: data.title,
       freshness,

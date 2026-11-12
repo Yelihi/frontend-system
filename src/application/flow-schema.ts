@@ -1,5 +1,6 @@
 import * as z from 'zod/v4';
 import {localPath, sha256} from './policy.js';
+import {flowReviewSchema, reviewNodeSchema, reviewStepSchema, reviewTestSchema} from './flow-review-schema.js';
 
 export const analysisId = z.string().regex(/^[a-z0-9][a-z0-9._-]{0,99}$/);
 const text = z.string().trim().min(1).max(1600);
@@ -7,11 +8,12 @@ export const flowCitation = z.object({path: localPath, quote: text, line: z.numb
 const evidence = z.array(analysisId).max(20);
 const designImage = z.object({path: localPath, hash: sha256, alt: text});
 export const flowTestCaseSchema = z.object({id: analysisId, scenarioId: analysisId,
-  given: text, when: text, then: text, method: z.enum(['unit', 'integration', 'e2e', 'manual'])});
+  given: text, when: text, then: text, review: reviewTestSchema.optional(), method: z.enum(['unit', 'integration', 'e2e', 'manual'])});
 const outcomeKind = z.enum(['idle', 'loading', 'success', 'empty', 'error', 'cancelled', 'retry', 'custom']);
 export const flowSchema = z.object({
   id: analysisId, title: text, basis: z.enum(['observed', 'proposed']),
   summary: text,
+  review: flowReviewSchema.optional(),
   scope: z.object({files: z.array(localPath).min(1).max(100),
     discoveryMode: z.enum(['source', 'all']).default('source').describe('source tracks new code/config/data files, not Markdown reports. Use all for Markdown-driven routes/content. Explicit files are always hashed.'),
     discoveryRoots: z.array(z.string().regex(/^(\.|[a-zA-Z0-9_@.-]+(?:\/[a-zA-Z0-9_@.-]+)*)$/)).min(1).max(20)
@@ -38,7 +40,7 @@ export const flowSchema = z.object({
     scenarios: z.array(analysisId), testCaseIds: z.array(analysisId).min(1)})).max(80).optional(),
   nodes: z.array(z.object({id: analysisId, kind: z.enum(['page', 'component', 'store', 'cache', 'module', 'service', 'external']),
     entityId: analysisId.optional().describe('Explicit project-wide identity. Reuse only for the same page/state/service contract, never merely the same label.'),
-    label: text, parent: analysisId.optional(), props: z.array(text).default([]), state: z.array(text).default([]),
+    label: text, parent: analysisId.optional(), review: reviewNodeSchema.optional(), props: z.array(text).default([]), state: z.array(text).default([]),
     events: z.array(text).default([]), lifecycle: z.array(text).default([]), evidence,
     architecture: z.object({layer: text, runtime: z.enum(['browser', 'server', 'shared', 'external']), responsibility: text}).optional(),
     contracts: z.array(z.object({kind: z.enum(['interface', 'type', 'function', 'store']),
@@ -48,10 +50,10 @@ export const flowSchema = z.object({
   })).min(1).max(80),
   edges: z.array(z.object({id: analysisId, from: analysisId, to: analysisId,
     kind: z.enum(['call', 'read', 'write', 'subscribe', 'props', 'return', 'invalidate', 'cleanup']),
-    label: text, condition: text.optional(), evidence})).max(200),
+    label: text, condition: text.optional(), delivery: z.enum(['normal','lost']).optional(), evidence})).max(200),
   scenarios: z.array(z.object({id: analysisId, title: text, entry: analysisId, event: text,
     category: z.enum(['event', 'lifecycle']).optional(), variant: outcomeKind.optional(),
-    steps: z.array(z.object({edge: analysisId, effect: text, condition: text.optional(),
+    steps: z.array(z.object({edge: analysisId, review: reviewStepSchema.optional(), effect: text, condition: text.optional(),
       views: z.array(z.object({page: analysisId, scene: analysisId})).min(1).optional(),
       changes: z.array(z.object({ownerNode: analysisId, field: text, before: text, after: text,
         basis: z.enum(['source', 'measured', 'proposed'])})).optional(),
@@ -71,7 +73,8 @@ export const flowSchema = z.object({
       requirement: text, verification: text, nodes: z.array(analysisId).min(1).max(20)})).max(20).default([]),
   }).optional(),
   invariants: z.array(z.object({id: analysisId, statement: text,
-    authority: z.enum(['observed', 'established', 'proposed']), evidence})).default([]),
+    authority: z.enum(['observed', 'established', 'proposed']), evidence,
+    review: z.object({title:text,status:text,nodeIds:z.array(analysisId),testIds:z.array(analysisId),source:localPath}).strict().optional()})).default([]),
   limitations: z.array(text).min(1).max(30),
 }).superRefine((flow, ctx) => {
   if (!flow.scenarios.length && flow.design?.stage !== 'visual-review' && !(flow.pages?.length && flow.designState === 'draft')) ctx.addIssue({code:'custom',message:'Event scenarios are required outside visual review',path:['scenarios']});

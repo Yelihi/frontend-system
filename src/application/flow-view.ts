@@ -18,8 +18,8 @@ export function flowToMermaid(flow: ProjectFlow, scenarioId?: string) {
   }
   for (const n of flow.nodes.filter(n => !n.parent)) node(n.id, '  ');
   const scenario = flow.scenarios.find(s => s.id === scenarioId);
-  for (const [i, edge] of flow.edges.filter(e => !scenario || scenario.steps.some(s => s.edge === e.id)).entries()) {
-    const steps = scenario?.steps.flatMap((s, j) => s.edge === edge.id ? [j + 1] : []) ?? [];
+  for (const [i, edge] of flow.edges.filter(e => !scenario || scenario.steps.some(s => (s.review?.edgeIds??[s.edge]).includes(e.id))).entries()) {
+    const steps = scenario?.steps.flatMap((s, j) => (s.review?.edgeIds??[s.edge]).includes(edge.id) ? [j + 1] : []) ?? [];
     lines.push(`  ${ids.get(edge.from)} -->|"${label(`${steps.length ? `${steps.join('/')} · ` : ''}${edge.label}${edge.condition ? ` [${edge.condition}]` : ''}`)}"| ${ids.get(edge.to)}`);
     if (steps.length) lines.push(`  linkStyle ${i} stroke:#0369a1,stroke-width:3px`);
   }

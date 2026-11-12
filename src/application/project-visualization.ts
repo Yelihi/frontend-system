@@ -39,7 +39,7 @@ export async function viewFlows(root:string, refs:FlowReceipt[]):Promise<ViewFlo
 }
 
 const encoded=(id:string)=>'v'+Buffer.from(id).toString('hex');
-type Spec=ReturnType<typeof projectFlowView> & {captures?:Array<{page:string;scene:string;[key:string]:unknown}>;blocked?:Array<{page:string;scene:string;reason:string}>;sources?:Array<{flowId:string;hash:string;sourceCommit?:string}>};
+type Spec=ReturnType<typeof projectFlowView> & {reviewFlows?:Array<NonNullable<ReturnType<typeof projectFlowView>['review']>&{captureRefs:Record<string,string>}>;captures?:Array<{page:string;scene:string;[key:string]:unknown}>;blocked?:Array<{page:string;scene:string;reason:string}>;sources?:Array<{flowId:string;hash:string;sourceCommit?:string}>};
 type Screens=Awaited<ReturnType<typeof prepareFlowExplorer>>['screens'];
 
 /** Flow-local edges/scenes retain their namespace; only explicitly shared entities coalesce. */
@@ -48,10 +48,12 @@ export function composeProjectViews(parts:Array<{flow:ProjectFlow;spec:Spec;scre
     baseline:{commit:baseline.expectedCommit,flow:{id:'project',hash}},designState:null,
     nodes:[],instances:[],pages:[],relations:[],navigation:[],scenarios:[],knowledge:[],checks:[],captures:[],blocked:[],sources:[]};
   const screens:Screens={};
+  result.reviewFlows=[];
   for(const {flow,spec,screens:assets} of parts){
     const nodeIds=new Map(flow.nodes.map(n=>[encoded(n.id),encoded(n.entityId?`entity:${n.entityId}`:`${flow.id}:node:${n.id}`)]));
     const node=(id:string)=>{const found=nodeIds.get(id);if(!found)throw new Error(`Unknown project node: ${flow.id}/${id}`);return found;};
     const scoped=(id:string)=>encoded(`${flow.id}:${id}`);
+    if(spec.review)result.reviewFlows!.push({...spec.review,captureRefs:Object.fromEntries((flow.pages??[]).flatMap(p=>p.scenes.map(s=>[s.id,`${node(encoded(p.node))}:${scoped(encoded(s.id))}`])))});
     const instance=(id:string)=>{
       const item=spec.instances.find(i=>i.id===id);if(!item)throw new Error('Unknown component instance');
       return encoded(`instance:${node(item.node)}:${node(item.page)}`);

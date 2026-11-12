@@ -21,6 +21,7 @@ try {
   await exec('tar', ['-xzf', join(temp, pack.filename), '-C', temp]);
   const releaseManifest = JSON.parse(await readFile(join(temp, 'package/release-manifest.json'), 'utf8'));
   const explorer = join(temp, 'package/skills/fs-plan-visualize');
+  for(const file of ['review-viewer.html','review-viewer.css','review-viewer.js','review-edges.js'])assert.ok(pack.files.some(entry=>entry.path==='skills/fs-plan-visualize/scripts/'+file),'Missing packaged review asset: '+file);
   const explorerInput = join(explorer, 'references/page-flow-input.json');
   const explorerOut = join(temp, 'page-flow');
   await exec(process.execPath, [join(explorer, 'scripts/build.mjs'), explorerInput, explorerOut], {cwd: temp});
@@ -65,6 +66,17 @@ try {
   await client.connect(new StdioClientTransport({ command: process.execPath, args: [join(temp, 'package/bundle/mcp.js')], cwd: temp,
     env: {...process.env, HOME: temp, FRONTEND_SYSTEM_REPO: ''} }));
   const definitions = (await client.listTools()).tools;
+  const reviewRoot=join(temp,'review-project');await mkdir(join(reviewRoot,'.frontend-system/drafts'),{recursive:true});
+  await copyFile('test/fixtures/flow-review/source-evidence.txt',join(reviewRoot,'source-evidence.txt'));
+  const reviewFlow=JSON.parse(await readFile('test/fixtures/flow-review/echo.json','utf8'));
+  await writeFile(join(reviewRoot,'.frontend-system/drafts/review.json'),JSON.stringify({expectedHash:null,record:{kind:'flow',data:reviewFlow}}));
+  const reviewSaved=await client.callTool({name:'save_project_analysis',arguments:{projectPath:reviewRoot,draftFile:'.frontend-system/drafts/review.json'}});
+  assert.ok(!reviewSaved.isError,JSON.stringify(reviewSaved));
+  const reviewHash=JSON.parse(reviewSaved.content[0].text).hash;
+  const reviewRendered=await client.callTool({name:'render_project_flow',arguments:{projectPath:reviewRoot,id:reviewFlow.id,expectedHash:reviewHash,allowUnverified:true}});
+  assert.ok(!reviewRendered.isError,JSON.stringify(reviewRendered));
+  assert.match(await readFile(JSON.parse(reviewRendered.content[0].text).path,'utf8'),/id="fs-review-data"/,'Packed MCP renders the actual review viewer');
+
   assert.equal(client.getServerVersion().version, releaseManifest.pluginVersion, 'MCP handshake must use the same package version');
   const tools = definitions.map(tool => tool.name);
   const identity = await client.callTool({name: 'get_fs_release', arguments: {}});

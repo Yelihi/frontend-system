@@ -135,3 +135,34 @@ ownership against the source or approved design. Verify images visually if tools
 This renderer has structural/package tests and prior browser checks, including a synthetic
 60-route/182-edge smoke check. It is not a complete automatic code analyzer, runtime debugger,
 or a benchmark for thousands of nodes. Report those boundaries without adding blocking approval.
+
+## Four-tab review
+
+An optional `flow.review.version:1` selects **흐름 / 도메인·계약 / 의존성 / 테스트 계획**
+through the same `render_project_flow` / `flow-render` path. The existing viewer,
+English logical view, Mermaid and capture checks remain available for older records.
+Read the exported `save_project_analysis --kind flow` schema for the input shape.
+
+Keep one canonical scenario: each step has `review.id`, ordered `edgeIds` (starting
+with its primary `edge`), `changes` referencing typed field IDs, and rule/test IDs.
+Do not keep a second executionFlow. Nodes explicitly declare changeKind and their
+contract IDs; fields declare ownerNodeId and state/ref/db/result/unknown. Scalars
+preserve false, 0 and null; `{status:"unknown"}` and `{status:"absent"}` are distinct.
+Contracts, invariants and detailed testCases share the same references. Test details
+use runner/layer/setup/mutation/limits and newline-separated given/when/then; do not
+assume one project's runner. `review.screens` contains declarative wireframe blocks,
+not executable HTML. Proposed screens are labeled; observed screens require verified
+captures and never silently fall back to a fabricated wireframe.
+
+The optional review is complete enough to browse when it has scenarios, test plans,
+unique scene IDs, valid owners and matching links. Use node.review.flowCard and
+node.review.graph only for the necessary display placements. Aggregate views retain
+separate review models and hashes behind their flow selector.
+
+`review.edits` binds copy proposals to UI blocks, contracts and affected test IDs.
+The viewer updates those projections and invalidates affected confirmations. All
+editing and confirmations remain a local draft, keyed by flowHash + review version.
+A changed flow hash starts a new draft. Export/import JSON preserves that boundary;
+storage/import failures are visible. Confirming all tests never creates executed test
+results or updates FS records. Reapply a reviewed draft only through a separately
+requested, validated save with expectedHash.

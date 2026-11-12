@@ -1,0 +1,5230 @@
+{
+  "checks": [
+    "four approved tabs",
+    "nine canonical steps",
+    "no new Echo functions",
+    "1440px step 1: no overflow",
+    "1440px step 1: all edges routed",
+    "1440px step 1: left alignment",
+    "1440px call-1-1 segment 1: avoids nodes",
+    "1440px call-1-1 segment 2: avoids nodes",
+    "1440px call-1-1 segment 3: avoids nodes",
+    "1440px call-1-1 segment 4: avoids nodes",
+    "1440px call-1-1 segment 5: avoids nodes",
+    "1440px call-1-2 segment 1: avoids nodes",
+    "1440px call-1-2 segment 2: avoids nodes",
+    "1440px call-1-2 segment 3: avoids nodes",
+    "1440px step 2: no overflow",
+    "1440px step 2: all edges routed",
+    "1440px step 2: left alignment",
+    "1440px call-2-1 segment 1: avoids nodes",
+    "1440px call-2-1 segment 2: avoids nodes",
+    "1440px call-2-1 segment 3: avoids nodes",
+    "1440px call-2-2 segment 1: avoids nodes",
+    "1440px call-2-2 segment 2: avoids nodes",
+    "1440px call-2-2 segment 3: avoids nodes",
+    "1440px step 3: no overflow",
+    "1440px step 3: all edges routed",
+    "1440px step 3: left alignment",
+    "1440px call-3-1 segment 1: avoids nodes",
+    "1440px call-3-1 segment 2: avoids nodes",
+    "1440px call-3-1 segment 3: avoids nodes",
+    "1440px step 4: no overflow",
+    "1440px step 4: all edges routed",
+    "1440px step 4: left alignment",
+    "1440px call-4-1 segment 1: avoids nodes",
+    "1440px call-4-1 segment 2: avoids nodes",
+    "1440px call-4-1 segment 3: avoids nodes",
+    "1440px step 5: no overflow",
+    "1440px step 5: all edges routed",
+    "1440px step 5: left alignment",
+    "1440px call-5-1 segment 1: avoids nodes",
+    "1440px call-5-1 segment 2: avoids nodes",
+    "1440px call-5-1 segment 3: avoids nodes",
+    "1440px call-5-2 segment 1: avoids nodes",
+    "1440px call-5-2 segment 2: avoids nodes",
+    "1440px call-5-2 segment 3: avoids nodes",
+    "1440px call-5-3 segment 1: avoids nodes",
+    "1440px call-5-3 segment 2: avoids nodes",
+    "1440px call-5-3 segment 3: avoids nodes",
+    "1440px call-5-3 segment 4: avoids nodes",
+    "1440px call-5-3 segment 5: avoids nodes",
+    "1440px step 6: no overflow",
+    "1440px step 6: all edges routed",
+    "1440px step 6: left alignment",
+    "1440px call-6-1 segment 1: avoids nodes",
+    "1440px call-6-1 segment 2: avoids nodes",
+    "1440px call-6-1 segment 3: avoids nodes",
+    "1440px call-6-1 segment 4: avoids nodes",
+    "1440px call-6-1 segment 5: avoids nodes",
+    "1440px call-6-2 segment 1: avoids nodes",
+    "1440px call-6-2 segment 2: avoids nodes",
+    "1440px call-6-2 segment 3: avoids nodes",
+    "1440px step 7: no overflow",
+    "1440px step 7: all edges routed",
+    "1440px step 7: left alignment",
+    "1440px call-7-1 segment 1: avoids nodes",
+    "1440px call-7-1 segment 2: avoids nodes",
+    "1440px call-7-1 segment 3: avoids nodes",
+    "1440px call-7-2 segment 1: avoids nodes",
+    "1440px call-7-2 segment 2: avoids nodes",
+    "1440px call-7-2 segment 3: avoids nodes",
+    "1440px step 8: no overflow",
+    "1440px step 8: all edges routed",
+    "1440px step 8: left alignment",
+    "1440px call-8-1 segment 1: avoids nodes",
+    "1440px call-8-1 segment 2: avoids nodes",
+    "1440px call-8-1 segment 3: avoids nodes",
+    "1440px call-8-2 segment 1: avoids nodes",
+    "1440px call-8-2 segment 2: avoids nodes",
+    "1440px call-8-2 segment 3: avoids nodes",
+    "1440px step 9: no overflow",
+    "1440px step 9: all edges routed",
+    "1440px step 9: left alignment",
+    "1440px call-9-1 segment 1: avoids nodes",
+    "1440px call-9-1 segment 2: avoids nodes",
+    "1440px call-9-1 segment 3: avoids nodes",
+    "1440px call-9-2 segment 1: avoids nodes",
+    "1440px call-9-2 segment 2: avoids nodes",
+    "1440px call-9-2 segment 3: avoids nodes",
+    "1440px call-9-3 segment 1: avoids nodes",
+    "1440px call-9-3 segment 2: avoids nodes",
+    "1440px call-9-3 segment 3: avoids nodes",
+    "1440px dependency graph routes all nine edges",
+    "1440px graph no overflow",
+    "1440px graph dependency-0 segment 1: avoids nodes",
+    "1440px graph dependency-0 segment 2: avoids nodes",
+    "1440px graph dependency-0 segment 3: avoids nodes",
+    "1440px graph dependency-1 segment 1: avoids nodes",
+    "1440px graph dependency-1 segment 2: avoids nodes",
+    "1440px graph dependency-1 segment 3: avoids nodes",
+    "1440px graph dependency-2 segment 1: avoids nodes",
+    "1440px graph dependency-3 segment 1: avoids nodes",
+    "1440px graph dependency-3 segment 2: avoids nodes",
+    "1440px graph dependency-3 segment 3: avoids nodes",
+    "1440px graph dependency-4 segment 1: avoids nodes",
+    "1440px graph dependency-5 segment 1: avoids nodes",
+    "1440px graph dependency-5 segment 2: avoids nodes",
+    "1440px graph dependency-5 segment 3: avoids nodes",
+    "1440px graph dependency-6 segment 1: avoids nodes",
+    "1440px graph dependency-6 segment 2: avoids nodes",
+    "1440px graph dependency-6 segment 3: avoids nodes",
+    "1440px graph dependency-7 segment 1: avoids nodes",
+    "1440px graph dependency-7 segment 2: avoids nodes",
+    "1440px graph dependency-7 segment 3: avoids nodes",
+    "1440px graph dependency-8 segment 1: avoids nodes",
+    "1024px step 1: no overflow",
+    "1024px step 1: all edges routed",
+    "1024px step 1: left alignment",
+    "1024px call-1-1 segment 1: avoids nodes",
+    "1024px call-1-1 segment 2: avoids nodes",
+    "1024px call-1-1 segment 3: avoids nodes",
+    "1024px call-1-1 segment 4: avoids nodes",
+    "1024px call-1-1 segment 5: avoids nodes",
+    "1024px call-1-2 segment 1: avoids nodes",
+    "1024px call-1-2 segment 2: avoids nodes",
+    "1024px call-1-2 segment 3: avoids nodes",
+    "1024px step 2: no overflow",
+    "1024px step 2: all edges routed",
+    "1024px step 2: left alignment",
+    "1024px call-2-1 segment 1: avoids nodes",
+    "1024px call-2-1 segment 2: avoids nodes",
+    "1024px call-2-1 segment 3: avoids nodes",
+    "1024px call-2-2 segment 1: avoids nodes",
+    "1024px call-2-2 segment 2: avoids nodes",
+    "1024px call-2-2 segment 3: avoids nodes",
+    "1024px step 3: no overflow",
+    "1024px step 3: all edges routed",
+    "1024px step 3: left alignment",
+    "1024px call-3-1 segment 1: avoids nodes",
+    "1024px call-3-1 segment 2: avoids nodes",
+    "1024px call-3-1 segment 3: avoids nodes",
+    "1024px step 4: no overflow",
+    "1024px step 4: all edges routed",
+    "1024px step 4: left alignment",
+    "1024px call-4-1 segment 1: avoids nodes",
+    "1024px call-4-1 segment 2: avoids nodes",
+    "1024px call-4-1 segment 3: avoids nodes",
+    "1024px step 5: no overflow",
+    "1024px step 5: all edges routed",
+    "1024px step 5: left alignment",
+    "1024px call-5-1 segment 1: avoids nodes",
+    "1024px call-5-1 segment 2: avoids nodes",
+    "1024px call-5-1 segment 3: avoids nodes",
+    "1024px call-5-2 segment 1: avoids nodes",
+    "1024px call-5-2 segment 2: avoids nodes",
+    "1024px call-5-2 segment 3: avoids nodes",
+    "1024px call-5-3 segment 1: avoids nodes",
+    "1024px call-5-3 segment 2: avoids nodes",
+    "1024px call-5-3 segment 3: avoids nodes",
+    "1024px call-5-3 segment 4: avoids nodes",
+    "1024px call-5-3 segment 5: avoids nodes",
+    "1024px step 6: no overflow",
+    "1024px step 6: all edges routed",
+    "1024px step 6: left alignment",
+    "1024px call-6-1 segment 1: avoids nodes",
+    "1024px call-6-1 segment 2: avoids nodes",
+    "1024px call-6-1 segment 3: avoids nodes",
+    "1024px call-6-1 segment 4: avoids nodes",
+    "1024px call-6-1 segment 5: avoids nodes",
+    "1024px call-6-2 segment 1: avoids nodes",
+    "1024px call-6-2 segment 2: avoids nodes",
+    "1024px call-6-2 segment 3: avoids nodes",
+    "1024px step 7: no overflow",
+    "1024px step 7: all edges routed",
+    "1024px step 7: left alignment",
+    "1024px call-7-1 segment 1: avoids nodes",
+    "1024px call-7-1 segment 2: avoids nodes",
+    "1024px call-7-1 segment 3: avoids nodes",
+    "1024px call-7-2 segment 1: avoids nodes",
+    "1024px call-7-2 segment 2: avoids nodes",
+    "1024px call-7-2 segment 3: avoids nodes",
+    "1024px step 8: no overflow",
+    "1024px step 8: all edges routed",
+    "1024px step 8: left alignment",
+    "1024px call-8-1 segment 1: avoids nodes",
+    "1024px call-8-1 segment 2: avoids nodes",
+    "1024px call-8-1 segment 3: avoids nodes",
+    "1024px call-8-2 segment 1: avoids nodes",
+    "1024px call-8-2 segment 2: avoids nodes",
+    "1024px call-8-2 segment 3: avoids nodes",
+    "1024px step 9: no overflow",
+    "1024px step 9: all edges routed",
+    "1024px step 9: left alignment",
+    "1024px call-9-1 segment 1: avoids nodes",
+    "1024px call-9-1 segment 2: avoids nodes",
+    "1024px call-9-1 segment 3: avoids nodes",
+    "1024px call-9-2 segment 1: avoids nodes",
+    "1024px call-9-2 segment 2: avoids nodes",
+    "1024px call-9-2 segment 3: avoids nodes",
+    "1024px call-9-3 segment 1: avoids nodes",
+    "1024px call-9-3 segment 2: avoids nodes",
+    "1024px call-9-3 segment 3: avoids nodes",
+    "1024px dependency graph routes all nine edges",
+    "1024px graph no overflow",
+    "1024px graph dependency-0 segment 1: avoids nodes",
+    "1024px graph dependency-0 segment 2: avoids nodes",
+    "1024px graph dependency-0 segment 3: avoids nodes",
+    "1024px graph dependency-1 segment 1: avoids nodes",
+    "1024px graph dependency-1 segment 2: avoids nodes",
+    "1024px graph dependency-1 segment 3: avoids nodes",
+    "1024px graph dependency-2 segment 1: avoids nodes",
+    "1024px graph dependency-3 segment 1: avoids nodes",
+    "1024px graph dependency-3 segment 2: avoids nodes",
+    "1024px graph dependency-3 segment 3: avoids nodes",
+    "1024px graph dependency-4 segment 1: avoids nodes",
+    "1024px graph dependency-5 segment 1: avoids nodes",
+    "1024px graph dependency-5 segment 2: avoids nodes",
+    "1024px graph dependency-5 segment 3: avoids nodes",
+    "1024px graph dependency-6 segment 1: avoids nodes",
+    "1024px graph dependency-6 segment 2: avoids nodes",
+    "1024px graph dependency-6 segment 3: avoids nodes",
+    "1024px graph dependency-7 segment 1: avoids nodes",
+    "1024px graph dependency-7 segment 2: avoids nodes",
+    "1024px graph dependency-7 segment 3: avoids nodes",
+    "1024px graph dependency-8 segment 1: avoids nodes",
+    "390px step 1: no overflow",
+    "390px step 1: all edges routed",
+    "390px step 1: left alignment",
+    "390px call-1-1 segment 1: avoids nodes",
+    "390px call-1-1 segment 2: avoids nodes",
+    "390px call-1-1 segment 3: avoids nodes",
+    "390px call-1-1 segment 4: avoids nodes",
+    "390px call-1-1 segment 5: avoids nodes",
+    "390px call-1-2 segment 1: avoids nodes",
+    "390px call-1-2 segment 2: avoids nodes",
+    "390px call-1-2 segment 3: avoids nodes",
+    "390px step 2: no overflow",
+    "390px step 2: all edges routed",
+    "390px step 2: left alignment",
+    "390px call-2-1 segment 1: avoids nodes",
+    "390px call-2-1 segment 2: avoids nodes",
+    "390px call-2-1 segment 3: avoids nodes",
+    "390px call-2-2 segment 1: avoids nodes",
+    "390px call-2-2 segment 2: avoids nodes",
+    "390px call-2-2 segment 3: avoids nodes",
+    "390px step 3: no overflow",
+    "390px step 3: all edges routed",
+    "390px step 3: left alignment",
+    "390px call-3-1 segment 1: avoids nodes",
+    "390px call-3-1 segment 2: avoids nodes",
+    "390px call-3-1 segment 3: avoids nodes",
+    "390px step 4: no overflow",
+    "390px step 4: all edges routed",
+    "390px step 4: left alignment",
+    "390px call-4-1 segment 1: avoids nodes",
+    "390px call-4-1 segment 2: avoids nodes",
+    "390px call-4-1 segment 3: avoids nodes",
+    "390px step 5: no overflow",
+    "390px step 5: all edges routed",
+    "390px step 5: left alignment",
+    "390px call-5-1 segment 1: avoids nodes",
+    "390px call-5-1 segment 2: avoids nodes",
+    "390px call-5-1 segment 3: avoids nodes",
+    "390px call-5-2 segment 1: avoids nodes",
+    "390px call-5-2 segment 2: avoids nodes",
+    "390px call-5-2 segment 3: avoids nodes",
+    "390px call-5-3 segment 1: avoids nodes",
+    "390px call-5-3 segment 2: avoids nodes",
+    "390px call-5-3 segment 3: avoids nodes",
+    "390px call-5-3 segment 4: avoids nodes",
+    "390px call-5-3 segment 5: avoids nodes",
+    "390px step 6: no overflow",
+    "390px step 6: all edges routed",
+    "390px step 6: left alignment",
+    "390px call-6-1 segment 1: avoids nodes",
+    "390px call-6-1 segment 2: avoids nodes",
+    "390px call-6-1 segment 3: avoids nodes",
+    "390px call-6-1 segment 4: avoids nodes",
+    "390px call-6-1 segment 5: avoids nodes",
+    "390px call-6-2 segment 1: avoids nodes",
+    "390px call-6-2 segment 2: avoids nodes",
+    "390px call-6-2 segment 3: avoids nodes",
+    "390px step 7: no overflow",
+    "390px step 7: all edges routed",
+    "390px step 7: left alignment",
+    "390px call-7-1 segment 1: avoids nodes",
+    "390px call-7-1 segment 2: avoids nodes",
+    "390px call-7-1 segment 3: avoids nodes",
+    "390px call-7-2 segment 1: avoids nodes",
+    "390px call-7-2 segment 2: avoids nodes",
+    "390px call-7-2 segment 3: avoids nodes",
+    "390px step 8: no overflow",
+    "390px step 8: all edges routed",
+    "390px step 8: left alignment",
+    "390px call-8-1 segment 1: avoids nodes",
+    "390px call-8-1 segment 2: avoids nodes",
+    "390px call-8-1 segment 3: avoids nodes",
+    "390px call-8-2 segment 1: avoids nodes",
+    "390px call-8-2 segment 2: avoids nodes",
+    "390px call-8-2 segment 3: avoids nodes",
+    "390px step 9: no overflow",
+    "390px step 9: all edges routed",
+    "390px step 9: left alignment",
+    "390px call-9-1 segment 1: avoids nodes",
+    "390px call-9-1 segment 2: avoids nodes",
+    "390px call-9-1 segment 3: avoids nodes",
+    "390px call-9-2 segment 1: avoids nodes",
+    "390px call-9-2 segment 2: avoids nodes",
+    "390px call-9-2 segment 3: avoids nodes",
+    "390px call-9-3 segment 1: avoids nodes",
+    "390px call-9-3 segment 2: avoids nodes",
+    "390px call-9-3 segment 3: avoids nodes",
+    "390px dependency graph routes all nine edges",
+    "390px graph no overflow",
+    "390px graph dependency-0 segment 1: avoids nodes",
+    "390px graph dependency-0 segment 2: avoids nodes",
+    "390px graph dependency-0 segment 3: avoids nodes",
+    "390px graph dependency-1 segment 1: avoids nodes",
+    "390px graph dependency-1 segment 2: avoids nodes",
+    "390px graph dependency-1 segment 3: avoids nodes",
+    "390px graph dependency-2 segment 1: avoids nodes",
+    "390px graph dependency-2 segment 2: avoids nodes",
+    "390px graph dependency-2 segment 3: avoids nodes",
+    "390px graph dependency-3 segment 1: avoids nodes",
+    "390px graph dependency-3 segment 2: avoids nodes",
+    "390px graph dependency-3 segment 3: avoids nodes",
+    "390px graph dependency-4 segment 1: avoids nodes",
+    "390px graph dependency-4 segment 2: avoids nodes",
+    "390px graph dependency-4 segment 3: avoids nodes",
+    "390px graph dependency-5 segment 1: avoids nodes",
+    "390px graph dependency-5 segment 2: avoids nodes",
+    "390px graph dependency-5 segment 3: avoids nodes",
+    "390px graph dependency-6 segment 1: avoids nodes",
+    "390px graph dependency-6 segment 2: avoids nodes",
+    "390px graph dependency-6 segment 3: avoids nodes",
+    "390px graph dependency-7 segment 1: avoids nodes",
+    "390px graph dependency-7 segment 2: avoids nodes",
+    "390px graph dependency-7 segment 3: avoids nodes",
+    "390px graph dependency-8 segment 1: avoids nodes",
+    "390px graph dependency-8 segment 2: avoids nodes",
+    "390px graph dependency-8 segment 3: avoids nodes",
+    "320px step 1: no overflow",
+    "320px step 1: all edges routed",
+    "320px step 1: left alignment",
+    "320px call-1-1 segment 1: avoids nodes",
+    "320px call-1-1 segment 2: avoids nodes",
+    "320px call-1-1 segment 3: avoids nodes",
+    "320px call-1-1 segment 4: avoids nodes",
+    "320px call-1-1 segment 5: avoids nodes",
+    "320px call-1-2 segment 1: avoids nodes",
+    "320px call-1-2 segment 2: avoids nodes",
+    "320px call-1-2 segment 3: avoids nodes",
+    "320px step 2: no overflow",
+    "320px step 2: all edges routed",
+    "320px step 2: left alignment",
+    "320px call-2-1 segment 1: avoids nodes",
+    "320px call-2-1 segment 2: avoids nodes",
+    "320px call-2-1 segment 3: avoids nodes",
+    "320px call-2-2 segment 1: avoids nodes",
+    "320px call-2-2 segment 2: avoids nodes",
+    "320px call-2-2 segment 3: avoids nodes",
+    "320px step 3: no overflow",
+    "320px step 3: all edges routed",
+    "320px step 3: left alignment",
+    "320px call-3-1 segment 1: avoids nodes",
+    "320px call-3-1 segment 2: avoids nodes",
+    "320px call-3-1 segment 3: avoids nodes",
+    "320px step 4: no overflow",
+    "320px step 4: all edges routed",
+    "320px step 4: left alignment",
+    "320px call-4-1 segment 1: avoids nodes",
+    "320px call-4-1 segment 2: avoids nodes",
+    "320px call-4-1 segment 3: avoids nodes",
+    "320px step 5: no overflow",
+    "320px step 5: all edges routed",
+    "320px step 5: left alignment",
+    "320px call-5-1 segment 1: avoids nodes",
+    "320px call-5-1 segment 2: avoids nodes",
+    "320px call-5-1 segment 3: avoids nodes",
+    "320px call-5-2 segment 1: avoids nodes",
+    "320px call-5-2 segment 2: avoids nodes",
+    "320px call-5-2 segment 3: avoids nodes",
+    "320px call-5-3 segment 1: avoids nodes",
+    "320px call-5-3 segment 2: avoids nodes",
+    "320px call-5-3 segment 3: avoids nodes",
+    "320px call-5-3 segment 4: avoids nodes",
+    "320px call-5-3 segment 5: avoids nodes",
+    "320px step 6: no overflow",
+    "320px step 6: all edges routed",
+    "320px step 6: left alignment",
+    "320px call-6-1 segment 1: avoids nodes",
+    "320px call-6-1 segment 2: avoids nodes",
+    "320px call-6-1 segment 3: avoids nodes",
+    "320px call-6-1 segment 4: avoids nodes",
+    "320px call-6-1 segment 5: avoids nodes",
+    "320px call-6-2 segment 1: avoids nodes",
+    "320px call-6-2 segment 2: avoids nodes",
+    "320px call-6-2 segment 3: avoids nodes",
+    "320px step 7: no overflow",
+    "320px step 7: all edges routed",
+    "320px step 7: left alignment",
+    "320px call-7-1 segment 1: avoids nodes",
+    "320px call-7-1 segment 2: avoids nodes",
+    "320px call-7-1 segment 3: avoids nodes",
+    "320px call-7-2 segment 1: avoids nodes",
+    "320px call-7-2 segment 2: avoids nodes",
+    "320px call-7-2 segment 3: avoids nodes",
+    "320px step 8: no overflow",
+    "320px step 8: all edges routed",
+    "320px step 8: left alignment",
+    "320px call-8-1 segment 1: avoids nodes",
+    "320px call-8-1 segment 2: avoids nodes",
+    "320px call-8-1 segment 3: avoids nodes",
+    "320px call-8-2 segment 1: avoids nodes",
+    "320px call-8-2 segment 2: avoids nodes",
+    "320px call-8-2 segment 3: avoids nodes",
+    "320px step 9: no overflow",
+    "320px step 9: all edges routed",
+    "320px step 9: left alignment",
+    "320px call-9-1 segment 1: avoids nodes",
+    "320px call-9-1 segment 2: avoids nodes",
+    "320px call-9-1 segment 3: avoids nodes",
+    "320px call-9-2 segment 1: avoids nodes",
+    "320px call-9-2 segment 2: avoids nodes",
+    "320px call-9-2 segment 3: avoids nodes",
+    "320px call-9-3 segment 1: avoids nodes",
+    "320px call-9-3 segment 2: avoids nodes",
+    "320px call-9-3 segment 3: avoids nodes",
+    "320px dependency graph routes all nine edges",
+    "320px graph no overflow",
+    "320px graph dependency-0 segment 1: avoids nodes",
+    "320px graph dependency-0 segment 2: avoids nodes",
+    "320px graph dependency-0 segment 3: avoids nodes",
+    "320px graph dependency-1 segment 1: avoids nodes",
+    "320px graph dependency-1 segment 2: avoids nodes",
+    "320px graph dependency-1 segment 3: avoids nodes",
+    "320px graph dependency-2 segment 1: avoids nodes",
+    "320px graph dependency-2 segment 2: avoids nodes",
+    "320px graph dependency-2 segment 3: avoids nodes",
+    "320px graph dependency-3 segment 1: avoids nodes",
+    "320px graph dependency-3 segment 2: avoids nodes",
+    "320px graph dependency-3 segment 3: avoids nodes",
+    "320px graph dependency-4 segment 1: avoids nodes",
+    "320px graph dependency-4 segment 2: avoids nodes",
+    "320px graph dependency-4 segment 3: avoids nodes",
+    "320px graph dependency-5 segment 1: avoids nodes",
+    "320px graph dependency-5 segment 2: avoids nodes",
+    "320px graph dependency-5 segment 3: avoids nodes",
+    "320px graph dependency-6 segment 1: avoids nodes",
+    "320px graph dependency-6 segment 2: avoids nodes",
+    "320px graph dependency-6 segment 3: avoids nodes",
+    "320px graph dependency-7 segment 1: avoids nodes",
+    "320px graph dependency-7 segment 2: avoids nodes",
+    "320px graph dependency-7 segment 3: avoids nodes",
+    "320px graph dependency-8 segment 1: avoids nodes",
+    "320px graph dependency-8 segment 2: avoids nodes",
+    "320px graph dependency-8 segment 3: avoids nodes",
+    "hover opens matching contract",
+    "popup belongs to selected function",
+    "popup remains open when entering",
+    "Escape closes popup",
+    "focus opens contract",
+    "confirming plans does not execute tests",
+    "plan confirmation succeeds",
+    "edited text updates wireframe",
+    "only affected confirmations invalidated",
+    "edits update contract proposal",
+    "edits update test conditions",
+    "draft restores across reload",
+    "different flow draft is rejected",
+    "matching draft import restores confirmations",
+    "storage failure is visible",
+    "200 percent effective viewport has no overflow",
+    "touch opens function contract",
+    "touch popup fits viewport",
+    "different fixture has one step",
+    "new function badge is data-driven",
+    "runner is data-driven",
+    "signature markup remains inert",
+    "script text is displayed",
+    "browser has no runtime errors"
+  ],
+  "errors": [],
+  "geometry": [
+    {
+      "width": 1440,
+      "step": 1,
+      "scroll": 1440,
+      "paths": [
+        {
+          "id": "call-1-1",
+          "from": "recording-controls",
+          "to": "turn",
+          "points": [
+            [
+              933,
+              534.421875
+            ],
+            [
+              941,
+              534.421875
+            ],
+            [
+              941,
+              133.546875
+            ],
+            [
+              961,
+              133.546875
+            ],
+            [
+              961,
+              122.296875
+            ],
+            [
+              1039,
+              122.296875
+            ]
+          ]
+        },
+        {
+          "id": "call-1-2",
+          "from": "turn",
+          "to": "session-store",
+          "points": [
+            [
+              1319,
+              140.953125
+            ],
+            [
+              1330,
+              140.953125
+            ],
+            [
+              1330,
+              350.54140625
+            ],
+            [
+              1319,
+              350.54140625
+            ]
+          ]
+        }
+      ],
+      "expected": 2,
+      "routeStatus": "",
+      "alignment": [
+        0,
+        0
+      ],
+      "obstacles": [
+        {
+          "id": "recording-view",
+          "left": 22,
+          "right": 953,
+          "top": 59.546875,
+          "bottom": 125.546875
+        },
+        {
+          "left": 42,
+          "right": 933,
+          "top": 143.546875,
+          "bottom": 241.6875
+        },
+        {
+          "left": 427.5,
+          "right": 547.5,
+          "top": 260.6875,
+          "bottom": 380.6875
+        },
+        {
+          "id": "error-feedback",
+          "left": 42,
+          "right": 933,
+          "top": 449.125,
+          "bottom": 494.21875
+        },
+        {
+          "id": "recording-controls",
+          "left": 42,
+          "right": 933,
+          "top": 512.21875,
+          "bottom": 575.65625
+        },
+        {
+          "id": "turn",
+          "left": 1039,
+          "right": 1319,
+          "top": 57,
+          "bottom": 243.5625
+        },
+        {
+          "id": "session-store",
+          "left": 1039,
+          "right": 1319,
+          "top": 260.5625,
+          "bottom": 460.515625
+        },
+        {
+          "id": "capture",
+          "left": 1039,
+          "right": 1319,
+          "top": 477.515625,
+          "bottom": 621.140625
+        },
+        {
+          "id": "persistence",
+          "left": 1039,
+          "right": 1319,
+          "top": 638.140625,
+          "bottom": 781.765625
+        },
+        {
+          "id": "recording-api",
+          "left": 1039,
+          "right": 1319,
+          "top": 798.765625,
+          "bottom": 942.390625
+        }
+      ]
+    },
+    {
+      "width": 1440,
+      "step": 2,
+      "scroll": 1440,
+      "paths": [
+        {
+          "id": "call-2-1",
+          "from": "capture",
+          "to": "turn",
+          "points": [
+            [
+              1319,
+              512.74296875
+            ],
+            [
+              1327,
+              512.74296875
+            ],
+            [
+              1327,
+              122.296875
+            ],
+            [
+              1319,
+              122.296875
+            ]
+          ]
+        },
+        {
+          "id": "call-2-2",
+          "from": "turn",
+          "to": "persistence",
+          "points": [
+            [
+              1319,
+              140.953125
+            ],
+            [
+              1330,
+              140.953125
+            ],
+            [
+              1330,
+              713.18515625
+            ],
+            [
+              1319,
+              713.18515625
+            ]
+          ]
+        }
+      ],
+      "expected": 2,
+      "routeStatus": "",
+      "alignment": [
+        0,
+        0
+      ],
+      "obstacles": [
+        {
+          "id": "recording-view",
+          "left": 22,
+          "right": 953,
+          "top": 59.546875,
+          "bottom": 125.546875
+        },
+        {
+          "left": 42,
+          "right": 933,
+          "top": 143.546875,
+          "bottom": 241.6875
+        },
+        {
+          "left": 427.5,
+          "right": 547.5,
+          "top": 260.6875,
+          "bottom": 380.6875
+        },
+        {
+          "id": "error-feedback",
+          "left": 42,
+          "right": 933,
+          "top": 449.125,
+          "bottom": 494.21875
+        },
+        {
+          "id": "recording-controls",
+          "left": 42,
+          "right": 933,
+          "top": 512.21875,
+          "bottom": 575.65625
+        },
+        {
+          "id": "turn",
+          "left": 1039,
+          "right": 1319,
+          "top": 57,
+          "bottom": 243.5625
+        },
+        {
+          "id": "session-store",
+          "left": 1039,
+          "right": 1319,
+          "top": 260.5625,
+          "bottom": 437.375
+        },
+        {
+          "id": "capture",
+          "left": 1039,
+          "right": 1319,
+          "top": 454.375,
+          "bottom": 621.140625
+        },
+        {
+          "id": "persistence",
+          "left": 1039,
+          "right": 1319,
+          "top": 638.140625,
+          "bottom": 804.90625
+        },
+        {
+          "id": "recording-api",
+          "left": 1039,
+          "right": 1319,
+          "top": 821.90625,
+          "bottom": 965.53125
+        }
+      ]
+    },
+    {
+      "width": 1440,
+      "step": 3,
+      "scroll": 1440,
+      "paths": [
+        {
+          "id": "call-3-1",
+          "from": "persistence",
+          "to": "recording-api",
+          "points": [
+            [
+              1319,
+              650.22734375
+            ],
+            [
+              1327,
+              650.22734375
+            ],
+            [
+              1327,
+              833.99296875
+            ],
+            [
+              1319,
+              833.99296875
+            ]
+          ]
+        }
+      ],
+      "expected": 1,
+      "routeStatus": "",
+      "alignment": [
+        0,
+        0
+      ],
+      "obstacles": [
+        {
+          "id": "recording-view",
+          "left": 22,
+          "right": 953,
+          "top": 59.546875,
+          "bottom": 125.546875
+        },
+        {
+          "left": 42,
+          "right": 933,
+          "top": 143.546875,
+          "bottom": 241.6875
+        },
+        {
+          "left": 427.5,
+          "right": 547.5,
+          "top": 260.6875,
+          "bottom": 380.6875
+        },
+        {
+          "id": "error-feedback",
+          "left": 42,
+          "right": 933,
+          "top": 449.125,
+          "bottom": 494.21875
+        },
+        {
+          "id": "recording-controls",
+          "left": 42,
+          "right": 933,
+          "top": 512.21875,
+          "bottom": 575.65625
+        },
+        {
+          "id": "turn",
+          "left": 1039,
+          "right": 1319,
+          "top": 57,
+          "bottom": 220.421875
+        },
+        {
+          "id": "session-store",
+          "left": 1039,
+          "right": 1319,
+          "top": 237.421875,
+          "bottom": 414.234375
+        },
+        {
+          "id": "capture",
+          "left": 1039,
+          "right": 1319,
+          "top": 431.234375,
+          "bottom": 574.859375
+        },
+        {
+          "id": "persistence",
+          "left": 1039,
+          "right": 1319,
+          "top": 591.859375,
+          "bottom": 758.625
+        },
+        {
+          "id": "recording-api",
+          "left": 1039,
+          "right": 1319,
+          "top": 775.625,
+          "bottom": 942.390625
+        }
+      ]
+    },
+    {
+      "width": 1440,
+      "step": 4,
+      "scroll": 1440,
+      "paths": [
+        {
+          "id": "call-4-1",
+          "from": "recording-api",
+          "to": "persistence",
+          "points": [
+            [
+              1319,
+              833.99296875
+            ],
+            [
+              1327,
+              833.99296875
+            ],
+            [
+              1327,
+              650.22734375
+            ],
+            [
+              1319,
+              650.22734375
+            ]
+          ]
+        }
+      ],
+      "expected": 1,
+      "routeStatus": "",
+      "alignment": [
+        0
+      ],
+      "obstacles": [
+        {
+          "id": "recording-view",
+          "left": 22,
+          "right": 953,
+          "top": 59.546875,
+          "bottom": 125.546875
+        },
+        {
+          "left": 42,
+          "right": 933,
+          "top": 143.546875,
+          "bottom": 241.6875
+        },
+        {
+          "left": 427.5,
+          "right": 547.5,
+          "top": 260.6875,
+          "bottom": 380.6875
+        },
+        {
+          "id": "error-feedback",
+          "left": 42,
+          "right": 933,
+          "top": 449.125,
+          "bottom": 494.21875
+        },
+        {
+          "id": "recording-controls",
+          "left": 42,
+          "right": 933,
+          "top": 512.21875,
+          "bottom": 575.65625
+        },
+        {
+          "id": "turn",
+          "left": 1039,
+          "right": 1319,
+          "top": 57,
+          "bottom": 220.421875
+        },
+        {
+          "id": "session-store",
+          "left": 1039,
+          "right": 1319,
+          "top": 237.421875,
+          "bottom": 414.234375
+        },
+        {
+          "id": "capture",
+          "left": 1039,
+          "right": 1319,
+          "top": 431.234375,
+          "bottom": 574.859375
+        },
+        {
+          "id": "persistence",
+          "left": 1039,
+          "right": 1319,
+          "top": 591.859375,
+          "bottom": 758.625
+        },
+        {
+          "id": "recording-api",
+          "left": 1039,
+          "right": 1319,
+          "top": 775.625,
+          "bottom": 942.390625
+        }
+      ]
+    },
+    {
+      "width": 1440,
+      "step": 5,
+      "scroll": 1440,
+      "paths": [
+        {
+          "id": "call-5-1",
+          "from": "persistence",
+          "to": "turn",
+          "points": [
+            [
+              1319,
+              696.50859375
+            ],
+            [
+              1327,
+              696.50859375
+            ],
+            [
+              1327,
+              122.296875
+            ],
+            [
+              1319,
+              122.296875
+            ]
+          ]
+        },
+        {
+          "id": "call-5-2",
+          "from": "turn",
+          "to": "session-store",
+          "points": [
+            [
+              1319,
+              140.953125
+            ],
+            [
+              1330,
+              140.953125
+            ],
+            [
+              1330,
+              350.54140625
+            ],
+            [
+              1319,
+              350.54140625
+            ]
+          ]
+        },
+        {
+          "id": "call-5-3",
+          "from": "session-store",
+          "to": "error-feedback",
+          "points": [
+            [
+              1039,
+              370.53671875
+            ],
+            [
+              1025,
+              370.53671875
+            ],
+            [
+              1025,
+              474.515625
+            ],
+            [
+              947,
+              474.515625
+            ],
+            [
+              947,
+              486.65390625
+            ],
+            [
+              933,
+              486.65390625
+            ]
+          ]
+        }
+      ],
+      "expected": 3,
+      "routeStatus": "",
+      "alignment": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "obstacles": [
+        {
+          "id": "recording-view",
+          "left": 22,
+          "right": 953,
+          "top": 59.546875,
+          "bottom": 125.546875
+        },
+        {
+          "left": 42,
+          "right": 933,
+          "top": 143.546875,
+          "bottom": 241.6875
+        },
+        {
+          "left": 427.5,
+          "right": 547.5,
+          "top": 260.6875,
+          "bottom": 380.6875
+        },
+        {
+          "id": "error-feedback",
+          "left": 42,
+          "right": 933,
+          "top": 449.125,
+          "bottom": 517.359375
+        },
+        {
+          "id": "capture",
+          "left": 42,
+          "right": 933,
+          "top": 535.359375,
+          "bottom": 597.15625
+        },
+        {
+          "id": "recording-controls",
+          "left": 42,
+          "right": 933,
+          "top": 615.15625,
+          "bottom": 701.734375
+        },
+        {
+          "id": "turn",
+          "left": 1039,
+          "right": 1319,
+          "top": 57,
+          "bottom": 243.5625
+        },
+        {
+          "id": "session-store",
+          "left": 1039,
+          "right": 1319,
+          "top": 260.5625,
+          "bottom": 460.515625
+        },
+        {
+          "id": "capture",
+          "left": 1039,
+          "right": 1319,
+          "top": 477.515625,
+          "bottom": 621.140625
+        },
+        {
+          "id": "persistence",
+          "left": 1039,
+          "right": 1319,
+          "top": 638.140625,
+          "bottom": 804.90625
+        },
+        {
+          "id": "recording-api",
+          "left": 1039,
+          "right": 1319,
+          "top": 821.90625,
+          "bottom": 965.53125
+        }
+      ]
+    },
+    {
+      "width": 1440,
+      "step": 6,
+      "scroll": 1440,
+      "paths": [
+        {
+          "id": "call-6-1",
+          "from": "recording-controls",
+          "to": "turn",
+          "points": [
+            [
+              933,
+              534.421875
+            ],
+            [
+              941,
+              534.421875
+            ],
+            [
+              941,
+              133.546875
+            ],
+            [
+              961,
+              133.546875
+            ],
+            [
+              961,
+              122.296875
+            ],
+            [
+              1039,
+              122.296875
+            ]
+          ]
+        },
+        {
+          "id": "call-6-2",
+          "from": "turn",
+          "to": "session-store",
+          "points": [
+            [
+              1319,
+              140.953125
+            ],
+            [
+              1330,
+              140.953125
+            ],
+            [
+              1330,
+              350.54140625
+            ],
+            [
+              1319,
+              350.54140625
+            ]
+          ]
+        }
+      ],
+      "expected": 2,
+      "routeStatus": "",
+      "alignment": [
+        0,
+        0
+      ],
+      "obstacles": [
+        {
+          "id": "recording-view",
+          "left": 22,
+          "right": 953,
+          "top": 59.546875,
+          "bottom": 125.546875
+        },
+        {
+          "left": 42,
+          "right": 933,
+          "top": 143.546875,
+          "bottom": 241.6875
+        },
+        {
+          "left": 427.5,
+          "right": 547.5,
+          "top": 260.6875,
+          "bottom": 380.6875
+        },
+        {
+          "id": "error-feedback",
+          "left": 42,
+          "right": 933,
+          "top": 449.125,
+          "bottom": 494.21875
+        },
+        {
+          "id": "recording-controls",
+          "left": 42,
+          "right": 933,
+          "top": 512.21875,
+          "bottom": 575.65625
+        },
+        {
+          "id": "turn",
+          "left": 1039,
+          "right": 1319,
+          "top": 57,
+          "bottom": 243.5625
+        },
+        {
+          "id": "session-store",
+          "left": 1039,
+          "right": 1319,
+          "top": 260.5625,
+          "bottom": 460.515625
+        },
+        {
+          "id": "capture",
+          "left": 1039,
+          "right": 1319,
+          "top": 477.515625,
+          "bottom": 621.140625
+        },
+        {
+          "id": "persistence",
+          "left": 1039,
+          "right": 1319,
+          "top": 638.140625,
+          "bottom": 781.765625
+        },
+        {
+          "id": "recording-api",
+          "left": 1039,
+          "right": 1319,
+          "top": 798.765625,
+          "bottom": 942.390625
+        }
+      ]
+    },
+    {
+      "width": 1440,
+      "step": 7,
+      "scroll": 1440,
+      "paths": [
+        {
+          "id": "call-7-1",
+          "from": "turn",
+          "to": "persistence",
+          "points": [
+            [
+              1319,
+              122.296875
+            ],
+            [
+              1327,
+              122.296875
+            ],
+            [
+              1327,
+              673.36796875
+            ],
+            [
+              1319,
+              673.36796875
+            ]
+          ]
+        },
+        {
+          "id": "call-7-2",
+          "from": "persistence",
+          "to": "recording-api",
+          "points": [
+            [
+              1319,
+              690.04453125
+            ],
+            [
+              1330,
+              690.04453125
+            ],
+            [
+              1330,
+              873.81015625
+            ],
+            [
+              1319,
+              873.81015625
+            ]
+          ]
+        }
+      ],
+      "expected": 2,
+      "routeStatus": "",
+      "alignment": [
+        0
+      ],
+      "obstacles": [
+        {
+          "id": "recording-view",
+          "left": 22,
+          "right": 953,
+          "top": 59.546875,
+          "bottom": 125.546875
+        },
+        {
+          "left": 42,
+          "right": 933,
+          "top": 143.546875,
+          "bottom": 241.6875
+        },
+        {
+          "left": 427.5,
+          "right": 547.5,
+          "top": 260.6875,
+          "bottom": 380.6875
+        },
+        {
+          "id": "error-feedback",
+          "left": 42,
+          "right": 933,
+          "top": 449.125,
+          "bottom": 494.21875
+        },
+        {
+          "id": "recording-controls",
+          "left": 42,
+          "right": 933,
+          "top": 512.21875,
+          "bottom": 575.65625
+        },
+        {
+          "id": "turn",
+          "left": 1039,
+          "right": 1319,
+          "top": 57,
+          "bottom": 243.5625
+        },
+        {
+          "id": "session-store",
+          "left": 1039,
+          "right": 1319,
+          "top": 260.5625,
+          "bottom": 437.375
+        },
+        {
+          "id": "capture",
+          "left": 1039,
+          "right": 1319,
+          "top": 454.375,
+          "bottom": 598
+        },
+        {
+          "id": "persistence",
+          "left": 1039,
+          "right": 1319,
+          "top": 615,
+          "bottom": 781.765625
+        },
+        {
+          "id": "recording-api",
+          "left": 1039,
+          "right": 1319,
+          "top": 798.765625,
+          "bottom": 965.53125
+        }
+      ]
+    },
+    {
+      "width": 1440,
+      "step": 8,
+      "scroll": 1440,
+      "paths": [
+        {
+          "id": "call-8-1",
+          "from": "recording-api",
+          "to": "persistence",
+          "points": [
+            [
+              1319,
+              857.13359375
+            ],
+            [
+              1327,
+              857.13359375
+            ],
+            [
+              1327,
+              673.36796875
+            ],
+            [
+              1319,
+              673.36796875
+            ]
+          ]
+        },
+        {
+          "id": "call-8-2",
+          "from": "persistence",
+          "to": "turn",
+          "points": [
+            [
+              1319,
+              690.04453125
+            ],
+            [
+              1330,
+              690.04453125
+            ],
+            [
+              1330,
+              140.953125
+            ],
+            [
+              1319,
+              140.953125
+            ]
+          ]
+        }
+      ],
+      "expected": 2,
+      "routeStatus": "",
+      "alignment": [
+        0,
+        0
+      ],
+      "obstacles": [
+        {
+          "id": "recording-view",
+          "left": 22,
+          "right": 953,
+          "top": 59.546875,
+          "bottom": 125.546875
+        },
+        {
+          "left": 42,
+          "right": 933,
+          "top": 143.546875,
+          "bottom": 241.6875
+        },
+        {
+          "left": 427.5,
+          "right": 547.5,
+          "top": 260.6875,
+          "bottom": 380.6875
+        },
+        {
+          "id": "error-feedback",
+          "left": 42,
+          "right": 933,
+          "top": 449.125,
+          "bottom": 494.21875
+        },
+        {
+          "id": "recording-controls",
+          "left": 42,
+          "right": 933,
+          "top": 512.21875,
+          "bottom": 575.65625
+        },
+        {
+          "id": "turn",
+          "left": 1039,
+          "right": 1319,
+          "top": 57,
+          "bottom": 243.5625
+        },
+        {
+          "id": "session-store",
+          "left": 1039,
+          "right": 1319,
+          "top": 260.5625,
+          "bottom": 437.375
+        },
+        {
+          "id": "capture",
+          "left": 1039,
+          "right": 1319,
+          "top": 454.375,
+          "bottom": 598
+        },
+        {
+          "id": "persistence",
+          "left": 1039,
+          "right": 1319,
+          "top": 615,
+          "bottom": 781.765625
+        },
+        {
+          "id": "recording-api",
+          "left": 1039,
+          "right": 1319,
+          "top": 798.765625,
+          "bottom": 965.53125
+        }
+      ]
+    },
+    {
+      "width": 1440,
+      "step": 9,
+      "scroll": 1440,
+      "paths": [
+        {
+          "id": "call-9-1",
+          "from": "turn",
+          "to": "capture",
+          "points": [
+            [
+              1319,
+              122.296875
+            ],
+            [
+              1327,
+              122.296875
+            ],
+            [
+              1327,
+              535.88359375
+            ],
+            [
+              1319,
+              535.88359375
+            ]
+          ]
+        },
+        {
+          "id": "call-9-2",
+          "from": "turn",
+          "to": "session-store",
+          "points": [
+            [
+              1319,
+              140.953125
+            ],
+            [
+              1330,
+              140.953125
+            ],
+            [
+              1330,
+              350.54140625
+            ],
+            [
+              1319,
+              350.54140625
+            ]
+          ]
+        },
+        {
+          "id": "call-9-3",
+          "from": "session-store",
+          "to": "recording-view",
+          "points": [
+            [
+              1039,
+              370.53671875
+            ],
+            [
+              1025,
+              370.53671875
+            ],
+            [
+              1025,
+              95.84687500000001
+            ],
+            [
+              953,
+              95.84687500000001
+            ]
+          ]
+        }
+      ],
+      "expected": 3,
+      "routeStatus": "",
+      "alignment": [
+        0,
+        0,
+        0
+      ],
+      "obstacles": [
+        {
+          "id": "recording-view",
+          "left": 22,
+          "right": 953,
+          "top": 59.546875,
+          "bottom": 125.546875
+        },
+        {
+          "left": 42,
+          "right": 933,
+          "top": 143.546875,
+          "bottom": 241.6875
+        },
+        {
+          "left": 427.5,
+          "right": 547.5,
+          "top": 260.6875,
+          "bottom": 380.6875
+        },
+        {
+          "id": "error-feedback",
+          "left": 42,
+          "right": 933,
+          "top": 449.125,
+          "bottom": 494.21875
+        },
+        {
+          "id": "turn",
+          "left": 1039,
+          "right": 1319,
+          "top": 57,
+          "bottom": 243.5625
+        },
+        {
+          "id": "session-store",
+          "left": 1039,
+          "right": 1319,
+          "top": 260.5625,
+          "bottom": 460.515625
+        },
+        {
+          "id": "capture",
+          "left": 1039,
+          "right": 1319,
+          "top": 477.515625,
+          "bottom": 644.28125
+        },
+        {
+          "id": "persistence",
+          "left": 1039,
+          "right": 1319,
+          "top": 661.28125,
+          "bottom": 804.90625
+        },
+        {
+          "id": "recording-api",
+          "left": 1039,
+          "right": 1319,
+          "top": 821.90625,
+          "bottom": 965.53125
+        }
+      ]
+    },
+    {
+      "width": 1024,
+      "step": 1,
+      "scroll": 1024,
+      "paths": [
+        {
+          "id": "call-1-1",
+          "from": "recording-controls",
+          "to": "turn",
+          "points": [
+            [
+              517,
+              534.421875
+            ],
+            [
+              525,
+              534.421875
+            ],
+            [
+              525,
+              133.546875
+            ],
+            [
+              545,
+              133.546875
+            ],
+            [
+              545,
+              122.296875
+            ],
+            [
+              623,
+              122.296875
+            ]
+          ]
+        },
+        {
+          "id": "call-1-2",
+          "from": "turn",
+          "to": "session-store",
+          "points": [
+            [
+              903,
+              140.953125
+            ],
+            [
+              914,
+              140.953125
+            ],
+            [
+              914,
+              350.54140625
+            ],
+            [
+              903,
+              350.54140625
+            ]
+          ]
+        }
+      ],
+      "expected": 2,
+      "routeStatus": "",
+      "alignment": [
+        0,
+        0
+      ],
+      "obstacles": [
+        {
+          "id": "recording-view",
+          "left": 22,
+          "right": 537,
+          "top": 59.546875,
+          "bottom": 125.546875
+        },
+        {
+          "left": 42,
+          "right": 517,
+          "top": 143.546875,
+          "bottom": 241.6875
+        },
+        {
+          "left": 219.5,
+          "right": 339.5,
+          "top": 260.6875,
+          "bottom": 380.6875
+        },
+        {
+          "id": "error-feedback",
+          "left": 42,
+          "right": 517,
+          "top": 449.125,
+          "bottom": 494.21875
+        },
+        {
+          "id": "recording-controls",
+          "left": 42,
+          "right": 517,
+          "top": 512.21875,
+          "bottom": 575.65625
+        },
+        {
+          "id": "turn",
+          "left": 623,
+          "right": 903,
+          "top": 57,
+          "bottom": 243.5625
+        },
+        {
+          "id": "session-store",
+          "left": 623,
+          "right": 903,
+          "top": 260.5625,
+          "bottom": 460.515625
+        },
+        {
+          "id": "capture",
+          "left": 623,
+          "right": 903,
+          "top": 477.515625,
+          "bottom": 621.140625
+        },
+        {
+          "id": "persistence",
+          "left": 623,
+          "right": 903,
+          "top": 638.140625,
+          "bottom": 781.765625
+        },
+        {
+          "id": "recording-api",
+          "left": 623,
+          "right": 903,
+          "top": 798.765625,
+          "bottom": 942.390625
+        }
+      ]
+    },
+    {
+      "width": 1024,
+      "step": 2,
+      "scroll": 1024,
+      "paths": [
+        {
+          "id": "call-2-1",
+          "from": "capture",
+          "to": "turn",
+          "points": [
+            [
+              903,
+              512.74296875
+            ],
+            [
+              911,
+              512.74296875
+            ],
+            [
+              911,
+              122.296875
+            ],
+            [
+              903,
+              122.296875
+            ]
+          ]
+        },
+        {
+          "id": "call-2-2",
+          "from": "turn",
+          "to": "persistence",
+          "points": [
+            [
+              903,
+              140.953125
+            ],
+            [
+              914,
+              140.953125
+            ],
+            [
+              914,
+              713.18515625
+            ],
+            [
+              903,
+              713.18515625
+            ]
+          ]
+        }
+      ],
+      "expected": 2,
+      "routeStatus": "",
+      "alignment": [
+        0,
+        0
+      ],
+      "obstacles": [
+        {
+          "id": "recording-view",
+          "left": 22,
+          "right": 537,
+          "top": 59.546875,
+          "bottom": 125.546875
+        },
+        {
+          "left": 42,
+          "right": 517,
+          "top": 143.546875,
+          "bottom": 241.6875
+        },
+        {
+          "left": 219.5,
+          "right": 339.5,
+          "top": 260.6875,
+          "bottom": 380.6875
+        },
+        {
+          "id": "error-feedback",
+          "left": 42,
+          "right": 517,
+          "top": 449.125,
+          "bottom": 494.21875
+        },
+        {
+          "id": "recording-controls",
+          "left": 42,
+          "right": 517,
+          "top": 512.21875,
+          "bottom": 575.65625
+        },
+        {
+          "id": "turn",
+          "left": 623,
+          "right": 903,
+          "top": 57,
+          "bottom": 243.5625
+        },
+        {
+          "id": "session-store",
+          "left": 623,
+          "right": 903,
+          "top": 260.5625,
+          "bottom": 437.375
+        },
+        {
+          "id": "capture",
+          "left": 623,
+          "right": 903,
+          "top": 454.375,
+          "bottom": 621.140625
+        },
+        {
+          "id": "persistence",
+          "left": 623,
+          "right": 903,
+          "top": 638.140625,
+          "bottom": 804.90625
+        },
+        {
+          "id": "recording-api",
+          "left": 623,
+          "right": 903,
+          "top": 821.90625,
+          "bottom": 965.53125
+        }
+      ]
+    },
+    {
+      "width": 1024,
+      "step": 3,
+      "scroll": 1024,
+      "paths": [
+        {
+          "id": "call-3-1",
+          "from": "persistence",
+          "to": "recording-api",
+          "points": [
+            [
+              903,
+              650.22734375
+            ],
+            [
+              911,
+              650.22734375
+            ],
+            [
+              911,
+              833.99296875
+            ],
+            [
+              903,
+              833.99296875
+            ]
+          ]
+        }
+      ],
+      "expected": 1,
+      "routeStatus": "",
+      "alignment": [
+        0,
+        0
+      ],
+      "obstacles": [
+        {
+          "id": "recording-view",
+          "left": 22,
+          "right": 537,
+          "top": 59.546875,
+          "bottom": 125.546875
+        },
+        {
+          "left": 42,
+          "right": 517,
+          "top": 143.546875,
+          "bottom": 241.6875
+        },
+        {
+          "left": 219.5,
+          "right": 339.5,
+          "top": 260.6875,
+          "bottom": 380.6875
+        },
+        {
+          "id": "error-feedback",
+          "left": 42,
+          "right": 517,
+          "top": 449.125,
+          "bottom": 494.21875
+        },
+        {
+          "id": "recording-controls",
+          "left": 42,
+          "right": 517,
+          "top": 512.21875,
+          "bottom": 575.65625
+        },
+        {
+          "id": "turn",
+          "left": 623,
+          "right": 903,
+          "top": 57,
+          "bottom": 220.421875
+        },
+        {
+          "id": "session-store",
+          "left": 623,
+          "right": 903,
+          "top": 237.421875,
+          "bottom": 414.234375
+        },
+        {
+          "id": "capture",
+          "left": 623,
+          "right": 903,
+          "top": 431.234375,
+          "bottom": 574.859375
+        },
+        {
+          "id": "persistence",
+          "left": 623,
+          "right": 903,
+          "top": 591.859375,
+          "bottom": 758.625
+        },
+        {
+          "id": "recording-api",
+          "left": 623,
+          "right": 903,
+          "top": 775.625,
+          "bottom": 942.390625
+        }
+      ]
+    },
+    {
+      "width": 1024,
+      "step": 4,
+      "scroll": 1024,
+      "paths": [
+        {
+          "id": "call-4-1",
+          "from": "recording-api",
+          "to": "persistence",
+          "points": [
+            [
+              903,
+              833.99296875
+            ],
+            [
+              911,
+              833.99296875
+            ],
+            [
+              911,
+              650.22734375
+            ],
+            [
+              903,
+              650.22734375
+            ]
+          ]
+        }
+      ],
+      "expected": 1,
+      "routeStatus": "",
+      "alignment": [
+        0
+      ],
+      "obstacles": [
+        {
+          "id": "recording-view",
+          "left": 22,
+          "right": 537,
+          "top": 59.546875,
+          "bottom": 125.546875
+        },
+        {
+          "left": 42,
+          "right": 517,
+          "top": 143.546875,
+          "bottom": 241.6875
+        },
+        {
+          "left": 219.5,
+          "right": 339.5,
+          "top": 260.6875,
+          "bottom": 380.6875
+        },
+        {
+          "id": "error-feedback",
+          "left": 42,
+          "right": 517,
+          "top": 449.125,
+          "bottom": 494.21875
+        },
+        {
+          "id": "recording-controls",
+          "left": 42,
+          "right": 517,
+          "top": 512.21875,
+          "bottom": 575.65625
+        },
+        {
+          "id": "turn",
+          "left": 623,
+          "right": 903,
+          "top": 57,
+          "bottom": 220.421875
+        },
+        {
+          "id": "session-store",
+          "left": 623,
+          "right": 903,
+          "top": 237.421875,
+          "bottom": 414.234375
+        },
+        {
+          "id": "capture",
+          "left": 623,
+          "right": 903,
+          "top": 431.234375,
+          "bottom": 574.859375
+        },
+        {
+          "id": "persistence",
+          "left": 623,
+          "right": 903,
+          "top": 591.859375,
+          "bottom": 758.625
+        },
+        {
+          "id": "recording-api",
+          "left": 623,
+          "right": 903,
+          "top": 775.625,
+          "bottom": 942.390625
+        }
+      ]
+    },
+    {
+      "width": 1024,
+      "step": 5,
+      "scroll": 1024,
+      "paths": [
+        {
+          "id": "call-5-1",
+          "from": "persistence",
+          "to": "turn",
+          "points": [
+            [
+              903,
+              696.50859375
+            ],
+            [
+              911,
+              696.50859375
+            ],
+            [
+              911,
+              122.296875
+            ],
+            [
+              903,
+              122.296875
+            ]
+          ]
+        },
+        {
+          "id": "call-5-2",
+          "from": "turn",
+          "to": "session-store",
+          "points": [
+            [
+              903,
+              140.953125
+            ],
+            [
+              914,
+              140.953125
+            ],
+            [
+              914,
+              350.54140625
+            ],
+            [
+              903,
+              350.54140625
+            ]
+          ]
+        },
+        {
+          "id": "call-5-3",
+          "from": "session-store",
+          "to": "error-feedback",
+          "points": [
+            [
+              623,
+              370.53671875
+            ],
+            [
+              609,
+              370.53671875
+            ],
+            [
+              609,
+              474.515625
+            ],
+            [
+              531,
+              474.515625
+            ],
+            [
+              531,
+              499.35546875
+            ],
+            [
+              517,
+              499.35546875
+            ]
+          ]
+        }
+      ],
+      "expected": 3,
+      "routeStatus": "",
+      "alignment": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "obstacles": [
+        {
+          "id": "recording-view",
+          "left": 22,
+          "right": 537,
+          "top": 59.546875,
+          "bottom": 125.546875
+        },
+        {
+          "left": 42,
+          "right": 517,
+          "top": 143.546875,
+          "bottom": 241.6875
+        },
+        {
+          "left": 219.5,
+          "right": 339.5,
+          "top": 260.6875,
+          "bottom": 380.6875
+        },
+        {
+          "id": "error-feedback",
+          "left": 42,
+          "right": 517,
+          "top": 449.125,
+          "bottom": 540.453125
+        },
+        {
+          "id": "capture",
+          "left": 42,
+          "right": 517,
+          "top": 558.453125,
+          "bottom": 620.25
+        },
+        {
+          "id": "recording-controls",
+          "left": 42,
+          "right": 517,
+          "top": 638.25,
+          "bottom": 724.828125
+        },
+        {
+          "id": "turn",
+          "left": 623,
+          "right": 903,
+          "top": 57,
+          "bottom": 243.5625
+        },
+        {
+          "id": "session-store",
+          "left": 623,
+          "right": 903,
+          "top": 260.5625,
+          "bottom": 460.515625
+        },
+        {
+          "id": "capture",
+          "left": 623,
+          "right": 903,
+          "top": 477.515625,
+          "bottom": 621.140625
+        },
+        {
+          "id": "persistence",
+          "left": 623,
+          "right": 903,
+          "top": 638.140625,
+          "bottom": 804.90625
+        },
+        {
+          "id": "recording-api",
+          "left": 623,
+          "right": 903,
+          "top": 821.90625,
+          "bottom": 965.53125
+        }
+      ]
+    },
+    {
+      "width": 1024,
+      "step": 6,
+      "scroll": 1024,
+      "paths": [
+        {
+          "id": "call-6-1",
+          "from": "recording-controls",
+          "to": "turn",
+          "points": [
+            [
+              517,
+              534.421875
+            ],
+            [
+              525,
+              534.421875
+            ],
+            [
+              525,
+              133.546875
+            ],
+            [
+              545,
+              133.546875
+            ],
+            [
+              545,
+              122.296875
+            ],
+            [
+              623,
+              122.296875
+            ]
+          ]
+        },
+        {
+          "id": "call-6-2",
+          "from": "turn",
+          "to": "session-store",
+          "points": [
+            [
+              903,
+              140.953125
+            ],
+            [
+              914,
+              140.953125
+            ],
+            [
+              914,
+              350.54140625
+            ],
+            [
+              903,
+              350.54140625
+            ]
+          ]
+        }
+      ],
+      "expected": 2,
+      "routeStatus": "",
+      "alignment": [
+        0,
+        0
+      ],
+      "obstacles": [
+        {
+          "id": "recording-view",
+          "left": 22,
+          "right": 537,
+          "top": 59.546875,
+          "bottom": 125.546875
+        },
+        {
+          "left": 42,
+          "right": 517,
+          "top": 143.546875,
+          "bottom": 241.6875
+        },
+        {
+          "left": 219.5,
+          "right": 339.5,
+          "top": 260.6875,
+          "bottom": 380.6875
+        },
+        {
+          "id": "error-feedback",
+          "left": 42,
+          "right": 517,
+          "top": 449.125,
+          "bottom": 494.21875
+        },
+        {
+          "id": "recording-controls",
+          "left": 42,
+          "right": 517,
+          "top": 512.21875,
+          "bottom": 575.65625
+        },
+        {
+          "id": "turn",
+          "left": 623,
+          "right": 903,
+          "top": 57,
+          "bottom": 243.5625
+        },
+        {
+          "id": "session-store",
+          "left": 623,
+          "right": 903,
+          "top": 260.5625,
+          "bottom": 460.515625
+        },
+        {
+          "id": "capture",
+          "left": 623,
+          "right": 903,
+          "top": 477.515625,
+          "bottom": 621.140625
+        },
+        {
+          "id": "persistence",
+          "left": 623,
+          "right": 903,
+          "top": 638.140625,
+          "bottom": 781.765625
+        },
+        {
+          "id": "recording-api",
+          "left": 623,
+          "right": 903,
+          "top": 798.765625,
+          "bottom": 942.390625
+        }
+      ]
+    },
+    {
+      "width": 1024,
+      "step": 7,
+      "scroll": 1024,
+      "paths": [
+        {
+          "id": "call-7-1",
+          "from": "turn",
+          "to": "persistence",
+          "points": [
+            [
+              903,
+              122.296875
+            ],
+            [
+              911,
+              122.296875
+            ],
+            [
+              911,
+              673.36796875
+            ],
+            [
+              903,
+              673.36796875
+            ]
+          ]
+        },
+        {
+          "id": "call-7-2",
+          "from": "persistence",
+          "to": "recording-api",
+          "points": [
+            [
+              903,
+              690.04453125
+            ],
+            [
+              914,
+              690.04453125
+            ],
+            [
+              914,
+              873.81015625
+            ],
+            [
+              903,
+              873.81015625
+            ]
+          ]
+        }
+      ],
+      "expected": 2,
+      "routeStatus": "",
+      "alignment": [
+        0
+      ],
+      "obstacles": [
+        {
+          "id": "recording-view",
+          "left": 22,
+          "right": 537,
+          "top": 59.546875,
+          "bottom": 125.546875
+        },
+        {
+          "left": 42,
+          "right": 517,
+          "top": 143.546875,
+          "bottom": 241.6875
+        },
+        {
+          "left": 219.5,
+          "right": 339.5,
+          "top": 260.6875,
+          "bottom": 380.6875
+        },
+        {
+          "id": "error-feedback",
+          "left": 42,
+          "right": 517,
+          "top": 449.125,
+          "bottom": 494.21875
+        },
+        {
+          "id": "recording-controls",
+          "left": 42,
+          "right": 517,
+          "top": 512.21875,
+          "bottom": 575.65625
+        },
+        {
+          "id": "turn",
+          "left": 623,
+          "right": 903,
+          "top": 57,
+          "bottom": 243.5625
+        },
+        {
+          "id": "session-store",
+          "left": 623,
+          "right": 903,
+          "top": 260.5625,
+          "bottom": 437.375
+        },
+        {
+          "id": "capture",
+          "left": 623,
+          "right": 903,
+          "top": 454.375,
+          "bottom": 598
+        },
+        {
+          "id": "persistence",
+          "left": 623,
+          "right": 903,
+          "top": 615,
+          "bottom": 781.765625
+        },
+        {
+          "id": "recording-api",
+          "left": 623,
+          "right": 903,
+          "top": 798.765625,
+          "bottom": 965.53125
+        }
+      ]
+    },
+    {
+      "width": 1024,
+      "step": 8,
+      "scroll": 1024,
+      "paths": [
+        {
+          "id": "call-8-1",
+          "from": "recording-api",
+          "to": "persistence",
+          "points": [
+            [
+              903,
+              857.13359375
+            ],
+            [
+              911,
+              857.13359375
+            ],
+            [
+              911,
+              673.36796875
+            ],
+            [
+              903,
+              673.36796875
+            ]
+          ]
+        },
+        {
+          "id": "call-8-2",
+          "from": "persistence",
+          "to": "turn",
+          "points": [
+            [
+              903,
+              690.04453125
+            ],
+            [
+              914,
+              690.04453125
+            ],
+            [
+              914,
+              140.953125
+            ],
+            [
+              903,
+              140.953125
+            ]
+          ]
+        }
+      ],
+      "expected": 2,
+      "routeStatus": "",
+      "alignment": [
+        0,
+        0
+      ],
+      "obstacles": [
+        {
+          "id": "recording-view",
+          "left": 22,
+          "right": 537,
+          "top": 59.546875,
+          "bottom": 125.546875
+        },
+        {
+          "left": 42,
+          "right": 517,
+          "top": 143.546875,
+          "bottom": 241.6875
+        },
+        {
+          "left": 219.5,
+          "right": 339.5,
+          "top": 260.6875,
+          "bottom": 380.6875
+        },
+        {
+          "id": "error-feedback",
+          "left": 42,
+          "right": 517,
+          "top": 449.125,
+          "bottom": 494.21875
+        },
+        {
+          "id": "recording-controls",
+          "left": 42,
+          "right": 517,
+          "top": 512.21875,
+          "bottom": 575.65625
+        },
+        {
+          "id": "turn",
+          "left": 623,
+          "right": 903,
+          "top": 57,
+          "bottom": 243.5625
+        },
+        {
+          "id": "session-store",
+          "left": 623,
+          "right": 903,
+          "top": 260.5625,
+          "bottom": 437.375
+        },
+        {
+          "id": "capture",
+          "left": 623,
+          "right": 903,
+          "top": 454.375,
+          "bottom": 598
+        },
+        {
+          "id": "persistence",
+          "left": 623,
+          "right": 903,
+          "top": 615,
+          "bottom": 781.765625
+        },
+        {
+          "id": "recording-api",
+          "left": 623,
+          "right": 903,
+          "top": 798.765625,
+          "bottom": 965.53125
+        }
+      ]
+    },
+    {
+      "width": 1024,
+      "step": 9,
+      "scroll": 1024,
+      "paths": [
+        {
+          "id": "call-9-1",
+          "from": "turn",
+          "to": "capture",
+          "points": [
+            [
+              903,
+              122.296875
+            ],
+            [
+              911,
+              122.296875
+            ],
+            [
+              911,
+              535.88359375
+            ],
+            [
+              903,
+              535.88359375
+            ]
+          ]
+        },
+        {
+          "id": "call-9-2",
+          "from": "turn",
+          "to": "session-store",
+          "points": [
+            [
+              903,
+              140.953125
+            ],
+            [
+              914,
+              140.953125
+            ],
+            [
+              914,
+              350.54140625
+            ],
+            [
+              903,
+              350.54140625
+            ]
+          ]
+        },
+        {
+          "id": "call-9-3",
+          "from": "session-store",
+          "to": "recording-view",
+          "points": [
+            [
+              623,
+              370.53671875
+            ],
+            [
+              609,
+              370.53671875
+            ],
+            [
+              609,
+              95.84687500000001
+            ],
+            [
+              537,
+              95.84687500000001
+            ]
+          ]
+        }
+      ],
+      "expected": 3,
+      "routeStatus": "",
+      "alignment": [
+        0,
+        0,
+        0
+      ],
+      "obstacles": [
+        {
+          "id": "recording-view",
+          "left": 22,
+          "right": 537,
+          "top": 59.546875,
+          "bottom": 125.546875
+        },
+        {
+          "left": 42,
+          "right": 517,
+          "top": 143.546875,
+          "bottom": 241.6875
+        },
+        {
+          "left": 219.5,
+          "right": 339.5,
+          "top": 260.6875,
+          "bottom": 380.6875
+        },
+        {
+          "id": "error-feedback",
+          "left": 42,
+          "right": 517,
+          "top": 449.125,
+          "bottom": 494.21875
+        },
+        {
+          "id": "turn",
+          "left": 623,
+          "right": 903,
+          "top": 57,
+          "bottom": 243.5625
+        },
+        {
+          "id": "session-store",
+          "left": 623,
+          "right": 903,
+          "top": 260.5625,
+          "bottom": 460.515625
+        },
+        {
+          "id": "capture",
+          "left": 623,
+          "right": 903,
+          "top": 477.515625,
+          "bottom": 644.28125
+        },
+        {
+          "id": "persistence",
+          "left": 623,
+          "right": 903,
+          "top": 661.28125,
+          "bottom": 804.90625
+        },
+        {
+          "id": "recording-api",
+          "left": 623,
+          "right": 903,
+          "top": 821.90625,
+          "bottom": 965.53125
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "step": 1,
+      "scroll": 390,
+      "paths": [
+        {
+          "id": "call-1-1",
+          "from": "recording-controls",
+          "to": "turn",
+          "points": [
+            [
+              274,
+              603.5
+            ],
+            [
+              282,
+              603.5
+            ],
+            [
+              282,
+              667.734375
+            ],
+            [
+              292,
+              667.734375
+            ],
+            [
+              292,
+              739.63125
+            ],
+            [
+              285,
+              739.63125
+            ]
+          ]
+        },
+        {
+          "id": "call-1-2",
+          "from": "turn",
+          "to": "session-store",
+          "points": [
+            [
+              285,
+              757.8875
+            ],
+            [
+              296,
+              757.8875
+            ],
+            [
+              296,
+              963.47578125
+            ],
+            [
+              285,
+              963.47578125
+            ]
+          ]
+        }
+      ],
+      "expected": 2,
+      "routeStatus": "",
+      "alignment": [
+        0,
+        0
+      ],
+      "obstacles": [
+        {
+          "id": "recording-view",
+          "left": 18,
+          "right": 284,
+          "top": 77.1875,
+          "bottom": 143.1875
+        },
+        {
+          "left": 28,
+          "right": 274,
+          "top": 158.1875,
+          "bottom": 287.671875
+        },
+        {
+          "left": 91,
+          "right": 211,
+          "top": 306.671875,
+          "bottom": 426.671875
+        },
+        {
+          "id": "error-feedback",
+          "left": 28,
+          "right": 274,
+          "top": 495.109375,
+          "bottom": 563.296875
+        },
+        {
+          "id": "recording-controls",
+          "left": 28,
+          "right": 274,
+          "top": 581.296875,
+          "bottom": 644.734375
+        },
+        {
+          "id": "turn",
+          "left": 17,
+          "right": 285,
+          "top": 675.734375,
+          "bottom": 858.296875
+        },
+        {
+          "id": "session-store",
+          "left": 17,
+          "right": 285,
+          "top": 875.296875,
+          "bottom": 1071.25
+        },
+        {
+          "id": "capture",
+          "left": 17,
+          "right": 285,
+          "top": 1088.25,
+          "bottom": 1227.875
+        },
+        {
+          "id": "persistence",
+          "left": 17,
+          "right": 285,
+          "top": 1244.875,
+          "bottom": 1404.640625
+        },
+        {
+          "id": "recording-api",
+          "left": 17,
+          "right": 285,
+          "top": 1421.640625,
+          "bottom": 1594.453125
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "step": 2,
+      "scroll": 390,
+      "paths": [
+        {
+          "id": "call-2-1",
+          "from": "capture",
+          "to": "turn",
+          "points": [
+            [
+              285,
+              1122.07734375
+            ],
+            [
+              293,
+              1122.07734375
+            ],
+            [
+              293,
+              739.63125
+            ],
+            [
+              285,
+              739.63125
+            ]
+          ]
+        },
+        {
+          "id": "call-2-2",
+          "from": "turn",
+          "to": "persistence",
+          "points": [
+            [
+              285,
+              757.8875
+            ],
+            [
+              296,
+              757.8875
+            ],
+            [
+              296,
+              1327.1828125
+            ],
+            [
+              285,
+              1327.1828125
+            ]
+          ]
+        }
+      ],
+      "expected": 2,
+      "routeStatus": "",
+      "alignment": [
+        0,
+        0
+      ],
+      "obstacles": [
+        {
+          "id": "recording-view",
+          "left": 18,
+          "right": 284,
+          "top": 77.1875,
+          "bottom": 143.1875
+        },
+        {
+          "left": 28,
+          "right": 274,
+          "top": 158.1875,
+          "bottom": 287.671875
+        },
+        {
+          "left": 91,
+          "right": 211,
+          "top": 306.671875,
+          "bottom": 426.671875
+        },
+        {
+          "id": "error-feedback",
+          "left": 28,
+          "right": 274,
+          "top": 495.109375,
+          "bottom": 563.296875
+        },
+        {
+          "id": "recording-controls",
+          "left": 28,
+          "right": 274,
+          "top": 581.296875,
+          "bottom": 644.734375
+        },
+        {
+          "id": "turn",
+          "left": 17,
+          "right": 285,
+          "top": 675.734375,
+          "bottom": 858.296875
+        },
+        {
+          "id": "session-store",
+          "left": 17,
+          "right": 285,
+          "top": 875.296875,
+          "bottom": 1048.109375
+        },
+        {
+          "id": "capture",
+          "left": 17,
+          "right": 285,
+          "top": 1065.109375,
+          "bottom": 1227.875
+        },
+        {
+          "id": "persistence",
+          "left": 17,
+          "right": 285,
+          "top": 1244.875,
+          "bottom": 1427.78125
+        },
+        {
+          "id": "recording-api",
+          "left": 17,
+          "right": 285,
+          "top": 1444.78125,
+          "bottom": 1617.59375
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "step": 3,
+      "scroll": 390,
+      "paths": [
+        {
+          "id": "call-3-1",
+          "from": "persistence",
+          "to": "recording-api",
+          "points": [
+            [
+              285,
+              1262.6109375
+            ],
+            [
+              293,
+              1262.6109375
+            ],
+            [
+              293,
+              1467.08359375
+            ],
+            [
+              285,
+              1467.08359375
+            ]
+          ]
+        }
+      ],
+      "expected": 1,
+      "routeStatus": "",
+      "alignment": [
+        0,
+        0
+      ],
+      "obstacles": [
+        {
+          "id": "recording-view",
+          "left": 18,
+          "right": 284,
+          "top": 77.1875,
+          "bottom": 143.1875
+        },
+        {
+          "left": 28,
+          "right": 274,
+          "top": 158.1875,
+          "bottom": 287.671875
+        },
+        {
+          "left": 91,
+          "right": 211,
+          "top": 306.671875,
+          "bottom": 426.671875
+        },
+        {
+          "id": "error-feedback",
+          "left": 28,
+          "right": 274,
+          "top": 495.109375,
+          "bottom": 563.296875
+        },
+        {
+          "id": "recording-controls",
+          "left": 28,
+          "right": 274,
+          "top": 581.296875,
+          "bottom": 644.734375
+        },
+        {
+          "id": "turn",
+          "left": 17,
+          "right": 285,
+          "top": 675.734375,
+          "bottom": 835.15625
+        },
+        {
+          "id": "session-store",
+          "left": 17,
+          "right": 285,
+          "top": 852.15625,
+          "bottom": 1024.96875
+        },
+        {
+          "id": "capture",
+          "left": 17,
+          "right": 285,
+          "top": 1041.96875,
+          "bottom": 1181.59375
+        },
+        {
+          "id": "persistence",
+          "left": 17,
+          "right": 285,
+          "top": 1198.59375,
+          "bottom": 1381.5
+        },
+        {
+          "id": "recording-api",
+          "left": 17,
+          "right": 285,
+          "top": 1398.5,
+          "bottom": 1594.453125
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "step": 4,
+      "scroll": 390,
+      "paths": [
+        {
+          "id": "call-4-1",
+          "from": "recording-api",
+          "to": "persistence",
+          "points": [
+            [
+              285,
+              1455.46796875
+            ],
+            [
+              293,
+              1455.46796875
+            ],
+            [
+              293,
+              1262.6109375
+            ],
+            [
+              285,
+              1262.6109375
+            ]
+          ]
+        }
+      ],
+      "expected": 1,
+      "routeStatus": "",
+      "alignment": [
+        0
+      ],
+      "obstacles": [
+        {
+          "id": "recording-view",
+          "left": 18,
+          "right": 284,
+          "top": 77.1875,
+          "bottom": 143.1875
+        },
+        {
+          "left": 28,
+          "right": 274,
+          "top": 158.1875,
+          "bottom": 287.671875
+        },
+        {
+          "left": 91,
+          "right": 211,
+          "top": 306.671875,
+          "bottom": 426.671875
+        },
+        {
+          "id": "error-feedback",
+          "left": 28,
+          "right": 274,
+          "top": 495.109375,
+          "bottom": 563.296875
+        },
+        {
+          "id": "recording-controls",
+          "left": 28,
+          "right": 274,
+          "top": 581.296875,
+          "bottom": 644.734375
+        },
+        {
+          "id": "turn",
+          "left": 17,
+          "right": 285,
+          "top": 675.734375,
+          "bottom": 835.15625
+        },
+        {
+          "id": "session-store",
+          "left": 17,
+          "right": 285,
+          "top": 852.15625,
+          "bottom": 1024.96875
+        },
+        {
+          "id": "capture",
+          "left": 17,
+          "right": 285,
+          "top": 1041.96875,
+          "bottom": 1181.59375
+        },
+        {
+          "id": "persistence",
+          "left": 17,
+          "right": 285,
+          "top": 1198.59375,
+          "bottom": 1381.5
+        },
+        {
+          "id": "recording-api",
+          "left": 17,
+          "right": 285,
+          "top": 1398.5,
+          "bottom": 1561.265625
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "step": 5,
+      "scroll": 390,
+      "paths": [
+        {
+          "id": "call-5-1",
+          "from": "persistence",
+          "to": "turn",
+          "points": [
+            [
+              285,
+              1458.0640625
+            ],
+            [
+              293,
+              1458.0640625
+            ],
+            [
+              293,
+              888.803125
+            ],
+            [
+              285,
+              888.803125
+            ]
+          ]
+        },
+        {
+          "id": "call-5-2",
+          "from": "turn",
+          "to": "session-store",
+          "points": [
+            [
+              285,
+              907.059375
+            ],
+            [
+              296,
+              907.059375
+            ],
+            [
+              296,
+              1112.64765625
+            ],
+            [
+              285,
+              1112.64765625
+            ]
+          ]
+        },
+        {
+          "id": "call-5-3",
+          "from": "session-store",
+          "to": "error-feedback",
+          "points": [
+            [
+              285,
+              1132.24296875
+            ],
+            [
+              299,
+              1132.24296875
+            ],
+            [
+              299,
+              613.53125
+            ],
+            [
+              288,
+              613.53125
+            ],
+            [
+              288,
+              558.04140625
+            ],
+            [
+              274,
+              558.04140625
+            ]
+          ]
+        }
+      ],
+      "expected": 3,
+      "routeStatus": "",
+      "alignment": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "obstacles": [
+        {
+          "id": "recording-view",
+          "left": 18,
+          "right": 284,
+          "top": 77.1875,
+          "bottom": 143.1875
+        },
+        {
+          "left": 28,
+          "right": 274,
+          "top": 158.1875,
+          "bottom": 287.671875
+        },
+        {
+          "left": 91,
+          "right": 211,
+          "top": 306.671875,
+          "bottom": 426.671875
+        },
+        {
+          "id": "error-feedback",
+          "left": 28,
+          "right": 274,
+          "top": 495.109375,
+          "bottom": 609.53125
+        },
+        {
+          "id": "capture",
+          "left": 28,
+          "right": 274,
+          "top": 627.53125,
+          "bottom": 689.328125
+        },
+        {
+          "id": "recording-controls",
+          "left": 28,
+          "right": 274,
+          "top": 707.328125,
+          "bottom": 793.90625
+        },
+        {
+          "id": "turn",
+          "left": 17,
+          "right": 285,
+          "top": 824.90625,
+          "bottom": 1007.46875
+        },
+        {
+          "id": "session-store",
+          "left": 17,
+          "right": 285,
+          "top": 1024.46875,
+          "bottom": 1220.421875
+        },
+        {
+          "id": "capture",
+          "left": 17,
+          "right": 285,
+          "top": 1237.421875,
+          "bottom": 1377.046875
+        },
+        {
+          "id": "persistence",
+          "left": 17,
+          "right": 285,
+          "top": 1394.046875,
+          "bottom": 1576.953125
+        },
+        {
+          "id": "recording-api",
+          "left": 17,
+          "right": 285,
+          "top": 1593.953125,
+          "bottom": 1733.578125
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "step": 6,
+      "scroll": 390,
+      "paths": [
+        {
+          "id": "call-6-1",
+          "from": "recording-controls",
+          "to": "turn",
+          "points": [
+            [
+              274,
+              603.5
+            ],
+            [
+              282,
+              603.5
+            ],
+            [
+              282,
+              667.734375
+            ],
+            [
+              292,
+              667.734375
+            ],
+            [
+              292,
+              739.63125
+            ],
+            [
+              285,
+              739.63125
+            ]
+          ]
+        },
+        {
+          "id": "call-6-2",
+          "from": "turn",
+          "to": "session-store",
+          "points": [
+            [
+              285,
+              757.8875
+            ],
+            [
+              296,
+              757.8875
+            ],
+            [
+              296,
+              963.47578125
+            ],
+            [
+              285,
+              963.47578125
+            ]
+          ]
+        }
+      ],
+      "expected": 2,
+      "routeStatus": "",
+      "alignment": [
+        0,
+        0
+      ],
+      "obstacles": [
+        {
+          "id": "recording-view",
+          "left": 18,
+          "right": 284,
+          "top": 77.1875,
+          "bottom": 143.1875
+        },
+        {
+          "left": 28,
+          "right": 274,
+          "top": 158.1875,
+          "bottom": 287.671875
+        },
+        {
+          "left": 91,
+          "right": 211,
+          "top": 306.671875,
+          "bottom": 426.671875
+        },
+        {
+          "id": "error-feedback",
+          "left": 28,
+          "right": 274,
+          "top": 495.109375,
+          "bottom": 563.296875
+        },
+        {
+          "id": "recording-controls",
+          "left": 28,
+          "right": 274,
+          "top": 581.296875,
+          "bottom": 644.734375
+        },
+        {
+          "id": "turn",
+          "left": 17,
+          "right": 285,
+          "top": 675.734375,
+          "bottom": 858.296875
+        },
+        {
+          "id": "session-store",
+          "left": 17,
+          "right": 285,
+          "top": 875.296875,
+          "bottom": 1071.25
+        },
+        {
+          "id": "capture",
+          "left": 17,
+          "right": 285,
+          "top": 1088.25,
+          "bottom": 1227.875
+        },
+        {
+          "id": "persistence",
+          "left": 17,
+          "right": 285,
+          "top": 1244.875,
+          "bottom": 1404.640625
+        },
+        {
+          "id": "recording-api",
+          "left": 17,
+          "right": 285,
+          "top": 1421.640625,
+          "bottom": 1561.265625
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "step": 7,
+      "scroll": 390,
+      "paths": [
+        {
+          "id": "call-7-1",
+          "from": "turn",
+          "to": "persistence",
+          "points": [
+            [
+              285,
+              739.63125
+            ],
+            [
+              293,
+              739.63125
+            ],
+            [
+              293,
+              1285.7515625
+            ],
+            [
+              285,
+              1285.7515625
+            ]
+          ]
+        },
+        {
+          "id": "call-7-2",
+          "from": "persistence",
+          "to": "recording-api",
+          "points": [
+            [
+              285,
+              1304.0421875
+            ],
+            [
+              296,
+              1304.0421875
+            ],
+            [
+              296,
+              1494.88515625
+            ],
+            [
+              285,
+              1494.88515625
+            ]
+          ]
+        }
+      ],
+      "expected": 2,
+      "routeStatus": "",
+      "alignment": [
+        0
+      ],
+      "obstacles": [
+        {
+          "id": "recording-view",
+          "left": 18,
+          "right": 284,
+          "top": 77.1875,
+          "bottom": 143.1875
+        },
+        {
+          "left": 28,
+          "right": 274,
+          "top": 158.1875,
+          "bottom": 287.671875
+        },
+        {
+          "left": 91,
+          "right": 211,
+          "top": 306.671875,
+          "bottom": 426.671875
+        },
+        {
+          "id": "error-feedback",
+          "left": 28,
+          "right": 274,
+          "top": 495.109375,
+          "bottom": 563.296875
+        },
+        {
+          "id": "recording-controls",
+          "left": 28,
+          "right": 274,
+          "top": 581.296875,
+          "bottom": 644.734375
+        },
+        {
+          "id": "turn",
+          "left": 17,
+          "right": 285,
+          "top": 675.734375,
+          "bottom": 858.296875
+        },
+        {
+          "id": "session-store",
+          "left": 17,
+          "right": 285,
+          "top": 875.296875,
+          "bottom": 1048.109375
+        },
+        {
+          "id": "capture",
+          "left": 17,
+          "right": 285,
+          "top": 1065.109375,
+          "bottom": 1204.734375
+        },
+        {
+          "id": "persistence",
+          "left": 17,
+          "right": 285,
+          "top": 1221.734375,
+          "bottom": 1404.640625
+        },
+        {
+          "id": "recording-api",
+          "left": 17,
+          "right": 285,
+          "top": 1421.640625,
+          "bottom": 1584.40625
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "step": 8,
+      "scroll": 390,
+      "paths": [
+        {
+          "id": "call-8-1",
+          "from": "recording-api",
+          "to": "persistence",
+          "points": [
+            [
+              285,
+              1478.60859375
+            ],
+            [
+              293,
+              1478.60859375
+            ],
+            [
+              293,
+              1285.7515625
+            ],
+            [
+              285,
+              1285.7515625
+            ]
+          ]
+        },
+        {
+          "id": "call-8-2",
+          "from": "persistence",
+          "to": "turn",
+          "points": [
+            [
+              285,
+              1304.0421875
+            ],
+            [
+              296,
+              1304.0421875
+            ],
+            [
+              296,
+              757.8875
+            ],
+            [
+              285,
+              757.8875
+            ]
+          ]
+        }
+      ],
+      "expected": 2,
+      "routeStatus": "",
+      "alignment": [
+        0,
+        0
+      ],
+      "obstacles": [
+        {
+          "id": "recording-view",
+          "left": 18,
+          "right": 284,
+          "top": 77.1875,
+          "bottom": 143.1875
+        },
+        {
+          "left": 28,
+          "right": 274,
+          "top": 158.1875,
+          "bottom": 287.671875
+        },
+        {
+          "left": 91,
+          "right": 211,
+          "top": 306.671875,
+          "bottom": 426.671875
+        },
+        {
+          "id": "error-feedback",
+          "left": 28,
+          "right": 274,
+          "top": 495.109375,
+          "bottom": 563.296875
+        },
+        {
+          "id": "recording-controls",
+          "left": 28,
+          "right": 274,
+          "top": 581.296875,
+          "bottom": 644.734375
+        },
+        {
+          "id": "turn",
+          "left": 17,
+          "right": 285,
+          "top": 675.734375,
+          "bottom": 858.296875
+        },
+        {
+          "id": "session-store",
+          "left": 17,
+          "right": 285,
+          "top": 875.296875,
+          "bottom": 1048.109375
+        },
+        {
+          "id": "capture",
+          "left": 17,
+          "right": 285,
+          "top": 1065.109375,
+          "bottom": 1204.734375
+        },
+        {
+          "id": "persistence",
+          "left": 17,
+          "right": 285,
+          "top": 1221.734375,
+          "bottom": 1404.640625
+        },
+        {
+          "id": "recording-api",
+          "left": 17,
+          "right": 285,
+          "top": 1421.640625,
+          "bottom": 1584.40625
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "step": 9,
+      "scroll": 390,
+      "paths": [
+        {
+          "id": "call-9-1",
+          "from": "turn",
+          "to": "capture",
+          "points": [
+            [
+              285,
+              635.1
+            ],
+            [
+              293,
+              635.1
+            ],
+            [
+              293,
+              1040.68671875
+            ],
+            [
+              285,
+              1040.68671875
+            ]
+          ]
+        },
+        {
+          "id": "call-9-2",
+          "from": "turn",
+          "to": "session-store",
+          "points": [
+            [
+              285,
+              653.35625
+            ],
+            [
+              296,
+              653.35625
+            ],
+            [
+              296,
+              858.94453125
+            ],
+            [
+              285,
+              858.94453125
+            ]
+          ]
+        },
+        {
+          "id": "call-9-3",
+          "from": "session-store",
+          "to": "recording-view",
+          "points": [
+            [
+              285,
+              878.53984375
+            ],
+            [
+              299,
+              878.53984375
+            ],
+            [
+              299,
+              113.48750000000001
+            ],
+            [
+              284,
+              113.48750000000001
+            ]
+          ]
+        }
+      ],
+      "expected": 3,
+      "routeStatus": "",
+      "alignment": [
+        0,
+        0,
+        0
+      ],
+      "obstacles": [
+        {
+          "id": "recording-view",
+          "left": 18,
+          "right": 284,
+          "top": 77.1875,
+          "bottom": 143.1875
+        },
+        {
+          "left": 28,
+          "right": 274,
+          "top": 158.1875,
+          "bottom": 287.671875
+        },
+        {
+          "left": 91,
+          "right": 211,
+          "top": 306.671875,
+          "bottom": 426.671875
+        },
+        {
+          "id": "error-feedback",
+          "left": 28,
+          "right": 274,
+          "top": 495.109375,
+          "bottom": 540.203125
+        },
+        {
+          "id": "turn",
+          "left": 17,
+          "right": 285,
+          "top": 571.203125,
+          "bottom": 753.765625
+        },
+        {
+          "id": "session-store",
+          "left": 17,
+          "right": 285,
+          "top": 770.765625,
+          "bottom": 966.71875
+        },
+        {
+          "id": "capture",
+          "left": 17,
+          "right": 285,
+          "top": 983.71875,
+          "bottom": 1146.484375
+        },
+        {
+          "id": "persistence",
+          "left": 17,
+          "right": 285,
+          "top": 1163.484375,
+          "bottom": 1323.25
+        },
+        {
+          "id": "recording-api",
+          "left": 17,
+          "right": 285,
+          "top": 1340.25,
+          "bottom": 1479.875
+        }
+      ]
+    },
+    {
+      "width": 320,
+      "step": 1,
+      "scroll": 320,
+      "paths": [
+        {
+          "id": "call-1-1",
+          "from": "recording-controls",
+          "to": "turn",
+          "points": [
+            [
+              204,
+              603.5
+            ],
+            [
+              212,
+              603.5
+            ],
+            [
+              212,
+              667.734375
+            ],
+            [
+              222,
+              667.734375
+            ],
+            [
+              222,
+              746.56015625
+            ],
+            [
+              215,
+              746.56015625
+            ]
+          ]
+        },
+        {
+          "id": "call-1-2",
+          "from": "turn",
+          "to": "session-store",
+          "points": [
+            [
+              215,
+              766.79609375
+            ],
+            [
+              226,
+              766.79609375
+            ],
+            [
+              226,
+              1016.17890625
+            ],
+            [
+              215,
+              1016.17890625
+            ]
+          ]
+        }
+      ],
+      "expected": 2,
+      "routeStatus": "",
+      "alignment": [
+        0,
+        0
+      ],
+      "obstacles": [
+        {
+          "id": "recording-view",
+          "left": 18,
+          "right": 214,
+          "top": 77.1875,
+          "bottom": 143.1875
+        },
+        {
+          "left": 28,
+          "right": 204,
+          "top": 158.1875,
+          "bottom": 287.671875
+        },
+        {
+          "left": 56,
+          "right": 176,
+          "top": 306.671875,
+          "bottom": 426.671875
+        },
+        {
+          "id": "error-feedback",
+          "left": 28,
+          "right": 204,
+          "top": 495.109375,
+          "bottom": 563.296875
+        },
+        {
+          "id": "recording-controls",
+          "left": 28,
+          "right": 204,
+          "top": 581.296875,
+          "bottom": 644.734375
+        },
+        {
+          "id": "turn",
+          "left": 17,
+          "right": 215,
+          "top": 675.734375,
+          "bottom": 878.09375
+        },
+        {
+          "id": "session-store",
+          "left": 17,
+          "right": 215,
+          "top": 895.09375,
+          "bottom": 1164.171875
+        },
+        {
+          "id": "capture",
+          "left": 17,
+          "right": 215,
+          "top": 1181.171875,
+          "bottom": 1340.59375
+        },
+        {
+          "id": "persistence",
+          "left": 17,
+          "right": 215,
+          "top": 1357.59375,
+          "bottom": 1570.34375
+        },
+        {
+          "id": "recording-api",
+          "left": 17,
+          "right": 215,
+          "top": 1587.34375,
+          "bottom": 1800.09375
+        }
+      ]
+    },
+    {
+      "width": 320,
+      "step": 2,
+      "scroll": 320,
+      "paths": [
+        {
+          "id": "call-2-1",
+          "from": "capture",
+          "to": "turn",
+          "points": [
+            [
+              215,
+              1221.928125
+            ],
+            [
+              223,
+              1221.928125
+            ],
+            [
+              223,
+              746.56015625
+            ],
+            [
+              215,
+              746.56015625
+            ]
+          ]
+        },
+        {
+          "id": "call-2-2",
+          "from": "turn",
+          "to": "persistence",
+          "points": [
+            [
+              215,
+              766.79609375
+            ],
+            [
+              226,
+              766.79609375
+            ],
+            [
+              226,
+              1463.74453125
+            ],
+            [
+              215,
+              1463.74453125
+            ]
+          ]
+        }
+      ],
+      "expected": 2,
+      "routeStatus": "",
+      "alignment": [
+        0,
+        0
+      ],
+      "obstacles": [
+        {
+          "id": "recording-view",
+          "left": 18,
+          "right": 214,
+          "top": 77.1875,
+          "bottom": 143.1875
+        },
+        {
+          "left": 28,
+          "right": 204,
+          "top": 158.1875,
+          "bottom": 287.671875
+        },
+        {
+          "left": 56,
+          "right": 176,
+          "top": 306.671875,
+          "bottom": 426.671875
+        },
+        {
+          "id": "error-feedback",
+          "left": 28,
+          "right": 204,
+          "top": 495.109375,
+          "bottom": 563.296875
+        },
+        {
+          "id": "recording-controls",
+          "left": 28,
+          "right": 204,
+          "top": 581.296875,
+          "bottom": 644.734375
+        },
+        {
+          "id": "turn",
+          "left": 17,
+          "right": 215,
+          "top": 675.734375,
+          "bottom": 878.09375
+        },
+        {
+          "id": "session-store",
+          "left": 17,
+          "right": 215,
+          "top": 895.09375,
+          "bottom": 1141.03125
+        },
+        {
+          "id": "capture",
+          "left": 17,
+          "right": 215,
+          "top": 1158.03125,
+          "bottom": 1340.59375
+        },
+        {
+          "id": "persistence",
+          "left": 17,
+          "right": 215,
+          "top": 1357.59375,
+          "bottom": 1593.484375
+        },
+        {
+          "id": "recording-api",
+          "left": 17,
+          "right": 215,
+          "top": 1610.484375,
+          "bottom": 1823.234375
+        }
+      ]
+    },
+    {
+      "width": 320,
+      "step": 3,
+      "scroll": 320,
+      "paths": [
+        {
+          "id": "call-3-1",
+          "from": "persistence",
+          "to": "recording-api",
+          "points": [
+            [
+              215,
+              1393.87421875
+            ],
+            [
+              223,
+              1393.87421875
+            ],
+            [
+              223,
+              1646.76484375
+            ],
+            [
+              215,
+              1646.76484375
+            ]
+          ]
+        }
+      ],
+      "expected": 1,
+      "routeStatus": "",
+      "alignment": [
+        0,
+        0
+      ],
+      "obstacles": [
+        {
+          "id": "recording-view",
+          "left": 18,
+          "right": 214,
+          "top": 77.1875,
+          "bottom": 143.1875
+        },
+        {
+          "left": 28,
+          "right": 204,
+          "top": 158.1875,
+          "bottom": 287.671875
+        },
+        {
+          "left": 56,
+          "right": 176,
+          "top": 306.671875,
+          "bottom": 426.671875
+        },
+        {
+          "id": "error-feedback",
+          "left": 28,
+          "right": 204,
+          "top": 495.109375,
+          "bottom": 563.296875
+        },
+        {
+          "id": "recording-controls",
+          "left": 28,
+          "right": 204,
+          "top": 581.296875,
+          "bottom": 644.734375
+        },
+        {
+          "id": "turn",
+          "left": 17,
+          "right": 215,
+          "top": 675.734375,
+          "bottom": 854.953125
+        },
+        {
+          "id": "session-store",
+          "left": 17,
+          "right": 215,
+          "top": 871.953125,
+          "bottom": 1117.890625
+        },
+        {
+          "id": "capture",
+          "left": 17,
+          "right": 215,
+          "top": 1134.890625,
+          "bottom": 1294.3125
+        },
+        {
+          "id": "persistence",
+          "left": 17,
+          "right": 215,
+          "top": 1311.3125,
+          "bottom": 1547.203125
+        },
+        {
+          "id": "recording-api",
+          "left": 17,
+          "right": 215,
+          "top": 1564.203125,
+          "bottom": 1800.09375
+        }
+      ]
+    },
+    {
+      "width": 320,
+      "step": 4,
+      "scroll": 320,
+      "paths": [
+        {
+          "id": "call-4-1",
+          "from": "recording-api",
+          "to": "persistence",
+          "points": [
+            [
+              215,
+              1646.76484375
+            ],
+            [
+              223,
+              1646.76484375
+            ],
+            [
+              223,
+              1393.87421875
+            ],
+            [
+              215,
+              1393.87421875
+            ]
+          ]
+        }
+      ],
+      "expected": 1,
+      "routeStatus": "",
+      "alignment": [
+        0
+      ],
+      "obstacles": [
+        {
+          "id": "recording-view",
+          "left": 18,
+          "right": 214,
+          "top": 77.1875,
+          "bottom": 143.1875
+        },
+        {
+          "left": 28,
+          "right": 204,
+          "top": 158.1875,
+          "bottom": 287.671875
+        },
+        {
+          "left": 56,
+          "right": 176,
+          "top": 306.671875,
+          "bottom": 426.671875
+        },
+        {
+          "id": "error-feedback",
+          "left": 28,
+          "right": 204,
+          "top": 495.109375,
+          "bottom": 563.296875
+        },
+        {
+          "id": "recording-controls",
+          "left": 28,
+          "right": 204,
+          "top": 581.296875,
+          "bottom": 644.734375
+        },
+        {
+          "id": "turn",
+          "left": 17,
+          "right": 215,
+          "top": 675.734375,
+          "bottom": 854.953125
+        },
+        {
+          "id": "session-store",
+          "left": 17,
+          "right": 215,
+          "top": 871.953125,
+          "bottom": 1117.890625
+        },
+        {
+          "id": "capture",
+          "left": 17,
+          "right": 215,
+          "top": 1134.890625,
+          "bottom": 1294.3125
+        },
+        {
+          "id": "persistence",
+          "left": 17,
+          "right": 215,
+          "top": 1311.3125,
+          "bottom": 1547.203125
+        },
+        {
+          "id": "recording-api",
+          "left": 17,
+          "right": 215,
+          "top": 1564.203125,
+          "bottom": 1800.09375
+        }
+      ]
+    },
+    {
+      "width": 320,
+      "step": 5,
+      "scroll": 320,
+      "paths": [
+        {
+          "id": "call-5-1",
+          "from": "persistence",
+          "to": "turn",
+          "points": [
+            [
+              215,
+              1661.85859375
+            ],
+            [
+              223,
+              1661.85859375
+            ],
+            [
+              223,
+              968.26328125
+            ],
+            [
+              215,
+              968.26328125
+            ]
+          ]
+        },
+        {
+          "id": "call-5-2",
+          "from": "turn",
+          "to": "session-store",
+          "points": [
+            [
+              215,
+              988.49921875
+            ],
+            [
+              226,
+              988.49921875
+            ],
+            [
+              226,
+              1237.88203125
+            ],
+            [
+              215,
+              1237.88203125
+            ]
+          ]
+        },
+        {
+          "id": "call-5-3",
+          "from": "session-store",
+          "to": "error-feedback",
+          "points": [
+            [
+              215,
+              1264.78984375
+            ],
+            [
+              229,
+              1264.78984375
+            ],
+            [
+              229,
+              636.625
+            ],
+            [
+              218,
+              636.625
+            ],
+            [
+              218,
+              570.74296875
+            ],
+            [
+              204,
+              570.74296875
+            ]
+          ]
+        }
+      ],
+      "expected": 3,
+      "routeStatus": "",
+      "alignment": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "obstacles": [
+        {
+          "id": "recording-view",
+          "left": 18,
+          "right": 214,
+          "top": 77.1875,
+          "bottom": 143.1875
+        },
+        {
+          "left": 28,
+          "right": 204,
+          "top": 158.1875,
+          "bottom": 287.671875
+        },
+        {
+          "left": 56,
+          "right": 176,
+          "top": 306.671875,
+          "bottom": 426.671875
+        },
+        {
+          "id": "error-feedback",
+          "left": 28,
+          "right": 204,
+          "top": 495.109375,
+          "bottom": 632.625
+        },
+        {
+          "id": "capture",
+          "left": 28,
+          "right": 204,
+          "top": 650.625,
+          "bottom": 712.421875
+        },
+        {
+          "id": "recording-controls",
+          "left": 28,
+          "right": 204,
+          "top": 730.421875,
+          "bottom": 866.4375
+        },
+        {
+          "id": "turn",
+          "left": 17,
+          "right": 215,
+          "top": 897.4375,
+          "bottom": 1099.796875
+        },
+        {
+          "id": "session-store",
+          "left": 17,
+          "right": 215,
+          "top": 1116.796875,
+          "bottom": 1385.875
+        },
+        {
+          "id": "capture",
+          "left": 17,
+          "right": 215,
+          "top": 1402.875,
+          "bottom": 1562.296875
+        },
+        {
+          "id": "persistence",
+          "left": 17,
+          "right": 215,
+          "top": 1579.296875,
+          "bottom": 1815.1875
+        },
+        {
+          "id": "recording-api",
+          "left": 17,
+          "right": 215,
+          "top": 1832.1875,
+          "bottom": 2044.9375
+        }
+      ]
+    },
+    {
+      "width": 320,
+      "step": 6,
+      "scroll": 320,
+      "paths": [
+        {
+          "id": "call-6-1",
+          "from": "recording-controls",
+          "to": "turn",
+          "points": [
+            [
+              204,
+              603.5
+            ],
+            [
+              212,
+              603.5
+            ],
+            [
+              212,
+              667.734375
+            ],
+            [
+              222,
+              667.734375
+            ],
+            [
+              222,
+              746.56015625
+            ],
+            [
+              215,
+              746.56015625
+            ]
+          ]
+        },
+        {
+          "id": "call-6-2",
+          "from": "turn",
+          "to": "session-store",
+          "points": [
+            [
+              215,
+              766.79609375
+            ],
+            [
+              226,
+              766.79609375
+            ],
+            [
+              226,
+              1016.17890625
+            ],
+            [
+              215,
+              1016.17890625
+            ]
+          ]
+        }
+      ],
+      "expected": 2,
+      "routeStatus": "",
+      "alignment": [
+        0,
+        0
+      ],
+      "obstacles": [
+        {
+          "id": "recording-view",
+          "left": 18,
+          "right": 214,
+          "top": 77.1875,
+          "bottom": 143.1875
+        },
+        {
+          "left": 28,
+          "right": 204,
+          "top": 158.1875,
+          "bottom": 287.671875
+        },
+        {
+          "left": 56,
+          "right": 176,
+          "top": 306.671875,
+          "bottom": 426.671875
+        },
+        {
+          "id": "error-feedback",
+          "left": 28,
+          "right": 204,
+          "top": 495.109375,
+          "bottom": 563.296875
+        },
+        {
+          "id": "recording-controls",
+          "left": 28,
+          "right": 204,
+          "top": 581.296875,
+          "bottom": 644.734375
+        },
+        {
+          "id": "turn",
+          "left": 17,
+          "right": 215,
+          "top": 675.734375,
+          "bottom": 878.09375
+        },
+        {
+          "id": "session-store",
+          "left": 17,
+          "right": 215,
+          "top": 895.09375,
+          "bottom": 1164.171875
+        },
+        {
+          "id": "capture",
+          "left": 17,
+          "right": 215,
+          "top": 1181.171875,
+          "bottom": 1340.59375
+        },
+        {
+          "id": "persistence",
+          "left": 17,
+          "right": 215,
+          "top": 1357.59375,
+          "bottom": 1570.34375
+        },
+        {
+          "id": "recording-api",
+          "left": 17,
+          "right": 215,
+          "top": 1587.34375,
+          "bottom": 1800.09375
+        }
+      ]
+    },
+    {
+      "width": 320,
+      "step": 7,
+      "scroll": 320,
+      "paths": [
+        {
+          "id": "call-7-1",
+          "from": "turn",
+          "to": "persistence",
+          "points": [
+            [
+              215,
+              746.56015625
+            ],
+            [
+              223,
+              746.56015625
+            ],
+            [
+              223,
+              1417.01484375
+            ],
+            [
+              215,
+              1417.01484375
+            ]
+          ]
+        },
+        {
+          "id": "call-7-2",
+          "from": "persistence",
+          "to": "recording-api",
+          "points": [
+            [
+              215,
+              1440.60390625
+            ],
+            [
+              226,
+              1440.60390625
+            ],
+            [
+              226,
+              1693.49453125
+            ],
+            [
+              215,
+              1693.49453125
+            ]
+          ]
+        }
+      ],
+      "expected": 2,
+      "routeStatus": "",
+      "alignment": [
+        0
+      ],
+      "obstacles": [
+        {
+          "id": "recording-view",
+          "left": 18,
+          "right": 214,
+          "top": 77.1875,
+          "bottom": 143.1875
+        },
+        {
+          "left": 28,
+          "right": 204,
+          "top": 158.1875,
+          "bottom": 287.671875
+        },
+        {
+          "left": 56,
+          "right": 176,
+          "top": 306.671875,
+          "bottom": 426.671875
+        },
+        {
+          "id": "error-feedback",
+          "left": 28,
+          "right": 204,
+          "top": 495.109375,
+          "bottom": 563.296875
+        },
+        {
+          "id": "recording-controls",
+          "left": 28,
+          "right": 204,
+          "top": 581.296875,
+          "bottom": 644.734375
+        },
+        {
+          "id": "turn",
+          "left": 17,
+          "right": 215,
+          "top": 675.734375,
+          "bottom": 878.09375
+        },
+        {
+          "id": "session-store",
+          "left": 17,
+          "right": 215,
+          "top": 895.09375,
+          "bottom": 1141.03125
+        },
+        {
+          "id": "capture",
+          "left": 17,
+          "right": 215,
+          "top": 1158.03125,
+          "bottom": 1317.453125
+        },
+        {
+          "id": "persistence",
+          "left": 17,
+          "right": 215,
+          "top": 1334.453125,
+          "bottom": 1570.34375
+        },
+        {
+          "id": "recording-api",
+          "left": 17,
+          "right": 215,
+          "top": 1587.34375,
+          "bottom": 1823.234375
+        }
+      ]
+    },
+    {
+      "width": 320,
+      "step": 8,
+      "scroll": 320,
+      "paths": [
+        {
+          "id": "call-8-1",
+          "from": "recording-api",
+          "to": "persistence",
+          "points": [
+            [
+              215,
+              1669.90546875
+            ],
+            [
+              223,
+              1669.90546875
+            ],
+            [
+              223,
+              1417.01484375
+            ],
+            [
+              215,
+              1417.01484375
+            ]
+          ]
+        },
+        {
+          "id": "call-8-2",
+          "from": "persistence",
+          "to": "turn",
+          "points": [
+            [
+              215,
+              1440.60390625
+            ],
+            [
+              226,
+              1440.60390625
+            ],
+            [
+              226,
+              766.79609375
+            ],
+            [
+              215,
+              766.79609375
+            ]
+          ]
+        }
+      ],
+      "expected": 2,
+      "routeStatus": "",
+      "alignment": [
+        0,
+        0
+      ],
+      "obstacles": [
+        {
+          "id": "recording-view",
+          "left": 18,
+          "right": 214,
+          "top": 77.1875,
+          "bottom": 143.1875
+        },
+        {
+          "left": 28,
+          "right": 204,
+          "top": 158.1875,
+          "bottom": 287.671875
+        },
+        {
+          "left": 56,
+          "right": 176,
+          "top": 306.671875,
+          "bottom": 426.671875
+        },
+        {
+          "id": "error-feedback",
+          "left": 28,
+          "right": 204,
+          "top": 495.109375,
+          "bottom": 563.296875
+        },
+        {
+          "id": "recording-controls",
+          "left": 28,
+          "right": 204,
+          "top": 581.296875,
+          "bottom": 644.734375
+        },
+        {
+          "id": "turn",
+          "left": 17,
+          "right": 215,
+          "top": 675.734375,
+          "bottom": 878.09375
+        },
+        {
+          "id": "session-store",
+          "left": 17,
+          "right": 215,
+          "top": 895.09375,
+          "bottom": 1141.03125
+        },
+        {
+          "id": "capture",
+          "left": 17,
+          "right": 215,
+          "top": 1158.03125,
+          "bottom": 1317.453125
+        },
+        {
+          "id": "persistence",
+          "left": 17,
+          "right": 215,
+          "top": 1334.453125,
+          "bottom": 1570.34375
+        },
+        {
+          "id": "recording-api",
+          "left": 17,
+          "right": 215,
+          "top": 1587.34375,
+          "bottom": 1823.234375
+        }
+      ]
+    },
+    {
+      "width": 320,
+      "step": 9,
+      "scroll": 320,
+      "paths": [
+        {
+          "id": "call-9-1",
+          "from": "turn",
+          "to": "capture",
+          "points": [
+            [
+              215,
+              665.12265625
+            ],
+            [
+              223,
+              665.12265625
+            ],
+            [
+              223,
+              1163.63125
+            ],
+            [
+              215,
+              1163.63125
+            ]
+          ]
+        },
+        {
+          "id": "call-9-2",
+          "from": "turn",
+          "to": "session-store",
+          "points": [
+            [
+              215,
+              685.35859375
+            ],
+            [
+              226,
+              685.35859375
+            ],
+            [
+              226,
+              934.74140625
+            ],
+            [
+              215,
+              934.74140625
+            ]
+          ]
+        },
+        {
+          "id": "call-9-3",
+          "from": "session-store",
+          "to": "recording-view",
+          "points": [
+            [
+              215,
+              961.64921875
+            ],
+            [
+              229,
+              961.64921875
+            ],
+            [
+              229,
+              113.48750000000001
+            ],
+            [
+              214,
+              113.48750000000001
+            ]
+          ]
+        }
+      ],
+      "expected": 3,
+      "routeStatus": "",
+      "alignment": [
+        0,
+        0,
+        0
+      ],
+      "obstacles": [
+        {
+          "id": "recording-view",
+          "left": 18,
+          "right": 214,
+          "top": 77.1875,
+          "bottom": 143.1875
+        },
+        {
+          "left": 28,
+          "right": 204,
+          "top": 158.1875,
+          "bottom": 287.671875
+        },
+        {
+          "left": 56,
+          "right": 176,
+          "top": 306.671875,
+          "bottom": 426.671875
+        },
+        {
+          "id": "error-feedback",
+          "left": 28,
+          "right": 204,
+          "top": 495.109375,
+          "bottom": 563.296875
+        },
+        {
+          "id": "turn",
+          "left": 17,
+          "right": 215,
+          "top": 594.296875,
+          "bottom": 796.65625
+        },
+        {
+          "id": "session-store",
+          "left": 17,
+          "right": 215,
+          "top": 813.65625,
+          "bottom": 1082.734375
+        },
+        {
+          "id": "capture",
+          "left": 17,
+          "right": 215,
+          "top": 1099.734375,
+          "bottom": 1282.296875
+        },
+        {
+          "id": "persistence",
+          "left": 17,
+          "right": 215,
+          "top": 1299.296875,
+          "bottom": 1512.046875
+        },
+        {
+          "id": "recording-api",
+          "left": 17,
+          "right": 215,
+          "top": 1529.046875,
+          "bottom": 1741.796875
+        }
+      ]
+    }
+  ]
+}

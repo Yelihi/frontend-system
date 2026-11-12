@@ -61,6 +61,7 @@ jobs:
       - run: npm run build
       - run: python3 test/evals/fs-comparison/v4/runner_test.py
       - run: node scripts/check-design-flow.mjs
+      - run: npm run test:flow-review
       # Authored fixture/protocol checks only: no paid model calls in CI.
       - run: python3 test/evals/fs-comparison/v5/runner_test.py
       - run: python3 test/evals/fs-comparison/v5/telemetry_test.py
@@ -78,6 +79,8 @@ jobs:
           path: |
             test/fixtures/frontend/playwright-report/
             test/fixtures/frontend/test-results/
+            docs/experiments/flow-review/browser/
+            docs/experiments/flow-review/comparison/
           retention-days: 7
   delivery:
     permissions:

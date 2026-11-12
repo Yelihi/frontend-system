@@ -131,6 +131,15 @@ fs-plan 주문 목록에 필터와 페이지네이션을 추가해주세요.
 
 ## 실제 화면에서 흐름 확인하기
 
+`review.version:1`이 있는 흐름은 **흐름 / 도메인·계약 / 의존성 / 테스트 계획**
+4탭으로 열립니다. 단계별 호출·상태 소유권, 함수 계약 팝업, 문구 제안과 영향받는
+테스트의 재확인을 연결합니다. 기존 FS 테마와 글꼴을 유지하며, 확인 상태는 로컬
+검토 초안입니다. 실제 테스트 실행이나 FS 계획 승인으로 처리하지 않습니다.
+
+[Echo 9단계 검토 예제](docs/experiments/flow-review/project/.frontend-system/diagrams/echo-save-response-loss.html) ·
+[구현과 검증 기록](docs/experiments/flow-review/README.md).
+기존 기록은 기존 뷰어로 열리며 CLI/MCP 렌더 진입점은 같습니다.
+
 **FS 자체 페이지 렌더러**로 만든 주문 앱 예제입니다. 위의 플러그인 구조·사용 흐름 설명만 Archify로 만들었습니다.
 
 ![주문 페이지와 활동 기록 페이지의 라우트 개요](docs/diagrams/routed-routes.png)

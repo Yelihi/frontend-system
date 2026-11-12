@@ -1,6 +1,6 @@
 {
   "name": "frontend-system",
-  "version": "0.12.1",
+  "version": "0.13.0",
   "type": "module",
   "bin": {
     "fs": "dist/src/cli.js",
@@ -33,7 +33,9 @@
     "test:package": "node scripts/check-package.mjs",
     "release:version": "node scripts/release.mjs version",
     "release:check": "node scripts/release.mjs check",
-    "release:ready": "node scripts/release.mjs ready"
+    "release:ready": "node scripts/release.mjs ready",
+    "test:flow-review": "node scripts/render-flow-review.mjs && node scripts/check-flow-review.mjs",
+    "test:flow-review:baseline": "node scripts/capture-flow-review-reference.mjs"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.30.0",

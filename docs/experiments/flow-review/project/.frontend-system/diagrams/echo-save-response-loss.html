@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FS · 흐름 검토</title><style>
+:root{color-scheme:light dark}html,body{margin:0}body{padding:16px;background:light-dark(#f8f9fb,#181d23)}button,input,textarea,select{font:inherit}code,pre{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+#fs-review{color-scheme:light dark;--surface:light-dark(#fff,#222830);--base:light-dark(#f5f6f8,#181d23);--text:light-dark(#26313d,#edf1f5);--dim:light-dark(#556473,#b7c4d0);--line:light-dark(#d8dfe7,#46515e);--accent:light-dark(#286453,#a4dbc9);--soft:light-dark(#edf5f1,#283e35);--amber:light-dark(#805414,#f4cc8a);--amberbg:light-dark(#fff4df,#3c3020);--codebg:light-dark(#f0f2f5,#151a20);font:14px/1.65 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--text);}
+#fs-review *{box-sizing:border-box;min-width:0;}
+#fs-review button,#fs-review input,#fs-review textarea{font:inherit;color:inherit;}
+#fs-review button,#fs-review summary{cursor:pointer;}
+#fs-review button:disabled{opacity:.5;cursor:not-allowed;}
+#fs-review button:focus-visible,#fs-review input:focus-visible,#fs-review textarea:focus-visible,#fs-review summary:focus-visible{outline:3px solid var(--accent);outline-offset:3px;}
+#fs-review h2,#fs-review h3,#fs-review h4,#fs-review p{margin:0;}
+#fs-review h2{font-size:22px;font-weight:600;letter-spacing:-.5px;}
+#fs-review h3{font-size:17px;font-weight:600;}
+#fs-review h4{font-size:14px;font-weight:600;}
+#fs-review .review-app{background:var(--base);border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+#fs-review .header{background:var(--surface);padding:17px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--line);}
+#fs-review .brand{font-weight:600;display:flex;gap:10px;align-items:center;}
+#fs-review .brand b{background:var(--text);color:var(--surface);padding:2px 7px;border-radius:6px;}
+#fs-review .dim{color:var(--dim);}
+#fs-review .small{font-size:12px;}
+#fs-review .heading{padding:22px 24px 15px;}
+#fs-review .row{display:flex;align-items:center;gap:9px;flex-wrap:wrap;}
+#fs-review .spread{justify-content:space-between;}
+#fs-review .badge{display:inline-block;font-size:12px;background:var(--soft);color:var(--accent);padding:3px 8px;border-radius:5px;}
+#fs-review .badge.warn{background:var(--amberbg);color:var(--amber);}
+#fs-review .navigation{display:flex;gap:25px;flex-wrap:wrap;padding:0 24px;border-bottom:1px solid var(--line);}
+#fs-review .navigation button{background:none;border:0;border-bottom:2px solid transparent;padding:12px 0;color:var(--dim);}
+#fs-review .navigation button[aria-pressed=true]{color:var(--accent);border-color:var(--accent);font-weight:600;}
+#fs-review .content{padding:22px 24px;}
+#fs-review .button{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:8px 12px;}
+#fs-review .button.primary{background:var(--text);color:var(--surface);border-color:var(--text);}
+#fs-review .button[aria-pressed=true]{border-color:var(--accent);background:var(--soft);color:var(--accent);}
+#fs-review .scenes{margin-bottom:20px;gap:8px;}
+#fs-review .scenes button{font-size:13px;}
+#fs-review .compare{display:grid;grid-template-columns:1fr 30px 1fr;gap:12px;align-items:start;}
+#fs-review .compare-arrow{align-self:center;text-align:center;color:var(--dim);font-size:24px;}
+#fs-review .compare-label{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;}
+#fs-review .echo-screen{--ec-bg:#14212c;--ec-line:#4b5a66;--ec-text:#f0f4f7;--ec-dim:#c1ccd5;background:var(--ec-bg);color:var(--ec-text);border-radius:10px;border:1px solid var(--ec-line);overflow:hidden;}
+#fs-review .echo-top{display:flex;align-items:center;gap:12px;padding:18px;}
+#fs-review .echo-top .exit{border:1px solid var(--ec-line);border-radius:50%;width:30px;height:30px;display:grid;place-items:center;}
+#fs-review .progress{height:4px;background:#465762;flex:1;border-radius:3px;}
+#fs-review .progress span{display:block;background:#c0d9d3;height:100%;border-radius:3px;}
+#fs-review .echo-inner{padding:18px 20px 24px;display:flex;flex-direction:column;align-items:center;gap:18px;}
+#fs-review .partner{border:1px solid var(--ec-line);border-radius:12px;padding:19px 15px;text-align:center;width:100%;background:#23333e;}
+#fs-review .partner small{display:block;color:#b8d9d0;font-size:12px;margin-bottom:7px;}
+#fs-review .partner p{font-size:19px;font-weight:500;}
+#fs-review .orb{width:120px;height:120px;border:1px solid #94b9ac;border-radius:50%;display:grid;place-items:center;margin:1px 0;}
+#fs-review .orb span{width:88px;height:88px;border-radius:50%;background:#ccd2d8;color:#1d2731;display:grid;place-items:center;font-size:13px;font-weight:600;}
+#fs-review .timer{border:1px solid var(--ec-line);border-radius:20px;padding:4px 13px;font-size:13px;font-variant-numeric:tabular-nums;}
+#fs-review .hotspot{position:relative;width:100%;border:1px solid transparent;border-radius:8px;background:transparent;padding:10px;color:var(--ec-text);text-align:center;}
+#fs-review .hotspot[aria-pressed=true]{border-color:#c2dbd5;background:#233c3a;}
+#fs-review .hotspot.changed{border:1px dashed #e4b97d;background:#302c25;}
+#fs-review .hotspot.changed[aria-pressed=true]{border:2px solid #e4b97d;padding:9px;}
+#fs-review .change-tag{display:block;color:#efc98d;font-size:11px;text-align:left;margin-bottom:5px;}
+#fs-review .audio-player{display:flex;align-items:center;gap:10px;border:1px solid var(--ec-line);padding:9px 12px;border-radius:8px;width:100%;color:var(--ec-dim);font-size:12px;}
+#fs-review .audio-track{height:3px;background:#93aaa9;flex:1;}
+#fs-review .echo-actions{display:flex;gap:8px;justify-content:center;align-items:center;}
+#fs-review .echo-actions span{display:block;border:1px solid var(--ec-line);border-radius:24px;padding:9px 13px;font-size:13px;}
+#fs-review .echo-actions .save{background:#d5d9de;color:#1d2731;border-color:#d5d9de;font-weight:600;}
+#fs-review .screen-note{margin-top:8px;font-size:12px;color:var(--dim);}
+#fs-review .selection{margin-top:20px;background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:20px;}
+#fs-review .selection-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:13px;}
+#fs-review .selection p{margin:7px 0;}
+#fs-review .rule-links{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px;}
+#fs-review .rule-links button{font-size:12px;background:var(--soft);color:var(--accent);border:0;border-radius:5px;padding:5px 8px;}
+#fs-review pre,#fs-review code{color:var(--text)!important;background:transparent!important;opacity:1!important;text-shadow:none!important;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px;line-height:1.7;}
+#fs-review pre{white-space:pre-wrap;overflow-wrap:anywhere;background:var(--codebg)!important;padding:15px;border:1px solid var(--line);border-radius:7px;margin:12px 0;}
+#fs-review code{overflow-wrap:anywhere;}
+#fs-review .section-gap{margin-top:24px;}
+#fs-review .source{font-size:12px;margin-top:13px;color:var(--dim);}
+#fs-review a{color:var(--accent);overflow-wrap:anywhere;}
+#fs-review .rule-card{padding:20px;background:var(--surface);border:1px solid var(--line);border-radius:8px;margin-top:13px;}
+#fs-review .rule-card p{margin-top:9px;}
+#fs-review .rule-card.selected{border-color:var(--accent);}
+#fs-review .term-list{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:15px;}
+#fs-review .term{padding:16px;background:var(--surface);border-left:2px solid var(--line);}
+#fs-review .term p{margin-top:6px;}
+#fs-review .interface-list{margin-top:22px;}
+#fs-review .interface-item{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:17px;margin-top:12px;}
+#fs-review .interface-item summary{font-weight:500;}
+#fs-review .test-workspace{display:grid;grid-template-columns:215px minmax(0,1fr);gap:22px;}
+#fs-review .test-nav h4{margin:17px 0 8px;color:var(--dim);}
+#fs-review .test-nav h4:first-child{margin-top:0;}
+#fs-review .test-nav button{display:block;width:100%;text-align:left;padding:11px 12px;margin-bottom:6px;border:1px solid transparent;border-radius:7px;background:transparent;}
+#fs-review .test-nav button[aria-pressed=true]{background:var(--surface);border-color:var(--accent);}
+#fs-review .test-nav button small{display:block;font-size:11px;color:var(--dim);margin-bottom:3px;}
+#fs-review .test-detail{padding:23px;background:var(--surface);border:1px solid var(--line);border-radius:9px;}
+#fs-review .test-detail h3{font-size:19px;}
+#fs-review .test-detail h4{margin-bottom:8px;}
+#fs-review .test-detail section{margin-top:23px;}
+#fs-review ul,#fs-review ol{padding-left:21px;margin:7px 0;}
+#fs-review li{margin:6px 0;}
+#fs-review .test-detail .checks{list-style:none;padding-left:0;}
+#fs-review .test-detail .checks li{padding-left:21px;position:relative;}
+#fs-review .test-detail .checks li:before{content:'□';position:absolute;left:0;color:var(--accent);}
+#fs-review .test-confirm{border-top:1px solid var(--line);margin-top:24px;padding-top:18px;display:flex;gap:10px;align-items:flex-start;font-weight:500;}
+#fs-review input[type=checkbox]{width:18px;height:18px;margin-top:4px;accent-color:var(--accent);}
+#fs-review .notice{padding:12px 15px;background:var(--amberbg);color:var(--amber);border-radius:7px;margin-bottom:18px;}
+#fs-review .graph{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:25px 20px;}
+#fs-review .graph-grid{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(5,95px);gap:62px 76px;}
+#fs-review .graph-node{z-index:2;position:relative;background:var(--base);border:1px solid var(--line);border-radius:8px;padding:10px;text-align:center;}
+#fs-review .graph-node[data-group=server]{border-style:dashed;}
+#fs-review .graph-node[aria-pressed=true]{border:2px solid var(--accent);padding:9px;background:var(--soft);}
+#fs-review .graph-node code{display:block;font-size:12px;}
+#fs-review .graph-node small{display:block;color:var(--dim);font-size:11px;}
+#fs-review .graph-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;z-index:1;}
+#fs-review .graph-lines path{fill:none;stroke:var(--dim);stroke-width:1.5;}
+#fs-review .graph-lines path.focus-edge{stroke:var(--accent);stroke-width:2;}
+#fs-review .graph-lines text{fill:var(--text);stroke:var(--surface);stroke-width:5;paint-order:stroke;stroke-linejoin:round;font:11px -apple-system,BlinkMacSystemFont,sans-serif;}
+#fs-review .graph-legend{margin:11px 0 17px;display:flex;gap:16px;flex-wrap:wrap;color:var(--dim);font-size:12px;}
+#fs-review .editor{padding:19px;background:var(--surface);border:1px solid var(--accent);border-radius:8px;margin-top:20px;}
+#fs-review .editor label{display:block;font-weight:500;margin-top:12px;}
+#fs-review textarea,#fs-review input[type=text]{display:block;width:100%;padding:10px;border:1px solid var(--line);border-radius:5px;margin-top:7px;background:var(--base);}
+#fs-review textarea{resize:vertical;min-height:75px;}
+#fs-review .footer{padding:15px 24px;background:var(--surface);border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+#fs-review .json-data{margin-top:20px;}
+@media(max-width:700px){#fs-review .compare{grid-template-columns:1fr;}#fs-review .compare-arrow{transform:rotate(90deg);padding:0;}#fs-review .selection-grid,#fs-review .term-list{grid-template-columns:1fr;}#fs-review .test-workspace{grid-template-columns:1fr;}#fs-review .test-nav{display:flex;flex-wrap:wrap;gap:6px;}#fs-review .test-nav h4{flex-basis:100%;margin:10px 0 0;}#fs-review .test-nav button{flex:1 1 44%;margin:0;font-size:13px;}#fs-review .graph-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:60px 58px;}#fs-review .graph-node code{font-size:11px;}#fs-review .graph-node small{font-size:11px;}}
+@media(max-width:480px){#fs-review .content,#fs-review .heading,#fs-review .header{padding:16px;}#fs-review .navigation{padding:0 16px;gap:18px;}#fs-review .navigation button{font-size:13px;}#fs-review .selection,#fs-review .test-detail{padding:16px;}#fs-review .graph{padding:20px 7px;}#fs-review .graph-grid{grid-template-columns:1fr;grid-template-rows:none;gap:52px;padding-right:48px;}#fs-review .graph-node{grid-column:1!important;grid-row:auto!important;min-height:80px;}#fs-review .button{min-height:43px;}#fs-review .graph-node code{font-size:12px;}#fs-review .graph-lines text{font-size:11px;}#fs-review .footer{padding:16px;}}
+#fs-review .flow-heading{margin-bottom:18px;}
+#fs-review .flow-canvas{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:85px;padding:20px 38px 20px 20px;background:var(--soft);border:1px solid var(--line);border-radius:10px;}
+#fs-review .flow-view{position:relative;z-index:2;}
+#fs-review .flow-modules{display:flex;flex-direction:column;gap:17px;padding-top:36px;}
+#fs-review .flow-module{position:relative;z-index:2;display:block;text-align:left;width:100%;padding:13px 15px;border:1px solid var(--line);border-radius:8px;background:var(--surface);}
+#fs-review .flow-module code{display:block;margin:5px 0;}
+#fs-review .flow-module.executing{background:var(--amberbg);border:2px solid var(--amber);padding:12px 14px;}
+#fs-review .flow-module[aria-pressed=true]{box-shadow:0 0 0 2px var(--accent);}
+#fs-review .flow-state{display:block;white-space:pre-line;font-size:12px;color:var(--dim);}
+#fs-review .flow-active-label{display:block;font-size:11px;color:var(--amber);margin-top:5px;}
+#fs-review [data-flow-active=true]{outline:2px solid #edc489;outline-offset:2px;}
+#fs-review .flow-overlay{position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none;overflow:visible;}
+#fs-review .flow-overlay path{fill:none;stroke:var(--amber);stroke-width:2;}
+#fs-review .flow-overlay path.lost{stroke-dasharray:6 5;}
+#fs-review .flow-overlay circle{fill:var(--surface);stroke:var(--amber);stroke-width:1.5;}
+#fs-review .flow-overlay text{fill:var(--text);font:12px -apple-system,BlinkMacSystemFont,sans-serif;}
+#fs-review .flow-trace{padding:20px;background:var(--surface);border:1px solid var(--line);border-radius:9px;margin-top:18px;}
+#fs-review .flow-track{display:flex;gap:7px;margin:18px 0 0;}
+#fs-review .flow-track button{flex:1;min-height:34px;border:0;border-radius:5px;background:var(--base);color:var(--dim);}
+#fs-review .flow-track button.visited{background:var(--soft);color:var(--accent);}
+#fs-review .flow-track button[aria-pressed=true]{background:var(--amberbg);color:var(--amber);box-shadow:inset 0 0 0 1px var(--amber);}
+#fs-review .flow-path-list{display:flex;flex-wrap:wrap;gap:12px;margin:14px 0;}
+#fs-review .flow-path-list>span{font-size:12px;overflow-wrap:anywhere;}
+#fs-review .flow-path-list b{font-weight:500;color:var(--amber);margin-right:4px;}
+#fs-review .flow-path-list small{display:block;color:var(--dim);padding-left:14px;}
+#fs-review .flow-deltas{width:100%;table-layout:fixed;border-collapse:collapse;font-size:13px;}
+#fs-review .flow-deltas th,#fs-review .flow-deltas td{text-align:left;padding:11px 8px;border-bottom:1px solid var(--line);vertical-align:top;overflow-wrap:anywhere;}
+#fs-review .flow-deltas th{color:var(--dim);font-weight:500;}
+#fs-review .flow-deltas td:last-child{background:var(--soft);}
+@media(max-width:800px){#fs-review .flow-canvas{grid-template-columns:minmax(0,1fr) 230px;gap:45px;padding:15px 30px 15px 15px;}#fs-review .flow-view .echo-inner{padding:15px 10px;}#fs-review .flow-module{padding:10px;}#fs-review .flow-module.executing{padding:9px;}#fs-review .flow-view .echo-actions{flex-wrap:wrap;}#fs-review .flow-view .compare-label{display:block;}}
+@media(max-width:600px){#fs-review .flow-canvas{grid-template-columns:1fr;padding:16px 38px 16px 16px;gap:10px;}#fs-review .flow-modules{padding-top:5px;}#fs-review .flow-trace{padding:15px;}#fs-review .flow-track{flex-wrap:wrap;}#fs-review .flow-track button{flex:1 1 15%;}#fs-review .flow-deltas{font-size:12px;}}
+
+#fs-review{--fn:light-dark(#6541a5,#d4b5ff);--type:light-dark(#096b78,#8bd4df);--keyword:light-dark(#93418c,#e7a8df);--string:light-dark(#38662c,#afd59b);--literal:light-dark(#955016,#edbd88);}
+#fs-review h2{font-size:24px;line-height:1.4;letter-spacing:-.6px;}
+#fs-review h3{font-size:19px;line-height:1.45;letter-spacing:-.3px;}
+#fs-review h4{font-size:15px;line-height:1.5;}
+#fs-review .navigation button{font-size:15px;}
+#fs-review code.symbol{color:var(--fn)!important;font-weight:650;font-size:13px;}
+#fs-review pre.code-block{padding:18px;line-height:1.85;tab-size:2;}
+#fs-review pre.code-block code{font-size:13px;line-height:inherit;}
+#fs-review .tok-function{color:var(--fn);font-weight:650;}
+#fs-review .tok-type{color:var(--type);font-weight:600;}
+#fs-review .tok-keyword{color:var(--keyword);font-weight:600;}
+#fs-review .tok-string{color:var(--string);}
+#fs-review .tok-literal{color:var(--literal);}
+#fs-review .tok-property{color:var(--text);font-weight:600;}
+#fs-review .tok-comment{color:var(--dim);font-weight:400;}
+#fs-review .interface-item summary{font-size:15px;font-weight:600;line-height:1.7;}
+#fs-review .interface-item summary .badge{font-weight:400;}
+#fs-review .source{display:inline-block;line-height:1.5;}
+#fs-review .flow-module code.symbol{margin:7px 0;line-height:1.55;}
+#fs-review .flow-state{line-height:1.7;}
+#fs-review .flow-deltas th{font-size:12px;color:var(--dim);font-weight:600;}
+#fs-review .flow-deltas td{padding-top:12px;padding-bottom:12px;}
+#fs-review .test-detail h3{font-size:21px;line-height:1.5;}
+#fs-review .test-detail section{margin-top:26px;}
+#fs-review .test-detail section h4{border-bottom:1px solid var(--line);padding-bottom:8px;margin-bottom:12px;}
+#fs-review .test-detail li{margin:10px 0;line-height:1.8;}
+#fs-review .test-nav h4{font-size:13px;font-weight:650;letter-spacing:.2px;}
+#fs-review .test-nav button small{font-size:12px;}
+#fs-review .test-nav button[aria-pressed=true]{font-weight:600;}
+#fs-review .test-nav button small{font-weight:400;}
+#fs-review .graph-grid{grid-template-rows:repeat(5,minmax(116px,auto));}
+#fs-review .graph-node code.symbol{font-size:12px;line-height:1.5;margin:5px 0;}
+#fs-review .selection h3 code.symbol{font-size:16px;}
+@media(max-width:600px){#fs-review h2{font-size:21px;}#fs-review h3{font-size:18px;}#fs-review pre.code-block{padding:13px;}#fs-review .test-detail h3{font-size:19px;}#fs-review .graph-grid{grid-template-rows:none;}}
+
+#fs-review{position:relative;}
+#fs-review .flow-module,#fs-review .flow-module.executing{padding:14px;border-width:1px;}
+#fs-review .flow-module.executing{box-shadow:inset 0 0 0 1px var(--amber);}
+#fs-review .flow-module code.symbol,#fs-review .graph-node code.symbol{padding:0!important;margin:8px 0!important;text-indent:0;text-align:left;}
+#fs-review .module-meta{display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
+#fs-review .origin{display:inline-block;font-size:11px;font-weight:600;padding:2px 6px;border-radius:4px;line-height:1.5;}
+#fs-review .origin.existing{background:var(--codebg);color:var(--dim);}
+#fs-review .origin.modified{background:var(--amberbg);color:var(--amber);}
+#fs-review .origin.added{background:var(--soft);color:var(--accent);}
+#fs-review .module-description{display:block;font-size:12px;line-height:1.65;color:var(--dim);margin:0 0 10px;padding:0;text-align:left;}
+#fs-review .state-group{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
+#fs-review .state-badge{display:inline-flex;align-items:stretch;max-width:100%;border:1px solid var(--line);border-radius:5px;overflow:hidden;font-size:12px;line-height:1.6;background:var(--surface);color:var(--text);vertical-align:middle;}
+#fs-review .state-badge .state-key{padding:3px 7px;background:var(--codebg);color:var(--dim);overflow-wrap:anywhere;}
+#fs-review .state-badge strong{padding:3px 7px;font-weight:600;overflow-wrap:anywhere;}
+#fs-review .state-badge.changed{border-color:var(--amber);}
+#fs-review .state-badge.changed strong{background:var(--amberbg);color:var(--amber);}
+#fs-review .flow-deltas td:last-child{background:transparent;}
+#fs-review .flow-path-list>span{display:grid;grid-template-columns:18px minmax(0,1fr);column-gap:6px;align-items:start;}
+#fs-review .flow-path-list small{grid-column:2;padding-left:0;}
+#fs-review .graph-node{text-align:left;}
+#fs-review .graph-node small{padding:0;margin:0;}
+#fs-review .graph-grid{grid-template-rows:repeat(5,minmax(145px,auto));}
+#fs-review .function-popup{position:absolute;z-index:20;background:var(--surface);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:18px;box-shadow:0 8px 28px light-dark(#26313d26,#0008);overflow-wrap:anywhere;}
+#fs-review .function-popup[hidden]{display:none;}
+#fs-review .popup-heading{display:flex;gap:6px;align-items:center;margin-bottom:10px;}
+#fs-review .function-popup h4 code{padding:0!important;}
+#fs-review .function-popup p{font-size:13px;margin:8px 0 14px;}
+#fs-review .popup-contract+.popup-contract{margin-top:14px;}
+#fs-review .function-popup pre.code-block{padding:12px;margin:7px 0 0;}
+#fs-review .function-popup pre.code-block code{font-size:12px;}
+@media(max-width:600px){#fs-review .graph-grid{grid-template-rows:none;}#fs-review .flow-module,#fs-review .flow-module.executing{padding:12px;}}
+
+#fs-review .field-owner{display:flex;flex-direction:column;align-items:flex-start;gap:8px;}
+#fs-review .field-owner>code.symbol{display:block;padding:0!important;margin:0!important;text-indent:0!important;line-height:1.6;}
+#fs-review .field-identity{display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
+#fs-review .field-kind{display:inline-block;padding:2px 6px;border-radius:4px;background:var(--soft);color:var(--accent);font-size:11px;font-weight:650;letter-spacing:.3px;}
+#fs-review .field-identity code{padding:0!important;margin:0!important;font-size:13px;font-weight:600;}
+
+/* Preserve the existing FS palette and system/monospace families; approved layout stays intact. */
+#fs-review{--surface:light-dark(#fff,#222830);--base:light-dark(#f8f9fb,#181d23);--text:light-dark(#252a34,#edf1f5);--dim:light-dark(#777f8c,#b7c4d0);--line:light-dark(#e2e5ea,#46515e);--accent:light-dark(#526784,#aec1de);--soft:light-dark(#eceff4,#283343);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;}
+#fs-review code,#fs-review pre{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;}
+#fs-review .symbol{color:light-dark(#69768a,#c6b8e9);}
+
+
+#fs-review .flow-overlay,#fs-review .graph-lines{overflow:visible;pointer-events:none;}
+#fs-review .graph-lines circle{fill:var(--surface);stroke:var(--dim);}
+#fs-review .graph-lines text{fill:var(--text);font:11px ui-monospace,monospace;}
+#fs-review .function-popup{max-height:min(70vh,600px);overflow:auto;}
+#fs-review .origin.unknown{background:var(--codebg);color:var(--dim);}
+#fs-review .footer{gap:12px;flex-wrap:wrap;}
+#fs-review .field-owner>code.symbol,#fs-review .field-identity{margin-left:0;padding-left:0;}
+#fs-review [data-storage-status]:empty,#fs-review [data-route-status]:empty{display:none;}
+@media(max-width:600px){#fs-review .flow-canvas{padding-right:38px;}#fs-review .graph-grid{padding-right:40px;gap:36px;}#fs-review .flow-track{flex-wrap:wrap;}#fs-review .flow-deltas{table-layout:fixed;}#fs-review .flow-deltas td,#fs-review .flow-deltas th{overflow-wrap:anywhere;}#fs-review .navigation{gap:16px;}}
+
+html,body{margin:0}body{padding:16px;background:light-dark(#f8f9fb,#181d23)}
+#fs-review h2,#fs-review h3,#fs-review h4,#fs-review p,#fs-review li{font-family:inherit;}
+#fs-review code.symbol{color:light-dark(#69768a,#c6b8e9);}
+
+#fs-review .capture-screen{position:relative}#fs-review .capture-screen img{display:block;width:100%;height:auto}#fs-review .capture-region{position:absolute;border:1px dashed var(--amber);background:transparent}
+
+#fs-review .field-identity{width:100%}#fs-review .field-identity code{flex:1 0 7ch;max-width:100%;}
+
+</style></head><body><div id="fs-review"><div class="review-app"></div><script type="application/json" id="fs-review-data">{"version":1,"projectLabel":"Echo","sourceCommit":"172f5f28abd3eab30129d177c15422622454ba6a","sourceBaseUrl":"https://github.com/Yelihi/echo/blob/172f5f28abd3eab30129d177c15422622454ba6a/","domain":{"name":"학습 문장별 녹음 확정","scope":"기존 세션의 비최종 학습 문장. 같은 화면·훅 수명 안에서 첫 응답을 잃고 사용자가 재시도한다.","terms":[{"term":"녹음 완료","meaning":"브라우저가 CapturedAudio를 확보한 상태. 서버 저장 성공을 뜻하지 않는다."},{"term":"저장 성공","meaning":"서버 확정 결과를 성공 응답으로 확인한 상태. 여기서만 현재 문장을 진행한다."},{"term":"결과 미확인","meaning":"서버는 저장했을 수 있지만 클라이언트가 응답을 받지 못한 상태. 실패 응답만으로 미저장을 단정할 수 없다."},{"term":"저장 재시도 / 다시 녹음","meaning":"save는 동일 Blob·ID로 재요청한다. retry는 녹음을 reset하여 새로 녹음하는 별도 행동이다."}],"excluded":["새로고침·재마운트 후 Blob과 ID 복원","마지막 문장의 finish·분석 요청","동시 탭 충돌 전체","물리 네트워크·DB RPC 응답 유실 전체"]},"contracts":[{"id":"i1","title":"화면 입력과 액션","status":"기존 계약 발췌","path":"src/views/recording/models/ui.ts","nodeIds":["recording-controls","error-feedback","client","panel"],"signature":"interface RecordingPanelProps {\n  content: RecordingPanelContent;\n  phase: RecordingPhase;\n  durationLabel: string;\n  message: string;\n  saving?: boolean;\n  recordedAudio?: CapturedAudio | null;\n  actions: {\n    toggle: () => void;\n    retry: () => void; // 다시 녹음\n    save: () => void;  // 저장 및 저장 재시도\n  };\n}","description":"RolePlayRecordingClient가 session과 turn을 연결하여 전달한다. 실패 문구는 getRecordingSessionHint가 결정한다.","evidence":[],"changeKind":"existing"},{"id":"i2","title":"변경 제안: 저장 버튼 문구","status":"제안 · 승인 전","path":"src/views/recording/models/ui.ts","nodeIds":["recording-controls","client","panel"],"signature":"// RecordingPanelProps에 선택 입력 추가\nsaveLabel?: string; // 기본값 \"저장하기\"\n\n// RolePlayRecordingClient에서 전달\nsaveLabel={session.saveFailed\n  ? \"다시 저장하기\"\n  : \"저장하기\"}\n\n// RecordingPanel: saving이 우선\n{saving ? \"저장 중\" : saveLabel}","description":"actions.save 계약은 그대로 유지한다. UI가 상태 저장소를 직접 참조하지 않도록 호출자가 문구를 전달한다.","evidence":[],"changeKind":"modified"},{"id":"i3","title":"녹음 데이터와 저장 함수","status":"기존 계약","path":"src/shared/lib/audio/types.ts","nodeIds":["capture","turn","persistence","controller"],"signature":"interface CapturedAudio {\n  readonly blob: Blob;\n  readonly mimeType: SupportedAudioMimeType;\n  readonly extension: SupportedAudioExtension;\n  readonly durationMs: number;\n}\n\nsaveRecording?: (audio: CapturedAudio) => Promise\u003cvoid>;\nsaveLearnerRecording(audio: CapturedAudio, lineId: string): Promise\u003cvoid>;","description":"saveTurn이 activeTurn.learnerLineId를 붙인다. Blob별 ID는 persistence의 useRef WeakMap이 관리한다.","evidence":[],"changeKind":"existing"},{"id":"i4","title":"저장 요청 경계","status":"기존 코드에서 추출한 wire contract","path":"src/features/recording-storage/services/server/saveLearnerRecording.ts","nodeIds":["persistence","recording-api","save-server"],"signature":"POST /api/roleplay-recordings\nContent-Type: multipart/form-data\n\naction: \"save\"\nsessionId: string\nlineId: string\nrecordingId: string\ndurationMs: string // ms, FormData 직렬화\nfile: File\n\n200 → { saved: true }\n409 → { code: \"RECORDING_CONFLICT\" }\n413 → { code: \"RECORDING_TOO_LARGE\" }","description":"인증 사용자·동일 origin·세션 소유권·파일 유효성을 검사한다. 네트워크 응답 유실과 HTTP 오류 응답을 테스트에서 구분한다.","evidence":[],"changeKind":"existing"},{"id":"i5","title":"진행 상태와 실패 전이","status":"기존 계약","path":"src/views/recording/models/stores/createRecordingSessionStore.ts","nodeIds":["session-store","turn","controller"],"signature":"interface RecordingSessionBaseState {\n  phase: RecordingPhase;\n  currentStep: number;\n  elapsedMs: number;\n  saving: boolean;\n  saveFailed: boolean;\n}\n\nsaveFailure() → {\n  phase: \"recorded\",\n  saving: false,\n  saveFailed: true\n} // currentStep은 변경하지 않음","description":"녹음 Blob과 저장 ID를 이 상태에 복제하지 않는다. 각각 React reducer와 useRef가 소유한다.","evidence":[],"changeKind":"existing"}],"fields":[{"id":"field-2","ownerNodeId":"session-store","name":"currentStep","fieldKind":"state","type":"number","description":"currentStep","display":"both","initial":2,"evidence":[]},{"id":"field-0","ownerNodeId":"session-store","name":"saving","fieldKind":"state","type":"boolean","description":"saving","display":"both","initial":false,"evidence":[]},{"id":"field-1","ownerNodeId":"session-store","name":"saveFailed","fieldKind":"state","type":"boolean","description":"saveFailed","display":"both","initial":false,"evidence":[]},{"id":"field-3","ownerNodeId":"capture","name":"recordedAudio","fieldKind":"state","type":"CapturedAudio | null","description":"recordedAudio","display":"both","initial":"Blob A","evidence":[]},{"id":"field-4","ownerNodeId":"persistence","name":"recordingIdByBlob","fieldKind":"ref","type":"WeakMap\u003cBlob, string>","description":"recordingIdByBlob","display":"table","initial":{"status":"absent"},"evidence":[]},{"id":"field-5","ownerNodeId":"persistence","name":"recordingId","fieldKind":"ref","type":"string","description":"recordingId","display":"badge","initial":{"status":"absent"},"evidence":[]},{"id":"field-6","ownerNodeId":"persistence","name":"요청","fieldKind":"result","type":"number","description":"요청","display":"badge","initial":0,"evidence":[]},{"id":"field-8","ownerNodeId":"recording-api","name":"accepted_recordings","fieldKind":"db","type":"number","description":"accepted_recordings","display":"both","initial":0,"evidence":[]},{"id":"field-9","ownerNodeId":"recording-api","name":"응답","fieldKind":"result","type":"Response","description":"응답","display":"badge","initial":{"status":"unknown"},"evidence":[]},{"id":"operation","ownerNodeId":"turn","name":"작업","fieldKind":"result","type":"string","description":"현재 단계의 조정 작업","display":"badge","initial":"진행 중","evidence":[]}],"screens":[{"sceneId":"recorded","title":"녹음 화면","blocks":[{"id":"progress","role":"progress","nodeId":"recording-view","label":"화면 진행","content":["2 / 5"],"value":40},{"id":"partner","role":"content","nodeId":"recording-controls","label":"Partner","content":["Could you say that again?"]},{"id":"mic","role":"microphone","nodeId":"capture","label":"MIC","content":[]},{"id":"timer","role":"timer","nodeId":"capture","label":"시간","content":["0:08"]},{"id":"feedback","role":"feedback","nodeId":"error-feedback","label":"오류 안내","content":["저장하거나 다시 녹음할 수 있어요"]},{"id":"player","role":"player","nodeId":"capture","label":"녹음 재생기","content":["0:00","0:08"]},{"id":"actions","role":"actions","nodeId":"recording-controls","label":"저장 / 다시 녹음","content":["다시 녹음","저장하기"]}]},{"sceneId":"saving","title":"녹음 화면","blocks":[{"id":"progress","role":"progress","nodeId":"recording-view","label":"화면 진행","content":["2 / 5"],"value":40},{"id":"partner","role":"content","nodeId":"recording-controls","label":"Partner","content":["Could you say that again?"]},{"id":"mic","role":"microphone","nodeId":"capture","label":"MIC","content":[]},{"id":"timer","role":"timer","nodeId":"capture","label":"시간","content":["0:08"]},{"id":"feedback","role":"feedback","nodeId":"error-feedback","label":"오류 안내","content":["저장 중입니다. 완료 후 나갈 수 있습니다."]},{"id":"actions","role":"actions","nodeId":"recording-controls","label":"저장 / 다시 녹음","content":["다시 녹음","저장 중"]}]},{"sceneId":"save-error","title":"녹음 화면","blocks":[{"id":"progress","role":"progress","nodeId":"recording-view","label":"화면 진행","content":["2 / 5"],"value":40},{"id":"partner","role":"content","nodeId":"recording-controls","label":"Partner","content":["Could you say that again?"]},{"id":"mic","role":"microphone","nodeId":"capture","label":"MIC","content":[]},{"id":"timer","role":"timer","nodeId":"capture","label":"시간","content":["0:08"]},{"id":"feedback","role":"feedback","nodeId":"error-feedback","label":"오류 안내","content":["저장 결과를 확인하지 못했어요. 녹음은 유지됩니다. 같은 녹음으로 다시 저장해 주세요."],"editId":"d1"},{"id":"player","role":"player","nodeId":"capture","label":"녹음 재생기","content":["0:00","0:08"]},{"id":"actions","role":"actions","nodeId":"recording-controls","label":"저장 / 다시 녹음","content":["다시 녹음","다시 저장하기"],"editId":"d2"}]},{"sceneId":"retrying","title":"녹음 화면","blocks":[{"id":"progress","role":"progress","nodeId":"recording-view","label":"화면 진행","content":["2 / 5"],"value":40},{"id":"partner","role":"content","nodeId":"recording-controls","label":"Partner","content":["Could you say that again?"]},{"id":"mic","role":"microphone","nodeId":"capture","label":"MIC","content":[]},{"id":"timer","role":"timer","nodeId":"capture","label":"시간","content":["0:08"]},{"id":"feedback","role":"feedback","nodeId":"error-feedback","label":"오류 안내","content":["저장 중입니다. 완료 후 나갈 수 있습니다."]},{"id":"actions","role":"actions","nodeId":"recording-controls","label":"저장 / 다시 녹음","content":["다시 녹음","저장 중"]}]},{"sceneId":"saved","title":"녹음 화면","blocks":[{"id":"progress","role":"progress","nodeId":"recording-view","label":"화면 진행","content":["3 / 5"],"value":60},{"id":"partner","role":"content","nodeId":"recording-controls","label":"Partner","content":["Let’s move on to the next topic."]},{"id":"mic","role":"microphone","nodeId":"capture","label":"MIC","content":[]},{"id":"timer","role":"timer","nodeId":"capture","label":"시간","content":["0:00"]},{"id":"feedback","role":"feedback","nodeId":"error-feedback","label":"오류 안내","content":["상대방 문장이 끝나면 녹음할 수 있어요"]}]}],"edits":[{"id":"d1","title":"실패 안내 문구","initial":"저장 결과를 확인하지 못했어요. 녹음은 유지됩니다. 같은 녹음으로 다시 저장해 주세요.","existing":"저장하지 못했습니다. 다시 시도해주세요.","maxLength":500,"nodeIds":["error-feedback"],"contractIds":["i1"],"testIds":["p-ui","m-a11y"],"ruleIds":["r1","r2"]},{"id":"d2","title":"저장 재시도 버튼","initial":"다시 저장하기","existing":"저장하기","maxLength":40,"nodeIds":["recording-controls","client","panel"],"contractIds":["i2"],"testIds":["p-ui","m-a11y"],"ruleIds":["r3","r4"],"signatureToken":"\"다시 저장하기\""}],"graphNote":"TanStack Query: 설치됨 · 이 저장 경로에는 연결 없음","dependencyEdgeIds":["dependency-0","dependency-1","dependency-2","dependency-3","dependency-4","dependency-5","dependency-6","dependency-7","dependency-8"],"flowHash":"4aa54bd66bf4c44040e27de52b6b4a366c48aaca1e687b059d334dc317550af0","flowId":"echo-save-response-loss","title":"녹음 저장 · 응답 유실과 재시도","basis":"proposed","summary":"기존 구현의 상태 소유권과 호출 계약을 보존하면서 응답 유실과 재시도를 검증하는 설계 시안.","limitations":["화면 배치는 제안 와이어프레임이며 실제 캡처가 아니다.","지정된 Echo 커밋에서 일부 관련 파일만 확인했다. 전체 import·라우트·캐시 소비자 분석은 미완료다.","서버 중복 방지는 검증 요구사항이며 이 산출물에서 실행 검증하지 않았다.","제공된 인계 자료의 소스 발췌를 사용하는 제안 fixture. 실제 Echo checkout·캡처·테스트 실행 증거가 아니다."],"nodes":[{"id":"recording-view","kind":"page","label":"녹음 화면","review":{"changeKind":"existing","reason":"코드 기준 기존 역할","contractIds":[]},"props":[],"state":[],"events":[],"lifecycle":[],"evidence":[],"architecture":{"layer":"views/recording","runtime":"browser","responsibility":"녹음·저장·진행 상태 표시"}},{"id":"recording-controls","kind":"component","label":"녹음·저장 조작 영역","parent":"recording-view","review":{"changeKind":"modified","reason":"기존 코드의 역할 유지; UI 문구만 변경 제안","contractIds":["i1","i2"]},"props":[],"state":[],"events":[],"lifecycle":[],"evidence":[],"architecture":{"layer":"views/recording","runtime":"browser","responsibility":"저장과 다시 녹음을 구분하는 UI 제안"}},{"id":"error-feedback","kind":"component","label":"저장 오류 안내 영역","parent":"recording-view","review":{"changeKind":"modified","reason":"기존 코드의 역할 유지; UI 문구만 변경 제안","contractIds":["i1"]},"props":[],"state":[],"events":[],"lifecycle":[],"evidence":[],"architecture":{"layer":"views/recording","runtime":"browser","responsibility":"녹음 보존과 재시도 방법을 알리는 UI 제안"}},{"id":"turn","kind":"module","label":"useRecordingTurn","review":{"changeKind":"existing","reason":"코드 기준 기존 역할","contractIds":["i3","i5"],"flowCard":{"order":0,"kind":"조정 훅"},"graph":{"row":3,"col":2,"caption":"save / retry · lock"}},"props":[],"state":["operationInProgress: Ref\u003cboolean>"],"events":[],"lifecycle":[],"evidence":["turn-source","failure-source"],"architecture":{"layer":"views/recording/services","runtime":"browser","responsibility":"녹음 제어·저장 순서 조정. 성공 후에만 resetRecording 및 saveSucceeded"}},{"id":"session-store","kind":"store","label":"RecordingSessionBaseStore","review":{"changeKind":"existing","reason":"코드 기준 기존 역할","contractIds":["i5"],"flowCard":{"order":1,"kind":"Zustand · UI 상태"},"graph":{"row":2,"col":3,"caption":"Zustand · phase / saving"}},"props":[],"state":["phase","currentStep","saving","saveFailed"],"events":[],"lifecycle":[],"evidence":["store-source"],"architecture":{"layer":"views/recording/models","runtime":"browser","responsibility":"진행 단계와 저장 UI 상태의 단일 소유자"}},{"id":"capture","kind":"module","label":"useRecordingSession","review":{"changeKind":"existing","reason":"코드 기준 기존 역할","contractIds":["i3"],"flowCard":{"order":2,"kind":"React reducer · 녹음"},"graph":{"row":3,"col":1,"caption":"React reducer · Blob"}},"props":[],"state":["state: RecordingSessionState (useReducer)","recorderRef: AudioCapture | null"],"events":[],"lifecycle":[],"evidence":["capture-source"],"architecture":{"layer":"features/session-recording","runtime":"browser","responsibility":"녹음 데이터와 녹음 라이프사이클 관리"}},{"id":"persistence","kind":"module","label":"useRoleplayRecordingPersistence","review":{"changeKind":"existing","reason":"코드 기준 기존 역할","contractIds":["i3","i4"],"flowCard":{"order":3,"kind":"useRef · 저장 요청"},"graph":{"row":4,"col":2,"caption":"WeakMap ID · fetch"}},"props":[],"state":["recordingIdByBlob: Ref\u003cWeakMap\u003cBlob, string>>"],"events":[],"lifecycle":[],"evidence":["persistence-source"],"architecture":{"layer":"views/recording/services","runtime":"browser","responsibility":"Blob별 ID 재사용과 FormData 저장 요청"}},{"id":"recording-api","kind":"service","label":"POST /api/roleplay-recordings","review":{"changeKind":"existing","reason":"코드 기준 기존 역할","contractIds":["i4"],"flowCard":{"order":4,"kind":"서버 · DB 경계"},"graph":{"row":5,"col":2,"caption":"인증 · origin · 세션"}},"props":[],"state":[],"events":[],"lifecycle":[],"evidence":[],"architecture":{"layer":"app/api · 경계","runtime":"server","responsibility":"저장 및 동일 ID 재요청 처리의 검증 대상"}},{"id":"query-context","kind":"cache","label":"TanStack Query","review":{"changeKind":"existing","reason":"코드 기준 기존 역할","contractIds":[]},"props":[],"state":[],"events":[],"lifecycle":[],"evidence":["package-source"],"architecture":{"layer":"프로젝트 의존성 · 범위 밖","runtime":"browser","responsibility":"설치 확인. 이 저장 함수는 fetch를 직접 사용하므로 mutation·invalidate 연결을 임의로 추가하지 않음"}},{"id":"client","kind":"component","label":"RolePlayRecordingClient","parent":"recording-view","review":{"changeKind":"modified","reason":"기존 함수 재사용; UI 계약 변경 제안","contractIds":["i1","i2"],"graph":{"row":1,"col":2,"caption":"UI props · actions 연결"}},"props":[],"state":[],"events":[],"lifecycle":[],"evidence":[],"architecture":{"layer":"views/recording","runtime":"browser","responsibility":"UI props · actions 연결"}},{"id":"panel","kind":"component","label":"RecordingPanel","parent":"recording-view","review":{"changeKind":"modified","reason":"기존 함수 재사용; UI 계약 변경 제안","contractIds":["i1","i2"],"graph":{"row":2,"col":1,"caption":"message · actions.save"}},"props":[],"state":[],"events":[],"lifecycle":[],"evidence":[],"architecture":{"layer":"views/recording","runtime":"browser","responsibility":"message · actions.save"}},{"id":"controller","kind":"module","label":"useRoleplayRecordingController","review":{"changeKind":"existing","reason":"기존 호출 경계","contractIds":["i3","i5"],"graph":{"row":2,"col":2,"caption":"store·turn·persistence 조립"}},"props":[],"state":[],"events":[],"lifecycle":[],"evidence":[],"architecture":{"layer":"views/recording/services","runtime":"browser","responsibility":"store·turn·persistence 조립"}},{"id":"save-server","kind":"service","label":"saveLearnerRecording","review":{"changeKind":"existing","reason":"기존 호출 경계","contractIds":["i4"],"graph":{"row":5,"col":3,"caption":"동일 ID 확인 · upload · commit"}},"props":[],"state":[],"events":[],"lifecycle":[],"evidence":[],"architecture":{"layer":"app/api · 경계","runtime":"server","responsibility":"동일 ID 확인 · upload · commit"}}],"evidence":{"turn-source":{"path":"source-evidence.txt","quote":"await saveRecording(audio);","line":2},"failure-source":{"path":"source-evidence.txt","quote":"saveFailure();","line":5},"persistence-source":{"path":"source-evidence.txt","quote":"const recordingIdByBlob = useRef(new WeakMap\u003cBlob, string>());","line":8},"store-source":{"path":"source-evidence.txt","quote":"saveFailure: () => set({ phase: \"recorded\", saving: false, saveFailed: true } as Partial\u003cT>),","line":11},"capture-source":{"path":"source-evidence.txt","quote":"const [state, dispatch] = useReducer(recordingSessionReducer, { status: \"idle\" });","line":14},"package-source":{"path":"source-evidence.txt","quote":"\"@tanstack/react-query\": \"^5.75.0\",","line":17}},"scenarios":[{"id":"lost-response","title":"응답 유실 → 재시도","steps":[{"id":"step-1","title":"저장 클릭 → 저장 상태 시작","code":"actions.save() → turn.save() → saveStarted()","edgeIds":["call-1-1","call-1-2"],"ruleIds":["r4"],"testIds":["j-lock"],"changes":[{"fieldId":"field-0","before":false,"after":true,"changeKind":"changed","basis":"proposed"},{"fieldId":"field-1","before":false,"after":false,"changeKind":"preserved","basis":"proposed"}],"scene":"saving","links":[{"id":"call-1-1","from":"recording-controls","to":"turn","kind":"call","label":"저장 클릭","delivery":"normal","evidence":[]},{"id":"call-1-2","from":"turn","to":"session-store","kind":"call","label":"saveStarted","delivery":"normal","evidence":[]}]},{"id":"step-2","title":"녹음 읽기 → 저장 ID 준비","code":"recordedAudio → saveTurn(audio) → saveLearnerRecording(audio, lineId)","edgeIds":["call-2-1","call-2-2"],"ruleIds":["r1","r3"],"testIds":["j-id"],"changes":[{"fieldId":"field-3","before":"Blob A","after":"Blob A","changeKind":"preserved","basis":"proposed"},{"fieldId":"field-4","before":{"status":"absent"},"after":"Blob A → ID A","changeKind":"changed","basis":"proposed"},{"fieldId":"field-5","before":{"status":"absent"},"after":"ID A","changeKind":"changed","basis":"proposed"}],"scene":"saving","links":[{"id":"call-2-1","from":"capture","to":"turn","kind":"call","label":"recordedAudio 읽기","delivery":"normal","evidence":[]},{"id":"call-2-2","from":"turn","to":"persistence","kind":"call","label":"saveTurn 콜백","delivery":"normal","evidence":[]}]},{"id":"step-3","title":"실제 API 요청 → 서버 저장 완료","code":"fetch(FormData) → saveLearnerRecording → commit_roleplay_recording","edgeIds":["call-3-1"],"ruleIds":["r2","r3"],"testIds":["p-db"],"changes":[{"fieldId":"field-8","before":0,"after":1,"changeKind":"changed","basis":"proposed"},{"fieldId":"field-2","before":2,"after":2,"changeKind":"preserved","basis":"proposed"},{"fieldId":"field-6","before":0,"after":1,"changeKind":"changed","basis":"proposed"}],"scene":"saving","links":[{"id":"call-3-1","from":"persistence","to":"recording-api","kind":"call","label":"POST · 요청 #1","delivery":"normal","evidence":[]}]},{"id":"step-4","title":"응답 유실 → 브라우저는 성공을 모름","code":"서버 커밋 완료 → 응답 전달 유실 · 브라우저 성공 미확인","edgeIds":["call-4-1"],"ruleIds":["r2"],"testIds":["p-db"],"changes":[{"fieldId":"field-8","before":1,"after":1,"changeKind":"preserved","basis":"proposed"},{"fieldId":"field-9","before":{"status":"unknown"},"after":"유실","changeKind":"changed","basis":"proposed"}],"scene":"saving","links":[{"id":"call-4-1","from":"recording-api","to":"persistence","kind":"return","label":"응답 유실","delivery":"lost","evidence":[]}]},{"id":"step-5","title":"오류 복구 → 녹음과 현재 문장 유지","code":"catch → saveFailure() → showRecordingError(error)","edgeIds":["call-5-1","call-5-2","call-5-3"],"ruleIds":["r1","r2","r5"],"testIds":["j-state","p-ui"],"changes":[{"fieldId":"field-0","before":true,"after":false,"changeKind":"changed","basis":"proposed"},{"fieldId":"field-1","before":false,"after":true,"changeKind":"changed","basis":"proposed"},{"fieldId":"field-2","before":2,"after":2,"changeKind":"preserved","basis":"proposed"},{"fieldId":"field-3","before":"Blob A","after":"Blob A","changeKind":"preserved","basis":"proposed"},{"fieldId":"operation","before":"진행 중","after":"오류 처리","changeKind":"changed","basis":"proposed"}],"scene":"save-error","links":[{"id":"call-5-1","from":"persistence","to":"turn","kind":"return","label":"reject","delivery":"normal","evidence":[]},{"id":"call-5-2","from":"turn","to":"session-store","kind":"call","label":"saveFailure","delivery":"normal","evidence":[]},{"id":"call-5-3","from":"session-store","to":"error-feedback","kind":"call","label":"saveFailed → message","delivery":"normal","evidence":[]}]},{"id":"step-6","title":"사용자 재시도 → 같은 저장 액션 실행","code":"actions.save() → turn.save() → saveStarted()","edgeIds":["call-6-1","call-6-2"],"ruleIds":["r4","r5"],"testIds":["j-lock","p-ui"],"changes":[{"fieldId":"field-1","before":true,"after":false,"changeKind":"changed","basis":"proposed"},{"fieldId":"field-0","before":false,"after":true,"changeKind":"changed","basis":"proposed"},{"fieldId":"operation","before":"오류 처리","after":"진행 중","changeKind":"changed","basis":"proposed"}],"scene":"saving","links":[{"id":"call-6-1","from":"recording-controls","to":"turn","kind":"call","label":"다시 저장하기","delivery":"normal","evidence":[]},{"id":"call-6-2","from":"turn","to":"session-store","kind":"call","label":"saveStarted","delivery":"normal","evidence":[]}]},{"id":"step-7","title":"동일 Blob·ID로 API 재요청","code":"WeakMap.get(Blob A) → ID A → fetch(FormData)","edgeIds":["call-7-1","call-7-2"],"ruleIds":["r3"],"testIds":["j-id","j-conflict","p-db"],"changes":[{"fieldId":"field-5","before":"ID A","after":"ID A","changeKind":"preserved","basis":"proposed"},{"fieldId":"field-8","before":1,"after":1,"changeKind":"preserved","basis":"proposed"},{"fieldId":"field-6","before":1,"after":2,"changeKind":"changed","basis":"proposed"}],"scene":"saving","links":[{"id":"call-7-1","from":"turn","to":"persistence","kind":"call","label":"같은 audio","delivery":"normal","evidence":[]},{"id":"call-7-2","from":"persistence","to":"recording-api","kind":"call","label":"POST · 요청 #2","delivery":"normal","evidence":[]}]},{"id":"step-8","title":"기존 저장 결과 → 성공 응답 전달","code":"200 { saved: true } → assertRecordingResponse(response)","edgeIds":["call-8-1","call-8-2"],"ruleIds":["r3","r4"],"testIds":["p-db"],"changes":[{"fieldId":"field-8","before":1,"after":1,"changeKind":"preserved","basis":"proposed"},{"fieldId":"field-2","before":2,"after":2,"changeKind":"preserved","basis":"proposed"},{"fieldId":"field-9","before":{"status":"unknown"},"after":200,"changeKind":"changed","basis":"proposed"}],"scene":"saving","links":[{"id":"call-8-1","from":"recording-api","to":"persistence","kind":"return","label":"200 · saved:true","delivery":"normal","evidence":[]},{"id":"call-8-2","from":"persistence","to":"turn","kind":"return","label":"Promise resolve","delivery":"normal","evidence":[]}]},{"id":"step-9","title":"녹음 정리 → store 갱신 → 다음 문장","code":"resetRecording() → saveSucceeded(totalSteps, nextPhase)","edgeIds":["call-9-1","call-9-2","call-9-3"],"ruleIds":["r4"],"testIds":["j-lock","p-ui","p-db"],"changes":[{"fieldId":"field-3","before":"Blob A","after":null,"changeKind":"changed","basis":"proposed"},{"fieldId":"field-0","before":true,"after":false,"changeKind":"changed","basis":"proposed"},{"fieldId":"field-2","before":2,"after":3,"changeKind":"changed","basis":"proposed"},{"fieldId":"operation","before":"진행 중","after":"완료","changeKind":"changed","basis":"proposed"}],"scene":"saved","links":[{"id":"call-9-1","from":"turn","to":"capture","kind":"call","label":"resetRecording","delivery":"normal","evidence":[]},{"id":"call-9-2","from":"turn","to":"session-store","kind":"call","label":"saveSucceeded","delivery":"normal","evidence":[]},{"id":"call-9-3","from":"session-store","to":"recording-view","kind":"call","label":"currentStep → 화면","delivery":"normal","evidence":[]}]}]}],"rules":[{"id":"r1","statement":"saveRecording이 reject되면 recordedAudio의 동일 Blob을 유지하고 currentStep을 바꾸지 않는다. phase=recorded, saving=false, saveFailed=true로 복구한다.","title":"저장 실패 시 녹음과 현재 문장 보존","status":"코드 근거 있음 · 회귀 검증 계획","nodeIds":["turn","capture","session-store"],"testIds":["j-state","p-ui","p-db"],"source":"src/views/recording/services/hooks/useRecordingTurn.ts"},{"id":"r2","statement":"응답 유실은 서버 미저장을 의미하지 않는다. UI는 결과 미확인 상태로 복구하고 같은 녹음으로 다시 확인할 수 있어야 한다.","title":"서버 저장과 클라이언트 확인을 구분","status":"기존 동작 기반 · 안내 문구 변경 제안","nodeIds":["error-feedback","persistence","recording-api"],"testIds":["p-ui","p-db"],"source":"src/features/recording-storage/services/server/saveLearnerRecording.ts"},{"id":"r3","statement":"같은 훅 수명에서 동일 Blob의 recordingId를 재사용한다. 서버는 같은 사용자·ID·lineId·object path이면 200 {saved:true}, 내용이나 대상이 다르면 409를 반환한다.","title":"같은 녹음은 같은 ID와 내용으로 재시도","status":"클라이언트·서버 코드 근거 있음","nodeIds":["persistence","recording-api"],"testIds":["j-id","j-conflict","p-db"],"source":"src/features/recording-storage/services/server/saveLearnerRecording.ts"},{"id":"r4","statement":"요청 중 중복 save를 막는다. 성공을 확인한 뒤 resetRecording과 saveSucceeded를 실행하며 currentStep을 한 번 증가시킨다.","title":"성공 확인 후 한 번만 진행","status":"코드 근거 있음 · 회귀 검증 계획","nodeIds":["turn","session-store","recording-controls"],"testIds":["j-lock","p-ui","p-db"],"source":"src/views/recording/services/hooks/useRecordingTurn.ts"},{"id":"r5","statement":"저장 재시도는 actions.save에 연결한다. actions.retry는 resetRecording을 호출하므로 저장 재시도 버튼에 연결하지 않는다.","title":"저장 재시도와 다시 녹음을 구분","status":"기존 액션 계약 유지","nodeIds":["turn","recording-controls"],"testIds":["p-ui","j-state"],"source":"src/views/recording/ui/role-play/RolePlayRecordingClient.tsx"},{"id":"r6","statement":"결과 미확인·녹음 보존·재시도 방법을 안내한다. 오류 팝업을 닫은 뒤 키보드로 저장 재시도에 접근하고 성공 후 포커스를 확인한다.","title":"승인된 오류 안내와 키보드 복구","status":"접근성 검증 요구 · 수동 확인 포함","nodeIds":["error-feedback","recording-controls"],"testIds":["p-ui","m-a11y"],"source":"src/views/recording/services/showRecordingError.ts"}],"tests":[{"id":"j-state","given":["currentStep=2, totalSteps=5, phase=recorded","고정 CapturedAudio A와 Blob A를 준비"],"when":["saveRecording을 제어 가능한 Promise로 주입","save() 호출 → pending → 네트워크 오류 reject"],"then":["pending 동안 saving=true","실패 후 phase=recorded, saving=false, saveFailed=true","recordedAudio.blob === Blob A; currentStep === 2","resetRecording·saveSucceeded 호출 0회"],"title":"저장 reject 후 녹음·문장 보존","runner":"Jest","layer":"훅 + 상태 통합","setup":["useRecordingTurn과 실제 상태 액션 사용","마이크 경계만 고정 오디오로 대체","각 테스트에 새 store·mock 인스턴스"],"mutation":"catch에서 resetRecording()을 호출하면 Blob 보존 assertion이 실패해야 한다.","limits":"실제 API·DB·브라우저 배치는 확인하지 않는다.","nodeIds":["turn","capture","session-store"],"ruleIds":["r1","r5"],"stepIds":["step-5"]},{"id":"j-id","given":["sessionId S, lineId L, 동일 Blob A","persistence 훅을 재마운트하지 않음"],"when":["fetch 첫 호출은 reject, 두 번째는 200 성공","같은 CapturedAudio로 saveLearnerRecording을 두 번 호출"],"then":["save 요청 정확히 2회","두 FormData의 recordingId가 같고 비어 있지 않음","sessionId·lineId·파일 바이트 동일","첫 실패가 호출자에게 전파됨"],"title":"재시도 요청의 ID·내용 동일성","runner":"Jest","layer":"저장 훅 / FormData 계약","setup":["fetch만 모킹; production 직렬화 사용","FormData file은 새 File일 수 있으므로 객체 동일성 대신 바이트 비교","테스트마다 fetch mock 복원"],"mutation":"매 요청마다 randomUUID()를 만들면 ID 동일성 검증이 실패해야 한다.","limits":"재마운트·새 Blob 생성·실제 DB 중복 방지는 보장하지 않는다.","nodeIds":["persistence"],"ruleIds":["r3"],"stepIds":["step-2","step-7"]},{"id":"j-lock","given":["녹음 완료·현재 문장 2","저장 Promise가 아직 완료되지 않음"],"when":["save()를 연속 두 번 호출","첫 요청을 resolve 후 상태 확인"],"then":["pending 저장 함수 호출 1회","resetRecording 1회, saveSucceeded 1회","currentStep 2 → 3","실패와 성공 모두 operation lock 해제"],"title":"중복 클릭 차단과 성공 후 1회 진행","runner":"Jest","layer":"저장 액션 통합","setup":["시간 sleep 대신 deferred Promise 사용","nextPhase와 totalSteps 고정","각 케이스에 독립 store"],"mutation":"operationInProgress 보호를 제거하면 중복 요청 검증이 실패해야 한다.","limits":"브라우저 이벤트·다중 탭 동시성은 별도다.","nodeIds":["turn","session-store","recording-controls"],"ruleIds":["r4"],"stepIds":["step-1","step-6","step-9"]},{"id":"j-conflict","given":["accepted_recordings에 동일 사용자·ID의 기존 행","같은 lineId·내용과 다른 lineId/내용을 각각 준비"],"when":["saveLearnerRecording에 같은 ID로 재요청","정상 재요청과 충돌 케이스를 각각 실행"],"then":["같은 object path·lineId → 200 {saved:true}","다른 대상 또는 digest → 409 RECORDING_CONFLICT","기존 행 발견 시 upload·commit 재호출 없음"],"title":"동일 ID의 다른 녹음은 거부","runner":"Jest","layer":"서버 워크플로 계약","setup":["Supabase 경계를 모킹한 서버 단위 검증","실제 digest 계산은 유지","각 케이스의 기존 행·호출 기록 격리"],"mutation":"기존 ID면 항상 성공을 반환하도록 바꾸면 충돌 케이스가 실패해야 한다.","limits":"모의 DB이므로 실제 제약·트랜잭션 보장은 p-db에서 확인한다.","nodeIds":["recording-api"],"ruleIds":["r3"],"stepIds":["step-7"]},{"id":"p-ui","given":["비최종 학습 문장 2/5, 고정 오디오 8초","새 브라우저 컨텍스트; 기존 오류 팝업 없음"],"when":["저장 요청을 네트워크 오류로 실패시킴","오류 팝업을 닫고 화면의 안내·녹음 재생기 확인","\"다시 저장하기\" 클릭; 두 번째 요청 성공 응답"],"then":["변경 승인된 안내 문구 표시; 녹음 재생기 유지","오류 뒤 진행 2/5 유지","재시도는 actions.save 경로; 마이크 재시작 없음","성공 응답 뒤 3/5로 한 번 진행","저장 중 저장·다시 녹음·나가기 조작 차단"],"title":"오류 안내에서 같은 녹음으로 복구","runner":"Playwright","layer":"브라우저 / API 모킹","setup":["API 네트워크 경계만 모킹","TTS는 고정 응답, 실제 분석 호출 없음","CSS 임의 sleep 대신 상태·텍스트 assertion"],"mutation":"재시도 버튼을 actions.retry에 연결하면 녹음 보존과 요청 횟수 검증이 실패해야 한다.","limits":"DB 중복 저장·실제 마이크 음질·스크린리더 이해는 확인하지 않는다.","nodeIds":["error-feedback","recording-controls","turn","capture","session-store"],"ruleIds":["r1","r2","r4","r5","r6"],"stepIds":["step-5","step-6","step-9"]},{"id":"p-db","given":["로컬 테스트 사용자 U·세션 S·학습 문장 L 격리","해당 사용자·세션·문장의 accepted_recordings 0개","유효한 합성 오디오 A와 실제 인증·동일 origin"],"when":["첫 action=save 요청을 실제 서버로 전달","성공 응답과 해당 저장 행을 확인한 뒤 브라우저 응답만 차단","UI가 실패로 복구한 뒤 저장 재시도","두 번째 저장 응답은 정상 전달"],"then":["첫 응답 차단 후 DB 행 1개, UI는 현재 문장 유지","action=save 요청 정확히 2회; finish는 횟수에서 제외","두 요청의 recordingId·lineId·파일 hash 동일","최종 accepted_recordings 행 1개; 기존 object path 동일","성공 확인 뒤 화면 진행 1회"],"title":"서버 커밋 후 응답 유실 → 중복 없이 복구","runner":"Playwright","layer":"브라우저 + 실제 테스트 API·DB","setup":["첫 save만 장애 주입; 네트워크·runner 자동 재시도 0","행 조회는 사용자·세션·ID로 제한","finally에서 사용자·세션·스토리지 정리","운영 DB로 대체 실행하지 않음"],"mutation":"클라이언트 재시도 ID를 바꾸면 ID 동일성 assertion이 실패해야 한다. 서버 중복 처리를 깨면 최종 저장 결과 assertion이 실패해야 한다.","limits":"브라우저 응답 유실을 통제한 실험. 실제 TCP 장애·DB RPC 응답 유실·새로고침 복원은 별도다.","nodeIds":["persistence","recording-api","turn","session-store"],"ruleIds":["r1","r2","r3","r4"],"stepIds":["step-3","step-4","step-7","step-8","step-9"]},{"id":"m-a11y","given":["오류 팝업과 녹음 보존 상태","키보드·스크린리더·확대 환경 준비"],"when":["팝업을 닫고 재시도 버튼까지 이동","오류 문구·저장 중 상태의 안내 확인","재시도 성공 후 포커스와 다음 문장 확인"],"then":["녹음 보존과 재시도 방법을 이해할 수 있음","포커스가 사라지거나 팝업 밖으로 누출되지 않음","저장 중 중복 조작 차단을 인지 가능","확대·작은 화면에서도 오류와 버튼을 확인 가능"],"title":"키보드로 오류를 이해하고 재시도","runner":"수동 확인","layer":"실제 UI / 접근성","setup":["사용한 브라우저·보조기술·확대율 기록","결과와 남은 문제를 수동 증거로 저장"],"mutation":"버튼 이름이나 포커스 복귀를 제거했을 때 검토자가 문제를 발견할 수 있어야 한다.","limits":"자동 통과 판정 대상이 아니며 환경별 확인 기록이 필요하다.","nodeIds":["error-feedback","recording-controls"],"ruleIds":["r6"],"stepIds":[]}],"dependencies":[{"id":"dependency-0","from":"client","to":"panel","kind":"call","label":"props / actions","evidence":[]},{"id":"dependency-1","from":"client","to":"controller","kind":"call","label":"hook","evidence":[]},{"id":"dependency-2","from":"controller","to":"session-store","kind":"call","label":"useStore","evidence":[]},{"id":"dependency-3","from":"controller","to":"turn","kind":"call","label":"saveTurn 주입","evidence":[]},{"id":"dependency-4","from":"turn","to":"capture","kind":"call","label":"audio / reset","evidence":[]},{"id":"dependency-5","from":"turn","to":"session-store","kind":"call","label":"상태 액션","evidence":[]},{"id":"dependency-6","from":"turn","to":"persistence","kind":"call","label":"saveTurn 콜백 경유","evidence":[]},{"id":"dependency-7","from":"persistence","to":"recording-api","kind":"call","label":"POST FormData","evidence":[]},{"id":"dependency-8","from":"recording-api","to":"save-server","kind":"call","label":"action=save","evidence":[]}],"sourceIds":{"recording-view":"v7265636f7264696e672d76696577","recording-controls":"v7265636f7264696e672d636f6e74726f6c73","error-feedback":"v6572726f722d666565646261636b","turn":"v7475726e","session-store":"v73657373696f6e2d73746f7265","capture":"v63617074757265","persistence":"v70657273697374656e6365","recording-api":"v7265636f7264696e672d617069","query-context":"v71756572792d636f6e74657874","client":"v636c69656e74","panel":"v70616e656c","controller":"v636f6e74726f6c6c6572","save-server":"v736176652d736572766572"},"freshness":"current","captureScreens":{}}</script></div><script>
+// Deterministic orthogonal routes. All coordinates are CSS pixels relative to the canvas.
+function reviewRoute(from,to,obstacles,lane=0) {
+  const gap=8+(lane%4)*3;
+  const sameColumn=Math.abs(from.left-to.left)<30;
+  const side=sameColumn?'right':from.right<=to.left?'right':from.left>=to.right?'left':from.top<to.top?'bottom':'top';
+  const targetSide=sameColumn?'right':side==='right'?'left':side==='left'?'right':side==='bottom'?'top':'bottom';
+  const fraction=.35+(lane%4)*.1;
+  const port=(r,s)=>s==='right'?[r.right,r.top+r.height*fraction]:s==='left'?[r.left,r.top+r.height*fraction]:s==='top'?[r.left+r.width*fraction,r.top]:[r.left+r.width*fraction,r.bottom];
+  const offset=(p,s)=>[p[0]+(s==='right'?gap:s==='left'?-gap:0),p[1]+(s==='bottom'?gap:s==='top'?-gap:0)];
+  const start=port(from,side),end=port(to,targetSide),a=offset(start,side),b=offset(end,targetSide);
+  const boxes=obstacles.map(r=>({left:r.left-3,right:r.right+3,top:r.top-3,bottom:r.bottom+3}));
+  const inside=(x,y)=>boxes.some(r=>x>r.left&&x<r.right&&y>r.top&&y<r.bottom);
+  const clear=(p,q)=>!boxes.some(r=>p[0]===q[0]?p[0]>r.left&&p[0]<r.right&&Math.max(p[1],q[1])>r.top&&Math.min(p[1],q[1])<r.bottom:p[1]>r.top&&p[1]<r.bottom&&Math.max(p[0],q[0])>r.left&&Math.min(p[0],q[0])<r.right);
+  const xs=[...new Set([a[0],b[0],...obstacles.flatMap(r=>[r.left-gap,r.right+gap])])].sort((a,b)=>a-b);
+  const ys=[...new Set([a[1],b[1],...obstacles.flatMap(r=>[r.top-gap,r.bottom+gap])])].sort((a,b)=>a-b);
+  const key=(x,y)=>x+','+y,goal=key(b[0],b[1]),first=key(a[0],a[1]);
+  const queue=[{p:a,cost:0}],costs=new Map([[first,0]]),previous=new Map();
+  while(queue.length){queue.sort((u,v)=>(v.cost+Math.abs(v.p[0]-b[0])+Math.abs(v.p[1]-b[1]))-(u.cost+Math.abs(u.p[0]-b[0])+Math.abs(u.p[1]-b[1])));const cur=queue.pop(),k=key(...cur.p);if(cur.cost!==costs.get(k))continue;if(k===goal)break;
+    const ix=xs.indexOf(cur.p[0]),iy=ys.indexOf(cur.p[1]);
+    for(const p of [[xs[ix-1],cur.p[1]],[xs[ix+1],cur.p[1]],[cur.p[0],ys[iy-1]],[cur.p[0],ys[iy+1]]]){
+      if(p.includes(undefined)||inside(...p)||!clear(cur.p,p))continue;
+      const next=key(...p),cost=cur.cost+Math.abs(p[0]-cur.p[0])+Math.abs(p[1]-cur.p[1])+1;
+      if(cost<(costs.get(next)??Infinity)){costs.set(next,cost);previous.set(next,k);queue.push({p,cost});}
+    }
+  }
+  if(!costs.has(goal))return null; // Never draw a knowingly obstructed fallback.
+  const points=[b];let k=goal;while(k!==first){k=previous.get(k);if(!k)return null;points.push(k.split(',').map(Number));}points.reverse();points.unshift(start);points.push(end);
+  const compact=points.filter((p,i)=>!i||i===points.length-1||!((points[i-1][0]===p[0]&&points[i+1][0]===p[0])||(points[i-1][1]===p[1]&&points[i+1][1]===p[1])));
+  return {points:compact,path:compact.map((p,i)=>(i?'L':'M')+p.join(',')).join(' ')};
+}
+
+(()=>{
+const root=document.getElementById('fs-review'),app=root.querySelector('.review-app');
+const M=JSON.parse(document.getElementById('fs-review-data').textContent),R=M.rules,I=M.contracts,T=M.tests;
+const N=new Map(M.nodes.map(n=>[n.id,n])),F=new Map(M.fields.map(f=>[f.id,f]));
+const FLOW_NODES=M.nodes.filter(n=>n.review?.flowCard).sort((a,b)=>a.review.flowCard.order-b.review.flowCard.order);
+const G={nodes:M.nodes.filter(n=>n.review?.graph),edges:M.dependencies};
+const draftKey=`fs-review:${M.flowHash}:v${M.version}`;
+let s={tab:'screen',scenario:M.scenarios.some(v=>v.id===M.initialScenario)?M.initialScenario:M.scenarios[0].id,flowIndex:0,flowNode:FLOW_NODES[0]?.id,region:M.edits[0]?.nodeIds[0],test:T[0]?.id,rule:R[0]?.id,node:G.nodes[0]?.id,revision:1,confirmed:[],approved:0,editing:false,edits:Object.fromEntries(M.edits.map(e=>[e.id,e.initial])),reason:'',notice:''};
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const source=path=>M.sourceBaseUrl?M.sourceBaseUrl+path.split('/').map(encodeURIComponent).join('/'):'#';
+const display=v=>v===null?'null':typeof v==='object'?(v.status==='absent'?'아직 값 없음':'미확인'):String(v);
+const steps=()=>M.scenarios.find(v=>v.id===s.scenario).steps;
+function restore(v){
+ if(!v||v.flowHash!==M.flowHash||v.version!==M.version)return;
+ const t=v.state;if(!t||!Number.isSafeInteger(t.revision)||t.revision<1)return;
+ if(!['screen','domain','graph','tests'].includes(t.tab)||!M.scenarios.some(v=>v.id===t.scenario))return;
+ if(!Array.isArray(t.confirmed)||!t.confirmed.every(id=>T.some(v=>v.id===id)))return;
+ if(!M.edits.every(e=>typeof t.edits?.[e.id]==='string'&&t.edits[e.id].trim()&&t.edits[e.id].length<=e.maxLength))return;
+ s={...s,tab:t.tab,scenario:t.scenario,revision:t.revision,edits:t.edits,confirmed:[...new Set(t.confirmed)],approved:t.approved===t.revision&&t.confirmed.length===T.length?t.revision:0,flowIndex:Math.max(0,Math.min(M.scenarios.find(v=>v.id===t.scenario).steps.length-1,Number(t.flowIndex)||0)),reason:typeof t.reason==='string'?t.reason.slice(0,300):''};
+ if(T.some(v=>v.id===t.test))s.test=t.test;return true;
+}
+try{restore(JSON.parse(localStorage.getItem(draftKey)));}catch{s.notice='로컬 검토 초안을 복원할 수 없습니다. JSON 내보내기를 사용할 수 있습니다.';}
+function persist(){try{localStorage.setItem(draftKey,JSON.stringify({flowHash:M.flowHash,version:M.version,state:{...s,editing:false}}));}catch{s.notice='로컬 저장 실패 · 초안 JSON을 내보내 보관하세요.';const notice=root.querySelector('[data-storage-status]');if(notice)notice.textContent=s.notice;}}
+function highlight(value){
+ const input=String(value), tokens=/\/\/[^\n]*|\/\*[\s\S]*?\*\/|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`|\b[A-Za-z_$][\w$]*\b|\b\d+(?:\.\d+)?\b/g;
+ let result='',end=0;
+ for(const match of input.matchAll(tokens)){
+  const word=match[0],tail=input.slice(match.index+word.length);
+  let kind='';
+  if(word.startsWith('//')||word.startsWith('/*'))kind='comment';
+  else if(/^["'`]/.test(word))kind='string';
+  else if(/^(interface|type|export|import|from|const|let|return|await|async|throw|new|if|else|try|catch|extends|readonly|keyof|typeof)$/.test(word))kind='keyword';
+  else if(/^(true|false|null|undefined)$/.test(word)||/^\d/.test(word))kind='literal';
+  else if(/^(string|number|boolean|void|unknown|never|any)$/.test(word)||/^[A-Z]/.test(word))kind='type';
+  else if(/^\s*\(/.test(tail))kind='function';
+  else if(/^\s*\??:/.test(tail))kind='property';
+  result+=esc(input.slice(end,match.index))+(kind?`<span class="tok-${kind}">${esc(word)}</span>`:esc(word));
+  end=match.index+word.length;
+ }
+ return result+esc(input.slice(end));
+}
+function codeBlock(value){return `<pre class="code-block"><code>${highlight(value)}</code></pre>`;}
+
+
+function signature(i){let result=i.signature;for(const e of M.edits.filter(e=>e.contractIds.includes(i.id))){result=e.signatureToken?result.replaceAll(e.signatureToken,JSON.stringify(s.edits[e.id])):result+`\n// 검토 제안 · ${e.title}: ${JSON.stringify(s.edits[e.id])}`;}return result;}
+function effectiveTest(t){const edits=M.edits.filter(e=>e.testIds.includes(t.id));return {...t,then:[...edits.map(e=>`${e.title}: ${s.edits[e.id]}`),...t.then]};}
+function rules(ids){return `<div class="rule-links">${ids.map(id=>`<button data-rule="${id}">${esc(id.toUpperCase())} · ${esc(R.find(r=>r.id===id).title)}</button>`).join('')}</div>`;}
+function testLinks(ids){return `<div class="row">${ids.map(id=>`<button class="button" data-test="${id}">${esc(id)}</button>`).join('')}</div>`;}
+function screenCard(proposed,linked=false){
+ const screen=M.screens.find(v=>v.sceneId===flowStep().scene),active=new Set(flowStep().links.flatMap(e=>[e.from,e.to]));
+ const capture=M.captureScreens?.[flowStep().scene];
+ if(capture)return `<div><div class="compare-label"><h3>${esc(screen.title)}</h3><span class="small dim">${capture.kind==='capture'?'실제 화면 캡처':'설계 이미지'}</span></div><div class="capture-screen"><img src="${capture.image}" width="${capture.width}" height="${capture.height}" alt="${esc(screen.title)}">${capture.regions.filter(r=>r.nodeId).map(r=>`<button class="capture-region" data-flow-endpoint="${r.nodeId}" data-region="${r.nodeId}" aria-label="${esc(flowNodeName(r.nodeId))}" style="left:${r.x*100}%;top:${r.y*100}%;width:${r.width*100}%;height:${r.height*100}%"></button>`).join('')}</div></div>`;
+ if(M.basis==='observed')return `<div class="selection"><h3>${esc(screen.title)}</h3><p>실제 화면 캡처 없음 · 코드 구조만 확인할 수 있습니다.</p></div>`;
+ const block=b=>{
+  const edit=M.edits.find(e=>e.id===b.editId),value=edit?(proposed?s.edits[edit.id]:edit.existing):b.content[0];
+  const endpoint=linked?`data-flow-endpoint="${b.nodeId}" ${active.has(b.nodeId)?'data-flow-active="true"':''}`:'';
+  const tag=edit&&proposed?`<span class="change-tag">${esc(edit.id.toUpperCase())} · ${esc(edit.title)}</span>`:'';
+  const hotspot=content=>`<button class="hotspot ${edit&&proposed?'changed':''}" ${endpoint} data-region="${b.nodeId}" aria-pressed="${s.region===b.nodeId}">${tag}${content}</button>`;
+  if(b.role==='progress')return `<div class="echo-top" ${endpoint}><span class="exit" aria-hidden="true">×</span><div class="progress"><span style="width:${b.value??0}%"></span></div><span>${esc(b.content[0])}</span></div>`;
+  if(b.role==='content')return `<div class="partner"><small>${esc(b.label)}</small>${b.content.map(v=>`<p>${esc(v)}</p>`).join('')}</div>`;
+  if(b.role==='microphone')return `<div class="orb" aria-label="${esc(b.label)}"><span>${esc(b.label)}</span></div>`;
+  if(b.role==='timer')return `<span class="timer">${esc(b.content[0])}</span>`;
+  if(b.role==='feedback')return hotspot(esc(value));
+  if(b.role==='player')return hotspot(`<span class="audio-player"><span aria-hidden="true">▷</span><span>${esc(b.content[0])}</span><span class="audio-track"></span><span>${esc(b.content[1])}</span></span>`);
+  return hotspot(`<span class="echo-actions"><span>${esc(b.content[0])}</span><span class="save">${esc(edit?value:b.content[1])}</span></span>`);
+ };
+ return `<div><div class="compare-label"><h3>${linked?esc(screen.title):proposed?'변경 제안':'기존 화면'}</h3><span class="${linked?'small dim':'badge '+(proposed?'warn':'')}">${linked?'제안 와이어프레임':proposed?M.edits.map(e=>esc(e.id.toUpperCase())).join(' · '):'코드 기준 재구성'}</span></div><div class="echo-screen">${screen.blocks.filter(b=>b.role==='progress').map(block).join('')}<div class="echo-inner">${screen.blocks.filter(b=>b.role!=='progress').map(block).join('')}</div></div></div>`;
+}
+function selectedRegion(){const target=s.region,node=N.get(target),contracts=I.filter(i=>i.nodeIds.includes(target)),rs=R.filter(r=>r.nodeIds.includes(target));return `<section class="selection"><div class="row spread"><h3>${esc(node?.label??'화면 영역')}</h3>${M.edits.length?'<button class="button" data-action="edit">변경안 편집</button>':''}</div><div class="selection-grid"><div><h4>도메인 규칙</h4>${rs.slice(0,2).map(r=>`<p><strong>${esc(r.id.toUpperCase())}</strong> ${esc(r.statement)}</p>`).join('')}${rules(rs.map(r=>r.id))}<h4 class="section-gap">연결 테스트</h4>${testLinks(T.filter(t=>t.nodeIds.includes(target)).map(t=>t.id))}</div><div><h4>연결 interface</h4>${contracts.slice(0,2).map(i=>`<p><span class="badge">${esc(i.status)}</span></p>${codeBlock(signature(i))}`).join('')}<button class="button" data-tab="domain">규칙·계약 전체</button></div></div></section>`;}
+function edit(){return `<section class="editor"><div class="row spread"><h3>${M.edits.map(e=>esc(e.id.toUpperCase())).join(' · ')} 변경안</h3><button class="button" data-action="cancel">닫기</button></div>${M.edits.map(e=>`<label>${esc(e.title)}<textarea data-edit="${e.id}" maxlength="${e.maxLength}">${esc(s.edits[e.id])}</textarea></label>`).join('')}<label>결정 이유<textarea data-field="reason" maxlength="300">${esc(s.reason)}</textarea></label><p class="small dim">변경에 연결된 테스트 계획은 다시 확인해야 합니다.</p><button class="button primary" data-action="apply">반영</button><p data-error role="alert"></p></section>`;}
+function originBadge(id){const kind=N.get(id)?.review?.changeKind??'unknown';return kind==='modified'?'<span class="origin existing">기존</span><span class="origin modified">수정 제안</span>':`<span class="origin ${kind}">${{existing:'기존',added:'신규 제안',unknown:'미확인'}[kind]}</span>`;}
+function moduleInfo(id){const node=N.get(id);return {name:node?.label??id,description:node?.architecture?.responsibility??'',contracts:I.filter(i=>node?.review.contractIds.includes(i.id))};}
+function stateBadge(key,value,changed=false){return `<span class="state-badge ${changed?'changed':''}"><span class="state-key">${esc(key)}</span><strong>${esc(display(value))}</strong></span>`;}
+function fieldValues(){const values=new Map(M.fields.map(f=>[f.id,f.initial]));for(const st of steps().slice(0,s.flowIndex+1))for(const c of st.changes)values.set(c.fieldId,c.after);return values;}
+function moduleStates(id){const values=fieldValues();if(!M.fields.some(f=>f.ownerNodeId===id))return `<span class="state-group">${(N.get(id)?.state??[]).map(v=>stateBadge('UNKNOWN',v)).join('')}</span>`;return `<span class="state-group">${M.fields.filter(f=>f.ownerNodeId===id&&f.display!=='table').map(f=>stateBadge(f.name,values.get(f.id),flowStep().changes.some(c=>c.fieldId===f.id&&c.changeKind==='changed'))).join('')}</span>`;}
+function popupMarkup(id){const info=moduleInfo(id);return `<div class="popup-heading">${originBadge(id)}<span class="small dim">interface 발췌</span></div><h4><code class="symbol">${esc(info.name)}</code></h4><p>${esc(info.description)}</p>${info.contracts.slice(0,1).map(i=>`<div class="popup-contract"><span class="small dim">${esc(i.title)} · ${esc(i.status)}</span>${codeBlock(signature(i))}</div>`).join('')}<button class="button" data-tab="domain">도메인·계약 전체</button>`;}
+let popupAnchor=null,popupTimer;
+function closeFunctionPopup(){clearTimeout(popupTimer);const popup=root.querySelector('.function-popup');if(popup)popup.hidden=true;popupAnchor?.removeAttribute('aria-describedby');popupAnchor=null;}
+function showFunctionPopup(anchor){
+ clearTimeout(popupTimer);if(!anchor)return;
+ const popup=root.querySelector('.function-popup');if(!popup)return;
+ popupAnchor?.removeAttribute('aria-describedby');popupAnchor=anchor;
+ popup.innerHTML=popupMarkup(anchor.dataset.function);popup.hidden=false;anchor.setAttribute('aria-describedby','fs-function-popup');
+ const box=root.getBoundingClientRect(),target=anchor.getBoundingClientRect();
+ popup.style.width=Math.min(460,box.width-24)+'px';
+ const width=popup.getBoundingClientRect().width,height=popup.getBoundingClientRect().height;
+ const left=target.left-box.left-width-12;
+ popup.style.left=Math.max(12,Math.min(box.width-width-12,left>=12?left:target.left-box.left))+'px';
+ const top=left>=12?target.top:target.bottom+8;popup.style.top=(Math.max(8,Math.min(innerHeight-height-8,top))-box.top)+'px';
+}
+root.addEventListener('pointerover',e=>{if(e.target.closest('.function-popup')){clearTimeout(popupTimer);return;}const anchor=e.target.closest('[data-function]');if(anchor&&anchor!==popupAnchor)showFunctionPopup(anchor);});
+root.addEventListener('pointerout',e=>{if(e.target.closest('[data-function],.function-popup')&&!e.relatedTarget?.closest?.('[data-function],.function-popup'))popupTimer=setTimeout(closeFunctionPopup,220);});
+root.addEventListener('focusin',e=>{const anchor=e.target.closest('[data-function]');if(anchor)showFunctionPopup(anchor);else if(!e.target.closest('.function-popup'))closeFunctionPopup();});
+root.addEventListener('focusout',e=>{if(!e.relatedTarget?.closest?.('[data-function],.function-popup'))closeFunctionPopup();});
+root.addEventListener('keydown',e=>{if(e.key==='Escape'){const anchor=popupAnchor;anchor?.focus();closeFunctionPopup();}});
+root.addEventListener('pointerdown',e=>{if(!e.target.closest('[data-function],.function-popup'))closeFunctionPopup();});
+
+
+function flowStep(){return steps()[s.flowIndex];}
+function flowNodeName(id){return N.get(id)?.label??id;}
+function flowSelection(){const n=FLOW_NODES.find(n=>n.id===s.flowNode);if(!n)return selectedRegion();return `<details class="selection"><summary><code class="symbol">${esc(n.label)}</code> · 계약과 검증</summary>${rules(R.filter(r=>r.nodeIds.includes(n.id)).map(r=>r.id))}${moduleInfo(n.id).contracts.slice(0,1).map(i=>codeBlock(signature(i))).join('')}${testLinks(T.filter(t=>t.nodeIds.includes(n.id)).map(t=>t.id))}</details>`;}
+function flowScreen(){const st=flowStep(),index=s.flowIndex,active=new Set(st.links.flatMap(e=>[e.from,e.to]));
+ return `<div class="flow-heading row spread"><div><h3>${esc(M.scenarios.find(v=>v.id===s.scenario).title)}</h3><span class="small dim">${M.basis==='proposed'?'설계 시뮬레이션 · 실행 전':'코드 해석 · 실행 측정 아님'}</span></div><span class="row"><span class="origin existing">기존 함수 재사용</span><span class="origin added">신규 함수 ${M.nodes.filter(n=>n.review.changeKind==='added').length}</span><span class="badge">${index+1} / ${steps().length}</span></span></div>${M.scenarios.length>1?`<label>시나리오 <select data-scenario>${M.scenarios.map(v=>`<option value="${v.id}" ${v.id===s.scenario?'selected':''}>${esc(v.title)}</option>`).join('')}</select></label>`:''}<div class="flow-canvas"><div class="flow-view">${screenCard(true,true)}</div><aside class="flow-modules" aria-label="화면 외부 상태와 API">${FLOW_NODES.map(n=>`<button class="flow-module ${active.has(n.id)?'executing':''}" data-function="${n.id}" data-flow-inspect="${n.id}" data-flow-endpoint="${n.id}" aria-pressed="${s.flowNode===n.id}"><span class="module-meta">${originBadge(n.id)}<span class="small dim">${esc(n.review.flowCard.kind)}</span></span><code class="symbol">${esc(n.label)}</code><span class="module-description">${esc(moduleInfo(n.id).description)}</span>${moduleStates(n.id)}${active.has(n.id)?'<span class="flow-active-label">현재 단계</span>':''}</button>`).join('')}</aside><svg class="flow-overlay" role="img" aria-label="현재 단계의 화면·store·API 연결"><defs><marker id="fs-flow-arrow" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" style="fill:var(--amber);stroke:none"/></marker></defs><g data-flow-paths></g></svg></div><p data-route-status class="small dim" role="status"></p><section class="flow-trace"><div class="row spread"><h3>${index+1}. ${esc(st.title)}</h3><div class="row"><button class="button" data-action="flow-prev" ${index===0?'disabled':''}>← 이전</button><button class="button primary" data-action="flow-next" ${index===steps().length-1?'disabled':''}>다음 →</button></div></div><div class="flow-track" aria-label="실행 단계">${steps().map((v,i)=>`<button data-flow-step="${i}" aria-label="${i+1}. ${esc(v.title)}" aria-pressed="${i===index}" class="${i<index?'visited':''}">${i+1}</button>`).join('')}</div>${codeBlock(st.code)}<div class="flow-path-list">${st.links.map((e,i)=>`<span><b>${i+1}</b><span>${esc(flowNodeName(e.from))} ${e.delivery==='lost'?'⇢ ×':'→'} ${esc(flowNodeName(e.to))}</span><small>${esc(e.label)}</small></span>`).join('')}</div><table class="flow-deltas"><thead><tr><th>소유자 · 상태</th><th>이전</th><th>이후</th></tr></thead><tbody>${st.changes.filter(c=>F.get(c.fieldId).display!=='badge').map(c=>{const f=F.get(c.fieldId);return `<tr><td><div class="field-owner"><code class="symbol">${esc(flowNodeName(f.ownerNodeId))}</code><span class="field-identity"><span class="field-kind">${f.fieldKind.toUpperCase()}</span><code>${esc(f.name)}</code></span></div></td><td>${stateBadge('이전',c.before)}</td><td>${stateBadge(c.changeKind==='preserved'?'유지':'변경',c.after,c.changeKind==='changed')}</td></tr>`;}).join('')}</tbody></table><div class="row spread section-gap">${rules(st.ruleIds)}${testLinks(st.testIds)}</div></section>${flowSelection()}${s.editing?edit():''}<details class="section-gap"><summary>기존 화면과 변경 제안 비교</summary><div class="compare" style="margin-top:15px">${screenCard(false)}<div class="compare-arrow" aria-hidden="true">→</div>${screenCard(true)}</div><p class="screen-note">코드 기준 재구성 · 실제 캡처 아님</p></details>`;
+}
+function domainView(){return `<h3>${esc(M.domain.name)}</h3><p class="section-gap">${esc(M.domain.scope)}</p><div class="term-list">${M.domain.terms.map(t=>`<section class="term"><h4>${esc(t.term)}</h4><p>${esc(t.meaning)}</p></section>`).join('')}</div><section class="section-gap"><h3>도메인 규칙</h3>${R.map(r=>`<article id="rule-${r.id}" class="rule-card ${s.rule===r.id?'selected':''}"><div class="row spread"><h4>${esc(r.id.toUpperCase())} · ${esc(r.title)}</h4><span class="badge">${esc(r.status)}</span></div><p>${esc(r.statement)}</p><div class="row spread section-gap">${testLinks(r.testIds)}<a class="source" href="${esc(source(r.source))}" target="_blank" rel="noreferrer">코드 근거 ↗</a></div></article>`).join('')}</section><section class="interface-list"><h3>Interface · 입출력과 경계</h3>${I.map(i=>`<details class="interface-item" ${i.changeKind==='modified'?'open':''}><summary>${esc(i.id.toUpperCase())} · ${esc(i.title)} <span class="badge ${i.changeKind==='modified'?'warn':''}">${esc(i.status)}</span></summary>${codeBlock(signature(i))}<p>${esc(i.description)}</p><a class="source" href="${esc(source(i.path))}" target="_blank" rel="noreferrer">${esc(i.path)}</a></details>`).join('')}</section><details class="section-gap"><summary>이번 검증 범위 밖</summary><ul>${M.domain.excluded.map(v=>`<li>${esc(v)}</li>`).join('')}</ul></details>`;}
+function graphView(){const selected=N.get(s.node)||G.nodes[0];return `<div class="row spread" style="margin-bottom:15px"><h3>저장 호출과 상태 소유권</h3><span class="badge">기존 호출 구조 유지</span></div><div class="graph"><div class="graph-grid">${G.nodes.map(n=>`<button class="graph-node" data-function="${n.id}" data-graph-node="${n.id}" data-group="${n.architecture?.runtime==='server'?'server':'app'}" style="grid-column:${n.review.graph.col};grid-row:${n.review.graph.row}" aria-pressed="${s.node===n.id}">${originBadge(n.id)}<small>${esc(n.architecture?.runtime)} · ${esc(n.architecture?.layer)}</small><code class="symbol">${esc(n.label)}</code><small>${esc(n.review.graph.caption)}</small></button>`).join('')}<svg class="graph-lines" aria-label="호출·상태 관계" role="img"><defs><marker id="fs-arrow" markerWidth="7" markerHeight="7" refX="7" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" style="fill:var(--dim);stroke:none"/></marker></defs><g data-graph-paths></g></svg></div></div><p data-route-status class="small dim" role="status"></p><div class="graph-legend"><span>실선 → 호출·상태 접근</span><span>점선 테두리: 서버 경계</span><span>${esc(M.graphNote)}</span></div><section class="selection"><h3><code class="symbol">${esc(selected?.label)}</code></h3><p>${esc(selected?.review.graph.caption)}</p>${rules(R.filter(r=>r.nodeIds.includes(selected?.id)).map(r=>r.id))}${moduleInfo(selected?.id).contracts.slice(0,1).map(i=>codeBlock(signature(i))).join('')}<details><summary>선택 노드의 연결</summary><ul>${G.edges.map((e,i)=>e.from===selected?.id||e.to===selected?.id?`<li>${i+1}. <code class="symbol">${esc(flowNodeName(e.from))}</code> → <code class="symbol">${esc(flowNodeName(e.to))}</code> · ${esc(e.label)}</li>`:'').join('')}</ul></details></section><p class="screen-note">호출·상태 관계 기준 · import / 레이어 규칙 검사 미연결</p>`;}
+function testView(){const t=effectiveTest(T.find(t=>t.id===s.test)||T[0]),list=arr=>`<ul>${arr.map(v=>`<li>${esc(v)}</li>`).join('')}</ul>`;return `<div class="test-workspace"><nav class="test-nav" aria-label="테스트 시나리오">${[...new Set(T.map(t=>t.runner))].map(r=>`<h4>${esc(r)}</h4>${T.filter(t=>t.runner===r).map(t=>`<button data-test="${t.id}" aria-pressed="${s.test===t.id}"><small>${esc(t.id)} · ${s.confirmed.includes(t.id)?'계획 확인됨':'확인 대기'}</small>${esc(t.title)}</button>`).join('')}`).join('')}</nav><article class="test-detail"><div class="row spread"><span class="badge">${esc(t.runner)} · ${esc(t.layer)}</span><span class="badge warn">실행 전</span></div><h3 style="margin-top:13px">${esc(t.title)}</h3>${rules(t.ruleIds)}<section><h4>준비 조건 · Given</h4>${list(t.given)}</section><section><h4>장애 주입과 행동 · When</h4><ol>${t.when.map(v=>`<li>${esc(v)}</li>`).join('')}</ol></section><section><h4>통과 조건 · Then</h4><ul class="checks">${t.then.map(v=>`<li>${esc(v)}</li>`).join('')}</ul></section><section><h4>환경 · mock · 데이터 격리</h4>${list(t.setup)}</section><section><h4>반증 · 실패해야 하는 변경</h4><p>${esc(t.mutation)}</p></section><section><h4>검증 한계</h4><p>${esc(t.limits)}</p></section><label class="test-confirm"><input type="checkbox" data-confirm="${t.id}" ${s.confirmed.includes(t.id)?'checked':''}><span>규칙·통과 조건·검증 범위를 확인했습니다.<br><span class="small dim">테스트 계획 확인 · 실행 결과 아님</span></span></label></article></div>`;}
+function render(){closeFunctionPopup();app.innerHTML=`<header class="header"><div class="brand"><b>fs</b> Frontend System <span class="dim small">/ ${esc(M.projectLabel)}</span></div><span class="small dim">${esc(M.sourceCommit.slice(0,7))} 기준 · ${M.basis==='proposed'?'설계 제안':'관측'}${M.freshness&&M.freshness!=='current'?' · '+esc(M.freshness):''} · 검토 v${s.revision}</span></header><div class="heading"><h2>${esc(M.title)}</h2></div><nav class="navigation" aria-label="설계 검토">${[['screen','흐름'],['domain','도메인·계약'],['graph','의존성'],['tests','테스트 계획']].map(([id,label])=>`<button data-tab="${id}" aria-pressed="${s.tab===id}">${label}</button>`).join('')}</nav><main class="content"><div data-storage-status class="${s.notice?'notice':''}" role="status">${esc(s.notice)}</div>${s.tab==='screen'?flowScreen():s.tab==='domain'?domainView():s.tab==='graph'?graphView():testView()}<details class="json-data"><summary class="small dim">기반 JSON</summary><pre>${esc(JSON.stringify(s.tab==='tests'?effectiveTest(T.find(t=>t.id===s.test)):s.tab==='graph'?G:s.tab==='domain'?{domain:M.domain,rules:R,contracts:I.map(i=>({...i,signature:signature(i)}))}:flowStep(),null,2))}</pre></details></main><footer class="footer"><span>검증 계획 ${s.confirmed.length} / ${T.length} 확인 · 실제 실행 0</span><span class="row"><button class="button" data-action="import">초안 불러오기</button><input hidden type="file" accept="application/json,.json" data-draft-file><button class="button" data-action="export">초안 JSON 내보내기</button><button class="button primary" data-action="approve" ${s.confirmed.length!==T.length||s.approved===s.revision?'disabled':''}>${s.approved===s.revision?'이 버전의 테스트 계획 확인됨':'테스트 계획 확인 완료'}</button></span></footer><aside class="function-popup" id="fs-function-popup" role="dialog" aria-label="함수 계약" hidden></aside>`;requestAnimationFrame(()=>s.tab==='graph'?drawGraph():s.tab==='screen'?drawFlow():null);}
+function exportDraft(){const url=URL.createObjectURL(new Blob([JSON.stringify({flowHash:M.flowHash,version:M.version,state:{...s,editing:false}},null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download=M.flowId+'-review-draft.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+root.addEventListener('click',e=>{const b=e.target.closest('button');if(!b||b.disabled)return;let focus='';
+ if(b.dataset.flowStep!==undefined){s.flowIndex=Number(b.dataset.flowStep);s.flowNode=flowStep().links.at(-1).to;focus=`[data-flow-step="${s.flowIndex}"]`;}
+ else if(b.dataset.flowInspect){s.flowNode=b.dataset.flowInspect;focus=`[data-flow-inspect="${s.flowNode}"]`;}
+ else if(b.dataset.tab){s.tab=b.dataset.tab;focus=`[data-tab="${s.tab}"]`;}
+ else if(b.dataset.region){s.region=b.dataset.region;s.flowNode=null;focus=`[data-region="${s.region}"]`;}
+ else if(b.dataset.rule){s.rule=b.dataset.rule;s.tab='domain';focus='[data-tab="domain"]';}
+ else if(b.dataset.test){s.test=b.dataset.test;s.tab='tests';focus=`[data-test="${s.test}"]`;}
+ else if(b.dataset.graphNode){s.node=b.dataset.graphNode;focus=`[data-graph-node="${s.node}"]`;}
+ else{const a=b.dataset.action;
+  if(a==='export'){exportDraft();return;}
+  if(a==='import'){root.querySelector('[data-draft-file]').click();return;}
+  if(a==='flow-next'||a==='flow-prev'){s.flowIndex=Math.max(0,Math.min(steps().length-1,s.flowIndex+(a==='flow-next'?1:-1)));s.flowNode=flowStep().links.at(-1).to;}
+  if(a==='edit')s.editing=true;if(a==='cancel')s.editing=false;
+  if(a==='approve'&&s.confirmed.length===T.length){s.approved=s.revision;s.notice=`v${s.revision} 테스트 계획 확인 완료. 로컬 검토 초안 · 실행 증거는 별도입니다.`;}
+  if(a==='apply'){
+   const values=Object.fromEntries(M.edits.map(v=>[v.id,root.querySelector(`[data-edit="${v.id}"]`).value.trim()])),reason=root.querySelector('[data-field="reason"]').value.trim();
+   if(!reason||M.edits.some(v=>!values[v.id]||values[v.id].length>v.maxLength)){root.querySelector('[data-error]').textContent='문구·결정 이유와 입력 길이를 확인하세요.';return;}
+   const changed=M.edits.filter(v=>values[v.id]!==s.edits[v.id]);if(!changed.length){root.querySelector('[data-error]').textContent='변경된 내용이 없습니다.';return;}
+   const affected=new Set(changed.flatMap(v=>v.testIds));s.edits=values;s.reason=reason;s.revision++;s.confirmed=s.confirmed.filter(id=>!affected.has(id));s.approved=0;s.editing=false;s.notice=`v${s.revision} 변경 반영 · ${[...affected].join(', ')} 재확인 필요 · ${reason}`;
+  }
+  focus=(a==='flow-next'||a==='flow-prev')?`[data-flow-step="${s.flowIndex}"]`:s.editing?'[data-edit]':`[data-tab="${s.tab}"]`;
+ }
+ render();persist();root.querySelector(focus)?.focus();if(b.dataset.rule)root.querySelector(`[id="rule-${s.rule}"]`)?.scrollIntoView({block:'nearest'});
+ // Touch/click opens the same contract as hover and keyboard focus.
+ if(b.dataset.function){const anchor=root.querySelector(`[data-function="${b.dataset.function}"]`);showFunctionPopup(anchor);}
+});
+root.addEventListener('change',async e=>{if(e.target.matches('[data-draft-file]')){const file=e.target.files[0];if(!file)return;try{if(file.size>200000)throw new Error('초안 파일 크기가 너무 큽니다.');const draft=JSON.parse(await file.text());if(draft.flowHash!==M.flowHash||draft.version!==M.version)throw new Error('다른 흐름 또는 버전의 초안입니다.');if(!restore(draft))throw new Error('유효하지 않은 검토 초안입니다.');s.notice='로컬 검토 초안을 불러왔습니다. 실행 결과·서버 승인이 아닙니다.';render();persist();}catch(error){s.notice='초안 복원 실패: '+error.message;render();}return;}if(e.target.matches('[data-scenario]')){s.scenario=e.target.value;s.flowIndex=0;render();persist();return;}const id=e.target.dataset.confirm;if(!id||!T.some(t=>t.id===id))return;s.confirmed=e.target.checked?[...new Set([...s.confirmed,id])]:s.confirmed.filter(v=>v!==id);s.approved=0;render();persist();root.querySelector(`[data-confirm="${id}"]`)?.focus();});
+function drawConnections(container,svgSelector,groupSelector,links,attribute,marker){
+ const canvas=root.querySelector(container);if(!canvas)return;
+ const svg=canvas.querySelector(svgSelector),group=canvas.querySelector(groupSelector),origin=canvas.getBoundingClientRect();
+ const rect=element=>{const r=element.getBoundingClientRect();return {left:r.left-origin.left,right:r.right-origin.left,top:r.top-origin.top,bottom:r.bottom-origin.top,width:r.width,height:r.height};};
+ const elements=[...canvas.querySelectorAll(`[${attribute}]`)];
+ const obstacles=[...new Set([...elements,...canvas.querySelectorAll('.partner,.orb')])].filter(el=>el.getBoundingClientRect().width>0).map(rect);
+ const missing=[],labels=[];
+ const markup=links.map((edge,i)=>{
+  const a=elements.find(el=>el.getAttribute(attribute)===edge.from),b=elements.find(el=>el.getAttribute(attribute)===edge.to);
+  if(!a||!b){missing.push(edge.label);return '';}
+  const route=reviewRoute(rect(a),rect(b),obstacles,i);
+  if(!route){missing.push(edge.label);return '';}
+  let label;
+  const segments=route.points.slice(1).map((q,i)=>({p:route.points[i],q,length:Math.abs(q[0]-route.points[i][0])+Math.abs(q[1]-route.points[i][1])})).sort((a,b)=>b.length-a.length);
+  for(const seg of segments){for(const t of [.5,.35,.65,.2,.8]){const p=[seg.p[0]+(seg.q[0]-seg.p[0])*t,seg.p[1]+(seg.q[1]-seg.p[1])*t];if(!obstacles.some(r=>p[0]>r.left-11&&p[0]<r.right+11&&p[1]>r.top-11&&p[1]<r.bottom+11)&&!labels.some(q=>Math.hypot(q[0]-p[0],q[1]-p[1])<25)){label=p;break;}}if(label)break;}
+  if(label)labels.push(label);
+  const lost=edge.delivery==='lost';
+  return `<g data-edge="${esc(edge.id)}" data-from="${edge.from}" data-to="${edge.to}" data-points="${esc(JSON.stringify(route.points))}"><title>${i+1}. ${esc(edge.label)}${lost?' · 응답 유실':''}</title><path class="${lost?'lost':''} ${edge.from===s.node||edge.to===s.node?'focus-edge':''}" d="${route.path}" ${lost?'':`marker-end="url(#${marker})"`}/>${label?`<circle cx="${label[0]}" cy="${label[1]}" r="10"/><text x="${label[0]}" y="${label[1]+4}" text-anchor="middle">${lost?'×':i+1}</text>`:''}</g>`;
+ }).join('');
+ group.innerHTML=markup;
+ const bounds=group.getBBox(),pad=16;
+ const left=Math.min(0,bounds.x-pad),top=Math.min(0,bounds.y-pad),right=Math.max(origin.width,bounds.x+bounds.width+pad),bottom=Math.max(origin.height,bounds.y+bounds.height+pad);
+ svg.setAttribute('viewBox',`${left} ${top} ${right-left} ${bottom-top}`);
+ Object.assign(svg.style,{left:left+'px',top:top+'px',width:(right-left)+'px',height:(bottom-top)+'px'});
+ const status=root.querySelector('[data-route-status]');if(status)status.textContent=missing.length?'연결 경로 확인 필요: '+missing.join(', '):'';
+}
+function drawFlow(){drawConnections('.flow-canvas','.flow-overlay','[data-flow-paths]',flowStep().links,'data-flow-endpoint','fs-flow-arrow');}
+function drawGraph(){drawConnections('.graph-grid','.graph-lines','[data-graph-paths]',G.edges,'data-graph-node','fs-arrow');}
+if(typeof ResizeObserver!=='undefined')new ResizeObserver(()=>requestAnimationFrame(()=>s.tab==='graph'?drawGraph():s.tab==='screen'?drawFlow():null)).observe(app);
+window.addEventListener('resize',()=>{closeFunctionPopup();if(s.tab==='graph')drawGraph();if(s.tab==='screen')drawFlow();});
+document.fonts?.ready.then(()=>{if(s.tab==='graph')drawGraph();if(s.tab==='screen')drawFlow();});
+render();
+})();
+
+</script></body></html>

@@ -1,0 +1,22 @@
+{
+  "source": "test/fixtures/flow-review/reference/approved-echo.html",
+  "viewport": {
+    "width": 1440,
+    "height": 1100
+  },
+  "steps": [
+    1,
+    3,
+    4,
+    5,
+    7,
+    9
+  ],
+  "tabs": [
+    "screen",
+    "domain",
+    "graph",
+    "tests"
+  ],
+  "note": "Unmodified approved reference; original theme. Product theme retained by user request."
+}
