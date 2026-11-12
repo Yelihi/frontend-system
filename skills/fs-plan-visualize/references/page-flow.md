@@ -141,7 +141,7 @@ or a benchmark for thousands of nodes. Report those boundaries without adding bl
 An optional `flow.review.version:1` selects **흐름 / 도메인·계약 / 의존성 / 테스트 계획**
 through the same `render_project_flow` / `flow-render` path. The existing viewer,
 English logical view, Mermaid and capture checks remain available for older records.
-Read the exported `save_project_analysis --kind flow` schema for the input shape.
+Read `node <plugin-root>/bundle/tool-help.mjs save_project_analysis` for the input schema.
 
 Keep one canonical scenario: each step has `review.id`, ordered `edgeIds` (starting
 with its primary `edge`), `changes` referencing typed field IDs, and rule/test IDs.
