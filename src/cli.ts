@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import {listSkills,saveSkill,pinSkills,readSkillRun,saveSkillEvaluation} from './application/skill-management.js';
 import { dirname, resolve } from "node:path";
 import { parseArgs } from "node:util";
 import { fileURLToPath } from "node:url";
@@ -40,6 +41,12 @@ const usage = `Usage:
   fs flow-save <project> .frontend-system/drafts/<name>.json
   fs flow-render <project> --overall [--issue <id>]
   fs flow-render <project> <id> --expected-hash <hash> [--plan <id>] [--scenario <id>] [--language ko|en] [--format html|mermaid] [--allow-unverified]
+  fs skill-list [FS-source]
+  fs skill-check [FS-source]
+  fs skill-save <FS-source> .frontend-system/drafts/<name>.json
+  fs skill-evaluate <FS-source> .frontend-system/drafts/<name>.json
+  fs skill-pin <project> <run-id> --skill <name> --reason "<selection reason>" [--source <FS-source>]
+  fs skill-run <project> <run-id> --expected-hash <hash>
   fs mcp
 
 These are deterministic helpers. Use the fs-* Skills in Codex or Claude Code for complete workflows.`;
@@ -68,6 +75,9 @@ async function main(): Promise<void> {
     allowPositionals: true,
     options: {
       "expected-hash": {type: "string"},
+      skill: {type:"string",multiple:true},
+      reason: {type:"string"},
+      source: {type:"string"},
       scenario: {type: "string"},
       language: {type: "string"},
       format: {type: "string", default: "html"},
@@ -100,6 +110,19 @@ async function main(): Promise<void> {
   }
 
   const root = resolve(rawPath ?? process.cwd());
+  if(command==='skill-list'||command==='skill-check'){
+    const catalog=await listSkills(rawPath?root:systemRoot);print(catalog);
+    if(command==='skill-check'&&!catalog.valid)process.exitCode=1;return;
+  }
+  if(command==='skill-save'||command==='skill-evaluate'){
+    if(!rawPath||!rest[0])throw new Error('Provide an explicit FS source and confined draft path');
+    const draft=(await readRevisionDraft(root,rest[0])).input;
+    return print(command==='skill-save'?await saveSkill(root,draft as Parameters<typeof saveSkill>[1]):await saveSkillEvaluation(root,draft as Parameters<typeof saveSkillEvaluation>[1]));
+  }
+  if(command==='skill-pin')return print(await pinSkills(root,values.source?resolve(values.source):systemRoot,{
+    id:rest[0]!,selections:(values.skill??[]).map(name=>({name,reason:values.reason!})),
+  }));
+  if(command==='skill-run')return print(await readSkillRun(root,rest[0]!,values['expected-hash']!));
   if (command === "flow-list") {
     if(values.overall)return print(await projectAnalysisReadiness(root,systemRoot));
     if (!/^\d+$/.test(values.offset)) throw new Error('Provide a nonnegative offset');

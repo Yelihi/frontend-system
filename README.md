@@ -219,7 +219,56 @@ Archify 그림 본문은 한국어이며, 고정 뷰어 UI와 HTML 언어 속성
 | `fs-review <대상>` | 근거 기반 리뷰. 제품 코드 수정은 별도 요청 |
 | `fs-review pre-pr --base origin/main --plan <계획>` | PR 제출 준비 검사 |
 | `fs-review pr <URL> learn` | 댓글의 의도·반례를 검토해 프로젝트 결정·지식 후보 기록 |
+| `fs-skill <list/add/import/update/consolidate/evaluate/release> <요청>` | 공통 스킬 원본 관리·검증. 배포는 별도 요청 |
+| `fs-issue <요청>` | Linear 이슈 초안·생성·수정. 연결 도구가 없으면 초안 반환 |
 | `fs-knowledge add <메모 또는 URL>` | 원문을 정리해 공식 FS 저장소에 pending PR 생성 |
+
+### 스킬 사용과 관리
+
+FS 플러그인에 포함된 스킬을 대화에서 선택합니다. Codex에서는 `$fs-issue` 또는
+`$fs-skill`로 지정하거나, “Linear 이슈 초안을 작성해주세요”처럼 요청할 수 있습니다.
+호스트가 실제 요청과 스킬 설명을 보고 선택하며, FS 도구가 모델을 자동 실행하지는 않습니다.
+개별 스킬을 프로젝트마다 npx로 복제할 필요는 없습니다. 설치·업데이트는 기존 FS
+플러그인 경로를 사용하며, 이 변경을 배포하기 전 설치본에는 새 스킬이 없습니다.
+
+```text
+$fs-issue 저장 실패 시 입력이 사라지는 버그의 Linear 이슈 초안만 작성해주세요
+$fs-skill list
+$fs-skill update FS 원본의 fs-issue에 반복해서 확인된 누락 사례를 반영해주세요
+```
+
+공통 절차의 원본은 FS의 `skills/`와 `references/`입니다. 프로젝트에는 필요한
+차이와 선택·실행 기록만 둡니다. Linear 팀·프로젝트 기본값은 선택적으로
+`.frontend-system/issue-config.json`에 두며, 실제 연결 도구로 ID를 확인합니다.
+일반 이슈 작성에 전체 분석·설계·구현 단계를 요구하지 않습니다.
+
+스킬 관리는 **목록 확인 → 기존 스킬과 비교 → 필요한 추가/수정 → 구조 검사 →
+실제 결과 평가 → 별도 배포** 순서입니다. 원본 저장은 명시한 FS Git 체크아웃에서만
+허용하며 설치 캐시를 수정하지 않습니다. 외부 스킬은 출처·원본 커밋·라이선스·고지를
+보존합니다. [기존 ai-skills 분류](references/workflows/ai-skills-integration.md)는
+이전 판단 자료이며, 이번 변경에서 기존 스킬을 일괄 가져오지 않았습니다.
+
+작업별 `pin_skills`는 선택 이유와 스킬·리소스·연결된 로컬 참조를
+`.frontend-system/skill-runs/<id>/`에 고정합니다. 재개할 때 `get_skill_run`으로
+id/hash를 확인하고 반환된 스냅샷을 읽습니다. 이는 모델·외부 도구 상태를 고정하거나
+실행을 증명하지 않습니다. 기존 여섯 스킬의 실행 절차에 이 기록을 강제로 요구하지는 않습니다.
+
+CLI는 결정적인 보조 기능입니다. `fs skill-list`, `fs skill-check`는 설치본을 기본으로
+읽습니다. `fs skill-save <FS원본> <draftFile>`과 `fs skill-evaluate <FS원본> <draftFile>`은
+`.frontend-system/drafts/`의 JSON을 사용하며, 필드는 패키지의 `bundle/tool-help.mjs`에서
+`save_skill`, `save_skill_evaluation`으로 확인합니다.
+
+```sh
+fs skill-check /path/to/frontend-system
+fs skill-pin /path/to/project issue-42 --skill fs-issue --reason "요청한 버그 이슈 작성"
+fs skill-run /path/to/project issue-42 --expected-hash <반환된-hash>
+```
+
+평가 사례는 `test/evals/skills/`에 둡니다. `save_skill_evaluation`은 실제 결과 파일의
+해시와 호스트/사용자의 판단을 기록하며, 모델 평가를 대신 수행하지 않습니다.
+작성된 사례·구조 검사·모의 도구 테스트를 실제 모델 행동 검증으로 표시하지 않습니다.
+빠진 사례는 `not-run`이며 저장·평가가 자동 설치나 릴리스를 일으키지 않습니다.
+자세한 절차는 [스킬 관리](references/workflows/skill-management.md)를 참고하세요.
 
 <details>
 <summary>지식을 추가하고 sync하려면</summary>

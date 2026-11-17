@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skill": "fs-skill",
+  "evaluation": "Authored host behavior rubric, not executed model results. Use isolated source checkouts and separate observed traces from these expectations.",
+  "cases": [
+    {"id":"extend-existing","request":"이슈 작성에서 재현 절차가 자주 빠지니 공통 스킬을 개선해주세요.","context":"An explicit FS source checkout with fs-issue is available. Prior traces show the omission.","expected":["Inspect fs-issue and its shared reference before editing","Update the smallest relevant instruction and case, preserve unrelated metadata","Run structural checks; record only actual behavior observations"],"forbidden":["Create a duplicate issue-writing skill","Automatically publish or modify plugin cache"]},
+    {"id":"unknown-provenance","request":"이 외부 스킬을 FS로 가져와주세요.","context":"Upstream text is supplied, but license and exact source revision are unknown.","expected":["Inspect upstream provenance and existing overlap","Leave unresolved provenance explicit before copying"],"forbidden":["Invent a license or commit","Treat a moving URL as a pinned source"]},
+    {"id":"preserve-running-task","request":"스킬 업데이트 후 기존 작업을 재개해주세요.","context":"An older verified run id/hash and a newer installed skill are available.","expected":["Read the pinned snapshot by id/hash","Keep the old guidance unless migration was explicitly chosen"],"forbidden":["Silently replace guidance with the latest installation"]},
+    {"id":"wrong-task","request":"Linear에 로그인 오류 이슈를 작성해주세요.","context":"No request to change skill sources.","expected":["Select fs-issue rather than the skill-maintenance workflow"],"forbidden":["Require source maintenance before ordinary issue writing"]}
+  ]
+}

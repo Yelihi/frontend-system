@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import {listSkills,inspectSkill,saveSkill,pinSkills,readSkillRun,saveSkillEvaluation,pinSkillsInput,skillName} from './application/skill-management.js';
 import {projectContextPayloadSchema} from './application/project-analysis-input.js';
 import { dirname, relative, resolve } from "node:path";
 import { existsSync, readFileSync } from "node:fs";
@@ -78,6 +79,31 @@ function repositoryPath(path?: string): string {
 
 const readOnly = { readOnlyHint: true, destructiveHint: false, openWorldHint: false };
 const localWrite = { readOnlyHint: false, destructiveHint: false, openWorldHint: false };
+
+server.registerTool('get_skills', {
+  description: 'Read installed skills by default, or an explicit FS source checkout. Identity covers skill resources and linked guidance; structural validity is not behavioral approval.',
+  inputSchema: {repositoryRoot:z.string().optional(),name:skillName.optional()}, annotations:readOnly,
+}, async ({repositoryRoot,name}) => {
+  const root=repositoryRoot?resolve(repositoryRoot):systemRoot;
+  if(!name)return result(await listSkills(root));
+  const {contents,...skill}=await inspectSkill(root,name);void contents;return result(skill);
+});
+server.registerTool('save_skill', {
+  description: 'Save a skill draft in an explicit FS source Git checkout, never the plugin cache. Read the payload schema; expectedHash covers linked guidance. Does not install or publish.',
+  inputSchema: {repositoryRoot:z.string(),draftFile:z.string()}, annotations:localWrite,
+}, async ({repositoryRoot,draftFile}) => result(await saveSkill(resolve(repositoryRoot),(await readRevisionDraft(resolve(repositoryRoot),draftFile)).input as Parameters<typeof saveSkill>[1])));
+server.registerTool('pin_skills', {
+  description: 'Freeze explicitly selected skill resources and linked guidance in a new project run. Returns id/hash; use get_skill_run and its snapshotRoot on resume. Selection is the host’s responsibility.',
+  inputSchema: {projectPath:z.string().optional(),repositoryRoot:z.string().optional(),...pinSkillsInput.shape}, annotations:localWrite,
+}, async ({projectPath:path,repositoryRoot,...input}) => result(await pinSkills(projectPath(path),repositoryRoot?resolve(repositoryRoot):systemRoot,input)));
+server.registerTool('get_skill_run', {
+  description: 'Verify an existing frozen skill snapshot by run id and receipt hash. Read guidance from returned snapshotRoot; no execution or quality claim.',
+  inputSchema: {projectPath:z.string().optional(),id:recordId,expectedHash:z.string().regex(/^[a-f0-9]{64}$/)}, annotations:readOnly,
+}, async ({projectPath:path,id,expectedHash}) => result(await readSkillRun(projectPath(path),id,expectedHash)));
+server.registerTool('save_skill_evaluation', {
+  description: 'Record host/user assessments against current source skill, authored cases and artifact hashes. Unassessed cases remain not-run. Does not execute a model, approve or publish a skill. Read the payload schema first.',
+  inputSchema: {repositoryRoot:z.string(),draftFile:z.string()}, annotations:localWrite,
+}, async ({repositoryRoot,draftFile}) => result(await saveSkillEvaluation(resolve(repositoryRoot),(await readRevisionDraft(resolve(repositoryRoot),draftFile)).input as Parameters<typeof saveSkillEvaluation>[1])));
 
 server.registerTool('get_fs_release', {
   title: 'Identify the installed FS build and knowledge snapshot',

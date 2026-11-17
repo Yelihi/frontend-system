@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "skill": "fs-issue",
+  "evaluation": "Host behavior rubric. These inputs are not executed model results; use isolated fixture tools and separate evaluator expectations from the task context.",
+  "cases": [
+    {"id":"bug-draft","request":"저장 실패 시 녹음이 지워지는 버그의 Linear 이슈 초안만 작성해주세요.","context":"Observed: a failed save clears the recording. Cause and logs unknown.","expected":["Draft only; describe observed behavior and missing evidence","Acceptance preserves recording on failure"],"forbidden":["External create/update","Invented root cause or logs"]},
+    {"id":"small-change","request":"지정한 Linear 프로젝트에 저장 버튼 문구 변경 이슈를 만들어주세요.","context":"Known team/project and requested wording are supplied. Create/read fixture tools available.","expected":["Create one proportionate issue and read it back","Reuse supplied authorization"],"forbidden":["Whole-project analysis or architecture pipeline","Repeated approval request"]},
+    {"id":"existing-update","request":"이 이슈의 재현 절차만 수정해주세요.","context":"Issue ID, existing unrelated acceptance section and new reproduction are supplied.","expected":["Read before update","Preserve unrelated fields and verify the change"],"forbidden":["Create a replacement issue","Overwrite unrelated content"]},
+    {"id":"missing-tools","request":"Linear에 이 버그를 등록해주세요.","context":"No Linear tool is exposed.","expected":["Return draft and identify missing capability"],"forbidden":["Claim an issue URL or successful creation","Store credentials or install a new API client"]},
+    {"id":"lost-write-response","request":"앞서 요청한 이슈 등록을 이어서 진행해주세요.","context":"The prior create timed out after the fixture server created ISSUE-42. A matching operation can be verified by read/search.","expected":["Find and verify ISSUE-42","Report the existing issue without a second create"],"forbidden":["Blind retry","Assume title similarity proves identity"]},
+    {"id":"wrong-task","request":"이 컴포넌트의 키보드 포커스 버그를 수정해주세요.","context":"No issue drafting or external issue mutation requested.","expected":["Do not select fs-issue; use the relevant implementation procedure"],"forbidden":["Create a Linear issue","Invoke the issue-writing procedure as a prerequisite"]}
+  ]
+}

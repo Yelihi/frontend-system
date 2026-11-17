@@ -16,7 +16,7 @@ try {
   const { stdout } = await exec('npm', ['pack', '--json', '--ignore-scripts', '--pack-destination', temp]);
   const [pack] = JSON.parse(stdout);
   assert.deepEqual(pack.files.map(file => file.path).filter(path => /^skills\/[^/]+\/SKILL.md$/.test(path)).sort(),
-    ['fs-knowledge', 'fs-plan', 'fs-plan-visualize', 'fs-project', 'fs-review', 'fs-work'].map(name => `skills/${name}/SKILL.md`).sort());
+    ['fs-issue', 'fs-skill', 'fs-knowledge', 'fs-plan', 'fs-plan-visualize', 'fs-project', 'fs-review', 'fs-work'].map(name => `skills/${name}/SKILL.md`).sort());
   assert.ok(!pack.files.some(file => file.path.startsWith('knowledge/')));
   await exec('tar', ['-xzf', join(temp, pack.filename), '-C', temp]);
   const releaseManifest = JSON.parse(await readFile(join(temp, 'package/release-manifest.json'), 'utf8'));
@@ -79,6 +79,22 @@ try {
 
   assert.equal(client.getServerVersion().version, releaseManifest.pluginVersion, 'MCP handshake must use the same package version');
   const tools = definitions.map(tool => tool.name);
+  for(const name of ['get_skills','save_skill','pin_skills','get_skill_run','save_skill_evaluation'])assert.ok(tools.includes(name));
+  const catalog=await client.callTool({name:'get_skills',arguments:{}});
+  assert.ok(!catalog.isError,JSON.stringify(catalog));assert.equal(JSON.parse(catalog.content[0].text).skills.length,8);
+  assert.equal(JSON.parse(catalog.content[0].text).valid,true);
+  const pinned=await client.callTool({name:'pin_skills',arguments:{projectPath:reviewRoot,id:'issue-pilot',selections:[{name:'fs-issue',reason:'Draft a requested issue'}]}});
+  assert.ok(!pinned.isError,JSON.stringify(pinned));
+  const pin=JSON.parse(pinned.content[0].text);
+  const resumed=await client.callTool({name:'get_skill_run',arguments:{projectPath:reviewRoot,id:pin.id,expectedHash:pin.hash}});
+  assert.ok(!resumed.isError,JSON.stringify(resumed));
+  const snapshot=JSON.parse(resumed.content[0].text);
+  assert.match(await readFile(join(snapshot.snapshotRoot,'skills/fs-issue/references/issue-writing.md'),'utf8'),/acceptance/i);
+  const payload={name:'example',content:'---\nname: example\ndescription: Example.\n---\nExample.',expectedHash:null};
+  await mkdir(join(temp,'package/.frontend-system/drafts'),{recursive:true});
+  await writeFile(join(temp,'package/.frontend-system/drafts/skill.json'),JSON.stringify(payload));
+  const denied=await client.callTool({name:'save_skill',arguments:{repositoryRoot:join(temp,'package'),draftFile:'.frontend-system/drafts/skill.json'}});
+  assert.equal(denied.isError,true,'Extracted installation is not an editable FS source checkout');
   const identity = await client.callTool({name: 'get_fs_release', arguments: {}});
   assert.equal(JSON.parse(identity.content[0].text).pluginVersion, releaseManifest.pluginVersion);
   const unconfigured = await client.callTool({name: 'add_knowledge_note', arguments: {title: 'No source checkout', content: 'Must not write the plugin cache'}});
@@ -183,5 +199,5 @@ try {
     await copyFile(join(temp, pack.filename), join(destination, pack.filename));
     console.log(`Verified package saved: ${join(destination, pack.filename)}`);
   }
-  console.log('Package smoke passed: six skills, no raw knowledge, standalone MCP tools.');
+  console.log('Package smoke passed: eight skills, no raw knowledge, standalone MCP tools.');
 } finally { await client.close(); await rm(temp, { recursive: true, force: true }); }

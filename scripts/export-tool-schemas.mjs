@@ -1,3 +1,4 @@
+import {saveSkillInput,skillEvaluationInput} from '../dist/src/application/skill-management.js';
 import {projectContextPayloadSchema} from '../dist/src/application/project-analysis-input.js';
 import {copyFile, writeFile} from 'node:fs/promises';
 import {fileURLToPath} from 'node:url';
@@ -15,7 +16,7 @@ try {
   const {tools} = await client.listTools();
   // The revision repeats citation/judgment/route schemas across new and patch inputs.
   // Standard local JSON Schema refs share those definitions without changing validation.
-  await writeFile(new URL('../bundle/tool-schemas.json', import.meta.url), JSON.stringify({version: 1, tools, payloadSchemas: {save_project_context: z.toJSONSchema(projectContextPayloadSchema, {io: "input"}), save_revision: z.toJSONSchema(revisionPayloadSchema, {io: "input", reused: "ref"}), save_project_analysis: z.toJSONSchema(projectAnalysisWriteSchema, {io: "input"})}}) + '\n');
+  await writeFile(new URL('../bundle/tool-schemas.json', import.meta.url), JSON.stringify({version: 1, tools, payloadSchemas: {save_skill:z.toJSONSchema(saveSkillInput,{io:"input"}),save_skill_evaluation:z.toJSONSchema(skillEvaluationInput,{io:"input"}),save_project_context: z.toJSONSchema(projectContextPayloadSchema, {io: "input"}), save_revision: z.toJSONSchema(revisionPayloadSchema, {io: "input", reused: "ref"}), save_project_analysis: z.toJSONSchema(projectAnalysisWriteSchema, {io: "input"})}}) + '\n');
   await copyFile(new URL('./tool-help.mjs', import.meta.url), new URL('../bundle/tool-help.mjs', import.meta.url));
   console.log(`Exported read-only help for ${tools.length} MCP tools.`);
 } finally { await client.close(); }
